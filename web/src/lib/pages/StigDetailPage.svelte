@@ -5,6 +5,7 @@
   import { formatDate, severityClass } from "../format";
   import CopyButton from "../components/CopyButton.svelte";
   import { stigCitation } from "../copy";
+  import { intuneProductUrl } from "../api";
 
   interface Props {
     id: string;
@@ -73,8 +74,23 @@
           </div>
         {/if}
       </div>
-      <CopyButton text={stigCitation(stig)} label="Copy citation" class="primary" />
+      <div class="row">
+        {#if stig.quicklink_id}
+          <a class="btn" href={intuneProductUrl(stig.quicklink_id)} target="_blank" rel="noopener"
+            >Export Intune JSON</a
+          >
+        {/if}
+        <CopyButton text={stigCitation(stig)} label="Copy citation" class="primary" />
+      </div>
     </div>
+
+    {#if stig.quicklink_id}
+      <p class="muted" style="margin:0">
+        Product-level Intune draft (OMA-URI aggregate) for
+        <span class="mono">{stig.quicklink_id}</span> — validate before deploy. Rule pages show
+        per-setting CSP suggestions with Learn links.
+      </p>
+    {/if}
 
     {#if stig.description}
       <div class="card">
@@ -117,5 +133,20 @@
   }
   .item {
     padding: 0.85rem 0.75rem !important;
+  }
+  a.btn {
+    display: inline-block;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-hover);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  a.btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    text-decoration: none;
   }
 </style>

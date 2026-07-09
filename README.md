@@ -2,7 +2,7 @@
 
 **Fast, static STIG & control reference.** Search DISA STIGs/SRGs and related NIST controls in the browser. No account, no backend, no assessment workflow.
 
-> Status: **Live** — search, filters, quick links, themes.  
+> Status: **Live** — search, filters, quick links, themes, Intune/CSP suggestions (quick-link products).  
 > Site: https://edodev.github.io/stigref/
 
 ## Why this exists

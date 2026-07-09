@@ -18,10 +18,12 @@ function read(): ThemeId {
   } catch {
     /* ignore */
   }
-  return "slate";
+  return "carbon";
 }
 
-export const theme = writable<ThemeId>(typeof localStorage !== "undefined" ? read() : "slate");
+export const theme = writable<ThemeId>(
+  typeof localStorage !== "undefined" ? read() : "carbon",
+);
 
 export function applyTheme(id: ThemeId): void {
   document.documentElement.dataset.theme = id;

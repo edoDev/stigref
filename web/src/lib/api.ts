@@ -45,3 +45,7 @@ export function fetchRule(id: string): Promise<RuleDetail> {
 export function fetchTagsCatalog(): Promise<TagsCatalog> {
   return getJson<TagsCatalog>(dataUrl("tags", "catalog.json"));
 }
+
+export function intuneProductUrl(productId: string): string {
+  return dataUrl("intune", "products", `${productId}.json`);
+}

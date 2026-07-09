@@ -12,6 +12,7 @@ from typing import Any
 
 from stigref_build import __version__
 from stigref_build.ids import rule_path_id
+from stigref_build.intune_suggest import attach_intune_to_stigs, load_csp_catalog
 from stigref_build.tags import build_quick_links, enrich_stig, load_curated
 
 log = logging.getLogger(__name__)
@@ -155,7 +156,17 @@ def write_data_tree(
     out = Path(out_dir)
     if clean and out.exists():
         # Only remove known subtrees to avoid deleting unrelated files
-        for sub in ("stigs", "rules", "search", "controls", "ccis", "tags", "families"):
+        for sub in (
+            "stigs",
+            "rules",
+            "search",
+            "controls",
+            "ccis",
+            "tags",
+            "families",
+            "intune",
+            "csp",
+        ):
             p = out / sub
             if p.exists():
                 shutil.rmtree(p)
@@ -167,6 +178,9 @@ def write_data_tree(
 
     curated = load_curated()
     stigs = [enrich_stig(s, curated) for s in stigs]
+    # Intune CSP suggestions (quick-link products) during STIG processing
+    csp_catalog = load_csp_catalog()
+    stigs, intune_exports = attach_intune_to_stigs(stigs, catalog=csp_catalog)
     rules_by_id = merge_rules_across_stigs(stigs)
 
     # STIG index + detail (detail includes rule summaries, not always full text)
@@ -286,8 +300,42 @@ def write_data_tree(
             "metadata": rule.get("metadata") or {},
             "stigs": rule.get("stigs") or [],
             "stig_ids": rule.get("stig_ids") or [],
+            "intune": rule.get("intune"),
         }
         _write_json(out / "rules" / "by-id" / f"{path_id}.json", detail)
+
+    # CSP catalog snapshot + product-level Intune export packages
+    _write_json(
+        out / "csp" / "catalog.json",
+        {
+            "version": csp_catalog.get("version"),
+            "sourceNote": csp_catalog.get("sourceNote"),
+            "learnPolicyIndex": csp_catalog.get("learnPolicyIndex"),
+            "entries": csp_catalog.get("entries") or [],
+            "count": len(csp_catalog.get("entries") or []),
+        },
+    )
+    for exp in intune_exports:
+        product = exp.get("product") or "unknown"
+        _write_json(out / "intune" / "products" / f"{product}.json", exp)
+    _write_json(
+        out / "intune" / "index.json",
+        {
+            "products": [
+                {
+                    "product": e.get("product"),
+                    "stigId": (e.get("stig") or {}).get("id"),
+                    "stigName": (e.get("stig") or {}).get("name"),
+                    "settings": (e.get("counts") or {}).get("settings"),
+                    "mappedRules": (e.get("counts") or {}).get("mappedRules"),
+                    "rules": (e.get("counts") or {}).get("rules"),
+                    "path": f"intune/products/{e.get('product')}.json",
+                }
+                for e in intune_exports
+            ],
+            "total": len(intune_exports),
+        },
+    )
 
     docs = build_search_documents(stigs, rules_by_id)
     _write_json(out / "search" / "documents.json", {"documents": docs, "total": len(docs)})

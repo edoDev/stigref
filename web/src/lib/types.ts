@@ -89,6 +89,31 @@ export interface TagsCatalog {
   };
 }
 
+export interface IntuneSuggestion {
+  cspId?: string;
+  title?: string;
+  area?: string;
+  name?: string;
+  kind?: string;
+  scope?: string[];
+  omaUri?: string;
+  dataType?: string;
+  value?: string | null;
+  confidence?: string;
+  rationale?: string;
+  learnUrl?: string;
+  description?: string;
+  source?: string;
+}
+
+export interface IntunePayload {
+  suggestions: IntuneSuggestion[];
+  status: string;
+  policySearchUrl?: string;
+  message?: string | null;
+  multiOption?: boolean;
+}
+
 export interface RuleDetail {
   id: string;
   full_rule_id: string;
@@ -111,4 +136,5 @@ export interface RuleDetail {
     release: string;
   }>;
   stig_ids: string[];
+  intune?: IntunePayload | null;
 }
