@@ -7,6 +7,10 @@ export type Route =
   | { name: "stigs" }
   | { name: "stig"; id: string }
   | { name: "rule"; id: string }
+  | { name: "kev" }
+  | { name: "saved" }
+  | { name: "products" }
+  | { name: "product"; id: string }
   | { name: "notfound"; path: string };
 
 function stripBase(pathname: string): string {
@@ -27,12 +31,18 @@ export function parsePath(pathname: string = location.pathname): Route {
   if (path === "/" || path === "") return { name: "home" };
   if (path === "/about") return { name: "about" };
   if (path === "/stigs") return { name: "stigs" };
+  if (path === "/kev") return { name: "kev" };
+  if (path === "/saved") return { name: "saved" };
+  if (path === "/products") return { name: "products" };
 
   let m = path.match(/^\/stigs\/([^/]+)\/?$/);
   if (m) return { name: "stig", id: decodeURIComponent(m[1]) };
 
   m = path.match(/^\/rules\/([^/]+)\/?$/);
   if (m) return { name: "rule", id: decodeURIComponent(m[1]) };
+
+  m = path.match(/^\/products\/([^/]+)\/?$/);
+  if (m) return { name: "product", id: decodeURIComponent(m[1]) };
 
   return { name: "notfound", path };
 }

@@ -413,6 +413,51 @@ def product_export(
     settings = list(by_oma.values())
     settings.sort(key=lambda s: (s.get("name") or ""))
 
+    # CSV for Excel / bulk import notes
+    csv_lines = ["omaUri,value,dataType,kind,confidence,cspId,title,sourceRules"]
+    for s in settings:
+        def esc(v: Any) -> str:
+            t = "" if v is None else str(v)
+            if any(c in t for c in ',"\n'):
+                return '"' + t.replace('"', '""') + '"'
+            return t
+
+        csv_lines.append(
+            ",".join(
+                [
+                    esc(s.get("omaUri")),
+                    esc(s.get("value")),
+                    esc(s.get("dataType")),
+                    esc(s.get("kind")),
+                    esc(s.get("confidence")),
+                    esc(s.get("cspId")),
+                    esc(s.get("name")),
+                    esc(";".join(s.get("sourceRules") or [])),
+                ]
+            )
+        )
+
+    readme = "\n".join(
+        [
+            f"stigref Intune pack — {product}",
+            f"STIG: {stig.get('name')} V{stig.get('version')}R{stig.get('release')}",
+            "",
+            "Contents:",
+            "  - This JSON file (policy settings + metadata)",
+            "  - settingsCsv field (copy into .csv)",
+            "",
+            "How to use in Microsoft Intune:",
+            "  1. Prefer Settings Catalog when the setting exists there.",
+            "  2. Otherwise: Devices > Configuration > Create > Windows 10+ > Templates > Custom.",
+            "  3. Add each OMA-URI with the listed data type and value.",
+            "  4. ADMX-backed settings may need SyncML <enabled/> payloads — open Learn URLs.",
+            "",
+            "Disclaimer: Assistive only. Validate against STIG checks and current Microsoft docs.",
+            f"Policy CSP index: {POLICY_SEARCH}",
+            "",
+        ]
+    )
+
     return {
         "format": "stigref-intune-product-export/v1",
         "product": product,
@@ -433,6 +478,12 @@ def product_export(
                 "OMA-URI row. Prefer Settings Catalog when a native setting exists. "
                 "ADMX-backed values may need SyncML <enabled/> payloads — see Learn links."
             ),
+            "steps": [
+                "Prefer Settings Catalog if the CSP is exposed there.",
+                "Else create a Windows Custom (OMA-URI) configuration profile.",
+                "Add each settings[] row: OMA-URI, type, value.",
+                "Assign to a pilot group; verify with STIG checks.",
+            ],
             "policyCspIndex": POLICY_SEARCH,
             "disclaimer": (
                 "Suggestions are assistive, not authoritative. Validate against STIG "
@@ -440,6 +491,8 @@ def product_export(
                 "Mappings may be multi-option or incomplete."
             ),
         },
+        "readme": readme,
+        "settingsCsv": "\n".join(csv_lines) + "\n",
         "settings": settings,
         "rulesSummary": rule_links,
         "counts": {

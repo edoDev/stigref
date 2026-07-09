@@ -14,7 +14,11 @@ from stigref_build import __version__
 from stigref_build.ids import rule_path_id
 from stigref_build.intune_suggest import attach_intune_to_stigs, load_csp_catalog
 from stigref_build.tags import build_quick_links, enrich_stig, load_curated
-from stigref_build.threat_enrich import attach_threat_to_rules, load_kev_ids
+from stigref_build.threat_enrich import (
+    attach_threat_to_rules,
+    load_kev_bundle,
+    normalize_cve,
+)
 
 log = logging.getLogger(__name__)
 
@@ -213,11 +217,33 @@ def write_data_tree(
     stigs, intune_exports = attach_intune_to_stigs(stigs, catalog=csp_catalog)
     rules_by_id = merge_rules_across_stigs(stigs)
 
-    # Threat intel: CVE display + CISA KEV join
+    # Threat intel: CVE display + CISA KEV join + full KEV catalog for /kev
     repo_root = Path(__file__).resolve().parents[2]
     kev_cache = repo_root / "raw" / "intel" / "kev.json"
-    kev_ids, kev_meta = load_kev_ids(kev_cache, fetch=True)
+    # First pass without rule links; second normalize after threat attach
+    kev_ids, kev_meta, _ = load_kev_bundle(kev_cache, fetch=True)
     threat_stats = attach_threat_to_rules(rules_by_id, kev_ids)
+
+    cve_to_rules: dict[str, list[str]] = {}
+    for rid, rule in rules_by_id.items():
+        for cve_row in (rule.get("threat") or {}).get("cves") or []:
+            cve = normalize_cve(cve_row.get("id") or "")
+            if not cve:
+                continue
+            cve_to_rules.setdefault(cve, []).append(rid)
+        for cve_raw in rule.get("cves") or []:
+            cve = normalize_cve(cve_raw)
+            if cve:
+                cve_to_rules.setdefault(cve, []).append(rid)
+    for cve, rids in cve_to_rules.items():
+        cve_to_rules[cve] = sorted(set(rids))
+
+    # Rebuild KEV entries with linked STIG rules (from cache, no re-fetch)
+    _, kev_meta2, kev_entries = load_kev_bundle(
+        kev_cache, fetch=False, cve_to_rules=cve_to_rules
+    )
+    if kev_meta2.get("count"):
+        kev_meta = {**kev_meta, **{k: v for k, v in kev_meta2.items() if v}}
 
     # Propagate vendor/roles onto rule search docs via stig lookup
     stig_by_id = {s["id"]: s for s in stigs}
@@ -344,7 +370,7 @@ def write_data_tree(
         }
         _write_json(out / "rules" / "by-id" / f"{path_id}.json", detail)
 
-    # Threat meta
+    # Threat meta + full KEV catalog for dedicated browser page
     _write_json(
         out / "threat" / "meta.json",
         {
@@ -352,6 +378,25 @@ def write_data_tree(
             "stats": threat_stats,
             "disclaimer": (
                 "Public CVE/KEV context only. Not a vulnerability scan result."
+            ),
+        },
+    )
+    _write_json(
+        out / "threat" / "kev.json",
+        {
+            "catalogVersion": kev_meta.get("catalogVersion"),
+            "dateReleased": kev_meta.get("dateReleased"),
+            "fetchedAt": kev_meta.get("fetchedAt"),
+            "source": kev_meta.get("source"),
+            "catalogUrl": kev_meta.get("catalogUrl"),
+            "count": len(kev_entries),
+            "linkedToStigCount": sum(
+                1 for e in kev_entries if e.get("linkedRules")
+            ),
+            "vulnerabilities": kev_entries,
+            "disclaimer": (
+                "CISA Known Exploited Vulnerabilities catalog. "
+                "stigref hosts a snapshot for search; always confirm on cisa.gov."
             ),
         },
     )

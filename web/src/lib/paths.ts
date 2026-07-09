@@ -27,4 +27,8 @@ export const routes = {
   stigs: () => href("stigs"),
   stig: (id: string) => href("stigs", encodeURIComponent(id)),
   rule: (id: string) => href("rules", encodeURIComponent(id)),
+  kev: () => href("kev"),
+  saved: () => href("saved"),
+  products: () => href("products"),
+  product: (id: string) => href("products", encodeURIComponent(id)),
 };

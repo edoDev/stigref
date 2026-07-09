@@ -42,7 +42,7 @@
 
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
-| B-001 | Saved searches / bookmarks (localStorage) | P0 | M | planned | No account |
+| B-001 | Saved searches / bookmarks (localStorage) | P0 | M | done | No account |
 | B-002 | Shareable search URLs (`?q=&vendor=&…`) | P0 | S | done | Deep-link results |
 | B-003 | Rule comparison (two rules / revisions) | P1 | L | idea | |
 | B-004 | Related rules (group / CCI / registry / CSP) | P1 | M | planned | |
@@ -50,7 +50,7 @@
 | B-006 | Keyboard-first UX | P1 | M | planned | |
 | B-007 | Print / PDF-friendly rule view | P2 | S | idea | |
 | B-008 | Severity / CCI filters on search | P0 | M | done | Facets + URL |
-| B-009 | “Open in Intune” guidance recipes | P1 | M | planned | With export |
+| B-009 | “Open in Intune” guidance recipes | P1 | M | done | With export |
 | B-010 | Intune coverage meter per product | P0 | S | done | Quick links |
 
 ### E2 — Intune / CSP
@@ -62,7 +62,7 @@
 | B-013 | Settings Catalog names beside OMA-URI | P1 | M | idea | |
 | B-014 | Multi-option ranking (preferred native vs ADMX) | P1 | M | planned | |
 | B-015 | Conflict warnings (same CSP/registry, different values) | P2 | M | idea | |
-| B-016 | Intune baseline pack export (JSON + CSV + readme) | P0 | M | planned | Extends product JSON |
+| B-016 | Intune baseline pack export (JSON + CSV + readme) | P0 | M | done | Extends product JSON |
 | B-017 | Map contribution helper (YAML snippet generator) | P2 | M | idea | |
 | B-018 | CSP catalog refresh job (quarterly with library) | P1 | L | planned | |
 | B-019 | Chrome / Office ADMX path documentation + maps | P2 | L | idea | |
@@ -85,7 +85,7 @@
 | B-026 | Faceted search (type, vendor, role, severity, has-Intune, has-CVE…) | P0 | M | done | Overlaps B-008 |
 | B-027 | CCI browser (CCI → rules → STIGs) | P1 | L | planned | |
 | B-028 | NIST 800-53 control pages | P2 | L | idea | Fixtures |
-| B-029 | Product hubs (`/products/windows-11`) | P0 | M | planned | |
+| B-029 | Product hubs (`/products/windows-11`) | P0 | M | done | |
 | B-030 | Recently viewed | P1 | S | planned | |
 | B-031 | Typo-tolerant rule ID search | P1 | S | planned | |
 | B-032 | Synonym dictionary | P2 | M | idea | |

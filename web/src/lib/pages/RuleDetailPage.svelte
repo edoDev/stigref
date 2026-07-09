@@ -9,6 +9,7 @@
     ruleMarkdown,
     ruleOmaUriPack,
   } from "../copy";
+  import { bookmarks, toggleBookmark } from "../bookmarks";
 
   interface Props {
     id: string;
@@ -18,6 +19,9 @@
   let state = $state<LoadState>("idle");
   let error = $state<string | null>(null);
   let rule = $state<RuleDetail | null>(null);
+  let saved = $derived(
+    $bookmarks.some((b) => b.type === "rule" && b.id === (rule?.full_rule_id || id)),
+  );
 
   async function load(ruleId: string) {
     state = "loading";
@@ -66,6 +70,17 @@
         </p>
       </div>
       <div class="row pack">
+        <button
+          type="button"
+          onclick={() =>
+            toggleBookmark({
+              type: "rule",
+              id: rule.full_rule_id,
+              title: rule.title,
+            })}
+        >
+          {saved ? "★ Saved" : "☆ Save"}
+        </button>
         <CopyButton text={rule.full_rule_id} label="Copy ID" />
         <CopyButton text={ruleCitation(rule)} label="Citation" class="primary" />
         <CopyButton text={ruleMarkdown(rule)} label="Markdown" />
@@ -182,6 +197,24 @@
           />
         {/if}
       </div>
+
+      <details class="recipe">
+        <summary>How to apply in Intune</summary>
+        <ol>
+          <li>Prefer <strong>Settings Catalog</strong> if the setting exists there.</li>
+          <li>
+            Else: <strong>Devices → Configuration → Create → Windows 10 and later → Templates →
+              Custom</strong>.
+          </li>
+          <li>Add each OMA-URI below (name, OMA-URI, type, value).</li>
+          <li>
+            ADMX-backed settings may need SyncML <span class="mono">&lt;enabled/&gt;</span> style
+            payloads — open the Learn link for the setting.
+          </li>
+          <li>Assign to a pilot group; verify with the STIG check text.</li>
+        </ol>
+      </details>
+
       {#if !rule.intune}
         <p class="muted" style="margin:0">
           No Intune analysis for this rule (only quick-link products are processed in v1).
@@ -342,5 +375,20 @@
   .badge.kev {
     border-color: var(--high);
     color: var(--high);
+  }
+  .recipe {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg);
+    font-size: 0.9rem;
+  }
+  .recipe summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .recipe ol {
+    margin: 0.5rem 0 0;
+    padding-left: 1.2rem;
   }
 </style>

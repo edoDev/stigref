@@ -6,6 +6,10 @@
   import StigDetailPage from "./lib/pages/StigDetailPage.svelte";
   import RuleDetailPage from "./lib/pages/RuleDetailPage.svelte";
   import AboutPage from "./lib/pages/AboutPage.svelte";
+  import KevPage from "./lib/pages/KevPage.svelte";
+  import SavedPage from "./lib/pages/SavedPage.svelte";
+  import ProductsPage from "./lib/pages/ProductsPage.svelte";
+  import ProductHubPage from "./lib/pages/ProductHubPage.svelte";
   import { initRouter, route } from "./lib/router";
   import { bootData } from "./lib/metaStore";
   import { toastMessage } from "./lib/toast";
@@ -39,6 +43,16 @@
   {:else if r.name === "rule"}
     {#key r.id}
       <RuleDetailPage id={r.id} />
+    {/key}
+  {:else if r.name === "kev"}
+    <KevPage />
+  {:else if r.name === "saved"}
+    <SavedPage />
+  {:else if r.name === "products"}
+    <ProductsPage />
+  {:else if r.name === "product"}
+    {#key r.id}
+      <ProductHubPage id={r.id} />
     {/key}
   {:else}
     <section class="state error">

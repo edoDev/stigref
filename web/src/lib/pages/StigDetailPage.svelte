@@ -6,6 +6,8 @@
   import CopyButton from "../components/CopyButton.svelte";
   import { stigCitation } from "../copy";
   import { intuneProductUrl } from "../api";
+  import { bookmarks, toggleBookmark } from "../bookmarks";
+  import { routes as appRoutes } from "../paths";
 
   interface Props {
     id: string;
@@ -15,6 +17,7 @@
   let state = $state<LoadState>("idle");
   let error = $state<string | null>(null);
   let stig = $state<StigDetail | null>(null);
+  let saved = $derived($bookmarks.some((b) => b.type === "stig" && b.id === id));
 
   async function load(stigId: string) {
     state = "loading";
@@ -75,7 +78,15 @@
         {/if}
       </div>
       <div class="row">
+        <button
+          type="button"
+          onclick={() =>
+            toggleBookmark({ type: "stig", id: stig.id, title: stig.name })}
+        >
+          {saved ? "★ Saved" : "☆ Save"}
+        </button>
         {#if stig.quicklink_id}
+          <a class="btn" href={appRoutes.product(stig.quicklink_id)}>Product hub</a>
           <a class="btn" href={intuneProductUrl(stig.quicklink_id)} target="_blank" rel="noopener"
             >Export Intune JSON</a
           >

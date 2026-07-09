@@ -28,16 +28,12 @@ def normalize_cve(cve: str) -> str:
     return (cve or "").strip().upper()
 
 
-def load_kev_ids(
+def _fetch_or_load_kev(
     cache_path: Path | None = None,
     *,
     fetch: bool = True,
     timeout: int = 60,
-) -> tuple[set[str], dict[str, Any]]:
-    """
-    Load set of CVE IDs in CISA KEV.
-    Prefers cache_path if present; optionally refreshes from CISA.
-    """
+) -> tuple[dict[str, Any] | None, dict[str, Any]]:
     meta: dict[str, Any] = {
         "source": KEV_URL,
         "catalogUrl": KEV_CATALOG,
@@ -64,7 +60,7 @@ def load_kev_ids(
             if cache_path:
                 cache_path.parent.mkdir(parents=True, exist_ok=True)
                 cache_path.write_text(
-                    json.dumps(data, indent=2), encoding="utf-8"
+                    json.dumps(data), encoding="utf-8"
                 )
             log.info("Downloaded CISA KEV catalog")
         except Exception as exc:  # noqa: BLE001
@@ -75,6 +71,59 @@ def load_kev_ids(
         meta["fromCache"] = True
         log.info("Loaded KEV from cache %s", cache_path)
 
+    if data:
+        meta["catalogVersion"] = data.get("catalogVersion")
+        meta["dateReleased"] = data.get("dateReleased")
+        meta["count"] = len(data.get("vulnerabilities") or [])
+    return data, meta
+
+
+def normalize_kev_entries(
+    data: dict[str, Any] | None,
+    *,
+    cve_to_rules: dict[str, list[str]] | None = None,
+) -> list[dict[str, Any]]:
+    """Flatten CISA KEV rows for the static site browser."""
+    cve_to_rules = cve_to_rules or {}
+    out: list[dict[str, Any]] = []
+    if not data:
+        return out
+    for row in data.get("vulnerabilities") or []:
+        cve = normalize_cve(row.get("cveID") or "")
+        if not cve:
+            continue
+        out.append(
+            {
+                "cveID": cve,
+                "vendorProject": row.get("vendorProject") or "",
+                "product": row.get("product") or "",
+                "vulnerabilityName": row.get("vulnerabilityName") or "",
+                "dateAdded": row.get("dateAdded") or "",
+                "shortDescription": row.get("shortDescription") or "",
+                "requiredAction": row.get("requiredAction") or "",
+                "dueDate": row.get("dueDate") or "",
+                "knownRansomwareCampaignUse": row.get(
+                    "knownRansomwareCampaignUse"
+                )
+                or "",
+                "notes": row.get("notes") or "",
+                "cwes": row.get("cwes") or [],
+                "nvdUrl": f"{NVD}{cve}",
+                "linkedRules": cve_to_rules.get(cve) or [],
+            }
+        )
+    out.sort(key=lambda r: (r.get("dateAdded") or "", r["cveID"]), reverse=True)
+    return out
+
+
+def load_kev_ids(
+    cache_path: Path | None = None,
+    *,
+    fetch: bool = True,
+    timeout: int = 60,
+) -> tuple[set[str], dict[str, Any]]:
+    """Load set of CVE IDs in CISA KEV (backward compatible)."""
+    data, meta = _fetch_or_load_kev(cache_path, fetch=fetch, timeout=timeout)
     ids: set[str] = set()
     if data:
         for row in data.get("vulnerabilities") or []:
@@ -82,9 +131,27 @@ def load_kev_ids(
             if cve:
                 ids.add(cve)
         meta["count"] = len(ids)
-        meta["catalogVersion"] = data.get("catalogVersion")
-        meta["dateReleased"] = data.get("dateReleased")
     return ids, meta
+
+
+def load_kev_bundle(
+    cache_path: Path | None = None,
+    *,
+    fetch: bool = True,
+    timeout: int = 60,
+    cve_to_rules: dict[str, list[str]] | None = None,
+) -> tuple[set[str], dict[str, Any], list[dict[str, Any]]]:
+    """Return (ids, meta, normalized entries for site catalog)."""
+    data, meta = _fetch_or_load_kev(cache_path, fetch=fetch, timeout=timeout)
+    ids: set[str] = set()
+    if data:
+        for row in data.get("vulnerabilities") or []:
+            cve = normalize_cve(row.get("cveID") or "")
+            if cve:
+                ids.add(cve)
+        meta["count"] = len(ids)
+    entries = normalize_kev_entries(data, cve_to_rules=cve_to_rules)
+    return ids, meta, entries
 
 
 def build_threat_for_rule(

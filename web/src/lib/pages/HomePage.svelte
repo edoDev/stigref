@@ -113,7 +113,7 @@
       <div class="qlinks">
         {#each quickLinks as link (link.id)}
           {#if link.found && link.stigId}
-            <a class="qlink" href={routes.stig(link.stigId)} title={link.stigName || link.label}>
+            <a class="qlink" href={routes.product(link.id)} title={link.stigName || link.label}>
               <span>{link.label}</span>
               {#if coverageFor(link.id)}
                 <span class="cov">{coverageFor(link.id)}</span>

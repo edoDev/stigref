@@ -20,6 +20,9 @@
     <nav class="row nav">
       <a href={routes.home()}>Search</a>
       <a href={routes.stigs()}>STIGs</a>
+      <a href={routes.products()}>Products</a>
+      <a href={routes.kev()}>KEV</a>
+      <a href={routes.saved()}>Saved</a>
       <a href={routes.about()}>About</a>
     </nav>
     <label class="theme muted">
