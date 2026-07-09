@@ -2,7 +2,7 @@
 
 **Version:** 0.1 (pre-implementation)  
 **Audience:** Maintainers + external design review  
-**Status:** Awaiting owner approval before build
+**Status:** Phase 1 implemented (build pipeline + sample data)
 
 ---
 

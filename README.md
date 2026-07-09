@@ -2,7 +2,7 @@
 
 **Fast, static STIG & control reference.** Search DISA STIGs/SRGs and related NIST controls in the browser. No account, no backend, no assessment workflow.
 
-> Status: **design approved pending** — scaffold and design only. Implementation starts after product approval.
+> Status: **Phase 1 complete** — XCCDF build pipeline + sample `data/`. Frontend not started yet.
 
 ## Why this exists
 
@@ -70,11 +70,25 @@ MIT (code). STIG content remains subject to DISA / U.S. Government distribution 
 
 Inspired by the product idea behind [rmfdb](https://github.com/atomweight/rmfdb) (static rethink). Differentiated from [STIG Manager](https://github.com/NUWCDIVNPT/stig-manager) (assessment vs reference).
 
+## Quick start (data pipeline)
+
+```powershell
+cd scripts
+py -3.12 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+pytest -q
+python -m stigref_build --input testdata\sample_stig-xccdf.xml --out ..\data
+```
+
+See [scripts/README.md](scripts/README.md).
+
 ## Status
 
 | Phase | State |
 |-------|--------|
-| Design | Ready for approval |
-| Implementation | Not started |
-| First data build | Not started |
+| Design | Done |
+| Phase 1 — parser + data build | **Done** (sample fixture) |
+| Phase 2 — frontend UI | Not started |
+| Full DISA library ingest | Not started |
 | GitHub Pages live | Not started |
