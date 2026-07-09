@@ -44,7 +44,7 @@ GitHub Pages  ◄──  Vite SPA (web/)  ◄── fetch ───────�
 - **Search:** MiniSearch (or equivalent) in a Web Worker.
 - **Hosting:** GitHub Pages only.
 
-Details: [docs/DESIGN.md](docs/DESIGN.md)
+Details: [docs/DESIGN.md](docs/DESIGN.md) · [Backlog](docs/BACKLOG.md) · [Roadmap](docs/ROADMAP.md)
 
 ## Content source
 
