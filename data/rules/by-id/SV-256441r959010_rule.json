@@ -1,0 +1,53 @@
+{
+  "id": "SV-256441r959010_rule",
+  "full_rule_id": "SV-256441r959010_rule",
+  "rule_id": "SV-256441",
+  "rule_revision": "959010",
+  "group_id": "V-256441",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi Host Client must be configured with a session timeout.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ESXi Host Client is the UI served up by the host itself, outside of vCenter. It is accessed by browsing to \"https://<ESX FQDN>/ui\". ESXi is not usually administered via this interface for long periods, and all users will be highly privileged. Implementing a mandatory session idle limit will ensure that orphaned, forgotten, or ignored sessions will be closed promptly.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nSelect the \"UserVars.HostClientSessionTimeout\" value and verify it is set to \"600\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout\n\nIf the \"UserVars.HostClientSessionTimeout\" setting is not set to \"600\", this is a finding.",
+  "fix": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nSelect the \"UserVars.HostClientSessionTimeout\" value and set it to \"600\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout | Set-AdvancedSetting -Value \"600\"",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ESXi Host Client is the UI served up by the host itself, outside of vCenter. It is accessed by browsing to \"https://<ESX FQDN>/ui\". ESXi is not usually administered via this interface for long periods, and all users will be highly privileged. Implementing a mandatory session idle limit will ensure that orphaned, forgotten, or ignored sessions will be closed promptly.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-70-000089",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2",
+      "name": "VMware vSphere 7.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2"
+  ]
+}

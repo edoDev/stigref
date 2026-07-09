@@ -1,0 +1,53 @@
+{
+  "id": "SV-222961r1043177_rule",
+  "full_rule_id": "SV-222961r1043177_rule",
+  "rule_id": "SV-222961",
+  "rule_revision": "1043177",
+  "group_id": "V-222961",
+  "group_title": "SRG-APP-000142-AS-000014",
+  "title": "Applications in privileged mode must be approved by the ISSO.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The privileged attribute controls if a context (application) is allowed to use container provided servlets like the Manager servlet. It is false by default and should only be changed for trusted web applications.\n\nSet to true to allow the context (application) to use container servlets, like the manager servlet. Use of the privileged attribute will change the context's parent class loader to be the Server class loader rather than the Shared class loader. Note that in a default installation, the Common class loader is used for both the Server and the Shared class loaders. Use of the privileged attribute will change the context's parent class loader to be the Server class loader rather than the Shared class loader.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Individual Context elements may be explicitly defined in an individual file located at /META-INF/context.xml inside the application files or in the $CATALINA_BASE/conf/context.xml file. It is not recommended to store the context element in the server.xml file as changes will require a server restart.\n\nThe $CATALINA_BASE/conf/context element information will be loaded by all web applications, the META-INF/context.xml will only be loaded by that specific application.\n\nOn the Tomcat server as a privileged user run the following commands:\n\ngrep -i privileged $CATALINA_BASE/conf/context.xml\n\nRepeat the following command for each installed application:\n\ngrep -i privileged $CATALINA_BASE/webapps/<application name>META-INF/context.xml\n\nIf the privileged context attribute is set to true, confirm the application has been approved for privileged mode by the ISSO. If the application is not approved to run in privileged mode, this is a finding.",
+  "fix": "On the Tomcat server as a privileged user, modify the relevant context.xml file and set the privileged attribute to false (privileged=false).\nA restart should not be required if the context element is not maintained in the server.xml file.\n\nIf privileged mode is required for a particular application, verify trust of application and obtain documented approval from the ISSO.  Document the applications that are approved to run in privileged mode and retain approvals in the system security plan (SSP) for CCRI reviews.",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The privileged attribute controls if a context (application) is allowed to use container provided servlets like the Manager servlet. It is false by default and should only be changed for trusted web applications.\n\nSet to true to allow the context (application) to use container servlets, like the manager servlet. Use of the privileged attribute will change the context's parent class loader to be the Server class loader rather than the Shared class loader. Note that in a default installation, the Common class loader is used for both the Server and the Shared class loaders. Use of the privileged attribute will change the context's parent class loader to be the Server class loader rather than the Shared class loader.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000590",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

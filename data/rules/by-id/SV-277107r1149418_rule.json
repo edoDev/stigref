@@ -1,0 +1,53 @@
+{
+  "id": "SV-277107r1149418_rule",
+  "full_rule_id": "SV-277107r1149418_rule",
+  "rule_id": "SV-277107",
+  "rule_revision": "1149418",
+  "group_id": "V-277107",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "The macOS system must disable iCloud storage setup during Setup Assistant.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The prompt to set up iCloud storage services during Setup Assistant must be disabled.\n\nThe default behavior of macOS is to prompt new users to set up storage in iCloud. Disabling the iCloud storage setup prompt provides organizations with more control over their data storage.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to disable iCloud storage setup during Setup Assistant with the following command:\n\n/usr/bin/osascript -l JavaScript 2>/dev/null << EOS\n$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SetupAssistant.managed')\\\n.objectForKey('skipSetupItems').containsObject(\"iCloudStorage\")\nEOS\n\nIf the result is not \"true\", this is a finding.",
+  "fix": "Configure the macOS system to disable iCloud storage setup during Setup Assistant by installing the \"com.apple.SetupAssistant.managed\" configuration profile.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The prompt to set up iCloud storage services during Setup Assistant must be disabled.\n\nThe default behavior of macOS is to prompt new users to set up storage in iCloud. Disabling the iCloud storage setup prompt provides organizations with more control over their data storage.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-26-002037",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2",
+      "name": "Apple macOS 26 (Tahoe) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2"
+  ]
+}

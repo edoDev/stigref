@@ -1,0 +1,53 @@
+{
+  "id": "SV-80541r1_rule",
+  "full_rule_id": "SV-80541r1_rule",
+  "rule_id": "SV-80541",
+  "rule_revision": "1",
+  "group_id": "V-66051",
+  "group_title": "SRG-NET-000343-L2S-000016",
+  "title": "HP FlexFabric Switch must authenticate all network-connected endpoint devices before establishing any connection.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Controlling LAN access via 802.1x authentication or MAC authentication can assist in preventing a malicious user from connecting an unauthorized PC to a switch port to inject or receive data from the network without detection.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify all access switch ports connecting to LAN outlets are configured for 802.1x or MAC authentication as shown in these configuration examples.\n\n802.1x example:\n\ninterface Ten-GigabitEthernet1/0/4\nport link-mode bridge\nport access vlan 200\ndot1x\n\nMAC authentication example:\n\ninterface Ten-GigabitEthernet1/0/5\nport link-mode bridge\nport access vlan 200\nmac-authentication\n\nIf all access switch ports connecting to LAN outlets are not configured for 802.1x or MAC authentication, this is a finding.",
+  "fix": "Configure 802.1 x authentications on all host-facing access switch ports. To authenticate those devices that do not support 802.1x, MAC Authentication Bypass must be configured.\n\n[HP] dot1x\n[HP] dot1x authentication-method eap\n[HP] domain radius jitc\n[HP] radius scheme jitc\n[HP-radius-jitc]radius scheme jitc\n[HP-radius-jitc]primary authentication 15.252.76.124\n[HP-radius-jitc]primary accounting 15.252.76.124\n[HP-radius-jitc]accounting-on enable\n[HP-radius-jitc]key authentication simple test123\n[HP-radius-jitc]user-name-format without-domain\n[HP-radius-jitc]nas-ip 15.252.78.99\n[HP]domain jitc\n[HP-isp-jitc]domain jitc\n[HP-isp-jitc]authentication lan-access radius-scheme jitc\n[HP-isp-jitc]authorization lan-access radius-scheme jitc\n[HP] interface gigbitethernet 1/0/1\n[HP-Gigabitethernet1/0/1] undo dot1x handshake\ndot1x mandatory-domain jitc\nundo dot1x multicast-trigger",
+  "ccis": [
+    "CCI-001958"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Controlling LAN access via 802.1x authentication or MAC authentication can assist in preventing a malicious user from connecting an unauthorized PC to a switch port to inject or receive data from the network without detection.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-L2-000002",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-l2s-security-technical-implementation-guide-v1r3-0b7a302d",
+      "name": "HP FlexFabric Switch L2S Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-l2s-security-technical-implementation-guide-v1r3-0b7a302d"
+  ]
+}

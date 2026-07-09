@@ -1,0 +1,53 @@
+{
+  "id": "SV-216294r959010_rule",
+  "full_rule_id": "SV-216294r959010_rule",
+  "rule_id": "SV-216294",
+  "rule_revision": "959010",
+  "group_id": "V-216294",
+  "group_title": "SRG-OS-000480",
+  "title": "The rpcbind service must be configured for local only services unless organizationally defined.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The portmap and rpcbind services increase the attack surface of the system and should only be used when needed. The portmap or rpcbind services are used by a variety of services using remote procedure calls (RPCs).  The organization may define and document the limited use of services (for example NFS) that may use these services with approval from their Authorizing Official.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the status of the rpcbind service local_only property.\n# svcprop -p config/local_only network/rpc/bind\n\nIf the state is not \"true\", this is a finding, unless it is required for system operations, then this is not a finding.",
+  "fix": "The Service Management profile is required.\n\nIf services such as portmap or rpcbind are required for system operations, the operator must document the services used and obtain approval from their Authorizing Official. They should also document the method(s) of blocking all other remote accesses through tools like a firewall or tcp_wrappers.\nOtherwise, configure the rpc/bind service for local only access. \n\n# svccfg -s network/rpc/bind setprop config/local_only=true",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The portmap and rpcbind services increase the attack surface of the system and should only be used when needed. The portmap or rpcbind services are used by a variety of services using remote procedure calls (RPCs).  The organization may define and document the limited use of services (for example NFS) that may use these services with approval from their Authorizing Official.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-020170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

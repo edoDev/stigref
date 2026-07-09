@@ -1,0 +1,53 @@
+{
+  "id": "SV-270522r1115956_rule",
+  "full_rule_id": "SV-270522r1115956_rule",
+  "rule_id": "SV-270522",
+  "rule_revision": "1115956",
+  "group_id": "V-270522",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "Fixed user and PUBLIC Database links must be authorized for use.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Database links define connections that may be used by the local Oracle database to access remote Oracle databases (homogenous links) and non-Oracle Databases (heterogeneous links). These links provide a means for a compromise to the local database to spread to remote databases and for a compromise of a remote database to the local database in a distributed database environment. Limiting or eliminating the use of database links, where they are not required to support the operational system, can help isolate compromises, mitigate risk, and reduce the potential attack surface.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If using a non-CDB database:\nUse the following query to get a list of database links.\n\nFrom SQL*Plus:\n\nselect owner||': '||db_link from dba_db_links;\n\nIf using a CDB database:\nUse the following query to get a list of database links.\n\nselect con_id_to_con_name(con_id) con_id, owner, db_link, username, host from cdb_db_links order by 1,2,3;\n\nCheck Results:\n\nIf no rows are returned from the first SQL statement, this check is not a finding.\n\nIf there are rows returned, verify the database links are required. If they are required and exist, this is not a finding.",
+  "fix": "Document all authorized connections from the database to remote databases.\n\nRemove all unauthorized remote database connection definitions from the database.\n\nFrom SQL*Plus:\n\ndrop database link [link name];\nOR\ndrop public database link [link name];\n\nReview remote database connection definitions periodically and confirm their use is still required and authorized.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Database links define connections that may be used by the local Oracle database to access remote Oracle databases (homogenous links) and non-Oracle Databases (heterogeneous links). These links provide a means for a compromise to the local database to spread to remote databases and for a compromise of a remote database to the local database in a distributed database environment. Limiting or eliminating the use of database links, where they are not required to support the operational system, can help isolate compromises, mitigate risk, and reduce the potential attack surface.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-008700",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

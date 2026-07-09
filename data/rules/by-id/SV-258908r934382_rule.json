@@ -1,0 +1,53 @@
+{
+  "id": "SV-258908r934382_rule",
+  "full_rule_id": "SV-258908r934382_rule",
+  "rule_id": "SV-258908",
+  "rule_revision": "934382",
+  "group_id": "V-258908",
+  "group_title": "SRG-APP-000141",
+  "title": "vCenter Server plugins must be verified.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The vCenter Server includes a vSphere Client extensibility framework, which provides the ability to extend the vSphere Client with menu selections or toolbar icons that provide access to vCenter Server add-on components or external, web-based functionality.\n\nvSphere Client plugins or extensions run at the same privilege level as the user. Malicious extensions might masquerade as useful add-ons while compromising the system by stealing credentials or incorrectly configuring the system.\n\nAdditionally, vCenter comes with a number of plugins preinstalled that may or may not be necessary for proper operation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Administration >> Solutions >> Client Plug-Ins.\n\nView the Installed/Available Plug-ins list and verify they are all identified as authorized VMware, third-party (partner), and/or site-specific approved plug-ins.\n\nIf any installed/available plug-ins in the viewable list cannot be verified as allowed vSphere Client plug-ins from trusted sources or are not in active use, this is a finding.",
+  "fix": "From the vSphere Client, go to Administration >> Solutions >> Client Plug-Ins, click the radio button next to the unknown plug-in, and click \"Disable\".\n\nIf the plugin will not be needed in the future, proceed to uninstall the plug-in.\n\nTo uninstall plug-ins, do the following:\n\nIf vCenter Server is in linked mode, perform this procedure on the vCenter Server that is used to install the plug-in initially and then restart the vCenter Server services on the linked vCenter Server:\n\nIn a web browser, navigate to \"http://vCenter_Server_name_or_IP/mob\", where \"vCenter_Server_name_or_IP/mob\" is the name of the vCenter Server or its IP address.\n\nClick \"Content\".\n\nClick \"ExtensionManager\".\n\nSelect and copy the name of the plug-in to be removed from the list of values under \"Properties\".\n\nClick \"UnregisterExtension\". A new window appears.\n\nPaste the name of the plug-in and click \"Invoke Method\". This removes the plug-in.\n\nClose the window.\n\nRefresh the Managed Object Type:ManagedObjectReference:ExtensionManager window to verify the plug-in is removed successfully.\n\nNote: If the plug-in still appears, restart the vSphere Client.\n\nNote: The Managed Object Browser (MOB) may have to be enabled temporarily if it was disabled previously.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The vCenter Server includes a vSphere Client extensibility framework, which provides the ability to extend the vSphere Client with menu selections or toolbar icons that provide access to vCenter Server add-on components or external, web-based functionality.\n\nvSphere Client plugins or extensions run at the same privilege level as the user. Malicious extensions might masquerade as useful add-ons while compromising the system by stealing credentials or incorrectly configuring the system.\n\nAdditionally, vCenter comes with a number of plugins preinstalled that may or may not be necessary for proper operation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000057",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

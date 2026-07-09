@@ -1,0 +1,53 @@
+{
+  "id": "SV-253956r843901_rule",
+  "full_rule_id": "SV-253956r843901_rule",
+  "rule_id": "SV-253956",
+  "rule_revision": "843901",
+  "group_id": "V-253956",
+  "group_title": "SRG-NET-000362-L2S-000022",
+  "title": "The Juniper EX switch must be configured to enable BPDU Protection on all user-facing or untrusted access switch ports.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If a rogue switch is introduced into the topology and transmits a Bridge Protocol Data Unit (BPDU) with a lower bridge priority than the existing root bridge, it will become the new root bridge and cause a topology change, rendering the network in a suboptimal state. BPDU Protection  allows network designers to enforce the STP domain borders and keep the active topology predictable. The devices behind interfaces that have BPDU Protection enabled are not able to influence the STP topology. At the reception of BPDUs,  BPDU Protection disables the port and logs the condition.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify that BPDU Protection is enabled on all user-facing or untrusted access switch interfaces.\n\nBPDU Protection discards all BPDUs received on a configured interface and stops forwarding on that interface. In contrast, Root Protection discards only superior root BPDUs but accepts remaining BPDU types. Verify BDPU Protection (bpdu-block-on-edge) and the edge interfaces where no BPDUs are expected.\n\n[protocols]\nmstp {\n    bpdu-block-on-edge;\n    interface <interface name> {\n        edge;\n    }\n}\nNote: Configuring BPDU Protection and Root Protection on the same interface is supported, but redundant because BPDU protection includes Root Protection.\n\nIf the switch has not enabled BPDU Protection, this is a finding.",
+  "fix": "Configure the switch to have BPDU Protection enabled on all user-facing or untrusted access switch interfaces.\n\nset protocols mstp bpdu-block-on-edge\nset protocols mstp interface <interface name> edge\n\nNote: Configuring BPDU Protection and Root Protection on the same interface is supported, but redundant because BPDU protection includes Root Protection.",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If a rogue switch is introduced into the topology and transmits a Bridge Protocol Data Unit (BPDU) with a lower bridge priority than the existing root bridge, it will become the new root bridge and cause a topology change, rendering the network in a suboptimal state. BPDU Protection  allows network designers to enforce the STP domain borders and keep the active topology predictable. The devices behind interfaces that have BPDU Protection enabled are not able to influence the STP topology. At the reception of BPDUs,  BPDU Protection disables the port and logs the condition.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-L2-000090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf",
+      "name": "Juniper EX Series Switches Layer 2 Switch Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf"
+  ]
+}

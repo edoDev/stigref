@@ -1,0 +1,53 @@
+{
+  "id": "SV-256959r961167_rule",
+  "full_rule_id": "SV-256959r961167_rule",
+  "rule_id": "SV-256959",
+  "rule_revision": "961167",
+  "group_id": "V-256959",
+  "group_title": "SRG-APP-000266-WSR-000160",
+  "title": "Debugging and trace information, within Automation Controller NGINX web server, used to diagnose the web server must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is important that Automation Controller NGINX web server debugging and trace information used to diagnose the web server is disabled, because debugging information can yield information about the Automation Controller NGINX webserver, like web server type, version, patches installed, plugins, modules, the hosted app’s code type. Back ends used for storage could be revealed, as well. An attacker would not need to cause an error condition to gain this information because they could reside in logs and general messages.\n\nIf debugging/trace information is enabled, attackers could get the information from logs and general information, without drawing attention to themselves via an error message.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For each Automation Controller NGINX web server, a system administrator must check to determine if any error or debug information is being logged or generated:\n\nNGINXCONF=`nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}' ` ;  cat $NGINXCONF  | grep '^\\s*error_log' && echo FAILED\n\nIf \"FAILED\" is displayed, this is a finding.",
+  "fix": "For each Automation Controller NGINX web server, a system administrator must complete the following steps. \n\nVerify the NGINX configuration file in use:\n\nNGINXCONF=`nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}' ` ;  echo $NGINXCONF\n\nRemove the error_log directive from the NGINX configuration file.\n\nCause NGINX to reload its configuration file:\n\npkill -HUP nginx",
+  "ccis": [
+    "CCI-001312"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is important that Automation Controller NGINX web server debugging and trace information used to diagnose the web server is disabled, because debugging information can yield information about the Automation Controller NGINX webserver, like web server type, version, patches installed, plugins, modules, the hosted app’s code type. Back ends used for storage could be revealed, as well. An attacker would not need to cause an error condition to gain this information because they could reside in logs and general messages.\n\nIf debugging/trace information is enabled, attackers could get the information from logs and general information, without drawing attention to themselves via an error message.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APWS-AT-000640",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65",
+      "name": "Red Hat Ansible Automation Controller Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65"
+  ]
+}

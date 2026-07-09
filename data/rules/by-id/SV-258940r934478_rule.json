@@ -1,0 +1,53 @@
+{
+  "id": "SV-258940r934478_rule",
+  "full_rule_id": "SV-258940r934478_rule",
+  "rule_id": "SV-258940",
+  "rule_revision": "934478",
+  "group_id": "V-258940",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must not configure VLAN Trunking unless Virtual Guest Tagging (VGT) is required and authorized.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When a port group is set to VLAN Trunking, the vSwitch passes all network frames in the specified range to the attached virtual machines without modifying the virtual local area network (VLAN) tags. In vSphere, this is referred to as VGT.\n\nThe virtual machine must process the VLAN information itself via an 802.1Q driver in the operating system. VLAN Trunking must only be implemented if the attached virtual machines have been specifically authorized and are capable of managing VLAN tags themselves.\n\nIf VLAN Trunking is enabled inappropriately, it may cause a denial of service or allow a virtual machine to interact with traffic on an unauthorized VLAN.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If distributed switches are not used, this is not applicable.\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Select a distributed port group >> Configure >> Settings >> Policies.\n\nReview the port group \"VLAN Type\" and \"VLAN trunk range\", if present.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-VDPortgroup | Where {$_.ExtensionData.Config.Uplink -ne \"True\"} | Select Name,VlanConfiguration\n\nIf any port group is configured with \"VLAN trunking\" and is not documented as a needed exception (such as NSX appliances), this is a finding.\n\nIf any port group is authorized to be configured with \"VLAN trunking\" but is not configured with the most limited range necessary, this is a finding.",
+  "fix": "From the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Select a distributed port group >> Configure >> Settings >> Policies.\n\nClick \"Edit\".\n\nClick the \"VLAN\" tab.\n\nIf \"VLAN trunking\" is not authorized, remove it by setting \"VLAN type\" to \"VLAN\" and configure an appropriate VLAN ID. Click \"OK\".\n\nIf \"VLAN trunking\" is authorized but the range is too broad, modify the range in the \"VLAN trunk range\" field to the minimum necessary and authorized range. An example range would be \"1,3-5,8\". Click \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command to configure trunking:\n\nGet-VDPortgroup \"Portgroup Name\" | Set-VDVlanConfiguration -VlanTrunkRange \"<VLAN Range(s) comma separated>\"\n\nor\n\nRun this command to configure a single VLAN ID:\n\nGet-VDPortgroup \"Portgroup Name\" | Set-VDVlanConfiguration -VlanId \"<New VLAN#>\"",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When a port group is set to VLAN Trunking, the vSwitch passes all network frames in the specified range to the attached virtual machines without modifying the virtual local area network (VLAN) tags. In vSphere, this is referred to as VGT.\n\nThe virtual machine must process the VLAN information itself via an 802.1Q driver in the operating system. VLAN Trunking must only be implemented if the attached virtual machines have been specifically authorized and are capable of managing VLAN tags themselves.\n\nIf VLAN Trunking is enabled inappropriately, it may cause a denial of service or allow a virtual machine to interact with traffic on an unauthorized VLAN.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000273",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

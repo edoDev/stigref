@@ -1,0 +1,53 @@
+{
+  "id": "SV-255252r960735_rule",
+  "full_rule_id": "SV-255252r960735_rule",
+  "rule_id": "SV-255252",
+  "rule_revision": "960735",
+  "group_id": "V-255252",
+  "group_title": "SRG-APP-000001-WSR-000001",
+  "title": "SSMC web server must limit the number of allowed simultaneous session requests.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Web server management includes the ability to control the number of users and user sessions that utilize a web server. Limiting the number of allowed users and sessions per user is helpful in limiting risks related to several types of Denial of Service attacks. \n\nAlthough there is some latitude concerning the settings themselves, the settings should follow DoD-recommended values, but the settings should be configurable to allow for future DOD direction. While the DOD will specify recommended values, the values can be adjusted to accommodate the operational requirement of a given system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SSMC limits the number of concurrent sessions by doing the following:\n\n1. Log on to SSMC TUI via SSH as ssmcadmin. Press \"X\" to escape to general bash shell.\n\n2. Execute the following commands:\n\n$ grep ^security.max.active.ui.sessions /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties\n\nsecurity.max.active.ui.sessions=10\n\n$ grep ^security.max.active.ui.per.user.sessions /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties\nsecurity.max.active.ui.per.user.sessions=1\n\nIf the output of the above commands does not show the values for \"security.max.active.ui.sessions\" and \"security.max.active.ui.per.user.sessions\" properties with values set as \"10\" and \"1\" respectively, this is a finding.",
+  "fix": "Configure SSMC to limit the number of allowed simultaneous web session requests by doing the following:\n\n1. Log on to SSMC TUI via SSH as ssmcadmin. Press \"X\" to escape to general bash shell.\n\n2. Edit /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties (Use vi to edit).\n\n3. Locate (or add a fresh entry) property security.max.active.ui.sessions. Set the value to \"10\".\n\n4. Locate (or add a fresh entry) property security.max.active.ui.per.user.sessions. Set the value to \"1\".\n\n5. Save the file and exit.\n\n6. Type \"config_appliance\" to return to TUI. Restart (stop and start) SSMC services using TUI menu option 2.",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Web server management includes the ability to control the number of users and user sessions that utilize a web server. Limiting the number of allowed users and sessions per user is helpful in limiting risks related to several types of Denial of Service attacks. \n\nAlthough there is some latitude concerning the settings themselves, the settings should follow DoD-recommended values, but the settings should be configurable to allow for future DOD direction. While the DOD will specify recommended values, the values can be adjusted to accommodate the operational requirement of a given system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SSMC-WS-010020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0",
+      "name": "HPE 3PAR SSMC Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-279562r1192301_rule",
+  "full_rule_id": "SV-279562r1192301_rule",
+  "rule_id": "SV-279562",
+  "rule_revision": "1192301",
+  "group_id": "V-279562",
+  "group_title": "SRG-OS-000473-GPOS-00218",
+  "title": "Nutanix OS must generate audit records when concurrent logons to the same account occur from different sources.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nAudit records can be generated from various components within the information system (e.g., module or policy filter).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify Nutanix AOS generates audit records when concurrent logons to the same account occur using the following command.\n\n$ sudo grep dir /etc/security/faillock.conf\n# The directory where the user files with the failure records are kept.\ndir = /var/log/faillock\n\n2. Using the location of the faillock log file, check that the following calls are being audited by performing the following command to check the file system rules in \"/etc/audit/audit.rules\".\n\n$ sudo grep -w faillock /etc/audit/audit.rules \n-w /var/log/faillock -p wa -k logins\n\nIf the commands do not return a line, or the lines are commented out, this is a finding.",
+  "fix": "1. For AOS, configure the audit rules.\n\n$ sudo salt-call state.sls security/CVM/auditCVM\n\n2. For Prism Central, configure the audit rules.\n\n$ sudo salt-call state.sls security/PCVM/auditPCVM\n\n3. For Files, configure the audit rules.\n\n$ sudo salt-call state.sls security/AFS/auditAFS\n\n4. For AHV, configure the audit rules.\n\n$ sudo salt-call state.sls security/KVM/auditKVM",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nAudit records can be generated from various components within the information system (e.g., module or policy filter).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000072",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

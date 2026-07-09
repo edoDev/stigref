@@ -1,0 +1,53 @@
+{
+  "id": "SV-260472r1137695_rule",
+  "full_rule_id": "SV-260472r1137695_rule",
+  "rule_id": "SV-260472",
+  "rule_revision": "1137695",
+  "group_id": "V-260472",
+  "group_title": "SRG-OS-000138-GPOS-00069",
+  "title": "Ubuntu 22.04 LTS must restrict access to the kernel message buffer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Restricting access to the kernel message buffer limits access only to root. This prevents attackers from gaining additional system information as a nonprivileged user.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu 22.04 LTS is configured to restrict access to the kernel message buffer by using the following command: \n \n     $ sysctl kernel.dmesg_restrict \n     kernel.dmesg_restrict = 1 \n \nIf \"kernel.dmesg_restrict\" is not set to \"1\" or is missing, this is a finding. \n \nVerify that there are no configurations that enable the kernel dmesg function: \n \n     $ sudo grep -ir kernel.dmesg_restrict /run/sysctl.d/* /etc/sysctl.d/* /usr/local/lib/sysctl.d/* /usr/lib/sysctl.d/* /lib/sysctl.d/* /etc/sysctl.conf 2> /dev/null \n     /etc/sysctl.d/10-kernel-hardening.conf:kernel.dmesg_restrict = 1 \n \nIf \"kernel.dmesg_restrict\" is not set to \"1\", is commented out, is missing, or conflicting results are returned, this is a finding.",
+  "fix": "Configure Ubuntu 22.04 LTS to restrict access to the kernel message buffer. \n \nAdd or modify the following line in the \"/etc/sysctl.conf\" file: \n \nkernel.dmesg_restrict = 1 \n \nRemove any configurations that conflict with the above from the following locations:  \n \n/run/sysctl.d/ \n/etc/sysctl.d/ \n/usr/local/lib/sysctl.d/ \n/usr/lib/sysctl.d/ \n/lib/sysctl.d/ \n/etc/sysctl.conf \n \nReload settings from all system configuration files by using the following command: \n \n     $ sudo sysctl --system",
+  "ccis": [
+    "CCI-001090"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Restricting access to the kernel message buffer limits access only to root. This prevents attackers from gaining additional system information as a nonprivileged user.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-22-213010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553",
+      "name": "Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553"
+  ]
+}

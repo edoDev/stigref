@@ -1,0 +1,53 @@
+{
+  "id": "SV-217011r604135_rule",
+  "full_rule_id": "SV-217011r604135_rule",
+  "rule_id": "SV-217011",
+  "rule_revision": "604135",
+  "group_id": "V-217011",
+  "group_title": "SRG-NET-000018-RTR-000001",
+  "title": "The Juniper router must be configured to enforce approved authorizations for controlling the flow of information within the network based on organization-defined information flow control policies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information flow control regulates where information is allowed to travel within a network and between interconnected networks. The flow of all network traffic must be monitored and controlled so it does not introduce any unacceptable risk to the network infrastructure or data. Information flow control policies and enforcement mechanisms are commonly employed by organizations to control the flow of information between designated sources and destinations (e.g., networks, individuals, and devices) within information systems.\n\nEnforcement occurs, for example, in boundary protection devices (e.g., gateways, routers, guards, encrypted tunnels, and firewalls) that employ rule sets or establish configuration settings that restrict information system services, provide a packet filtering capability based on header information, or provide a message filtering capability based on message content (e.g., implementing key word searches or using document characteristics).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DoDIN Backbone.\n\nReview the router configuration to verify that firewall filters are configured to allow or deny traffic for specific source and destination addresses as well as ports and protocols. For example, the configuration below will allow only printer traffic into subnet 11.1.23.0/24 and SQL traffic into subnet 11.1.24.0/24. ICMP is allowed for troubleshooting and OSPF is the routing protocol used within the network.\n\ninterfaces {\n    ge-0/0/0 {\n        unit 0 {\n            family inet {\n                filter {\n                    input FILTER_SERVER_TRAFFIC;\n                }\n                address 11.1.12.2/24;\n            }\n        }\n    }\n…\n…\n…\nfirewall {\n    family inet {\n        filter FILTER_SERVER_TRAFFIC {\n            term PRINT_FILTER {\n                from {\n                    destination-address {\n                        11.1.23.0/24;\n                    }\n                    protocol tcp;\n                    destination-port [ 515 631 9100 ];\n                }\n                then accept;\n            }\n            term SQL_FILTER {\n                from {\n                    destination-address {\n                        11.1.24.0/24;\n                    }\n                    protocol tcp;\n                    destination-port [ 1433 1434 4022 ];\n                }\n                then accept;\n            }\n            term ALLOW_OSPF {\n                from {\n                    protocol ospf;\n                }\n                then accept;\n            }\n            term ALLOW_ICMP {\n                from {\n                    protocol icmp;\n                }\n                then accept;\n            }\n            term DENY_ALL_OTHER {\n                then {\n                    log;\n                    syslog;\n                    reject;\n                }\n            }\n        }\n\n\n\nIf the router is not configured to enforce approved authorizations for controlling the flow of information within the network based on organization-defined information flow control policies, this is a finding.",
+  "fix": "This requirement is not applicable for the DoDIN Backbone.\n\nConfigure firewall filters to allow or deny traffic for specific source and destination addresses as well as ports and protocols between various subnets as required. The commands used below were used to create the configuration as shown in the check content.\n\n[edit firewall family inet]\nset filter FILTER_SERVER_TRAFFIC term PRINT_FILTER from destination-address 11.1.23.0/24\nset filter FILTER_SERVER_TRAFFIC term PRINT_FILTER from protocol tcp destination-port [515 631 9100] \nset filter FILTER_SERVER_TRAFFIC term PRINT_FILTER then accept\nset filter FILTER_SERVER_TRAFFIC term SQL_FILTER from destination-address 11.1.24.0/24\nset filter FILTER_SERVER_TRAFFIC term SQL_FILTER from protocol tcp destination-port [1433 1434 4022]\nset filter FILTER_SERVER_TRAFFIC term SQL_FILTER then accept\nset filter FILTER_SERVER_TRAFFIC term ALLOW_OSPF from protocol ospf\nset filter FILTER_SERVER_TRAFFIC term ALLOW_OSPF then accept\nset filter FILTER_SERVER_TRAFFIC term ALLOW_ICMP from protocol icmp\nset filter FILTER_SERVER_TRAFFIC term ALLOW_ICMP then accept\nset filter FILTER_SERVER_TRAFFIC term DENY_ALL_OTHER then log reject\n\n[edit interfaces ge-0/0/0 unit 0 family inet]\nset filter input FILTER_SERVER_TRAFFIC",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information flow control regulates where information is allowed to travel within a network and between interconnected networks. The flow of all network traffic must be monitored and controlled so it does not introduce any unacceptable risk to the network infrastructure or data. Information flow control policies and enforcement mechanisms are commonly employed by organizations to control the flow of information between designated sources and destinations (e.g., networks, individuals, and devices) within information systems.\n\nEnforcement occurs, for example, in boundary protection devices (e.g., gateways, routers, guards, encrypted tunnels, and firewalls) that employ rule sets or establish configuration settings that restrict information system services, provide a packet filtering capability based on header information, or provide a message filtering capability based on message content (e.g., implementing key word searches or using document characteristics).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

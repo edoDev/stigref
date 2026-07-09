@@ -1,0 +1,53 @@
+{
+  "id": "SV-248634r991589_rule",
+  "full_rule_id": "SV-248634r991589_rule",
+  "rule_id": "SV-248634",
+  "rule_revision": "991589",
+  "group_id": "V-248634",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "For OL 8 systems using Domain Name Servers (DNS) resolution, at least two name servers must be configured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To provide availability for name resolution services, multiple redundant name servers are mandated. A failure in name resolution could lead to the failure of security functions requiring name resolution, which may include time synchronization, centralized authentication, and remote system logging.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine whether the system is using local or DNS name resolution with the following command: \n \n$ sudo grep hosts /etc/nsswitch.conf \n \nhosts: files dns \n \nIf the DNS entry is missing from the host's line in the \"/etc/nsswitch.conf\" file, the \"/etc/resolv.conf\" file must be empty. \n \nVerify the \"/etc/resolv.conf\" file is empty with the following command: \n \n$ sudo ls -al /etc/resolv.conf \n \n-rw-r--r-- 1 root root 0 Aug 19 08:31 resolv.conf \n \nIf local host authentication is being used and the \"/etc/resolv.conf\" file is not empty, this is a finding. \n \nIf the DNS entry is found on the host's line of the \"/etc/nsswitch.conf\" file, verify the operating system is configured to use two or more name servers for DNS resolution. \n \nDetermine the name servers used by the system with the following command: \n \n$ sudo grep nameserver /etc/resolv.conf \n \nnameserver 192.168.1.2 \nnameserver 192.168.1.3 \n \nIf fewer than two lines are returned that are not commented out, this is a finding.",
+  "fix": "Configure OL 8 to use two or more name servers for DNS resolution. \n \nBy default, \"NetworkManager\" on OL 8 dynamically updates the \"/etc/resolv.conf\" file with the DNS settings from active \"NetworkManager\" connection profiles. However, this feature can be disabled to allow manual configurations. \n \nIf manually configuring DNS, edit the \"/etc/resolv.conf\" file to uncomment or add the two or more \"nameserver\" option lines with the IP address of local authoritative name servers.  \n \nIf local host resolution is being performed, the \"/etc/resolv.conf\" file must be empty. An empty \"/etc/resolv.conf\" file can be created as follows: \n \n$ sudo echo -n > /etc/resolv.conf",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To provide availability for name resolution services, multiple redundant name servers are mandated. A failure in name resolution could lead to the failure of security functions requiring name resolution, which may include time synchronization, centralized authentication, and remote system logging.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL08-00-010680",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96",
+      "name": "Oracle Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96"
+  ]
+}

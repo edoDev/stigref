@@ -1,0 +1,53 @@
+{
+  "id": "SV-253965r843928_rule",
+  "full_rule_id": "SV-253965r843928_rule",
+  "rule_id": "SV-253965",
+  "rule_revision": "843928",
+  "group_id": "V-253965",
+  "group_title": "SRG-NET-000512-L2S-000004",
+  "title": "The Juniper EX switch must be configured to verify two-way connectivity on all interswitch trunked interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In topologies where fiber optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability. OAM LFM and LAG are industry standard layer 2 protocols that can detect these physical misconfigurations by verifying that traffic is flowing bidirectionally between neighbors. Interfaces with OAM configured, and LAG interfaces, periodically transmit packets to neighbor devices. If the packets are not exchanged within a specific time frame, the link is flagged as unidirectional and the interface is shut down. OAM LFM and LAG require both connected devices to be configured.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If any of the interfaces have fiber optic interconnections with neighbors, review the switch configuration to verify that OAM or LAG is enabled on those interfaces. Because OAM and LAG interfaces exchange packets, the neighbor device must also be configured with OAM or LAG.\n\nVerify OAM connectivity fault management:\n[edit protocols oam ethernet link-fault-management]\ninterface <interface name>;\nNote: To enable LFM using default values, specifying the interface is sufficient.\n\nVerify OAM connectivity with custom actions (must match the target environment).\naction-profile <profile name> {\n    event {\n        link-adjacency-loss;\n        protocol-down;\n        link-event-rate {\n            frame-error (1..1000 error(s) per 100 milli-second);\n            frame-period (1..100 error(s) per 100 frames);\n            frame-period-summary (1..1000 error(s) per second);\n            symbol-period (1..100 error(s) per 100 symbol);\n        }\n    }\n    action {\n        syslog;\n        link-down;\n    }\n}\ninterface <interface name-1> {\n    apply-action-profile <profile name>;\n    pdu-interval (100..1000 milliseconds);\n    pdu-threshold (5..10);\n    detect-loc;\n    link-discovery active;\n}\ninterface <interface name>;\n\nVerify LAG on appropriate interfaces:\n[edit interfaces]\n<interface name> {\n    ether-options {\n        802.3ad ae<bundle number>;\n    }\n}\nae<bundle number> {\n    aggregated-ether-options {\n        lacp {\n            active;\n            periodic slow;\n        }\n    }\n    unit 0 {\n        family ethernet-switching {\n            interface-mode trunk;\n            vlan {\n                members [ vlan_name ... vlan_name ];\n            }\n        }\n    }\n}\nNote: The bundle number is an integer value that matches the logical LAG interface. For example, physical interface \"ge-0/0/0 ether-options 802.3ad ae0\" is only associated with the logical LAG bundle \"ae0\".\n\nIf the switch has fiber optic interconnections with neighbors and OAM or LAG is not enabled, this is a finding.",
+  "fix": "Configure the switch to enable OAM or LAG to protect against one-way connections.\n\nLFM with default values:\nset protocols oam ethernet link-fault-management interface <interface name>\n\nLAG:\nset interfaces <interface name> ether-options 802.3ad ae<bundle number>\n\nset interfaces ae<bundle number> aggregated-ether-options lacp\nset interfaces ae<bundle number> unit 0 family ethernet-switching interface-mode trunk\nset interfaces ae<bundle number> unit 0 family ethernet-switching vlan members <vlan_name>\n:\nset interfaces ae<bundle number> unit 0 family ethernet-switching vlan members <vlan_name>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In topologies where fiber optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability. OAM LFM and LAG are industry standard layer 2 protocols that can detect these physical misconfigurations by verifying that traffic is flowing bidirectionally between neighbors. Interfaces with OAM configured, and LAG interfaces, periodically transmit packets to neighbor devices. If the packets are not exchanged within a specific time frame, the link is flagged as unidirectional and the interface is shut down. OAM LFM and LAG require both connected devices to be configured.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-L2-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf",
+      "name": "Juniper EX Series Switches Layer 2 Switch Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf"
+  ]
+}

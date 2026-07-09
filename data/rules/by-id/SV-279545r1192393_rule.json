@@ -1,0 +1,54 @@
+{
+  "id": "SV-279545r1192393_rule",
+  "full_rule_id": "SV-279545r1192393_rule",
+  "rule_id": "SV-279545",
+  "rule_revision": "1192393",
+  "group_id": "V-279545",
+  "group_title": "SRG-OS-000327-GPOS-00127",
+  "title": "Nutanix OS must audit the execution of privileged functions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Misusing privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.\n\nSatisfies: SRG-OS-000327-GPOS-00127, SRG-OS-000326-GPOS-00126</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS is configured to audit the misuse of privileged commands using the following command.\n\n$ sudo grep -iw execve /etc/audit/audit.rules\n-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid\n-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k setuid\n-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k setgid\n-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k setgid\n-a always,exit -F arch=b64 -S execve -F auid>2000 -F auid!=4294967295 -k audit_execve\n-a always,exit -F arch=b32 -S execve -F auid>2000 -F auid!=4294967295 -k audit_execve\n\nIf both the \"b32\" and \"b64\" audit rules for \"UID\" and \"GID\" files are not defined, this is a finding.",
+  "fix": "1. For AOS, configure the audit rules.\n\n$ sudo salt-call state.sls security/CVM/auditCVM\n\n2. For Prism Central, configure the audit rules.\n\n$ sudo salt-call state.sls security/PCVM/auditPCVM\n\n3. For Files, configure the audit rules.\n\n$ sudo salt-call state.sls security/AFS/auditAFS\n\n4. For AHV, configure the audit rules.\n\n$ sudo salt-call state.sls security/KVM/auditKVM",
+  "ccis": [
+    "CCI-002234",
+    "CCI-002233"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Misusing privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.\n\nSatisfies: SRG-OS-000327-GPOS-00127, SRG-OS-000326-GPOS-00126",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000033",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

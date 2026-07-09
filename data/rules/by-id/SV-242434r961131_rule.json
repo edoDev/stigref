@@ -1,0 +1,53 @@
+{
+  "id": "SV-242434r961131_rule",
+  "full_rule_id": "SV-242434r961131_rule",
+  "rule_id": "SV-242434",
+  "rule_revision": "961131",
+  "group_id": "V-242434",
+  "group_title": "SRG-APP-000233-CTR-000585",
+  "title": "Kubernetes Kubelet must enable kernel protection.",
+  "severity": "high",
+  "description": "<VulnDiscussion>System kernel is responsible for memory, disk, and task management. The kernel provides a gateway between the system hardware and software. Kubernetes requires kernel access to allocate resources to the Control Plane. Threat actors that penetrate the system kernel can inject malicious code or hijack the Kubernetes architecture. It is vital to implement protections through Kubernetes components to reduce the attack surface.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "On the Control Plane, run the command:\nps -ef | grep kubelet\n\nIf the \"--protect-kernel-defaults\" option exists, this is a finding.\n\nNote the path to the config file (identified by --config).\n\nRun the command:\ngrep -i protectKernelDefaults <path_to_config_file>\n\nIf the setting \"protectKernelDefaults\" is not set or is set to false, this is a finding.",
+  "fix": "On the Control Plane, run the command:\nps -ef | grep kubelet\n\nRemove the \"--protect-kernel-defaults\" option if present.\n\nNote the path to the Kubernetes Kubelet config file (identified by --config).\n\nEdit the Kubernetes Kubelet config file: \nSet \"protectKernelDefaults\" to \"true\". \n\nRestart the kubelet service using the following command:\nsystemctl daemon-reload && systemctl restart kubelet",
+  "ccis": [
+    "CCI-001084"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "System kernel is responsible for memory, disk, and task management. The kernel provides a gateway between the system hardware and software. Kubernetes requires kernel access to allocate resources to the Control Plane. Threat actors that penetrate the system kernel can inject malicious code or hijack the Kubernetes architecture. It is vital to implement protections through Kubernetes components to reduce the attack surface.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-001620",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

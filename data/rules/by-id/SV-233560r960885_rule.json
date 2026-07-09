@@ -1,0 +1,53 @@
+{
+  "id": "SV-233560r960885_rule",
+  "full_rule_id": "SV-233560r960885_rule",
+  "rule_id": "SV-233560",
+  "rule_revision": "960885",
+  "group_id": "V-233560",
+  "group_title": "SRG-APP-000091-DB-000325",
+  "title": "PostgreSQL must generate audit records when unsuccessful attempts to retrieve privileges/permissions occur.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. PostgreSQLs typically make such information available through views or functions.\n\nThis requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of privileges/permissions/role memberships that PostgreSQL continually performs to determine if any and every action on the database is permitted.\n\nTo aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: The following instructions use the PGLOG environment variables. See supplementary content APPENDIX-I for instructions on configuring PGLOG.\n\nFirst, as the database administrator (shown here as \"postgres\"), create a role \"bob\" by running the following SQL:\n\n$ sudo su - postgres\n$ psql -c \"CREATE ROLE bob\"\n\nNext, attempt to retrieve information from the pg_authid table:\n\n$ psql -c \"SET ROLE bob; SELECT * FROM pg_authid\"\n$ psql -c \"DROP ROLE bob;\"\n\nNow, as the database administrator (shown here as \"postgres\"), verify the event was logged in pg_log:\n\n$ sudo su - postgres\n$ cat ${PGLOG?}/<latest_log>\n< 2016-07-13 16:49:58.864 EDT postgres postgres ERROR: > permission denied for relation pg_authid\n< 2016-07-13 16:49:58.864 EDT postgres postgres STATEMENT: > SELECT * FROM pg_authid;\n\nIf the above steps cannot verify that audit records are produced when PostgreSQL denies retrieval of privileges/permissions/role memberships, this is a finding.",
+  "fix": "Configure PostgreSQL to produce audit records when unsuccessful attempts to access privileges occur.\n\nAll denials are logged if logging is enabled. To ensure that logging is enabled, review supplementary content APPENDIX-C for instructions on enabling logging.",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. PostgreSQLs typically make such information available through views or functions.\n\nThis requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of privileges/permissions/role memberships that PostgreSQL continually performs to determine if any and every action on the database is permitted.\n\nTo aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CD12-00-005300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c",
+      "name": "Crunchy Data PostgreSQL Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-223756r991589_rule",
+  "full_rule_id": "SV-223756r991589_rule",
+  "rule_id": "SV-223756",
+  "rule_revision": "991589",
+  "group_id": "V-223756",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "IBM z/OS RJE workstations and NJE nodes must be controlled in accordance with security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Configuring the operating system to implement organization-wide security implementation guides and security checklists ensures compliance with federal standards and establishes a common security baseline across DoD that reflects the most restrictive security posture consistent with operational requirements.\n\nConfiguration settings are the set of parameters that can be changed in hardware, software, or firmware components of the system that affect the security posture and/or functionality of the system. Security-related parameters are those parameters impacting the security state of the system, including the parameters required to satisfy other security control requirements. Security-related parameters include, for example: registry settings; account, file, directory permission settings; and settings for functions, ports, protocols, services, and remote connections.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note that this guidance addresses RJE Workstations that are \"Dedicated\". If an RJE workstation is dedicated, the assumption is that the RJE to host connection is hard-wired between the RJE and host. In this case the RMT definition statement will contain the keyword LINE= which specifies that this RJE is only connected via that one LINE statement. \n\nRefer to the JES2PARM member of PARMLIB.\n\nIf all of the statements below are true, this is not a finding.\n\nIf any of the statements below are untrue, this is a finding.\n\nReview the JES2 parameters for RJE workstation definitions by searching for RMT( in the report.\n\nA userid of RMTnnnn is defined to RACF for each RJE workstation, where nnnn is the number on the RMT statement.\n\nNo userid segments (e.g., TSO, CICS, etc.) are defined.\n\nRestricted from accessing all data sets and resources with exception of the corresponding JESINPUT class profile for that remote.\n\nNOTE: Execute the JCL in CNTL(IRRUT100) using the RACF RMTnnnn userids as SYSIN input. This report lists all occurrences of these userids within the RACF database, including data set and resource access lists.\n\nA FACILITY-Class profile exists in the format RJE.RMTnnnn where nnn identifies the remote number.",
+  "fix": "Note that this guidance addresses RJE Workstations that are \"Dedicated\". If an RJE workstation is dedicated, the assumption is that the RJE to host connection is hard-wired between the RJE and host. In this case the RMT definition statement will contain the keyword LINE= which specifies that this RJE is only connected via that one LINE statement. \n\n Review the JES2 parameters for RJE workstation definitions by searching for RMT( in the report.\n\n Configure the RJE workstation userids to be defined as follows:\n\n A userid of RMTnnnn is defined to RACF for each RJE workstation, where nnnn is the number on the RMT statement.\n\n No userid segments (e.g., TSO, CICS, etc.) are defined.\n\n Restricted from accessing all data sets and resources with exception of the corresponding JESINPUT-class profile for that remote.\n\nReview Chapter 17 of the RACF Security Admin Guide. The following is an example that show proper implementation:\n\nAG RMTGRP OWNER(ADMIN) SUPGROUP(ADMIN)\n\nAU RMT777 NAME('RMT RJE 777') DFLTGRP(RMTGRP) OWNER(RMTGRP) DATA('COMPLY WITH ZJES0011') NOPASS RESTRICTED\n\nPE RMT777 CL(JESINPUT) ID(RMT777)\n\n Ensure that a FACILITY-Class profile exists in the format RJE.RMTnnnn where nnn identifies the remote number.\n\nA command example is shown here:\n\nRDEF FACILITY RJE.RMT777 UACC(NONE) OWNER(ADMIN) DATA('COMPLY WITH ZJES0011 FOR RJE 777')",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Configuring the operating system to implement organization-wide security implementation guides and security checklists ensures compliance with federal standards and establishes a common security baseline across DoD that reflects the most restrictive security posture consistent with operational requirements.\n\nConfiguration settings are the set of parameters that can be changed in hardware, software, or firmware components of the system that affect the security posture and/or functionality of the system. Security-related parameters are those parameters impacting the security state of the system, including the parameters required to satisfy other security control requirements. Security-related parameters include, for example: registry settings; account, file, directory permission settings; and settings for functions, ports, protocols, services, and remote connections.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-JS-000120",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

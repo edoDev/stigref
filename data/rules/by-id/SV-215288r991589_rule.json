@@ -1,0 +1,53 @@
+{
+  "id": "SV-215288r991589_rule",
+  "full_rule_id": "SV-215288r991589_rule",
+  "rule_id": "SV-215288",
+  "rule_revision": "991589",
+  "group_id": "V-215288",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "All AIX shells referenced in passwd file must be listed in /etc/shells file, except any shells specified for the purpose of preventing logins.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The /etc/shells file lists approved default shells. It helps provide layered defense to the security approach by ensuring users cannot change their default shell to an unauthorized unsecure shell.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Confirm the login shells referenced in the \"/etc/passwd\" file are listed in the \"/etc/security/login.cfg\" file's \"shells =variable\" in the usw stanza by running commands: \n\n#  more /etc/security/login.cfg | grep shells | grep -v '*'\n        shells = /bin/sh,/bin/bsh,/bin/csh,/bin/ksh,/bin/tsh,/bin/ksh93,/usr/bin/sh,/usr/bin/bsh,/usr/bin/csh,/usr/bin/ksh,/usr/bin/tsh \n\n# more /etc/shells \n/bin/csh\n/bin/ksh\n/bin/psh\n/bin/tsh\n/bin/bsh\n/usr/bin/csh\n/usr/bin/ksh\n/usr/bin/psh\n/usr/bin/tsh\n/usr/bin/bsh\n\nThe \"/usr/bin/false\", \"/bin/false\", \"/dev/null\", \"/sbin/nologin\" (and equivalents), and \"sdshell\" will be considered valid shells for use in the \"/etc/passwd\" file, but will not be listed in the shells stanza. \nIf a shell referenced in \"/etc/passwd\" is not listed in the shells stanza, excluding the above mentioned shells, this is a finding.",
+  "fix": "Use the \"chsh\" utility or edit the \"/etc/passwd\" file and correct the error by changing the default shell of the account in error to an acceptable shell name contained in the \"/etc/shells file\". \n\nAlternatively, use the SMIT to change the \"/etc/passwd\" shell entry.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The /etc/shells file lists approved default shells. It helps provide layered defense to the security approach by ensuring users cannot change their default shell to an unauthorized unsecure shell.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002103",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

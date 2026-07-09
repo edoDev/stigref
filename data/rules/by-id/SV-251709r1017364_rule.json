@@ -1,0 +1,53 @@
+{
+  "id": "SV-251709r1017364_rule",
+  "full_rule_id": "SV-251709r1017364_rule",
+  "rule_id": "SV-251709",
+  "rule_revision": "1017364",
+  "group_id": "V-251709",
+  "group_title": "SRG-OS-000259-GPOS-00100",
+  "title": "RHEL 8 library directories must be group-owned by root or a system account.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If RHEL 8 were to allow any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.\n\nThis requirement applies to RHEL 8 with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs that execute with escalated privileges. Only qualified and authorized individuals will be allowed to obtain access to information system components for purposes of initiating changes, including upgrades and modifications.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the system-wide shared library directories are group-owned by \"root\" with the following command:\n\n$ sudo find /lib /lib64 /usr/lib /usr/lib64 ! -group root -type d -exec stat -c \"%n %G\" '{}' \\;\n\nIf any system-wide shared library directory is returned and is not group-owned by a required system account, this is a finding.",
+  "fix": "Configure the system-wide shared library directories (/lib, /lib64, /usr/lib and /usr/lib64) to be protected from unauthorized access.\n\nRun the following command, replacing \"[DIRECTORY]\" with any library directory not group-owned by \"root\".\n\n$ sudo chgrp root [DIRECTORY]",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If RHEL 8 were to allow any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.\n\nThis requirement applies to RHEL 8 with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs that execute with escalated privileges. Only qualified and authorized individuals will be allowed to obtain access to information system components for purposes of initiating changes, including upgrades and modifications.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-010351",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

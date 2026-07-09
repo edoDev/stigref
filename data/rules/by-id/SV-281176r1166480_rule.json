@@ -1,0 +1,53 @@
+{
+  "id": "SV-281176r1166480_rule",
+  "full_rule_id": "SV-281176r1166480_rule",
+  "rule_id": "SV-281176",
+  "rule_revision": "1166480",
+  "group_id": "V-281176",
+  "group_title": "SRG-OS-000362-GPOS-00149",
+  "title": "RHEL 10 must be configured so that all local interactive user initialization file executable search path statements do not contain statements that will reference a working directory other than user home directories.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The executable search path (typically the PATH environment variable) contains a list of directories for the shell to search to find executables. If this path includes the current working directory (other than the user's home directory), executables in these directories may be executed instead of system commands.\n\nThis variable is formatted as a colon-separated list of directories. If there is an empty entry, such as a leading or trailing colon or two consecutive colons, this is interpreted as the current working directory. If deviations from the default system search path for the local interactive user are required, they must be documented with the information system security officer (ISSO).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 local interactive user initialization file executable search path statements do not contain statements that will reference a working directory other than user home directories with the following commands:\n\n$ sudo find /home -maxdepth 2 -type f -name \".[^.]*\" -exec grep -iH path= {} \\;\nPATH=\"$HOME/.local/bin:$HOME/bin:$PATH\"\n\nIf any local interactive user initialization files have executable search path statements that include directories outside of their home directory, and this is not documented with the ISSO as an operational requirement, this is a finding.",
+  "fix": "Configure RHEL 10 so that all local interactive user initialization file executable search path statements do not contain statements that will reference a working directory other than user home directories.\n\nEdit the local interactive user initialization files to change any PATH variable statements that reference directories other than their home directory.\n\nIf a local interactive user requires path variables to reference a directory owned by the application, it must be documented with the ISSO.",
+  "ccis": [
+    "CCI-003980"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The executable search path (typically the PATH environment variable) contains a list of directories for the shell to search to find executables. If this path includes the current working directory (other than the user's home directory), executables in these directories may be executed instead of system commands.\n\nThis variable is formatted as a colon-separated list of directories. If there is an empty entry, such as a leading or trailing colon or two consecutive colons, this is interpreted as the current working directory. If deviations from the default system search path for the local interactive user are required, they must be documented with the information system security officer (ISSO).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-600170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

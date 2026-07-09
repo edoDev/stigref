@@ -1,0 +1,53 @@
+{
+  "id": "SV-216130r958398_rule",
+  "full_rule_id": "SV-216130r958398_rule",
+  "rule_id": "SV-216130",
+  "rule_revision": "958398",
+  "group_id": "V-216130",
+  "group_title": "SRG-OS-000027",
+  "title": "The operating system must limit the number of concurrent sessions for each account to an organization-defined number of sessions.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Limiting the number of allowed users and sessions per user can limit risks related to denial of service attacks. The organization may define the maximum number of concurrent sessions for an information system account globally, by account type, by account, or by a combination thereof. \n\nThis requirement addresses concurrent sessions for a single information system account and does not address concurrent sessions by a single user via multiple accounts.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Identify the organizational requirements for maximum number of sessions and which users must be restricted. If there are no requirements to limit concurrent sessions, this item does not apply.\n\nFor each user requiring concurrent session restrictions, determine if that user is in the user.[username] project where [username] is the user's account username.\n\n# projects [username] | grep user\n\nIf the output does not include the project user.[username], this is a finding.\n\nDetermine the project membership for the user.\n\n# projects [username]\n\nIf the user is a member of any project other than default, group.[groupname], or user.[username], this is a finding.\n\nDetermine whether the max-tasks resource control is enabled properly.\n\n# projects -l user.[username] | grep attribs\n\nIf the output does not include the text:\n\nattribs: project.max-tasks=(privileged,[MAX],deny)\n\nwhere [MAX] is the organization-defined maximum number of concurrent sessions, this is a finding.",
+  "fix": "Identify the organizational requirements for maximum number of sessions and which users must be restricted. If there are no requirements to limit concurrent sessions, this item does not apply.\n\nThe Project Management profile is required.\n\nFor each user requiring concurrent session restrictions, add the user to the special user.[username] project where [username] is the user's account username where [MAX] is equal to the organizational requirement.\n\n# pfexec projadd -K 'project.max-tasks=(privileged,[MAX],deny)' user.[username]\n\nDetermine the project membership for the user.\n\n# projects [username]\n\nIf the user is a member of any projects other than default, group.[groupname], or user.[username], remove that project from the user's account.\n\nThe root role is required.\n\n# pfedit /etc/user_attr\n\nLocate the line containing the user's username. Remove any project=[projectname] entries from the fifth field.\n\n# pfedit /etc/project\n\nLocate the line containing the user's username in a project other than default, group.[groupname], or user.[username], and remove the user from the project's entry or entries from the fourth field.",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Limiting the number of allowed users and sessions per user can limit risks related to denial of service attacks. The organization may define the maximum number of concurrent sessions for an information system account globally, by account type, by account, or by a combination thereof. \n\nThis requirement addresses concurrent sessions for a single information system account and does not address concurrent sessions by a single user via multiple accounts.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

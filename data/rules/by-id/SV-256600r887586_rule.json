@@ -1,0 +1,53 @@
+{
+  "id": "SV-256600r887586_rule",
+  "full_rule_id": "SV-256600r887586_rule",
+  "rule_id": "SV-256600",
+  "rule_revision": "887586",
+  "group_id": "V-256600",
+  "group_title": "SRG-APP-000171-DB-000074",
+  "title": "The vPostgres database must use \"md5\" for authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The DOD standard for authentication is DOD-approved public key infrastructure (PKI) certificates.\n\nAuthentication based on user ID and password may be used only when it is not possible to employ a PKI certificate, and requires authorizing official approval.\n\nIn such cases, database passwords stored in clear text, using reversible encryption or unsalted hashes, would be vulnerable to unauthorized disclosure. Database passwords must always be in the form of one-way, salted hashes when stored internally or externally to the database management system (DBMS).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW password_encryption;\"\n\nExpected result:\n\nmd5\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "At the command prompt, run the following commands:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET password_encryption TO 'md5';\"\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT pg_reload_conf();\"",
+  "ccis": [
+    "CCI-000196"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DOD standard for authentication is DOD-approved public key infrastructure (PKI) certificates.\n\nAuthentication based on user ID and password may be used only when it is not possible to employ a PKI certificate, and requires authorizing official approval.\n\nIn such cases, database passwords stored in clear text, using reversible encryption or unsalted hashes, would be vulnerable to unauthorized disclosure. Database passwords must always be in the form of one-way, salted hashes when stored internally or externally to the database management system (DBMS).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-70-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497",
+      "name": "VMware vSphere 7.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-279567r1192427_rule",
+  "full_rule_id": "SV-279567r1192427_rule",
+  "rule_id": "SV-279567",
+  "rule_revision": "1192427",
+  "group_id": "V-279567",
+  "group_title": "SRG-OS-000342-GPOS-00133",
+  "title": "Nutanix OS must be configured to send audit records to a site-specific remote syslog server.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nSatisfies: SRG-OS-000342-GPOS-00133, SRG-OS-000479-GPOS-00224</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify there are lines in the \"/etc/rsyslog.d/rsyslog-nutanix.conf\" files that contain the \"@\" or \"@@\" symbol(s) and also lines with the correct symbol(s) to send output a remote log.\n\n$ sudo grep @ /etc/rsyslog.d/rsyslog-nutanix.conf\nlocal0.*; @remote-log-host:514\n\nIf the lines are commented out or there is no evidence that the audit logs are being sent to another system, this is a finding.",
+  "fix": "1. Configure the OS to off-load audit records to a site-specific syslog server by running the following command.\n\nncli rsyslog-config add-server name=[alias_of_central_host] ip-address=[IP_of_central_host] port=[port_of_central_host] network-protocol=tcp|udp|relp relp-enabled=yes|no; ncli rsyslog-config add-module module-name=syslog_module level=info server-name=[alias_of_central_host]\n\n2. Configure the remote syslog server to perform the following:\n- Notify designated personnel if baseline configurations are changed in an unauthorized manner.\n- Notify the system administrator (SA) and information system security officer (ISSO) (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.\n- Notify designated personnel if baseline configurations are changed in an unauthorized manner.\n- Notify system administrators and ISSOs when accounts are created.\n- Notify system administrators and ISSOs when accounts are modified.\n- Notify system administrators and ISSOs when accounts are removed.\n- Notify system administrators and ISSOs when accounts are disabled.\n- Notify SAs and ISSOs of account enabling actions.",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nSatisfies: SRG-OS-000342-GPOS-00133, SRG-OS-000479-GPOS-00224",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000089",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

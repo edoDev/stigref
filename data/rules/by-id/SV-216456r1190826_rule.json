@@ -1,0 +1,53 @@
+{
+  "id": "SV-216456r1190826_rule",
+  "full_rule_id": "SV-216456r1190826_rule",
+  "rule_id": "SV-216456",
+  "rule_revision": "1190826",
+  "group_id": "V-216456",
+  "group_title": "SRG-OS-000480",
+  "title": "SNMP default community strings and passphrases must be changed from vendor defaults.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Whether active or not, default SNMP passwords, users, and passphrases must be changed to maintain security. If the service is running with the default authenticators, then anyone can gather data about the system and the network and use the information to potentially compromise the integrity of the system or network(s).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the Solaris 11 system does not use default SNMP community strings or passphrases.\n\nThe root role is required.\n\nFind any occurrences of the snmpd.conf file delivered with Solaris packages:\n\n# pkg search -l -Ho path snmpd.conf | awk '{ print \"/\"$1 }'\n/etc/net-snmp/snmp/snmpd.conf\n\nFor each listed file, use the following command to review its contents:\n\n# more [filename]\n\nReview SNMP trap configurations for default community strings:\n\n# grep trap /etc/net-snmp/snmp/snmpd.conf\n\nIdentify any community names, trap communities, or user password configurations set to default values. \nExamples: public, private, trap, public@localhost, password\n\nIf any default values are present, this is a finding.",
+  "fix": "The root role is required.\n\nStop the SNMP service:\n# svcadm disable svc: /application/management/net-snmp:default\n\nOpen the /etc/snmp/snmpd.conf file and remove any lines containing default values.\n# pfedit [/path/filename]\n\nCreate a new SNMPv3 user with strong authentication and privacy keys (if the service is required).\n\nRestart the service (if the service is required).\n# svcadm enable svc: /application/management/net-snmp:default\n\nEnsure permissions on the configuration files are restricted:\n# chmod 600 /etc/snmp/snmp.conf",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Whether active or not, default SNMP passwords, users, and passphrases must be changed to maintain security. If the service is running with the default authenticators, then anyone can gather data about the system and the network and use the information to potentially compromise the integrity of the system or network(s).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-080160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

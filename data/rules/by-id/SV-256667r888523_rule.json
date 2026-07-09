@@ -1,0 +1,53 @@
+{
+  "id": "SV-256667r888523_rule",
+  "full_rule_id": "SV-256667r888523_rule",
+  "rule_id": "SV-256667",
+  "rule_revision": "888523",
+  "group_id": "V-256667",
+  "group_title": "SRG-APP-000435-WSR-000147",
+  "title": "VAMI must be protected from being stopped by a nonprivileged user.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>An attacker has at least two reasons to stop a web server. The first is to cause a denial of service, and the second is to put in place changes the attacker made to the web server configuration. Therefore, only administrators should ever be able to stop VAMI.\n\nThe VAMI process is configured out of the box to be owned by root. This configuration must be verified and maintained.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# ps -f -U root | awk '$0 ~ /vami-lighttpd/ && $0 !~ /awk/ {print $1}'\n\nExpected result:\n\nroot\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/systemd/system/vami-lighttp.service\n\nUnder the \"[Service]\" section, remove the line that beings with \"User=\".\n\nRestart the service with the following command:\n\n# vmon-cli --restart applmgmt",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "An attacker has at least two reasons to stop a web server. The first is to cause a denial of service, and the second is to put in place changes the attacker made to the web server configuration. Therefore, only administrators should ever be able to stop VAMI.\n\nThe VAMI process is configured out of the box to be owned by root. This configuration must be verified and maintained.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCLD-70-000023",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vami-security-technical-implementation-guide-v1r2-8a01e09e",
+      "name": "VMware vSphere 7.0 VAMI Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vami-security-technical-implementation-guide-v1r2-8a01e09e"
+  ]
+}

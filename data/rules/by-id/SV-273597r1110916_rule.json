@@ -1,0 +1,53 @@
+{
+  "id": "SV-273597r1110916_rule",
+  "full_rule_id": "SV-273597r1110916_rule",
+  "rule_id": "SV-273597",
+  "rule_revision": "1110916",
+  "group_id": "V-273597",
+  "group_title": "SRG-NET-000168-RTR-000078",
+  "title": "The RUCKUS ICX router must be configured to authenticate all routing protocol messages using NIST-validated FIPS 198-1 message authentication code algorithm.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack.\n\nSince MD5 is vulnerable to \"birthday\" attacks and may be compromised, routing protocol authentication must use FIPS 198-1 validated algorithms and modules to encrypt the authentication key. This requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and multicast-related protocols.\n\nSatisfies: SRG-NET-000168-RTR-000078, SRG-NET-000168-RTR-000077</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review configuration for routing protocol authentication and encryption.\n\nOSPF:\n\nrouter ospf\n area 0\n!\ninterface ethernet 1/1/1\n ip ospf area 0\n ip ospf authentication hmac-sha-256 key-id 10 key 2 $Nlx9cy1TR31TIS0tfURuXA==\n ipv6 address fd00:12::2/32\n!\n\nBGP:\n\nkeychain mykeychain tcp\n key-id 1\n  password 2 $Uyt9R3NVfURuXH1a\n  authentication-algorithm aes-128-cmac\n  send-lifetime start 03-05-2024 00:00:00 end 09-01-2024 00:00:00\n  no accept-ao-mismatch\n  send-id 1\n  recv-id 1\n\nrouter bgp\n local-as xxxx\n neighbor x.x.x.x remote-as 10\n neighbor x.x.x.x ao mykeychain\n\nIf OSPF or BGP is configured and does not use authentication/encryption, this is a finding.",
+  "fix": "Configure OSPF or BGP keychain as appropriate:\n\nICX(config)# router ospf\nICX(config-ospf-router)# area 0\n\nICX(config)# interface ve 1\nICX(config-vif-1)#ip ospf area 0\nICX(config-vif-1)#ip ospf authentication hmac-sha-256 key 10 key my_ospf_pass_key\n\n---------------------\n\nICX(config)# keychain mykeychain\nICX(config-keychain-tcp-mykeychain)# key 1\nICX(config-keychain-tcp-mykeychain-key-1)# authentication-algorithm aes-128-cmac\nICX(config-keychain-tcp-mykeychain-key-1)# no accept-ao-mismatch\nICX(config-keychain-tcp-mykeychain-key-1)# include-tcp-options\nICX(config-keychain-tcp-mykeychain-key-1)# send-id 1\nICX(config-keychain-tcp-mykeychain-key-1)# recv-id 1\nICX(config-keychain-tcp-mykeychain-key-1)# accept-lifetime start 03-05-24 10:10:10 end 15552000  !!! 180 days in seconds\nICX(config-keychain-tcp-mykeychain-key-1)# send-lifetime start 03-05-24 10:10:10 end 09-01-24 10:10:10\n\nICX(config)# router bgp\nICX(config-bgp-router)# local-as xxxx\nICX(config-bgp-router)# neighbor x.x.x.x remote-as 10\nICX(config-bgp-router)#neighbor x.x.x.x ao mykeychain",
+  "ccis": [
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack.\n\nSince MD5 is vulnerable to \"birthday\" attacks and may be compromised, routing protocol authentication must use FIPS 198-1 validated algorithms and modules to encrypt the authentication key. This requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and multicast-related protocols.\n\nSatisfies: SRG-NET-000168-RTR-000078, SRG-NET-000168-RTR-000077",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

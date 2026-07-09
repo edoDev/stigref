@@ -1,0 +1,53 @@
+{
+  "id": "SV-272063r1168094_rule",
+  "full_rule_id": "SV-272063r1168094_rule",
+  "rule_id": "SV-272063",
+  "rule_revision": "1168094",
+  "group_id": "V-272063",
+  "group_title": "SRG-NET-000018-RTR-000005",
+  "title": "The BGP Cisco ACI must be configured to reject outbound route advertisements for any prefixes that do not belong to any customers or the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.\n\nAn alternative to route maps is to use subnets under the External EPG with the correct route Controls assigned as discussed in vendor documentation (Reference the L3 out white paper). </VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the ACI configuration to verify it will reject routes belonging to the local AS.\n\n1. Verify a prefix list has been configured containing prefixes belonging to the local AS. Navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> Route Map for import and export route control.\n2. Verify the prefix list has been applied to all external BGP peers. Navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> External EPGs >> Policy >> General >> Route Control Profile. \n\nIf the ACI is not configured to reject inbound route advertisements belonging to the local AS, this is a finding.",
+  "fix": "Configure the router to reject outbound route advertisements for any prefixes belonging to the local AS. Use a prefix list containing the local AS prefixes and apply it as an outbound filter on the BGP neighbor configuration.\n\n1. Navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> Route Map for import and export route control. \n2. Then apply that route MAP to the external EPG in the following location: Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> External EPGs >> Policy >> General >> Route Control Profile. \n\nNote: An alternative to route maps is to use subnets under the External EPG with the correct route Controls assigned as discussed in vendor documentation (Reference the L3 out white paper).",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.\n\nAn alternative to route maps is to use subnets under the External EPG with the correct route Controls assigned as discussed in vendor documentation (Reference the L3 out white paper).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CACI-RT-000003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251",
+      "name": "Cisco ACI Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-215187r958400_rule",
+  "full_rule_id": "SV-215187r958400_rule",
+  "rule_id": "SV-215187",
+  "rule_revision": "958400",
+  "group_id": "V-215187",
+  "group_title": "SRG-OS-000028-GPOS-00009",
+  "title": "AIX must provide the lock command to let users retain their session lock until users are reauthenticated.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>All systems are vulnerable if terminals are left logged in and unattended. Leaving system terminals unsecure poses a potential security hazard. \n\nTo lock the terminal, use the lock command.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the system to determine if \"bos.rte.security\" is installed: \n\n# lslpp -L bos.rte.security\nFileset                      Level  State  Type  Description (Uninstaller)\n  ----------------------------------------------------------------------------\n bos.rte.security           7.2.1.1    C     F    Base Security Function\n\nIf the \"bos.rte.security\" fileset is not installed, this is a finding. \n\nCheck if lock command exist using the following command:\n# ls  /usr/bin/lock\n\nThe above command should display the following:\n/usr/bin/lock\n\nIf the above command does not show that \"/usr/bin/lock\" exists, this is a finding.",
+  "fix": "Install \"bos.rte.security\" fileset from the AIX DVD Volume 1 using the following command (assuming that the DVD device is mounted to /dev/cd0):\n\n# installp -aXYgd /dev/cd0 -e /tmp/install.log bos.rte.security",
+  "ccis": [
+    "CCI-000056"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "All systems are vulnerable if terminals are left logged in and unattended. Leaving system terminals unsecure poses a potential security hazard. \n\nTo lock the terminal, use the lock command.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001028",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

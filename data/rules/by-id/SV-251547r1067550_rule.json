@@ -1,0 +1,53 @@
+{
+  "id": "SV-251547r1067550_rule",
+  "full_rule_id": "SV-251547r1067550_rule",
+  "rule_id": "SV-251547",
+  "rule_revision": "1067550",
+  "group_id": "V-251547",
+  "group_title": "SRG-APP-000177",
+  "title": "Firefox must be configured to ask which certificate to present to a website when a certificate is required.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When a website asks for a certificate for user authentication, Firefox must be configured to have the user choose which certificate to present. Websites within DOD require user authentication for access, which increases security for DOD information. Access will be denied to the user if certificate management is not configured.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Type \"about:policies\" in the browser address bar. \n\nIf \"Preferences\" is not displayed under Policy Name and the Policy Value does not include \"security.default_personal_cert\" with a value of \"Ask Every Time\" and status of \"locked\", this is a finding.",
+  "fix": "Windows group policy:\n1. Open the group policy editor tool with \"gpedit.msc\".\n2. Navigate to Policy Path: Computer Configuration\\Administrative Templates\\Mozilla\\Firefox\\\nPolicy Name: Preferences\nPolicy State: Enabled\nPolicy Value:\n{\n  \"security.default_personal_cert\": {\n    \"Value\": \"Ask Every Time\",\n    \"Status\": \"locked\"\n  }\n}\n\nmacOS \"plist\" file:\nAdd the following:\n<key>Preferences</key>\n<dict>\n  <key>security.default_personal_cert</key>\n  <dict>\n    <key>Value</key>\n    <string>Ask Every Time</string>\n    <key>Status</key>\n    <string>locked</string>\n  </dict>\n</dict>\n\nLinux \"policies.json\" file:\nAdd the following in the policies section:\n\"Preferences\": {\n  \"security.default_personal_cert\": {\n    \"Value\": \"Ask Every Time\",\n    \"Status\": \"locked\"\n  }\n}",
+  "ccis": [
+    "CCI-000187"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When a website asks for a certificate for user authentication, Firefox must be configured to have the user choose which certificate to present. Websites within DOD require user authentication for access, which increases security for DOD information. Access will be denied to the user if certificate management is not configured.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "FFOX-00-000003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mozilla-firefox-security-technical-implementation-guide-v6r7-c813f3e3",
+      "name": "Mozilla Firefox Security Technical Implementation Guide",
+      "version": "6",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "mozilla-firefox-security-technical-implementation-guide-v6r7-c813f3e3"
+  ]
+}

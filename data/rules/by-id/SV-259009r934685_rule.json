@@ -1,0 +1,53 @@
+{
+  "id": "SV-259009r934685_rule",
+  "full_rule_id": "SV-259009r934685_rule",
+  "rule_id": "SV-259009",
+  "rule_revision": "934685",
+  "group_id": "V-259009",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "The vCenter ESX Agent Manager service must disable stack tracing.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Stack tracing provides debugging information from the application call stacks when a runtime error is encountered. If stack tracing is left enabled, Tomcat will provide this call stack information to the requestor, which could result in the loss of sensitive information or data that could be used to compromise the system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --xpath \"//Connector[@allowTrace = 'true']\" /usr/lib/vmware-eam/web/conf/server.xml\n\nExpected result:\n\nXPath set is empty\n\nIf any connectors are returned, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-eam/web/conf/server.xml\n\nNavigate to and locate:\n\n'allowTrace=\"true\"'\n\nRemove the 'allowTrace=\"true\"' setting.\n\nNote: If \"allowTrace\" is not present, it defaults to \"false\".\n\nRestart the service with the following command:\n\n# vmon-cli --restart eam",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Stack tracing provides debugging information from the application call stacks when a runtime error is encountered. If stack tracing is left enabled, Tomcat will provide this call stack information to the requestor, which could result in the loss of sensitive information or data that could be used to compromise the system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCEM-80-000036",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-esx-agent-manager-eam-security-technical-im-v1r1-c5747352",
+      "name": "VMware vSphere 8.0 vCenter Appliance ESX Agent Manager (EAM) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-esx-agent-manager-eam-security-technical-im-v1r1-c5747352"
+  ]
+}

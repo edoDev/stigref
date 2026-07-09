@@ -1,0 +1,59 @@
+{
+  "id": "SV-275716r1148198_rule",
+  "full_rule_id": "SV-275716r1148198_rule",
+  "rule_id": "SV-275716",
+  "rule_revision": "1148198",
+  "group_id": "V-275716",
+  "group_title": "SRG-OS-000004-GPOS-00004",
+  "title": "Ubuntu OS must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create an account. Auditing account creation actions provides logging that can be used for forensic purposes.  \n  \nTo address access requirements, many operating systems may be integrated with enterprise level authentication/access/auditing mechanisms that meet or exceed access control policy requirements.\n\nSatisfies: SRG-OS-000004-GPOS-00004, SRG-OS-000239-GPOS-00089, SRG-OS-000240-GPOS-00090, SRG-OS-000241-GPOS-00091, SRG-OS-000303-GPOS-00120, SRG-OS-000458-GPOS-00203, SRG-OS-000463-GPOS-00207, SRG-OS-000476-GPOS-00221, SRG-OS-000001-GPOS-00001, SRG-OS-000274-GPOS-00104, , SRG-OS-000275-GPOS-00105, SRG-OS-000276-GPOS-00106, SRG-OS-000277-GPOS-00107, SRG-OS-000304-GPOS-00121, SRG-OS-000470-GPOS-00214</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu OS generates audit records for all account creations, modifications, disabling, and termination events that affect \"/etc/passwd\" by using the following command: \n \n     $ sudo auditctl -l | grep passwd \n     -w /etc/passwd -p wa -k usergroup_modification \n \nIf the command does not return a line that matches the example or the line is commented out, this is a finding. \n \nNote: The \"-k\" value is arbitrary and can be different from the example output above.",
+  "fix": "Configure Ubuntu OS to generate audit records for all account creations, modifications, disabling, and termination events that affect \"/etc/passwd\". \n \nAdd or modify the following line to \"/etc/audit/rules.d/stig.rules\": \n \n-w /etc/passwd -p wa -k usergroup_modification \n \nTo reload the rules file, issue the following command: \n \n     $ sudo augenrules --load \n \nNote: The \"-k <keyname>\" at the end of the line gives the rule a unique meaning to help during an audit investigation. The <keyname> does not need to match the example above.",
+  "ccis": [
+    "CCI-000018",
+    "CCI-000172",
+    "CCI-001403",
+    "CCI-001404",
+    "CCI-001405",
+    "CCI-002130",
+    "CCI-000015"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create an account. Auditing account creation actions provides logging that can be used for forensic purposes.  \n  \nTo address access requirements, many operating systems may be integrated with enterprise level authentication/access/auditing mechanisms that meet or exceed access control policy requirements.\n\nSatisfies: SRG-OS-000004-GPOS-00004, SRG-OS-000239-GPOS-00089, SRG-OS-000240-GPOS-00090, SRG-OS-000241-GPOS-00091, SRG-OS-000303-GPOS-00120, SRG-OS-000458-GPOS-00203, SRG-OS-000463-GPOS-00207, SRG-OS-000476-GPOS-00221, SRG-OS-000001-GPOS-00001, SRG-OS-000274-GPOS-00104, , SRG-OS-000275-GPOS-00105, SRG-OS-000276-GPOS-00106, SRG-OS-000277-GPOS-00107, SRG-OS-000304-GPOS-00121, SRG-OS-000470-GPOS-00214",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RIIM-OS-654145",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd",
+      "name": "Riverbed NetIM OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd"
+  ]
+}

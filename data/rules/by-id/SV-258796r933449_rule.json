@@ -1,0 +1,53 @@
+{
+  "id": "SV-258796r933449_rule",
+  "full_rule_id": "SV-258796r933449_rule",
+  "rule_id": "SV-258796",
+  "rule_revision": "933449",
+  "group_id": "V-258796",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host must not use the default Active Directory ESX Admin group.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When adding ESXi hosts to Active Directory, all user/group accounts assigned to the Active Directory group \"ESX Admins\" will have full administrative access to the host.\n\nIf this group is not controlled or known to the system administrators, it may be used for inappropriate access to the host. Therefore, the default group must be changed to a site-specific Active Directory group and membership must be severely restricted.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For systems that do not use Active Directory, this is not applicable.\n\nFrom the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nSelect the \"Config.HostAgent.plugins.hostsvc.esxAdminsGroup\" value and verify it is not set to \"ESX Admins\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-AdvancedSetting -Name Config.HostAgent.plugins.hostsvc.esxAdminsGroup\n\nIf the \"Config.HostAgent.plugins.hostsvc.esxAdminsGroup\" setting is set to \"ESX Admins\", this is a finding.",
+  "fix": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nClick \"Edit\". Select the \"Config.HostAgent.plugins.hostsvc.esxAdminsGroup\" key and configure its value to an appropriate Active Directory group other than \"ESX Admins\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-AdvancedSetting -Name Config.HostAgent.plugins.hostsvc.esxAdminsGroup | Set-AdvancedSetting -Value \"<site specific AD group>\"\n\nNote: Changing the group name does not remove the permissions of the previous group.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When adding ESXi hosts to Active Directory, all user/group accounts assigned to the Active Directory group \"ESX Admins\" will have full administrative access to the host.\n\nIf this group is not controlled or known to the system administrators, it may be used for inappropriate access to the host. Therefore, the default group must be changed to a site-specific Active Directory group and membership must be severely restricted.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000241",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99"
+  ]
+}

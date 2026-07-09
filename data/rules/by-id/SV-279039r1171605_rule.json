@@ -1,0 +1,53 @@
+{
+  "id": "SV-279039r1171605_rule",
+  "full_rule_id": "SV-279039r1171605_rule",
+  "rule_id": "SV-279039",
+  "rule_revision": "1171605",
+  "group_id": "V-279039",
+  "group_title": "SRG-APP-000133-AS-000092",
+  "title": "Critical ColdFusion directories must have secure file system permissions and ownership.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Controlling the overall security posture of the server encompasses controlling the patches and versions of the software running within the production environment. Patches are installed to fix security and bug issues. Vendors will often supply a feature to uninstall the patch in the event the patch does not install correctly, if the patch causes issues with hosted applications, or if the patch contains issues not found during testing. The uninstall feature is meant to be used by a system administrator (SA) to maintain a secure and stable system. In the event an attacker gains access to the uninstall functionality, they can then attempt to revert the system to an unsecure version which may have known and documented attacks that can be successful to compromise ColdFusion. \n\nTo protect against this type of attack and to further define roles for users, access to the patch management functionality is important. Proper protection is performed through assigning the appropriate roles to the users of the Administrator Console and through the least privileged permissions assigned at the OS level.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify critical ColdFusion directories have secure file system permissions and ownership appropriate to the operating system and deployment model.\n\n1. Locate the following directories within the ColdFusion installation for each ColdFusion instance:\n<ColdFusion_Install>\\bundles\n<ColdFusion_Instance>\\bin\n<ColdFusion_Instance>\\lib\n<ColdFusion_Instance>\\runtime\\lib\n<ColdFusion_Instance>\\wwwroot\\WEB-INF\\lib\n\n2. For ColdFusion running on Windows, each of the above directories must have \"Full Control\" granted to:\n- The Administrators group.\n- The user account running ColdFusion.\n\nIf any directory or file within these paths has incorrect permissions, this is a finding.\n\n3. For ColdFusion running on Linux, each directory must meet the following criteria:\n- Owner: The user account running ColdFusion.\n- Group ownership: root.\n- Permissions: Set to 740 or more restrictive.\n\nIf the ownership or permissions on any directory or file are incorrect, this is a finding.",
+  "fix": "Update ownership and permissions on ColdFusion directories. \n\n1. Locate the following directories in the ColdFusion installation and in each ColdFusion instance:\n- bundles\n- bin\n- lib\n- runtime\\lib\n- wwwroot\\WEB-INF\\lib\n\n2. For ColdFusion running on Windows, right-click the directory (e.g., lib) and select \"Properties\".\n\n3. Select the Security tab and then click \"Advanced\".\n\n4. On the Permissions tab, click \"Disable inheritance\" and select \"Remove all inherited permissions from this object\".\n\n5. Click \"Add\".\n- In the Permission Entry dialog, click \"Select a principal\".\n- Enter the user account running the ColdFusion service.\n- Grant full control and then click \"OK\".\n\n6. Click \"Add\" again.\n- In the Permission Entry dialog, click \"Select a principal\".\n- Enter the Administrators group.\n- Grant full control and then click \"OK\".\n\n7. Check \"Replace all child object permission entries with inheritable permission entries from this object\".\n\n8. Click \"OK\" to apply the permissions.\n\n9. Repeat these steps for each of the listed directories.\n\n10. For ColdFusion running on Linux, for each directory (e.g., /opt/ColdFusion2023/cfusion/lib), set ownership and permissions using the following commands, replacing cfuser with the user running ColdFusion:\n\nchown -R <cfuser>:root /path/to/directory\nchmod -R 740 /path/to/directory\n\n11. Repeat these commands for each of the identified directories (bundles, bin, lib, runtime/lib, wwwroot/WEB-INF/lib).",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Controlling the overall security posture of the server encompasses controlling the patches and versions of the software running within the production environment. Patches are installed to fix security and bug issues. Vendors will often supply a feature to uninstall the patch in the event the patch does not install correctly, if the patch causes issues with hosted applications, or if the patch contains issues not found during testing. The uninstall feature is meant to be used by a system administrator (SA) to maintain a secure and stable system. In the event an attacker gains access to the uninstall functionality, they can then attempt to revert the system to an unsecure version which may have known and documented attacks that can be successful to compromise ColdFusion. \n\nTo protect against this type of attack and to further define roles for users, access to the patch management functionality is important. Proper protection is performed through assigning the appropriate roles to the users of the Administrator Console and through the least privileged permissions assigned at the OS level.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APAS-CF-000175",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878",
+      "name": "Adobe ColdFusion Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878"
+  ]
+}

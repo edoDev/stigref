@@ -1,0 +1,53 @@
+{
+  "id": "SV-253776r961860_rule",
+  "full_rule_id": "SV-253776r961860_rule",
+  "rule_id": "SV-253776",
+  "rule_revision": "961860",
+  "group_id": "V-253776",
+  "group_title": "SRG-APP-000515-DB-000318",
+  "title": "MariaDB must off-load audit data to a separate log management facility; this must be continuous and in near real time for systems with a network connection to the storage facility and weekly or more often for stand-alone systems.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOff-loading is a common process in information systems with limited audit storage capacity. \n\nMariaDB writes audit records to files in the file system, to other kinds of local repository, or directly to a centralized log management system. Whatever the method used, it must be compatible with off-loading the records to the centralized system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check if the variable server_audit_output_type is set to syslog, and verify the operating system is using a centralized syslog utility such as rsyslogd. \n\nMariaDB> SHOW GLOBAL VARIABLES LIKE 'server_audit_output_type'; \n\nIf not, this is a finding.",
+  "fix": "To set up the audit logs to write to sylog:\n\nEdit the mariadb-enterprise.cnf file. Add the following under the [mariadb] section:  \n\nserver_audit_output_type = 'syslog' \n\nAfter the .cnf file is updated and saved, the mariadb database service must be restarted.",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOff-loading is a common process in information systems with limited audit storage capacity. \n\nMariaDB writes audit records to files in the file system, to other kinds of local repository, or directly to a centralized log management system. Whatever the method used, it must be compatible with off-loading the records to the centralized system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-012400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-256364r919045_rule",
+  "full_rule_id": "SV-256364r919045_rule",
+  "rule_id": "SV-256364",
+  "rule_revision": "919045",
+  "group_id": "V-256364",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must restrict access to the default roles with cryptographic permissions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In vSphere, a number of default roles contain permission to perform cryptographic operations such as Key Management Server (KMS) functions and encrypting and decrypting virtual machine disks. These roles must be reserved for cryptographic administrators where virtual machine encryption and/or vSAN encryption is in use.\n\nA new built-in role called \"No Cryptography Administrator\" exists to provide all administrative permissions except cryptographic operations. Permissions must be restricted such that normal vSphere administrators are assigned the \"No Cryptography Administrator\" role or more restrictive.\n\nThese default roles must be tightly controlled and must not be applied to administrators who will not be doing cryptographic work. Catastrophic data loss can result from poorly administered cryptography.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "By default, there are four roles that contain cryptographic-related permissions: Administrator, No Trusted Infrastructure Administrator, vCLSAdmin, and vSphere Kubernetes Manager.\n\nFrom the vSphere Client, go to Administration >> Access Control >> Roles.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-VIPermission | Where {$_.Role -eq \"Admin\" -or $_.Role -eq \"NoTrustedAdmin\" -or $_.Role -eq \"vCLSAdmin\" -or $_.Role -eq \"vSphereKubernetesManager\"} | Select Role,Principal,Entity,Propagate,IsGroup | FT -Auto\n\nIf there are any users or groups assigned to the default roles with cryptographic permissions and are not explicitly designated to perform cryptographic operations, this is a finding.\n\nThe built-in solution users assigned to the administrator role are NOT a finding.",
+  "fix": "From the vSphere Client, go to Administration >> Access Control >> Roles.\n\nMove any accounts not explicitly designated for cryptographic operations, other than Solution Users, to other roles such as \"No Cryptography Administrator\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In vSphere, a number of default roles contain permission to perform cryptographic operations such as Key Management Server (KMS) functions and encrypting and decrypting virtual machine disks. These roles must be reserved for cryptographic administrators where virtual machine encryption and/or vSAN encryption is in use.\n\nA new built-in role called \"No Cryptography Administrator\" exists to provide all administrative permissions except cryptographic operations. Permissions must be restricted such that normal vSphere administrators are assigned the \"No Cryptography Administrator\" role or more restrictive.\n\nThese default roles must be tightly controlled and must not be applied to administrators who will not be doing cryptographic work. Catastrophic data loss can result from poorly administered cryptography.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-70-000284",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8",
+      "name": "VMware vSphere 7.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8"
+  ]
+}

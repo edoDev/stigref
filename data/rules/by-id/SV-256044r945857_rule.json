@@ -1,0 +1,53 @@
+{
+  "id": "SV-256044r945857_rule",
+  "full_rule_id": "SV-256044r945857_rule",
+  "rule_id": "SV-256044",
+  "rule_revision": "945857",
+  "group_id": "V-256044",
+  "group_title": "SRG-NET-000364-RTR-000113",
+  "title": "The Arista perimeter router must be configured to block all outbound management traffic.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>For in-band management, the management network must have its own subnet in order to enforce control and access boundaries provided by Layer 3 network nodes, such as routers and firewalls. Management traffic between the managed network elements and the management network is routed via the same links and nodes as that used for production or operational traffic. Safeguards must be implemented to ensure that the management traffic does not leak past the perimeter of the managed network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nThe Arista perimeter router of the managed network must be configured with an access control list (ACL) or filter on the egress interface to block all management traffic.\n\nStep 1: To verify the configuration is blocking all outbound traffic destined to management network, execute the command \"sh ip access-list\".\n\nip access-list FILTER_MANAGEMENT_SUBNET\n  deny ip any 172.20.1.0 0.0.0.255 log\n  permit ip any any\n\nStep 2: To verify the filter is applied on egress interface, execute the command \"sh run int ethernet YY\".\n\ninterface ethernet 3\nip access-group FILTER_MANAGEMENT_SUBNET out\n\nIf management traffic is not blocked at the perimeter, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure the Arista perimeter router of the managed network with an ACL or filter on the egress interface to block all outbound management traffic.\n\nStep 1: Configure the filter to block all outbound traffic destined to the management network.\n\nLEAF-1A(config-if-Et3)#ip access-list FILTER_MANAGEMENT_SUBNET\nLEAF-1A(config-acl-FILTER_MANAGEMENT_SUBNET)#  deny ip any 172.20.1.0 0.0.0.255 log\nLEAF-1A(config-acl-FILTER_MANAGEMENT_SUBNET)#  permit ip any any\n\nStep 2: Apply the filter egress on the interface.\n\nLEAF-1A(config-acl-FILTER_MANAGEMENT_SUBNET)#interface ethernet 3\nLEAF-1A(config-if-Et3)#ip access-group FILTER_MANAGEMENT_SUBNET out",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "For in-band management, the management network must have its own subnet in order to enforce control and access boundaries provided by Layer 3 network nodes, such as routers and firewalls. Management traffic between the managed network elements and the management network is routed via the same links and nodes as that used for production or operational traffic. Safeguards must be implemented to ensure that the management traffic does not leak past the perimeter of the managed network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000650",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

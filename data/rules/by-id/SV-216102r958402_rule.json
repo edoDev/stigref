@@ -1,0 +1,53 @@
+{
+  "id": "SV-216102r958402_rule",
+  "full_rule_id": "SV-216102r958402_rule",
+  "rule_id": "SV-216102",
+  "rule_revision": "958402",
+  "group_id": "V-216102",
+  "group_title": "SRG-OS-000029",
+  "title": "Graphical desktop environments provided by the system must automatically lock after 15 minutes of inactivity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Allowing access to a graphical environment when the user is not attending the system can allow unauthorized users access to the system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the system is not running XWindows, this check does not apply.\n\nDetermine if the screen saver timeout is configured properly.\n\n# grep \"^\\*timeout:\" /usr/share/X11/app-defaults/XScreenSaver\n\nIf the output is not:\n*timeout: 0:15:00\nthis is a finding.\n\n# grep \"^\\*lockTimeout:\" /usr/share/X11/app-defaults/XScreenSaver\n\nIf the output is not:\n*lockTimeout: 0:00:05\nthis is a finding.\n\n# grep \"^\\*lock:\" /usr/share/X11/app-defaults/XScreenSaver\n\nIf the output is not:\n*lock: True\nthis is a finding.\n\nFor each existing user, check the configuration of their personal .xscreensaver file.\n# grep \"^lock:\" $HOME/.xscreensaver\n\nIf the output is not:\n*lock: True\nthis is a finding.\n\ngrep \"^lockTimeout:\" $HOME/.xscreensaver\nIf the output is not:\n*lockTimeout: 0:00:05\nthis is a finding.",
+  "fix": "The root role is required.\n\nEdit the global screensaver configuration file to ensure 15 minute screen lock.\n\n# pfedit /usr/share/X11/app-defaults/XScreenSaver\n\nFind the timeout control lines and change them to read:\n\n*timeout: 0:15:00\n*lockTimeout:0:00:05\n*lock: True\n\nFor each user on the system, edit their local $HOME/.xscreensaver file and change the timeout values.\n\n# pfedit $HOME/.xscreensaver\n\nFind the timeout control lines and change them to read:\n\ntimeout: 0:15:00\nlockTimeout:0:00:05\nlock: True",
+  "ccis": [
+    "CCI-000057"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Allowing access to a graphical environment when the user is not attending the system can allow unauthorized users access to the system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-266095r1024904_rule",
+  "full_rule_id": "SV-266095r1024904_rule",
+  "rule_id": "SV-266095",
+  "rule_revision": "1024904",
+  "group_id": "V-266095",
+  "group_title": "SRG-APP-000190-NDM-000267",
+  "title": "The F5 BIG-IP appliance must set the idle time before automatic logout to five minutes of inactivity except to fulfill documented and validated mission requirements.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, deallocating associated TCP/IP address/port pairs at the operating system level, or deallocating networking assignments at the application level if multiple application sessions are using a single, operating system-level network connection. This does not mean that the device terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.\n\nSatisfies: SRG-APP-000190-NDM-000267, SRG-APP-000003-NDM-000202</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If a documented and validated reason for not implementing the five-minute idle timeout exists, this is not a finding.\n\nFrom the BIG-IP GUI:\nHTTPD/TMSH:\n1. System.\n2. Preferences.\n3. Under Security Settings, verify \"Idle Time Before Automatic Logout\" is configured for 300 seconds or less.\n\nSSHD:\n1. System.\n2. Configuration.\n3. Device.\n4. SSHD.\n5. Verify \"Idle Time Before Automatic Logout\" is configured for 300 seconds or less.\n\nFrom the BIG-IP Console, issue the following commands:\nHTTPD/TMSH:\n\ntmsh list sys httpd auth-pam-idle-timeout\nNote: This must return a value of 300 or less.\n\ntmsh list sys httpd auth-pam-dashboard-timeout\nNote: This must return a value of \"on\".\n\ntmsh list sys global-settings console-inactivity-timeout\nNote: This must return a value of 300 or less.\n\ntmsh list cli global-settings idle-timeout\nNote: This must return a value of 5.\n\nSSHD:\ntmsh list sys sshd inactivity-timeout\nNote: This must return a value of 300 or less.\n\nIf the BIG-IP appliance is not configured to terminate inactive sessions after five minutes of inactivity, this is a finding.",
+  "fix": "From the BIG-IP GUI:\nHTTPD/TMSH:\n1. System.\n2. Preferences.\n3. Under Security Settings configure \"Idle Time Before Automatic Logout\" to 300 seconds.\n4. Click \"Update\".\n\nSSHD:\n1. System.\n2. Configuration.\n3. Device.\n4. SSHD.\n5. Configure \"Idle Time Before Automatic Logout\" to 300 seconds.\n6. Click \"Update\".\n\nFrom the BIG-IP Console, issue the following commands:\nHTTPD/TMSH:\ntmsh modify sys httpd auth-pam-idle-timeout 300\n\ntmsh modify sys httpd auth-pam-dashboard-timeout on\n\ntmsh modify sys global-settings console-inactivity-timeout 300\n\ntmsh modify cli global-settings idle-timeout 5\n\nSSHD:\ntmsh modify sys sshd inactivity-timeout 300\n\ntmsh save sys config",
+  "ccis": [
+    "CCI-001133",
+    "CCI-000057"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, deallocating associated TCP/IP address/port pairs at the operating system level, or deallocating networking assignments at the application level if multiple application sessions are using a single, operating system-level network connection. This does not mean that the device terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.\n\nSatisfies: SRG-APP-000190-NDM-000267, SRG-APP-000003-NDM-000202",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-DM-300057",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-ndm-security-technical-implementation-guide-v1r2-1787aa3e",
+      "name": "F5 BIG-IP TMOS NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-ndm-security-technical-implementation-guide-v1r2-1787aa3e"
+  ]
+}

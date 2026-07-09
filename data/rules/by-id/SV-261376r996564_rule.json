@@ -1,0 +1,53 @@
+{
+  "id": "SV-261376r996564_rule",
+  "full_rule_id": "SV-261376r996564_rule",
+  "rule_id": "SV-261376",
+  "rule_revision": "996564",
+  "group_id": "V-261376",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "SLEM 5 must specify the default \"include\" directory for the /etc/sudoers file.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The \"sudo\" command allows authorized users to run programs (including shells) as other users, system users, and root. The \"/etc/sudoers\" file is used to configure authorized \"sudo\" users as well as the programs they are allowed to run. Some configuration options in the \"/etc/sudoers\" file allow configured users to run programs without reauthenticating. Use of these configuration options makes it easier for one compromised account to be used to compromise other accounts.\n\nIt is possible to include other sudoers files from within the sudoers file currently being parsed using the @include and @includedir directives. For compatibility with sudo versions prior to 1.9.1, #include and #includedir are also accepted. When sudo reaches this line it will suspend processing of the current file (/etc/sudoers) and switch to the specified file/directory. Once the end of the included file(s) is reached, the rest of /etc/sudoers will be processed. Files that are included may themselves include other files. A hard limit of 128 nested include files is enforced to prevent include file loops.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 specifies only the default \"include\" directory for the /etc/sudoers file, and does not have nested \"include\" files or directories within the /etc/sudoers.d directory with the following command:\n\nNote: If the \"include\" and \"includedir\" directives are not present in the /etc/sudoers file, this requirement is not applicable.\n\n     > sudo find /etc/sudoers /etc/sudoers.d -type f -exec grep -H \"[#@]include\" {} +\n     /etc/sudoers:@includedir /etc/sudoers.d\n\nIf the results are not \"/etc/sudoers.d\" or additional files or directories are specified, this is a finding.",
+  "fix": "Configure the \"/etc/sudoers\" file to only include the \"/etc/sudoers.d\" directory.\n\nAdd or modify the following line:\n\n@includedir /etc/sudoers.d\n\nRemove any nested includes under the \"/etc/sudoers.d\" directory.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The \"sudo\" command allows authorized users to run programs (including shells) as other users, system users, and root. The \"/etc/sudoers\" file is used to configure authorized \"sudo\" users as well as the programs they are allowed to run. Some configuration options in the \"/etc/sudoers\" file allow configured users to run programs without reauthenticating. Use of these configuration options makes it easier for one compromised account to be used to compromise other accounts.\n\nIt is possible to include other sudoers files from within the sudoers file currently being parsed using the @include and @includedir directives. For compatibility with sudo versions prior to 1.9.1, #include and #includedir are also accepted. When sudo reaches this line it will suspend processing of the current file (/etc/sudoers) and switch to the specified file/directory. Once the end of the included file(s) is reached, the rest of /etc/sudoers will be processed. Files that are included may themselves include other files. A hard limit of 128 nested include files is enforced to prevent include file loops.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-432030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

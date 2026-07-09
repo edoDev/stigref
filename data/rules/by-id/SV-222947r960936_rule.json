@@ -1,0 +1,53 @@
+{
+  "id": "SV-222947r960936_rule",
+  "full_rule_id": "SV-222947r960936_rule",
+  "rule_id": "SV-222947",
+  "rule_revision": "960936",
+  "group_id": "V-222947",
+  "group_title": "SRG-APP-000120-AS-000080",
+  "title": "Jar files in the $CATALINA_HOME/bin/ folder must have their permissions set to 640.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Tomcat's file permissions must be restricted. The standard configuration is to have all Tomcat files owned by root with the group Tomcat. While root has read/write privileges, tomcat group only has read permissions, and world has no permissions. The exceptions are the logs, temp, and work directories that are owned by the Tomcat user rather than root. This means that even if an attacker compromises the Tomcat process, they cannot change the Tomcat configuration, deploy new web applications, or modify existing web applications. The Tomcat process runs with a umask of 0027 to maintain these permissions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Access the Tomcat server from the command line and execute the following OS command:\n\nsudo find $CATALINA_HOME/bin/*jar -follow -maxdepth 0 -type f  \\( \\! -perm 640 \\) -ls\n\nIf there are no results, or if .sh extensions are found, this is not a finding.\n\nIf results indicate any of the jar file permissions contained in the $CATALINA_HOME/bin folder are not set to 640, this is a finding.",
+  "fix": "Run the following command on the Tomcat server:\n\nsudo find $CATALINA_HOME/bin/*jar -follow -maxdepth 0 -type f -print0 | sudo xargs chmod 640 $CATALINA_HOME/bin/*jar",
+  "ccis": [
+    "CCI-000164"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Tomcat's file permissions must be restricted. The standard configuration is to have all Tomcat files owned by root with the group Tomcat. While root has read/write privileges, tomcat group only has read permissions, and world has no permissions. The exceptions are the logs, temp, and work directories that are owned by the Tomcat user rather than root. This means that even if an attacker compromises the Tomcat process, they cannot change the Tomcat configuration, deploy new web applications, or modify existing web applications. The Tomcat process runs with a umask of 0027 to maintain these permissions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000380",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

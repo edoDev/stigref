@@ -1,0 +1,53 @@
+{
+  "id": "SV-223482r991589_rule",
+  "full_rule_id": "SV-223482r991589_rule",
+  "rule_id": "SV-223482",
+  "rule_revision": "991589",
+  "group_id": "V-223482",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "ACF2 LOGONIDs with the NON-CNCL attribute specified in the associated LOGONID record must be listed as trusted and must be specifically approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Activity under unusual conditions can indicate hostile activity. For example, what is normal activity during business hours can indicate hostile activity if it occurs during off hours.\n\nDepending on mission needs and conditions, account usage restrictions based on conditions and circumstances may be critical to limit access to resources and data to comply with operational or mission access control requirements. Thus, the operating system must be configured to enforce the specific conditions or circumstances under which organization-defined accounts can be used (e.g., by restricting usage to certain days of the week, time of day, or specific durations of time).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ACF command screen enter:\nSET LID \nSET VERBOSE \nLIST IF(NON-CNCL)\n\nIf only logonids associated with trusted STCs have the NON-CNCL attribute specified, this is not a finding.\n\nTRUSTED STCs:\nSTCs that are listed as z/OS started tasks and address spaces in the IBM z/OS MVS Initialization and Tuning Reference. \n\nGuidelines for reference:\n\nAssign the TRUSTED attribute when one of the following conditions applies:\n-The started procedure or address space creates or accesses a wide variety of unpredictably named data sets within your installation.\n-Insufficient authority to an accessed resource might risk an unsuccessful IPL or other system problem.\n-Avoid assigning TRUSTED to a z/OS started procedure or address space unless it is listed here or you are instructed to do so by the product documentation.\n\nAdditionally external security managers are candidates for trusted attribute.\n \nAny other started tasks not listed or not covered by the guidelines are a finding unless approval by the Authorizing Official AO.",
+  "fix": "Review all LOGONIDs with the NON-CNCL attribute. Ensure that only STCs in the trusted list in the IBM z/OS MVS Initialization and Tuning Reference have been granted this authority. Evaluate the impact of correcting the deficiency. Develop a plan of action and implement the changes.\n\nTrusted STCs:\nWhile the actual list may vary based on local site requirements and software configuration, the started tasks listed in the IBM z/OS MVS Initialization and Tuning Reference is an approved list of started tasks that may be considered trusted started procedures.\n\nGuidelines for reference:\nAssign the TRUSTED attribute when one of the following conditions applies:\n-The started procedure or address space creates or accesses a wide variety of unpredictably named data sets within your installation.\n-Insufficient authority to an accessed resource might risk an unsuccessful IPL or other system problem.\n-Avoid assigning TRUSTED to a z/OS started procedure or address space unless it is listed here or you are instructed to do so by the product documentation.\n\nAdditionally external security managers are candidates for trusted attribute. Any other started tasks not listed or not covered by the guidelines are a finding unless approval by the Authorizing Official AO.\n\nThese STCs will be given the following attribute to facilitate access while logging any accesses they would not ordinarily be granted by the access rule sets:\n\nNON-CNCL\n\nExample:\nSET LID\nCHANGE logonid STC NON-CNCL",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Activity under unusual conditions can indicate hostile activity. For example, what is normal activity during business hours can indicate hostile activity if it occurs during off hours.\n\nDepending on mission needs and conditions, account usage restrictions based on conditions and circumstances may be critical to limit access to resources and data to comply with operational or mission access control requirements. Thus, the operating system must be configured to enforce the specific conditions or circumstances under which organization-defined accounts can be used (e.g., by restricting usage to certain days of the week, time of day, or specific durations of time).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ACF2-ES-000640",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad",
+      "name": "IBM z/OS ACF2 Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad"
+  ]
+}

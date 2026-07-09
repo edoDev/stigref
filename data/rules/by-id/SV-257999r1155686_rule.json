@@ -1,0 +1,53 @@
+{
+  "id": "SV-257999r1155686_rule",
+  "full_rule_id": "SV-257999r1155686_rule",
+  "rule_id": "SV-257999",
+  "rule_revision": "1155686",
+  "group_id": "V-257999",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "RHEL 9 SSH server configuration files' permissions must not be modified.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Service configuration files enable or disable features of their respective services, that if configured incorrectly, can lead to insecure and vulnerable configurations. Therefore, service configuration files must have correct permissions (owner, group owner, mode) to prevent unauthorized changes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the permissions of the \"/etc/ssh/sshd_config\" file with the following command:\n\n$ sudo rpm --verify openssh-server | awk '! ($2 == \"c\" && $1 ~ /^.\\..\\.\\.\\.\\..\\./) {print $0}'\n\nIf the command returns any output, this is a finding.",
+  "fix": "Run the following commands to restore the correct permissions of OpenSSH server configuration files:\n\n$ sudo rpm --setugids openssh-server\n$ sudo rpm --setperms openssh-server",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Service configuration files enable or disable features of their respective services, that if configured incorrectly, can lead to insecure and vulnerable configurations. Therefore, service configuration files must have correct permissions (owner, group owner, mode) to prevent unauthorized changes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-255115",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

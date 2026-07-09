@@ -1,0 +1,54 @@
+{
+  "id": "SV-223695r1050760_rule",
+  "full_rule_id": "SV-223695r1050760_rule",
+  "rule_id": "SV-223695",
+  "rule_revision": "1050760",
+  "group_id": "V-223695",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "The IBM RACF PASSWORD(REVOKE) SETROPTS value must be specified to revoke the userid after three invalid logon attempts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nSETRopts List\n\nIf the PASSWORD(REVOKE) value shows \"AFTER <n> CONSECUTIVE UNSUCCESSFUL PASSWORD ATTEMPTS, A USERID WILL BE REVOKED.\" where <n> is either \"1\" or \"2\", this is not a finding.\n\nIf the PASSWORD(REVOKE) value is not enabled and is not set to either \"1\" or \"2\", this is a finding.",
+  "fix": "Ensure that PASSWORD(REVOKE) SETROPTS value is set to \"1\" or \"2\". This specifies the number of consecutive incorrect password attempts RACF allows before it revokes the USERID on the next incorrect attempt. If REVOKE is specified, ensure INITSTATS are in effect.\n\nEvaluate the impact associated with implementation of the control option. Develop a plan of action to implement the control option as specified in the example below:\n\nThe RACF Command SETR LIST will show the status of RACF Controls including PASSWORD REVOKE. \n\nSet the password REVOKE to \"2\" invalid attempts activated with the command SETR PASSWORD(REVOKE(2)).",
+  "ccis": [
+    "CCI-000044",
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

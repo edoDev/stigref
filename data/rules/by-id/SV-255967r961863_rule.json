@@ -1,0 +1,53 @@
+{
+  "id": "SV-255967r961863_rule",
+  "full_rule_id": "SV-255967r961863_rule",
+  "rule_id": "SV-255967",
+  "rule_revision": "961863",
+  "group_id": "V-255967",
+  "group_title": "SRG-APP-000516-NDM-000351",
+  "title": "The Arista network device must be running an operating system release that is currently supported by the vendor.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Network devices running an unsupported operating system lack current security fixes required to mitigate the risks associated with recent vulnerabilities.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the Arista device is running a certified version of EOS from the Arista.com website on the Support/Software Download section.\n\nswitch#show version\nArista DCS-7280SRA-48C6-F\nHardware version: 21.00\nSerial number: SSJ18250372\nHardware MAC address: 7483.ef6d.86f7\nSystem MAC address: 7483.ef6d.86f7\n\nSoftware image version: 4.26.4M\nArchitecture: i686\nInternal build version: 4.26.4M-25280047.4264M\nInternal build ID: 79589245-f1f3-49b7-8bee-cbfacac004e6\nImage format version: 1.0\n\nUptime: 2 weeks, 0 days, 9 hours and 53 minutes\nTotal memory: 8098984 kB\nFree memory: 6155528 kB\n\nIf the Arista network device is not running an operating system release that is currently supported by Arista Networks, this is a finding.",
+  "fix": "Upgrade the Arista network device to an operating system that is supported by the vendor.\n\nStep 1: The Administrator would log on to www.arista.com/support/software-download website and choose EOS/Active Releases and choose appropriate version of EOS to download.\n\nStep 2: Transfer the EOS-4.x.yz.swi.sha512sum to Arista network device directory \"flash:\".\n \nStep 3: From the EOS CLI, type dir flash: to verify the file EOS-4.x.yz.swi.sha512sum is in the directory \"flash:\".\n\nswitch#directory flash:\nEOS-4.x.yz.swi.sha512sum\n\nStep 4: Use the command verify to verify the checksum sha512sum:\n\nswitch#verify flash: /sha512 flash:EOS-4.x.yz\nchecksum should match\n\nStep 5: The file can also be verified from bash.\n\nswitch#bash\n#bash\n# sha512sum  /mnt/flash/EOS-4.x.yz\n*note the Arista network device would not run an invalid version of EOS and if the checksum does not match, contact an Arista Representative for assistance.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Network devices running an unsupported operating system lack current security fixes required to mitigate the risks associated with recent vulnerabilities.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-ND-000860",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-ndm-security-technical-implementation-guide-v2r2-273eebe1",
+      "name": "Arista MLS EOS 4.X NDM Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-ndm-security-technical-implementation-guide-v2r2-273eebe1"
+  ]
+}

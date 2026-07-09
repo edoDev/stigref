@@ -1,0 +1,54 @@
+{
+  "id": "SV-215223r1038967_rule",
+  "full_rule_id": "SV-215223r1038967_rule",
+  "rule_id": "SV-215223",
+  "rule_revision": "1038967",
+  "group_id": "V-215223",
+  "group_title": "SRG-OS-000076-GPOS-00044",
+  "title": "AIX Operating systems must enforce a 60-day maximum password lifetime restriction.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any password, no matter how complex, can eventually be cracked. Therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the command prompt, run the following command to check the system default \"maxage\" attribute value:\n# lssec -f /etc/security/user -s default -a maxage\ndefault maxage=8\n\nIf the default \"maxage\" value is not set, or its value is great than \"8\", or its value is set to \"0\", this is a finding.\n\nFrom the command prompt, run the following command to check \"maxage\" attribute value for all accounts:\n# lsuser -a maxage ALL\nroot maxage=8\nuser1 maxage=8\nuser2 maxage=8\n\nIf any user does not have \"maxage\" set, or its \"maxage\" value is greater than \"8\", or its value is set to \"0\", this is a finding.",
+  "fix": "From the command prompt, run the following command to set \"maxage=8\" (56 days) for the default stanza in \"/etc/security/user\":\n# chsec -f /etc/security/user -s default -a maxage=8\n\nFor each user who has \"maxage\" value great than \"8\", set its \"maxage\" to \"8\" by running the following command from command prompt:\n# chsec -f /etc/security/user -s [user_name] -a maxage=8",
+  "ccis": [
+    "CCI-004066",
+    "CCI-000199"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any password, no matter how complex, can eventually be cracked. Therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001126",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

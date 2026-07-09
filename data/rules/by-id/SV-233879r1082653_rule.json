@@ -1,0 +1,53 @@
+{
+  "id": "SV-233879r1082653_rule",
+  "full_rule_id": "SV-233879r1082653_rule",
+  "rule_id": "SV-233879",
+  "rule_revision": "1082653",
+  "group_id": "V-233879",
+  "group_title": "SRG-APP-000516-DNS-000112",
+  "title": "The private keys corresponding to both the Zone Signing Key (ZSK) and the Key Signing Key (KSK) must not be kept on the DNSSEC-aware primary authoritative DNS service member when the DNS service member does not support dynamic updates.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The private keys in the KSK and ZSK key pairs must be protected from unauthorized access. If possible, the private keys should be stored offline (with respect to the internet-facing, DNSSEC-aware name server) in a physically secure, non-network-accessible machine along with the zone file master copy. \n\nThis strategy is not feasible in situations in which the DNSSEC-aware name server has to support dynamic updates. To support dynamic update transactions, the DNSSEC-aware name server (which usually is a primary authoritative name server) must have both the zone file master copy and the private key corresponding to the zone-signing key (ZSK-private) online to immediately update the signatures for the updated RRSets. The private key corresponding to the key-signing key (KSK-private) can still be kept offline.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: For Infoblox DNS systems on a classified network, this requirement is Not Applicable.  \n\nBy default, KSK and ZSK private keys are stored on the Grid Master within the Infoblox database. No clients should be permitted to use the Grid Master DNS service.  \n\n1. Navigate to Data Management >> DNS >> Zones.  \n2. Review each zone by selecting the zone and clicking \"Edit\" and selecting the \"DNSName Servers\" tab. \n\nIf the Grid Master is a listed DNS service member and not marked \"Stealth\", this is a finding.\n\nIf a Hardware Security Module (HSM) is configured, KSK and ZSK private keys are encrypted and stored on the HSM, this is not a finding.",
+  "fix": "For each zone that is not in compliance:  \n\n1. Navigate to Data Management >> DNS >> Zones.\n2. Select and edit the zone. \n3. Select the \"DNS service members\" tab and modify the Grid Master by selecting \"Stealth\". \n4. When complete, click \"Save & Close\" to save the changes and exit the \"Properties\" screen. \n5. Perform a service restart if necessary.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The private keys in the KSK and ZSK key pairs must be protected from unauthorized access. If possible, the private keys should be stored offline (with respect to the internet-facing, DNSSEC-aware name server) in a physically secure, non-network-accessible machine along with the zone file master copy. \n\nThis strategy is not feasible in situations in which the DNSSEC-aware name server has to support dynamic updates. To support dynamic update transactions, the DNSSEC-aware name server (which usually is a primary authoritative name server) must have both the zone file master copy and the private key corresponding to the zone-signing key (ZSK-private) online to immediately update the signatures for the updated RRSets. The private key corresponding to the key-signing key (KSK-private) can still be kept offline.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDNS-8X-400021",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46",
+      "name": "Infoblox 8.x DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46"
+  ]
+}

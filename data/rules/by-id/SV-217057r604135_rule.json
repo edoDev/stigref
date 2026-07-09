@@ -1,0 +1,53 @@
+{
+  "id": "SV-217057r604135_rule",
+  "full_rule_id": "SV-217057r604135_rule",
+  "rule_id": "SV-217057",
+  "rule_revision": "604135",
+  "group_id": "V-217057",
+  "group_title": "SRG-NET-000205-RTR-000006",
+  "title": "The Juniper BGP router must be configured to reject outbound route advertisements for any prefixes belonging to the IP core.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a non-optimized path.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that there is a filter defined to block route advertisements for prefixes that belong to the IP core. \n\nVerify a prefix list has been configured containing prefixes belonging to the local autonomous system as shown in the example below.\n\npolicy-options {\n    …\n    …\n    …\n    prefix-list CORE_PREFIX {\n        x.x.x.x/16;\n    }\n\nVerify that a policy has been configured to not advertise prefixes belong to the core as shown in the example below.\n\npolicy-options {\n    …\n    …\n    …\n    policy-statement BGP_ADVERTISE_POLICY {\n        term EXCLUDE_CORE {\n            from {\n                prefix-list CORE_PREFIX;\n            }\n            then reject;\n        }\n                term INCLUDE_OTHER {\n            then accept;\n        }\n    }\n\nVerify that the export statement as shown below references the advertise policy. \n\nprotocols {\n    bgp {\n        group AS4 {\n            type external;\n            export BGP_ADVERTISE_POLICY;\n            peer-as 4;\n            neighbor x.x.x.x;\n        }\n\nIf the router is not configured to reject outbound route advertisements that belong to the IP core, this is a finding.",
+  "fix": "Configure the router to filter outbound route advertisements belonging to the IP core.\n\nConfigure a prefix list containing prefixes belonging to the IP core.\n\n[edit policy-options]\nset prefix-list CORE_PREFIX x.x.x.x/16\n\nConfigure a policy-statement to filter BGP route advertisements that will exclude core prefixes.\n\n[edit policy-options]\nset policy-statement BGP_ADVERTISE_POLICY term EXCLUDE_CORE from prefix-list CORE_PREFIX\nset policy-statement BGP_ADVERTISE_POLICY term EXCLUDE_CORE then reject\nset policy-statement BGP_ADVERTISE_POLICY term INCLUDE_OTHER then accept\n\nConfigure an export statement referencing the advertise policy on all external BGP peer groups as shown in the example below.\n\n[edit protocols bgp group GROUP_AS4]\nset export BGP_ADVERTISE_POLICY",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a non-optimized path.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000520",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

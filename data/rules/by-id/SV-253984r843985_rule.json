@@ -1,0 +1,53 @@
+{
+  "id": "SV-253984r843985_rule",
+  "full_rule_id": "SV-253984r843985_rule",
+  "rule_id": "SV-253984",
+  "rule_revision": "843985",
+  "group_id": "V-253984",
+  "group_title": "SRG-NET-000019-RTR-000002",
+  "title": "The Juniper router must be configured to enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information flow control regulates authorized information to travel within a network and between interconnected networks. Controlling the flow of network traffic is critical so it does not introduce any unacceptable risk to the network infrastructure or data. An example of a flow control restriction is blocking outside traffic claiming to be from within the organization. For most routers, internal information flow control is a product of system design.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify each router enforces approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.\n\nJunos enforces information flow via stateless firewall filters and unicast Reverse Path Forwarding (uRPF). uRPF performs a forwarding table lookup to validate the incoming packet's source address is appropriate for the arriving interface. Verify uRPF is enabled on applicable interfaces. The example shows uRPF and the stateless firewall filter applied. Verify the interface and assigned addresses are appropriate for the target environment.\n\n[edit interfaces]\n<interface name> {\n    unit <logical unit number> {\n        family inet {\n            rpf-check;\n           filter {\n              input deny-prod-to-mgt;\n           }\n        }\n        family inet6 {\n           rpf-check;\n           filter {\n              input deny-prod-to-mgt-v6;\n           }\n        }\n    }\n}\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. \n\n[edit firewall]\nfamily inet {\n    filter deny-prod-to-mgt {\n        term 1 {\n            from {\n                source-address {\n                    <production IPv4 subnet/mask>;\n                }\n                destination-address {\n                    <MGT IPv4 subnet/mask>;\n                }\n            }\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n        term 2 {\n            from {\n                source-address {\n                    <production IPv4 subnet/mask>;\n                }\n            }\n            then accept;\n        }\n    }\n}\nfamily inet6 {\n    filter deny-prod-to-mgt-v6 {\n        term 1 {                        \n            from {\n                source-address {\n                     <production IPv6 subnet/prefix>;\n                }\n                destination-address {\n                    <MGT IPv6 subnet/prefix>;\n                }\n            }\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n        term 2 {\n            from {\n                source-address {\n                    <production IPv6 subnet/prefix>;\n                }\n            }\n            then accept;\n        }\n    }\n}\n\nIf the router does not enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy, this is a finding.",
+  "fix": "Configure the router to enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.\n\nset interfaces <interface name> unit <logical unit> family inet rpf-check\nset interfaces <interface name> unit <logical unit> family inet filter input deny-prod-to-mgt\nset interfaces <interface name> unit <logical unit> family inet6 rpf-check\nset interfaces <interface name> unit <logical unit> family inet6 filter input deny-prod-to-mgt-v6\n\nset firewall family inet filter deny-prod-to-mgt term 1 from source-address <production IPv4 subnet/mask>\nset firewall family inet filter deny-prod-to-mgt term 1 from destination-address <MGT IPv4 subnet/mask>\nset firewall family inet filter deny-prod-to-mgt term 1 then log\nset firewall family inet filter deny-prod-to-mgt term 1 then syslog\nset firewall family inet filter deny-prod-to-mgt term 1 then discard\nset firewall family inet filter deny-prod-to-mgt term 2 from source-address <production IPv4 subnet/mask>\nset firewall family inet filter deny-prod-to-mgt term 2 then accept\n\nset firewall family inet6 filter deny-prod-to-mgt-v6 term 1 from source-address <production IPv6 subnet/prefix>\nset firewall family inet6 filter deny-prod-to-mgt-v6 term 1 from destination-address <MGT IPv6 subnet/prefix>\nset firewall family inet6 filter deny-prod-to-mgt-v6 term 1 then log\nset firewall family inet6 filter deny-prod-to-mgt-v6 term 1 then syslog\nset firewall family inet6 filter deny-prod-to-mgt-v6 term 1 then discard\nset firewall family inet6 filter deny-prod-to-mgt-v6 term 2 from source-address <production IPv6 subnet/prefix>\nset firewall family inet6 filter deny-prod-to-mgt-v6 term 2 then accept",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information flow control regulates authorized information to travel within a network and between interconnected networks. Controlling the flow of network traffic is critical so it does not introduce any unacceptable risk to the network infrastructure or data. An example of a flow control restriction is blocking outside traffic claiming to be from within the organization. For most routers, internal information flow control is a product of system design.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000120",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

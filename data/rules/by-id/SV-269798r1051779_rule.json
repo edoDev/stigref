@@ -1,0 +1,53 @@
+{
+  "id": "SV-269798r1051779_rule",
+  "full_rule_id": "SV-269798r1051779_rule",
+  "rule_id": "SV-269798",
+  "rule_revision": "1051779",
+  "group_id": "V-269798",
+  "group_title": "SRG-APP-000435-NDM-000315",
+  "title": "The Dell OS10 Switch must be configured to protect against known types of denial-of-service (DoS) attacks by employing organization-defined security safeguards.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity.\n\nThis requirement addresses the configuration of network devices to mitigate the impact of DoS attacks that have occurred or are ongoing on device availability. For each network device, known and potential DoS attacks must be identified and solutions for each type implemented. A variety of technologies exist to limit or, in some cases, eliminate the effects of DoS attacks (e.g., limiting processes or restricting the number of sessions the device opens at one time). Employing increased capacity and bandwidth, combined with service redundancy, may reduce the susceptibility to some DoS attacks.\n\nThe security safeguards cannot be defined at the DOD level because they vary according to the capabilities of the individual network devices and the security controls applied on the adjacent networks (for example, firewalls performing packet filtering to block DoS attacks).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the OS10 Switch protects against or limits the effects of all known types of DoS attacks by employing organization-defined security safeguards. Dell OS10 Switches provide DoS protection via control plane ACLs and Control Plane Policing (CoPP).\n\nUse the show control-plane info command to verify that the CoPP queue rate limits are appropriate to implement the organization-defined security safeguards:\n\nOS10# show control-plane info\nQueue                    Min Rate Limit(in pps)   Max Rate Limit(in pps)   Protocols\n0                        600                      600                      ISCSI UNKNOWN UNICAST\n1                        1000                     1000                     OPEN_FLOW SFLOW\n2                        400                      400                      IGMP PIM\n3                        600                      1000                     VLT NDS\n4                        500                      1000                     IPV6_ICMP IPV4_ICMP\n5                        500                      1000                     ICMPV6_RS ICMPV6_NS ICMPV6_RA ICMPV6_NA\n6                        500                      1000                     ARP_REQ SERVICEABILITY\n7                        500                      1000                     ARP_RESP\n8                        500                      500                      SSH TELNET TACACS NTP FTP\n9                        600                      600                      FCOE NVME\n10                       600                      1000                     LACP\n11                       400                      400                      RSTP PVST MSTP\n12                       500                      500                      DOT1X LLDP FEFD\n13                       600                      1000                     IPV6_OSPF IPV4_OSPF\n14                       600                      1000                     OSPF_HELLO\n15                       600                      1000                     BGP\n16                       500                      500                      IPV6_DHCP IPV4_DHCP\n17                       600                      1000                     VRRP\n18                       700                      700                      BFD\n19                       1400                     2000                     REMOTE CPS\n20                       300                      300                      MCAST DATA\n21                       100                      100                      ACL LOGGING\n22                       300                      300                      MCAST KNOWN DATA\n23                       100                      100                      PTP\n24                       100                      100                      PORT_SECURITY\nOS10#\n\nUse the show running-configuration class-map and policy-map to review configured CoPP policies:\n\nOS10# show running-configuration class-map\n!\nclass-map type application class-iscsi\n!\nclass-map type control-plane example-copp-class-map-name\nOS10#\nOS10# show running-configuration policy-map\n!\npolicy-map type application policy-iscsi\n!\npolicy-map type control-plane example-copp-policy-map-name\n !\n class example-copp-class-map-name\n  set qos-group 2\n  police cir 100 pir 100\n\nExamine the interface configuration for the control plane ACLs applied to the traffic destined to the control plane from the OOBM management port or front panel data ports:\n\nOS10# show running-configuration control-plane\n!\ncontrol-plane\n ip access-group MGMT_TRAFFIC_FROM_OOBM mgmt in\n ip access-group MGMT_TRAFFIC_FROM_DATA data in\n\nReview the control plane ACLs and verify traffic is limited appropriately:\n\nOS10# show running-configuration access-list\n!\nip access-list MGMT_TRAFFIC_FROM_OOBM\n seq 10 permit ...\n seq 20 permit ...\n seq 30 deny ... log\n seq 40 deny ... log\n\n!\nip access-list MGMT_TRAFFIC_FROM_DATA\n seq 10 permit ...\n seq 20 permit ...\n seq 30 deny ... log\n seq 40 deny ... log\n\nIf the OS10 Switch does not protect against or limit the effects of all known types of DoS attacks by employing organization-defined security safeguards, this is a finding.",
+  "fix": "Configure the network device to protect against or limit the effects of all known types of DoS attacks by employing organization-defined security safeguards.\n\nCreate an appropriate QoS policy for CoPP:\n\nOS10(config)# class-map type control-plane example-copp-class-map-name\nOS10(config-cmap-control-plane)# exit\nOS10(config)# policy-map type control-plane example-copp-policy-map-name\nOS10(config-pmap-control-plane)# class example-copp-class-map-name\nOS10(config-pmap-c)# set qos-group 2\nOS10(config-pmap-c)# police cir 100 pir 100\n\nAssign the control-plane service-policy:\n\nOS10(config)# control-plane\nOS10(conf-control-plane)# service-policy input example-copp-policy-map-name\n\nConfigure inbound ACLs to restrict which packets should be allowed to reach to the control plane from the OOBM management port and from the front panel data ports:\n\nOS10(config)# ip access-list MGMT_TRAFFIC_FROM_OOBM\nOS10(config-ipv4-acl)# permit ...\nOS10(config-ipv4-acl)# permit ...\nOS10(config-ipv4-acl)# deny ... log\nOS10(config-ipv4-acl)# deny ... log\n\nOS10(config)# ip access-list MGMT_TRAFFIC_FROM_DATA\nOS10(config-ipv4-acl)# permit ...\nOS10(config-ipv4-acl)# permit ...\nOS10(config-ipv4-acl)# deny ... log\nOS10(config-ipv4-acl)# deny ... log\n\nApply the ACLs to the ingress of the control-plane:\n\nOS10(config)# control-plane\nOS10(config-control-plane)# ip access-group MGMT_TRAFFIC_FROM_OOBM mgmt in\nOS10(config-control-plane)# ip access-group MGMT_TRAFFIC_FROM_DATA data in",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity.\n\nThis requirement addresses the configuration of network devices to mitigate the impact of DoS attacks that have occurred or are ongoing on device availability. For each network device, known and potential DoS attacks must be identified and solutions for each type implemented. A variety of technologies exist to limit or, in some cases, eliminate the effects of DoS attacks (e.g., limiting processes or restricting the number of sessions the device opens at one time). Employing increased capacity and bandwidth, combined with service redundancy, may reduce the susceptibility to some DoS attacks.\n\nThe security safeguards cannot be defined at the DOD level because they vary according to the capabilities of the individual network devices and the security controls applied on the adjacent networks (for example, firewalls performing packet filtering to block DoS attacks).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

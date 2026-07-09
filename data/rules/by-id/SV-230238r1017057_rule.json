@@ -1,0 +1,53 @@
+{
+  "id": "SV-230238r1017057_rule",
+  "full_rule_id": "SV-230238r1017057_rule",
+  "rule_id": "SV-230238",
+  "rule_revision": "1017057",
+  "group_id": "V-230238",
+  "group_title": "SRG-OS-000120-GPOS-00061",
+  "title": "RHEL 8 must prevent system daemons from using Kerberos for authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised.\n\nRHEL 8 systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.\n\nThe key derivation function (KDF) in Kerberos is not FIPS compatible.  Ensuring the system does not have any keytab files present prevents system daemons from using Kerberos for authentication.  A keytab is a file containing pairs of Kerberos principals and encrypted keys.\n\nFIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DoD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general-purpose computing system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that RHEL 8 prevents system daemons from using Kerberos for authentication.\n\nIf the system is a server utilizing krb5-server-1.17-18.el8.x86_64 or newer, this requirement is not applicable.\nIf the system is a workstation utilizing krb5-workstation-1.17-18.el8.x86_64 or newer, this requirement is not applicable.\n\nCheck if there are available keytabs with the following command:\n\n$ sudo ls -al /etc/*.keytab\n\nIf this command produces any file(s), this is a finding.",
+  "fix": "Configure RHEL 8 to prevent system daemons from using Kerberos for authentication.\n\nRemove any files with the .keytab extension from the operating system.",
+  "ccis": [
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised.\n\nRHEL 8 systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.\n\nThe key derivation function (KDF) in Kerberos is not FIPS compatible.  Ensuring the system does not have any keytab files present prevents system daemons from using Kerberos for authentication.  A keytab is a file containing pairs of Kerberos principals and encrypted keys.\n\nFIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DoD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general-purpose computing system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-010161",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

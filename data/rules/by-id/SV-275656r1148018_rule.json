@@ -1,0 +1,56 @@
+{
+  "id": "SV-275656r1148018_rule",
+  "full_rule_id": "SV-275656r1148018_rule",
+  "rule_id": "SV-275656",
+  "rule_revision": "1148018",
+  "group_id": "V-275656",
+  "group_title": "SRG-OS-000710-GPOS-00160",
+  "title": "Ubuntu OS must be configured so that when passwords are changed or new passwords are established, pwquality must be used.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. \"pwquality\" enforces complex password construction configuration and has the ability to limit brute-force attacks on the system.\n\nSatisfies: SRG-OS-000710-GPOS-00160, SRG-OS-000725-GPOS-00180, SRG-OS-000730-GPOS-00190, SRG-OS-000480-GPOS-00225</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu OS enforces password complexity rules by using the following command:   \n \n     $ grep -i enforcing /etc/security/pwquality.conf  \n     enforcing = 1  \n  \nIf \"enforcing\" is not \"1\", is commented out, or is missing, this is a finding.  \n  \nCheck for the use of \"pwquality\" by using the following command:  \n  \n     $ cat /etc/pam.d/common-password | grep requisite | grep pam_pwquality \n      password     requisite     pam_pwquality.so retry=3  \n  \nIf \"retry\" is set to \"0\" or is greater than \"3\", or is missing, this is a finding.",
+  "fix": "Configure Ubuntu OS to enforce password complexity rules. \n  \nAdd or modify the following line in the \"/etc/security/pwquality.conf\" file: \n  \nenforcing = 1  \n  \nAdd or modify the following line in the \"/etc/pam.d/common-password\" file: \n  \npassword requisite pam_pwquality.so retry=3  \n  \nNote: The value of \"retry\" should be between \"1\" and \"3\".",
+  "ccis": [
+    "CCI-004061",
+    "CCI-004064",
+    "CCI-004065",
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. \"pwquality\" enforces complex password construction configuration and has the ability to limit brute-force attacks on the system.\n\nSatisfies: SRG-OS-000710-GPOS-00160, SRG-OS-000725-GPOS-00180, SRG-OS-000730-GPOS-00190, SRG-OS-000480-GPOS-00225",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RIIM-OS-611045",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd",
+      "name": "Riverbed NetIM OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd"
+  ]
+}

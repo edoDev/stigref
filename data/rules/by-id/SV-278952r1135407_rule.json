@@ -1,0 +1,57 @@
+{
+  "id": "SV-278952r1135407_rule",
+  "full_rule_id": "SV-278952r1135407_rule",
+  "rule_id": "SV-278952",
+  "rule_revision": "1135407",
+  "group_id": "V-278952",
+  "group_title": "SRG-OS-000037-GPOS-00015",
+  "title": "OL 9 must audit any script or executable called by cron as root or by any privileged user.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any script or executable called by cron as root or by any privileged user must be owned by that user, must have the permissions 0755 or more restrictive, and should have no extended rights that allow any nonprivileged user to modify the script or executable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 is configured to audit the execution of any system call made by cron as root or as any privileged user.\n\n$ sudo auditctl -l | grep /etc/cron.d\n-w /etc/cron.d -p wa -k cronjobs\n\n$ sudo auditctl -l | grep /var/spool/cron\n-w /var/spool/cron -p wa -k cronjobs\n\nIf either of these commands do not return the expected output, or the lines are commented out, this is a finding.",
+  "fix": "Configure OL 9 to audit the execution of any system call made by cron as root or as any privileged user.\n\nAdd or update the following file system rules to \"/etc/audit/rules.d/audit.rules\":\n\nauditctl -w /etc/cron.d/ -p wa -k cronjobs\nauditctl -w /var/spool/cron/ -p wa -k cronjobs\n\nTo load the rules to the kernel immediately, use the following command:\n\n$ sudo augenrules --load",
+  "ccis": [
+    "CCI-000130",
+    "CCI-000135",
+    "CCI-000169",
+    "CCI-000172",
+    "CCI-002884"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any script or executable called by cron as root or by any privileged user must be owned by that user, must have the permissions 0755 or more restrictive, and should have no extended rights that allow any nonprivileged user to modify the script or executable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002584",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

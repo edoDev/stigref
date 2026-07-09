@@ -1,0 +1,53 @@
+{
+  "id": "SV-213502r960792_rule",
+  "full_rule_id": "SV-213502r960792_rule",
+  "rule_id": "SV-213502",
+  "rule_revision": "960792",
+  "group_id": "V-213502",
+  "group_title": "SRG-APP-000033-AS-000024",
+  "title": "JBoss management interfaces must be secured.",
+  "severity": "high",
+  "description": "<VulnDiscussion>JBoss utilizes the concept of security realms to secure the management interfaces used for JBoss server administration.  If the security realm attribute is omitted or removed from the management interface definition, access to that interface is no longer secure.  The JBoss management interfaces must be secured.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log on to the OS of the JBoss server with OS permissions that allow access to JBoss.\nUsing the relevant OS commands and syntax, cd to the <JBOSS_HOME>/bin/ folder.\nRun the jboss-cli script.\nConnect to the server and authenticate.\n\nIdentify the management interfaces.  To identity the management interfaces, run the following command:\n\nFor standalone servers:\n\"ls /core-service=management/management-interface=\"\n\nFor managed domain installations:\n\"ls /host=HOST_NAME/core-service=management/management-interface=\"\n\nBy default, JBoss provides two management interfaces; they are named \"NATIVE-INTERFACE\" and \"HTTP-INTERFACE\".  The system may or may not have both interfaces enabled.  For each management interface listed as a result of the previous command, append the name of the management interface to the end of the following command.\n\nFor a standalone system:\n\n\"ls /core-service=management/management-interface=<MANAGEMENT INTERFACE NAME>\"\n\nFor a managed domain:\n\n\"ls /host=HOST_NAME/core-service=management/management-interface=<MANAGEMENT INTERFACE NAME>\"\n\nIf the \"security-realm=\" attribute is not associated with a management realm, this is a finding.",
+  "fix": "Identify the security realm used for management of the system.  By default, this is called \"Management Realm\".\n\nIf a management security realm is not already available, reference the Jboss EAP 6.3 system administration guide for instructions on how to create a security realm for management purposes.  Create the management realm, and assign authentication and authorization access restrictions to the management realm.\n\nAssign the management interfaces to the management realm.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "JBoss utilizes the concept of security realms to secure the management interfaces used for JBoss server administration.  If the security realm attribute is omitted or removed from the management interface definition, access to that interface is no longer secure.  The JBoss management interfaces must be secured.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JBOS-AS-000075",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9",
+      "name": "JBoss Enterprise Application Platform 6.3 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9"
+  ]
+}

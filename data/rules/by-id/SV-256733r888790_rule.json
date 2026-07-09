@@ -1,0 +1,55 @@
+{
+  "id": "SV-256733r888790_rule",
+  "full_rule_id": "SV-256733r888790_rule",
+  "rule_id": "SV-256733",
+  "rule_revision": "888790",
+  "group_id": "V-256733",
+  "group_title": "SRG-APP-000358-WSR-000163",
+  "title": "Lookup Service log files must be offloaded to a central log server in real time.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Lookup Service produces several logs that must be offloaded from the originating system. This information can then be used for diagnostic, forensics, or other purposes relevant to ensuring the availability and integrity of the hosted application.\n\nSatisfies: SRG-APP-000358-WSR-000163, SRG-APP-000108-WSR-000166, SRG-APP-000125-WSR-000071</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# rpm -V VMware-visl-integration|grep vmware-services-lookupsvc.conf\n\nIf the above command returns any output, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/vmware-syslog/vmware-services-lookupsvc.conf\n\nCreate the file if it does not exist.\n\nSet the contents of the file as follows:\n\n#localhost_access_log\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/lookupsvc/tomcat/localhost_access.log\"\n      Tag=\"lookupsvc-localhost_access\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#lookupsvc_stream.log.std\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/lookupsvc/lookupsvc_stream.log.std*\"\n      Tag=\"lookupsvc-std\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#lookupserver-default\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/lookupsvc/lookupserver-default.log\"\n      Tag=\"lookupsvc-lookupserver-default\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#lookupServer\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/lookupsvc/lookupServer.log\"\n      Tag=\"lookupsvc-lookupServer\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#ls-perflogs\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/lookupsvc/vmware-lookupservice-perf.log\"\n      Tag=\"lookupsvc-perf\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#ls-gc\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/lookupsvc/vmware-lookupsvc-gc.log.*.current\"\n      Tag=\"lookupsvc-gc\"\n      Severity=\"info\"\n      Facility=\"local0\")",
+  "ccis": [
+    "CCI-000139",
+    "CCI-001348",
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Lookup Service produces several logs that must be offloaded from the originating system. This information can then be used for diagnostic, forensics, or other purposes relevant to ensuring the availability and integrity of the hosted application.\n\nSatisfies: SRG-APP-000358-WSR-000163, SRG-APP-000108-WSR-000166, SRG-APP-000125-WSR-000071",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCLU-70-000028",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2",
+      "name": "VMware vSphere 7.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2"
+  ]
+}

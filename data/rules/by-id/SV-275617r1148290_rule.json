@@ -1,0 +1,55 @@
+{
+  "id": "SV-275617r1148290_rule",
+  "full_rule_id": "SV-275617r1148290_rule",
+  "rule_id": "SV-275617",
+  "rule_revision": "1148290",
+  "group_id": "V-275617",
+  "group_title": "SRG-OS-000481-GPOS-00481",
+  "title": "Ubuntu OS must restrict SSH access to allow only NetIM internal communication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote access is not authorized for connection to the Riverbed NetIM shell to minimize and deter system administrators from accessing the shell, bash commands, or root account remotely. Though the device is not critical to the infrastructure, compromise of this device at the OS level could lead to compromise of other devices on the network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify firewall rule exists to restrict SSH to allow specific IP addresses only by using the following commands:\n\n$ sudo ufw status\n\nIf a firewall rule does not exist to restrict port 22 to allow specific IP addresses and deny all other address, this is a finding.",
+  "fix": "Deny all other SSH connections and allow SSH connections from a specific IP address by using the following commands. Allow from NetIM core/worker(s)/manager in a base configuration with UFW allow.  \n\n$ sudo ufw deny from any to any port 22\n$ sudo ufw allow from <NETIM_IP_ADDRESS node list> to any port 22\n\nWhere NETIM_IP_ADDRESS list are the list of NETIM IP addresses for all nodes.\n\nNote: This will restrict system admins to use of the CONSOLE mechanism available depending on the Virtual Platform being used.",
+  "ccis": [
+    "CCI-002418",
+    "CCI-002420",
+    "CCI-002422"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote access is not authorized for connection to the Riverbed NetIM shell to minimize and deter system administrators from accessing the shell, bash commands, or root account remotely. Though the device is not critical to the infrastructure, compromise of this device at the OS level could lead to compromise of other devices on the network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RIIM-OS-255010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd",
+      "name": "Riverbed NetIM OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd"
+  ]
+}

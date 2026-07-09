@@ -1,0 +1,53 @@
+{
+  "id": "SV-268152r1131105_rule",
+  "full_rule_id": "SV-268152r1131105_rule",
+  "rule_id": "SV-268152",
+  "rule_revision": "1131105",
+  "group_id": "V-268152",
+  "group_title": "SRG-OS-000362-GPOS-00149",
+  "title": "NixOS must prohibit user installation of system software without explicit privileged status.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Allowing regular users to install software, without explicit privileges, creates the risk that untested or potentially malicious software will be installed on the system. Explicit privileges (escalated or administrative privileges) provide the regular user with explicit capabilities and control that exceeds the rights of a regular user.\n\nOperating system functionality will vary, and while users are not permitted to install unapproved software, there may be instances where the organization allows the user to install approved software packages, such as from an approved software repository.\n\nThe operating system or software configuration management utility must enforce control of software installation by users based upon what types of software installations are permitted (e.g., updates and security patches to existing software) and what types of installations are prohibited (e.g., software whose pedigree with regard to being potentially malicious is unknown or suspect) by the organization.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS prevents unauthorized users from using nix with the following command:\n\n$ grep -R allowed-users /etc/nixos/\n\n/etc/nixos/configuration.nix:nix.settings.allowed-users = [ \"root\" \"@wheel\" ];\n\nIf any other groups or users are included in \"nix.settings.allowed-users\" other than \"root\" and \"wheel\", or the configuration setting does not exist, this is a finding.",
+  "fix": "Configure NixOS to prevent unauthorized users from using nix.\n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\n nix.settings.allowed-users = [ \"root\" \"@wheel\" ];\n\nNote: Extra usergroups may be permitted by adding them with the format \"@group\" (e.g.: \"@users\").\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-003980"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Allowing regular users to install software, without explicit privileges, creates the risk that untested or potentially malicious software will be installed on the system. Explicit privileges (escalated or administrative privileges) provide the regular user with explicit capabilities and control that exceeds the rights of a regular user.\n\nOperating system functionality will vary, and while users are not permitted to install unapproved software, there may be instances where the organization allows the user to install approved software packages, such as from an approved software repository.\n\nThe operating system or software configuration management utility must enforce control of software installation by users based upon what types of software installations are permitted (e.g., updates and security patches to existing software) and what types of installations are prohibited (e.g., software whose pedigree with regard to being potentially malicious is unknown or suspect) by the organization.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-001450",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

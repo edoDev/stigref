@@ -1,0 +1,53 @@
+{
+  "id": "SV-80603r1_rule",
+  "full_rule_id": "SV-80603r1_rule",
+  "rule_id": "SV-80603",
+  "rule_revision": "1",
+  "group_id": "V-66113",
+  "group_title": "SRG-NET-000168-RTR-000078",
+  "title": "The HP FlexFabric Switch must use NIST-validated FIPS 140-2 cryptography to implement authentication encryption mechanisms for routing protocols.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network, or merely used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack. \n\nSince MD5 is vulnerable to \"birthday\" attacks and may be compromised, routing protocol authentication must use FIPS 140-2 validated algorithms and modules to encrypt the authentication key. This requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and Multicast-related protocols.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the HP FlexFabric Switch configuration to ensure that it is using a NIST validated FIPS 140-2 cryptography encryption mechanism by implementing OSPFv3 with IPsec.\n\n[HP] display current-configuration interface\n\ninterface GigabitEthernet0/0\n port link-mode route\n description R1 ACTIVE\n combo enable copper\n ospfv3 200 area 0.0.0.0\n ospfv3 ipsec-profile jitc\n ipv6 address 2115:B:1::3E/126\n\nIf the routing protocol authentication mechanism is not a validated FIPS 140-2 cryptography, this is a finding.\n\nNote: OSPFv3 requires IPsec to enable authentication using either the IPv6 Authentication Header (AH) or the Encapsulating Security Payload (ESP) header.",
+  "fix": "Configure the HP FlexFabric Switch to authenticate OSPFv3 packets:\n\n[HP]ipsec transform-set jitcipsecprop\n[HP-ipsec-transform-set-jitcipsecprop] \n[HP-ipsec-transform-set-jitcipsecprop] ipsec transform-set jitcipsecprop\n[HP-ipsec-transform-set-jitcipsecprop] encapsulation-mode transport\n[HP-ipsec-transform-set-jitcipsecprop] esp encryption-algorithm aes-cbc-256\n[HP-ipsec-transform-set-jitcipsecprop] esp authentication-algorithm sha1\n[HP-ipsec-transform-set-jitcipsecprop] quit\n[HP] ipsec profile jitc manual\n[HP-ipsec-profile-manual-jitc]\n[HP-ipsec-profile-manual-jitc] ipsec profile jitc manual\n[HP-ipsec-profile-manual-jitc] transform-set jitcipsecprop\n[HP-ipsec-profile-manual-jitc] sa spi inbound esp 256\n[HP-ipsec-profile-manual-jitc] sa string-key inbound esp  simple test123\n[HP-ipsec-profile-manual-jitc] sa spi outbound esp 256\n[HP-ipsec-profile-manual-jitc] sa string-key outbound esp simple test123\n[HP-ipsec-profile-manual-jitc] quit\n[HP] interface gigabitethernet 0/1 \n[HP--GigabitEthernet0/1] ospfv3 ipsec-profile jitc",
+  "ccis": [
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network, or merely used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack. \n\nSince MD5 is vulnerable to \"birthday\" attacks and may be compromised, routing protocol authentication must use FIPS 140-2 validated algorithms and modules to encrypt the authentication key. This requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and Multicast-related protocols.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-RT-000012",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225",
+      "name": "HP FlexFabric Switch RTR Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225"
+  ]
+}

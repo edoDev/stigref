@@ -1,0 +1,53 @@
+{
+  "id": "SV-279626r1192509_rule",
+  "full_rule_id": "SV-279626r1192509_rule",
+  "rule_id": "SV-279626",
+  "rule_revision": "1192509",
+  "group_id": "V-279626",
+  "group_title": "SRG-OS-000420-GPOS-00186",
+  "title": "Nutanix OS must protect against or limit the effects of denial-of-service (DoS) attacks by ensuring the operating system is implementing rate-limiting measures on impacted network interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity.\n\nThis requirement addresses the configuration of the operating system to mitigate the impact of DoS attacks that have occurred or are ongoing on system availability. For each system, known and potential DoS attacks must be identified and solutions for each type implemented. A variety of technologies exist to limit or, in some cases, eliminate the effects of DoS attacks (e.g., limiting processes or establishing memory partitions). Employing increased capacity and bandwidth, combined with service redundancy, may reduce the susceptibility to some DoS attacks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For AHV, this requirement is Not Applicable.\n\nVerify Nutanix OS protects against or limits the effects of DoS attacks by ensuring that a rate-limiting measures are enabled using the following command.\n\n$ /sbin/sysctl -a | grep 'net.ipv4.tcp_invalid_ratelimit'\nnet.ipv4.tcp_invalid_ratelimit = 500\n\nIf \"net.ipv4.tcp_invalid_ratelimit\" has a value greater than \"1000\" or equal to \"0\", this is a finding.",
+  "fix": "Restrict using functions, ports, protocols, and/or services as defined in the Ports, Protocols, and Services Management (PPSM) Category Assurance List (CAL) and vulnerability assessments.\n\n1. For AOS, use the following command.\n\n$ sudo salt-call state.sls security/CVM/iptables/init\n\n2. For Prism Central, use the following command.\n\n$ sudo salt-call state.sls security/PVCM/iptables/init\n\n3. For Files, use the following command.\n\n$ sudo salt-call state.sls security/AFS/iptables/init",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity.\n\nThis requirement addresses the configuration of the operating system to mitigate the impact of DoS attacks that have occurred or are ongoing on system availability. For each system, known and potential DoS attacks must be identified and solutions for each type implemented. A variety of technologies exist to limit or, in some cases, eliminate the effects of DoS attacks (e.g., limiting processes or establishing memory partitions). Employing increased capacity and bandwidth, combined with service redundancy, may reduce the susceptibility to some DoS attacks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000199",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

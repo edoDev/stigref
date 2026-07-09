@@ -1,0 +1,53 @@
+{
+  "id": "SV-256737r889149_rule",
+  "full_rule_id": "SV-256737r889149_rule",
+  "rule_id": "SV-256737",
+  "rule_revision": "889149",
+  "group_id": "V-256737",
+  "group_title": "SRG-APP-000001-WSR-000001",
+  "title": "Envoy must drop connections to disconnected clients.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Envoy client connections that are established but no longer connected can consume resources that might otherwise be required by active connections. It is a best practice to terminate connections that are no longer connected to an active client. \n \nEnvoy is hard coded to drop connections after three minutes of idle time. The absence of any \"tcpKeepAliveTimeSec\" settings means this default is in effect. This configuration must be verified and maintained.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# xmllint --xpath '/config/envoy/L4Filter/tcpKeepAliveTimeSec/text()' /etc/vmware-rhttpproxy/config.xml \n \nExpected result: \n \n180 \n \nor \n \nXPath set is empty \n \nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open: \n \n/etc/vmware-rhttpproxy/config.xml \n \nLocate the <config>/<envoy>/<L4Filter> block and configure <tcpKeepAliveTimeSec> as follows: \n \n<tcpKeepAliveTimeSec>180</tcpKeepAliveTimeSec> \n \nRestart the service for changes to take effect. \n \n# vmon-cli --restart rhttpproxy",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Envoy client connections that are established but no longer connected can consume resources that might otherwise be required by active connections. It is a best practice to terminate connections that are no longer connected to an active client. \n \nEnvoy is hard coded to drop connections after three minutes of idle time. The absence of any \"tcpKeepAliveTimeSec\" settings means this default is in effect. This configuration must be verified and maintained.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCRP-70-000001",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-rhttpproxy-security-technical-implementatio-v1r1-c23c2049",
+      "name": "VMware vSphere 7.0 vCenter Appliance RhttpProxy Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-rhttpproxy-security-technical-implementatio-v1r1-c23c2049"
+  ]
+}

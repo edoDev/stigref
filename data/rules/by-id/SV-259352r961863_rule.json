@@ -1,0 +1,53 @@
+{
+  "id": "SV-259352r961863_rule",
+  "full_rule_id": "SV-259352r961863_rule",
+  "rule_id": "SV-259352",
+  "rule_revision": "961863",
+  "group_id": "V-259352",
+  "group_title": "SRG-APP-000516-DNS-000091",
+  "title": "For zones split between the external and internal sides of a network, the resource records (RRs) for the external hosts must be separate from the RRs for the internal hosts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Authoritative name servers for an enterprise may be configured to receive requests from both external and internal clients. \n\nExternal clients need to receive RRs that pertain only to public services (public web server, mail server, etc.). \n\nInternal clients need to receive RRs pertaining to public services as well as internal hosts. \n\nThe zone information that serves the RRs on both the inside and the outside of a firewall should be split into different physical files for these two types of clients (one file for external clients and one file for internal clients).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log on to the DNS server using the Domain Admin or Enterprise Admin account or Local Administrator account.\n\nPress the Windows key + R and execute \"dnsmgmt.msc\".\n\nOn the opened DNS Manager snap-in from the left pane, expand the server name for the DNS server and then expand \"Forward Lookup Zones\".\n\nFrom the expanded list, click to select the zone.\n\nFor each zone, review the records.\n\nIf any RRs on an internal DNS server resolve to IP addresses located outside the internal DNS server's network, this is a finding.\n\nIf any RRs on an external DNS server resolve to IP addresses located inside the network, this is a finding.",
+  "fix": "Remove any RRs from the internal zones for which the resolution is for an external IP address.\n\nRemove any RRs from the external zones for which the resolution is for an internal IP address.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Authoritative name servers for an enterprise may be configured to receive requests from both external and internal clients. \n\nExternal clients need to receive RRs that pertain only to public services (public web server, mail server, etc.). \n\nInternal clients need to receive RRs pertaining to public services as well as internal hosts. \n\nThe zone information that serves the RRs on both the inside and the outside of a firewall should be split into different physical files for these two types of clients (one file for external clients and one file for internal clients).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WDNS-22-000021",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-domain-name-system-dns-security-technical-implementatio-v2r4-4d0efd47",
+      "name": "Microsoft Windows Server Domain Name System (DNS) Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-domain-name-system-dns-security-technical-implementatio-v2r4-4d0efd47"
+  ]
+}

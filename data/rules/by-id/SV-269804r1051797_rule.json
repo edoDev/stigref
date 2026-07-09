@@ -1,0 +1,53 @@
+{
+  "id": "SV-269804r1051797_rule",
+  "full_rule_id": "SV-269804r1051797_rule",
+  "rule_id": "SV-269804",
+  "rule_revision": "1051797",
+  "group_id": "V-269804",
+  "group_title": "SRG-APP-000516-NDM-000351",
+  "title": "The Dell OS10 Switch must be running an operating system release that is currently supported by Dell.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Network devices running an unsupported operating system lack current security fixes required to mitigate the risks associated with recent vulnerabilities.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the OS10 Switch complies with this requirement by entering the following command: \n\nOS10# show version\n\nVerify the release is still supported by Dell. All OS10 releases supported by Dell can be found at https://www.dell.com/support.\n\nIf the OS10 Switch is not running an operating system release that is currently supported by Dell, this is a finding.",
+  "fix": "Upgrade the network device to the latest version of the desired LTS version of OS10 available from Dell support.\n\nStep 1: Download the OS10 image file and GPG signature using secure file transfer from a trusted local server:\n\nOS10# image download https://hostip/filepath/PKGS_OS10-Enterprise-10.5.6.2.110buster-installer-x86_64.bin\nDownload started.\nUse 'show image status' for updates\nOS10#\nOS10# show image status\nImage Upgrade State:     idle\n==================================================\nFile Transfer State:     transfer-success\n--------------------------------------------------\n  State Detail:          Completed: No error\n  Task Start:            2024-04-26T16:52:54Z\n  Task End:              2024-04-26T16:53:18Z\n  Transfer Progress:     100 %\n  Transfer Bytes:        959310070 bytes\n  File Size:             959310070 bytes\n  Transfer Rate:         44447 kbps\n\nInstallation State:      idle\n--------------------------------------------------\n  State Detail:          No install information available\n  Task Start:            0000-00-00T00:00:00Z\n  Task End:              0000-00-00T00:00:00Z\nOS10#\nOS10# image download https://hostip/filepath/PKGS_OS10-Enterprise-10.5.6.2.110buster-installer-x86_64.bin.gpg\nOS10#\nOS10#\nOS10# dir image\n\nDirectory contents for folder: image\nDate (modified)        Size (bytes)  Name\n---------------------  ------------  ------------------------------------------\n2024-04-26T16:53:16Z   959310070     PKGS_OS10-Enterprise-10.5.6.2.110buster-installer-x86_64.bin\n2024-04-26T16:57:36Z   566           PKGS_OS10-Enterprise-10.5.6.2.110buster-installer-x86_64.bin.gpg\nOS10#\n\nStep 2: Load the Dell GPG signing key and verify the image GPG signature:\n\nOS10# image gpg-key key-server keyserver.ubuntu.com key-id 7FDA043B\nOS10#\nOS10# image verify image://PKGS_OS10-Enterprise-10.5.6.2.110buster-installer-x86_64.bin gpg signature image://PKGS_OS10-Enterprise-10.5.6.2.110buster-installer-x86_64.bin.gpg\nImage verified successfully.\nOS10#\n\nStep 3: Install the new OS10 image into the backup image partition:\n\nOS10# image install image://PKGS_OS10-Enterprise-10.5.6.2.110buster-installer-x86_64.bin\nInfo: Take the Backup of the configs which can be used during downgrade\nInstall started.\nUse 'show image status' for updates\nOS10#\nOS10# show image status\nImage Upgrade State:     idle\n==================================================\nFile Transfer State:     transfer-success\n--------------------------------------------------\n  State Detail:          Completed: No error\n  Task Start:            2024-04-26T16:58:01Z\n  Task End:              2024-04-26T16:58:01Z\n  Transfer Progress:     100 %\n  Transfer Bytes:        350 bytes\n  File Size:             350 bytes\n  Transfer Rate:         3 kbps\n\nInstallation State:      install-success\n--------------------------------------------------\n  State Detail:          Completed: Success\n  Task Start:            2024-04-26T17:04:48Z\n  Task End:              2024-04-26T17:22:03Z\nOS10#\n\nStep 4: Switch the standby image to be the boot image and reboot the switch:\n\nOS10#\nOS10# boot system standby\nOS10#\nOS10# reload\n\nProceed to reboot the system? [confirm yes/no]:yes",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Network devices running an unsupported operating system lack current security fixes required to mitigate the risks associated with recent vulnerabilities.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000980",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

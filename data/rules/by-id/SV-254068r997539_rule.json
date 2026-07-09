@@ -1,0 +1,54 @@
+{
+  "id": "SV-254068r997539_rule",
+  "full_rule_id": "SV-254068r997539_rule",
+  "rule_id": "SV-254068",
+  "rule_revision": "997539",
+  "group_id": "V-254068",
+  "group_title": "SRG-NET-000512-RTR-000009",
+  "title": "The Juniper PE router providing Virtual Private LAN Services (VPLS) must be configured to have all attachment circuits defined to the virtual forwarding instance (VFI) with the globally unique VPN ID assigned for each customer VLAN.",
+  "severity": "high",
+  "description": "<VulnDiscussion>VPLS defines an architecture that delivers Ethernet multipoint services over an MPLS network. Customer layer 2 frames are forwarded across the MPLS core via pseudowires using IEEE 802.1q Ethernet bridging principles. A pseudowire is a virtual bidirectional connection between two attachment circuits (virtual connections between PE and CE routers). A pseudowire contains two unidirectional label-switched paths (LSP) between two PE routers. Each MAC virtual forwarding table instance (VFI) is interconnected using pseudowires provisioned for the bridge domain, thereby maintaining privacy and logical separation between each VPLS bridge domain.\n\nThe VFI specifies the pseudowires associated with connecting PE routers and the customer-facing attachment circuits belonging to a given VLAN. Resembling a layer 2 switch, the VFI is responsible for learning MAC addresses and providing loop-free forwarding of customer traffic to the appropriate end nodes. Each VPLS domain is identified by a globally unique VPN ID; hence, VFIs of the same VPLS domain must be configured with the same VPN ID on all participating PE routers. To guarantee traffic separation for all customer VLANs and that all packets are forwarded to the correct destination, it is imperative that the correct attachment circuits are associated with the appropriate VFI and that each VFI is associated to the unique VPN ID assigned to the customer VLAN.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the implementation plan and the VPN IDs assigned to customer VLANs for the VPLS deployment.\n\nReview the PE router configuration to verify that customer attachment circuits (i.e., VLANs) are associated to the appropriate VPLS ID.\n\nReview the implementation plan and the VPLS IDs assigned to customer VLANs for the VPLS deployment.\n\nReview the PE router configuration to verify that customer attachment circuits are associated to the appropriate routing instance configured for the customers VPLS ID.\n\n[edit]\nrouting-instances {\n    <instance name> {\n        interface <interface name>.<logical unit>;\n        protocols {\n            vpls {\n                vpls-id <VPLS ID>;\n                    neighbor <neighbor address>;\n                }\n            }\n        }\n    }\n}\n\nNote: Only EX9200-series devices currently support VPLS.\n\nIf the attachment circuits have not been bound to the appropriate routing-instance with the assigned VPN ID for each associated VLAN, this is a finding.",
+  "fix": "Assign globally unique VPN IDs for each customer VLAN using VPLS for carrier Ethernet services between multiple sites, and configure the attachment circuits to the appropriate VFI.\n\nset routing-instances <instance name> protocols vpls vpls-id <VPLS ID> neighbor <neighbor address>",
+  "ccis": [
+    "CCI-000366",
+    "CCI-004891"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "VPLS defines an architecture that delivers Ethernet multipoint services over an MPLS network. Customer layer 2 frames are forwarded across the MPLS core via pseudowires using IEEE 802.1q Ethernet bridging principles. A pseudowire is a virtual bidirectional connection between two attachment circuits (virtual connections between PE and CE routers). A pseudowire contains two unidirectional label-switched paths (LSP) between two PE routers. Each MAC virtual forwarding table instance (VFI) is interconnected using pseudowires provisioned for the bridge domain, thereby maintaining privacy and logical separation between each VPLS bridge domain.\n\nThe VFI specifies the pseudowires associated with connecting PE routers and the customer-facing attachment circuits belonging to a given VLAN. Resembling a layer 2 switch, the VFI is responsible for learning MAC addresses and providing loop-free forwarding of customer traffic to the appropriate end nodes. Each VPLS domain is identified by a globally unique VPN ID; hence, VFIs of the same VPLS domain must be configured with the same VPN ID on all participating PE routers. To guarantee traffic separation for all customer VLANs and that all packets are forwarded to the correct destination, it is imperative that the correct attachment circuits are associated with the appropriate VFI and that each VFI is associated to the unique VPN ID assigned to the customer VLAN.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000960",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-223226r1056109_rule",
+  "full_rule_id": "SV-223226r1056109_rule",
+  "rule_id": "SV-223226",
+  "rule_revision": "1056109",
+  "group_id": "V-223226",
+  "group_title": "SRG-APP-000412-NDM-000331",
+  "title": "The Juniper SRX Services Gateway must securely configure SNMPv3 with privacy options to protect the confidentiality of nonlocal maintenance and diagnostic communications using SNMP.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session.\n\nNonlocal maintenance and diagnostic activities are activities conducted by individuals communicating through an external network (e.g., the internet) or internal network. \n \nTo protect the confidentiality of nonlocal maintenance sessions, SNMPv3 with AES encryption must be configured to provide confidentiality. The Juniper SRX allows the use of SNMPv3 to monitor or query the device in support of diagnostics information. SNMP cannot be used to make configuration changes; however, it is a valuable diagnostic tool. SNMP is disabled by default and must be enabled for use. SNMPv3 is the DOD-required version but must be configured to be used securely.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SNMPv3 is configured with privacy options.\n\n[edit]\nshow snmp v3\n \nIf SNMPv3 is not configured using AES, and other privacy options are not configured, this is a finding.",
+  "fix": "Configure SNMP to use version 3 with privacy options. The following is an example.\n\n[edit]\nset snmp location <NAME>\nset snmp v3 usm local-engine user <NAME> privacy-AES128\nset snmp v3 vacm security-to-group security-model usm security-name <NAME> group <NAMEGROUP>\nset snmp v3 vacm access group <NAME-GROUP> default-context-prefix security-model usm\nsecurity-level privacy read-view all\nset snmp v3 vacm access group <NAME-GROUP> default-context-prefix security-model usm\nsecurity-level privacy notify-view all",
+  "ccis": [
+    "CCI-003123"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session.\n\nNonlocal maintenance and diagnostic activities are activities conducted by individuals communicating through an external network (e.g., the internet) or internal network. \n \nTo protect the confidentiality of nonlocal maintenance sessions, SNMPv3 with AES encryption must be configured to provide confidentiality. The Juniper SRX allows the use of SNMPv3 to monitor or query the device in support of diagnostics information. SNMP cannot be used to make configuration changes; however, it is a valuable diagnostic tool. SNMP is disabled by default and must be enabled for use. SNMPv3 is the DOD-required version but must be configured to be used securely.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000149",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

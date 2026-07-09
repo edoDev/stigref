@@ -1,0 +1,53 @@
+{
+  "id": "SV-261932r1000801_rule",
+  "full_rule_id": "SV-261932r1000801_rule",
+  "rule_id": "SV-261932",
+  "rule_revision": "1000801",
+  "group_id": "V-261932",
+  "group_title": "SRG-APP-000441-DB-000378",
+  "title": "PostgreSQL must maintain the confidentiality and integrity of information during preparation for transmission.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information can be either unintentionally or maliciously disclosed or modified during preparation for transmission, including, for example, during aggregation, at protocol transformation points, and during packing/unpacking. These unauthorized disclosures or modifications compromise the confidentiality or integrity of the information.\n\nUse of this requirement will be limited to situations where the data owner has a strict requirement for ensuring data integrity and confidentiality is maintained at every step of the data transfer and handling process.\n\nWhen transmitting data, PostgreSQL, associated applications, and infrastructure must leverage transmission protection mechanisms.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the data owner does not have a strict requirement for ensuring data integrity and confidentiality is maintained at every step of the data transfer and handling process, this is not a finding.\n\nAs the database administrator (shown here as \"postgres\"), verify SSL is enabled by running the following SQL:\n\n$ sudo su - postgres\n$ psql -c \"SHOW ssl\"\n\nIf SSL is not enabled, this is a finding.\n\nIf PostgreSQL does not employ protective measures against unauthorized disclosure and modification during preparation for transmission, this is a finding.",
+  "fix": "Note: The following instructions use the PGDATA and PGVER environment variables. Refer to APPENDIX-F for instructions on configuring PGDATA and APPENDIX-H for PGVER.\n\nImplement protective measures against unauthorized disclosure and modification during preparation for transmission.\n\nTo configure PostgreSQL to use SSL, as a database administrator (shown here as \"postgres\"), edit postgresql.conf:\n\n$ sudo su - postgres\n$ vi ${PGDATA?}/postgresql.conf\n\nAdd the following parameter:\n\nssl = on\n\nAs the system administrator, reload the server with the new configuration:\n\n$ sudo systemctl reload postgresql-${PGVER?}\n\nFor more information on configuring PostgreSQL to use SSL, refer to supplementary content APPENDIX-G.",
+  "ccis": [
+    "CCI-002420"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information can be either unintentionally or maliciously disclosed or modified during preparation for transmission, including, for example, during aggregation, at protocol transformation points, and during packing/unpacking. These unauthorized disclosures or modifications compromise the confidentiality or integrity of the information.\n\nUse of this requirement will be limited to situations where the data owner has a strict requirement for ensuring data integrity and confidentiality is maintained at every step of the data transfer and handling process.\n\nWhen transmitting data, PostgreSQL, associated applications, and infrastructure must leverage transmission protection mechanisms.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CD16-00-008800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "crunchy-data-postgres-16-security-technical-implementation-guide-v1r2-b53c97e5",
+      "name": "Crunchy Data Postgres 16 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "crunchy-data-postgres-16-security-technical-implementation-guide-v1r2-b53c97e5"
+  ]
+}

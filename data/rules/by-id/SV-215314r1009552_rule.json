@@ -1,0 +1,54 @@
+{
+  "id": "SV-215314r1009552_rule",
+  "full_rule_id": "SV-215314r1009552_rule",
+  "rule_id": "SV-215314",
+  "rule_revision": "1009552",
+  "group_id": "V-215314",
+  "group_title": "SRG-OS-000365-GPOS-00152",
+  "title": "AIX must be configured to use syslogd to log events by TCPD.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without auditing the enforcement of access restrictions against changes to the application configuration, it will be difficult to identify attempted attacks and an audit trail will not be available for forensic investigation for after-the-fact actions.\n\nEnforcement actions are the methods or mechanisms used to prevent unauthorized changes to configuration settings. Enforcement action methods may be as simple as denying access to a file based on the application of file permissions (access restriction). Audit items may consist of lists of actions blocked by access restrictions or changes identified after the fact.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Normally, TCPD logs to the \"mail\" facility in \"/etc/syslog.conf\". Determine if syslog is configured to log events by TCPD. \n\nProcedure: \n# more /etc/syslog.conf \n\nLook for entries similar to the following: \nmail.debug  /var/adm/maillog \nmail.none  /var/adm/maillog \nmail.*  /var/log/mail \nauth.info  /var/log/messages \n\nThe above entries would indicate mail alerts are being logged. \n\nIf no entries for \"mail\" exist, then TCPD is not logging and this is a finding.",
+  "fix": "Configure the access restriction program to log every access attempt. Ensure the implementation instructions for TCP_WRAPPERS are followed, so system access attempts are logged into the system log files. If an alternate application is used, it must support this function. Edit the \"/etc/syslog.conf\" file by writing the following to the file.\nauth.info /var/log/messages\n\n# touch /var/log/messages\n# refresh -s yslogd",
+  "ccis": [
+    "CCI-003938",
+    "CCI-001814"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without auditing the enforcement of access restrictions against changes to the application configuration, it will be difficult to identify attempted attacks and an audit trail will not be available for forensic investigation for after-the-fact actions.\n\nEnforcement actions are the methods or mechanisms used to prevent unauthorized changes to configuration settings. Enforcement action methods may be as simple as denying access to a file based on the application of file permissions (access restriction). Audit items may consist of lists of actions blocked by access restrictions or changes identified after the fact.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002133",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

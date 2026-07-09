@@ -1,0 +1,54 @@
+{
+  "id": "SV-223724r998347_rule",
+  "full_rule_id": "SV-223724r998347_rule",
+  "rule_id": "SV-223724",
+  "rule_revision": "998347",
+  "group_id": "V-223724",
+  "group_title": "SRG-OS-000069-GPOS-00037",
+  "title": "IBM RACF PASSWORD(RULEn) SETROPTS value(s) must be properly set.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The shorter the password, the lower the number of possible combinations that need to be tested before the password is compromised.\n\nPassword complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. Password length is one factor of several that helps to determine strength and how long it takes to crack a password. Use of more characters in a password helps to exponentially increase the time and/or resources required to compromise the password.\n\nSatisfies: SRG-OS-000069-GPOS-00037, SRG-OS-000078-GPOS-00046</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nSETRopts\n\nIf the following options are specified, this is not a finding.\n\nEvery PASSWORD(RULE) under \"INSTALLATION PASSWORD SYNTAX RULES\" is defined with the values shown below:\n\nRULE n LENGTH(8) xxxxxxxx\n\nThe following options are in effect under \"PASSWORD PROCESSING OPTIONS\":\n\n\"MIXED CASE PASSWORD SUPPORT IS IN EFFECT\"\n\"SPECIAL CHARACTERS ARE ALLOWED.\"",
+  "fix": "Evaluate the impact associated with implementation of the control option. Develop a plan of action to implement the control option as specified in the example below:\n\nFor z/OS release 1.13 and 1.14 PTF UA90720 must be applied.\nFor z/OS Release 2.1 PTF UA90721 must be applied.\n\nThe RACF Command SETR LIST will show the status of RACF Controls including PASSWORD SYNTAX RULEs.\n\nSetting the password syntax to all Mixed Case Alphanumeric and Special Characters is activated with the commands:\n\nsetr password(mixedcase)\nsetr password(specialchars)\nsetr password(rulen(length(8) mixedall(1:8))",
+  "ccis": [
+    "CCI-004065",
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The shorter the password, the lower the number of possible combinations that need to be tested before the password is compromised.\n\nPassword complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. Password length is one factor of several that helps to determine strength and how long it takes to crack a password. Use of more characters in a password helps to exponentially increase the time and/or resources required to compromise the password.\n\nSatisfies: SRG-OS-000069-GPOS-00037, SRG-OS-000078-GPOS-00046",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000770",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

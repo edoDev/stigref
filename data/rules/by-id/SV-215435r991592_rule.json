@@ -1,0 +1,53 @@
+{
+  "id": "SV-215435r991592_rule",
+  "full_rule_id": "SV-215435r991592_rule",
+  "rule_id": "SV-215435",
+  "rule_revision": "991592",
+  "group_id": "V-215435",
+  "group_title": "SRG-OS-000480-GPOS-00230",
+  "title": "All AIX interactive users must be assigned a home directory in the passwd file and the directory must exist.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>All users must be assigned a home directory in the passwd file. Failure to have a home directory may result in the user being put in the root directory. This could create a Denial of Service because the user would not be able to perform useful tasks in this location.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify each interactive user is assigned a home directory:\n\n# cut -d: -f1,6 /etc/passwd\nroot\nsrvproxy\ndoejohn\n\nIf an interactive user is not assigned a home directory, this is a finding.\n\nVerify that the interactive user home directories exist on the system:\n\n# cut -d: -f6 /etc/passwd | xargs -n1 ls -ld\n\ndrwxr-xr-x    2 doejohn  staff           256 Jan 25 13:18 /home/doejohn\n\ndrwxr-xr-x    2 sshd     system          256 Aug 11 2017  /home/srvproxy\n\ndrwx------    2 root     system          256 Jan 30 12:54 /root\n\nIf any interactive user home directory does not exist, this is a finding.",
+  "fix": "Remove any unauthorized accounts with no home directory. \n\nIf the account is valid, create the home directory using the appropriate system administration utility or process.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "All users must be assigned a home directory in the passwd file. Failure to have a home directory may result in the user being put in the root directory. This could create a Denial of Service because the user would not be able to perform useful tasks in this location.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003141",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

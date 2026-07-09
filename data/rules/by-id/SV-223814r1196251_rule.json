@@ -1,0 +1,53 @@
+{
+  "id": "SV-223814r1196251_rule",
+  "full_rule_id": "SV-223814r1196251_rule",
+  "rule_id": "SV-223814",
+  "rule_revision": "1196251",
+  "group_id": "V-223814",
+  "group_title": "SRG-OS-000104-GPOS-00051",
+  "title": "The IBM z/OS Syslog daemon must be properly defined and secured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Syslog daemon, known as syslogd, is a z/OS Unix daemon that provides a central processing point for log messages issued by other z/OS Unix processes. It is also possible to receive log messages from other network-connected hosts. Some of the IBM Communications Server components that may send messages to syslog are the FTP, z/OS Unix Telnet, DNS, and DHCP servers. The messages may be of varying importance and may include general process information, diagnostic information, critical error notification, and audit-class information. There is a security interest in protecting the syslogd process and its associated data because of the potential to use this information in an audit process. \n\nThe Syslog daemon requires special privileges and access to sensitive resources to provide its system services. Failure to properly define and control the syslog daemon could lead to unauthorized access. This exposure may result in the compromise of the integrity and availability of the operating system environment, ACP, and customer data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From z/OS command screen enter: \nListUser SYSLOGD OMVS (SYSLOGD is usual name of the SYSLOG daemon)\n\nIf all of the following are true, this is not a finding.\n\nIf either of the following is untrue, this is a finding.\n\n-The SYSLOGD userid is defined as a PROTECTED userid.\n-The SYSLOGD userid has the following z/OS Unix attributes: UID(0), HOME directory '/', shell program /bin/sh.\n\nFrom z/OS command screen enter:\nRList STARTED SYSLOGD\n\nIf a matching entry in the STARTED resource class exists enabling the use of the standard userid and appropriate group, this is not a finding.",
+  "fix": "The Syslog daemon userid is SYSLOGD.\nDefine the SYSLOGD userid as a PROTECTED userid.\nDefine the SYSLOGD userid has UID(0), HOME('/'), and PROGRAM('/bin/sh') specified in the OMVS segment.\n\nTo set up and use as an MVS Started Proc, the following sample commands are provided:\n\nAU SYSLOGD NAME('stc, tcpip') NOPASSWORD NOOIDCARD DFLTGRP(STC) -\nOWNER(STC) DATA('Reference ISLG0020 for proper setup ')\nALU SYSLOGD DFLTGRP(stctcpx) \nALU SYSLOGD OMVS(UID(0) HOME('/') PROGRAM('/bin/sh')) \nCO SYSLOGD GROUP(stctcpx) OWNER(stctcpx)\n\nA matching entry mapping the SYSLOGD started proc to the SYSLOGD userid is in the STARTED resource class.\n\nRDEF STARTED SYSLOGD.** UACC(NONE) OWNER(ADMIN) AUDIT(ALL(READ)) STDATA(USER(SYSLOGD) GROUP(STC)) \n\nIf /etc/rc is used to start the Syslog daemon, ensure that the _BPX_JOBNAME and _BPX_ USERID environment variables are assigned a value of SYSLOGD.",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Syslog daemon, known as syslogd, is a z/OS Unix daemon that provides a central processing point for log messages issued by other z/OS Unix processes. It is also possible to receive log messages from other network-connected hosts. Some of the IBM Communications Server components that may send messages to syslog are the FTP, z/OS Unix Telnet, DNS, and DHCP servers. The messages may be of varying importance and may include general process information, diagnostic information, critical error notification, and audit-class information. There is a security interest in protecting the syslogd process and its associated data because of the potential to use this information in an audit process. \n\nThe Syslog daemon requires special privileges and access to sensitive resources to provide its system services. Failure to properly define and control the syslog daemon could lead to unauthorized access. This exposure may result in the compromise of the integrity and availability of the operating system environment, ACP, and customer data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-SL-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

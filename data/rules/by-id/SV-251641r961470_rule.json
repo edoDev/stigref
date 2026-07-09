@@ -1,0 +1,53 @@
+{
+  "id": "SV-251641r961470_rule",
+  "full_rule_id": "SV-251641r961470_rule",
+  "rule_id": "SV-251641",
+  "rule_revision": "961470",
+  "group_id": "V-251641",
+  "group_title": "SRG-APP-000383-DB-000364",
+  "title": "IDMS terminal and lines that are not secure must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of nonsecure network functions, ports, protocols, and services exposes the system to avoidable threats.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For each load area, run a CREPORT 43 to check the nodes and access types for each node. For each node, issue DCMT D LINE. For each LINE type with a status of InSrv, inspect the access type for potential unauthorized connection types. \n\nFor TCP/IP, any line with access type SOCKET, issue DCMT D LINE <tcp-line-id>. If any terminals are of type LIST and status InSrv, check port number for a valid port. If the port number is unacceptable as defined in the PPSM CAL, this is a finding. \n\nFor each terminal with the type of LIST and InSrv, issue DCMT D PTE <pterm-id>. For each task and (possible PARM STRING which could pass a task) identified in the PTE display, issue DCMT D TASK <task-id>. If the task is IDMSJSRV and the associated program is RHDCNP3J, this is not a finding. If the task/program has not been authorized, this is a finding. \n\nIf other access types (e.g., VTAM, SVC, CCI) have been deemed nonsecure in the PPSM CAL, this is a finding.",
+  "fix": "For any pterm found to have nonsecure attributes (task, program, port), disable by issuing DCMT V PTE <pterm-id> OFF. \n\nUsing SYSGEN, remove offending lines, pterms, lterms, and/or port numbers and regenerate the system.",
+  "ccis": [
+    "CCI-001762"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of nonsecure network functions, ports, protocols, and services exposes the system to avoidable threats.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDMS-DB-000770",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ca-idms-security-technical-implementation-guide-v2r1-d3b5ec3b",
+      "name": "CA IDMS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ca-idms-security-technical-implementation-guide-v2r1-d3b5ec3b"
+  ]
+}

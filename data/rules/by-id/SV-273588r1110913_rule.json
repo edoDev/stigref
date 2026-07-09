@@ -1,0 +1,53 @@
+{
+  "id": "SV-273588r1110913_rule",
+  "full_rule_id": "SV-273588r1110913_rule",
+  "rule_id": "SV-273588",
+  "rule_revision": "1110913",
+  "group_id": "V-273588",
+  "group_title": "SRG-NET-000019-RTR-000011",
+  "title": "The RUCKUS ICX out-of-band management (OOBM) gateway router must be configured to have separate Interior Gateway Protocol (IGP) instances for the managed network and management network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate IGP routing instances is critical on the router to segregate traffic from each network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nVerify there is a separate VRF for management and production domains:\nICX# show vrf\nTotal number of VRFs configured: 2\nStatus Codes - A:active, D:pending deletion, I:inactive\nName                 Default RD vrf|v4|v6          Routes Interfaces\nMgmt                 1:1         A | A| A              12 ve111 ve211 ve311*\nProd                 10:12       A | A| A               4 ve1117 port-id tn1*\nTotal number of IPv4 unicast route for all non-default VRF is 8\nTotal number of IPv6 unicast route for all non-default VRF is 8\n\nIf the OOBM gateway router does not have separate VRFs for management and production or the interfaces are associated with the wrong VRF, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure separate Mgmt and Prod VRFs and assign interfaces as appropriate:\nICX(config)# vrf Mgmt\nICX(config-vrf-Mgmt)# rd 11:11\nICX(config-vrf-Mgmt)# address-family ipv4 unicast\nICX(config-vrf-Mgmt)# exit \nICX(config)# vrf Prod\nICX(config-vrf-Prod)# rd 10:10\nICX(config-vrf-Prod)# address-family ipv4 unicast\nICX(config-vrf-Prod)# exit \n\nICX(config)# router ospf vrf Mgmt\nICX(config-ospf-router)# area 0\nICX(config-ospf-router)# exit\n\nICX(config)# interface ve 10\nICX(config-vif-10)# vrf forwarding Mgmt\nWarning: All IPv4 and IPv6 addresses (including link-local) on this interface have been removed\nhave been removed\nICX(config-vif-10)# ip address x.x.x.x/24\nICX(config-vif-10)# ip ospf area 0\nICX(config-vif-10)# ip ospf passive\nICX(config-vif-10)# exit\n\nThe above example assigns L3 interface from VLAN 10 to VRF Mgmt.",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate IGP routing instances is critical on the router to segregate traffic from each network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-271612r1091548_rule",
+  "full_rule_id": "SV-271612r1091548_rule",
+  "rule_id": "SV-271612",
+  "rule_revision": "1091548",
+  "group_id": "V-271612",
+  "group_title": "SRG-OS-000069-GPOS-00037",
+  "title": "OL 9 must ensure the password complexity module in the system-auth file is configured for three retries or less.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. \"pwquality\" enforces complex password construction configuration and has the ability to limit brute-force attacks on the system.\n\nOL 9 uses \"pwquality\" as a mechanism to enforce password complexity. This is set in both:\n/etc/pam.d/password-auth\n/etc/pam.d/system-auth\n\nBy limiting the number of attempts to meet the pwquality module complexity requirements before returning with an error, the system will audit abnormal attempts at password changes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 is configured to limit the \"pwquality\" retry option to \"3\". \n\nCheck for the use of the \"pwquality\" retry option in the system-auth file with the following command:\n\n$ grep pam_pwquality /etc/pam.d/system-auth \npassword required pam_pwquality.so retry=3\n\nIf the value of \"retry\" is set to \"0\" or greater than \"3\", or is missing, this is a finding.",
+  "fix": "Configure OL 9 to limit the \"pwquality\" retry option to \"3\".\n\nAdd the following line to the \"/etc/pam.d/system-auth\" file (or modify the line to have the required value):\n\npassword required pam_pwquality.so retry=3",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. \"pwquality\" enforces complex password construction configuration and has the ability to limit brute-force attacks on the system.\n\nOL 9 uses \"pwquality\" as a mechanism to enforce password complexity. This is set in both:\n/etc/pam.d/password-auth\n/etc/pam.d/system-auth\n\nBy limiting the number of attempts to meet the pwquality module complexity requirements before returning with an error, the system will audit abnormal attempts at password changes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-001001",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

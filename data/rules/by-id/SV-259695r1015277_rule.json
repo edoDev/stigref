@@ -1,0 +1,54 @@
+{
+  "id": "SV-259695r1015277_rule",
+  "full_rule_id": "SV-259695r1015277_rule",
+  "rule_id": "SV-259695",
+  "rule_revision": "1015277",
+  "group_id": "V-259695",
+  "group_title": "SRG-APP-000272",
+  "title": "The Exchange malware scanning agent must be configured for automatic updates.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Antimalware protection in Exchange Server 2019 helps combat viruses and spyware in an email messaging environment. Viruses infect other programs and data, and they spread throughout computer looking for programs to infect. Spyware gathers personal information (for example, sign-in information and personal data) and sends it back to its author.\n\nThe antimalware protection in Exchange Server was introduced in Exchange 2013 and is provided by the Transport agent named Malware Agent. The agent scans messages as they travel through the Transport service on a Mailbox server.\n\nTo ensure increased effectiveness of the Malware Agent, ensuring its signatures are automatically updated is imperative. Not doing so can lead to system compromise.\n\nThe Malware agent is installed during the initial installation of Microsoft Exchange server and if installed, is set for automatic updates by default.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In Exchange Management shell, run the following cmdlet:\n\nGet-MalwareFilteringServer |Select-Object -Property Name, *Update*\n\nIf the property \"Update frequency\" is not set, this is a finding.\n\nIf the Malware agent is not installed, then this is not applicable.",
+  "fix": "In an elevated Exchange management shell, run the following cmdlet:\n\nSet-MalwareFilteringServer -Identity <Identity> -UpdateFrequency <integer>\n\nWhere <Identity> is the name of the Exchange Server and <integer> is the update frequency (in minutes).\n\nRefer to the Enterprise Domain Security Plan (EDSP) for the update cadence that best aligns with the user's organization.",
+  "ccis": [
+    "CCI-004964",
+    "CCI-001247"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Antimalware protection in Exchange Server 2019 helps combat viruses and spyware in an email messaging environment. Viruses infect other programs and data, and they spread throughout computer looking for programs to infect. Spyware gathers personal information (for example, sign-in information and personal data) and sends it back to its author.\n\nThe antimalware protection in Exchange Server was introduced in Exchange 2013 and is provided by the Transport agent named Malware Agent. The agent scans messages as they travel through the Transport service on a Mailbox server.\n\nTo ensure increased effectiveness of the Malware Agent, ensuring its signatures are automatically updated is imperative. Not doing so can lead to system compromise.\n\nThe Malware agent is installed during the initial installation of Microsoft Exchange server and if installed, is set for automatic updates by default.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-MB-000147",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-mailbox-server-security-technical-implementation-guide-v2r3-ea0ba475",
+      "name": "Microsoft Exchange 2019 Mailbox Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-mailbox-server-security-technical-implementation-guide-v2r3-ea0ba475"
+  ]
+}

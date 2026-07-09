@@ -1,0 +1,53 @@
+{
+  "id": "SV-269775r1051710_rule",
+  "full_rule_id": "SV-269775r1051710_rule",
+  "rule_id": "SV-269775",
+  "rule_revision": "1051710",
+  "group_id": "V-269775",
+  "group_title": "SRG-APP-000131-NDM-000243",
+  "title": "The Dell OS10 Switch must prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Changes to any software components can have significant effects on the overall security of the network device. Verifying software components have been digitally signed using a certificate that is recognized and approved by the organization ensures the software has not been tampered with and has been provided by a trusted vendor. \n\nAccordingly, patches, service packs, or application components must be signed with a certificate recognized and approved by the organization. \n\nVerifying the authenticity of the software prior to installation validates the integrity of the patch or upgrade received from a vendor. This ensures the software has not been tampered with and has been provided by a trusted vendor. Self-signed certificates are disallowed by this requirement. The device should not have to verify the software again. This requirement does not mandate DOD certificates for this purpose; however, the certificate used to verify the software must be from an approved certificate authority (CA).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the OS10 Switch prevents the installation of patches, service packs, or application components without verifying the software component has been digitally signed using a certificate that is recognized and approved by the organization. \n\nImage install commands verify signatures if OS10 secure-boot is enabled. Verify that OS10 secure-boot feature is enabled with the following command:\n\nOS10# show secure-boot status\nLast boot was via secure boot : yes\nSecure boot configured : yes\nLatest startup config protected: yes\nBIOS secure boot:\nBIOS Secure boot configured: yes\n\nIf BIOS Secure boot is not configured, this is a finding.",
+  "fix": "Install OS10 images with digital signature verification using the following command.\n\nEnable OS10 secure-boot, if necessary, with the following command. Reload the switch after enabling secure boot.\n\nOS10# secure-boot enable\n\nWith OS10 secure-boot enabled, install OS10 images with the following command:\n\nOS10# image secure-install <image-filepath> {sha256 signature <signature-filepath> | gpg signature <signature-filepath> | pki signature <signature-filepath> publickey\n<key-file>}",
+  "ccis": [
+    "CCI-003992"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Changes to any software components can have significant effects on the overall security of the network device. Verifying software components have been digitally signed using a certificate that is recognized and approved by the organization ensures the software has not been tampered with and has been provided by a trusted vendor. \n\nAccordingly, patches, service packs, or application components must be signed with a certificate recognized and approved by the organization. \n\nVerifying the authenticity of the software prior to installation validates the integrity of the patch or upgrade received from a vendor. This ensures the software has not been tampered with and has been provided by a trusted vendor. Self-signed certificates are disallowed by this requirement. The device should not have to verify the software again. This requirement does not mandate DOD certificates for this purpose; however, the certificate used to verify the software must be from an approved certificate authority (CA).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000320",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

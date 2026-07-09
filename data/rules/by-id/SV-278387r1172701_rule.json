@@ -1,0 +1,53 @@
+{
+  "id": "SV-278387r1172701_rule",
+  "full_rule_id": "SV-278387r1172701_rule",
+  "rule_id": "SV-278387",
+  "rule_revision": "1172701",
+  "group_id": "V-278387",
+  "group_title": "SRG-APP-000112",
+  "title": "NGINX must prevent the execution of unapproved modules.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Decisions regarding the employment of mobile code within organizational information systems are based on the potential for the code to cause damage to the system if used maliciously. \n\nMobile code is defined as software modules obtained from remote systems, transferred across a network, and then downloaded and executed on a local system without explicit installation or execution by the recipient.\n\nActions enforced before executing mobile code include prompting users prior to opening email attachments and disabling automatic execution.\n\nUsage restrictions and implementation guidance apply to both the selection and using the mobile code installed, downloaded, or executed on all endpoints (e.g., servers, workstations, and smart phones). This requirement applies to applications that execute, evaluate, or otherwise process mobile code (e.g., web applications, browsers, and antivirus applications).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check nginx.conf for external modules being loaded (grep load_module). \n\nIf additional modules are being loaded, confirm the directory does not include write or execute for other users.\n\nDetermine the path to nginx config file(s):\n\n# nginx -qT | grep \"# configuration\"\n# configuration file /etc/nginx/nginx.conf:\n\nNote: The default NGINX configuration is \"/etc/nginx/nginx.conf\", though various files may also be included.\n\n# grep load_module /etc/nginx/nginx.conf\nload_module modules/ngx_http_app_protect_module.so;\n# ls -la /etc/nginx/modules\nlrwxrwxrwx 1 root root 22 Oct 10 2023 modules -> /usr/lib/nginx/modules\n# ls -la /usr/lib/nginx\ndrwxr-xr-x root root 4096 Jan 30 2024 modules\n\nIf directory where modules are loaded is writeable by other, this is a finding.",
+  "fix": "Set permissions on directory containing external modules to read only for \"Other\" only.\n\nThe directory may be organizationally defined. The default path is /usr/lib/nginx/modules.\n\n# chmod o-wx /usr/lib/nginx/modules",
+  "ccis": [
+    "CCI-001695"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Decisions regarding the employment of mobile code within organizational information systems are based on the potential for the code to cause damage to the system if used maliciously. \n\nMobile code is defined as software modules obtained from remote systems, transferred across a network, and then downloaded and executed on a local system without explicit installation or execution by the recipient.\n\nActions enforced before executing mobile code include prompting users prior to opening email attachments and disabling automatic execution.\n\nUsage restrictions and implementation guidance apply to both the selection and using the mobile code installed, downloaded, or executed on all endpoints (e.g., servers, workstations, and smart phones). This requirement applies to applications that execute, evaluate, or otherwise process mobile code (e.g., web applications, browsers, and antivirus applications).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NGNX-APP-000370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55",
+      "name": "F5 NGINX Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55"
+  ]
+}

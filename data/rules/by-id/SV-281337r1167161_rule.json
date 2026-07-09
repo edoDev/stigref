@@ -1,0 +1,53 @@
+{
+  "id": "SV-281337r1167161_rule",
+  "full_rule_id": "SV-281337r1167161_rule",
+  "rule_id": "SV-281337",
+  "rule_revision": "1167161",
+  "group_id": "V-281337",
+  "group_title": "SRG-OS-000433-GPOS-00192",
+  "title": "RHEL 10 must enable hardening for the Berkeley Packet Filter (BPF) just-in-time compiler.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When hardened, the extended BPF just-in-time (JIT) compiler will randomize any kernel addresses in the BPF programs and maps, and will not expose the JIT addresses in \"/proc/kallsyms\".</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 enables hardening for the BPF JIT compiler.\n\nCheck the status of the \"net.core.bpf_jit_harden\" parameter with the following command:\n\n$ sudo sysctl net.core.bpf_jit_harden\nnet.core.bpf_jit_harden = 2\n\nIf \"net.core.bpf_jit_harden\" is not equal to \"2\" or is missing, this is a finding.",
+  "fix": "Configure RHEL 10 to enable hardening for the BPF JIT compiler.\n\nCreate the drop-in file if it does not already exist:\n\n$ sudo vi /etc/sysctl.d/99-net_core-bpf_jit_harden.conf\n\nAdd the following line to the file:\n\nnet.core.bpf_jit_harden = 2\n\nReload settings from all system configuration files with the following command:\n\n$ sudo sysctl --system",
+  "ccis": [
+    "CCI-002824"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When hardened, the extended BPF just-in-time (JIT) compiler will randomize any kernel addresses in the BPF programs and maps, and will not expose the JIT addresses in \"/proc/kallsyms\".",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-800050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

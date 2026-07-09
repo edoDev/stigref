@@ -1,0 +1,53 @@
+{
+  "id": "SV-270705r1066604_rule",
+  "full_rule_id": "SV-270705r1066604_rule",
+  "rule_id": "SV-270705",
+  "rule_revision": "1066604",
+  "group_id": "V-270705",
+  "group_title": "SRG-OS-000480-GPOS-00225",
+  "title": "Ubuntu 24.04 LTS must be configured so that when passwords are changed or new passwords are established, pwquality must be used.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. \"pwquality\" enforces complex password construction configuration and has the ability to limit brute-force attacks on the system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that Ubuntu 24.04 LTS uses \"pwquality\" to enforce the password complexity rules.  \n \nVerify the pwquality module is being enforced by Ubuntu 24.04 LTS with the following command: \n \n$ grep -i enforcing /etc/security/pwquality.conf\nenforcing = 1 \n \nIf the value of \"enforcing\" is not \"1\", or the line is commented out, this is a finding. \n \nCheck for the use of \"pwquality\" with the following command: \n \n$ cat /etc/pam.d/common-password | grep requisite | grep pam_pwquality\npassword requisite pam_pwquality.so retry=3 \n \nIf the value of \"retry\" is set to \"0\" or is greater than \"3\", or if a line is not returned, this is a finding.",
+  "fix": "Configure Ubuntu 24.04 LTS to use \"pwquality\" to enforce password complexity rules. \n \nAdd the following line to \"/etc/security/pwquality.conf\" (or modify the line to have the required value): \n \nenforcing = 1 \n \nAdd the following line to \"/etc/pam.d/common-password\" (or modify the line to have the required value): \n \npassword requisite pam_pwquality.so retry=3 \n \nNote: Ensure the value of \"retry\" is between \"1\" and \"3\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. \"pwquality\" enforces complex password construction configuration and has the ability to limit brute-force attacks on the system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-300016",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

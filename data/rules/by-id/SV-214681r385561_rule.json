@@ -1,0 +1,53 @@
+{
+  "id": "SV-214681r385561_rule",
+  "full_rule_id": "SV-214681r385561_rule",
+  "rule_id": "SV-214681",
+  "rule_revision": "385561",
+  "group_id": "V-214681",
+  "group_title": "SRG-NET-000512",
+  "title": "The Juniper SRX Services Gateway VPN must use Encapsulating Security Payload (ESP) in tunnel mode.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>ESP provides confidentiality, data origin authentication, integrity, and anti-replay services within the IPsec suite of protocols. ESP in tunnel mode ensures a secure path for communications for site-to-site VPNs and gateway to endpoints, including header information.\n\nESP can be deployed in either transport or tunnel mode. Transport mode is used to create a secured session between two hosts. It can also be used when two hosts simply want to authenticate each IP packet with IPsec authentication header (AH). With ESP transport mode, only the payload (transport layer) is encrypted, whereas with tunnel mode, the entire IP packet is encrypted and encapsulated with a new IP header. Tunnel mode is used to encrypt traffic between secure IPsec gateways or between an IPsec gateway and an end-station running IPsec software. Hence, it is the only method to provide a secured path to transport traffic between remote sites or end-stations and the central site.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review all IPsec profiles and zones to verify ESP tunnel mode has been specified.\n\n[edit]\nshow security ipsec proposal\nshow security zones security-zone untrust\n\nIf all IPsec proposals are not configured for the ESP protocol, this is a finding.\n\nIf an Internet Key Exchange (IKE) is not bound to an external host-inbound service to direct all inbound VPN traffic to the VPN interface configured for IKE, this is a finding.",
+  "fix": "Configure Phase 2 for ESP and allow IKE as a host-inbound service within the security zone associated with the IKE gateway’s external interface configuration. Any traffic that you wish to encrypt is routed to this tunnel interface.\n\nExample:\n\n[edit\nset security ipsec proposal IPSEC-PROPOSAL protocol esp\n\nAssumes the external interface is associated with the “untrust” zone.\n\n[edit]\nset security ike gateway <IKE-PEER> external-interface <EXTERNAL-INTERFACE-NAME>\nset security zones security-zone untrust host-inbound-traffic system-services ike",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ESP provides confidentiality, data origin authentication, integrity, and anti-replay services within the IPsec suite of protocols. ESP in tunnel mode ensures a secure path for communications for site-to-site VPNs and gateway to endpoints, including header information.\n\nESP can be deployed in either transport or tunnel mode. Transport mode is used to create a secured session between two hosts. It can also be used when two hosts simply want to authenticate each IP packet with IPsec authentication header (AH). With ESP transport mode, only the payload (transport layer) is encrypted, whereas with tunnel mode, the entire IP packet is encrypted and encapsulated with a new IP header. Tunnel mode is used to encrypt traffic between secure IPsec gateways or between an IPsec gateway and an end-station running IPsec software. Hence, it is the only method to provide a secured path to transport traffic between remote sites or end-stations and the central site.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-VN-000014",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0",
+      "name": "Juniper SRX Services Gateway VPN Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0"
+  ]
+}

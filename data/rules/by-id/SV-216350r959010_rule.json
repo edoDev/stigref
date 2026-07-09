@@ -1,0 +1,53 @@
+{
+  "id": "SV-216350r959010_rule",
+  "full_rule_id": "SV-216350r959010_rule",
+  "rule_id": "SV-216350",
+  "rule_revision": "959010",
+  "group_id": "V-216350",
+  "group_title": "SRG-OS-000480",
+  "title": "The nobody access for RPC encryption key storage service must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If login by the user \"nobody\" is allowed for secure RPC, there is an increased risk of system compromise. If keyserv holds a private key for the \"nobody\" user, it will be used by key_encryptsession to compute a magic phrase which can be easily recovered by a malicious user.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the rpc-authdes package is installed:\n\n# pkg list solaris/legacy/security/rpc-authdes\n\nIf the output of this command is:\n\npkg list: no packages matching 'solaris/legacy/security/rpc-authdes' installed\n\nno further action is required.\n\nDetermine if \"nobody\" access for keyserv is enabled.\n\n# grep \"^ENABLE_NOBODY_KEYS=\" /etc/default/keyserv \n\nIf the output of the command is not:\n\nENABLE_NOBODY_KEYS=NO\n\nthis is a finding.",
+  "fix": "Determine if the rpc-authdes package is installed:\n\n# pkg list solaris/legacy/security/rpc-authdes\n\nIf the output of this command is:\n\npkg list: no packages matching 'solaris/legacy/security/rpc-authdes' installed\n\nno further action is required.\n\nThe root role is required.\n\nModify the /etc/default/keyserv file.\n\n# pfedit /etc/default/keyserv\n\nLocate the line:\n\n#ENABLE_NOBODY_KEYS=YES\n\nChange it to:\n\nENABLE_NOBODY_KEYS=NO",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If login by the user \"nobody\" is allowed for secure RPC, there is an increased risk of system compromise. If keyserv holds a private key for the \"nobody\" user, it will be used by key_encryptsession to compute a magic phrase which can be easily recovered by a malicious user.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040320",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

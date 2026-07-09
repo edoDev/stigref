@@ -1,0 +1,53 @@
+{
+  "id": "SV-259067r934859_rule",
+  "full_rule_id": "SV-259067r934859_rule",
+  "rule_id": "SV-259067",
+  "rule_revision": "934859",
+  "group_id": "V-259067",
+  "group_title": "SRG-APP-000516-AS-000237",
+  "title": "The vCenter Lookup service must disable \"ALLOW_BACKSLASH\".",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When Tomcat is installed behind a proxy configured to only allow access to certain contexts (web applications), an HTTP request containing \"/\\../\" may allow attackers to work around the proxy restrictions using directory traversal attack methods. If \"allow_backslash\" is \"true\", the \"\\\" character will be permitted as a path delimiter. The default value for the setting is \"false\", but Tomcat must always be configured as if no proxy restricting context access was used, and \"allow_backslash\" should be set to \"false\" to prevent directory-traversal-style attacks. This setting can create operability issues with noncompliant clients.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command:\n\n# grep ALLOW_BACKSLASH /usr/lib/vmware-lookupsvc/conf/catalina.properties\n\nExample result:\n\norg.apache.catalina.connector.ALLOW_BACKSLASH=false\n\nIf \"org.apache.catalina.connector.ALLOW_BACKSLASH\" is not set to \"false\", this is a finding.\n\nIf the \"org.apache.catalina.connector.ALLOW_BACKSLASH\" setting does not exist, this is not a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-lookupsvc/conf/catalina.properties\n\nUpdate or remove the following line:\n\norg.apache.catalina.connector.ALLOW_BACKSLASH=false\n\nRestart the service with the following command:\n\n# vmon-cli --restart lookupsvc",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When Tomcat is installed behind a proxy configured to only allow access to certain contexts (web applications), an HTTP request containing \"/\\../\" may allow attackers to work around the proxy restrictions using directory traversal attack methods. If \"allow_backslash\" is \"true\", the \"\\\" character will be permitted as a path delimiter. The default value for the setting is \"false\", but Tomcat must always be configured as if no proxy restricting context access was used, and \"allow_backslash\" should be set to \"false\" to prevent directory-traversal-style attacks. This setting can create operability issues with noncompliant clients.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCLU-80-000151",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-lookup-service-security-technical-implement-v1r1-6632b0e8",
+      "name": "VMware vSphere 8.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-lookup-service-security-technical-implement-v1r1-6632b0e8"
+  ]
+}

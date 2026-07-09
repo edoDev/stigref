@@ -1,0 +1,54 @@
+{
+  "id": "SV-221102r999711_rule",
+  "full_rule_id": "SV-221102r999711_rule",
+  "rule_id": "SV-221102",
+  "rule_revision": "999711",
+  "group_id": "V-221102",
+  "group_title": "SRG-NET-000230-RTR-000002",
+  "title": "The Cisco BGP switch must be configured to use a unique key for each autonomous system (AS) that it peers with.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the same keys are used between eBGP neighbors, the chance of a hacker compromising any of the BGP sessions increases. It is possible that a malicious user exists in one autonomous system who would know the key used for the eBGP session. This user would then be able to hijack BGP sessions with other trusted neighbors.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the BGP configuration to determine if it is peering with multiple autonomous systems. Interview the ISSM and switch administrator to determine if unique keys are being used. \n\nrouter bgp xx\n router-id 10.1.1.1\n neighbor x.1.12.2 remote-as 2\n password 3 7b07d1b3023056a9\n address-family ipv4 unicast\n neighbor x.2.44.4 remote-as xx\n password 3 f07a10cb41db8bb6f8f0a340049a9b02\n address-family ipv4 unicast\n\nIf unique keys are not being used, this is a finding.",
+  "fix": "Configure the switch to use unique keys for each AS that it peers with as shown in the example below:\n\nSW1(config)# router bgp xx\nSW1(config-router)# neighbor x.1.12.2\nSW1(config-router-neighbor)# password yyyyyyyyy\nSW1(config-router-neighbor)# exit\nSW1(config-router)# neighbor x.2.44.4\nSW1(config-router-neighbor)# password zzzzzzzzzz\nSW1(config-router-neighbor)# end",
+  "ccis": [
+    "CCI-000366",
+    "CCI-002205"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the same keys are used between eBGP neighbors, the chance of a hacker compromising any of the BGP sessions increases. It is possible that a malicious user exists in one autonomous system who would know the key used for the eBGP session. This user would then be able to hijack BGP sessions with other trusted neighbors.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651",
+      "name": "Cisco NX OS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651"
+  ]
+}

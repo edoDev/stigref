@@ -1,0 +1,53 @@
+{
+  "id": "SV-279581r1192447_rule",
+  "full_rule_id": "SV-279581r1192447_rule",
+  "rule_id": "SV-279581",
+  "rule_revision": "1192447",
+  "group_id": "V-279581",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "Nutanix OS must enforce a delay of at least four seconds between logon prompts following a failed logon attempt.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Limiting the number of logon attempts over a certain time interval reduces the chances that an unauthorized user may gain access to an account.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS enforces a delay of at least four seconds between console logon prompts following a failed logon attempt using the following command.\n\n$ sudo grep -i fail_delay /etc/login.defs\nFAIL_DELAY 4\n\nIf the value of \"FAIL_DELAY\" is not set to \"4\" or greater, or the line is commented out, this is a finding.",
+  "fix": "Configure the use of complex passwords for Nutanix OS VMs.\n\n1. For AOS, configure the use of complex passwords using the following command.\n\n$ sudo salt-call state.sls security/CVM/pamCVM.sls\n\n2. For Prism Central, configure the use of complex passwords using the following command.\n\n$ sudo salt-call state.sls security/PCVM/pamPCVM.sls\n\n3. For Files, configure the use of complex passwords using the following command.\n\n$ sudo salt-call state.sls security/AFS/pamAFS.sls\n\n4. For Prism Central, configure the use of complex passwords using the following command.\n\n$ ncli cluster edit-hypervisor-security-params enable-high-strength-password=true",
+  "ccis": [
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Limiting the number of logon attempts over a certain time interval reduces the chances that an unauthorized user may gain access to an account.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000128",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-260549r958388_rule",
+  "full_rule_id": "SV-260549r958388_rule",
+  "rule_id": "SV-260549",
+  "rule_revision": "958388",
+  "group_id": "V-260549",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "Ubuntu 22.04 LTS must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts have been made.",
+  "severity": "low",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that Ubuntu 22.04 LTS utilizes the \"pam_faillock\" module by using the following command: \n \n     $ grep faillock /etc/pam.d/common-auth \n \nauth     [default=die]  pam_faillock.so authfail \nauth     sufficient     pam_faillock.so authsucc \n \nIf the \"pam_faillock.so\" module is not present in the \"/etc/pam.d/common-auth\" file, this is a finding. \n \nVerify the \"pam_faillock\" module is configured to use the following options: \n \n     $ sudo grep -Ew 'silent|audit|deny|fail_interval|unlock_time' /etc/security/faillock.conf \n     audit \n     silent \n     deny = 3 \n     fail_interval = 900 \n     unlock_time = 0 \n \nIf \"audit\" is commented out, or is missing, this is a finding.\n\nIf \"silent\" is commented out, or is missing, this is a finding.\n\nIf \"deny\" is set to a value greater than \"3\", is commented out, or is missing, this is a finding.\n \nIf \"fail_interval\" is set to a value greater than \"900\", is commented out, or is missing, this is a finding.\n \nIf \"unlock_time\" is not set to \"0\", is commented out, or is missing, this is a finding.",
+  "fix": "Configure Ubuntu 22.04 LTS to utilize the \"pam_faillock\" module.  \n \nAdd or modify the following lines in the \"/etc/pam.d/common-auth\" file, below the \"auth\" definition for \"pam_unix.so\":  \n \nauth     [default=die]  pam_faillock.so authfail \nauth     sufficient          pam_faillock.so authsucc \n \nConfigure the \"pam_faillock\" module to use the following options. \n \nAdd or modify the following lines in the \"/etc/security/faillock.conf\" file: \n \naudit \nsilent \ndeny = 3 \nfail_interval = 900 \nunlock_time = 0",
+  "ccis": [
+    "CCI-000044",
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-22-411045",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553",
+      "name": "Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-216160r1190830_rule",
+  "full_rule_id": "SV-216160r1190830_rule",
+  "rule_id": "SV-216160",
+  "rule_revision": "1190830",
+  "group_id": "V-216160",
+  "group_title": "SRG-OS-000023",
+  "title": "The GNOME service must display the DOD-approved system use notification message or banner before granting access to the system.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Warning messages inform users who are attempting to log in to the system of their legal status regarding the system and must include the name of the organization that owns the system and any monitoring policies that are in place. As implementing a logon banner to deter inappropriate use can provide a foundation for legal action against abuse, this warning content should be set as appropriate.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This item does not apply if a graphic login is not configured.\n\nLog in to the Gnome Graphical interface. If the approved banner message does not appear, this is a finding.\n\n# cat /etc/issue\n\n# grep /etc/gdm/Init/Default zenity\n\nIf /etc/issue does not contain the DOD-approved banner message or /etc/gdm/Init/Default does not contain the line:\n\n/usr/bin/zenity --text-info --width=800 --height=300 \\\n--title=\"Security Message\" --filename=/etc/issue\n\nthis is a finding.",
+  "fix": "The root role is required.\n\nIf the system does not use XWindows, this is not applicable.\n\n# pfedit /etc/issue \n\nInsert the proper DOD banner message text. The DOD required text is:\n\nYou are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.\n\nBy using this IS (which includes any device attached to this IS), you consent to the following conditions:\n\n-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.\n\n-At any time, the USG may inspect and seize data stored on this IS.\n\n-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.\n\n-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.\n\n-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants.  Such communications and work product are private and confidential.  See User Agreement for details.\n# pfedit /etc/gdm/Init/Default\n\nAdd the following content before the \"exit 0\" line of the file.\n\n/usr/bin/zenity --text-info --width=800 --height=300 \\\n--title=\"Security Message\" --filename=/etc/issue",
+  "ccis": [
+    "CCI-000048",
+    "CCI-000050"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Warning messages inform users who are attempting to log in to the system of their legal status regarding the system and must include the name of the organization that owns the system and any monitoring policies that are in place. As implementing a logon banner to deter inappropriate use can provide a foundation for legal action against abuse, this warning content should be set as appropriate.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-050410",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

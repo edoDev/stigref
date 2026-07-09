@@ -1,0 +1,53 @@
+{
+  "id": "SV-215276r991592_rule",
+  "full_rule_id": "SV-215276r991592_rule",
+  "rule_id": "SV-215276",
+  "rule_revision": "991592",
+  "group_id": "V-215276",
+  "group_title": "SRG-OS-000480-GPOS-00230",
+  "title": "All AIX interactive users home directories must be owned by their respective users.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>System binaries are executed by privileged users as well as system services, and restrictive permissions are necessary to ensure that their execution of these programs cannot be co-opted.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the ownership of each user's home directory listed in the \"/etc/passwd file\": \n\n# cut -d: -f6 /etc/passwd | xargs ls -lLd\n\ndrwxr-xr-x   21 root     system         4096 Jan 29 09:58 /\n\ndrwxr-xr-x    4 bin      bin           45056 Jan 24 12:31 /bin\n\ndrwxr-xr-x    2 doejohn  staff           256 Jan 25 13:18 /home/doejohn\n\ndrwxr-xr-x    2 sshd     system          256 Aug 11 2017  /home/srvproxy\n\ndrwx------    2 root     system          256 Jan 30 12:54 /root\n\ndrwxrwxr-x    4 bin      bin             256 Mar 23 2017  /usr/sys\n\ndrwxrwxr-x   15 root     adm            4096 Jan 24 12:26 /var/adm\n\ndrwxr-xr-x    6 root     system         4096 Jan 24 07:34 /var/adm/invscout\n\ndrwxr-xr-x    8 esaadmin system          256 Jan 24 09:02 /var/esa\n\n\nIf any user's home directory is not owned by the assigned user, this is a finding.",
+  "fix": "Change the owner of a user's home directory to its assigned user using command: \n# chown <user> <home directory>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "System binaries are executed by privileged users as well as system services, and restrictive permissions are necessary to ensure that their execution of these programs cannot be co-opted.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002085",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

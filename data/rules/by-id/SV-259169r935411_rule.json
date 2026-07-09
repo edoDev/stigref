@@ -1,0 +1,53 @@
+{
+  "id": "SV-259169r935411_rule",
+  "full_rule_id": "SV-259169r935411_rule",
+  "rule_id": "SV-259169",
+  "rule_revision": "935411",
+  "group_id": "V-259169",
+  "group_title": "SRG-APP-000091-DB-000066",
+  "title": "The vCenter PostgreSQL service must generate audit records.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. Database management systems (DBMS) typically make such information available through views or functions.\n\nThis requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of privileges/permissions/role memberships that PostgreSQL continually performs to determine if any and every action on the database is permitted.\n\nSatisfies: SRG-APP-000091-DB-000066, SRG-APP-000091-DB-000325, SRG-APP-000492-DB-000332, SRG-APP-000492-DB-000333, SRG-APP-000495-DB-000326, SRG-APP-000495-DB-000327, SRG-APP-000495-DB-000328, SRG-APP-000495-DB-000329, SRG-APP-000496-DB-000334, SRG-APP-000496-DB-000335, SRG-APP-000499-DB-000330, SRG-APP-000499-DB-000331, SRG-APP-000501-DB-000336, SRG-APP-000501-DB-000337, SRG-APP-000504-DB-000354, SRG-APP-000504-DB-000355, SRG-APP-000507-DB-000356, SRG-APP-000507-DB-000357</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following commands:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW pgaudit.log_catalog;\"\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW pgaudit.log;\"\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW pgaudit.log_parameter;\"\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW pgaudit.log_statement_once;\"\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW pgaudit.log_level;\"\n\nIf \"pgaudit.log_catalog\" is not set to \"on\", this is a finding.\n\nIf \"pgaudit.log\" is not set to \"all, -misc\", this is a finding.\n\nIf \"pgaudit.log_parameter\" is not set to \"on\", this is a finding.\n\nIf \"pgaudit.log_statement_once\" is not set to \"off\", this is a finding.\n\nIf \"pgaudit.log_level\" is not set to \"log\", this is a finding.",
+  "fix": "A script is included with vCenter to generate a PostgreSQL STIG configuration.\n\nAt the command prompt, run the following commands:\n\n# chmod +x /opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py\n# /opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py --action stig_enable --pg-data-dir /storage/db/vpostgres\n# chmod -x /opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py\n\nRestart the PostgreSQL service by running the following command:\n\n# vmon-cli --restart vmware-vpostgres",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. Database management systems (DBMS) typically make such information available through views or functions.\n\nThis requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of privileges/permissions/role memberships that PostgreSQL continually performs to determine if any and every action on the database is permitted.\n\nSatisfies: SRG-APP-000091-DB-000066, SRG-APP-000091-DB-000325, SRG-APP-000492-DB-000332, SRG-APP-000492-DB-000333, SRG-APP-000495-DB-000326, SRG-APP-000495-DB-000327, SRG-APP-000495-DB-000328, SRG-APP-000495-DB-000329, SRG-APP-000496-DB-000334, SRG-APP-000496-DB-000335, SRG-APP-000499-DB-000330, SRG-APP-000499-DB-000331, SRG-APP-000501-DB-000336, SRG-APP-000501-DB-000337, SRG-APP-000504-DB-000354, SRG-APP-000504-DB-000355, SRG-APP-000507-DB-000356, SRG-APP-000507-DB-000357",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-80-000007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r1-e6e7fe9a",
+      "name": "VMware vSphere 8.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r1-e6e7fe9a"
+  ]
+}

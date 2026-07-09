@@ -1,0 +1,53 @@
+{
+  "id": "SV-273583r1110888_rule",
+  "full_rule_id": "SV-273583r1110888_rule",
+  "rule_id": "SV-273583",
+  "rule_revision": "1110888",
+  "group_id": "V-273583",
+  "group_title": "SRG-NET-000019-RTR-000005",
+  "title": "The RUCKUS ICX multicast edge router must be configured to establish boundaries for administratively scoped multicast traffic.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify boundaries are established for administratively scoped multicast traffic:\n\nip access-list standard MULTICAST_SCOPE\n sequence 10 deny 239.0.0.0 0.255.255.255\n sequence 20 permit any\n!\n\ninterface ethernet 1/1/10\n ip address x.12.1.10 255.255.255.0\n ip pim-sparse\n ip pim neighbor-filter PIM_NEIGHBORS\n ip multicast-boundary MULTICAST_SCOPE\n!\n\nIf the multicast boundary is not established, this is a finding.",
+  "fix": "Establish a multicast boundary for administratively scoped multicast traffic:\n\nip access-list standard MULTICAST_SCOPE\n sequence 10 deny 239.0.0.0 0.255.255.255\n sequence 20 permit any\n!\ninterface ethernet 1/1/10\n ip address x.12.1.10 255.255.255.0\n ip pim-sparse\n ip pim neighbor-filter PIM_NEIGHBORS\n ip multicast-boundary MULTICAST_SCOPE\n!",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

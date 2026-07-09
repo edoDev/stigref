@@ -1,0 +1,53 @@
+{
+  "id": "SV-269293r1050175_rule",
+  "full_rule_id": "SV-269293r1050175_rule",
+  "rule_id": "SV-269293",
+  "rule_revision": "1050175",
+  "group_id": "V-269293",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "AlmaLinux OS 9 must clear the page allocator to prevent use-after-free attacks.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Poisoning writes an arbitrary value to freed pages, so any modification or reference to that page after being freed or before being initialized will be detected and prevented. \n\nThis prevents many types of use-after-free vulnerabilities at little performance cost. This also prevents data leaks and detects corrupted memory.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that GRUB 2 is configured to enable page poisoning to mitigate use-after-free vulnerabilities.\n\nCheck that the current GRUB 2 configuration has page poisoning enabled  with the following command:\n\n$ grubby --info=ALL | grep args | grep -v 'page_poison=1'\n\nIf any output is returned, this is a finding.\n\nCheck that page poisoning is enabled by default to persist in kernel updates with the following command: \n\n$ grep page_poison /etc/default/grub\n\nGRUB_CMDLINE_LINUX=\"page_poison=1\"\n\nIf \"page_poison\" is not set to \"1\", is missing or commented out, this is a finding.",
+  "fix": "Configure AlmaLinux OS 9 to enable page poisoning with the following commands:\n\n$ grubby --update-kernel=ALL --args=\"page_poison=1\"\n\nAdd or modify the following line in \"/etc/default/grub\" to ensure the configuration survives kernel updates:\n\nGRUB_CMDLINE_LINUX=\"page_poison=1\"",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Poisoning writes an arbitrary value to freed pages, so any modification or reference to that page after being freed or before being initialized will be detected and prevented. \n\nThis prevents many types of use-after-free vulnerabilities at little performance cost. This also prevents data leaks and detects corrupted memory.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-024110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

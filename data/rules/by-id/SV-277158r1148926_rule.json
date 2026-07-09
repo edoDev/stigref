@@ -1,0 +1,54 @@
+{
+  "id": "SV-277158r1148926_rule",
+  "full_rule_id": "SV-277158r1148926_rule",
+  "rule_id": "SV-277158",
+  "rule_revision": "1148926",
+  "group_id": "V-277158",
+  "group_title": "SRG-OS-000205-GPOS-00083",
+  "title": "The macOS system must configure Apple System Log (ASL) files owned by root and group to wheel.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ASL must be owned by root.\n\nASLs contain sensitive data about the system and users. Setting ASL files to be readable and writable only by system administrators mitigates the risk.\n\nSatisfies: SRG-OS-000205-GPOS-00083, SRG-OS-000206-GPOS-00084</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured with ASL files owned by root and group to wheel with the following command:\n\n/usr/bin/stat -f '%Su:%Sg:%N' $(/usr/bin/grep -e '^>' /etc/asl.conf /etc/asl/* | /usr/bin/awk '{ print $2 }') 2> /dev/null | /usr/bin/awk '!/^root:wheel:/{print $1}' | /usr/bin/wc -l | /usr/bin/tr -d ' '\n\nIf the result is not \"0\", this is a finding.",
+  "fix": "Configure the macOS system with ASL files owned by root and group to wheel with the following command:\n\n/usr/sbin/chown root:wheel $(/usr/bin/stat -f '%Su:%Sg:%N' $(/usr/bin/grep -e '^>' /etc/asl.conf /etc/asl/* | /usr/bin/awk '{ print $2 }') 2> /dev/null | /usr/bin/awk '!/^root:wheel:/{print $1}' | /usr/bin/awk -F\":\" '!/^root:wheel:/{print $3}')",
+  "ccis": [
+    "CCI-001312",
+    "CCI-001314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ASL must be owned by root.\n\nASLs contain sensitive data about the system and users. Setting ASL files to be readable and writable only by system administrators mitigates the risk.\n\nSatisfies: SRG-OS-000205-GPOS-00083, SRG-OS-000206-GPOS-00084",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-26-004001",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2",
+      "name": "Apple macOS 26 (Tahoe) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2"
+  ]
+}

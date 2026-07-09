@@ -1,0 +1,54 @@
+{
+  "id": "SV-268442r1131200_rule",
+  "full_rule_id": "SV-268442r1131200_rule",
+  "rule_id": "SV-268442",
+  "rule_revision": "1131200",
+  "group_id": "V-268442",
+  "group_title": "SRG-OS-000104-GPOS-00051",
+  "title": "The macOS system must disable login to other users' active and locked sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ability to log in to another user's active or locked session must be disabled.\n\nWARNING: This rule may cause issues when platformSSO is configured.\n\nmacOS has a privilege that can be granted to any user that will allow that user to unlock active users' sessions. Disabling the administrator's and/or user's ability to log in to another user's active and locked session prevents unauthorized people from viewing potentially sensitive and/or personal information.\n\nNote: Configuring this setting will change the user experience and disable TouchID from unlocking the screen saver. To restore the user experience and allow TouchID to unlock the screen saver, run \"/usr/bin/sudo /usr/bin/defaults write /Library/Preferences/com.apple.loginwindow screenUnlockMode -int 1\". This setting can also be deployed with a configuration profile.\n\nSatisfies: SRG-OS-000104-GPOS-00051, SRG-OS-000109-GPOS-00056</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to disable login to other users' active and locked sessions with the following command:\n\n/usr/bin/security authorizationdb read system.login.screensaver 2>&1 | /usr/bin/grep -c '<string>authenticate-session-owner</string>'\n\nIf the result is not \"1\", this is a finding.",
+  "fix": "Configure the macOS system to disable login to other users' active and locked sessions with the following command:\n\n/usr/bin/security authorizationdb write system.login.screensaver \"authenticate-session-owner\"",
+  "ccis": [
+    "CCI-000764",
+    "CCI-004045"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ability to log in to another user's active or locked session must be disabled.\n\nWARNING: This rule may cause issues when platformSSO is configured.\n\nmacOS has a privilege that can be granted to any user that will allow that user to unlock active users' sessions. Disabling the administrator's and/or user's ability to log in to another user's active and locked session prevents unauthorized people from viewing potentially sensitive and/or personal information.\n\nNote: Configuring this setting will change the user experience and disable TouchID from unlocking the screen saver. To restore the user experience and allow TouchID to unlock the screen saver, run \"/usr/bin/sudo /usr/bin/defaults write /Library/Preferences/com.apple.loginwindow screenUnlockMode -int 1\". This setting can also be deployed with a configuration profile.\n\nSatisfies: SRG-OS-000104-GPOS-00051, SRG-OS-000109-GPOS-00056",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-15-000090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66",
+      "name": "Apple macOS 15 (Sequoia) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66"
+  ]
+}

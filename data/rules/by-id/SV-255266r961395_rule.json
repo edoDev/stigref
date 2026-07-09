@@ -1,0 +1,53 @@
+{
+  "id": "SV-255266r961395_rule",
+  "full_rule_id": "SV-255266r961395_rule",
+  "rule_id": "SV-255266",
+  "rule_revision": "961395",
+  "group_id": "V-255266",
+  "group_title": "SRG-APP-000358-WSR-000063",
+  "title": "SSMC web server must not impede the ability to write specified log record content to an audit log server.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Writing events to a centralized management audit system offers many benefits to the enterprise over having dispersed logs. Centralized management of audit records and logs provides for efficiency in maintenance and management of records, enterprise analysis of events, and backup and archiving of event records enterprise-wide. The web server and related components are required to be capable of writing logs to centralized audit log servers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the SSMC web process writes the web app and audit log files at the right location on the filesystem for log exports to work correctly:\n\n1. Log on to SSMC appliance via SSH as ssmcadmin. Press \"X\" to escape to general bash shell.\n\n2. Check the following property values in /opt/hpe/ssmc/ssmcbase/resources/log4j2.json file:\n\na. File name for SSMCRollingFile Appender:\n\n$ grep \"\\\"name\\\" : \\\"SSMCRollingFile\\\"\" -A13 /opt/hpe/ssmc/ssmcbase/resources/log4j2.json | grep \"fileName\"\n        \"fileName\" : \"${logpath}/ssmc.log\",\nIf the output does not read ' \"fileName\" : \"${logpath}/ssmc.log\", ' , this is a finding.\n\nb. File name for LocalAuditRollingFile Appender:\n\n$ grep \"\\\"name\\\" : \\\"LocalAuditRollingFile\\\"\" -A13 /opt/hpe/ssmc/ssmcbase/resources/log4j2.json | grep \"fileName\"\n        \"fileName\" : \"${logpath}/audit.log\",\nIf the output does not read ' \"fileName\" : \"${logpath}/audit.log\", ' , this is a finding.",
+  "fix": "Configure SSMC web process to write the web application and audit log files at the right location on the filesystem for log exports to work correctly:\n\n1. Log on to SSMC appliance via SSH as ssmcadmin. Press \"X\" to escape to general bash shell.\n\n2. Locate and update the following property values in /opt/hpe/ssmc/ssmcbase/resources/log4j2.json file:\n\na. File name for SSMCRollingFile Appender:\n\nLocate the line to update with the following command: $ grep -n \"\\\"name\\\" : \\\"SSMCRollingFile\\\"\" -A13 /opt/hpe/ssmc/ssmcbase/resources/log4j2.json | grep \"fileName\"\n21-        \"fileName\" : \"${logpath}/ssmc.log\",\nUpdate: set the value for \"fileName\" property to \"${logpath}/ssmc.log\", if different, using vi editor.\n\nb. File name for LocalAuditRollingFile Appender:\n\nLocate the line to update with the following command: $ grep -n \"\\\"name\\\" : \\\"LocalAuditRollingFile\\\"\" -A13 /opt/hpe/ssmc/ssmcbase/resources/log4j2.json | grep \"fileName\"\n51-        \"fileName\" : \"${logpath}/audit.log\",\nUpdate: set the value for \"fileName\" property to \"${logpath}/audit.log\", if different, using vi editor.",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Writing events to a centralized management audit system offers many benefits to the enterprise over having dispersed logs. Centralized management of audit records and logs provides for efficiency in maintenance and management of records, enterprise analysis of events, and backup and archiving of event records enterprise-wide. The web server and related components are required to be capable of writing logs to centralized audit log servers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SSMC-WS-030000",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0",
+      "name": "HPE 3PAR SSMC Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0"
+  ]
+}

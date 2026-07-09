@@ -1,0 +1,54 @@
+{
+  "id": "SV-281304r1167062_rule",
+  "full_rule_id": "SV-281304r1167062_rule",
+  "rule_id": "SV-281304",
+  "rule_revision": "1167062",
+  "group_id": "V-281304",
+  "group_title": "SRG-OS-000433-GPOS-00193",
+  "title": "RHEL 10 must enable mitigations against processor-based vulnerabilities.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Kernel page-table isolation is a kernel feature that mitigates the Meltdown security vulnerability and hardens the kernel against attempts to bypass kernel address space layout randomization (KASLR).\n\nSatisfies: SRG-OS-000433-GPOS-00193, SRG-OS-000095-GPOS-00049</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 enables kernel page-table isolation with the following command:\n\n$ sudo grubby --info=ALL | grep args | grep -v 'pti=on'\n\nIf any output is returned, this is a finding.\n\nCheck that kernel page-table isolation is enabled by default to persist in kernel updates:\n\n$ sudo grep pti /etc/default/grub\nGRUB_CMDLINE_LINUX=\"pti=on\"\n\nIf \"pti\" is not set to \"on\", is missing, or is commented out, this is a finding.",
+  "fix": "Configure RHEL 10 to enable kernel page-table isolation with the following command:\n\n$ sudo grubby --update-kernel=ALL --args=\"pti=on\"",
+  "ccis": [
+    "CCI-002824",
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Kernel page-table isolation is a kernel feature that mitigates the Meltdown security vulnerability and hardens the kernel against attempts to bypass kernel address space layout randomization (KASLR).\n\nSatisfies: SRG-OS-000433-GPOS-00193, SRG-OS-000095-GPOS-00049",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-701020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

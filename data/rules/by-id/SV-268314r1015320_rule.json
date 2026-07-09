@@ -1,0 +1,53 @@
+{
+  "id": "SV-268314r1015320_rule",
+  "full_rule_id": "SV-268314r1015320_rule",
+  "rule_id": "SV-268314",
+  "rule_revision": "1015320",
+  "group_id": "V-268314",
+  "group_title": "SRG-NET-000345-VPN-002430",
+  "title": "The Cisco ASA must be configured to not accept certificates that have been revoked when using PKI for authentication.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Situations may arise in which the certificate issued by a Certificate Authority (CA) may need to be revoked before the lifetime of the certificate expires. For example, the certificate is known to have been compromised.\n\nWhen an incoming Internet Key Exchange (IKE) session is initiated for a remote client or peer whose certificate is revoked, the revocation list configured for use by the VPN server is checked to see if the certificate is valid; if the certificate is revoked, IKE will fail and an IPsec security association will not be established for the remote endpoint.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If PKI certificates are not implemented on the ASA, this requirement is not applicable.\n\nVerify the ASA does not accept certificates that have been revoked.\n\nRevocation checking using CRL example:\n\ncrypto ca trustpoint CA_X\n revocation-check crl\n\nNote: By default, the ASA will use the distribution points listed in CDP extension of the certificate that is being validated. \n\nRevocation checking using OCSP example:\n\ncrypto ca trustpoint CA_X\n revocation-check ocsp\n\nNote: By default, the ASA will use the OSCP responder address found in the Authority Information Access (AIA) field of the client's certificate. Deployment with CAC would be an exception.\n\nIf the ASA accepts certificates that have been revoked, this is a finding.",
+  "fix": "Configure the ASA to not accept certificates that have been revoked.\n\nRevocation checking using CRL example:\n\nASA1(config)# crypto ca trustpoint CA_X\nASA1(config-ca-trustpoint)# revocation-check crl\nASA1(config-ca-crl)# end\n\nRevocation checking using OCSP example:\n\nASA1(config)# crypto ca trustpoint CA_X\nASA1(config-ca-trustpoint)# revocation-check ocsp\nASA1(config-ca-crl)# end",
+  "ccis": [
+    "CCI-004068"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Situations may arise in which the certificate issued by a Certificate Authority (CA) may need to be revoked before the lifetime of the certificate expires. For example, the certificate is known to have been compromised.\n\nWhen an incoming Internet Key Exchange (IKE) session is initiated for a remote client or peer whose certificate is revoked, the revocation list configured for use by the VPN server is checked to see if the certificate is valid; if the certificate is revoked, IKE will fail and an IPsec security association will not be established for the remote endpoint.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

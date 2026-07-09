@@ -1,0 +1,53 @@
+{
+  "id": "SV-248807r991557_rule",
+  "full_rule_id": "SV-248807r991557_rule",
+  "rule_id": "SV-248807",
+  "rule_revision": "991557",
+  "group_id": "V-248807",
+  "group_title": "SRG-OS-000256-GPOS-00097",
+  "title": "OL 8 audit tools must have a mode of \"0755\" or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting audit information includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information. \n \nOL 8 systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools, and the corresponding user rights, to make access decisions regarding the access to audit tools. \n \nAudit tools include but are not limited to vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the audit tools are protected from unauthorized access, deletion, or modification by checking the permissive mode. \n \nCheck the octal permission of each audit tool by running the following command: \n \n$ sudo stat -c \"%a %n\" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/rsyslogd /sbin/augenrules \n \n755 /sbin/auditctl \n755 /sbin/aureport \n755 /sbin/ausearch \n750 /sbin/autrace \n755 /sbin/auditd \n755 /sbin/rsyslogd \n755 /sbin/augenrules \n \nIf any of the audit tools has a mode more permissive than \"0755\", this is a finding.",
+  "fix": "Configure the audit tools to be protected from unauthorized access by setting the correct permissive mode using the following command: \n \n$ sudo chmod 0755 [audit_tool] \n \nReplace \"[audit_tool]\" with the audit tool that does not have the correct permissive mode.",
+  "ccis": [
+    "CCI-001493"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting audit information includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information. \n \nOL 8 systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools, and the corresponding user rights, to make access decisions regarding the access to audit tools. \n \nAudit tools include but are not limited to vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL08-00-030620",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96",
+      "name": "Oracle Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96"
+  ]
+}

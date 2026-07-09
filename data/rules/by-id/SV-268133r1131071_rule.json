@@ -1,0 +1,53 @@
+{
+  "id": "SV-268133r1131071_rule",
+  "full_rule_id": "SV-268133r1131071_rule",
+  "rule_id": "SV-268133",
+  "rule_revision": "1131071",
+  "group_id": "V-268133",
+  "group_title": "SRG-OS-000076-GPOS-00044",
+  "title": "NixOS must enforce a 60-day maximum password lifetime restriction.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any password, no matter how complex, can eventually be cracked. Therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS enforces a 60-day maximum password lifetime for new user accounts by running the following command:\n\n$ grep PASS_MAX_DAYS /etc/login.defs\n\nPASS_MAX_DAYS 60\n\nIf the \"PASS_MAX_DAYS\" parameter value is less than 60 or commented out, this is a finding.",
+  "fix": "Configure NixOS operating system to enforce a 60-day maximum password lifetime.\n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\nsecurity.loginDefs.settings.PASS_MAX_DAYS = \"60\";\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any password, no matter how complex, can eventually be cracked. Therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

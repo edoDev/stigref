@@ -1,0 +1,53 @@
+{
+  "id": "SV-268113r1039227_rule",
+  "full_rule_id": "SV-268113r1039227_rule",
+  "rule_id": "SV-268113",
+  "rule_revision": "1039227",
+  "group_id": "V-268113",
+  "group_title": "SRG-OS-000057-GPOS-00027",
+  "title": "NixOS audit log directory must have a mode of 0700 or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.\n\nAudit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit NixOS system activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the audit log directory has a mode of \"0700\" or less permissive.\n\nFirst, determine where the audit logs are stored with the following command:\n\n$ sudo grep log_file /etc/audit/auditd.conf\nlog_file = /var/log/audit/audit.log\n\nUsing the path of the directory containing the audit logs, check if the audit log directory has a mode of \"0700\" or less by using the following command:\n\n$ sudo find /var/log/audit -type d -exec stat -c \"%a %n\" {} \\;\n700 /var/log/audit\n\nIf the audit log directory (or any subfolders) has a mode more permissive than \"0700\", this is a finding.",
+  "fix": "Configure the audit log directory to have a mode of \"0700\" or less permissive.\n\nUsing the path of the directory containing the audit logs, configure the audit log directory to have a mode of \"0700\" or less permissive by using the following command:\n\n$ sudo chmod 0700 /var/log/audit",
+  "ccis": [
+    "CCI-000162"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.\n\nAudit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit NixOS system activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000550",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

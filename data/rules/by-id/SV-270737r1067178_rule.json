@@ -1,0 +1,54 @@
+{
+  "id": "SV-270737r1067178_rule",
+  "full_rule_id": "SV-270737r1067178_rule",
+  "rule_id": "SV-270737",
+  "rule_revision": "1067178",
+  "group_id": "V-270737",
+  "group_title": "SRG-OS-000066-GPOS-00034",
+  "title": "Ubuntu 24.04 LTS, for PKI-based authentication, Privileged Access Management (PAM) must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without path validation, an informed trust decision by the relying party cannot be made when presented with any certificate not already explicitly trusted. \n \nA trust anchor is an authoritative entity represented via a public key and associated data. It is used in the context of public key infrastructures, X.509 digital certificates, and DNSSEC. \n \nWhen there is a chain of trust, usually the top entity to be trusted becomes the trust anchor; it can be, for example, a certification authority (CA). A certification path starts with the subject certificate and proceeds through a number of intermediate certificates up to a trusted root certificate, typically issued by a trusted CA. \n \nThis requirement verifies that a certification path to an accepted trust anchor is used for certificate validation and that the path includes status information. Path validation is necessary for a relying party to make an informed trust decision when presented with any certificate not already explicitly trusted. Status information for certification paths includes certificate revocation lists or online certificate status protocol responses. Validation of the certificate status information is out of scope for this requirement.\n\nSatisfies: SRG-OS-000066-GPOS-00034, SRG-OS-000775-GPOS-00230</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu 24.04 LTS, for PKI-based authentication, has valid certificates by constructing a certification path to an accepted trust anchor. \n \nDetermine which pkcs11 module is being used via the \"use_pkcs11_module\" in \"/etc/pam_pkcs11/pam_pkcs11.conf\" and then ensure \"ca\" is enabled in \"cert_policy\" with the following command: \n  \n$ sudo grep use_pkcs11_module /etc/pam_pkcs11/pam_pkcs11.conf | awk '/pkcs11_module opensc {/,/}/' /etc/pam_pkcs11/pam_pkcs11.conf | grep cert_policy | grep ca  \n \ncert_policy = ca,signature,ocsp_on; \n \nIf \"cert_policy\" is not set to \"ca\" or the line is commented out, this is a finding.",
+  "fix": "Configure Ubuntu 24.04 LTS, for PKI-based authentication, to validate certificates by constructing a certification path to an accepted trust anchor. \n \nDetermine which pkcs11 module is being used via the \"use_pkcs11_module\" in \"/etc/pam_pkcs11/pam_pkcs11.conf\" and ensure \"ca\" is enabled in \"cert_policy\". \n \nAdd or update the \"cert_policy\" to ensure \"ca\" is enabled: \n \ncert_policy = ca,signature,ocsp_on; \n \nIf the system is missing an \"/etc/pam_pkcs11/\" directory and an \"/etc/pam_pkcs11/pam_pkcs11.conf\", find an example to copy into place and modify accordingly at \"https://manpages.ubuntu.com/manpages/xenial/man8/pam_pkcs11.8.html\".",
+  "ccis": [
+    "CCI-000185",
+    "CCI-004909"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without path validation, an informed trust decision by the relying party cannot be made when presented with any certificate not already explicitly trusted. \n \nA trust anchor is an authoritative entity represented via a public key and associated data. It is used in the context of public key infrastructures, X.509 digital certificates, and DNSSEC. \n \nWhen there is a chain of trust, usually the top entity to be trusted becomes the trust anchor; it can be, for example, a certification authority (CA). A certification path starts with the subject certificate and proceeds through a number of intermediate certificates up to a trusted root certificate, typically issued by a trusted CA. \n \nThis requirement verifies that a certification path to an accepted trust anchor is used for certificate validation and that the path includes status information. Path validation is necessary for a relying party to make an informed trust decision when presented with any certificate not already explicitly trusted. Status information for certification paths includes certificate revocation lists or online certificate status protocol responses. Validation of the certificate status information is out of scope for this requirement.\n\nSatisfies: SRG-OS-000066-GPOS-00034, SRG-OS-000775-GPOS-00230",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-400375",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

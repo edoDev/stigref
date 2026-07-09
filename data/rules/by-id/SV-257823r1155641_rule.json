@@ -1,0 +1,53 @@
+{
+  "id": "SV-257823r1155641_rule",
+  "full_rule_id": "SV-257823r1155641_rule",
+  "rule_id": "SV-257823",
+  "rule_revision": "1155641",
+  "group_id": "V-257823",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "RHEL 9 must be configured so that the cryptographic hashes of system files match vendor values.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The hashes of important files such as system executables should match the information given by the RPM database. Executables with erroneous hashes could be a sign of nefarious activity on the system.\nIf the Check Text command returns results from third-party software vendors, it is an indication that the vendor is not implementing their rpm packages correctly and this must be corrected by the software vendor.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 9 is configured so that the cryptographic hashes of system files match vendor values.\n \nList files on the system that have file hashes different from what is expected by the RPM database with the following command:\n\n$ sudo rpm -Va --noconfig | awk '$1 ~ /..5/ && $2 != \"c\"' \n\nIf there is output, this is a finding.",
+  "fix": "Configure RHEL 9 so that the cryptographic hashes of system files match vendor values.\n\nGiven output from the check command, identify the package that provides the output and reinstall it. The following trimmed example output shows a package that has failed verification, been identified, and been reinstalled:\n\n$ sudo rpm -Va --noconfig | awk '$1 ~ /..5/ && $2 != \"c\"'\nS.5....T.    /usr/bin/znew\n\n$ sudo dnf provides /usr/bin/znew\n[...]\ngzip-1.10-8.el9.x86_64 : The GNU data compression program\n[...]\n\n$ sudo dnf -y reinstall gzip\n[...]\n\n$ sudo rpm -Va --noconfig | awk '$1 ~ /..5/ && $2 != \"c\"'\n[no output]",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The hashes of important files such as system executables should match the information given by the RPM database. Executables with erroneous hashes could be a sign of nefarious activity on the system.\nIf the Check Text command returns results from third-party software vendors, it is an indication that the vendor is not implementing their rpm packages correctly and this must be corrected by the software vendor.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-214030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

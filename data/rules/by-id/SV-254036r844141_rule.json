@@ -1,0 +1,53 @@
+{
+  "id": "SV-254036r844141_rule",
+  "full_rule_id": "SV-254036r844141_rule",
+  "rule_id": "SV-254036",
+  "rule_revision": "844141",
+  "group_id": "V-254036",
+  "group_title": "SRG-NET-000362-RTR-000115",
+  "title": "The Juniper router must be configured to have Internet Control Message Protocol (ICMP) redirects disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Redirect ICMP messages are commonly used by attackers for network mapping and diagnosis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the device configuration to determine if controls have been defined to ensure the router does not send ICMP Redirect messages out to any external interfaces.\n\nVerify the global \"no-redirects\" statement is enabled under [edit system] or that individual interface \"no-redirects\" statements are configured on external interfaces.\n[edit system]\nno-redirects;\n[edit interfaces]\n<external interface name> {\n    unit <number> {\n        family inet {\n            no-redirects;\n            address <IPv4 address>.<mask>;\n        }\n        family inet6 {\n            no-redirects;\n            address <IPv6 address>.<prefix>;\n        }\n    }\n}\n\nIf ICMP Redirect messages are enabled on any external interfaces, this is a finding.",
+  "fix": "Disable ICMP redirects on all external interfaces.\n\nset system no-redirects\n\nset interfaces <external interface name> unit <number> family inet no-redirects\nset interfaces <external interface name> unit <number> family inet6 no-redirects",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Redirect ICMP messages are commonly used by attackers for network mapping and diagnosis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000640",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

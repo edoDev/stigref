@@ -1,0 +1,53 @@
+{
+  "id": "SV-216667r1117237_rule",
+  "full_rule_id": "SV-216667r1117237_rule",
+  "rule_id": "SV-216667",
+  "rule_revision": "1117237",
+  "group_id": "V-216667",
+  "group_title": "SRG-NET-000019-RTR-000009",
+  "title": "The Cisco perimeter router must be configured to not be a Border Gateway Protocol (BGP) peer to an alternate gateway service provider.",
+  "severity": "high",
+  "description": "<VulnDiscussion>ISPs use BGP to share route information with other autonomous systems (i.e. other ISPs and corporate networks). If the perimeter router was configured to BGP peer with an ISP, NIPRnet routes could be advertised to the ISP, thereby creating a backdoor connection from the Internet to the NIPRnet.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration and verify that it is not BGP peering with an alternate gateway service provider.\n\nStep 1: Determine the ip address of the ISP router. \n\ninterface GigabitEthernet0/2\n description Link to ISP\n ip address x.22.1.15 255.255.255.240\n\nStep 2: Verify that the router is not BGP peering with this router.\n\nrouter bgp nn\n no synchronization\n bgp log-neighbor-changes\n neighbor x.11.1.7 remote-as nn\n neighbor x.11.1.7 password xxxxxxx\n no auto-summary\n\nIn the example above, the router is not peering with the ISP.\n\nIf the router is BGP peering with an alternate gateway service provider, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nRemove any BGP neighbors belonging to the alternate gateway service provider and configure a static route to forward Internet bound traffic to the alternate gateway as shown in the example below:\n\nR5(config)#ip route 0.0.0.0 0.0.0.0 x.22.1.14",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ISPs use BGP to share route information with other autonomous systems (i.e. other ISPs and corporate networks). If the perimeter router was configured to BGP peer with an ISP, NIPRnet routes could be advertised to the ISP, thereby creating a backdoor connection from the Internet to the NIPRnet.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000290",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b",
+      "name": "Cisco IOS XE Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b"
+  ]
+}

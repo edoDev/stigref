@@ -1,0 +1,54 @@
+{
+  "id": "SV-256023r991786_rule",
+  "full_rule_id": "SV-256023r991786_rule",
+  "rule_id": "SV-256023",
+  "rule_revision": "991786",
+  "group_id": "V-256023",
+  "group_title": "SRG-NET-000205-RTR-000010",
+  "title": "The out-of-band management (OOBM) Arista gateway router must be configured to forward only authorized management traffic to the Network Operations Center (NOC).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The OOBM network is an IP network used exclusively for the transport of OAM&P data from the network being managed to the OSS components located at the NOC. Its design provides connectivity to each managed network device, enabling network management traffic to flow between the managed network elements and the NOC. This allows the use of paths separate from those used by the managed network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nReview the network topology diagram to determine connectivity between the managed network and the NOC.\n\nReview the OOBM gateway router configuration to validate the path that the management traffic traverses.\n\nStep 1: To verify only management traffic is forwarded through the OOBM interface or IPsec tunnel, execute the command \"sh ip access-list\".\n\nip access-list OOBM_to_MGMT\n   10 permit tcp 10.10.10.0/24 host 10.20.10.1 eq ssh telnet\n   20 permit ip 10.10.10.0/24 192.168.10.0/24 \n   30 permit udp 10.20.20.0/24 any eq bootps snmp\n\nStep 2: To verify the ACL is applied outbound on the OOBM interface, execute the command \"sh run int Eth YY\".\n\ninterface ethernet 1\n  description OOBM to MGMT link\n  ip access-group OOBM_to_MGMT out\n\nIf traffic other than authorized management traffic is permitted through the OOBM interface or IPsec tunnel, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure filters based on port, source IP address, and destination IP address to permit only authorized management traffic into IPsec tunnels or the OOBM interface used for forwarding management data.\n\nStep 1: To configure an ACL to allow only management traffic to be forwarded through the OOBM interface or IPsec tunnel, execute the command \"sh ip access-list\".\n\nip access-list OOBM_to_MGMT\n   10 permit tcp 10.10.10.0/24 host 10.20.10.1 eq ssh\n   20 permit ip 10.10.10.0/24 192.168.10.0/24 \n   30 permit udp 10.20.20.0/24 any eq bootps snmp\n\nStep 2: To apply the ACL outbound on the OOBM interface, execute the command \"sh run int Eth YY\".\n\ninterface ethernet 1\n  description OOBM to MGMT link\n  ip access-group OOBM_to_MGMT out",
+  "ccis": [
+    "CCI-001097",
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The OOBM network is an IP network used exclusively for the transport of OAM&P data from the network being managed to the OSS components located at the NOC. Its design provides connectivity to each managed network device, enabling network management traffic to flow between the managed network elements and the NOC. This allows the use of paths separate from those used by the managed network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000420",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

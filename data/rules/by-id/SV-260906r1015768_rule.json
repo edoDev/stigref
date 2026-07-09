@@ -1,0 +1,60 @@
+{
+  "id": "SV-260906r1015768_rule",
+  "full_rule_id": "SV-260906r1015768_rule",
+  "rule_id": "SV-260906",
+  "rule_revision": "1015768",
+  "group_id": "V-260906",
+  "group_title": "SRG-APP-000033-CTR-000095",
+  "title": "Least privilege access and need to know must be required to access MKE runtime and instantiate container images.",
+  "severity": "high",
+  "description": "<VulnDiscussion>To control what is instantiated within MKE, it is important to control access to the runtime. Without this control, container platform specific services and customer services can be introduced without receiving approval and going through proper testing. Only those individuals and roles approved by the organization can have access to the container platform runtime.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Access to use the docker CLI must be limited to root only.\n\n1. Log on to the host CLI and execute the following:\n\nstat -c %U:%G /var/run/docker.sock | grep -v root:docker\n\nIf any output is present, this is a finding.\n\n2. Verify that the docker group has only the required users by executing:\n\ngetent group docker\n\nIf any users listed are not required to have direct access to MCR, this is a finding.\n\n3. Execute the following command to verify the Docker socket file has permissions of 660 or more restrictive:\n stat -c %a /var/run/docker.sock\n\nIf permissions are not set to \"660\", this is a finding.",
+  "fix": "To remove unauthorized users from the docker group, access the host CLI and run:\n\ngpasswd -d docker [username to remove]\n\nTo ensure that docker.socket is group owned, execute the following:\n\nchown root:docker /var/run/docker.sock\n\nSet the file permissions of the Docker socket file to \"660\" execute the following:\n\nchmod 660 /var/run/docker.sock",
+  "ccis": [
+    "CCI-000213",
+    "CCI-001499",
+    "CCI-001094",
+    "CCI-003980",
+    "CCI-001813",
+    "CCI-001764",
+    "CCI-002385",
+    "CCI-001812"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To control what is instantiated within MKE, it is important to control access to the runtime. Without this control, container platform specific services and customer services can be introduced without receiving approval and going through proper testing. Only those individuals and roles approved by the organization can have access to the container platform runtime.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

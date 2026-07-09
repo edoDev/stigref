@@ -1,0 +1,53 @@
+{
+  "id": "SV-252947r958398_rule",
+  "full_rule_id": "SV-252947r958398_rule",
+  "rule_id": "SV-252947",
+  "rule_revision": "958398",
+  "group_id": "V-252947",
+  "group_title": "SRG-OS-000027-GPOS-00008",
+  "title": "TOSS must limit the number of concurrent sessions to 256 for all accounts and/or account types.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Operating system management includes the ability to control the number of users and user sessions that utilize an operating system. Limiting the number of allowed users and sessions per user is helpful in reducing the risks related to Denial of Service (DoS) attacks.\n\nTOSS as an HPC operating system, is capable of supporting a large number of sessions, as well as tools which presume a larger number of concurrent sessions will be allowed.\n\nThis requirement addresses concurrent sessions for information system accounts and does not address concurrent sessions by single users via multiple system accounts. The maximum number of concurrent sessions should be defined based upon mission needs and the operational environment for each system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify TOSS limits the number of concurrent sessions to less than or equal to 256 for all accounts and/or account types by issuing the following command:\n\n$ sudo grep -r -s '^[^#].*maxlogins' /etc/security/limits.conf /etc/security/limits.d/*.conf\n* hard maxlogins 256\n\nThis can be set as a global domain (with the * wildcard) but may be set differently for multiple domains.\n\nIf the \"maxlogins\" item is missing, commented out, or the value is set greater than \"256\" and is not documented with the Information System Security Officer (ISSO) as an operational requirement for all domains that have the \"maxlogins\" item assigned, this is a finding.",
+  "fix": "Configure TOSS to limit the number of concurrent sessions to at most 256 for all accounts and/or account types.\n\nAdd the following line to the top of the /etc/security/limits.conf or in a .\"conf\" file defined in /etc/security/limits.d/:\n\n* hard maxlogins 256",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Operating system management includes the ability to control the number of users and user sessions that utilize an operating system. Limiting the number of allowed users and sessions per user is helpful in reducing the risks related to Denial of Service (DoS) attacks.\n\nTOSS as an HPC operating system, is capable of supporting a large number of sessions, as well as tools which presume a larger number of concurrent sessions will be allowed.\n\nThis requirement addresses concurrent sessions for information system accounts and does not address concurrent sessions by single users via multiple system accounts. The maximum number of concurrent sessions should be defined based upon mission needs and the operational environment for each system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-020010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

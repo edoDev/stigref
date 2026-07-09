@@ -1,0 +1,53 @@
+{
+  "id": "SV-213527r960972_rule",
+  "full_rule_id": "SV-213527r960972_rule",
+  "rule_id": "SV-213527",
+  "rule_revision": "960972",
+  "group_id": "V-213527",
+  "group_title": "SRG-APP-000149-AS-000102",
+  "title": "The JBoss Server must be configured to use certificates to authenticate admins.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Multifactor authentication creates a layered defense and makes it more difficult for an unauthorized person to access the application server.  If one factor is compromised or broken, the attacker still has at least one more barrier to breach before successfully breaking into the target.  Unlike a simple username/password scenario where the attacker could gain access by knowing both the username and password without the user knowing his account was compromised, multifactor authentication adds the requirement that the attacker must have something from the user, such as a token, or to biometrically be the user.\n\nMultifactor authentication is defined as: using two or more factors to achieve authentication.\n\nFactors include: \n(i) something a user knows (e.g., password/PIN); \n(ii) something a user has (e.g., cryptographic identification device, token); or \n(iii) something a user is (e.g., biometric). A CAC or PKI Hardware Token meets this definition.\n\nA privileged account is defined as an information system account with authorizations of a privileged user.  These accounts would be capable of accessing the web management interface.\n\nWhen accessing the application server via a network connection, administrative access to the application server must be PKI Hardware Token enabled or a DoD-approved soft certificate.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log on to the OS of the JBoss server with OS permissions that allow access to JBoss.\nUsing the relevant OS commands and syntax, cd to the <JBOSS_HOME>/bin/ folder.\nRun the jboss-cli script.\nConnect to the server and authenticate.\n\nFollow these steps:\n1. Identify the security realm assigned to the management interfaces by using the following command:\n\nFor standalone systems:\n\"ls  /core-service=management/management-interface=<INTERFACE-NAME>\"\n\nFor managed domain systems:\n\"ls  /host=master/core-service=management/management-interface=<INTERFACE-NAME>\"\n\nDocument the name of the security-realm associated with each management interface.\n\n2. Review the security realm using the command:\n\nFor standalone systems:\n\"ls /core-service=management/security-realm=<SECURITY_REALM_NAME>/authentication\"\n\nFor managed domains:\n\"ls /host=master/core-service=management/security-realm=<SECURITY_REALM_NAME>/authentication\"\n\nIf the command in step 2 does not return a security realm that uses certificates for authentication, this is a finding.",
+  "fix": "Configure the application server to authenticate privileged users via multifactor/certificate-based authentication mechanisms when using network access to the management interface.",
+  "ccis": [
+    "CCI-000765"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Multifactor authentication creates a layered defense and makes it more difficult for an unauthorized person to access the application server.  If one factor is compromised or broken, the attacker still has at least one more barrier to breach before successfully breaking into the target.  Unlike a simple username/password scenario where the attacker could gain access by knowing both the username and password without the user knowing his account was compromised, multifactor authentication adds the requirement that the attacker must have something from the user, such as a token, or to biometrically be the user.\n\nMultifactor authentication is defined as: using two or more factors to achieve authentication.\n\nFactors include: \n(i) something a user knows (e.g., password/PIN); \n(ii) something a user has (e.g., cryptographic identification device, token); or \n(iii) something a user is (e.g., biometric). A CAC or PKI Hardware Token meets this definition.\n\nA privileged account is defined as an information system account with authorizations of a privileged user.  These accounts would be capable of accessing the web management interface.\n\nWhen accessing the application server via a network connection, administrative access to the application server must be PKI Hardware Token enabled or a DoD-approved soft certificate.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JBOS-AS-000265",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9",
+      "name": "JBoss Enterprise Application Platform 6.3 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9"
+  ]
+}

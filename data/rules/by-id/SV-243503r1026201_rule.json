@@ -1,0 +1,53 @@
+{
+  "id": "SV-243503r1026201_rule",
+  "full_rule_id": "SV-243503r1026201_rule",
+  "rule_id": "SV-243503",
+  "rule_revision": "1026201",
+  "group_id": "V-243503",
+  "group_title": "SRG-OS-000480",
+  "title": "Anonymous Access to AD forest data above the rootDSE level must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>For Windows Server 2003 or above, the dsHeuristics option can be configured to override the default restriction on anonymous access to AD data above the rootDSE level. Anonymous access to AD data could provide valuable account or configuration information to an intruder trying to determine the most effective attack strategies.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. At the command line prompt enter (on a single line): \ndsquery * \"cn=Directory Service,\ncn=Windows NT,cn=Services,cn=Configuration,dc=[forest-name]\" -scope base -attr * \n\n(Where dc=[forest-name] is the fully qualified LDAP name of the root of the domain being reviewed.)\n\nExample:\nThe following is an example of the dsquery command for the vcfn.ost.com forest.\n\ndsquery * \"cn=Directory Service,cn=Windows  NT,cn=Services,cn=Configuration,  dc=vcfn,dc=ost,dc=com -scope base -attr * \n\n2. If the dsHeuristics attribute is listed, note the assigned value.\n\n3. If the dsHeuristics attribute is defined and has a \"2\" as the 7th character, then this is a finding.\n\nExamples of values that would be a finding as follows:\n \"0000002\", \"0010002\", \"0000002000001\".\n(The 7th character controls anonymous access.)\n\nSupplementary Notes:\nDomain controllers have this option disabled by default. However, this check verifies that the option has not been enabled.\n\nThe dsHeuristics option can be configured with the Windows Support Tools Active Directory Service Interfaces Editor (ADSI Edit) console (adsiedit.msc).",
+  "fix": "Disable anonymous access to AD forest data above the rootDSE level.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "For Windows Server 2003 or above, the dsHeuristics option can be configured to override the default restriction on anonymous access to AD data above the rootDSE level. Anonymous access to AD data could provide valuable account or configuration information to an intruder trying to determine the most effective attack strategies.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AD.0230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "active-directory-forest-security-technical-implementation-guide-v3r2-45633120",
+      "name": "Active Directory Forest Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "active-directory-forest-security-technical-implementation-guide-v3r2-45633120"
+  ]
+}

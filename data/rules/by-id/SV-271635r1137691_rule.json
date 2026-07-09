@@ -1,0 +1,53 @@
+{
+  "id": "SV-271635r1137691_rule",
+  "full_rule_id": "SV-271635r1137691_rule",
+  "rule_id": "SV-271635",
+  "rule_revision": "1137691",
+  "group_id": "V-271635",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "OL 9 must require a boot loader superuser password.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nPassword protection on the boot loader configuration ensures users with physical access cannot trivially alter important bootloader settings. These include which kernel to use, and whether to enter single-user mode.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 requires a boot loader superuser password with the following command:\n\n$ sudo grep \"superusers\" /etc/grub2.cfg \npassword_pbkdf2  superusers-account   ${GRUB2_PASSWORD}  \n\nTo verify the boot loader superuser account password has been set, and the password encrypted, run the following command:\n\n$ sudo cat /boot/grub2/user.cfg \nGRUB2_PASSWORD=grub.pbkdf2.sha512.10000.C4E08AC72FBFF7E837FD267BFAD7AEB3D42DDC\n2C99F2A94DD5E2E75C2DC331B719FE55D9411745F82D1B6CFD9E927D61925F9BBDD1CFAA0080E0\n916F7AB46E0D.1302284FCCC52CD73BA3671C6C12C26FF50BA873293B24EE2A96EE3B57963E6D7\n0C83964B473EC8F93B07FE749AA6710269E904A9B08A6BBACB00A2D242AD828 \n\nIf a \"GRUB2_PASSWORD\" is not set, this is a finding.",
+  "fix": "Configure OL 9 to require a grub bootloader password for the grub superuser account.\n\nGenerate an encrypted grub2 password for the grub superuser account with the following command:\n\n$ sudo grub2-setpassword\nEnter password:\nConfirm password:",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nPassword protection on the boot loader configuration ensures users with physical access cannot trivially alter important bootloader settings. These include which kernel to use, and whether to enter single-user mode.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-001115",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

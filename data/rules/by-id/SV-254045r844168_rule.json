@@ -1,0 +1,53 @@
+{
+  "id": "SV-254045r844168_rule",
+  "full_rule_id": "SV-254045r844168_rule",
+  "rule_id": "SV-254045",
+  "rule_revision": "844168",
+  "group_id": "V-254045",
+  "group_title": "SRG-NET-000364-RTR-000109",
+  "title": "The Juniper perimeter router must be configured to only allow incoming communications from authorized sources to be routed to authorized destinations.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unrestricted traffic may contain malicious traffic that poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nTraffic can be restricted directly by stateless firewall filter, or filter based forwarding. Filter based forwarding is a technique used to make routing decisions based on a number of different criteria other than just the destination network, including source or destination network, source or destination address, source or destination port, protocol, packet size, and packet classification. This overrides the router's normal routing procedures used to control the specific paths of network traffic. It is normally used for traffic engineering but can also be used to meet security requirements; for example, traffic that is not allowed can be routed to the discard interface. Filter based forwarding can also be used to control which prefixes appear in the routing table.\n\nThis requirement is intended to allow network administrators the flexibility to use whatever technique is most effective.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to determine if the router allows only incoming communications from authorized sources to be routed to authorized destinations.\n\n[edit policy-options]\nprefix-list inside-addresses-ipv4 {\n    192.0.2.0/25;\n    192.0.2.130/32;\n}\nprefix-list inside-addresses-ipv6 {\n    2001:db8:1::/64;\n    2001:db8:a1::/64;\n}\n\n[edit firewall]\nfamily inet {\n    filter authorized-outbound-ipv4 {\n        <additional terms>\n        term permitted-source-addresses {\n            from {\n                source-prefix-list {\n                    inside-addresses-ipv4;\n                }\n            }\n            then accept;\n        }\n        term default-deny {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n    filter authorized-inbound-ipv4 {\n        <additional terms>\n        term permitted-destination-addresses {\n            from {\n                destination-prefix-list {\n                    inside-addresses-ipv4;\n                }\n            }\n            then accept;\n        }\n        term default-deny {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\nfamily inet6 {\n    filter authorized-outbound-ipv6 {\n        <additional terms>\n        term permitted-source-addresses {\n            from {\n                source-prefix-list {\n                    inside-addresses-ipv6;\n                }\n            }\n            then accept;\n        }\n        term default-deny {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n    filter authorized-inbound-ipv6 {\n        <additional terms>\n        term permitted-destination-addresses {\n            from {\n                destination-prefix-list {\n                    inside-addresses-ipv6;\n                }\n            }\n            then accept;\n        }\n        term default-deny {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\n\nNote: The same firewall filtering process can be configured to control traffic destined to the router, or between internal subnets.\n\nVerify the firewall filters are applied to the correct interface in the appropriate direction.\n[edit interfaces]\n<external interface> {\n    unit <number> {\n        family inet {\n            filter {\n                input authorized-inbound-ipv4;\n            }\n            address <IPv4 address>.<mask>;\n        }\n        family inet6 {\n            filter {\n                input authorized-inbound-ipv6;\n            }\n            address <IPv6 address>.<prefix>;\n        }\n    }\n}\n<internal interface> {\n    unit <number> {\n        family inet {\n            filter {\n                input authorized-outbound-ipv4;\n            }\n            address <IPv4 address>.<mask>;\n        }\n        family inet6 {\n            filter {\n                input authorized-outbound-ipv6;\n            }\n            address <IPv6 address>.<prefix>;\n        }\n    }\n}\n\nIf the router does not restrict incoming communications to allow only authorized sources and destinations, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the router to allow only incoming communications from authorized sources to be routed to authorized destinations.\n\nset policy-options prefix-list inside-addresses-ipv4 192.0.2.0/25\nset policy-options prefix-list inside-addresses-ipv4 192.0.2.130/32\nset policy-options prefix-list inside-addresses-ipv6 2001:db8:1::/64\nset policy-options prefix-list inside-addresses-ipv6 2001:db8:a1::/64\n\nset firewall family inet filter authorized-outbound-ipv4 <additional terms>\nset firewall family inet filter authorized-outbound-ipv4 term permitted-source-addresses from source-prefix-list inside-addresses-ipv4\nset firewall family inet filter authorized-outbound-ipv4 term permitted-source-addresses then accept\nset firewall family inet filter authorized-outbound-ipv4 term default-deny then log\nset firewall family inet filter authorized-outbound-ipv4 term default-deny then syslog\nset firewall family inet filter authorized-outbound-ipv4 term default-deny then discard\n\nset firewall family inet filter authorized-inbound-ipv4 <additional terms>\nset firewall family inet filter authorized-inbound-ipv4 term permitted-destination-addresses from destination-prefix-list inside-addresses-ipv4\nset firewall family inet filter authorized-inbound-ipv4 term permitted-destination-addresses then accept\nset firewall family inet filter authorized-inbound-ipv4 term default-deny then log\nset firewall family inet filter authorized-inbound-ipv4 term default-deny then syslog\nset firewall family inet filter authorized-inbound-ipv4 term default-deny then discard\n\nset firewall family inet6 filter authorized-outbound-ipv6 <additional terms>\nset firewall family inet6 filter authorized-outbound-ipv6 term permitted-source-addresses from source-prefix-list inside-addresses-ipv6\nset firewall family inet6 filter authorized-outbound-ipv6 term permitted-source-addresses then accept\nset firewall family inet6 filter authorized-outbound-ipv6 term default-deny then log\nset firewall family inet6 filter authorized-outbound-ipv6 term default-deny then syslog\nset firewall family inet6 filter authorized-outbound-ipv6 term default-deny then discard\n\nset firewall family inet6 filter authorized-inbound-ipv6 <additional terms>\nset firewall family inet6 filter authorized-inbound-ipv6 term permitted-destination-addresses from destination-prefix-list inside-addresses-ipv6\nset firewall family inet6 filter authorized-inbound-ipv6 term permitted-destination-addresses then accept\nset firewall family inet6 filter authorized-inbound-ipv6 term default-deny then log\nset firewall family inet6 filter authorized-inbound-ipv6 term default-deny then syslog\nset firewall family inet6 filter authorized-inbound-ipv6 term default-deny then discard\n\nset interfaces <external interface> unit <number> family inet filter input authorized-inbound-ipv4\nset interfaces <external interface> unit <number> family inet6 filter input authorized-inbound-ipv6\n\nset interfaces <internal interface> unit <number> family inet filter input authorized-outbound-ipv4\nset interfaces <internal interface> unit <number> family inet6 filter input authorized-outbound-ipv6",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unrestricted traffic may contain malicious traffic that poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nTraffic can be restricted directly by stateless firewall filter, or filter based forwarding. Filter based forwarding is a technique used to make routing decisions based on a number of different criteria other than just the destination network, including source or destination network, source or destination address, source or destination port, protocol, packet size, and packet classification. This overrides the router's normal routing procedures used to control the specific paths of network traffic. It is normally used for traffic engineering but can also be used to meet security requirements; for example, traffic that is not allowed can be routed to the discard interface. Filter based forwarding can also be used to control which prefixes appear in the routing table.\n\nThis requirement is intended to allow network administrators the flexibility to use whatever technique is most effective.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000730",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

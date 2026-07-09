@@ -1,0 +1,53 @@
+{
+  "id": "SV-258844r933593_rule",
+  "full_rule_id": "SV-258844r933593_rule",
+  "rule_id": "SV-258844",
+  "rule_revision": "933593",
+  "group_id": "V-258844",
+  "group_title": "SRG-OS-000341-GPOS-00132",
+  "title": "The Photon operating system must allocate audit record storage capacity to store audit records when audit records are not immediately sent to a central audit record storage facility.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Audit logs are most useful when accessible by date, rather than size. This can be accomplished through a combination of an audit log rotation and setting a reasonable number of logs to keep. This ensures that audit logs are accessible to the ISSO in the event of a central log processing failure.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command to verify auditd is configured to keep a number of audit logs in the event of a central log processing failure:\n\n# grep -E \"^num_logs|^max_log_file_action\" /etc/audit/auditd.conf\n\nExample result:\n\nnum_logs = 5\nmax_log_file_action = ROTATE\n\nIf \"num_logs\" is not configured to \"5\" or greater, this is a finding.\nIf \"max_log_file_action\" is not configured to \"ROTATE\", this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/audit/auditd.conf\n\nEnsure the following lines are present, not duplicated, and not commented:\n\nnum_logs = 5\nmax_log_file_action = ROTATE\n\nAt the command line, run the following command:\n\n# pkill -SIGHUP auditd",
+  "ccis": [
+    "CCI-001849"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Audit logs are most useful when accessible by date, rather than size. This can be accomplished through a combination of an audit log rotation and setting a reasonable number of logs to keep. This ensures that audit logs are accessible to the ISSO in the event of a central log processing failure.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

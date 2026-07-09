@@ -1,0 +1,56 @@
+{
+  "id": "SV-274187r1120715_rule",
+  "full_rule_id": "SV-274187r1120715_rule",
+  "rule_id": "SV-274187",
+  "rule_revision": "1120715",
+  "group_id": "V-274187",
+  "group_title": "SRG-OS-000462-GPOS-00206",
+  "title": "Amazon Linux 2023 audit system must protect logon user identifiers (UIDs) from unauthorized change.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If modification of login UIDs is not prevented, they can be changed by nonprivileged users and make auditing complicated or impossible.\n\nSatisfies: SRG-OS-000462-GPOS-00206, SRG-OS-000475-GPOS-00220, SRG-OS-000057-GPOS-00027, SRG-OS-000058-GPOS-00028, SRG-OS-000059-GPOS-00029</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 is configured so that the audit system prevents unauthorized changes to login UIDs with the following command:\n\n$ sudo grep -i immutable /etc/audit/audit.rules\n--loginuid-immutable\n\nIf the \"--loginuid-immutable\" option is not returned in the \"/etc/audit/audit.rules\", or the line is commented out, this is a finding.",
+  "fix": "Configure Amazon Linux 2023 auditing to prevent modification of login UIDs once they are set by adding the following line to /etc/audit/rules.d/audit.rules:\n\n--loginuid-immutable\n\nTo load the rules to the kernel immediately, use the following command: \n\n$ sudo augenrules --load",
+  "ccis": [
+    "CCI-000172",
+    "CCI-000162",
+    "CCI-000163",
+    "CCI-000164"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If modification of login UIDs is not prevented, they can be changed by nonprivileged users and make auditing complicated or impossible.\n\nSatisfies: SRG-OS-000462-GPOS-00206, SRG-OS-000475-GPOS-00220, SRG-OS-000057-GPOS-00027, SRG-OS-000058-GPOS-00028, SRG-OS-000059-GPOS-00029",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-005000",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

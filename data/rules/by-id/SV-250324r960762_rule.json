@@ -1,0 +1,53 @@
+{
+  "id": "SV-250324r960762_rule",
+  "full_rule_id": "SV-250324r960762_rule",
+  "rule_id": "SV-250324",
+  "rule_revision": "960762",
+  "group_id": "V-250324",
+  "group_title": "SRG-APP-000015-AS-000010",
+  "title": "Security cookies must be set to HTTPOnly.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Web applications use cookies to track users across requests. These cookies, while typically not sensitive in themselves, connect to the existing state on the back-end system. If an intruder were to capture one of these cookies, they could potentially use the cookie to act as the user. Important web traffic should be encrypted using SSL. This includes important cookies.\n\nIn the case of WebSphere Liberty Server, the most important cookies are the LTPA cookie and session cookie; therefore, both should be configured to be only sent over SSL. To set httpOnly on the application server’s cookies, the security feature (appSecurity-2.0) must be defined in order to configure a user registry for the servlet to authenticate against. The servlet (servlet-3.1) feature must be defined in order to deploy web applications, the ssl (ssl-1.0) feature must be defined in order to do SSL communications, and the ldap feature (ldapRegistry-3.0) must be defined in order to configure an enterprise-level user registry for authentication of users. \n\nFor the LTPA cookie,  the httpOnlyCookies element must be set to true: \n<webAppSecurity  ssoCookieName=\"LtpaToken2\"  ssoRequiresSSL=\"true\"    httpOnlyCookies=\"true\"   logoutOnHttpSessionExpire=\"true\"/>   \n\nFor the JSESSIONID cookie, the cookieHttpOnly element must be set to true: \n<httpSession    cookieName=\"JSESSIONID\"    cookieSecure=\"true\"    cookieHttpOnly=\"true\"    cookiePath=\"/\"/></VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As a user with local file access to ${server.config.dir}/server.xml, verify appSecurity feature is enabled.\n\n<featureManager><feature>appSecurity-2.0</feature></featureManager>\n\nVerify both web application LTPA and http session cookies are configured for httpOnly.\n\n<webAppSecurity  ssoCookieName=\"LtpaToken2\"  ssoRequiresSSL=\"true\"    httpOnlyCookies=\"true\"   logoutOnHttpSessionExpire=\"true\"/>  \n\n<httpSession    cookieName=\"JSESSIONID\"    cookieSecure=\"true\"    cookieHttpOnly=\"true\"    cookiePath=\"/\"/>\n\nIf the appSecurity feature is not enabled or if the LPTA or Session cookie settings are not set for httpOnly, this is a finding.",
+  "fix": "To ensure security cookies use httpOnly, the ${server.config.dir)/server.xml must be configured as follows: \n\n<featureManager><feature>appSecurity-2.0</feature></featureManager>\n\n <webAppSecurity  ssoCookieName=\"LtpaToken2\"  ssoRequiresSSL=\"true\"    httpOnlyCookies=\"true\"   logoutOnHttpSessionExpire=\"true\"/>  \n\n<httpSession    cookieName=\"JSESSIONID\"    cookieSecure=\"true\"    cookieHttpOnly=\"true\"    cookiePath=\"/\"/>",
+  "ccis": [
+    "CCI-001453"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Web applications use cookies to track users across requests. These cookies, while typically not sensitive in themselves, connect to the existing state on the back-end system. If an intruder were to capture one of these cookies, they could potentially use the cookie to act as the user. Important web traffic should be encrypted using SSL. This includes important cookies.\n\nIn the case of WebSphere Liberty Server, the most important cookies are the LTPA cookie and session cookie; therefore, both should be configured to be only sent over SSL. To set httpOnly on the application server’s cookies, the security feature (appSecurity-2.0) must be defined in order to configure a user registry for the servlet to authenticate against. The servlet (servlet-3.1) feature must be defined in order to deploy web applications, the ssl (ssl-1.0) feature must be defined in order to do SSL communications, and the ldap feature (ldapRegistry-3.0) must be defined in order to configure an enterprise-level user registry for authentication of users. \n\nFor the LTPA cookie,  the httpOnlyCookies element must be set to true: \n<webAppSecurity  ssoCookieName=\"LtpaToken2\"  ssoRequiresSSL=\"true\"    httpOnlyCookies=\"true\"   logoutOnHttpSessionExpire=\"true\"/>   \n\nFor the JSESSIONID cookie, the cookieHttpOnly element must be set to true: \n<httpSession    cookieName=\"JSESSIONID\"    cookieSecure=\"true\"    cookieHttpOnly=\"true\"    cookiePath=\"/\"/>",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IBMW-LS-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6",
+      "name": "IBM WebSphere Liberty Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6"
+  ]
+}

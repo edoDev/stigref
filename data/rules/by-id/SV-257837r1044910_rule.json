@@ -1,0 +1,53 @@
+{
+  "id": "SV-257837r1044910_rule",
+  "full_rule_id": "SV-257837r1044910_rule",
+  "rule_id": "SV-257837",
+  "rule_revision": "1044910",
+  "group_id": "V-257837",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "A graphical display manager must not be installed on RHEL 9 unless approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unnecessary service packages must not be installed to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that a graphical user interface is not installed with the following command:\n\n$ dnf list --installed \"xorg-x11-server-common\"\nError: No matching Packages to list\n\nIf the \"xorg-x11-server-common\" package is installed, and the use of a graphical user interface has not been documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "Document the requirement for a graphical user interface with the ISSO or remove all xorg packages with the following command:\n\nWarning: If you are accessing the system through the graphical user interface, change to the multi-user.target with the following command:\n\n$ sudo systemctl isolate multi-user.target\n\nWarning: Removal of the graphical user interface will immediately render it useless. The following commands must not be run from a virtual terminal emulator in the graphical interface.\n\n$ sudo dnf remove \"xorg*\"\n$ sudo systemctl set-default multi-user.target",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unnecessary service packages must not be installed to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-215070",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

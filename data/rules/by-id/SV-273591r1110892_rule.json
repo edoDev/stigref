@@ -1,0 +1,53 @@
+{
+  "id": "SV-273591r1110892_rule",
+  "full_rule_id": "SV-273591r1110892_rule",
+  "rule_id": "SV-273591",
+  "rule_revision": "1110892",
+  "group_id": "V-273591",
+  "group_title": "SRG-NET-000019-RTR-000014",
+  "title": "The RUCKUS ICX multicast Rendezvous Pointerface (RP) router must be configured to filter Protocol Independent Multicast (PIM) Join messages received from the Designated Router (DR) for any undesirable multicast groups.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check PIM sparse Join/Prune policy configuration for required filters:\n\nICX# show ip pim jp\n\nVrf Instance : default-vrf\n---------------------------\n\n(RP,G) JP policy\n---------\n\n(RP,G) JP policy count: 1\n\nRP-Address           ACL Name                (RP,G) Join Drops   (RP,G) Prune Drops\n10.1.1.1             FILTER_PIM_JOINS                        0                    0\n\n(*,G) and (S,G) JP policy\n---------\n\nACL Name                 (*,G) Join Drops    (*,G) Prune Drops     (S,G) Join Drops    (S,G) Prune Drops\nEXT_FILTER_PIM_JOINS                    0                    0                    0                    0\n\nIf the RP is not configured to filter PIM register messages, this is a finding.",
+  "fix": "Note: Standard ACLs can only be applied to specific RPs. Extended ACLs must be used when applying to any RP.\n\nConfigure filter for PIM Join messages and apply to PIM:\n\nICX(config)#ip access stand FILTER_PIM_JOINS\nICX(config-std-ipacl-FILTER_PIM_JOINS)#deny 239.8.0.0/16\nICX(config-std-ipacl-FILTER_PIM_JOINS)#exit\nICX(config)#router pim\nICX(config-pim-router)#jp-policy 10.1.1.1 FILTER_PIM_JOINS",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

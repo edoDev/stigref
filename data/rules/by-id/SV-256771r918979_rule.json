@@ -1,0 +1,53 @@
+{
+  "id": "SV-256771r918979_rule",
+  "full_rule_id": "SV-256771r918979_rule",
+  "rule_id": "SV-256771",
+  "rule_revision": "918979",
+  "group_id": "V-256771",
+  "group_title": "SRG-APP-000383-WSR-000175",
+  "title": "The Security Token Service must be configured with the appropriate ports.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Web servers provide numerous processes, features, and functionalities that use TCP/IP ports. Some of these processes may be deemed unnecessary or too unsecure to run on a production system. The ports that the Security Token Service listens on are configured in the \"catalina.properties\" file and must be verified as accurate to their shipping state.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# grep 'bio' /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties\n\nExpected result:\n\nbio-custom.http.port=7080\nbio-custom.https.port=8443\nbio-ssl-clientauth.https.port=3128\nbio-ssl-localhost.https.port=7444\n\nIf the output of the command does not match the expected result, this is a finding.\n\nNote: Port 3128 will not be shown in the output prior to 7.0 U3i.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties\n\nNavigate to the ports specification section.\n\nSet the Security Token Service port specifications according to the following list:\n\nbio-custom.http.port=7080\nbio-custom.https.port=8443\nbio-ssl-clientauth.https.port=3128\nbio-ssl-localhost.https.port=7444\n\nRestart the service with the following command:\n\n# vmon-cli --restart sts",
+  "ccis": [
+    "CCI-001762"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Web servers provide numerous processes, features, and functionalities that use TCP/IP ports. Some of these processes may be deemed unnecessary or too unsecure to run on a production system. The ports that the Security Token Service listens on are configured in the \"catalina.properties\" file and must be verified as accurate to their shipping state.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCST-70-000028",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-sts-security-technical-implementation-guide-v1r2-ef860c6a",
+      "name": "VMware vSphere 7.0 vCenter Appliance STS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-sts-security-technical-implementation-guide-v1r2-ef860c6a"
+  ]
+}

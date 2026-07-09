@@ -1,0 +1,53 @@
+{
+  "id": "SV-253091r958848_rule",
+  "full_rule_id": "SV-253091r958848_rule",
+  "rule_id": "SV-253091",
+  "rule_revision": "958848",
+  "group_id": "V-253091",
+  "group_title": "SRG-OS-000393-GPOS-00173",
+  "title": "TOSS must implement DoD-approved encryption in the OpenSSL package.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nRemote access (e.g., RDP) is access to DoD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.\n\nTOSS incorporates system-wide crypto policies by default. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/openssl.config file.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the OpenSSL library is configured to use only ciphers employing FIPS 140-2-approved algorithms:\n\nVerify that system-wide crypto policies are in effect:\n\n$ sudo grep -i opensslcnf.config /etc/pki/tls/openssl.cnf\n\n.include /etc/crypto-policies/back-ends/opensslcnf.config\n\nIf the \"opensslcnf.config\" is not defined in the \"/etc/pki/tls/openssl.cnf\" file, this is a finding.\n\nVerify which system-wide crypto policy is in use:\n\n$ sudo update-crypto-policies --show\n\nFIPS:OSPP\n\nIf the system-wide crypto policy is set to anything other than \"FIPS\" or \"FIPS:OSPP\", this is a finding.",
+  "fix": "Configure the TOSS OpenSSL library to use only ciphers employing FIPS 140-2-approved algorithms with the following command:\n\n$ sudo fips-mode-setup --enable\n\nA reboot is required for the changes to take effect.",
+  "ccis": [
+    "CCI-002890"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nRemote access (e.g., RDP) is access to DoD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.\n\nTOSS incorporates system-wide crypto policies by default. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/openssl.config file.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-040440",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-214292r961167_rule",
+  "full_rule_id": "SV-214292r961167_rule",
+  "rule_id": "SV-214292",
+  "rule_revision": "961167",
+  "group_id": "V-214292",
+  "group_title": "SRG-APP-000266-WSR-000142",
+  "title": "The Apache web server must display a default hosted application web page, not a directory listing, when a requested web page cannot be found.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The goal is to completely control the web user's experience in navigating any portion of the web document root directories. Ensuring all web content directories have at least the equivalent of an index.html file is a significant factor to accomplish this end. \n \nEnumeration techniques, such as URL parameter manipulation, rely upon being able to obtain information about the Apache web server's directory structure by locating directories without default pages. In the scenario, the Apache web server will display to the user a listing of the files in the directory being accessed. By having a default hosted application web page, the anonymous web user will not obtain directory browsing information or an error message that reveals the server type and version.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "View the \"DocumentRoot\" value by entering the following command: \n \nawk '{print $1,$2,$3}' <'INSTALL PATH'>/conf/httpd.conf|grep -i DocumentRoot|grep -v '^#' \n \nNote each location following the \"DocumentRoot\" string. This is the configured path(s) to the document root directory(s). \n \nTo view a list of the directories and subdirectories and the file \"index.html\", from each stated \"DocumentRoot\" location enter the following commands: \n \nfind . -type d \nfind . -type f -name index.html \n \nReview the results for each document root directory and its subdirectories. \n \nIf a directory does not contain an \"index.html\" or equivalent default document, this is a finding.",
+  "fix": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file: \n \n# apachectl -V | egrep -i 'httpd_root|server_config_file' \n-D HTTPD_ROOT=\"/etc/httpd\" \n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\" \n \nAdd a default document to the applicable directories.",
+  "ccis": [
+    "CCI-001312"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The goal is to completely control the web user's experience in navigating any portion of the web document root directories. Ensuring all web content directories have at least the equivalent of an index.html file is a significant factor to accomplish this end. \n \nEnumeration techniques, such as URL parameter manipulation, rely upon being able to obtain information about the Apache web server's directory structure by locating directories without default pages. In the scenario, the Apache web server will display to the user a listing of the files in the directory being accessed. By having a default hosted application web page, the anonymous web user will not obtain directory browsing information or an error message that reveals the server type and version.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U2-000620",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66",
+      "name": "Apache Server 2.4 UNIX Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66"
+  ]
+}

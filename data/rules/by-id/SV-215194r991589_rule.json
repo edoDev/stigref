@@ -1,0 +1,53 @@
+{
+  "id": "SV-215194r991589_rule",
+  "full_rule_id": "SV-215194r991589_rule",
+  "rule_id": "SV-215194",
+  "rule_revision": "991589",
+  "group_id": "V-215194",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The Group Identifiers (GIDs) reserved for AIX system accounts must not be assigned to non-system accounts as their primary group GID.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Reserved GIDs are typically used by system software packages. If non-system groups have GIDs in this range, they may conflict with system software, possibly leading to the group having permissions to modify system files.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the command prompt, run the following command:\n\n# more /etc/passwd \nroot:!:0:0::/root:/usr/bin/ksh\ndaemon:!:1:1::/etc:\nbin:!:2:2::/bin:\nsys:!:3:3::/usr/sys:\nadm:!:4:4::/var/adm:\nnobody:!:4294967294:4294967294::/:\ninvscout:*:6:12::/var/adm/invscout:/usr/bin/ksh\nsrvproxy:*:203:0:Service Proxy Daemon:/home/srvproxy:/usr/bin/ksh\nesaadmin:*:7:0::/var/esa:/usr/bin/ksh\nsshd:*:212:203::/var/empty:/usr/bin/ksh\ndoejohn:*:704:1776::/home/doej:/usr/bin/ksh\n\nConfirm all accounts with a primary GID of 99 and below are used by a system account. \n\nIf a GID reserved for system accounts, 0 - 99, is used by a non-system account, this is a finding.",
+  "fix": "Change the primary GID for non-system accounts that have reserved GIDs as their primary GIDs using the following command:\n# chuser pgrp=<non_reserved_group_name> <non_system_user_name>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Reserved GIDs are typically used by system software packages. If non-system groups have GIDs in this range, they may conflict with system software, possibly leading to the group having permissions to modify system files.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001035",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

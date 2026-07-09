@@ -1,0 +1,53 @@
+{
+  "id": "SV-215434r991592_rule",
+  "full_rule_id": "SV-215434r991592_rule",
+  "rule_id": "SV-215434",
+  "rule_revision": "991592",
+  "group_id": "V-215434",
+  "group_title": "SRG-OS-000480-GPOS-00230",
+  "title": "The AIX root user home directory must not be the root directory (/).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Changing the root home directory to something other than / and assigning it a 0700 protection makes it more difficult for intruders to manipulate the system by reading the files that root places in its default directory. It also gives root the same discretionary access control for root's home directory as for the other plain user home directories.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if root is assigned a home directory other than \"/\" by listing its home directory by running command: \n\n# grep \"^root\" /etc/passwd | awk -F\":\" '{print $6}' \n/root\n\nIf the root user's home directory is \"/\", this is a finding.",
+  "fix": "The root home directory should be something other than \"/\" (such as /root). \n\nRun commands: \n# mkdir /root \n# chown root /root \n# chgrp system /root \n# chmod 700 /root \n\nThen, edit the passwd file and change the root home directory to \"/root\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Changing the root home directory to something other than / and assigning it a 0700 protection makes it more difficult for intruders to manipulate the system by reading the files that root places in its default directory. It also gives root the same discretionary access control for root's home directory as for the other plain user home directories.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

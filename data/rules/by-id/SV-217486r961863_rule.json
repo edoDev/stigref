@@ -1,0 +1,53 @@
+{
+  "id": "SV-217486r961863_rule",
+  "full_rule_id": "SV-217486r961863_rule",
+  "rule_id": "SV-217486",
+  "rule_revision": "961863",
+  "group_id": "V-217486",
+  "group_title": "SRG-APP-000516-NDM-000341",
+  "title": "The HP FlexFabric switch must be configured to send SNMP traps and notifications to the SNMP manager for the purpose of sending alarms and notifying appropriate personnel as required by specific events.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If appropriate actions are not taken when a network device failure occurs, a denial of service condition may occur which could result in mission failure since the network would be operating without a critical security monitoring and prevention function. Upon detecting a failure of network device security components, the HP FlexFabric Switch must activate a system alert message, send an alarm, or shut down. By immediately displaying an alarm message, potential security violations can be identified more quickly even when administrators are not logged on to the device. This can be facilitated by the switch sending SNMP traps to the SNMP manager that can then have the necessary action taken by automatic or operator intervention.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the HP FlexFabric Switch is configured to send system alert messages, alarms to a SNMP agent and/or automatically shuts down when a component failure is detected.\n\n[HP] display current-configuration\n\nsnmp-agent\n snmp-agent local-engineid 800063A280D07E28ECBDB800000001\n snmp-agent sys-info version v3\n snmp-agent group v3 group1 privacy\n snmp-agent target-host trap address udp-domain 192.168.16.103 params securityname snmp1 v3 privacy\n snmp-agent usm-user v3 user1 group1 cipher authentication-mode sha $c$3$3C41avdWWmRMT64buQYb6FLdhVIUpAVHhIGyxIMhX6o3Qe3+GjY= privacy-mode aes128 $c$3$YpvVDasCitD9iCUvGc01ycckCq0rY+c6sThoqny+TjMTlQ==\n\nIf the HP FlexFabric Switch is not configured to send system alert messages and alarms to a SNMP agent and/or does not automatically shuts down when a component failure is detected, this is a finding.",
+  "fix": "Configure the HP FlexFabric Switch to send system alert messages and alarms to a SNMP agent:\n\n[HP]snmp-agent\n[HP]snmp-agent sys-info version v3\n[HP]snmp-agent group v3 group1 privacy\n[HP]snmp-agent target-host trap address udp-domain 192.168.16.103 params securityname snmp1 v3 privacy\n[HP]snmp-agent usm-user v3 user1 group1 simple authentication-mode xxxxxxxxx privacy-mode aes128 xxxxxxxxx",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If appropriate actions are not taken when a network device failure occurs, a denial of service condition may occur which could result in mission failure since the network would be operating without a critical security monitoring and prevention function. Upon detecting a failure of network device security components, the HP FlexFabric Switch must activate a system alert message, send an alarm, or shut down. By immediately displaying an alarm message, potential security violations can be identified more quickly even when administrators are not logged on to the device. This can be facilitated by the switch sending SNMP traps to the SNMP manager that can then have the necessary action taken by automatic or operator intervention.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-ND-000143",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881",
+      "name": "HP FlexFabric Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881"
+  ]
+}

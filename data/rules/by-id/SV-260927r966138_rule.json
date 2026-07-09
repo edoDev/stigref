@@ -1,0 +1,54 @@
+{
+  "id": "SV-260927r966138_rule",
+  "full_rule_id": "SV-260927r966138_rule",
+  "rule_id": "SV-260927",
+  "rule_revision": "966138",
+  "group_id": "V-260927",
+  "group_title": "SRG-APP-000141-CTR-000320",
+  "title": "MKE's self-signed certificates must be replaced with DOD trusted, signed certificates.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Self-signed certificates pose security risks, as they are not issued by a trusted third party. DOD trusted, signed certificates have undergone a validation process by a trusted CA, reducing the risk of man-in-the-middle attacks and unauthorized access. MKE uses TLS to protect sessions. Using trusted certificates ensures that only trusted sources can access the MKE cluster.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If Kubernetes ingress is being used, this is Not Applicable.\n\nCheck that MKE has been integrated with a trusted certificate authority (CA).\n\nLog in to the MKE web UI and navigate to admin >> Admin Settings >> Certificates.\n\nClick \"Download MKE Server CA Certificate\". \n\nVerify that the contents of the downloaded \"ca.pem\" file match that of the trusted CA certificate.\n\nIf the certificate chain does not match the chain as defined by the System Security Plan (SSP), then this is a finding.",
+  "fix": "If Kubernetes ingress is being used, this is Not Applicable.\n\nIntegrate MKE and MSR (if used) with a trusted certificate authority CA.\n\nLog in to the MKE web UI and navigate to admin >> Admin Settings >> Certificates.\n\nEither fill in the \"CA Certificate\" field with the contents of the external public CA certificate or upload a file.\n\nEither fill in the \"Server Certificate\" and \"Private Key\" fields with the contents of the public/private certificates or upload a file.\n\nThe \"Server Certificate\" field must include both the MKE server certificate and any intermediate certificates.\n\nClick \"Save\".",
+  "ccis": [
+    "CCI-000381",
+    "CCI-000185"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Self-signed certificates pose security risks, as they are not issued by a trusted third party. DOD trusted, signed certificates have undergone a validation process by a trusted CA, reducing the risk of man-in-the-middle attacks and unauthorized access. MKE uses TLS to protect sessions. Using trusted certificates ensures that only trusted sources can access the MKE cluster.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-000610",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

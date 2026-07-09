@@ -1,0 +1,53 @@
+{
+  "id": "SV-269149r1184091_rule",
+  "full_rule_id": "SV-269149r1184091_rule",
+  "rule_id": "SV-269149",
+  "rule_revision": "1184091",
+  "group_id": "V-269149",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "AlmaLinux OS 9 must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify AlmaLinux OS 9 locks an account after three unsuccessful logon attempts within a period of 15 minutes with the following command:\n\n$ grep fail_interval /etc/security/faillock.conf\n\nfail_interval = 900\n\nIf the \"fail_interval\" option is not set to 900 or less (but not 0), the line is commented out, or the line is missing, this is a finding.",
+  "fix": "Configure AlmaLinux OS 9 to lock an account after a number of incorrect login attempts within 15 minutes using pam_faillock.\n\nFirst, enable the feature using the following command:\n\n$ authselect enable-feature with-faillock\n\nThen, add or uncomment the following line in the \"/etc/security/faillock.conf\" file:\n\nfail_interval = 900",
+  "ccis": [
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-007720",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

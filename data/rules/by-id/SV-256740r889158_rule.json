@@ -1,0 +1,57 @@
+{
+  "id": "SV-256740r889158_rule",
+  "full_rule_id": "SV-256740r889158_rule",
+  "rule_id": "SV-256740",
+  "rule_revision": "889158",
+  "group_id": "V-256740",
+  "group_title": "SRG-APP-000015-WSR-000014",
+  "title": "Envoy must use only Transport Layer Security (TLS) 1.2 for the protection of client connections.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Envoy can be configured to support TLS 1.0, 1.1, and 1.2. Due to intrinsic problems in TLS 1.0 and TLS 1.1, they are disabled by default. The <protocol> block in the rhttpproxy configuration is commented out by default, and this configuration forces TLS 1.2. \n \nThe block may also be set to \"tls1.2\" in certain upgrade scenarios, but the effect is the same. Uncommenting the block and enabling older protocols is possible; therefore, TLS 1.2 restriction must be verified and maintained.\n\nSatisfies: SRG-APP-000015-WSR-000014, SRG-APP-000172-WSR-000104, SRG-APP-000439-WSR-000151, SRG-APP-000439-WSR-000152, SRG-APP-000439-WSR-000156, SRG-APP-000441-WSR-000181, SRG-APP-000442-WSR-000182</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# xmllint --xpath '/config/vmacore/ssl/protocols' /etc/vmware-rhttpproxy/config.xml \n \nExpected result: \n \nXPath set is empty \n \nor \n \n<protocols>tls1.2</protocols> \n \nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open: \n \n/etc/vmware-rhttpproxy/config.xml \n \nLocate the <config>/<vmacore>/<ssl> block and configure <protocols> as follows: \n \n<protocols>tls1.2</protocols> \n \nRestart the service for changes to take effect. \n \n# vmon-cli --restart rhttpproxy",
+  "ccis": [
+    "CCI-000197",
+    "CCI-001453",
+    "CCI-002418",
+    "CCI-002420",
+    "CCI-002422"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Envoy can be configured to support TLS 1.0, 1.1, and 1.2. Due to intrinsic problems in TLS 1.0 and TLS 1.1, they are disabled by default. The <protocol> block in the rhttpproxy configuration is commented out by default, and this configuration forces TLS 1.2. \n \nThe block may also be set to \"tls1.2\" in certain upgrade scenarios, but the effect is the same. Uncommenting the block and enabling older protocols is possible; therefore, TLS 1.2 restriction must be verified and maintained.\n\nSatisfies: SRG-APP-000015-WSR-000014, SRG-APP-000172-WSR-000104, SRG-APP-000439-WSR-000151, SRG-APP-000439-WSR-000152, SRG-APP-000439-WSR-000156, SRG-APP-000441-WSR-000181, SRG-APP-000442-WSR-000182",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCRP-70-000004",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-rhttpproxy-security-technical-implementatio-v1r1-c23c2049",
+      "name": "VMware vSphere 7.0 vCenter Appliance RhttpProxy Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-rhttpproxy-security-technical-implementatio-v1r1-c23c2049"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-253944r1137890_rule",
+  "full_rule_id": "SV-253944r1137890_rule",
+  "rule_id": "SV-253944",
+  "rule_revision": "1137890",
+  "group_id": "V-253944",
+  "group_title": "SRG-APP-000516-NDM-000350",
+  "title": "The Juniper EX switch must be configured to send log data to at least two central log servers for the purpose of forwarding alerts to the administrators and the information system security officer (ISSO).",
+  "severity": "high",
+  "description": "<VulnDiscussion>The aggregation of log data kept on a syslog server can be used to detect attacks and trigger an alert to the appropriate security personnel. Information stored in one location is vulnerable to accidental or incidental deletion or alteration.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify that the network device is configured to send log data to a redundant central log servers. \n2. Verify the external syslog server is configured. The lowest severity level, \"any\", is debug and will generate a significant number of messages.\n\n[edit system syslog]\nhost <external syslog address> {\n    any info;\n    structured-format; << Only if structured formatting is required, otherwise events are recorded in standard format.\n}\ntime-format year;\n\nIf the network device is not configured to send log data to redundant log servers, this is a finding.",
+  "fix": "Add the following stanzas to the configuration.\n\nset system syslog host <external syslog host1 IPv4 or IPv6 address> any info\nset system syslog host <external syslog host2 IPv4 or IPv6 address> any info\n\nNote: The time-format command supports including the year and/or the time in milliseconds. The default format does not include the year and time is recorded in seconds.",
+  "ccis": [
+    "CCI-002605",
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The aggregation of log data kept on a syslog server can be used to detect attacks and trigger an alert to the appropriate security personnel. Information stored in one location is vulnerable to accidental or incidental deletion or alteration.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-NM-000670",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685",
+      "name": "Juniper EX Series Switches Network Device Management Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685"
+  ]
+}

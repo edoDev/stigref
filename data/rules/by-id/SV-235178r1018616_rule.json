@@ -1,0 +1,54 @@
+{
+  "id": "SV-235178r1018616_rule",
+  "full_rule_id": "SV-235178r1018616_rule",
+  "rule_id": "SV-235178",
+  "rule_revision": "1018616",
+  "group_id": "V-235178",
+  "group_title": "SRG-APP-000389-DB-000372",
+  "title": "The MySQL Database Server 8.0 must require users to reauthenticate when organization-defined circumstances or situations require reauthentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The DOD standard for authentication of an interactive user is the presentation of a Common Access Card (CAC) or other physical token bearing a valid, current, DOD-issued Public Key Infrastructure (PKI) certificate, coupled with a Personal Identification Number (PIN) to be entered by the user at the beginning of each session and whenever reauthentication is required.\n\nWithout reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen applications provide the capability to change security roles or escalate the functional capability of the application, it is critical the user reauthenticate.\n\nIn addition to the reauthentication requirements associated with session locks, organizations may require reauthentication of individuals and/or devices in other situations, including (but not limited to) the following circumstances:\n\n(i) When authenticators change; \n(ii) When roles change; \n(iii) When security categories of information systems change; \n(iv) When the execution of privileged functions occurs; \n(v) After a fixed period of time; or\n(vi) Periodically.\n\nWithin the DOD, the minimum circumstances requiring reauthentication are privilege escalation and role changes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine all situations where a user must reauthenticate. Check if the mechanisms that handle such situations use the following SQL:\n\nTo make a single user reauthenticate, an existing connection must be present:\n\nTo search for a specific user:\nSELECT * FROM information_schema.PROCESSLIST where user ='<name> and host like '%';\n\nTo review all  connections:\nSELECT * FROM INFORMATION_SCHEMA.PROCESSLIST;\n\nNote the ID(s) (processlist_id) of the connection(s) for the user that must reauthenticate.\n\nTo make a user reauthenticate, run the following for each ID returned above (as they can have multiple connections):\n\nKILL CONNECTION processslist_id;\n\nIf the provided SQL does not force reauthentication, this is a finding.",
+  "fix": "Modify and/or configure MySQL and related applications and tools so that users are always required to reauthenticate when changing role or escalating privileges.\n\nTo make a single user reauthenticate, the following must be present:\n\nKILL CONNECTION processslist_id;",
+  "ccis": [
+    "CCI-004895",
+    "CCI-002038"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DOD standard for authentication of an interactive user is the presentation of a Common Access Card (CAC) or other physical token bearing a valid, current, DOD-issued Public Key Infrastructure (PKI) certificate, coupled with a Personal Identification Number (PIN) to be entered by the user at the beginning of each session and whenever reauthentication is required.\n\nWithout reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen applications provide the capability to change security roles or escalate the functional capability of the application, it is critical the user reauthenticate.\n\nIn addition to the reauthentication requirements associated with session locks, organizations may require reauthentication of individuals and/or devices in other situations, including (but not limited to) the following circumstances:\n\n(i) When authenticators change; \n(ii) When roles change; \n(iii) When security categories of information systems change; \n(iv) When the execution of privileged functions occurs; \n(v) After a fixed period of time; or\n(vi) Periodically.\n\nWithin the DOD, the minimum circumstances requiring reauthentication are privilege escalation and role changes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MYS8-00-010400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-mysql-8-0-security-technical-implementation-guide-v2r2-2e81afb5",
+      "name": "Oracle MySQL 8.0 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "oracle-mysql-8-0-security-technical-implementation-guide-v2r2-2e81afb5"
+  ]
+}

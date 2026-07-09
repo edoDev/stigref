@@ -1,0 +1,53 @@
+{
+  "id": "SV-279620r1192503_rule",
+  "full_rule_id": "SV-279620r1192503_rule",
+  "rule_id": "SV-279620",
+  "rule_revision": "1192503",
+  "group_id": "V-279620",
+  "group_title": "SRG-OS-000125-GPOS-00065",
+  "title": "Nutanix OS must employ strong authenticators in the establishment of nonlocal maintenance and diagnostic sessions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>If maintenance tools are used by unauthorized personnel, they may accidentally or intentionally damage or compromise the system. The act of managing systems and applications includes the ability to access sensitive application information, such as system configuration details, diagnostic information, user information, and potentially sensitive application data.\n\nSome maintenance and test tools are either standalone devices with their own operating systems or are applications bundled with an operating system.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection. Typically, strong authentication requires authenticators that are resistant to replay attacks and employ multifactor authentication. Strong authenticators include, for example, PKI where certificates are stored on a token protected by a password, passphrase, or biometric.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS is configured to use only MACs employing FIPS 140-3-approved algorithms using the following command.\n\n$ sudo grep -i ciphers /etc/crypto-policies/back-ends/opensshserver.config\nCRYPTO_POLICY=Ciphers=aes256-ctr,aes192-ctr,aes128-ctr,aes256-gcm@openssh.com,aes128-gcm@openssh.com \n\nIf the cipher entries in the \"opensshserver.config\" file have any hashes other than shown here, the order differs from the example above, or they are missing or commented out, this is a finding.",
+  "fix": "Configure SSH.\n\n1. For AOS, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/CVM/sshdCVM\n$ sudo systemctl restart sshd\n\n2. For Prism Central, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/PCVM/sshdPCVM\n$ sudo systemctl restart sshd\n\n3. For Files, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/AFS/sshdAFS\n$ sudo systemctl restart sshd\n\n4. For AHV configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/KVM/sshdKVM\n$ sudo systemctl restart sshd",
+  "ccis": [
+    "CCI-000877"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If maintenance tools are used by unauthorized personnel, they may accidentally or intentionally damage or compromise the system. The act of managing systems and applications includes the ability to access sensitive application information, such as system configuration details, diagnostic information, user information, and potentially sensitive application data.\n\nSome maintenance and test tools are either standalone devices with their own operating systems or are applications bundled with an operating system.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection. Typically, strong authentication requires authenticators that are resistant to replay attacks and employ multifactor authentication. Strong authenticators include, for example, PKI where certificates are stored on a token protected by a password, passphrase, or biometric.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000184",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

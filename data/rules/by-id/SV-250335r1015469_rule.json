@@ -1,0 +1,56 @@
+{
+  "id": "SV-250335r1015469_rule",
+  "full_rule_id": "SV-250335r1015469_rule",
+  "rule_id": "SV-250335",
+  "rule_revision": "1015469",
+  "group_id": "V-250335",
+  "group_title": "SRG-APP-000149-AS-000102",
+  "title": "Multifactor authentication for network access to privileged accounts must be used.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Multifactor authentication creates a layered defense and makes it more difficult for an unauthorized person to access the application server. If one factor is compromised or broken, the attacker still has at least one more barrier to breach before successfully breaking into the target. Unlike a simple username/password scenario where the attacker could gain access by knowing both the username and password without the user knowing his account was compromised, multifactor authentication adds the requirement that the attacker must have something from the user, such as a token, or to biometrically be the user.\n\nWhen accessing the application server via a network connection, administrative access to the application server must be PKI Hardware Token enabled.\n\nThe high level steps required for configuring Liberty Server to use certificate based authentication include the following:\n\n1. Configure Web Application with client certificate authentication.\n2. Configure Liberty SSL configuration with client authentication.\n3. Configure Liberty LDAP Security Configuration with certificate filter.\n\nSatisfies: SRG-APP-000149-AS-000102, SRG-APP-000151-AS-000103, SRG-APP-000402-AS-000247, SRG-APP-000403-AS-000248, SRG-APP-000177-AS-000126</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As a user with local file access to ${server.config.dir}/server.xml file, verify the TLS connection used for managing the server is configured to use clientAuthentication.\n\n<featureManager>\n<feature>appSecurity-2.0</feature>\n<feature>ldapRegistry-3.0</feature>\n<feature>transportSecurity-1.0</feature>\n</featureManager>\n\nVerify the TLS connection used for managing the server is configured to use clientAuthentication. The following is used as an example.\n\nIf the clientAuthentication setting for the TLS management application is not set to \"true\", this is a finding.\n\nEXAMPLE:\n<!-- default SSL configuration is defaultSSLSettings -->      \n    <sslDefault sslRef=\"defaultSSLSettings\" />\n    <ssl id=\"defaultSSLSettings\" keyStoreRef=\"defaultKeyStore\" sslProtocol=\"SSL_TLSv2\" trustStoreRef=\"defaultTrustStore\"\nclientAuthentication=\"true\"/>\n\nAccess the web management interface via a web browser and verify TLS secured connectivity to the web based management application.",
+  "fix": "Refer to IBM documentation on how to configure TLS and client based certificate authentication for additional configuration details. The following is a summary list of items needed to configure the system for certificate based authentication. Production systems and installations will vary. \n\nThe application’s web.xml file must be configured to use client certs.\n\nEXAMPLE:\n<login-config>\n    <auth-method>CLIENT-CERT</auth-method>\n</login-config>\n\nThe server.xml features must be configured to use transportSecurity and an ldap configuration. \n\n<featureManager>\n<feature>appSecurity-2.0</feature>\n<feature>ldapRegistry-3.0</feature>\n<feature>transportSecurity-1.0</feature>\n</featureManager>\n\nThe server.xml TLS and LDAP settings must be configured. The following is an EXAMPLE only. \"Default\" verbiage and keystore information in the below SSL configuration will be different in production systems.\n\n <!-- default SSL configuration is defaultSSLSettings -->      \n    <sslDefault sslRef=\"defaultSSLSettings\" />\n    <ssl id=\"defaultSSLSettings\" keyStoreRef=\"defaultKeyStore\" sslProtocol=\"SSL_TLSv2\" trustStoreRef=\"defaultTrustStore\"\nclientAuthentication=\"true\"/>\n\n <keyStore id=\"defaultKeyStore\" location=\"key.jks\" type=\"JKS\" password=\"defaultPWD\" />\n <keyStore id=\"defaultTrustStore\" location=\"key.jks\" type=\"JKS\" password=\"defaultPWD\" />\n\nConfigure LDAP certificate filter settings according the certificates being used.\n\n<ldapRegistry id=\"ldap\" realm=\"SampleLdapRealm\" host=\"${ldap.server.name}\" port=\"${ldap.server.port}\" ignoreCase=\"true\"\nbaseDN=\"${ldap.server.base.dn}\"\nldapType=\"${ldap.vendor.type}\"\ncertificateMapMode=\"Certificate_Filter\" or \"Exact_DN\"\ncertificateFilter=\"${your certificate mapping}\"\nsearchTimeout=\"8m\"\nsslEnabled=\"true\">\n</ldapRegistry>",
+  "ccis": [
+    "CCI-000187",
+    "CCI-000765",
+    "CCI-002009",
+    "CCI-002010"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Multifactor authentication creates a layered defense and makes it more difficult for an unauthorized person to access the application server. If one factor is compromised or broken, the attacker still has at least one more barrier to breach before successfully breaking into the target. Unlike a simple username/password scenario where the attacker could gain access by knowing both the username and password without the user knowing his account was compromised, multifactor authentication adds the requirement that the attacker must have something from the user, such as a token, or to biometrically be the user.\n\nWhen accessing the application server via a network connection, administrative access to the application server must be PKI Hardware Token enabled.\n\nThe high level steps required for configuring Liberty Server to use certificate based authentication include the following:\n\n1. Configure Web Application with client certificate authentication.\n2. Configure Liberty SSL configuration with client authentication.\n3. Configure Liberty LDAP Security Configuration with certificate filter.\n\nSatisfies: SRG-APP-000149-AS-000102, SRG-APP-000151-AS-000103, SRG-APP-000402-AS-000247, SRG-APP-000403-AS-000248, SRG-APP-000177-AS-000126",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IBMW-LS-000390",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6",
+      "name": "IBM WebSphere Liberty Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6"
+  ]
+}

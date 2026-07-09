@@ -1,0 +1,53 @@
+{
+  "id": "SV-258016r958804_rule",
+  "full_rule_id": "SV-258016r958804_rule",
+  "rule_id": "SV-258016",
+  "rule_revision": "958804",
+  "group_id": "V-258016",
+  "group_title": "SRG-OS-000368-GPOS-00154",
+  "title": "RHEL 9 must disable the graphical user interface autorun function unless required.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Allowing autorun commands to execute may introduce malicious code to a system. Configuring this setting prevents autorun commands from executing.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 9 disables the graphical user interface autorun function with the following command:\n\nNote: This requirement assumes the use of the RHEL 9 default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.\n\n$ gsettings get org.gnome.desktop.media-handling autorun-never \n\ntrue\n\nIf \"autorun-never\" is set to \"false\", and is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "Configure the GNOME desktop to disable the autorun function on removable media.\n\nThe dconf settings can be edited in the /etc/dconf/db/* location.\n\nUpdate the [org/gnome/desktop/media-handling] section of the \"/etc/dconf/db/local.d/00-security-settings\" database file and add or update the following lines:\n\n[org/gnome/desktop/media-handling]\nautorun-never=true\n\nThen update the dconf system databases:\n\n$ sudo dconf update",
+  "ccis": [
+    "CCI-001764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Allowing autorun commands to execute may introduce malicious code to a system. Configuring this setting prevents autorun commands from executing.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-271030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

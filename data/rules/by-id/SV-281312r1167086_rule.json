@@ -1,0 +1,53 @@
+{
+  "id": "SV-281312r1167086_rule",
+  "full_rule_id": "SV-281312r1167086_rule",
+  "rule_id": "SV-281312",
+  "rule_revision": "1167086",
+  "group_id": "V-281312",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "RHEL 10 must be configured to disable the Controller Area Network (CAN) kernel module.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Disabling CAN protects the system against exploitation of any flaws in its implementation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 disables the ability to load the CAN kernel module with the following command:\n\n$ sudo grep -rs can /etc/modprobe.conf /etc/modprobe.d/* | grep -v '#'\n/etc/modprobe.d/can.conf:install can /bin/false\n/etc/modprobe.d/can.conf:blacklist can\n\nIf the command does not return any output, or the lines are commented out, and use of CAN is not documented with the information system security officer as an operational requirement, this is a finding.",
+  "fix": "Configure RHEL 10 to disable the ability to load the CAN kernel module.\n\nCreate a drop-in if it does not already exist:\n\n$ sudo vi /etc/modprobe.d/can.conf\n\nAdd the following lines to the file:\n\ninstall can /bin/false\nblacklist can",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Disabling CAN protects the system against exploitation of any flaws in its implementation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-701100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

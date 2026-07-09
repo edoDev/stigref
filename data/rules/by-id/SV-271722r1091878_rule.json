@@ -1,0 +1,53 @@
+{
+  "id": "SV-271722r1091878_rule",
+  "full_rule_id": "SV-271722r1091878_rule",
+  "rule_id": "SV-271722",
+  "rule_revision": "1091878",
+  "group_id": "V-271722",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 must require reauthentication when using the \"sudo\" command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the organization requires the user to reauthenticate when using the \"sudo\" command.\n\nIf the value is set to an integer less than \"0\", the user's time stamp will not expire and the user will not have to reauthenticate for privileged actions until the user's session is terminated.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 requires reauthentication when using the \"sudo\" command to elevate privileges with the following command:\n\n$ sudo grep -i 'timestamp_timeout' /etc/sudoers /etc/sudoers.d/*\n/etc/sudoers:Defaults timestamp_timeout=0\n\nIf results are returned from more than one file location, this is a finding.\n\nIf \"timestamp_timeout\" is set to a negative number, is commented out, or no results are returned, this is a finding.",
+  "fix": "Configure OL 9 to reauthenticate \"sudo\" commands after the specified timeout:\n\nAdd the following line to \"/etc/sudoers\":\n\nDefaults timestamp_timeout=0",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the organization requires the user to reauthenticate when using the \"sudo\" command.\n\nIf the value is set to an integer less than \"0\", the user's time stamp will not expire and the user will not have to reauthenticate for privileged actions until the user's session is terminated.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002360",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

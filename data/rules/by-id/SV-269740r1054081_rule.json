@@ -1,0 +1,53 @@
+{
+  "id": "SV-269740r1054081_rule",
+  "full_rule_id": "SV-269740r1054081_rule",
+  "rule_id": "SV-269740",
+  "rule_revision": "1054081",
+  "group_id": "V-269740",
+  "group_title": "SRG-APP-000516",
+  "title": "Xylok Security Suite must use a valid DOD-issued certification.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without the use of a certificate validation process, the site is vulnerable to accepting certificates that have expired or have been revoked. This would allow unauthorized individuals access to the web server. This also defeats the purpose of the multi-factor authentication provided by the PKI process.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the Xylok Security Suite is using a valid DOD-issued certification with the following command:\n\n$ openssl x509 -noout -text -in /opt/xylok/certs/cert.crt\nCertificate:\n   Data:\n      Version: 3 (0x2)\n      Serial Number: 1 (0x1)\n      Signature Algorithm: sha256WithRSAEncryption\n      Issuer: C = US, O = U.S. Government, OU = DoD, OU = PKI, CN = DoD Root CA 3\n      Validity\n         Not Before: Mar 20 18:46:41 2012 GMT\n         Not After   : Dec 30 18:46:41 2029 GMT\n      Subject: C = US, O = U.S. Government, OU = DoD, OU = PKI, CN = DoD Root CA 3\n      Subject Public Key Info:\n         Public Key Algorithm: rsaEncryption\n\nIf the Issuer is not an approved authority, this is a finding.",
+  "fix": "1. Obtain DOD root certificate authority (CA)-signed certificate for the domain or generate a certificate using other approved provider.\n2. Install the certificate in x509 format at /opt/xylok/certs/cert.crt\n3. Restart Xylok: systemctl restart xylok",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without the use of a certificate validation process, the site is vulnerable to accepting certificates that have expired or have been revoked. This would allow unauthorized individuals access to the web server. This also defeats the purpose of the multi-factor authentication provided by the PKI process.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "XYLK-20-000244",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "xylok-security-suite-20-x-security-technical-implementation-guide-v1r2-31f543fd",
+      "name": "Xylok Security Suite 20.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "xylok-security-suite-20-x-security-technical-implementation-guide-v1r2-31f543fd"
+  ]
+}

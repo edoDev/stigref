@@ -1,0 +1,53 @@
+{
+  "id": "SV-269098r1106505_rule",
+  "full_rule_id": "SV-269098r1106505_rule",
+  "rule_id": "SV-269098",
+  "rule_revision": "1106505",
+  "group_id": "V-269098",
+  "group_title": "SRG-OS-000324",
+  "title": "Windows Server hosting Active Directory Certificate Services (AD CS) must enforce Certificate Authority (CA) certificate management approval for certificate requests.",
+  "severity": "high",
+  "description": "<VulnDiscussion>When users are requesting new certificates through AD CS, there must be management approval and awareness for these requests. Without this, a user or bad actor could request certificates they should not have or should not have access to.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Certificate templates with the following extended key usages AND that allow a requestor to supply the subject name in the request require manual approval. In the AD CS web server properties, select \"VulnerableCertTemplate\" properties. Verify that \"Subject Name\" and \"Supply in the request\" are selected.\n\nIf \"Subject Name\" AND \"Supply in the request\" are selected and if manual approval is not required, this is a finding. \n\nIf the \"Supply in Request\" is NOT selected, and the Enroll Permissions for the template have been limited to a select group of users/administrators, this is not a finding.",
+  "fix": "In the AD CS web server properties, select \"VulnerableCertTemplate\" properties and then select \"Subject Name\" and \"Supply in the request\".\n\nCertificate templates with the following extended key usages must require manual approval in all cases:\n  i. Smart Card Logon (1.3.6.1.4.1.311.20.2.2).\n ii. Any Purpose EKU (2.5.29.37.0).\niii. No EKU set. i.e., this is a (subordinate) CA certificate.\n\nCertificate templates with the following extended key usages AND that allow a requestor to supply the subject name in the request must require manual approval:\n  i. Client Authentication (1.3.6.1.5.5.7.3.2).\n ii. PKINIT Client Authentication (1.3.6.1.5.2.3.4).\niii. Supply in request\" setting:  VulnerableCertTemplate Properties.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When users are requesting new certificates through AD CS, there must be management approval and awareness for these requests. Without this, a user or bad actor could request certificates they should not have or should not have access to.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AD.3145_AD",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "active-directory-forest-security-technical-implementation-guide-v3r2-45633120",
+      "name": "Active Directory Forest Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "active-directory-forest-security-technical-implementation-guide-v3r2-45633120"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-258946r934496_rule",
+  "full_rule_id": "SV-258946r934496_rule",
+  "rule_id": "SV-258946",
+  "rule_revision": "934496",
+  "group_id": "V-258946",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must protect the confidentiality and integrity of transmitted information by isolating Internet Protocol (IP)-based storage traffic.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Virtual machines might share virtual switches and virtual local area networks (VLAN) with the IP-based storage configurations.\n\nIP-based storage includes vSAN, Internet Small Computer System Interface (iSCSI), and Network File System (NFS). This configuration might expose IP-based storage traffic to unauthorized virtual machine users. IP-based storage frequently is not encrypted. It can be viewed by anyone with access to this network.\n\nTo restrict unauthorized users from viewing the IP-based storage traffic, the IP-based storage network must be logically separated from the production traffic. Configuring the IP-based storage adaptors on separate VLANs or network segments from other VMkernels and virtual machines will limit unauthorized users from viewing the traffic.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If IP-based storage is not used, this is not applicable.\n\nIP-based storage (iSCSI, NFS, vSAN) VMkernel port groups must be in a dedicated VLAN that can be on a standard or distributed virtual switch that is logically separated from other traffic types.\n\nThe check for this will be unique per environment.\n\nTo check a standard switch, do the following:\n\nFrom the vSphere Client, select the ESXi host and go to Configure >> Networking >> Virtual switches. Select a standard switch.\n\nFor each storage port group (iSCSI, NFS, vSAN), select the port group and note the VLAN ID associated with each port group.\n\nVerify it is dedicated to that purpose and is logically separated from other traffic types.\n\nTo check a distributed switch, do the following,\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect and expand a distributed switch.\n\nFor each storage port group (iSCSI, NFS, vSAN), select the port group and navigate to the \"Summary\" tab.\n\nNote the VLAN ID associated with each port group and verify it is dedicated to that purpose and is logically separated from other traffic types.\n\nIf any IP-based storage networks are not isolated from other traffic types, this is a finding.",
+  "fix": "Configuration of an IP-based VMkernel will be unique to each environment.\n\nTo configure VLANs and traffic types, do the following:\n\nStandard switch:\n\nFrom the vSphere Client, select the ESXi host and go to Configure >> Networking >> VMkernel adapters.\n\nSelect the Storage VMkernel (for any IP-based storage). Click \"Edit...\" and click the \"Port properties\" tab.\n\nUncheck everything (unless vSAN).\n\nClick the \"IPv4\" settings or \"IPv6\" settings tab.\n\nEnter the appropriate IP address and subnet information.\n\nClick \"OK\". \n\nFrom the vSphere Client, select the ESXi host and go to Configure >> Networking >> Virtual switches. Select a standard switch.\n\nFor each storage port group (iSCSI, NFS, vSAN), select the port group and click \"...\". Click \"Edit Settings\". On the \"Properties\" tab, enter the appropriate VLAN ID and click \"OK\".\n\nDistributed switch:\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Configure >> Settings >> Topology.\n\nSelect the Storage VMkernel (for any IP-based storage). Click \"...\" and click \"Edit Settings\".\n\nOn the \"Port properties\" tab, uncheck everything (unless vSAN).\n\nClick the \"IPv4\" settings or \"IPv6\" settings tab.\n\nEnter the appropriate IP address and subnet information.\n\nClick \"OK\". \n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect and expand a distributed switch.\n\nFor each storage port group (iSCSI, NFS, vSAN), select the port group and navigate to Configure >> Settings >> Properties.\n\nClick \"Edit\".\n\nClick the \"VLAN\" tab.\n\nEnter the appropriate VLAN type and ID and click \"OK\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Virtual machines might share virtual switches and virtual local area networks (VLAN) with the IP-based storage configurations.\n\nIP-based storage includes vSAN, Internet Small Computer System Interface (iSCSI), and Network File System (NFS). This configuration might expose IP-based storage traffic to unauthorized virtual machine users. IP-based storage frequently is not encrypted. It can be viewed by anyone with access to this network.\n\nTo restrict unauthorized users from viewing the IP-based storage traffic, the IP-based storage network must be logically separated from the production traffic. Configuring the IP-based storage adaptors on separate VLANs or network segments from other VMkernels and virtual machines will limit unauthorized users from viewing the traffic.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000279",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

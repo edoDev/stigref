@@ -1,0 +1,53 @@
+{
+  "id": "SV-270709r1066616_rule",
+  "full_rule_id": "SV-270709r1066616_rule",
+  "rule_id": "SV-270709",
+  "rule_revision": "1066616",
+  "group_id": "V-270709",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "Ubuntu 24.04 LTS SSH daemon must prevent remote hosts from connecting to the proxy display.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When X11 forwarding is enabled, there may be additional exposure to the server and client displays if the sshd proxy display is configured to listen on the wildcard address. By default, sshd binds the forwarding server to the loopback address and sets the hostname part of the DISPLAY environment variable to localhost. This prevents remote hosts from connecting to the proxy display.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SSH daemon prevents remote hosts from connecting to the proxy display with the following command:\n\n$ sudo grep -ir x11uselocalhost /etc/ssh/sshd_config*\nX11UseLocalhost yes\n\nIf the \"X11UseLocalhost\" keyword is set to \"no\", is commented out, is missing, or multiple conflicting results are returned, this is a finding.",
+  "fix": "Configure the SSH daemon to prevent remote hosts from connecting to the proxy display. \n \nEdit the \"/etc/ssh/sshd_config\" file to uncomment or add the line for the \"X11UseLocalhost\" keyword and set its value to \"yes\" (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor): \n \nX11UseLocalhost yes \n \nRestart the SSH daemon for the changes to take effect: \n \n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When X11 forwarding is enabled, there may be additional exposure to the server and client displays if the sshd proxy display is configured to listen on the wildcard address. By default, sshd binds the forwarding server to the loopback address and sets the hostname part of the DISPLAY environment variable to localhost. This prevents remote hosts from connecting to the proxy display.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-300023",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

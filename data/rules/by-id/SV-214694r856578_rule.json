@@ -1,0 +1,53 @@
+{
+  "id": "SV-214694r856578_rule",
+  "full_rule_id": "SV-214694r856578_rule",
+  "rule_id": "SV-214694",
+  "rule_revision": "856578",
+  "group_id": "V-214694",
+  "group_title": "SRG-NET-000364",
+  "title": "The Juniper SRX Services Gateway VPN must only allow incoming VPN communications from organization-defined authorized sources routed to organization-defined authorized destinations.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unrestricted traffic may contain malicious traffic which poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nAccess control policies and access control lists implemented on devices, such as firewalls, that control the flow of network traffic, ensure the flow of traffic is only allowed from authorized sources to authorized destinations. Networks with different levels of trust (e.g., the Internet) must be kept separated.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Request documentation of the Juniper SRX configuration drawings to determine which ports are configured for external/outbound traffic. Verify outbound interfaces have been configured with DoS screens.\n\n[edit]\nshow security zones <security-zone-name>\n\nIf the VPN zone(s) is configured to allow unauthorized/untrusted traffic to unauthorized zones, this is a finding.",
+  "fix": "The SRX device will route traffic over the IPsec VPN’s secure tunnel interface if there is a route with the next-hop specified as the secure tunnel interface. The following example commands configure an IPv4 and IPv6 static route for their respective secure tunnels.\n\nset routing-options static route <IPv4 network/netmask> next-hop st0.0\nset routing-options rib inet6.0 static route <IPv6 network/mask> next-hop st0.1\nset security policies from-zone untrust to-zone trust policy group-sec-policy then permit tunnel ipsec-vpn groupvpn\n\nNote: For the SRX device to transmit traffic over the IPsec tunnel, you must configure the secure tunnel interface (st0 in this case), associate it with a security zone, and create a static route entry for the remote network’s address space.",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unrestricted traffic may contain malicious traffic which poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nAccess control policies and access control lists implemented on devices, such as firewalls, that control the flow of network traffic, ensure the flow of traffic is only allowed from authorized sources to authorized destinations. Networks with different levels of trust (e.g., the Internet) must be kept separated.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-VN-000027",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0",
+      "name": "Juniper SRX Services Gateway VPN Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0"
+  ]
+}

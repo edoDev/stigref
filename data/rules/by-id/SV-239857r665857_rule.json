@@ -1,0 +1,53 @@
+{
+  "id": "SV-239857r665857_rule",
+  "full_rule_id": "SV-239857r665857_rule",
+  "rule_id": "SV-239857",
+  "rule_revision": "665857",
+  "group_id": "V-239857",
+  "group_title": "SRG-NET-000089-FW-000019",
+  "title": "The Cisco ASA must be configured to queue log records locally in the event that the central audit server is down or not reachable.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical that when the network element is at risk of failing to process traffic logs as required, it takes action to mitigate the failure. Audit processing failures include software/hardware errors, failures in the audit capturing mechanisms, and audit storage capacity being reached or exceeded. Responses to audit failure depend on the nature of the failure mode.\n\nIn accordance with DoD policy, the traffic log must be sent to a central audit server. When logging functions are lost, system processing cannot be shut down because firewall availability is an overriding concern given the role of the firewall in the enterprise. The system should either be configured to log events to an alternative server or queue log records locally. Upon restoration of the connection to the central audit server, action should be taken to synchronize the local log data with the central audit server.\n\nIf the central audit server uses User Datagram Protocol (UDP) communications instead of a connection oriented protocol such as TCP, a method for detecting a lost connection must be implemented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the ASA configuration and verify that logging to the buffer is enabled and that the queue size has been increased as shown in the example below.\n\nlogging enable\nlogging buffered informational\nlogging queue 8192\nlogging host NDM_INTERFACE 10.1.22.2 6/1514\n\nNote: Configuring a value of 0 for the queue size will set it to maximum size for the specific platform.\n\nIf the ASA is not configured to queue log records locally In the event that the central audit server is down or not reachable, this is a finding.",
+  "fix": "To continue to allow new connections and queue log records in the event the syslog server is not reachable, configure logging buffered and increase the queue size as shown in the example below.\n\nASA(config)# logging buffered informational\nASA(config)# logging queue 8192",
+  "ccis": [
+    "CCI-000140"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical that when the network element is at risk of failing to process traffic logs as required, it takes action to mitigate the failure. Audit processing failures include software/hardware errors, failures in the audit capturing mechanisms, and audit storage capacity being reached or exceeded. Responses to audit failure depend on the nature of the failure mode.\n\nIn accordance with DoD policy, the traffic log must be sent to a central audit server. When logging functions are lost, system processing cannot be shut down because firewall availability is an overriding concern given the role of the firewall in the enterprise. The system should either be configured to log events to an alternative server or queue log records locally. Upon restoration of the connection to the central audit server, action should be taken to synchronize the local log data with the central audit server.\n\nIf the central audit server uses User Datagram Protocol (UDP) communications instead of a connection oriented protocol such as TCP, a method for detecting a lost connection must be implemented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-FW-000090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-firewall-security-technical-implementation-guide-v2r1-a0d2d852",
+      "name": "Cisco ASA Firewall Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-firewall-security-technical-implementation-guide-v2r1-a0d2d852"
+  ]
+}

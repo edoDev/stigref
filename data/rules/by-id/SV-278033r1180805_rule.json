@@ -1,0 +1,53 @@
+{
+  "id": "SV-278033r1180805_rule",
+  "full_rule_id": "SV-278033r1180805_rule",
+  "rule_id": "SV-278033",
+  "rule_revision": "1180805",
+  "group_id": "V-278033",
+  "group_title": "SRG-OS-000329-GPOS-00128",
+  "title": "Windows Server 2025 account lockout duration must be configured to 15 minutes or greater.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When enabled, the account lockout feature prevents brute-force password attacks on the system. This parameter specifies the period of time that an account will remain locked after the specified number of failed logon attempts.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the effective setting in Local Group Policy Editor.\n\nRun gpedit.msc.\n\nNavigate to Local Computer Policy >> Computer Configuration >> Windows Settings >> Security Settings >> Account Policies >> Account Lockout Policy.\n\nIf the \"Account lockout duration\" is less than \"15\" minutes (excluding \"0\"), this is a finding.\n\nFor server core installations, run the following command:\n\nSecedit /Export /Areas SecurityPolicy /CFG C:\\Path\\FileName.Txt\n\nIf \"LockoutDuration\" is less than \"15\" (excluding \"0\") in the file, this is a finding.\n\nConfiguring this to \"0\", requiring an administrator to unlock the account, is more restrictive and is not a finding.",
+  "fix": "Configure the policy value for Computer Configuration >> Windows Settings >> Security Settings >> Account Policies >> Account Lockout Policy. Set \"Account lockout duration\" to \"15\" minutes or greater.\n\nA value of \"0\" is also acceptable, requiring an administrator to unlock the account.",
+  "ccis": [
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When enabled, the account lockout feature prevents brute-force password attacks on the system. This parameter specifies the period of time that an account will remain locked after the specified number of failed logon attempts.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN25-AC-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2025-security-technical-implementation-guide-v1r1-e1e76802",
+      "name": "Microsoft Windows Server 2025 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2025-security-technical-implementation-guide-v1r1-e1e76802"
+  ]
+}

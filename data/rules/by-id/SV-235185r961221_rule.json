@@ -1,0 +1,53 @@
+{
+  "id": "SV-235185r961221_rule",
+  "full_rule_id": "SV-235185r961221_rule",
+  "rule_id": "SV-235185",
+  "rule_revision": "961221",
+  "group_id": "V-235185",
+  "group_title": "SRG-APP-000295-DB-000305",
+  "title": "The MySQL Database Server 8.0 must automatically terminate a user session after organization-defined conditions or trigger events requiring session disconnect.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>This addresses the termination of user-initiated logical sessions in contrast to the termination of network connections associated with communications sessions (i.e., network disconnect). A logical session (for local, network, and remote access) is initiated whenever a user (or process acting on behalf of a user) accesses an organizational information system. Such user sessions can be terminated (and thus terminate user access) without terminating network sessions. \n\nSession termination ends all processes associated with a user's logical session except those batch processes/jobs that are specifically created by the user (i.e., session owner) to continue after the session is terminated. \n\nConditions or trigger events requiring automatic session termination can include, for example, organization-defined periods of user inactivity, targeted responses to certain types of incidents, and time-of-day restrictions on information system use.\n\nThis capability is typically reserved for specific cases where the system owner, data owner, or organization requires additional assurance.\n\nEach connection to mysqld runs in a separate thread. Kill a connection by killing the connections thread with the KILL processlist_id statement.\n\nThread processlist identifiers can be determined from the ID column of the INFORMATION_SCHEMA PROCESSLIST table, the Id column of SHOW PROCESSLIST output, and the PROCESSLIST_ID column of the Performance Schema threads table.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review system documentation to obtain the organization's definition of circumstances requiring automatic session termination. If the documentation explicitly states that such termination is not required or is prohibited, this is not a finding.\n\nDetermine the situations where a user must reauthenticate. Check if the mechanisms that handle such situations use the following SQL:\n\nTo make a single user reauthenticate, an existing connection must be present:\n\nTo search for a specific user:\nSELECT * FROM information_schema.PROCESSLIST where user ='<name> and host like '%';\n\nTo review all connections:\nSELECT * FROM INFORMATION_SCHEMA.PROCESSLIST;\n\nNote the ID(s) (processlist_id) of the connection(s) for the user that must reauthenticate.\n\nTo make a user reauthenticate, run the following for each ID returned above (as they can have multiple connections).\n\nKILL CONNECTION processslist_id;\n\nIf the provided SQL does not force reauthentication, this is a finding.",
+  "fix": "Modify and/or configure MySQL and related applications and tools so that users are always required to reauthenticate when changing role or escalating privileges.\n\nTo make a single user reauthenticate, the following must be present:\n\nKILL CONNECTION processslist_id;",
+  "ccis": [
+    "CCI-002361"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This addresses the termination of user-initiated logical sessions in contrast to the termination of network connections associated with communications sessions (i.e., network disconnect). A logical session (for local, network, and remote access) is initiated whenever a user (or process acting on behalf of a user) accesses an organizational information system. Such user sessions can be terminated (and thus terminate user access) without terminating network sessions. \n\nSession termination ends all processes associated with a user's logical session except those batch processes/jobs that are specifically created by the user (i.e., session owner) to continue after the session is terminated. \n\nConditions or trigger events requiring automatic session termination can include, for example, organization-defined periods of user inactivity, targeted responses to certain types of incidents, and time-of-day restrictions on information system use.\n\nThis capability is typically reserved for specific cases where the system owner, data owner, or organization requires additional assurance.\n\nEach connection to mysqld runs in a separate thread. Kill a connection by killing the connections thread with the KILL processlist_id statement.\n\nThread processlist identifiers can be determined from the ID column of the INFORMATION_SCHEMA PROCESSLIST table, the Id column of SHOW PROCESSLIST output, and the PROCESSLIST_ID column of the Performance Schema threads table.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MYS8-00-011100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-mysql-8-0-security-technical-implementation-guide-v2r2-2e81afb5",
+      "name": "Oracle MySQL 8.0 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "oracle-mysql-8-0-security-technical-implementation-guide-v2r2-2e81afb5"
+  ]
+}

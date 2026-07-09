@@ -1,0 +1,53 @@
+{
+  "id": "SV-233870r1082635_rule",
+  "full_rule_id": "SV-233870r1082635_rule",
+  "rule_id": "SV-233870",
+  "rule_revision": "1082635",
+  "group_id": "V-233870",
+  "group_title": "SRG-APP-000516-DNS-000093",
+  "title": "In a split DNS configuration, where separate DNS service members are used between the external and internal networks, the internal DNS service member must be configured to not be reachable from outside resolvers.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Instead of having the same set of authoritative name servers serve different types of clients, an enterprise could have two different sets of authoritative name servers. \n\nOne set, called external name servers, can be located within a DMZ; these would be the only name servers accessible to external clients and would serve resource records (RRs) pertaining to hosts with public services (web servers that serve external web pages or provide B2C services, mail servers, etc.) \n\nThe other set, called internal name servers, is to be located within the firewall and should be configured so it is not reachable from outside and hence provides naming services exclusively to internal clients.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Validation of this configuration item requires review of the network architecture and security configuration in addition to DNS service member configuration to verify that external DNS service members are not accessible from the internal network when a split DNS configuration is implemented. \n\n1. Navigate to Data Management >> DNS >> Members tab. \n2. Review the network configuration and access control of each Infoblox member that has the DNS service running. \n3. Select each grid member and click \"Edit\". Review the \"Queries\" tab to verify that both queries and recursion options are enabled and allowed only from the respective client networks. \n\nIf a split DNS configuration is not used, this is not a finding.\n\nIf there is no access control configured or access control does not restrict queries and recursion to the respective client network, this is a finding.",
+  "fix": "Navigate to Data Management >> DNS >> Members tab. \n\nFor Internal DNS resolvers in a Split DNS configuration:\n1. Select the Grid member(s) identified as running the DNS service and click \"Edit\".  \n2. Under the Queries tab, enable and configure either an Access Control List (ACL) or set of Access Control Entries (ACE) allowing internal clients and denying external clients . \n3. When complete, click \"Save & Close\" to save the changes and exit the \"Properties\" screen.  \n4. Perform a service restart if necessary.\n\nACLs for Internal members should end with \"Any\" deny at the end after allowing internal networks.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Instead of having the same set of authoritative name servers serve different types of clients, an enterprise could have two different sets of authoritative name servers. \n\nOne set, called external name servers, can be located within a DMZ; these would be the only name servers accessible to external clients and would serve resource records (RRs) pertaining to hosts with public services (web servers that serve external web pages or provide B2C services, mail servers, etc.) \n\nThe other set, called internal name servers, is to be located within the firewall and should be configured so it is not reachable from outside and hence provides naming services exclusively to internal clients.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDNS-8X-400012",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46",
+      "name": "Infoblox 8.x DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46"
+  ]
+}

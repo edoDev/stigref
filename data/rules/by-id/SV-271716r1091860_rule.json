@@ -1,0 +1,53 @@
+{
+  "id": "SV-271716r1091860_rule",
+  "full_rule_id": "SV-271716r1091860_rule",
+  "rule_id": "SV-271716",
+  "rule_revision": "1091860",
+  "group_id": "V-271716",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 SSH daemon must prevent remote hosts from connecting to the proxy display.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When X11 forwarding is enabled, there may be additional exposure to the server and client displays if the SSHD proxy display is configured to listen on the wildcard address. By default, SSHD binds the forwarding server to the loopback address and sets the hostname part of the \"DISPLAY\" environment variable to localhost. This prevents remote hosts from connecting to the proxy display.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 SSH daemon prevents remote hosts from connecting to the proxy display with the following command:\n\n$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*x11uselocalhost'\nX11UseLocalhost yes\n\nIf the \"X11UseLocalhost\" keyword is set to \"no\", is missing, or is commented out, this is a finding.",
+  "fix": "Configure the SSH daemon to prevent remote hosts from connecting to the proxy display.\n\nAdd the following line to \"/etc/ssh/sshd_config\" or to a file in \"/etc/ssh/sshd_config.d\" or uncomment the line and set the value to \"yes\":\n\nX11UseLocalhost yes\n\nThe SSH service must be restarted for changes to take effect:\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When X11 forwarding is enabled, there may be additional exposure to the server and client displays if the SSHD proxy display is configured to listen on the wildcard address. By default, SSHD binds the forwarding server to the loopback address and sets the hostname part of the \"DISPLAY\" environment variable to localhost. This prevents remote hosts from connecting to the proxy display.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002354",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

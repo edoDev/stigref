@@ -1,0 +1,59 @@
+{
+  "id": "SV-266256r1024869_rule",
+  "full_rule_id": "SV-266256r1024869_rule",
+  "rule_id": "SV-266256",
+  "rule_revision": "1024869",
+  "group_id": "V-266256",
+  "group_title": "F5BI-FW-300005",
+  "title": "The F5 BIG-IP appliance must generate traffic log entries containing information to establish the details of the event, including success or failure of the application of the firewall rule.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without establishing what type of event occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.\n\nAudit event content that may be necessary to satisfy this requirement includes, for example, time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.\n\nAssociating event types with detected events in the network element logs provides a means of investigating an attack, recognizing resource utilization or capacity thresholds, or identifying an improperly configured network element.\n\nSatisfies: SRG-NET-000074-FW-000009, SRG-NET-000075-FW-000010, SRG-NET-000076-FW-000011, SRG-NET-000077-FW-000012, SRG-NET-000078-FW-000013, SRG-NET-000492-FW-000006, SRG-NET-000493-FW-000007, SRG-NET-000333-FW-000014</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the BIG-IP GUI:\n1. Security.\n2. Event Logs.\n3. Logging Profiles.\n4. Edit the global-network profile.\n5. Network Firewall tab.\n6. Select a Log Publisher to use (for production environments, use Remote High Speed Logging).\n7. Verify at least the \"Accept\", \"Drop\", and \"Reject\" Log Rule Matches boxes are checked, along with any other settings to be enabled.\n\nFrom the BIG-IP Console, type the following commands:\n\ntmsh list security log profile global-network\n\nNote: Verify the log-acl-match-accept, log-acl-match-drop, and log-acl-match-reject settings are enabled.\n\nIf the BIG-IP is not configured to generate traffic log entries containing information to establish the details of the event, including success or failure of the application of the firewall rule, this is a finding.",
+  "fix": "From the BIG-IP GUI:\n1. Security.\n2. Event Logs.\n3. Logging Profiles.\n4. Edit the global-network profile.\n5. Network Firewall tab.\n6. Select a Log Publisher to use (for production environments, use Remote High Speed Logging).\n7. Check the \"Accept\", \"Drop\", and \"Reject\" Log Rule Matches boxes are checked, along with any other settings to be enabled.\n8. Click \"Update\".\n\nFrom the BIG-IP Console, type the following commands:\n\ntmsh modify security log profile global-network network modify { all { filter { log-acl-match-accept enabled log-acl-match-drop enabled log-acl-match-reject enabled } publisher <publisher name> } }\ntmsh save sys config\n\nRefer to vendor documentation for more information.",
+  "ccis": [
+    "CCI-000130",
+    "CCI-000131",
+    "CCI-000132",
+    "CCI-000133",
+    "CCI-000134",
+    "CCI-000172",
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without establishing what type of event occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.\n\nAudit event content that may be necessary to satisfy this requirement includes, for example, time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.\n\nAssociating event types with detected events in the network element logs provides a means of investigating an attack, recognizing resource utilization or capacity thresholds, or identifying an improperly configured network element.\n\nSatisfies: SRG-NET-000074-FW-000009, SRG-NET-000075-FW-000010, SRG-NET-000076-FW-000011, SRG-NET-000077-FW-000012, SRG-NET-000078-FW-000013, SRG-NET-000492-FW-000006, SRG-NET-000493-FW-000007, SRG-NET-000333-FW-000014",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-FW-300005",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-firewall-security-technical-implementation-guide-v1r1-97266c8c",
+      "name": "F5 BIG-IP TMOS Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-firewall-security-technical-implementation-guide-v1r1-97266c8c"
+  ]
+}

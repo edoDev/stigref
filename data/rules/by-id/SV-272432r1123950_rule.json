@@ -1,0 +1,53 @@
+{
+  "id": "SV-272432r1123950_rule",
+  "full_rule_id": "SV-272432r1123950_rule",
+  "rule_id": "SV-272432",
+  "rule_revision": "1123950",
+  "group_id": "V-272432",
+  "group_title": "SRG-APP-000125-DNS-000012",
+  "title": "The BIND 9.x server implementation must be configured with a channel to send audit records to at least two remote syslogs.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Protection of log data includes assuring log data is not accidentally lost or deleted. Backing up audit records to a different system or onto separate media than the system being audited on a defined frequency helps to ensure, in the event of a catastrophic system failure, the audit records will be retained. \n\nThis helps to ensure a compromise of the information system being audited does not also result in a compromise of the audit records.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the BIND 9.x server is configured to send audit logs to at least two syslog servers.\n\nNote: syslog and local file channel must be defined for every defined category.\n\nInspect the \"named.conf\" file for the following:\n\nlogging {\nchannel <syslog_channel> {\nsyslog <syslog_facility>;\n};\n\ncategory <category_name> { <syslog_channel>; };\n\nlogging {\nchannel <syslog_channel> {\nsyslog <syslog_facility>;\n};\n\ncategory <category_name> { <syslog_channel>; };\n\nIf a logging channel is not defined for each syslog, this is a finding.\n\nIf a category is not defined to send messages to the syslog channels, this is a finding.",
+  "fix": "Configure the \"logging\" statement to send audit logs to the syslog daemons.\n\nlogging {\nchannel <syslog_channel> {\nsyslog <syslog_facility>;\n};\ncategory <category_name> { <syslog_channel>; };\n};\n\nlogging {\nchannel <syslog_channel> {\nsyslog <syslog_facility>;\n};\ncategory <category_name> { <syslog_channel>; };\n};\n\nNote: It is recommended to use a local syslog facility (i.e., local0 -7) when configuring the syslog channel. \n\nRestart the BIND 9.x process.",
+  "ccis": [
+    "CCI-001348"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protection of log data includes assuring log data is not accidentally lost or deleted. Backing up audit records to a different system or onto separate media than the system being audited on a defined frequency helps to ensure, in the event of a catastrophic system failure, the audit records will be retained. \n\nThis helps to ensure a compromise of the information system being audited does not also result in a compromise of the audit records.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BIND-9X-001910",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460",
+      "name": "BIND 9.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460"
+  ]
+}

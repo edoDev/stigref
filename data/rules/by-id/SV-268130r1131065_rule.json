@@ -1,0 +1,53 @@
+{
+  "id": "SV-268130r1131065_rule",
+  "full_rule_id": "SV-268130r1131065_rule",
+  "rule_id": "SV-268130",
+  "rule_revision": "1131065",
+  "group_id": "V-268130",
+  "group_title": "SRG-OS-000073-GPOS-00041",
+  "title": "NixOS must store only encrypted representations of passwords.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS stores only encrypted representations of passwords with the following command: \n\n$ grep ENCRYPT_METHOD /etc/login.defs\n\nENCRYPT_METHOD SHA512\n\nIf \"ENCRYPT_METHOD\" does not equal SHA512 or greater, is commented out, or is missing, this is a finding.",
+  "fix": "Configure NixOS to store only encrypted representations of passwords. \n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\nsecurity.loginDefs.settings.ENCRYPT_METHOD = \"SHA512\";\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-004062"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000770",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

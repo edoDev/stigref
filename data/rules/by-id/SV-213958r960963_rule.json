@@ -1,0 +1,53 @@
+{
+  "id": "SV-213958r960963_rule",
+  "full_rule_id": "SV-213958r960963_rule",
+  "rule_id": "SV-213958",
+  "rule_revision": "960963",
+  "group_id": "V-213958",
+  "group_title": "SRG-APP-000141-DB-000093",
+  "title": "Access to CLR code must be disabled or restricted, unless specifically required and approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).  \n \nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives.  \n \nApplications must adhere to the principles of least functionality by providing only essential capabilities. \n \nSQL Server may spawn additional external processes to execute procedures that are defined in the SQL Server but stored in external host files (external procedures). The spawned process used to execute the external procedure may operate within a different OS security context than SQL Server and provide unauthorized access to the host system. \n \nThe common language runtime (CLR) component of the .NET Framework for Microsoft Windows in SQL Server allows you to write stored procedures, triggers, user-defined types, user-defined functions, user-defined aggregates, and streaming table-valued functions, using any .NET Framework language, including Microsoft Visual Basic .NET and Microsoft Visual C#.  CLR packing assemblies can access resources protected by .NET Code Access Security when it runs managed code.  Specifying UNSAFE enables the code in the assembly complete freedom to perform operations in the SQL Server process space that can potentially compromise the robustness of SQL Server. UNSAFE assemblies can also potentially subvert the security system of either SQL Server or the common language runtime.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The common language runtime (CLR) component of the .NET Framework for Microsoft Windows in SQL Server allows you to write stored procedures, triggers, user-defined types, user-defined functions, user-defined aggregates, and streaming table-valued functions, using any .NET Framework language, including Microsoft Visual Basic .NET and Microsoft Visual C#. CLR packing assemblies can access resources protected by .NET Code Access Security when it runs managed code. Specifying UNSAFE enables the code in the assembly complete freedom to perform operations in the SQL Server process space that can potentially compromise the robustness of SQL Server. UNSAFE assemblies can also potentially subvert the security system of either SQL Server or the common language runtime.  \n\nTo determine if CLR is enabled, execute the following commands:  \n\nEXEC SP_CONFIGURE 'show advanced options', '1';  \nRECONFIGURE WITH OVERRIDE;  \nEXEC SP_CONFIGURE 'clr enabled';  \n\nIf the value of \"config_value\" is \"0\", this is not a finding.  \n\nIf the value of \"config_value\" is \"1\", review the system documentation to determine whether the use of CLR code is approved. If it is not approved, this is a finding. \n\nIf CLR code is approved, check the database for UNSAFE assembly permission using the following script: \n\nUSE [master]\nSELECT *  \nFROM sys.assemblies \nWHERE permission_set_desc != 'SAFE' \nAND is_user_defined = 1;\n\nIf any records are returned, review the system documentation to determine if the use of UNSAFE assemblies is approved. If it is not approved, this is a finding.",
+  "fix": "Disable use of or remove any CLR code that is not authorized. \n \nTo disable the use of CLR, from the query prompt:  \n \nsp_configure 'show advanced options', 1; \nGO \nRECONFIGURE; \nGO \nsp_configure 'clr enabled', 0; \nGO \nRECONFIGURE; \nGO \n \nFor any approved CLR code with Unsafe or External permissions, use the ALTER ASSEMBLY to change the Permission set for the Assembly and ensure a certificate is configured.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).  \n \nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives.  \n \nApplications must adhere to the principles of least functionality by providing only essential capabilities. \n \nSQL Server may spawn additional external processes to execute procedures that are defined in the SQL Server but stored in external host files (external procedures). The spawned process used to execute the external procedure may operate within a different OS security context than SQL Server and provide unauthorized access to the host system. \n \nThe common language runtime (CLR) component of the .NET Framework for Microsoft Windows in SQL Server allows you to write stored procedures, triggers, user-defined types, user-defined functions, user-defined aggregates, and streaming table-valued functions, using any .NET Framework language, including Microsoft Visual Basic .NET and Microsoft Visual C#.  CLR packing assemblies can access resources protected by .NET Code Access Security when it runs managed code.  Specifying UNSAFE enables the code in the assembly complete freedom to perform operations in the SQL Server process space that can potentially compromise the robustness of SQL Server. UNSAFE assemblies can also potentially subvert the security system of either SQL Server or the common language runtime.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQL6-D0-007300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a",
+      "name": "MS SQL Server 2016 Instance Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-248869r991589_rule",
+  "full_rule_id": "SV-248869r991589_rule",
+  "rule_id": "SV-248869",
+  "rule_revision": "991589",
+  "group_id": "V-248869",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The x86 Ctrl-Alt-Delete key sequence must be disabled on OL 8.",
+  "severity": "high",
+  "description": "<VulnDiscussion>A locally logged-on user, who presses Ctrl-Alt-Delete when at the console, can reboot the system. If accidentally pressed, as could happen in the case of a mixed OS environment, this can create the risk of short-term loss of system availability due to unintentional reboot. In a graphical user environment, risk of unintentional reboot from the Ctrl-Alt-Delete sequence is reduced because the user will be prompted before any action is taken.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify OL 8 is not configured to reboot the system when Ctrl-Alt-Delete is pressed with the following command: \n \n$ sudo systemctl status ctrl-alt-del.target | grep Loaded: \n \nLoaded: masked (Reason: Unit ctrl-alt-del.target is masked.)  \n \nIf the \"ctrl-alt-del.target\" Loaded: value is not set to \"masked\", this is a finding.",
+  "fix": "Configure the system to disable the Ctrl-Alt-Delete sequence for the command line with the following commands: \n \n$ sudo systemctl disable ctrl-alt-del.target \n\n$ sudo systemctl mask ctrl-alt-del.target \n \nCreated symlink /etc/systemd/system/ctrl-alt-del.target -> /dev/null \n \nReload the daemon to take effect: \n \n$ sudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A locally logged-on user, who presses Ctrl-Alt-Delete when at the console, can reboot the system. If accidentally pressed, as could happen in the case of a mixed OS environment, this can create the risk of short-term loss of system availability due to unintentional reboot. In a graphical user environment, risk of unintentional reboot from the Ctrl-Alt-Delete sequence is reduced because the user will be prompted before any action is taken.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL08-00-040170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96",
+      "name": "Oracle Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96"
+  ]
+}

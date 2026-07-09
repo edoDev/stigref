@@ -1,0 +1,53 @@
+{
+  "id": "SV-213931r1043176_rule",
+  "full_rule_id": "SV-213931r1043176_rule",
+  "rule_id": "SV-213931",
+  "rule_revision": "1043176",
+  "group_id": "V-213931",
+  "group_title": "SRG-APP-000023-DB-000001",
+  "title": "SQL Server must be configured to utilize the most-secure authentication method available.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Enterprise environments make account management for applications and databases challenging and complex. A manual process for account management functions adds the risk of a potential oversight or other error. Managing accounts for the same person in multiple places is inefficient and prone to problems with consistency and synchronization. \n \nA comprehensive application account management process that includes automation helps to ensure that accounts designated as requiring attention are consistently and promptly addressed.  \n \nExamples include, but are not limited to, using automation to take action on multiple accounts designated as inactive, suspended, or terminated, or by disabling accounts located in non-centralized account stores, such as multiple servers. Account management functions can also include: assignment of group or role membership; identifying account type; specifying user access authorizations (i.e., privileges); account removal, update, or termination; and administrative alerts. The use of automated mechanisms can include, for example: using email or text messaging to notify account managers when users are terminated or transferred; using the information system to monitor account usage; and using automated telephone notification to report atypical system account usage. \n \nSQL Server must be configured to automatically utilize organization-level account management functions, and these functions must immediately enforce the organization's current account policy.  \n \nAutomation may be comprised of differing technologies that when placed together contain an overall mechanism supporting an organization's automated account management requirements. \n \nSQL Server supports several authentication methods to allow operation in various environments, Kerberos, NTLM, and SQL Server. An instance of SQL Server must be configured to utilize the most-secure method available. Service accounts utilized by SQL Server should be unique to a given instance.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the SQL Server is not part of an Active Directory domain, this finding is Not Applicable. \n\nObtain the fully qualified domain name of the SQL Server instance: \n\nLaunch Windows Explorer. \n\nRight-click on \"Computer\" or \"This PC\" (Varies by OS level), click \"Properties\". \n\nNote the value shown for \"Full computer name\". \n\n*** Note: For a cluster, this value must be obtained from the Failover Cluster Manager. *** \n\nObtain the TCP port that is supporting the SQL Server instance: \n\nClick Start >> Type \"SQL Server 2016 Configuration Manager\" >> From the search results, click \"SQL Server 2016 Configuration Manager\". \n\nFrom the tree on the left, expand \"SQL Server Network Configuration\". \n\nClick \"Protocols for <Instance Name>\" where <Instance Name> is the name of the instance (MSSQLSERVER is the default name). \n\nIn the right pane, right-click on \"TCP/IP\" and choose \"Properties\". \n\nIn the window that opens, click the \"IP Addresses\" tab. \n\nNote the TCP port configured for the instance. \n\nObtain the service account that is running the SQL Server service: \n\nClick \"Start\".  \nType \"SQL Server 2016 Configuration Manager\".  \nFrom the search results, click \"SQL Server 2016 Configuration Manager\". \n\nFrom the tree on the left, select \"SQL Server Services\". \n\nNote the account listed in the \"Log On As\" column for the SQL Server instance being reviewed. \n\nLaunch a command-line or PowerShell window. \n\nEnter the following command where <Service Account> is the identity of the service account. \n\nsetspn -L <Service Account> \n\nExample: setspn -L CONTOSO\\sql2016svc \n\nReview the Registered Service Principal Names returned.  \n\nIf the listing does not contain the following supported service principal names (SPN) formats, this is a finding. \n\nNamed instance\n   MSSQLSvc/<FQDN>:[<port> | <instancename>], where:\n   MSSQLSvc is the service that is being registered.\n   <FQDN> is the fully qualified domain name of the server.\n   <port> is the TCP port number.\n   <instancename> is the name of the SQL Server instance.\n\nDefault instance\n   MSSQLSvc/<FQDN>:<port> | MSSQLSvc/<FQDN>, where:\n   MSSQLSvc is the service that is being registered.\n   <FQDN> is the fully qualified domain name of the server.\n   <port> is the TCP port number.\n\nIf the MSSQLSvc service is registered for any fully qualified domain names that do not match the current server, this may indicate the service account is shared across SQL Server instances. Review server documentation, if the sharing of service accounts across instances is not documented and authorized, this is a finding.",
+  "fix": "Ensure Service Principal Names (SPNs) are properly registered for the SQL Server instance. \n\nUtilize the Microsoft Kerberos Configuration Manager to review Kerberos configuration issues for a given SQL Server instance. \n\nhttps://www.microsoft.com/en-us/download/details.aspx?id=39046 \n\nAlternatively, SPNs for SQL Server can be manually registered. \n\nFor other connections that support Kerberos the SPN is registered in the format MSSQLSvc/<FQDN>/<instancename> for a named instance. The format for registering the default instance is MSSQLSvc/<FQDN>.\n\nUsing an account with permissions to register SPNs, issue the following commands from a command-prompt: \n\nsetspn -S MSSQLSvc/<Fully Qualified Domain Name> <Service Account> \nsetspn -S MSSQLSvc/<Fully Qualified Domain Name>:<TCP Port> <Service Account> \nFor a named instance, use:\nsetspn -S MSSQLSvc/<FQDN>:<instancename> <Service Account> \nsetspn -S MSSQLSvc/<FQDN>:<TCP Port> <Service Account>\n\nRestart the SQL Server instance. \n\nMore information regarding this process is available at:  \nhttps://docs.microsoft.com/en-us/sql/database-engine/configure-windows/register-a-service-principal-name-for-kerberos-connections#Manual",
+  "ccis": [
+    "CCI-000015"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enterprise environments make account management for applications and databases challenging and complex. A manual process for account management functions adds the risk of a potential oversight or other error. Managing accounts for the same person in multiple places is inefficient and prone to problems with consistency and synchronization. \n \nA comprehensive application account management process that includes automation helps to ensure that accounts designated as requiring attention are consistently and promptly addressed.  \n \nExamples include, but are not limited to, using automation to take action on multiple accounts designated as inactive, suspended, or terminated, or by disabling accounts located in non-centralized account stores, such as multiple servers. Account management functions can also include: assignment of group or role membership; identifying account type; specifying user access authorizations (i.e., privileges); account removal, update, or termination; and administrative alerts. The use of automated mechanisms can include, for example: using email or text messaging to notify account managers when users are terminated or transferred; using the information system to monitor account usage; and using automated telephone notification to report atypical system account usage. \n \nSQL Server must be configured to automatically utilize organization-level account management functions, and these functions must immediately enforce the organization's current account policy.  \n \nAutomation may be comprised of differing technologies that when placed together contain an overall mechanism supporting an organization's automated account management requirements. \n \nSQL Server supports several authentication methods to allow operation in various environments, Kerberos, NTLM, and SQL Server. An instance of SQL Server must be configured to utilize the most-secure method available. Service accounts utilized by SQL Server should be unique to a given instance.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQL6-D0-003800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a",
+      "name": "MS SQL Server 2016 Instance Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a"
+  ]
+}

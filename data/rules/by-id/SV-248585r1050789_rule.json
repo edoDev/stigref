@@ -1,0 +1,54 @@
+{
+  "id": "SV-248585r1050789_rule",
+  "full_rule_id": "SV-248585r1050789_rule",
+  "rule_id": "SV-248585",
+  "rule_revision": "1050789",
+  "group_id": "V-248585",
+  "group_title": "SRG-OS-000373-GPOS-00156",
+  "title": "OL 8 must require reauthentication when using the \"sudo\" command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the organization requires the user to reauthenticate when using the \"sudo\" command.\n\nIf the value is set to an integer less than 0, the user's time stamp will not expire and the user will not have to reauthenticate for privileged actions until the user's session is terminated.\n\nSatisfies: SRG-OS-000373-GPOS-00156, SRG-OS-000373-GPOS-00157, SRG-OS-000373-GPOS-00158</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the operating system requires re-authentication when using the \"sudo\" command to elevate privileges.\n\n     $ sudo grep -Eir 'timestamp_timeout' /etc/sudoers /etc/sudoers.d*\n     /etc/sudoers:Defaults timestamp_timeout=0\n\nIf conflicting results are returned, this is a finding.\n\nIf \"timestamp_timeout\" is set to a negative number, is commented out, or no results are returned, this is a finding.",
+  "fix": "Configure the \"sudo\" command to require re-authentication.\n\nEdit the /etc/sudoers file:\n     $ sudo visudo\n\nAdd or modify the following line:\n     Defaults timestamp_timeout=[value]\n\nNote: The \"[value]\" must be a number that is greater than or equal to \"0\".\n\nRemove any duplicate or conflicting lines from /etc/sudoers and /etc/sudoers.d/ files.",
+  "ccis": [
+    "CCI-004895",
+    "CCI-002038"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the organization requires the user to reauthenticate when using the \"sudo\" command.\n\nIf the value is set to an integer less than 0, the user's time stamp will not expire and the user will not have to reauthenticate for privileged actions until the user's session is terminated.\n\nSatisfies: SRG-OS-000373-GPOS-00156, SRG-OS-000373-GPOS-00157, SRG-OS-000373-GPOS-00158",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL08-00-010384",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96",
+      "name": "Oracle Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96"
+  ]
+}

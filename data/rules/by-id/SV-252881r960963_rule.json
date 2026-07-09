@@ -1,0 +1,53 @@
+{
+  "id": "SV-252881r960963_rule",
+  "full_rule_id": "SV-252881r960963_rule",
+  "rule_id": "SV-252881",
+  "rule_revision": "960963",
+  "group_id": "V-252881",
+  "group_title": "SRG-APP-000141",
+  "title": "Firefox must be configured to not delete data upon shutdown.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>For diagnostic purposes, data must remain behind when the browser is closed. This is required to meet non-repudiation controls.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Type \"about:policies\" in the browser address bar. \n\nIf \"SanitizeOnShutdown\" is not displayed under Policy Name or the Policy Value does not have {\"Cache\":false,\"Cookies\":false,\"Downloads\":false,\"FormData\":false,\"Sessions\":false,\"History\":false,\"OfflineApps\":false,\"SiteSettings\":false,\"Locked\":true}, this is a finding.",
+  "fix": "Windows group policy:\n1. Open the group policy editor tool with \"gpedit.msc\".\n2. Navigate to Policy Path: Computer Configuration\\Administrative Templates\\Mozilla\\Firefox\\Clear data when browser is closed\nPolicy Name: Cache, Cookies, Download History, Form & Search History, Browsing History, Active Logins, Site Preferences, Offline Website Data\nPolicy State: Disabled\nPolicy Name: Locked\nPolicy State: Enabled\n\nmacOS \"plist\" file:\nAdd the following:\n<key>SanitizeOnShutdown</key>\n<dict>\n  <key>Cache</key>\n  <false/>\n  <key>Cookies</key>\n  <false/>\n  <key>Downloads</key>\n  <false/>\n  <key>FormData</key>\n  <false/>\n  <key>History</key>\n  <false/>\n  <key>Sessions</key>\n  <false/>\n  <key>SiteSettings</key>\n  <false/>\n  <key>OfflineApps</key>\n  <false/>\n  <key>Locked</key>\n  <true/>\n</dict>\n\nLinux \"policies.json\" file:\nAdd the following in the policies section:\n\"SanitizeOnShutdown\": {\n  \"Cache\": false,\n  \"Cookies\": false,\n  \"Downloads\": false,\n  \"FormData\": false,\n  \"History\": false,\n  \"Sessions\": false,\n  \"SiteSettings\": false,\n  \"OfflineApps\": false,\n  \"Locked\": true \n}",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "For diagnostic purposes, data must remain behind when the browser is closed. This is required to meet non-repudiation controls.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "FFOX-00-000017",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mozilla-firefox-security-technical-implementation-guide-v6r7-c813f3e3",
+      "name": "Mozilla Firefox Security Technical Implementation Guide",
+      "version": "6",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "mozilla-firefox-security-technical-implementation-guide-v6r7-c813f3e3"
+  ]
+}

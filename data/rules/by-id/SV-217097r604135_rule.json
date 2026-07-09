@@ -1,0 +1,53 @@
+{
+  "id": "SV-217097r604135_rule",
+  "full_rule_id": "SV-217097r604135_rule",
+  "rule_id": "SV-217097",
+  "rule_revision": "604135",
+  "group_id": "V-217097",
+  "group_title": "SRG-NET-000018-RTR-000009",
+  "title": "The Juniper Multicast Source Discovery Protocol (MSDP) router must be configured to limit the amount of source-active messages it accepts on per-peer basis.",
+  "severity": "low",
+  "description": "<VulnDiscussion>To reduce any risk of a denial-of-service (DoS) attack from a rogue or misconfigured MSDP router, the router must be configured to limit the number of source-active messages it accepts from each peer.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if it is configured to limit the amount of source-active messages it accepts on a per-peer basis.\n\nprotocols {\n    …\n    …\n    …\n    }\n    msdp {\n        export SA_EXPORT;\n        import SA_IMPORT;\n        group AS25 {\n            peer x.x.x.x {\n                active-source-limit {\n                    maximum nnn;\n                }\n\nIf the router is not configured to limit the source-active messages it accepts, this is a finding.",
+  "fix": "Configure the router to limit the amount of source-active messages it accepts from each peer.\n\n[edit protocols msdp group AS25 peer x.x.x.x]\nset active-source-limit maximum nnn",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To reduce any risk of a denial-of-service (DoS) attack from a rogue or misconfigured MSDP router, the router must be configured to limit the number of source-active messages it accepts from each peer.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000930",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

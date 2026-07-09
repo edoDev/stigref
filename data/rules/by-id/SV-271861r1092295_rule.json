@@ -1,0 +1,53 @@
+{
+  "id": "SV-271861r1092295_rule",
+  "full_rule_id": "SV-271861r1092295_rule",
+  "rule_id": "SV-271861",
+  "rule_revision": "1092295",
+  "group_id": "V-271861",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 systems using Domain Name Servers (DNS) resolution must have at least two name servers configured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To provide availability for name resolution services, multiple redundant name servers are mandated. A failure in name resolution could lead to the failure of security functions requiring name resolution, which may include time synchronization, centralized authentication, and remote system logging.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 configures name servers used by the system with the following command:\n\n$ grep nameserver /etc/resolv.conf\nnameserver 192.168.1.2\nnameserver 192.168.1.3\n\nIf less than two lines are returned that are not commented out, this is a finding.",
+  "fix": "Configure the operating system to use two or more name servers for DNS resolution based on the DNS mode of the system.\n\nIf the NetworkManager DNS mode is set to \"none\", then add the following lines to \"/etc/resolv.conf\":\n\nnameserver [name server 1]\nnameserver [name server 2]\n\nReplace [name server 1] and [name server 2] with the IPs of two different DNS resolvers.\n\nIf the NetworkManager DNS mode is set to \"default\" then add two DNS servers to a NetworkManager connection. Using the following commands:\n\n$ sudo nmcli connection modify [connection name] ipv4.dns [name server 1]\n$ sudo nmcli connection modify [connection name] ipv4.dns [name server 2]\n\nReplace [name server 1] and [name server 2] with the IPs of two different DNS resolvers. Replace [connection name] with a valid NetworkManager connection name on the system. Replace ipv4 with ipv6 if IPv6 DNS servers are used.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To provide availability for name resolution services, multiple redundant name servers are mandated. A failure in name resolution could lead to the failure of security functions requiring name resolution, which may include time synchronization, centralized authentication, and remote system logging.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-006003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-233297r855916_rule",
+  "full_rule_id": "SV-233297r855916_rule",
+  "rule_id": "SV-233297",
+  "rule_revision": "855916",
+  "group_id": "V-233297",
+  "group_title": "SRG-NET-000364-RTR-000204",
+  "title": "The Juniper perimeter router must be configured to drop IPv6 packets containing an extension header with the Endpoint Identification option.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The optional and extensible natures of the IPv6 extension headers require higher scrutiny since many implementations do not always drop packets with headers that it cannot recognize, and hence could cause a Denial-of-Service on the target device. In addition, the type, length, value (TLV) formatting provides the ability for headers to be very large. This option type is associated with the Nimrod Routing system and has no defining RFC document.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration and determine if filters are bound to the applicable interfaces to drop all inbound IPv6 packets containing an option type values of 0x8A (Endpoint Identification) regardless of whether it appears in a Hop-by-Hop or Destination Option header.  \n\nThe following example will block IPv6 packet containing either a Hop-by-Hop or Destination Option header: \n\n    family inet6 {\n        filter IPV6-INGRESS-FILTER {\n            term HOP_BY_HOP_HEADER {\n                from {\n                    next-header hop-by-hop;\n                }\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n            term DEST_ OPT_HEADER {\n                from {\n                    next-header dstops;\n                }\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n            term ALLOW_TCP_ESTABLISHED {\n                from {\n                    next-header tcp;\n                    tcp-established;\n                }\n                then accept;\n            }\n            term DENY_BY_DEFAULT {\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n        }\n    }\n}\n\n\nNote: Currently JUNOS has no method to filter option type within either Hop-by-Hop or Destination Option header. Hence, all packets with a Hop-by-Hop or Destination Option headers must be dropped.\n\nIf the router is not configured to drop IPv6 packets containing an extension header with the Endpoint Identification option, this is a finding.",
+  "fix": "Step 1: Configure a filter to block packets with either a Hop-by-Hop or Destination Option header as shown in the example.\n\nuser@R1# edit firewall family inet6\nuser@R1# edit filter IPV6-INGRESS-FILTER\nuser@R1# set term HOP_BY_HOP_HEADER from next-header hop-by-hop\nuser@R1# set term HOP_BY_HOP_HEADER then discard syslog\nuser@R1# set term DEST_ OPT_HEADER from next-header dstops\nuser@R1# set term DEST_ OPT_HEADER then discard syslog\nuser@R1# top\n\nStep 2: Apply the filter inbound on all external IPv6-enabled interfaces.\n\nuser@R1# edit interfaces ge-0/0/0 unit 0 family inet6\nuser@R1# set filter input IPV6-INGRESS-FILTER\nuser@R1# commit",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The optional and extensible natures of the IPv6 extension headers require higher scrutiny since many implementations do not always drop packets with headers that it cannot recognize, and hence could cause a Denial-of-Service on the target device. In addition, the type, length, value (TLV) formatting provides the ability for headers to be very large. This option type is associated with the Nimrod Routing system and has no defining RFC document.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000385",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

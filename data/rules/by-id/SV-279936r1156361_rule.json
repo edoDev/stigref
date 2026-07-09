@@ -1,0 +1,53 @@
+{
+  "id": "SV-279936r1156361_rule",
+  "full_rule_id": "SV-279936r1156361_rule",
+  "rule_id": "SV-279936",
+  "rule_revision": "1156361",
+  "group_id": "V-279936",
+  "group_title": "SRG-OS-000471-GPOS-00215",
+  "title": "RHEL 9 must audit any script or executable called by cron as root or by any privileged user.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any script or executable called by cron as root or by any privileged user must be owned by that user. It must also have the permissions 755 or more restrictive and should have no extended rights that allow any nonprivileged user to modify the script or executable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 9 is configured to audit the execution of any system call made by cron as root or by any privileged user.\n\n$ sudo auditctl -l | grep /etc/cron.d\n-w /etc/cron.d -p wa -k cronjobs\n\n$ sudo auditctl -l | grep /var/spool/cron\n-w /var/spool/cron -p wa -k cronjobs\n\nIf either of these commands do not return the expected output, or the lines are commented out, this is a finding.",
+  "fix": "Configure RHEL 9 to audit the execution of any system call made by cron as root or by any privileged user.\n\nAdd or update the following file system rules to \"/etc/audit/rules.d/audit.rules\":\n-w /etc/cron.d/ -p wa -k cronjobs\n-w /var/spool/cron/ -p wa -k cronjobs\n\nTo load the rules to the kernel immediately, use the following command:\n\n$ sudo augenrules --load",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any script or executable called by cron as root or by any privileged user must be owned by that user. It must also have the permissions 755 or more restrictive and should have no extended rights that allow any nonprivileged user to modify the script or executable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-654097",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

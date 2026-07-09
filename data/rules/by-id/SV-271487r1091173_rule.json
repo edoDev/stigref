@@ -1,0 +1,58 @@
+{
+  "id": "SV-271487r1091173_rule",
+  "full_rule_id": "SV-271487r1091173_rule",
+  "rule_id": "SV-271487",
+  "rule_revision": "1091173",
+  "group_id": "V-271487",
+  "group_title": "SRG-OS-000023-GPOS-00006",
+  "title": "OL 9 must display the Standard Mandatory DOD Notice and Consent Banner before granting local or remote access to the system via a SSH logon.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The warning message reinforces policy awareness during the logon process and facilitates possible legal action against attackers. Alternatively, systems whose ownership should not be obvious should ensure usage of a banner that does not provide easy attribution.\n\nSatisfies: SRG-OS-000023-GPOS-00006, SRG-OS-000228-GPOS-00088</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 displays the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via SSH connections.\n\nCheck for the location of the banner file currently being used with the following command:\n\n$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*banner'\nbanner /etc/issue\n\nIf the line is commented out or if the file is missing, this is a finding.",
+  "fix": "Configure OL 9 to display the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via ssh.\n\nEdit the \"etc/ssh/sshd_config\" file or a file in \"/etc/ssh/sshd_config.d\" to uncomment the banner keyword and configure it to point to a file that will contain the logon banner (this file may be named differently or be in a different location if using a version of SSH that is provided by a third-party vendor).\n\nAn example configuration line is:\n\nBanner /etc/issue",
+  "ccis": [
+    "CCI-000048",
+    "CCI-001384",
+    "CCI-001385",
+    "CCI-001386",
+    "CCI-001387",
+    "CCI-001388"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The warning message reinforces policy awareness during the logon process and facilitates possible legal action against attackers. Alternatively, systems whose ownership should not be obvious should ensure usage of a banner that does not provide easy attribution.\n\nSatisfies: SRG-OS-000023-GPOS-00006, SRG-OS-000228-GPOS-00088",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-000256",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

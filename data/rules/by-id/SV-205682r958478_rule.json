@@ -1,0 +1,53 @@
+{
+  "id": "SV-205682r958478_rule",
+  "full_rule_id": "SV-205682r958478_rule",
+  "rule_id": "SV-205682",
+  "rule_revision": "958478",
+  "group_id": "V-205682",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "Windows Server 2019 must not have the Server Message Block (SMB) v1 protocol installed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>SMBv1 is a legacy protocol that uses the MD5 algorithm as part of SMB. MD5 is known to be vulnerable to a number of attacks such as collision and preimage attacks and is not FIPS compliant.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Different methods are available to disable SMBv1 on Windows Server 2019. This is the preferred method; however, if WN19-00-000390 and WN19-00-000400 are configured, this is NA.\n\nOpen \"Windows PowerShell\" with elevated privileges (run as administrator).\n\nEnter \"Get-WindowsFeature -Name FS-SMB1\".\n\nIf \"Installed State\" is \"Installed\", this is a finding.\n\nAn Installed State of \"Available\" or \"Removed\" is not a finding.",
+  "fix": "Uninstall the SMBv1 protocol.\n\nOpen \"Windows PowerShell\" with elevated privileges (run as administrator).\n\nEnter \"Uninstall-WindowsFeature -Name FS-SMB1 -Restart\".\n(Omit the Restart parameter if an immediate restart of the system cannot be done.)\n\nAlternately:\n\nStart \"Server Manager\".\n\nSelect the server with the feature.\n\nScroll down to \"ROLES AND FEATURES\" in the right pane.\n\nSelect \"Remove Roles and Features\" from the drop-down \"TASKS\" list.\n\nSelect the appropriate server on the \"Server Selection\" page and click \"Next\".\n\nDeselect \"SMB 1.0/CIFS File Sharing Support\" on the \"Features\" page.\n\nClick \"Next\" and \"Remove\" as prompted.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "SMBv1 is a legacy protocol that uses the MD5 algorithm as part of SMB. MD5 is known to be vulnerable to a number of attacks such as collision and preimage attacks and is not FIPS compliant.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN19-00-000380",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2019-security-technical-implementation-guide-v3r8-b8ffc6b1",
+      "name": "Microsoft Windows Server 2019 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2019-security-technical-implementation-guide-v3r8-b8ffc6b1"
+  ]
+}

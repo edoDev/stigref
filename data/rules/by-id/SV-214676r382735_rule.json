@@ -1,0 +1,53 @@
+{
+  "id": "SV-214676r382735_rule",
+  "full_rule_id": "SV-214676r382735_rule",
+  "rule_id": "SV-214676",
+  "rule_revision": "382735",
+  "group_id": "V-214676",
+  "group_title": "SRG-NET-000019",
+  "title": "The Juniper SRX Services Gateway VPN must ensure inbound and outbound traffic is configured with a security policy in compliance with information flow control policies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote access devices, such as those providing remote access to network devices and information systems, which lack automated, capabilities increase risk and makes remote user access management difficult at best.\n\nRemote access is access to DoD non-public information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. \n\nAutomated monitoring of remote access sessions allows organizations to detect cyber attacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, from a variety of information system components (e.g., servers, workstations, notebook computers, smart phones, and tablets). \n\nIn phase-2, another negotiation is performed, detailing the parameters for the IPsec connection. New keying material using the Diffie-Hellman key exchange established in phase-1 is used to provide session keys used to protecting the VPN data flow. If Perfect-Forwarding-Secrecy (PFS) is used, a new Diffie-Hellman exchange is performed for each phase-2 negotiation. While this is slower, it makes sure that no keys are dependent on any other previously used keys; no keys are extracted from the same initial keying material. This is to make sure that, in the unlikely event that some key was compromised; no subsequent keys can be derived.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify an IPsec policy is configured and used to control the VPN information flow.\n\n[edit]\nshow security ipsec\n\nInspect the security policy.\n\nIf VPN traffic is not configured and controlled using an IPsec policy, this is a finding.",
+  "fix": "The following example command is an example of an IPsec policy.\n\n[edit]\nset security ipsec policy <IPSEC-POLICY> perfect-forward-secrecy keys group14\nset security ipsec policy <IPSEC-POLICY> proposals <IPSEC-PROPOSAL>\n\nThe following command is an example of how to define an IPsec VPN using the IPsec policy and a secure tunnel interface. Alternatively, administrators can configure on-traffic tunnel establishment.\n\n[edit]\nset security ipsec vpn <VPN> bind-interface st0.0\nset security ipsec vpn <VPN> ike gateway <IKE-PEER>\nset security ipsec vpn <VPN> ike ipsec-policy <IPSEC-POLICY>\nset security ipsec vpn <VPN> establish-tunnels immediately\n\nFor site-to-site VPN implementation, the SRX device is configured to route traffic over the IPsec VPN’s secure tunnel interface by establishing a route with the next-hop specified as the secure tunnel interface. The following commands configure an IPv4 and IPv6 static route for their respective secure tunnels.\n\nset routing-options static route <IPv4 network/netmask> next-hop st0.0\nset routing-options rib inet6.0 static route <IPv6 network/netmask> next-hop st0.1",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote access devices, such as those providing remote access to network devices and information systems, which lack automated, capabilities increase risk and makes remote user access management difficult at best.\n\nRemote access is access to DoD non-public information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. \n\nAutomated monitoring of remote access sessions allows organizations to detect cyber attacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, from a variety of information system components (e.g., servers, workstations, notebook computers, smart phones, and tablets). \n\nIn phase-2, another negotiation is performed, detailing the parameters for the IPsec connection. New keying material using the Diffie-Hellman key exchange established in phase-1 is used to provide session keys used to protecting the VPN data flow. If Perfect-Forwarding-Secrecy (PFS) is used, a new Diffie-Hellman exchange is performed for each phase-2 negotiation. While this is slower, it makes sure that no keys are dependent on any other previously used keys; no keys are extracted from the same initial keying material. This is to make sure that, in the unlikely event that some key was compromised; no subsequent keys can be derived.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-VN-000009",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0",
+      "name": "Juniper SRX Services Gateway VPN Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0"
+  ]
+}

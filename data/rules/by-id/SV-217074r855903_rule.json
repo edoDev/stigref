@@ -1,0 +1,53 @@
+{
+  "id": "SV-217074r855903_rule",
+  "full_rule_id": "SV-217074r855903_rule",
+  "rule_id": "SV-217074",
+  "rule_revision": "855903",
+  "group_id": "V-217074",
+  "group_title": "SRG-NET-000362-RTR-000119",
+  "title": "The Juniper PE router must be configured to implement Protocol Independent Multicast (PIM) snooping  for each Virtual Private LAN Services (VPLS) bridge domain.",
+  "severity": "low",
+  "description": "<VulnDiscussion>PIM snooping provides a way to constrain multicast traffic at Layer 2. By monitoring PIM join and prune packets on each interface, the PE router is able to determine interested multicast receivers and hence will populate the layer 2 multicast-forwarding table. This enables the PE router to deliver traffic only to ports with at least one interested member within the VPLS bridge, thereby significantly reducing the volume of multicast traffic that would otherwise flood an entire VPLS bridge domain. The PIM snooping operation applies to both access circuits and pseudowires within a VPLS bridge domain.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that PIM snooping has been configured under the routing instance protocols hierarchy for each VPLS bridge domain as shown in the example.\n\nrouting-instances {\n    VPLS_CUST2 {\n        instance-type vpls;\n        interface ge-0/1/0.0;  \n        route-distinguisher 22:22;\n        vrf-target target:22:22;\n        }\n        protocols {\n            vpls {\n                site-range 9;\n                no-tunnel-services;\n                site R8 {\n                    site-identifier 8;\n                    interface ge-0/1/0.0;\n                }\n                vpls-id 102;\n                neighbor 8.8.8.8;\n            }\n            pim-snooping;\n            }\n        }\n    }\n}\n\nIf the router is not configured to implement PIM  snooping for each VPLS bridge domain, this is a finding.",
+  "fix": "Configure PIM snooping for each VPLS bridge domain as shown in the example below.\n\n[edit routing-instances VPLS_CUST2]\nset routing-instances VPLS_CUST2 protocols pim-snooping",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "PIM snooping provides a way to constrain multicast traffic at Layer 2. By monitoring PIM join and prune packets on each interface, the PE router is able to determine interested multicast receivers and hence will populate the layer 2 multicast-forwarding table. This enables the PE router to deliver traffic only to ports with at least one interested member within the VPLS bridge, thereby significantly reducing the volume of multicast traffic that would otherwise flood an entire VPLS bridge domain. The PIM snooping operation applies to both access circuits and pseudowires within a VPLS bridge domain.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000690",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

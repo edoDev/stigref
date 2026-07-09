@@ -1,0 +1,53 @@
+{
+  "id": "SV-271632r1091608_rule",
+  "full_rule_id": "SV-271632r1091608_rule",
+  "rule_id": "SV-271632",
+  "rule_revision": "1091608",
+  "group_id": "V-271632",
+  "group_title": "SRG-OS-000076-GPOS-00044",
+  "title": "OL 9 user account passwords must have a 60-day maximum password lifetime restriction.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any password, no matter how complex, can eventually be cracked; therefore, passwords need to be changed periodically. If OL 9 does not limit the lifetime of passwords and force users to change their passwords, there is the risk that OL 9 passwords could be compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 user account passwords have a 60-day maximum password lifetime restriction with the following commands:\n\n$ sudo awk -F: '$5 > 60 {print $1 \"\" \"\" $5}' /etc/shadow\n\n$ sudo awk -F: '$5 <= 0 {print $1 \"\" \"\" $5}' /etc/shadow\n\nIf any results are returned that are not associated with a system account, this is a finding.",
+  "fix": "Configure noncompliant accounts to enforce a 60-day maximum password lifetime restriction.\n\npasswd -x 60 [user]",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any password, no matter how complex, can eventually be cracked; therefore, passwords need to be changed periodically. If OL 9 does not limit the lifetime of passwords and force users to change their passwords, there is the risk that OL 9 passwords could be compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-001100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

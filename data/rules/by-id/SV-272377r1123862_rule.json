@@ -1,0 +1,53 @@
+{
+  "id": "SV-272377r1123862_rule",
+  "full_rule_id": "SV-272377r1123862_rule",
+  "rule_id": "SV-272377",
+  "rule_revision": "1123862",
+  "group_id": "V-272377",
+  "group_title": "SRG-APP-000176-DNS-000018",
+  "title": "The TSIG keys used with the BIND 9.x implementation must be owned by a privileged account.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Incorrect ownership of a TSIG key file could allow an adversary to modify the file, thus defeating the security objective.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "With the assistance of the DNS administrator, identify all of the TSIG keys used by the BIND 9.x implementation.\n\nIdentify the account that the \"named\" process is running as:\n\n# ps -ef | grep named\nnamed 3015 1 0 12:59 ? 00:00:00 /usr/sbin/named -u named -t /var/named/chroot\n\nWith the assistance of the DNS administrator, determine the location of the TSIG keys used by the BIND 9.x implementation.\n\n# ls -al <TSIG_Key_Location>\n-rw-r-----. 1 root named 76 May 10 20:35 tsig-example.key\n\nIf any of the TSIG keys are not owned by the above account, this is a finding.",
+  "fix": "Change the ownership of the TSIG keys to the named process it is running as.\n\n# chown <named_proccess_owner> <TSIG_key_file>.",
+  "ccis": [
+    "CCI-000186"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Incorrect ownership of a TSIG key file could allow an adversary to modify the file, thus defeating the security objective.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BIND-9X-001200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460",
+      "name": "BIND 9.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460"
+  ]
+}

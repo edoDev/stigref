@@ -1,0 +1,53 @@
+{
+  "id": "SV-213914r961131_rule",
+  "full_rule_id": "SV-213914r961131_rule",
+  "rule_id": "SV-213914",
+  "rule_revision": "961131",
+  "group_id": "V-213914",
+  "group_title": "SRG-APP-000233-DB-000124",
+  "title": "SQL Server must isolate security functions from non-security functions.",
+  "severity": "low",
+  "description": "<VulnDiscussion>An isolation boundary provides access control and protects the integrity of the hardware, software, and firmware that perform security functions. \n\nSecurity functions are the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based.\n\nDevelopers and implementers can increase the assurance in security functions by employing well-defined security policy models; structured, disciplined, and rigorous hardware and software development techniques; and sound system/security engineering principles. \n\nDatabase Management Systems typically separate security functionality from non-security functionality via separate databases or schemas. Database objects or code implementing security functionality should not be commingled with objects or code implementing application logic. When security and non-security functionality are commingled, users who have access to non-security functionality may be able to access security functionality.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine elements of security functionality (lists of permissions, additional authentication information, stored procedures, application specific auditing, etc.) that are being housed inside SQL server.\n\nFor any elements found, check SQL Server to determine if these objects or code implementing security functionality are located in a separate security domain, such as a separate database, schema, or table created specifically for security functionality.\n\nIf the database is a SQL Server default database (master, msdb, model, tempdb), this is NA.\n\nRun the following query to list all the user-defined databases:\n\nSELECT Name \nFROM sys.databases \nWHERE database_id > 4 \nORDER BY 1;\n\nReview the database structure to determine where security related functionality is stored. If security-related database objects or code are not kept separate, this is a finding.",
+  "fix": "Check the server documentation, locate security-related database objects and code in a separate database, schema, table, or other separate security domain from database objects and code implementing application logic.  \n\nMicrosoft SQL Server 2005 introduced the concept of database object schemas. Schemas are analogous to separate namespaces or containers used to store database objects. Security permissions apply to schemas, making them an important tool for separating and protecting database objects based on access rights. Schemas reduce the work required, and improve the flexibility, for security-related administration of a database.\n\nUser-schema separation allows for more flexibility in managing database object permissions. A schema is a named container for database objects, which allows the user to group objects into separate namespaces.\n\nWhere possible, locate security-related database objects and code in a separate database, schema, or other separate security domain from database objects and code implementing application logic. In all cases, use GRANT, REVOKE, DENY, ALTER ROLE … ADD MEMBER … and/or ALTER ROLE …. DROP MEMBER statements to add and remove permissions on server-level and database-level security-related objects to provide effective isolation.",
+  "ccis": [
+    "CCI-001084"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "An isolation boundary provides access control and protects the integrity of the hardware, software, and firmware that perform security functions. \n\nSecurity functions are the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based.\n\nDevelopers and implementers can increase the assurance in security functions by employing well-defined security policy models; structured, disciplined, and rigorous hardware and software development techniques; and sound system/security engineering principles. \n\nDatabase Management Systems typically separate security functionality from non-security functionality via separate databases or schemas. Database objects or code implementing security functionality should not be commingled with objects or code implementing application logic. When security and non-security functionality are commingled, users who have access to non-security functionality may be able to access security functionality.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQL6-D0-001900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ms-sql-server-2016-database-security-technical-implementation-guide-v3r5-c5a96c75",
+      "name": "MS SQL Server 2016 Database Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "ms-sql-server-2016-database-security-technical-implementation-guide-v3r5-c5a96c75"
+  ]
+}

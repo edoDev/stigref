@@ -1,0 +1,62 @@
+{
+  "id": "SV-265978r1003613_rule",
+  "full_rule_id": "SV-265978r1003613_rule",
+  "rule_id": "SV-265978",
+  "rule_revision": "1003613",
+  "group_id": "V-265978",
+  "group_title": "SRG-APP-000014",
+  "title": "The vCenter Server must use DOD-approved encryption to protect the confidentiality of network sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Using older unauthorized versions or incorrectly configuring protocol negotiation makes the gateway vulnerable to known and unknown attacks that exploit vulnerabilities in this protocol.\n\nIn vCenter 8 Update 3, Transport Layer Security (TLS) Profiles were introduced that allow users to manage and configure TLS parameters for the vCenter server. Several TLS profiles are available by default but not all may be suitable for high security environments.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Developer Center >> API Explorer.\n\nSelect \"appliance\" from the \"Select API\" drop down list then scroll down to the \"tls/profiles/global\" section.\n\nExpand the GET call and click Execute and review the response for the configured global TLS profile.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nInvoke-GetTlsProfilesGlobal\n\nIf the global TLS profile is not \"NIST_2024\", this is a finding.",
+  "fix": "From the vSphere Client, go to Developer Center >> API Explorer.\n\nSelect \"appliance\" from the \"Select API\" drop down list then scroll down to the \"tls/profiles/global\" section.\n\nExpand the PUT call and enter the following in the value box:\n\n{\n    \"profile\": \"NIST_2024\"\n}\n\nClick Execute and Continue to configure a new global TLS profile.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nInvoke-SetProfilesGlobalAsync -TlsProfilesGlobalSetSpec (Initialize-TlsProfilesGlobalSetSpec -VarProfile NIST_2024)\n\nTo monitor the status of the operation the task id from the command output can be used with the \"Invoke-GetTask\" command. For example:\n\nInvoke-GetTask -Task 66b247c2-fe02-4425-9338-1c88eb856138:com.vmware.appliance.tls.profiles.global",
+  "ccis": [
+    "CCI-000068",
+    "CCI-000382",
+    "CCI-001184",
+    "CCI-001453",
+    "CCI-001941",
+    "CCI-002418",
+    "CCI-002420",
+    "CCI-002421",
+    "CCI-002422",
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using older unauthorized versions or incorrectly configuring protocol negotiation makes the gateway vulnerable to known and unknown attacks that exploit vulnerabilities in this protocol.\n\nIn vCenter 8 Update 3, Transport Layer Security (TLS) Profiles were introduced that allow users to manage and configure TLS parameters for the vCenter server. Several TLS profiles are available by default but not all may be suitable for high security environments.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000009",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3"
+  ]
+}

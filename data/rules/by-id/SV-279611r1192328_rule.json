@@ -1,0 +1,53 @@
+{
+  "id": "SV-279611r1192328_rule",
+  "full_rule_id": "SV-279611r1192328_rule",
+  "rule_id": "SV-279611",
+  "rule_revision": "1192328",
+  "group_id": "V-279611",
+  "group_title": "SRG-OS-000078-GPOS-00046",
+  "title": "Nutanix OS must enforce a minimum 15-character password length.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The shorter the password, the lower the number of possible combinations that need to be tested before the password is compromised.\n\nPassword complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. Password length is one factor of several that helps to determine strength and how long it takes to crack a password. Using more characters in a password helps to exponentially increase the time and/or resources required to compromise the password.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS is configured to enforce a minimum 15-character password length using the following command.\n\n$ sudo grep minlen /etc/security/pwquality.conf\nminlen = 15\n\nIf the command does not return a \"minlen\" value of 15 or greater, this is a finding.",
+  "fix": "Configure Nutanix OS to use complex password.\n\n1. For AOS, enter the following command.\n\n$ sudo salt-call state.sls security/CVM/pamCVM.sls\n\n2. For Prism Central, enter the following command.\n\n$ sudo salt-call state.sls security/PCVM/pamPCVM.sls\n\n3. For Files, enter the following command.\n\n$ sudo salt-call state.sls security/AFS/pamAFS.sls\n\n4. For AHV OS CVM, enter the following command.\n\n$ ncli cluster edit-hypervisor-security-params enable-high-strength-password=true",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The shorter the password, the lower the number of possible combinations that need to be tested before the password is compromised.\n\nPassword complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. Password length is one factor of several that helps to determine strength and how long it takes to crack a password. Using more characters in a password helps to exponentially increase the time and/or resources required to compromise the password.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000168",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-220680r940009_rule",
+  "full_rule_id": "SV-220680r940009_rule",
+  "rule_id": "SV-220680",
+  "rule_revision": "940009",
+  "group_id": "V-220680",
+  "group_title": "SRG-NET-000362-L2S-000021",
+  "title": "The Cisco switch must have Root Guard enabled on all switch ports connecting to access layer switches and hosts.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Spanning Tree Protocol (STP) does not provide any means for the network administrator to securely enforce the topology of the switched network. Any switch can be the root bridge in a network. However, a more optimal forwarding topology places the root bridge at a specific predetermined location. With the standard STP, any bridge in the network with a lower bridge ID takes the role of the root bridge. The administrator cannot enforce the position of the root bridge but can set the root bridge priority to 0 in an effort to secure the root bridge position.\n\nThe root guard feature provides a way to enforce the root bridge placement in the network. If the bridge receives superior STP Bridge Protocol Data Units (BPDUs) on a root guard-enabled port, root guard moves this port to a root-inconsistent STP state and no traffic can be forwarded across this port while it is in this state. To enforce the position of the root bridge it is imperative that root guard is enabled on all ports where the root bridge should never appear.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch topology as well as the configuration to verify that Root Guard is enabled on all switch ports connecting to access layer switches.\n\ninterface Ethernet1/1\n…\n …\n …\nspanning-tree guard root\n\ninterface Ethernet1/2\n…\n …\n …\nspanning-tree guard root\n\ninterface Ethernet1/3\n…\n …\n …\nspanning-tree guard root\n\nIf the switch has not enabled Root Guard on all switch ports connecting to access layer switches, this is a finding.",
+  "fix": "Configure the switch to have Root Guard enabled on all ports connecting to access layer switches.\n\nSW1(config)# int e1/1 – 44\nSW1(config-if-range)# spanning-tree guard root\nSW1(config-if-range)# end",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Spanning Tree Protocol (STP) does not provide any means for the network administrator to securely enforce the topology of the switched network. Any switch can be the root bridge in a network. However, a more optimal forwarding topology places the root bridge at a specific predetermined location. With the standard STP, any bridge in the network with a lower bridge ID takes the role of the root bridge. The administrator cannot enforce the position of the root bridge but can set the root bridge priority to 0 in an effort to secure the root bridge position.\n\nThe root guard feature provides a way to enforce the root bridge placement in the network. If the bridge receives superior STP Bridge Protocol Data Units (BPDUs) on a root guard-enabled port, root guard moves this port to a root-inconsistent STP state and no traffic can be forwarded across this port while it is in this state. To enforce the position of the root bridge it is imperative that root guard is enabled on all ports where the root bridge should never appear.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-L2-000090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-l2s-security-technical-implementation-guide-v3r2-c012221b",
+      "name": "Cisco NX OS Switch L2S Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-l2s-security-technical-implementation-guide-v3r2-c012221b"
+  ]
+}

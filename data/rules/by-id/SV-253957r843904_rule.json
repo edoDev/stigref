@@ -1,0 +1,53 @@
+{
+  "id": "SV-253957r843904_rule",
+  "full_rule_id": "SV-253957r843904_rule",
+  "rule_id": "SV-253957",
+  "rule_revision": "843904",
+  "group_id": "V-253957",
+  "group_title": "SRG-NET-000362-L2S-000023",
+  "title": "The Juniper EX switch must be configured to enable STP Loop Protection on all non-designated STP switch ports.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Spanning Tree Protocol (STP) Loop Protection feature provides additional protection against STP loops. An STP loop is created when an STP blocking port in a redundant topology erroneously transitions to the forwarding state. In its operation, STP relies on continuous reception and transmission of BPDUs based on the port role. The designated port transmits BPDUs, and the non-designated port receives BPDUs. When one of the ports in a physically redundant topology no longer receives BPDUs, the STP conceives that the topology is loop free. Eventually, the blocking port from the alternate or backup port becomes a designated port and moves to a forwarding state. This situation creates a loop. The loop protection feature makes additional checks. If BPDUs are not received on a non-designated port and loop protection is enabled, that port is moved into the STP loop-inconsistent blocking state.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify that STP Loop Protection is enabled on all non-designated STP switch ports.\n\nVerify STP Loop Protection for RSTP and VSTP.\n[edit protocols]\nrstp {\n    interface <interface name> {\n        bpdu-timeout-action {\n            block;\n        }\n    }\n}\nvstp {\n    interface <interface name> {\n        bpdu-timeout-action {\n            block;\n        }\n    }\n}\n\nVerify Loop Protection for all instances on an MSTP interface:\n[protocols]\nmstp {\n    interface <interface name> {\n        bpdu-timeout-action {\n            block;\n        }\n    }\n}\n\nNote: Loop Protection and Root Protection are mutually exclusive and cannot be simultaneously configured on the same interface.\n\nIf STP Loop Protection is not configured on non-designated STP ports, this is a finding.",
+  "fix": "Configure the switch to have STP Loop Protection enabled on all non-designated STP interfaces.\n\nRSTP or VSTP non-designated interface loop protection:\nset protocols rstp interface <interface name> bpdu-timeout-action block\nset protocols vstp interface <interface name> bpdu-timeout-action block\n\nAll instances on an MSTP interface:\nset protocols mstp interface <interface name> bpdu-timeout-action block\n\nNote: Loop Protection and Root Protection are mutually exclusive and cannot be simultaneously configured on the same interface.",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Spanning Tree Protocol (STP) Loop Protection feature provides additional protection against STP loops. An STP loop is created when an STP blocking port in a redundant topology erroneously transitions to the forwarding state. In its operation, STP relies on continuous reception and transmission of BPDUs based on the port role. The designated port transmits BPDUs, and the non-designated port receives BPDUs. When one of the ports in a physically redundant topology no longer receives BPDUs, the STP conceives that the topology is loop free. Eventually, the blocking port from the alternate or backup port becomes a designated port and moves to a forwarding state. This situation creates a loop. The loop protection feature makes additional checks. If BPDUs are not received on a non-designated port and loop protection is enabled, that port is moved into the STP loop-inconsistent blocking state.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-L2-000100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf",
+      "name": "Juniper EX Series Switches Layer 2 Switch Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf"
+  ]
+}

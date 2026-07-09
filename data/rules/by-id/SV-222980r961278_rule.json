@@ -1,0 +1,53 @@
+{
+  "id": "SV-222980r961278_rule",
+  "full_rule_id": "SV-222980r961278_rule",
+  "rule_id": "SV-222980",
+  "rule_revision": "961278",
+  "group_id": "V-222980",
+  "group_title": "SRG-APP-000315-AS-000094",
+  "title": "LockOutRealms must be used for management of Tomcat.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A LockOutRealm adds the ability to lock a user out after multiple failed logins. LockOutRealm is an implementation of the Tomcat Realm interface that extends the CombinedRealm to provide user lock out functionality if there are too many failed authentication attempts in a given period of time. A LockOutRealm is created by wrapping around a standard realm such as a JNDI Directory Realm which connects Tomcat to an LDAP Directory. \n\nA Catalina container (Engine, Host, or Context) may contain no more than one Realm element (although this one Realm may itself contain multiple nested Realms). In addition, the Realm associated with an Engine or a Host is automatically inherited by lower-level containers unless the lower level container explicitly defines its own Realm. If no Realm is configured for the Engine, an instance of the Null Realm will be configured for the Engine automatically.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the Tomcat server console, run the following command:\n\nsudo grep -i  LockOutRealm $CATALINA_BASE/conf/server.xml.  \n\nIf there are no results or if the LockOutRealm is not used for the Tomcat management application context, this is a finding.",
+  "fix": "From the Tomcat server console as a privileged user edit the $CATALINA_BASE/conf/server.xml file.\n\nsudo nano $CATALINA_BASE/conf/server.xml file\n\nLocate or add the LockOutRealm element. Make sure the LockOutRealm element is applied to the management application at a minimum (if the management application is in use on the system). This is done by ensuring the LockOutRealm is nested under the Engine, Host or directly within the management application Context container.\n\nEXAMPLE:\n\n      <Realm className=\"org.apache.catalina.realm.LockOutRealm\" failureCount=\"5\" lockOutTime=\"600\">\n...\n</Realm>",
+  "ccis": [
+    "CCI-002314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A LockOutRealm adds the ability to lock a user out after multiple failed logins. LockOutRealm is an implementation of the Tomcat Realm interface that extends the CombinedRealm to provide user lock out functionality if there are too many failed authentication attempts in a given period of time. A LockOutRealm is created by wrapping around a standard realm such as a JNDI Directory Realm which connects Tomcat to an LDAP Directory. \n\nA Catalina container (Engine, Host, or Context) may contain no more than one Realm element (although this one Realm may itself contain multiple nested Realms). In addition, the Realm associated with an Engine or a Host is automatically inherited by lower-level containers unless the lower level container explicitly defines its own Realm. If no Realm is configured for the Engine, an instance of the Null Realm will be configured for the Engine automatically.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-001020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-279604r1192604_rule",
+  "full_rule_id": "SV-279604r1192604_rule",
+  "rule_id": "SV-279604",
+  "rule_revision": "1192604",
+  "group_id": "V-279604",
+  "group_title": "SRG-OS-000073-GPOS-00041",
+  "title": "Nutanix OS must store only encrypted representations of passwords.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify Nutanix OS is configured to store encrypted representation of passwords and that the encryption meets required standards using the following command.\n\n$ sudo grep -i encrypt /etc/login.defs\nENCRYPT_METHOD SHA512\n\nIf the /etc/login.defs file does not contain the required output, this is a finding.\n\n2. Confirm that the interactive user account passwords are using a strong password hash using the following command.\n\n$ sudo cut -d: -f2 /etc/shadow\n\n$6$hMKOdbToveIPcp$ybbhyd/bY/.nbce5H1Qc8Ji7ECmTZvs50ASDFHSY9XEW/TkK7Xer5xUYp7AHYzrk815rkJecsCDIMIgYXBQ9C/\n\nPassword hashes \"!\" or \"*\" indicate inactive accounts not available for logon and are not evaluated. If any interactive user passwords do not begin with \"$6$\", this is a finding.\n\n3. Check that a minimum number of hash rounds is configured using the following command.\n\n$ sudo grep -iE \"^SHA_CRYPT_\" /etc/login.defs\nSHA_CRYPT_MAX_ROUNDS 5000\n\nIf the value of \"SHA_CRYPT_MAX_ROUNDS\" is not set to 5000 or more, this is a finding.",
+  "fix": "Configure Nutanix OS to use complex password using the following command.\n\n1. For AOS, enter the following command.\n\n$ sudo salt-call state.sls security/CVM/pamCVM.sls\n\n2. For Prism Central, enter the following command.\n\n$ sudo salt-call state.sls security/PCVM/pamPCVM.sls\n\n3. For Files, enter the following command.\n\n$ sudo salt-call state.sls security/AFS/pamAFS.sls",
+  "ccis": [
+    "CCI-004062"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000161",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

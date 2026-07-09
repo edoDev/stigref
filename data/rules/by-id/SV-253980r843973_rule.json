@@ -1,0 +1,53 @@
+{
+  "id": "SV-253980r843973_rule",
+  "full_rule_id": "SV-253980r843973_rule",
+  "rule_id": "SV-253980",
+  "rule_revision": "843973",
+  "group_id": "V-253980",
+  "group_title": "SRG-NET-000018-RTR-000008",
+  "title": "The Juniper router configured for Multicast Source Discovery Protocol (MSDP) must filter source-active multicast advertisements to external MSDP peers to avoid global visibility of local-only multicast sources and groups.",
+  "severity": "low",
+  "description": "<VulnDiscussion>To avoid global visibility of local information, there are a number of source-group (S, G) states in a PIM-SM domain that must not be leaked to another domain, such as multicast sources with private address, administratively scoped multicast addresses, and the auto-RP groups (224.0.1.39 and 224.0.1.40).\n\nAllowing a multicast distribution tree, local to the core, to extend beyond its boundary could enable local multicast traffic to leak into other autonomous systems and customer networks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if there is export policy to block local source-active multicast advertisements.\n\nVerify that an outbound source-active filter is bound to each MSDP peer.\n\n[edit protocols msdp]\npeer <address> {\n    export source-active-filter;\n}\n\nReview the policy-statement referenced by the source-active filters and verify that MSDP source-active messages being sent to MSDP peers do not leak advertisements that are local.\n\n[edit policy-options]\npolicy-statement source-active-filter {\n    term unauth-groups {\n        from {\n            route-filter 224.0.1.2/32 exact;\n            route-filter 224.0.2.2/32 exact;\n        }\n        then reject;\n    }\n    term unauth-sources {\n        from {\n            source-address-filter 10.0.0.0/8 orlonger;\n            source-address-filter 127.0.0.0/8 orlonger;\n        }\n        then reject;\n    }\n}\n\nIf the router is not configured with an export policy to block local source-active multicast advertisements, this is a finding.",
+  "fix": "Ensure an export policy is implemented on all MSDP routers to avoid global visibility of local multicast (S, G) states.\n\nset protocols msdp peer <address> export source-active-filter\n\nset policy-options policy-statement source-active-filter term unauth-groups from route-filter 224.0.1.2/32 exact\nset policy-options policy-statement source-active-filter term unauth-groups from route-filter 224.0.2.2/32 exact\nset policy-options policy-statement source-active-filter term unauth-groups then reject\nset policy-options policy-statement source-active-filter term unauth-sources from source-address-filter 10.0.0.0/8 orlonger\nset policy-options policy-statement source-active-filter term unauth-sources from source-address-filter 127.0.0.0/8 orlonger\nset policy-options policy-statement source-active-filter term unauth-sources then reject",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To avoid global visibility of local information, there are a number of source-group (S, G) states in a PIM-SM domain that must not be leaked to another domain, such as multicast sources with private address, administratively scoped multicast addresses, and the auto-RP groups (224.0.1.39 and 224.0.1.40).\n\nAllowing a multicast distribution tree, local to the core, to extend beyond its boundary could enable local multicast traffic to leak into other autonomous systems and customer networks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

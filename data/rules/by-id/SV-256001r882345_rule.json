@@ -1,0 +1,53 @@
+{
+  "id": "SV-256001r882345_rule",
+  "full_rule_id": "SV-256001r882345_rule",
+  "rule_id": "SV-256001",
+  "rule_revision": "882345",
+  "group_id": "V-256001",
+  "group_title": "SRG-NET-000019-RTR-000007",
+  "title": "The Arista router must be configured to have all inactive interfaces disabled.",
+  "severity": "low",
+  "description": "<VulnDiscussion>An inactive interface is rarely monitored or controlled and may expose a network to an undetected attack on that interface. Unauthorized personnel with access to the communication facility could gain access to a router by connecting to a configured interface that is not in use.\n\nIf an interface is no longer used, the configuration must be deleted and the interface disabled. For sub-interfaces, delete sub-interfaces that are on inactive interfaces and delete sub-interfaces that are themselves inactive. If the sub-interface is no longer necessary for authorized communications, it must be deleted.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router configuration.\n\nVerify the interfaces and sub-interfaces execute the commands \"show ip interface brief\" and \"show interface status\".\n\nExample of a disabled interface:\ninterface Ethernet 8-10\n description The interface is administratively shutdown\n shutdown\n\nIf an interface is not being used but is configured or enabled, this is a finding.",
+  "fix": "Delete inactive sub-interfaces and disable and delete the configuration of any inactive ports on the router.\n\nDeleting the sub-interface:\n\nrouter(config)#no interface Ethernet8.100\n\nDisabling the interface:\n\nrouter(config)#interface Ethernet 8-10\nrouter(config-if-Et8-10)#shutdown\n\nResetting the interface to the default-configuration:\n\nrouter(config)#default interface Ethernet 8",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "An inactive interface is rarely monitored or controlled and may expose a network to an undetected attack on that interface. Unauthorized personnel with access to the communication facility could gain access to a router by connecting to a configured interface that is not in use.\n\nIf an interface is no longer used, the configuration must be deleted and the interface disabled. For sub-interfaces, delete sub-interfaces that are on inactive interfaces and delete sub-interfaces that are themselves inactive. If the sub-interface is no longer necessary for authorized communications, it must be deleted.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

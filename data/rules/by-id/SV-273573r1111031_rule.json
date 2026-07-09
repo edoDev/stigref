@@ -1,0 +1,53 @@
+{
+  "id": "SV-273573r1111031_rule",
+  "full_rule_id": "SV-273573r1111031_rule",
+  "rule_id": "SV-273573",
+  "rule_revision": "1111031",
+  "group_id": "V-273573",
+  "group_title": "SRG-NET-000018-RTR-000005",
+  "title": "The RUCKUS ICX BGP router must be configured to reject outbound route advertisements for any prefixes that do not belong to any customer or the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify there is a filter defined to only advertise routes for prefixes that belong to any customers or the local AS.\n\nThis requirement is not applicable for the DODIN Backbone. \n\n1. Verify a prefix-list is configured for routes belonging to the local AS.\nICX# show ip prefix-lists\nip prefix-list local-AS: 2 entries\n     seq 5 permit x.1.1.0/24\n     seq 10 permit x.1.2.0/24\n\n2. Verify the prefix-list is applied to outbound routes to neighbors. \nICX# show ip bgp config \nCurrent BGP configuration:\nrouter bgp\n local-as 1000\n neighbor x.x.x.x remote-as 1001\n neighbor x.x.x.x prefix-list local-AS out \n\nIf the router does not filter out prefix advertisements that do not belong on the local AS, this is a finding.",
+  "fix": "Configure a prefix-list representing prefixes that belong to the local-AS and apply them to BGP neighbors similar to what is shown below:\n\nip prefix-list mylist seq 10 permit x.1.1.0/24\nip prefix-list mylist seq 10 permit x.1.2.0/24\nip prefix-list mylist seq 15 deny 0.0.0.0/0 ge 8\n\nrouter bgp\n local-as 1000\n neighbor x.x.x.x remote-as 1001\n neighbor x.x.x.x prefix-list local-AS out",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

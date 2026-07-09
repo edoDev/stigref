@@ -1,0 +1,53 @@
+{
+  "id": "SV-256042r882468_rule",
+  "full_rule_id": "SV-256042r882468_rule",
+  "rule_id": "SV-256042",
+  "rule_revision": "882468",
+  "group_id": "V-256042",
+  "group_title": "SRG-NET-000364-RTR-000111",
+  "title": "The Arista perimeter router must be configured to have Link Layer Discovery Protocols (LLDPs) disabled on all external interfaces.",
+  "severity": "low",
+  "description": "<VulnDiscussion>LLDPs are primarily used to obtain protocol addresses of neighboring devices and discover platform capabilities of those devices. Use of SNMP with the LLDP Management Information Base (MIB) allows network management applications to learn the device type and the SNMP agent address of neighboring devices, thereby enabling the application to send SNMP queries to those devices. LLDPs are also media- and protocol-independent as they run over the data link layer; therefore, two systems that support different network-layer protocols can still learn about each other. Allowing LLDP messages to reach external network nodes is dangerous as it provides an attacker a method to obtain information of the network infrastructure that can be useful to plan an attack.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nReview all Arista router configurations to ensure LLDPs are not included in the global configuration or LLDPs are not included for each active external interface. Examples of LLDPs are Cisco Discovery Protocol (CDP), Link Layer Discovery Protocol (LLDP), and Link Layer Discovery Protocol - Media Endpoint Discovery (LLDP-MED).\n\nDisable LLDP on external interface.\n\nint ethernet 3\n no lldp transmit\n no lldp receive\n\nOn Arista multi-layer routers, the LLDP can be disabled globally.\n\nno lldp run\n\nIf LLDPs are configured globally or on any external interface, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nDisable LLDPs on all external interfaces.\n\nLEAF-1A(config)#int ethernet 3\nLEAF-1A(config-if-Et3)#no lldp transmit\nLEAF-1A(config-if-Et3)#no lldp receive\n\nDisable LLDP globally.\n\nLEAF-1A(config)#no lldp run",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "LLDPs are primarily used to obtain protocol addresses of neighboring devices and discover platform capabilities of those devices. Use of SNMP with the LLDP Management Information Base (MIB) allows network management applications to learn the device type and the SNMP agent address of neighboring devices, thereby enabling the application to send SNMP queries to those devices. LLDPs are also media- and protocol-independent as they run over the data link layer; therefore, two systems that support different network-layer protocols can still learn about each other. Allowing LLDP messages to reach external network nodes is dangerous as it provides an attacker a method to obtain information of the network infrastructure that can be useful to plan an attack.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000630",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

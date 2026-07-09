@@ -1,0 +1,53 @@
+{
+  "id": "SV-237824r647881_rule",
+  "full_rule_id": "SV-237824r647881_rule",
+  "rule_id": "SV-237824",
+  "rule_revision": "647881",
+  "group_id": "V-237824",
+  "group_title": "SRG-OS-000123-GPOS-00064",
+  "title": "The storage system must be configured to have only 1 emergency account which can be accessed without LDAP, and which has full administrator capabilities.",
+  "severity": "high",
+  "description": "<VulnDiscussion>While LDAP allows the storage system to support stronger authentication and provides additional auditing, it also places a dependency on an external entity in the operational environment. The existence of a single local account with a strong password means that administrators can continue to access the storage system in the event the LDAP system is temporarily unavailable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that only essential local accounts are configured. Enter the following command:\n\ncli% showuser\n\nIf the output shows users other than the four accounts below, this is a finding:\n\n3paradm\n3parsvc\n3parsnmpuser\n3parcimuser",
+  "fix": "Display users with the following command:\n\ncli% showuser\n\nIf the accounts \"3parbrowse\", \"3paredit\", or \"3parservice\" exist, see HP3P-32-001504 for removal instructions specific to these accounts.\n\nIf the account \"3parcimuser\" exists see HP3P-32-001002 for removal instructions specific to that account.\n\nOtherwise, remove all accounts except \"3paradm\", \"3parsvc\", \"3parsnmpuser\", and \"3parcimuser\" using the following command:\n\ncli% removeuser <username>\n\nConfirm the operation with \"y\".",
+  "ccis": [
+    "CCI-001682"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "While LDAP allows the storage system to support stronger authentication and provides additional auditing, it also places a dependency on an external entity in the operational environment. The existence of a single local account with a strong password means that administrators can continue to access the storage system in the event the LDAP system is temporarily unavailable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HP3P-32-001501",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-storeserv-3-2-x-security-technical-implementation-guide-v2r1-c5cff27e",
+      "name": "HPE 3PAR StoreServ 3.2.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-storeserv-3-2-x-security-technical-implementation-guide-v2r1-c5cff27e"
+  ]
+}

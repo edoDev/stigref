@@ -1,0 +1,53 @@
+{
+  "id": "SV-241792r971322_rule",
+  "full_rule_id": "SV-241792r971322_rule",
+  "rule_id": "SV-241792",
+  "rule_revision": "971322",
+  "group_id": "V-241792",
+  "group_title": "PP-MDM-411051",
+  "title": "The Jamf Pro EMM server must be configured with an enterprise certificate for signing policies (if function is not automatically implemented during Jamf Pro EMM server install).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical that only authorized certificates are used for key activities such as code signing for system software updates, code signing for integrity verification, and policy signing. Otherwise, there is no assurance that a malicious actor has not inserted itself in the process of packaging the code or policy. For example, messages signed with an invalid certificate may contain links to malware, which could lead to the installation or distribution of that malware on DoD information systems, leading to compromise of DoD sensitive information and other attacks. Therefore, the Jamf Pro EMM server must have the capability to configure the enterprise certificate.\n\nSFR ID: FMT_SMF.1.1(2) i, FMT_POL_EXT.1.1</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Jamf Pro is utilizing an External CA for signing communication to mobile devices:\n\n1. Open Jamf Pro server.\n2. Open \"Settings\".\n3. Select \"PKI Certificates\".\n4. Select \"Management Certificate Template\".\n5. Select \"External CA\" tab.\n6. Verify the \"Use a SCEP-enabled external CA for computer and mobile device enrollment\" is enabled.\n7. Verify that the Signing Certificate is listed at the bottom of the page.\n\nIf these settings are confirmed, Jamf Pro is set to use an external CA.\n\nIf Jamf Pro is not configured to use an External CA for signing communication to mobile devices, this is a finding.",
+  "fix": "Configure the following settings within the Jamf Pro EMM server for ensuring an authorized DoD certificate is used for signing enrollment and configuration profiles:\n\n1. Open Jamf Pro server.\n2. Open \"Settings\".\n3. Open \"PKI Certificates\".\n4. Select \"Management Certificate Template\" tab.\n5. Select \"External CA\" tab.\n6. Select \"Edit\".\n7. Select to use SCEP-enabled external CA for computer and mobile device enrollment.\n8. Enter all the applicable settings to connect this server to SCEP/Entrust enabled CA.\n9. Select \"Save\".\n10. At the bottom of the External CA screen, select \"Change Signing and CA Certificates\".\n11. Follow onscreen instructions to upload the signing and CA certificates for Jamf Pro to use.\n\nJamf Pro is now set to use an External CA for signing all communication to mobile devices.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical that only authorized certificates are used for key activities such as code signing for system software updates, code signing for integrity verification, and policy signing. Otherwise, there is no assurance that a malicious actor has not inserted itself in the process of packaging the code or policy. For example, messages signed with an invalid certificate may contain links to malware, which could lead to the installation or distribution of that malware on DoD information systems, leading to compromise of DoD sensitive information and other attacks. Therefore, the Jamf Pro EMM server must have the capability to configure the enterprise certificate.\n\nSFR ID: FMT_SMF.1.1(2) i, FMT_POL_EXT.1.1",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JAMF-10-000480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "jamf-pro-v10-x-emm-security-technical-implementation-guide-v3r1-2abf09e7",
+      "name": "Jamf Pro v10.x EMM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "jamf-pro-v10-x-emm-security-technical-implementation-guide-v3r1-2abf09e7"
+  ]
+}

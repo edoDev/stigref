@@ -1,0 +1,53 @@
+{
+  "id": "SV-253963r843922_rule",
+  "full_rule_id": "SV-253963r843922_rule",
+  "rule_id": "SV-253963",
+  "rule_revision": "843922",
+  "group_id": "V-253963",
+  "group_title": "SRG-NET-000512-L2S-000002",
+  "title": "The Juniper EX switch must be configured to enable IGMP or MLD Snooping on all VLANs.",
+  "severity": "low",
+  "description": "<VulnDiscussion>IGMP and MLD snooping provides a way to constrain multicast traffic at layer 2. By monitoring the IGMP or MLD membership reports sent by hosts within a VLAN, the snooping application can set up layer 2 multicast forwarding tables to deliver specific multicast traffic only to interfaces connected to hosts interested in receiving the traffic, thereby significantly reducing the volume of multicast traffic that would otherwise flood the VLAN.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify that IGMP or MLD snooping has been configured for IPv4 and IPv6 multicast traffic respectively.\n\nVerify IGMP and MLD is globally configured for all VLANs:\n[edit protocols]\nigmp-snooping {\n    vlan all {\n        immediate-leave;\n        interface <multicast router interface name>.<logical unit> {\n            multicast-router-interface;\n        }\n    }\n}\nmld-snooping {\n    vlan all {\n        immediate-leave;\n        interface <multicast router interface name>.<logical unit> {\n            multicast-router-interface;\n        }\n    }\n}\n\nFor VLAN-specific values, verify IGMP and MLD snooping is configured for each VLAN:\n[edit protocols]\nigmp-snooping {\n    vlan vlan-name {\n        immediate-leave;\n        interface <multicast router interface name>.<logical unit> {\n            multicast-router-interface;\n        }\n        interface <host interface name>.<logical unit> {\n            host-only-interface;\n        }\n    }\n}\nmld-snooping {\n    vlan vlan-name {\n        immediate-leave;                \n        interface <multicast router interface name>.<logical unit> {\n            multicast-router-interface;\n        }\n        interface <host interface name>.<logical unit> {\n            host-only-interface;\n        }\n    }\n}\n\nIf the switch is not configured to implement IGMP or MLD snooping for each VLAN, this is a finding.",
+  "fix": "Configure IGMP or MLD snooping for IPv4 and IPv6 multicast traffic respectively for each VLAN.\n\nGlobal:\nset protocols igmp-snooping vlan all immediate-leave\nset protocols igmp-snooping vlan all interface <multicast router interface name>.<logical unit> multicast-router-interface\nset protocols mld-snooping vlan all immediate-leave\nset protocols mld-snooping vlan all interface <multicast router interface name>.<logical unit> multicast-router-interface\n\nPer VLAN:\nset protocols igmp-snooping vlan vlan-name immediate-leave\nset protocols igmp-snooping vlan vlan-name interface <multicast router interface name>.<logical unit> multicast-router-interface\nset protocols igmp-snooping vlan vlan-name interface <host interface name>.<logical unit> host-only-interface\nset protocols mld-snooping vlan vlan-name immediate-leave\nset protocols mld-snooping vlan vlan-name interface <multicast router interface name>.<logical unit> multicast-router-interface\nset protocols mld-snooping vlan vlan-name interface <host interface name>.<logical unit> host-only-interface",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "IGMP and MLD snooping provides a way to constrain multicast traffic at layer 2. By monitoring the IGMP or MLD membership reports sent by hosts within a VLAN, the snooping application can set up layer 2 multicast forwarding tables to deliver specific multicast traffic only to interfaces connected to hosts interested in receiving the traffic, thereby significantly reducing the volume of multicast traffic that would otherwise flood the VLAN.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-L2-000160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf",
+      "name": "Juniper EX Series Switches Layer 2 Switch Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf"
+  ]
+}

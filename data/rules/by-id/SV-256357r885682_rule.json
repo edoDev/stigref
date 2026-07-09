@@ -1,0 +1,53 @@
+{
+  "id": "SV-256357r885682_rule",
+  "full_rule_id": "SV-256357r885682_rule",
+  "rule_id": "SV-256357",
+  "rule_revision": "885682",
+  "group_id": "V-256357",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must be isolated from the public internet but must still allow for patch notification and delivery.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>vCenter and the embedded Lifecycle Manager system must never have a direct route to the internet. Despite this, updates and patches sourced from VMware on the internet must be delivered in a timely manner.\n\nThere are two methods to accomplish this: a proxy server and the Update Manager Download Service (UMDS). UMDS is an optional module for Lifecycle Manager that fetches upgrades for virtual appliances, patch metadata, patch binaries, and notifications that would not otherwise be available to an isolated Lifecycle Manager directly.\n\nAlternatively, a proxy for Lifecycle Manager can be configured to allow controlled, limited access to the public internet for the sole purpose of patch gathering. Either solution mitigates the risk of internet connectivity by limiting its scope and use.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the following conditions:\n\n1. Lifecycle Manager must be configured to use the UMDS.\n\nOR\n\n2. Lifecycle Manager must be configured to use a proxy server for access to VMware patch repositories.\n\nOR\n\n3. Lifecycle Manager must disable internet patch repositories and any patches must be manually validated and imported as needed.\n\nOption 1:\n\nFrom the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.\n\nClick the \"Change Download Source\" button.\n\nVerify the \"Download patches from a UMDS shared repository\" radio button is selected and a valid UMDS repository is supplied.\n\nClick \"Cancel\".\n\nIf this is not set, this is a finding.\n\nOption 2: \n\nFrom the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.\n\nClick the \"Change Download Source\" button.\n\nVerify the \"Download patches directly from the internet\" radio button is selected.\n\nClick \"Cancel\".\n\nNavigate to the vCenter Server Management interface at https://<vcenter dns>:5480 >> Networking >> Proxy Settings.\n\nVerify \"HTTPS\" is \"Enabled\".\n\nClick the \"HTTPS\" row.\n\nVerify the proxy server configuration is accurate.\n\nIf this is not set, this is a finding.\n\nOption 3: \n\nFrom the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Downloads.\n\nVerify the \"Automatic downloads\" option is disabled.\n\nFrom the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.\n\nVerify any download sources are disabled.\n\nIf this is not set, this is a finding.",
+  "fix": "Option 1:\n\nFrom the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.\n\nClick the \"Change Download Source\" button.\n\nSelect the \"Download patches from a UMDS shared repository\" radio button and supply a valid UMDS repository.\n\nClick \"Save\".\n\nOption 2:\n\nFrom the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.\n\nClick the \"Change Download Source\" button.\n\nSelect the \"Download patches directly from the internet\" radio button.\n\nClick \"Save\".\n\nNavigate to the vCenter Server Management interface at https://<vcenter dns>:5480 >> Networking >> Proxy Settings.\n\nClick \"Edit\".\n\nSlide \"HTTPS\" to \"Enabled\".\n\nSupply the appropriate proxy server configuration.\n\nClick \"Save\".\n\nOption 3:\n\nFrom the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Downloads.\n\nClick \"Edit\" and uncheck \"Download patches\". \n\nUnder \"Patch Setup\", select each download source and click \"Disable\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "vCenter and the embedded Lifecycle Manager system must never have a direct route to the internet. Despite this, updates and patches sourced from VMware on the internet must be delivered in a timely manner.\n\nThere are two methods to accomplish this: a proxy server and the Update Manager Download Service (UMDS). UMDS is an optional module for Lifecycle Manager that fetches upgrades for virtual appliances, patch metadata, patch binaries, and notifications that would not otherwise be available to an isolated Lifecycle Manager directly.\n\nAlternatively, a proxy for Lifecycle Manager can be configured to allow controlled, limited access to the public internet for the sole purpose of patch gathering. Either solution mitigates the risk of internet connectivity by limiting its scope and use.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-70-000277",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8",
+      "name": "VMware vSphere 7.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8"
+  ]
+}

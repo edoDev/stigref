@@ -1,0 +1,53 @@
+{
+  "id": "SV-269349r1050232_rule",
+  "full_rule_id": "SV-269349r1050232_rule",
+  "rule_id": "SV-269349",
+  "rule_revision": "1050232",
+  "group_id": "V-269349",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "Cameras must be disabled or covered when not in use.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors. \n \nFailing to disconnect from collaborative computing devices (i.e., cameras) can result in subsequent compromises of organizational information.\n\nProviding easy methods to physically disconnect from such devices after a collaborative computing session helps to ensure participants actually carry out the disconnect activity without having to go through complex and tedious procedures; it also ensures that microphones built into the cameras are also disabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the operating system disables the ability to load the uvcvideo kernel module:\n\n$ grep -r uvcvideo /etc/modprobe.conf /etc/modprobe.d/* \n\n/etc/modprobe.d/uvcvideo.conf:install uvcvideo /bin/false\n/etc/modprobe.d/uvcvideo.conf:blacklist uvcvideo\n\nIf the command does not return any output, or either line is commented out, and the collaborative computing device has not been authorized for use, this is a finding.\n\nIf a built-in camera is not protected with a cover or is not physically disabled, this is a finding.\n\nFor an external camera, if there is not a method for the operator to manually disconnect the camera (e.g., unplug, power off) at the end of collaborative computing sessions, this is a finding.\n\nIf the device or operating system does not have a camera installed, this requirement is not applicable.",
+  "fix": "To configure the system to prevent the uvcvideo kernel module from being loaded, run the following command:\n\n$ cat << EOF | tee /etc/modprobe.d/uvcvideo.conf \ninstall uvcvideo /bin/false\nblacklist uvcvideo\nEOF",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors. \n \nFailing to disconnect from collaborative computing devices (i.e., cameras) can result in subsequent compromises of organizational information.\n\nProviding easy methods to physically disconnect from such devices after a collaborative computing session helps to ensure participants actually carry out the disconnect activity without having to go through complex and tedious procedures; it also ensures that microphones built into the cameras are also disabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-030490",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

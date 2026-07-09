@@ -1,0 +1,53 @@
+{
+  "id": "SV-272424r1124066_rule",
+  "full_rule_id": "SV-272424r1124066_rule",
+  "rule_id": "SV-272424",
+  "rule_revision": "1124066",
+  "group_id": "V-272424",
+  "group_title": "SRG-APP-000247-DNS-000036",
+  "title": "A BIND 9.x server implementation must manage excess capacity, bandwidth, or other redundancy to limit the effects of information flooding types of denial-of-service (DoS) attacks.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity. \n\nA DoS attack against the DNS infrastructure has the potential to cause a DoS to all network users. As the DNS is a distributed backbone service of the internet, various forms of amplification attacks resulting in DoS, while using the DNS, are still prevalent on the internet today. Some potential DoS flooding attacks against the DNS include malformed packet flood, spoofed source addresses, and distributed DoS. Without the DNS, users and systems would not have the ability to perform simple name to IP resolution. \n\nConfiguring the DNS implementation to defend against cache poisoning, employing increased capacity and bandwidth, building redundancy into the DNS architecture, using DNSSEC, limiting and securing recursive services, DNS black holes, etc., may reduce the susceptibility to some flooding types of DoS attacks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If this is a recursive name server, this is not applicable.\n\nExcessive, almost-identical UDP responses can be controlled by configuring a rate-limit clause in an options or view statement. This mechanism keeps authoritative BIND 9 from being used to amplify reflection denial-of-service (DoS) attacks.\n\nInspect the \"named.conf\" file for the following:\n\noptions {\n  ...\n  rate-limit {\n    responses-per-second <integer>;\n    window <integer>; \n  };\n\nIf the rate-limit sub-statements are missing, this is a finding.",
+  "fix": "Configure the authoritative name server to prohibit recursion.\n\nEdit the \"named.conf\" file and add the following sub-statements to the options statement:\n\noptions {\n  rate-limit {\n    responses-per-second <integer>;\n    window <integer>;            \n  };\n\nRestart the BIND 9.x process.",
+  "ccis": [
+    "CCI-001095"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity. \n\nA DoS attack against the DNS infrastructure has the potential to cause a DoS to all network users. As the DNS is a distributed backbone service of the internet, various forms of amplification attacks resulting in DoS, while using the DNS, are still prevalent on the internet today. Some potential DoS flooding attacks against the DNS include malformed packet flood, spoofed source addresses, and distributed DoS. Without the DNS, users and systems would not have the ability to perform simple name to IP resolution. \n\nConfiguring the DNS implementation to defend against cache poisoning, employing increased capacity and bandwidth, building redundancy into the DNS architecture, using DNSSEC, limiting and securing recursive services, DNS black holes, etc., may reduce the susceptibility to some flooding types of DoS attacks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BIND-9X-001750",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460",
+      "name": "BIND 9.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-254048r844177_rule",
+  "full_rule_id": "SV-254048r844177_rule",
+  "rule_id": "SV-254048",
+  "rule_revision": "844177",
+  "group_id": "V-254048",
+  "group_title": "SRG-NET-000364-RTR-000112",
+  "title": "The Juniper perimeter router must be configured to have Proxy ARP disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When Proxy ARP is enabled on a router, it allows that router to extend the network (at layer 2) across multiple interfaces (LAN segments). Because proxy ARP allows hosts from different LAN segments to look like they are on the same segment, proxy ARP is only safe when used between trusted LAN segments. Attackers can leverage the trusting nature of proxy ARP by spoofing a trusted host and then intercepting packets. Proxy ARP should always be disabled on router interfaces that do not require it, unless the router is being used as a LAN bridge.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to determine if Proxy ARP is disabled on all external interfaces. By default, Proxy ARP is disabled on all interfaces. Verify \"proxy-arp\" has not been enabled on external interfaces as shown in the example:\n\n[edit interfaces]\n<external interface> {\n    unit 0 {\n        proxy-arp [restricted|unrestricted]; << Must not be configured on external interfaces.\n        <additional configuration>\n    }\n}\n\nIf Proxy ARP is enabled on any external interface, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nDisable IP Proxy ARP on all external interfaces.\n\ndelete interfaces <external interface> unit 0 proxy-arp",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When Proxy ARP is enabled on a router, it allows that router to extend the network (at layer 2) across multiple interfaces (LAN segments). Because proxy ARP allows hosts from different LAN segments to look like they are on the same segment, proxy ARP is only safe when used between trusted LAN segments. Attackers can leverage the trusting nature of proxy ARP by spoofing a trusted host and then intercepting packets. Proxy ARP should always be disabled on router interfaces that do not require it, unless the router is being used as a LAN bridge.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000760",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

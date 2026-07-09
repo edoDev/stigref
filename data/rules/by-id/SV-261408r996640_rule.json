@@ -1,0 +1,53 @@
+{
+  "id": "SV-261408r996640_rule",
+  "full_rule_id": "SV-261408r996640_rule",
+  "rule_id": "SV-261408",
+  "rule_revision": "996640",
+  "group_id": "V-261408",
+  "group_title": "SRG-OS-000447-GPOS-00201",
+  "title": "SLEM 5 must notify the system administrator (SA) when Advanced Intrusion Detection Environment (AIDE) discovers anomalies in the operation of any security functions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If anomalies are not acted on, security functions may fail to secure the system.\n\nSecurity function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.\n\nNotifications provided by information systems include messages to local computer consoles and/or hardware indications, such as lights.\n\nThis capability must take into account operational requirements for availability for selecting an appropriate response. The organization may choose to shut down or restart the information system upon security function anomaly detection.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 notifies the SA when AIDE discovers anomalies in the operation of any security functions.\n\nNote: A file integrity tool other than AIDE may be used, but the tool must be configured to notify the system administrator and/or ISSO if there is an anomaly.\n\nVerify the aide cron job sends an email when executed with the following command:\n\n     > sudo grep -i \"aide\" /etc/cron.*/aide \n\n     0 0 * * * /usr/sbin/aide --check | /bin/mail -s \"$HOSTNAME - Daily AIDE integrity check run\" root@example_server_name.mil\n\nIf the \"aide\" file does not exist under the \"/etc/cron\" directory structure or the cron job is not configured to execute a binary to send an email (such as \"/bin/mail\"), this is a finding.",
+  "fix": "Configure SLEM 5 to notify the SA when AIDE discovers anomalies in the operation of any security functions.\n\nAdd or modify the following line in the \"/etc/cron.daily/aide\" file:\n\n0 0 * * * /usr/sbin/aide --check | /bin/mail -s \"$HOSTNAME - Daily AIDE integrity check run\" root@example_server_name.mil",
+  "ccis": [
+    "CCI-002702"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If anomalies are not acted on, security functions may fail to secure the system.\n\nSecurity function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.\n\nNotifications provided by information systems include messages to local computer consoles and/or hardware indications, such as lights.\n\nThis capability must take into account operational requirements for availability for selecting an appropriate response. The organization may choose to shut down or restart the information system upon security function anomaly detection.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-651035",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

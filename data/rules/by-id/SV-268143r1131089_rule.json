@@ -1,0 +1,53 @@
+{
+  "id": "SV-268143r1131089_rule",
+  "full_rule_id": "SV-268143r1131089_rule",
+  "rule_id": "SV-268143",
+  "rule_revision": "1131089",
+  "group_id": "V-268143",
+  "group_title": "SRG-OS-000163-GPOS-00072",
+  "title": "NixOS must terminate all SSH connections after becoming unresponsive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at the operating system level, and de-allocating networking assignments at the application level if multiple application sessions are using a single operating system-level network connection. This does not mean that the operating system terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that all network connections associated with SSH traffic are automatically terminated after becoming unresponsive with the following command:\n\n$ grep -i clientalivecount /etc/ssh/sshd_config\n\nClientAliveCountMax 1\n\nIf \"ClientAliveCountMax\" is not set to \"1\", is commented out, or is missing, this is a finding.",
+  "fix": "Configure NixOS to automatically terminate all network connections associated with SSH traffic after being unresponsive. \n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\nservices.openssh.extraConfig = ''\n ClientAliveCountMax 1\n'';\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-001133"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at the operating system level, and de-allocating networking assignments at the application level if multiple application sessions are using a single operating system-level network connection. This does not mean that the operating system terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-001000",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-256010r882372_rule",
+  "full_rule_id": "SV-256010r882372_rule",
+  "rule_id": "SV-256010",
+  "rule_revision": "882372",
+  "group_id": "V-256010",
+  "group_title": "SRG-NET-000168-RTR-000077",
+  "title": "The Arista router must be configured to authenticate all routing protocol messages using NIST-validated FIPS 198-1 message authentication code algorithm.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack.\n\nSince MD5 is vulnerable to \"birthday\" attacks and may be compromised, routing protocol authentication must use FIPS 198-1 validated algorithms and modules to encrypt the authentication key. This requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and multicast-related protocols.\n\nSatisfies: SRG-NET-000168-RTR-000077, SRG-NET-000168-RTR-000078</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router configuration to verify it is using a NIST-validated FIPS 198-1 message authentication code algorithm to authenticate routing protocol messages.\n\nOSPFv2 Example:\n\nVerify the Message-Digest authentication configuration on the interface for OSPF with the following command:\n\nsh run int ethernet YY\n\ninterface Eth12\n ip ospf authentication message-digest\n ip ospf message-digest-key 23 sha256 0 arista123\n\nIf MD5 is present in the output, this is a finding.\n\nBGP Example:\n\nStep 1: Arista router must verify the system clock is set to the correct date/time zone and clock source as this will affect the key lifetimes.\n\nrouter#show clock\nWed Oct 5 14:25:53 2022\nTimezone: US/Pacific\nClock source: NTP server (192.168.10.25)\n\nIf the clock is incorrect, this is a finding. \n\nStep 2: Arista router must verify the management security profile is configured and the session shared-secrets Lifetime durations are specified for the required rotation order and must not exceed 180 days.\n\nrouter#sh man sec session shared-secret profile BGP-SHA1\nProfile: BGP-SHA1\n\nCurrent receive secret: ID: 5, Expires: December 05 2022, 14:34 UTC\nCurrent transmit secret: ID: 5, Expires: December 05 2022, 14:34 UTC\n\nReceive secret rotation order: 5, 10, 15\nTransmit secret rotation order: 5, 10, 15\n\nSecrets:\n   ID 15\n      Secret: $1c$rcKS3MQ9sre00iXfxDVMEg==\n      Receive lifetime: March 05 2023, 14:34 UTC to infinite\n      Transmit lifetime: March 05 2023, 14:34 UTC to infinite\n   ID 10\n      Secret: $1c$rcKS3MQ9srcBunxwqKkGEw==\n      Receive lifetime: December 05 2022, 14:34 UTC to March 05 2023, 14:34 UTC\n      Transmit lifetime: December 05 2022, 14:34 UTC to March 05 2023, 14:34 UTC\n   ID 5\n      Secret: $1c$rcKS3MQ9srd9RAMH9iKmPQ==\n      Receive lifetime: October 05 2022, 14:34 UTC to December 05 2022, 14:34 UTC\n      Transmit lifetime: October 05 2022, 14:34 UTC to December 05 2022, 14:34 UTC\n\nIf the management security profile is not configured, this is a finding.\n\nIf the key lifetime exceeds 180 days, this is a finding.\n\nStep 3: Arista router must verify the BGP peer group is configured to use the BGP security profile for the configured BGP neighbor peer. BGP Graceful-restart must be configured in the event the peer restarts to allow TCP resets and prevent clearing of traffic keys. Arista router supports graceful-restart restart-time configuration <1-3600> default [300 seconds].\n\nshow running-config | section bgp 65000\nrouter bgp 65000\n   router-id 10.11.11.11\n   graceful-restart restart-time 300\n   graceful-restart\n   neighbor Peer_Leaf peer group\n   neighbor Peer_Leaf remote-as 65000\n   neighbor Peer_Leaf next-hop-self\n   neighbor Peer_Leaf send-community extended\n   neighbor Peer_Leaf maximum-routes 12000\n   neighbor Peer_Leaf2 peer group\n   neighbor Peer_Leaf2 remote-as 200\n   neighbor Peer_Leaf2 next-hop-self\n   neighbor Peer_Leaf2 send-community extended\n   neighbor Peer_Leaf2 maximum-routes 12000\n   neighbor 1.1.1.1 password 7 kEFkx0nsheXsR5ICROtOfB==\n   neighbor 1.1.1.1 maximum-routes 12000\n   neighbor 2.2.2.2 peer group Peer_Leaf2\n   neighbor 2.2.2.2 password shared-secret profile BGP-SHA1 algorithm aes-128-cmac-96\n   neighbor 2.2.2.2 maximum-routes 12000\n   neighbor 10.11.12.2 peer group Peer_Leaf\n   no neighbor 10.11.12.2 route-map out\n   redistribute connected route-map loopback\n\nIf BGP is not configured to use the security profile, this is a finding.",
+  "fix": "Configure routing protocol authentication to use a NIST-validated FIPS 198-1 message authentication code algorithm.\n\nOSPFv2:\n\nrouter(config)#interface Eth12\nrouter(config-int-Eth12)#ip ospf authentication message-digest\nrouter(config-int-Eth12)#ip ospf message-digest-key 23 sha256 0 arista123\n\nBGP:\n\nStep 1: The Arista router must configure the system clock, which will affect the valid key for a given profile and should be used with caution.\n\nrouter(config)#clock set hh:mm:ss  Current time\n\nStep 2: The Arista router must be configured for management security profile <profile_name> and keys for BGP neighbor sessions.\n\nrouter(config)#management security\nrouter(config-man-sec)#session shared-secret profile BGP-SHA\nrouter(config-man-sec-sh-sec-profile-BGP-SHA)#secret 5 password1 2022-10-05 14:34:01 2022–12-05 14:34:01\nrouter(config-man-sec-sh-sec-profile-BGP-SHA)#secret 10 password2 2022-12-05 14:34:01 2023-03-05 14:34:01\nrouter(config-man-sec-sh-sec-profile-BGP-SHA)#secret 15 password3 2023-10-05 14:34:01 <not to exceed 180 days>\n\nStep 3: The Arista router must configure the BGP Neighbor to select the profile for use in TCP AO.\n\nrouter(config)#router bgp 65000\nrouter(config-router-bgp)#neighbor 2.2.2.2 password shared-secret profile BGP-SHA1 algorithm aes-128-cmac-96\nrouter(config-router-bgp)#exit\nrouter(config)#write memory",
+  "ccis": [
+    "CCI-000803",
+    "CCI-002205"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack.\n\nSince MD5 is vulnerable to \"birthday\" attacks and may be compromised, routing protocol authentication must use FIPS 198-1 validated algorithms and modules to encrypt the authentication key. This requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and multicast-related protocols.\n\nSatisfies: SRG-NET-000168-RTR-000077, SRG-NET-000168-RTR-000078",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000280",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

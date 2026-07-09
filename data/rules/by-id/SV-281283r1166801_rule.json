@@ -1,0 +1,53 @@
+{
+  "id": "SV-281283r1166801_rule",
+  "full_rule_id": "SV-281283r1166801_rule",
+  "rule_id": "SV-281283",
+  "rule_revision": "1166801",
+  "group_id": "V-281283",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "RHEL 10 must ensure effective dconf policy matches the policy keyfiles.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unlike text-based keyfiles, the binary database is impossible to check through most automated and all manual means; therefore, to evaluate dconf configuration, both must be true at the same time. Configuration files must be compliant, and the database must be more recent than those keyfiles, which gives confidence that it reflects them.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This requirement assumes the use of the RHEL 10 default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is not applicable.\n\nVerify RHEL 10 ensures effective dconf policy matches the policy keyfiles.\n\nCheck the last modification time of the local databases, comparing it to the last modification time of the related keyfiles. The following command will check every dconf database and compare its modification time to the related system keyfiles:\n\n$ function dconf_needs_update { for db in $(find /etc/dconf/db -maxdepth 1 -type f); do db_mtime=$(stat -c %Y \"$db\"); keyfile_mtime=$(stat -c %Y \"$db\".d/* | sort -n | tail -1); if [ -n \"$db_mtime\" ] && [ -n \"$keyfile_mtime\" ] && [ \"$db_mtime\" -lt \"$keyfile_mtime\" ]; then echo \"$db needs update\"; return 1; fi; done; }; dconf_needs_update\n\nIf the command has any output, then a dconf database needs to be updated, and this is a finding.",
+  "fix": "Configure RHEL 10 to ensure that the effective dconf policy matches the policy keyfiles.\n\nUpdate the dconf databases by running the following command:\n\n$ sudo dconf update",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unlike text-based keyfiles, the binary database is impossible to check through most automated and all manual means; therefore, to evaluate dconf configuration, both must be true at the same time. Configuration files must be compliant, and the database must be more recent than those keyfiles, which gives confidence that it reflects them.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-700800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

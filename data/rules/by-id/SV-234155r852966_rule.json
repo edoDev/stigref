@@ -1,0 +1,53 @@
+{
+  "id": "SV-234155r852966_rule",
+  "full_rule_id": "SV-234155r852966_rule",
+  "rule_id": "SV-234155",
+  "rule_revision": "852966",
+  "group_id": "V-234155",
+  "group_title": "SRG-NET-000364-FW-000036",
+  "title": "The FortiGate firewall must restrict traffic entering the VPN tunnels to the management network to only the authorized management packets based on destination address.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protect the management network with a filtering firewall configured to block unauthorized traffic. This requirement is similar to the out-of-band management (OOBM) model, in which the production network is managed in-band. The management network could also be housed at a Network Operations Center (NOC) that is located locally or remotely at a single or multiple interconnected sites. \n\nNOC interconnectivity, as well as connectivity between the NOC and the managed networks’ premise routers, would be enabled using either provisioned circuits or VPN technologies such as IPsec tunnels or MPLS VPN services.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If FortiGate is not configured to support VPN access, this requirement is Not Applicable.\n\nLog in to the FortiGate GUI with Super- or Firewall Policy-Admin privilege.\n\n1. Click Policy and Objects.\n2. Click IPv4 or IPv6 Policy.\n3. Verify there are Policies where the Incoming Interface is a management-related VPN Tunnel interface, and the Outgoing Interface is the Management Network interface.\n4. Verify such policies with Action IPSEC meet organization requirements to only allow connectivity to specific, authorized Management Network hosts and ensure that traffic is encrypted through the IPsec tunnel.\n5. Verify at least one of these polices are configured with Action set to DENY.\n\nIf there are not DENY Policies in which the Incoming Interface is a management-related VPN Tunnel interface, and the Outgoing Interface is the Management Network interface, this is a finding.\n\nIf there are no IPSEC Policies for which the Incoming Interface is a management-related VPN Tunnel interface, and the Outgoing Interface is the Management Network interface that meets organization requirements, this is a finding.",
+  "fix": "Log in to the FortiGate GUI with Super- or Firewall Policy-Admin privilege.\n\n1. Click Policy and Objects.\n2. Click IPv4 or IPv6 Policy.\n3. Click +Create New.\n4. Name the policy.\n5. For the Incoming Interface, select the tunnel from which a host is connecting to the management network.\n6. For the Outgoing Interface, select the interface connected to the management network.\n7. For the Source, select the address object or group of authorized management hosts.\n8. For the Destination, select assets in the management network, and approved Network Services.\n9. Configure the Policy Action to Accept.\n10. Ensure Enable this policy is toggled to right.\n11. Click OK.\n\nRepeat these steps for each Management Network host and associated Service.",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protect the management network with a filtering firewall configured to block unauthorized traffic. This requirement is similar to the out-of-band management (OOBM) model, in which the production network is managed in-band. The management network could also be housed at a Network Operations Center (NOC) that is located locally or remotely at a single or multiple interconnected sites. \n\nNOC interconnectivity, as well as connectivity between the NOC and the managed networks’ premise routers, would be enabled using either provisioned circuits or VPN technologies such as IPsec tunnels or MPLS VPN services.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "FNFG-FW-000130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "fortinet-fortigate-firewall-security-technical-implementation-guide-v1r4-4c8634a1",
+      "name": "Fortinet FortiGate Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "fortinet-fortigate-firewall-security-technical-implementation-guide-v1r4-4c8634a1"
+  ]
+}

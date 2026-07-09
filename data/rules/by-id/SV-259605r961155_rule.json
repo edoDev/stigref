@@ -1,0 +1,53 @@
+{
+  "id": "SV-259605r961155_rule",
+  "full_rule_id": "SV-259605r961155_rule",
+  "rule_id": "SV-259605",
+  "rule_revision": "961155",
+  "group_id": "V-259605",
+  "group_title": "SRG-APP-000247",
+  "title": "Exchange receive connectors must control the number of recipients chunked on a single message.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Email system availability depends in part on best practice strategies for setting tuning configurations. For message size restrictions, multiple places exist to set or override inbound or outbound message size. Failure to control the configuration strategy can result in loss of data or system availability.\n\nThis setting enables the administrator to enable \"chunking\" on received messages as they arrive at the domain. This is done so large message bodies can be relayed by the remote sender to the Receive connector in multiple, smaller chunks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Open the Exchange Management Shell and enter the following command:\n\nGet-ReceiveConnector | Select-Object -Property Name, Identity, ChunkingEnabled\n\nFor each receive connector, if the value of \"ChunkingEnabled\" is not set to \"True\", this is a finding.",
+  "fix": "Open the Exchange Management Shell and enter the following command:\n\nSet-ReceiveConnector -Identity <'IdentityName'> -ChunkingEnabled $true\n\nNote: The <IdentityName> value must be in quotes.\n\nRepeat the procedure for each receive connector.",
+  "ccis": [
+    "CCI-001095"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Email system availability depends in part on best practice strategies for setting tuning configurations. For message size restrictions, multiple places exist to set or override inbound or outbound message size. Failure to control the configuration strategy can result in loss of data or system availability.\n\nThis setting enables the administrator to enable \"chunking\" on received messages as they arrive at the domain. This is done so large message bodies can be relayed by the remote sender to the Receive connector in multiple, smaller chunks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-ED-000118",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac",
+      "name": "Microsoft Exchange 2019 Edge Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac"
+  ]
+}

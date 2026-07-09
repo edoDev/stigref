@@ -1,0 +1,53 @@
+{
+  "id": "SV-222954r960963_rule",
+  "full_rule_id": "SV-222954r960963_rule",
+  "rule_id": "SV-222954",
+  "rule_revision": "960963",
+  "group_id": "V-222954",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "DefaultServlet directory listings parameter must be disabled.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The DefaultServlet serves static resources as well as directory listings. It is declared globally in $CATALINA_BASE/conf/web.xml and by default is configured with the directory \"listings\" parameter set to disabled. If no welcome file is present and the \"listings\" setting is enabled, a directory listing is shown. Directory listings must be disabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the Tomcat server run the following OS command:\n\nsudo cat $CATALINA_BASE/conf/web.xml |grep -i -A10 -B2 defaultservlet \n\nThe above command will include ten lines after and two lines before the occurrence of \"defaultservlet\". Some systems may require that the user increase the after number (A10) in order to determine the \"listings\" param-value. \n\nIf the \"listings\" param-value for the \"DefaultServlet\" servlet class does not = \"false\", this is a finding.",
+  "fix": "From the Tomcat server as a privileged user:\n\nEdit the $CATALINA_BASE/conf/web.xml file.\n\nExamine the <init-param> elements within the <Servletclass> element, if the \"listings\" <param-value>element is \"true\" change the \"listings\" <param-value> to read \"false\".\n\nsudo systemctl restart tomcat\nsudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DefaultServlet serves static resources as well as directory listings. It is declared globally in $CATALINA_BASE/conf/web.xml and by default is configured with the directory \"listings\" parameter set to disabled. If no welcome file is present and the \"listings\" setting is enabled, a directory listing is shown. Directory listings must be disabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000520",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

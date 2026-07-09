@@ -1,0 +1,53 @@
+{
+  "id": "SV-270525r1112473_rule",
+  "full_rule_id": "SV-270525r1112473_rule",
+  "rule_id": "SV-270525",
+  "rule_revision": "1112473",
+  "group_id": "V-270525",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "The Oracle SQL92_SECURITY parameter must be set to TRUE.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The configuration option SQL92_SECURITY specifies whether table-level SELECT privileges are required to execute an update or delete those references table column values. If this option is disabled (set to FALSE), the UPDATE privilege can be used to determine values that should require SELECT privileges.\n\nThe SQL92_SECURITY setting of TRUE prevents the exploitation of user credentials with only DELETE or UPDATE privileges on a table from being able to derive column values in that table by performing a series of update/delete statements using a where clause, and rolling back the change. In the following example, with SQL92_SECURITY set to FALSE, a user with only delete privilege on the scott.emp table is able to derive that there is one employee with a salary greater than 3000. With SQL92_SECURITY set to TRUE, that user is prevented from attempting to derive a value.\n\nSQL92_SECURITY = FALSE\nSQL> delete from scott.emp where sal > 3000;\n1 row deleted\nSQL> rollback;\nRollback complete\n\nSQL92_SECURITY = TRUE\nSQL> delete from scott.emp where sal > 3000;\ndelete from scott.emp where sal > 3000\n*\nERROR at line 1:\nORA-01031: insufficient privileges</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To verify the current status of the SQL92_SECURITY parameter use the SQL statement: \n\nIf using a non-CDB database: \nFrom SQL*Plus:\n\nselect value from v$parameter where name = 'sql92_security';\n\nIf using a CDB database:\nFrom SQL*Plus:\n\ncolumn name format a20\ncolumn parameter_value format a20\n\nSELECT name, inst_id, con_id, value AS PARAMETER_VALUE \nFROM sys.gv_$parameter \nWHERE name = 'sql92_security' \nORDER BY 1;\n\nCheck Result:\n\nThe CDB database and all PDBs must be checked.\n\nIf the value returned is set to FALSE, this is a finding.\n\nIf the parameter is set to TRUE or does not exist, this is not a finding.\n\nIn any instance or container, if the PARAMETER_VALUE is not TRUE, that is a finding.",
+  "fix": "Enable SQL92 security.\n\nFrom SQL*Plus:\n\nalter system set sql92_security = TRUE scope = spfile;\n\nThe above SQL*Plus command will set the parameter to take effect at next system startup.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The configuration option SQL92_SECURITY specifies whether table-level SELECT privileges are required to execute an update or delete those references table column values. If this option is disabled (set to FALSE), the UPDATE privilege can be used to determine values that should require SELECT privileges.\n\nThe SQL92_SECURITY setting of TRUE prevents the exploitation of user credentials with only DELETE or UPDATE privileges on a table from being able to derive column values in that table by performing a series of update/delete statements using a where clause, and rolling back the change. In the following example, with SQL92_SECURITY set to FALSE, a user with only delete privilege on the scott.emp table is able to derive that there is one employee with a salary greater than 3000. With SQL92_SECURITY set to TRUE, that user is prevented from attempting to derive a value.\n\nSQL92_SECURITY = FALSE\nSQL> delete from scott.emp where sal > 3000;\n1 row deleted\nSQL> rollback;\nRollback complete\n\nSQL92_SECURITY = TRUE\nSQL> delete from scott.emp where sal > 3000;\ndelete from scott.emp where sal > 3000\n*\nERROR at line 1:\nORA-01031: insufficient privileges",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-009300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

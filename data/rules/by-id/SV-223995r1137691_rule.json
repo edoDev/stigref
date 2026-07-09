@@ -1,0 +1,53 @@
+{
+  "id": "SV-223995r1137691_rule",
+  "full_rule_id": "SV-223995r1137691_rule",
+  "rule_id": "SV-223995",
+  "rule_revision": "1137691",
+  "group_id": "V-223995",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS JES2 system commands must be protected in accordance with security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell, enter:\nTSS WHOHAS OPERCMDS(JES2.)\n\nIf the JES2.** resource is defined to the OPERCMDS class with an access of NONE and all access is logged, this is not a finding.\n\nIf access to JES2 system commands defined in the IBM z/OS JES2 commands is restricted to the appropriate personnel (e.g., operations staff, systems programming personnel, general users), this is not a finding.\n\nNOTE: Use the GROUP category specified in the table referenced above as a guideline to determine appropriate personnel access to system commands.",
+  "fix": "Extended MCS support allows the installation to control the use of JES2 system commands through the ESM. These commands are subject to various types of potential abuse. For this reason, it is necessary to place restrictions on the JES2 system commands that can be entered by particular operators.\n\nSome commands are particularly dangerous and should only be used when less drastic options have been exhausted. Misuse of these commands can create a situation in which the only recovery is an IPL.\n\nTo control access to JES2 system commands, apply the following:\n\nDefine the JES2.** resource in the OPERCMDS class with an access of NONE and all access is logged.\n\nDefine the JES2 system commands as specified in the IBM z/OS JES2 Commands to be restricted to the appropriate personnel (e.g., operations staff, systems programming personnel, general users), as determined in the documented site security plan.\n\nDefine the JES2 system commands with proper logging as determined in the documented site security plan.\n\nNote: Display commands and others as deemed by the site IAW site security plan may be allowed for all users with no logging. \n\nBuild a command file based on the referenced JES2 Command Table. A sample of the commands in the command file is provided here:\n\nThe following is a sample command to allow operators with a profile ACID of opracid to use the $DS command:\n\nTSS PERMIT(opracid) OPRCMDS(JES2.DISPLAY.STC) ACCESS(READ)\n\nThe following is a sample command to allow operators with a profile ACID of opracid to use the $DM command:\n\nTSS PERMIT(opracid) OPERCMDS(JES2.SEND.MESSAGE) -\nACCESS(READ) ACTION(AUDIT)\n\nThe following is a sample command to allow operators with a profile ACID of opracid to use the $B command:\n\nTSS PERMIT(opracid) OPERCMDS(JES2.BACKSP.DEV) -\nACCESS(UPDATE) ACTION(AUDIT)\n\nThe following is a sample command to allow operators with a profile ACID of opracid to use the $ZI command:\n      \nTSS PERMIT(opracid) OPERCMDS(JES2.HALT.INITIATOR) -\nACCESS(CONTROL) ACTION(AUDIT)\n\nThe following is a sample command to allow operators with a profile ACID of opracid to use the $ZSPOOL command:\n\nTSS PERMIT(opracid) OPERCMDS(JES2.HALT.SPOOL) -\nACCESS(CONTROL) ACTION(AUDIT)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-JS-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

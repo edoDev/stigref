@@ -1,0 +1,53 @@
+{
+  "id": "SV-237766r1132545_rule",
+  "full_rule_id": "SV-237766r1132545_rule",
+  "rule_id": "SV-237766",
+  "rule_revision": "1132545",
+  "group_id": "V-237766",
+  "group_title": "SRG-NET-000364-RTR-000202",
+  "title": "The Cisco perimeter switch must be configured to drop IPv6 packets containing a Hop-by-Hop header with invalid option type values.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>These options are intended to be for the Destination Options header only. The optional and extensible natures of the IPv6 extension headers require higher scrutiny since many implementations do not always drop packets with headers that it cannot recognize and hence could cause a Denial-of-Service on the target device. In addition, the type, length, value (TLV) formatting provides the ability for headers to be very large. </VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the switch configuration to determine if it is compliant with this requirement.  \n\nStep 1: Verify that an inbound IPv6 ACL has been configured on the external interface.\n\ninterface gigabitethernet1/0\n ipv6 address 2001::1:0:22/64\n ipv6 traffic-filter FILTER_IPV6 in\n\nStep 2: Verify that the ACL drops IPv6 packets containing a Hop-by-Hop header with option type values of 0x04 (Tunnel Encapsulation Limit), 0xC9 (Home Address Destination), or 0xC3 (NSAP Address) as shown in the example below.\n\nipv6 access-list FILTER_IPV6\n deny hbh any any dest-option log\n permit ipv6 …\n …\n …\n …\n deny ipv6 any any log\n\nNote: Cisco has deprecated the dest-option-type command used to filter by option type within Hop-by-Hop header. Therefore, all packets with the Hop-by-Hop header option types must be dropped.\n\nIf the switch is not configured to drop IPv6 packets containing a Hop-by-Hop header with destination options, this is a finding.",
+  "fix": "Drop IPv6 packets containing a Hop-by-Hop header as shown in the example below.\n\nSW1(config)#ipv6 access-list FILTER_IPV6\nSW1(config-ipv6-acl)#deny hbh any any dest-option log\nSW1(config-ipv6-acl)# permit ipv6 …\n…\n…\n…\nSW1(config-ipv6-acl)#deny ipv6 any any log\nSW1(config-ipv6-acl)#exit\nSW1(config)#int g1/0\nSW1(config-if)#ipv6 traffic-filter FILTER_IPV6\nSW1(config-if)#end",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "These options are intended to be for the Destination Options header only. The optional and extensible natures of the IPv6 extension headers require higher scrutiny since many implementations do not always drop packets with headers that it cannot recognize and hence could cause a Denial-of-Service on the target device. In addition, the type, length, value (TLV) formatting provides the ability for headers to be very large.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000394",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887",
+      "name": "Cisco IOS XE Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887"
+  ]
+}

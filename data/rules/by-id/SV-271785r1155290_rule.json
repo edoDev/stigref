@@ -1,0 +1,53 @@
+{
+  "id": "SV-271785r1155290_rule",
+  "full_rule_id": "SV-271785r1155290_rule",
+  "rule_id": "SV-271785",
+  "rule_revision": "1155290",
+  "group_id": "V-271785",
+  "group_title": "SRG-OS-000138-GPOS-00069",
+  "title": "OL 9 world-writable directories must be owned by root, sys, bin, or an application user.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If a world-writable directory is not owned by root, sys, bin, or an application user identifier (UID), unauthorized users may be able to modify files created by others.\n\nThe only authorized public directories are those temporary directories supplied with the system or those designed to be temporary file repositories. The setting is normally reserved for directories used by the system and by users for temporary file storage, (e.g., /tmp), and for directories requiring global read/write access.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify OL 9 world writable directories are owned by root, a system account, or an application account with the following command:\n\n$ sudo find / -xdev -type d -perm -0002 -uid +999 -exec stat -c \"%U, %u, %A, %n\" {} \\; 2>/dev/null\n\nIf there is output that indicates world-writable directories are owned by any account other than root or an approved system account, this is a finding.",
+  "fix": "Configure all OL 9 public directories to be owned by root or a system account to prevent unauthorized and unintended information transferred via shared system resources.\n\nUse the following command template to set ownership of public directories to root or a system account:\n\n$ sudo chown [root or system account] [Public Directory]",
+  "ccis": [
+    "CCI-001090"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If a world-writable directory is not owned by root, sys, bin, or an application user identifier (UID), unauthorized users may be able to modify files created by others.\n\nThe only authorized public directories are those temporary directories supplied with the system or those designed to be temporary file repositories. The setting is normally reserved for directories used by the system and by users for temporary file storage, (e.g., /tmp), and for directories requiring global read/write access.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002516",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

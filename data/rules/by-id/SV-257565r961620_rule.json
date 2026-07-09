@@ -1,0 +1,53 @@
+{
+  "id": "SV-257565r961620_rule",
+  "full_rule_id": "SV-257565r961620_rule",
+  "rule_id": "SV-257565",
+  "rule_revision": "961620",
+  "group_id": "V-257565",
+  "group_title": "SRG-APP-000435-CTR-001070",
+  "title": "OpenShift must protect against or limit the effects of all types of Denial-of-Service (DoS) attacks by employing organization-defined security safeguards by including a default resource quota.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DNS attacks that are internal to the container platform (exploited or otherwise malicious applications) can have a limited blast radius by adhering to least privilege RBAC and Network access:\nhttps://docs.openshift.com/container-platform/4.8/post_installation_configuration/network-configuration.html#post-install-configuring-network-policy\n\nAdditionally, applications can even be limited using OpenShift Service Mesh Operator.\n\nDoS attacks coming from outside the cluster (ingress) can also be limited using an external cloud load balancer or by using 3scale API Gateway:\nhttps://docs.openshift.com/container-platform/4.8/security/container_security/security-platform.html\n\nResource quotas must be set on a given namespace or across multiple namespaces. Using resource quotas will help to mitigate a DoS attack by limiting how much CPU, memory, and pods may be consumed in a project. This helps protect other projects (namespaces) from being denied resources to process.\n\nhttps://docs.openshift.com/container-platform/4.8/applications/quotas/quotas-setting-per-project.html</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the new project template includes a default resource quota by executing the following:\n\noc get templates/project-request -n openshift-config -o jsonpath=\"{.objects[?(.kind=='ResourceQuota')]}{'\\n'}\"\n\nReview the ResourceQuota definition. If nothing is return, this is a finding.",
+  "fix": "Configure a default resource quota as necessary to protect resource over utilization.\n\n1. Create a bootstrap project template by executing the following:\n\noc adm create-bootstrap-project-template -o yaml > template.yaml\n\n2. Edit the template and add a ResourceQuota object definition before the parameters section.\n\n- apiVersion: v1\n  kind: ResourceQuota\n  metadata:\n    name: example\n  spec:\n    hard:\n      persistentvolumeclaims: \"10\"\n      requests.storage: \"50Gi\"\n      ...\nparameters:\n\n3. Apply the project template to the cluster by executing the following:\n\noc create -f template.yaml -n openshift-config\n\nDetails regarding the configuration of resource quotas can be reviewed at https://docs.openshift.com/container-platform/4.8/applications/quotas/quotas-setting-per-project.html.",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DNS attacks that are internal to the container platform (exploited or otherwise malicious applications) can have a limited blast radius by adhering to least privilege RBAC and Network access:\nhttps://docs.openshift.com/container-platform/4.8/post_installation_configuration/network-configuration.html#post-install-configuring-network-policy\n\nAdditionally, applications can even be limited using OpenShift Service Mesh Operator.\n\nDoS attacks coming from outside the cluster (ingress) can also be limited using an external cloud load balancer or by using 3scale API Gateway:\nhttps://docs.openshift.com/container-platform/4.8/security/container_security/security-platform.html\n\nResource quotas must be set on a given namespace or across multiple namespaces. Using resource quotas will help to mitigate a DoS attack by limiting how much CPU, memory, and pods may be consumed in a project. This helps protect other projects (namespaces) from being denied resources to process.\n\nhttps://docs.openshift.com/container-platform/4.8/applications/quotas/quotas-setting-per-project.html",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-OS-000800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2",
+      "name": "Red Hat OpenShift Container Platform 4.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2"
+  ]
+}

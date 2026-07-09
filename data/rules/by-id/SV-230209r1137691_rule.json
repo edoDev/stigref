@@ -1,0 +1,53 @@
+{
+  "id": "SV-230209r1137691_rule",
+  "full_rule_id": "SV-230209r1137691_rule",
+  "rule_id": "SV-230209",
+  "rule_revision": "1137691",
+  "group_id": "V-230209",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "The IBM RACF System REXX IRRPHREX security data set must be properly protected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.\n\nThis requirement also applies to Zero Trust initiatives.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to the zOS system REXXLIB concatenation found in SYS1. PARMLIB (AXR) for the data set that contains the REXX for Password exit named IRRPHREX and the defined AXRUSER.\n\nIf the following guidance is true, this is not a finding.\n\n-RACF data set access authorizations restrict READ to AXRUSER, z/OS systems programming personnel, security personnel, and auditors.\n-RACF data set access authorizations restrict UPDATE to security personnel using a documented change management procedure to provide a mechanism for access and revoking of access after use.\n-All (i.e., failures and successes) data set access authorities (i.e., READ, UPDATE, and CONTROL) is logged.\n-RACF data set access authorizations specify UACC(NONE) and NOWARNING.",
+  "fix": "Configure read access to be restricted to security administrators, systems programmers, and auditors.\n\nEstablish a procedure documented with the ISSM that defines a change management process to provide mechanism for granting Update access to security administrators on an exception basis. The process should contain procedures to revoke access when documented update is completed.\n\nConfigure all failures and successes data set access authorities for RACF data set that contains the Password exit to be logged.\n\nExamples:\nad 'sys3.racf.rexxlib.**' uacc(none) owner(sys3) -\naudit(all(read)) \nPermit 'sys3.racf.rexxlib.**' id(<syspsmpl> <secasmpl> <smplsmpl> AXRUSER) acc(r)\nPermit 'sys3.racf.rexxlib.**' id(<secasmpl>) acc(u)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.\n\nThis requirement also applies to Zero Trust initiatives.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000365",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

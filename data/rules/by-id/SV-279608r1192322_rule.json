@@ -1,0 +1,53 @@
+{
+  "id": "SV-279608r1192322_rule",
+  "full_rule_id": "SV-279608r1192322_rule",
+  "rule_id": "SV-279608",
+  "rule_revision": "1192322",
+  "group_id": "V-279608",
+  "group_title": "SRG-OS-000072-GPOS-00040",
+  "title": "Nutanix OS must require the change of at least 50 percent of the total number of characters when passwords are changed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the operating system allows the user to consecutively reuse extensive portions of passwords, this increases the chances of password compromise by increasing the window of opportunity for attempts at guessing and brute-force attacks.\n\nThe number of changed characters refers to the number of changes required with respect to the total number of positions in the current password. In other words, characters may be the same within the two passwords; however, the positions of the like characters must be different.\n\nIf the password length is an odd number then number of changed characters must be rounded up. For example, a password length of 15 characters must require the change of at least eight characters.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify Nutanix AOS is configured to require complex passwords using the following command. Note: The values to require for complex passwords is located in \"/etc/security/pwquality.conf\".\n\n$ sudo grep difok /etc/security/pwquality.conf \ndifok = 8\n\nIf the value of \"difok\" is set to less than \"8\", this is a finding.\n\n2. Verify Nutanix AOS is configured to require complex passwords using the following command.\n\n$ sudo grep minclass /etc/security/pwquality.conf \nminclass = 4\n\nIf the value of \"minclass\" is set to less than \"4\", this is a finding.\n\n3. Verify Nutanix AOS is configured to require complex passwords using the following command.\n\n$ sudo grep maxrepeat /etc/security/pwquality.conf \nmaxrepeat = 2\n\nIf the value of \"maxrepeat\" is set to more than \"2\", this is a finding.\n\n4. Verify Nutanix AOS is configured to require complex passwords using the following command.\n\n$ sudo grep maxclassrepeat /etc/security/pwquality.conf \nmaxclassrepeat = 4\n\nIf the value of \"maxclassrepeat\" is set to more than \"4\", this is a finding.",
+  "fix": "Configure Nutanix OS to use complex password by running the following command.\n\n1. For AOS, enter the following command.\n\n$ sudo salt-call state.sls security/CVM/pamCVM.sls\n\n2. For Prism Central, enter the following command.\n\n$ sudo salt-call state.sls security/PCVM/pamPCVM.sls\n\n3. For Files, enter the following command.\n\n$ sudo salt-call state.sls security/AFS/pamAFS.sls\n\n4. For AHV OS CVM, enter the following command.\n\n$ ncli cluster edit-hypervisor-security-params enable-high-strength-password=true",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the operating system allows the user to consecutively reuse extensive portions of passwords, this increases the chances of password compromise by increasing the window of opportunity for attempts at guessing and brute-force attacks.\n\nThe number of changed characters refers to the number of changes required with respect to the total number of positions in the current password. In other words, characters may be the same within the two passwords; however, the positions of the like characters must be different.\n\nIf the password length is an odd number then number of changed characters must be rounded up. For example, a password length of 15 characters must require the change of at least eight characters.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000165",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

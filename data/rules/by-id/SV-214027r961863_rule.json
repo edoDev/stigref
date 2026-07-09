@@ -1,0 +1,53 @@
+{
+  "id": "SV-214027r961863_rule",
+  "full_rule_id": "SV-214027r961863_rule",
+  "rule_id": "SV-214027",
+  "rule_revision": "961863",
+  "group_id": "V-214027",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "SQL Server must configure SQL Server Usage and Error Reporting Auditing.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By default, Microsoft SQL Server enables participation in the customer experience improvement program (CEIP). This program collects information about how its customers are using the product. Specifically, SQL Server collects information about the installation experience, feature usage, and performance. This information helps Microsoft improve the product to better meet customer needs. The Local Audit component of SQL Server Usage Feedback collection writes data collected by the service to a designated folder, representing the data (logs) that will be sent to Microsoft. The purpose of the Local Audit is to allow customers to see all data Microsoft collects with this feature, for compliance, regulatory or privacy validation reasons.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the server documentation to determine if auditing of the telemetry data is required. If auditing of telemetry data is not required, this is not a finding. \n \nIf auditing of telemetry data is required, determine the telemetry service user name by executing the following query: \n \nSELECT name \nFROM sys.server_principals \nWHERE name LIKE '%SQLTELEMETRY%' \n \nReview the values of the following registry key: \nNote: InstanceId refers to the type and instance of the feature. (e.g., MSSQL13.SqlInstance, MSAS13.SSASInstance, MSRS13.SSRSInstance) \n \nHKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\[InstanceId]\\CPE\\UserRequestedLocalAuditDirectory \n \nIf the registry key do not exist or the value is blank, this is a finding. \n \nNavigate the path defined in the \"UserRequestedLocalAuditDirectory\" registry key in file explorer. \n \nRight-click on the folder and choose \"Properties\". \nOpen the \"Security\" tab.\n \nVerify the SQLTELEMETRY account has the following permissions: \n \n- List folder contents \n- Read \n- Write \n \nIf the permissions are not set properly on the folder, this is a finding. \n \nOpen services.msc and find the telemetry service. \n- For Database Engine, use SQL Server CEIP service (<INSTANCENAME>). \n- For Analysis Services, use SQL Server Analysis Services CEIP (<INSTANCENAME>). \n \nRight-click on the service and choose \"Properties\". Verify the \"Startup type\" is \"Automatic.\"  \n \nIf the service is not configured to automatically start, this is a finding. \n \nReview the processes and procedures for reviewing the telemetry data. If there is evidence that the telemetry data is periodically reviewed in accordance with the processes and procedures, this is not a finding. \n \nIf no processes and procedures exist for reviewing telemetry data, this is a finding.",
+  "fix": "Configure the instance to audit telemetry data. More information about auditing telemetry data can be found at https://msdn.microsoft.com/en-us/library/mt743085.aspx. \n \nCreate a folder to store the telemetry audit data in. \n \nGrant the SQLTELEMETRY service the following permissions on the folder: \n \n- List folder contents \n- Read \n- Write \n \nCreate and configure the following registry key: \nNote: InstanceId refers to the type and instance of the feature. (e.g., MSSQL13.SqlInstance, MSAS13.SSASInstance, MSRS13.SSRSInstance) \n \nHKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\[InstanceId]\\CPE\\UserRequestedLocalAuditDirectory [string] \n \nSet the \"UserRequestedLocalAuditDirectory\" key value to the path of the telemetry audit folder. \n \nSet the telemetry service to start automatically. Restart the service. \n- For Database Engine, use SQL Server CEIP service (<INSTANCENAME>). \n- For Analysis Services, use SQL Server Analysis Services CEIP (<INSTANCENAME>).",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By default, Microsoft SQL Server enables participation in the customer experience improvement program (CEIP). This program collects information about how its customers are using the product. Specifically, SQL Server collects information about the installation experience, feature usage, and performance. This information helps Microsoft improve the product to better meet customer needs. The Local Audit component of SQL Server Usage Feedback collection writes data collected by the service to a designated folder, representing the data (logs) that will be sent to Microsoft. The purpose of the Local Audit is to allow customers to see all data Microsoft collects with this feature, for compliance, regulatory or privacy validation reasons.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQL6-D0-016100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a",
+      "name": "MS SQL Server 2016 Instance Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a"
+  ]
+}

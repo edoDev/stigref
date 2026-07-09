@@ -1,0 +1,54 @@
+{
+  "id": "SV-104513r1_rule",
+  "full_rule_id": "SV-104513r1_rule",
+  "rule_id": "SV-104513",
+  "rule_revision": "1",
+  "group_id": "V-94683",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "Accounts for device management must be configured on the authentication server and not on Symantec ProxySG itself, except for the account of last resort.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the Symantec ProxySG uses a centrally administered AAA server (LDAP to Active Directory).\n\n1. Log on to the Web Management Console.\n2. Click Configuration >> Authentication >> LDAP.\n3. Click through the \"LDAP Realms\", \"LDAP DN\", \"LDAP Search & Groups\", \"LDAP Objectclasses\", and \"LDAP General\" tabs and ensure that the settings are appropriate for your organization. \n\nIf accounts for device management are not configured on the authentication server or are on the Symantec ProxySG itself, except for the account of last resort, this is a finding.",
+  "fix": "In order to configure the ProxySG to use a centrally administered AAA server (LDAP to Active Directory):\n\n1. Log on to the Web Management Console.\n2. Click Configuration >> Authentication >> LDAP.\n3. Click \"New\", provide a name for the realm.\n4. Change the \"Type of LDAP server\" to be \"Microsoft Active Directory\".\n5. Provide an IP address or FQDN for the \"Primary Server host\" and change the port to 636 for LDAP over TLS.\n6. Change the \"User attribute type\" if your organization uses a different attribute than the sAMAccountName, click \"OK\".\n7. Click on the \"LDAP Servers\" tab, select \"Enable SSL\", and confirm the other settings per your organization.\n8. Click through the \"LDAP DN\", \"LDAP Search & Groups\", \"LDAP Objectclasses\", and \"LDAP General\" tabs and ensure that the settings are appropriate for your organization.\n9. Click \"Apply\".\n10. To test the configuration, click the \"Test Configuration\" button under \"LDAP Servers\", and provide a valid username and password.\n11. Still within the \"Configuration\" tab, click on \"Policy\", then \"Visual Policy Editor\" and click \"Launch\".\n12. Click \"Policy\" and choose \"Add Admin Authentication Layer\".\n13. Give it a name and click \"OK\".\n14. Right-click the \"Action\" cell and choose \"Set\".\n15. With \"AdminAuthenticate1\" highlighted, click \"Edit\".\n16. Choose the \"Realm\" that was created on step 3, and click \"OK\", click \"OK\" again.\n17. Click \"Policy\" and choose \"Add Admin Access Layer\".\n18. Give it a name and click \"OK\".\n19. Right-click the \"Source\" field and click \"Set\".\n20. If a \"local realm\" exists in the list, highlight it and click \"Remove\".\n21. Click \"New\", and choose either \"User\" or \"Group\" depending on what you wish to accomplish.\n22. Provide the user or group name, and ensure that the Authentication Realm from step 3 is selected, and populate the Group/User Base DN and \"Full Name\" fields as appropriate for your organization. \n23. If you wish to restrict this user/group to specific management services, right-click the \"Service\" Field, and select \"Set\", click \"New\", click \"Service Name\" then choose the appropriate service name. Repeat for any other specific services you would like to grant access for. Then click \"OK\".\n24. Right-click the \"Action\" cell, and either choose \"read-only\" or \"read/write\" access. \n25. Click \"File\" and choose \"Install Policy on SG Appliance\".",
+  "ccis": [
+    "CCI-000366",
+    "CCI-000370"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SYMP-NM-000160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "symantec-proxysg-ndm-security-technical-implementation-guide-v1r2-5788060e",
+      "name": "Symantec ProxySG NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "symantec-proxysg-ndm-security-technical-implementation-guide-v1r2-5788060e"
+  ]
+}

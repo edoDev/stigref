@@ -1,0 +1,55 @@
+{
+  "id": "SV-274050r1120138_rule",
+  "full_rule_id": "SV-274050r1120138_rule",
+  "rule_id": "SV-274050",
+  "rule_revision": "1120138",
+  "group_id": "V-274050",
+  "group_title": "SRG-OS-000163-GPOS-00072",
+  "title": "Amazon Linux 2023 must be configured so that all network connections associated with SSH traffic are terminated after 10 minutes of becoming unresponsive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at Amazon Linux 2023 level, and de-allocating networking assignments at the application level if multiple application sessions are using a single operating system-level network connection. This does not mean that Amazon Linux 2023 terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.\n\nSatisfies: SRG-OS-000163-GPOS-00072, SRG-OS-000279-GPOS-00109, SRG-OS-000395-GPOS-00175</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 has the \"ClientAliveInterval\" variable set to a value of \"600\" or less by performing the following command:\n\n$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*clientaliveinterval'\n/etc/ssh/sshd_config.d/91-ClientAliveInterval.conf:ClientAliveInterval 600\n\nIf \"ClientAliveInterval\" does not exist, does not have a value of \"600\" or less in \"/etc/ssh/sshd_config\" or a dropfile in \"/etc/ssh/sshd_config.d\", or is commented out, this is a finding.",
+  "fix": "Configure Amazon Linux 2023 SSH server to terminate a user session automatically after the SSH client has been unresponsive for 10 minutes.\n\nNote: This setting must be applied in conjunction with \"ClientAliveCountMax 1\" to function correctly.\n\nModify or append the following lines in the \"/etc/ssh/sshd_config\" or a dropfile in \"/etc/ssh/sshd_config.d\" file:\n\nClientAliveInterval 600\n\nFor the changes to take effect, the SSH daemon must be restarted.\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-001133",
+    "CCI-002361",
+    "CCI-002891"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at Amazon Linux 2023 level, and de-allocating networking assignments at the application level if multiple application sessions are using a single operating system-level network connection. This does not mean that Amazon Linux 2023 terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.\n\nSatisfies: SRG-OS-000163-GPOS-00072, SRG-OS-000279-GPOS-00109, SRG-OS-000395-GPOS-00175",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-001245",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

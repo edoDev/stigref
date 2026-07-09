@@ -1,0 +1,53 @@
+{
+  "id": "SV-252917r971535_rule",
+  "full_rule_id": "SV-252917r971535_rule",
+  "rule_id": "SV-252917",
+  "rule_revision": "971535",
+  "group_id": "V-252917",
+  "group_title": "SRG-OS-000120-GPOS-00061",
+  "title": "The TOSS pam_unix.so module must be configured in the password-auth file to use a FIPS 140-2-approved cryptographic hashing algorithm for system authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised.\n\nTOSS systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.\n\nFIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DoD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general-purpose computing system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the pam_unix.so module is configured to use sha512.\n\nCheck that the pam_unix.so module is configured to use sha512 in /etc/pam.d/password-auth with the following command:\n\n$ sudo grep password /etc/pam.d/password-auth | grep pam_unix\n\npassword sufficient pam_unix.so sha512\n\nIf \"sha512\" is missing, or is commented out, this is a finding.",
+  "fix": "Configure TOSS to use a FIPS 140-2-approved cryptographic hashing algorithm for system authentication.\n\nEdit and/or modify the following line in the \"/etc/pam.d/password-auth\" file to include the sha512 option for pam_unix.so:\n\npassword sufficient pam_unix.so sha512",
+  "ccis": [
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised.\n\nTOSS systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.\n\nFIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DoD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general-purpose computing system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-010060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

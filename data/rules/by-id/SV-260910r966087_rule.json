@@ -1,0 +1,53 @@
+{
+  "id": "SV-260910r966087_rule",
+  "full_rule_id": "SV-260910r966087_rule",
+  "rule_id": "SV-260910",
+  "rule_revision": "966087",
+  "group_id": "V-260910",
+  "group_title": "SRG-APP-000033-CTR-000095",
+  "title": "SSH must not run within Linux containers.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To limit the attack surface of MKE, it is important that the nonessential services are not installed. Containers are designed to be lightweight and isolated, and introducing SSH can add attack vectors. Unauthorized access or exploitation of SSH vulnerabilities would compromise the security of the container and the host system. SSH is not necessary for process management within containers, as container orchestration platforms provide mechanisms for starting, stopping, and monitoring containerized processes. SSH access within containers may bypass auditing mechanisms, making it harder to track and audit user activities.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This check must be executed on all nodes in a Docker Enterprise cluster.\n\nVerify no running containers have a process for SSH server. Using CLI, execute the following:\n\nfor i in $(docker container ls --format \"{{.ID}}\"); do\n  pid=$(docker inspect -f '{{.State.Pid}}' \"$i\")\n  ps -h --ppid \"$pid\" -o cmd\ndone | grep sshd\n\nIf a container is output, it has a process for SSH server, this is a finding.",
+  "fix": "Containers found with SSH server must be removed by executing the following:\n\ndocker rm [container name]\n\nThen, a new image must be added with SSH server removed.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To limit the attack surface of MKE, it is important that the nonessential services are not installed. Containers are designed to be lightweight and isolated, and introducing SSH can add attack vectors. Unauthorized access or exploitation of SSH vulnerabilities would compromise the security of the container and the host system. SSH is not necessary for process management within containers, as container orchestration platforms provide mechanisms for starting, stopping, and monitoring containerized processes. SSH access within containers may bypass auditing mechanisms, making it harder to track and audit user activities.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-000120",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-230386r958730_rule",
+  "full_rule_id": "SV-230386r958730_rule",
+  "rule_id": "SV-230386",
+  "rule_revision": "958730",
+  "group_id": "V-230386",
+  "group_title": "SRG-OS-000326-GPOS-00126",
+  "title": "The RHEL 8 audit system must be configured to audit the execution of privileged functions and prevent all software from executing at higher privilege levels than users executing the software.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.\n\nSatisfies: SRG-OS-000326-GPOS-00126, SRG-OS-000327-GPOS-00127</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 8 audits the execution of privileged functions.\n\nCheck if RHEL 8 is configured to audit the execution of the \"execve\" system call, by running the following command:\n\n$ sudo grep execve /etc/audit/audit.rules\n\n-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k execpriv \n-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv\n\n-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv \n-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv\n\nIf the command does not return all lines, or the lines are commented out, this is a finding.",
+  "fix": "Configure RHEL 8 to audit the execution of the \"execve\" system call.\n\nAdd or update the following file system rules to \"/etc/audit/rules.d/audit.rules\":\n\n-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k execpriv \n-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv\n\n-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv \n-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv \n\nThe audit daemon must be restarted for the changes to take effect.",
+  "ccis": [
+    "CCI-002233"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.\n\nSatisfies: SRG-OS-000326-GPOS-00126, SRG-OS-000327-GPOS-00127",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-030000",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

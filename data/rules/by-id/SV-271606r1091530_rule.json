@@ -1,0 +1,53 @@
+{
+  "id": "SV-271606r1091530_rule",
+  "full_rule_id": "SV-271606r1091530_rule",
+  "rule_id": "SV-271606",
+  "rule_revision": "1091530",
+  "group_id": "V-271606",
+  "group_title": "SRG-OS-000068-GPOS-00036",
+  "title": "OL 9 must map the authenticated identity to the user or group account for PKI-based authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without mapping the certificate used to authenticate to the user account, the ability to determine the identity of the individual user or group will not be available for forensic analysis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 maps the authenticated identity to the certificate of the user or group to the corresponding user or group in the \"sssd.conf\" file with the following command:\n\n$ sudo cat /etc/sssd/sssd.conf \n[certmap/testing.test/rule_name]\nmatchrule =<SAN>.*EDIPI@mil\nmaprule = (userCertificate;binary={cert!bin})\ndomains = testing.test\n\nIf the certmap section does not exist, ask the system administrator (SA) to indicate how certificates are mapped to accounts. If there is no evidence of certificate mapping, this is a finding.",
+  "fix": "Configure OL 9 to map the authenticated identity to the user or group account by adding or modifying the certmap section of the \"/etc/sssd/sssd.conf\" file based on the following example:\n\n[certmap/testing.test/rule_name]\nmatchrule = .*EDIPI@mil\nmaprule = (userCertificate;binary={cert!bin})\ndmains = testing.test\n\nThe \"sssd\" service must be restarted for the changes to take effect. To restart the \"sssd\" service, run the following command:\n\n$ sudo systemctl restart sssd.service",
+  "ccis": [
+    "CCI-000187"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without mapping the certificate used to authenticate to the user account, the ability to determine the identity of the individual user or group will not be available for forensic analysis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-000910",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

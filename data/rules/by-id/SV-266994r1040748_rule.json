@@ -1,0 +1,53 @@
+{
+  "id": "SV-266994r1040748_rule",
+  "full_rule_id": "SV-266994r1040748_rule",
+  "rule_id": "SV-266994",
+  "rule_revision": "1040748",
+  "group_id": "V-266994",
+  "group_title": "SRG-NET-000166-VPN-000580",
+  "title": "The Remote Access VPN Gateway must use a separate authentication server (e.g., Lightweight Directory Access Protocol [LDAP], Remote Authentication Dial-In User Service [RADIUS], Terminal Access Controller Access-Control System+ [TACACS+] to perform user authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The VPN interacts directly with public networks and devices and should not contain user authentication information for all users. Authentication, Authorization, and Accounting (AAA) network security services provide the primary framework through which a network administrator can set up access control and authorization on network points of entry or network access servers. It is not advisable to configure access control on the VPN gateway or remote access server. Separation of services provides added assurance to the network if the access control server is compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration with the following commands:\nshow aaa authentication via auth-profile\n\nNote each referenced VIA authentication profile. \n\nFor each referenced VIA authentication profile:\nshow aaa authentication via auth-profile <name>\n\nNote the server-group. \n\nFor each server-group:\nshow aaa server-group <name>\n\nIf the remote access authentication profile is not set to use a separate authentication server, this is a finding.",
+  "fix": "Configure AOS with the following commands:\n\n1. crypto pki csr ec curve_name secp384r1 common_name <common_name> country <US> state_or_province <state> city <city> organization <org> unit <unit> email <email>\nshow crypto pki csr\n2. Use DOD PKI to generate a public certificate based on the CSR.\n3. Using the web GUI, navigate to Configuration >> System >> Certificates >> Import Certificates. \n4. Click the plus sign (+) and enter \"Certificate name:\", browse to the public certificate file, choose the appropriate format, select Certificate type: \"ServerCert\", and click \"Submit\".\n5. Click Pending Changes >> Deploy Changes.\n\nContinue configuring with the CLI:\nconfigure terminal\ncrypto-local isakmp ca-certificate <CA certificate name>\ncrypto-local isakmp certificate-group server-certificate <EC certificate name> ca-certificate <CA certificate name>\nwrite memory\n\ncrypto dynamic-map <name> <priority>\nversion v2\nset pfs group20\nset transform-set default-gcm256\nset security-association lifetime seconds 28800\nexit\nwrite memory\n\naaa authentication-server radius <name>\nhost <A.B.C.D or X:X:X:X::X or hostname>\nkey <preshared key>\nenable\nexit\nwrite memory\n\naaa server-group <name>\nauth-server <name>\nexit\nwrite memory\n\nip access-list session <name>\nany any any permit \nipv6 any any any permit\nexit\nwrite memory\n\nuser-role <name>\naccess-list session <name>\nexit\nwrite memory\n\naaa authentication via auth-profile <name>\ndefault-role <name>\nclient-cert-enable\nserver-group <name>\nexit\nwrite memory\n\naaa authentication via connection-profile <name>\nauth-profile <name>\nenable-fips\nikev2-policy 10009\nikev2-proto\nikev2auth eap-tls\nipsecv2-cryptomap map <name> number <priority>\nmax-timeout value <0-65535>\nsuiteb-crypto\nvalidate-server-cert\nexit\nwrite memory\n\naaa authentication via web-auth default\nauth-profile <name>\nexit\nwrite memory\n\nuser-role <name>\nvia <name>\nexit\nwrite memory",
+  "ccis": [
+    "CCI-000187"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The VPN interacts directly with public networks and devices and should not contain user authentication information for all users. Authentication, Authorization, and Accounting (AAA) network security services provide the primary framework through which a network administrator can set up access control and authorization on network points of entry or network access servers. It is not advisable to configure access control on the VPN gateway or remote access server. Separation of services provides added assurance to the network if the access control server is compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-VN-000580",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a",
+      "name": "HPE Aruba Networking AOS VPN Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a"
+  ]
+}

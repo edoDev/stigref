@@ -1,0 +1,53 @@
+{
+  "id": "SV-218736r1022669_rule",
+  "full_rule_id": "SV-218736r1022669_rule",
+  "rule_id": "SV-218736",
+  "rule_revision": "1022669",
+  "group_id": "V-218736",
+  "group_title": "SRG-APP-000001-WSR-000002",
+  "title": "The IIS 10.0 website session state cookie settings must be configured to Use Cookies mode.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When the session information is stored on the client, the session ID, along with the user authorization and identity information, is sent along with each client request and is stored in either a cookie, embedded in the uniform resource locator (URL), or placed in a hidden field on the displayed form. Each of these offers advantages and disadvantages. The biggest disadvantage to all three is the hijacking of a session along with all of the user's credentials.\n\nWhen the user authorization and identity information is stored on the server in a protected and encrypted database, the communication between the client and website will only send the session identifier, and the server can then retrieve user credentials for the session when needed. If, during transmission, the session were to be hijacked, the user's credentials would not be compromised.\n\nASP.NET provides a session state, which is available as the HttpSessionState class, as a method of storing session-specific information visible only within the session. ASP.NET session state identifies requests from the same browser during a limited time window as a session and provides the ability to persist variable values for the duration of that session.\n\nWhen using the URI mode for cookie settings under session state, IIS will reject and reissue session IDs that do not have active sessions. Configuring IIS to expire session IDs and regenerate tokens gives a potential attacker less time to capture a cookie and gain access to server content.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If ASP.NET is not installed, this is Not Applicable.\n\nFollow the procedures below for each site hosted on the IIS 10.0 web server:\nOpen the IIS 10.0 Manager.\nClick the site name.\nUnder the \"ASP.NET\" section, select \"Session State\".\nUnder \"Cookie Settings\", verify the \"Use Cookies\" mode is selected from the \"Mode:\" drop-down list.\nIf the \"Use Cookies\" mode is selected, this is not a finding.\n\nAlternative method:\nClick the site name.\nSelect \"Configuration Editor\" under the \"Management\" section.\nFrom the \"Section:\" drop-down list at the top of the configuration editor, locate \"system.web/sessionState\".\nVerify the \"cookieless\" is set to \"UseCookies\".\nIf the \"cookieless\" is not set to \"UseCookies\", this is a finding.\nNote: If IIS 10.0 server/site is used only for system-to-system maintenance, does not allow users to connect to interface, and is restricted to specific system IPs, this is Not Applicable.",
+  "fix": "Follow the procedures below for each site hosted on the IIS 10.0 web server: \n\nOpen the IIS 10.0 Manager.\n\nClick the site name.\n\nUnder the ASP.NET section, select \"Session State\".\n\nUnder \"Cookie Settings\", select the \"Use Cookies\" from the \"Mode:\" drop-down list.\n\nSelect \"Apply\" from the \"Actions\" pane.",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When the session information is stored on the client, the session ID, along with the user authorization and identity information, is sent along with each client request and is stored in either a cookie, embedded in the uniform resource locator (URL), or placed in a hidden field on the displayed form. Each of these offers advantages and disadvantages. The biggest disadvantage to all three is the hijacking of a session along with all of the user's credentials.\n\nWhen the user authorization and identity information is stored on the server in a protected and encrypted database, the communication between the client and website will only send the session identifier, and the server can then retrieve user credentials for the session when needed. If, during transmission, the session were to be hijacked, the user's credentials would not be compromised.\n\nASP.NET provides a session state, which is available as the HttpSessionState class, as a method of storing session-specific information visible only within the session. ASP.NET session state identifies requests from the same browser during a limited time window as a session and provides the ability to persist variable values for the duration of that session.\n\nWhen using the URI mode for cookie settings under session state, IIS will reject and reissue session IDs that do not have active sessions. Configuring IIS to expire session IDs and regenerate tokens gives a potential attacker less time to capture a cookie and gain access to server content.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IIST-SI-000202",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-iis-10-0-site-security-technical-implementation-guide-v2r15-f7e4aa41",
+      "name": "Microsoft IIS 10.0 Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "15"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-iis-10-0-site-security-technical-implementation-guide-v2r15-f7e4aa41"
+  ]
+}

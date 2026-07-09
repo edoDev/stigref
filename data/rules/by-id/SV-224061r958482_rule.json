@@ -1,0 +1,53 @@
+{
+  "id": "SV-224061r958482_rule",
+  "full_rule_id": "SV-224061r958482_rule",
+  "rule_id": "SV-224061",
+  "rule_revision": "958482",
+  "group_id": "V-224061",
+  "group_title": "SRG-OS-000104-GPOS-00051",
+  "title": "IBM z/OS started tasks for the Base TCP/IP component must be defined in accordance with security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following: \n\n1) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n2) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to system Proclibs to determine the TCPIP address space(s).\n\nFrom the ISPF Command Shell enter:\nTSS list(<TCPIP STCs>) SEGMENT(OMVS)\n\nFor each TCPIP:\n\nIf all of the following items are true, this is not a finding.\n\nIf any item is untrue, this is a finding.\n\nFrom the ISPF Command Shell enter\nTSS LIST(EZAZSSI) SEGMENT(OMVS)\nIf EZAZSSI STC has the STC facility, this is not finding.\n\n-Named TCPIP or, in the case of multiple instances, prefixed with TCPIP.\n-Has the STC facility. \n\n-z/OS UNIX attributes: \nUID(0), HOME directory '/', shell program /bin/sh \n\nEnsure the following items are in effect for the ACID assigned to the EZAZSSI started task: \n-Named EZAZSSI \n-Has the STC facility.",
+  "fix": "Develop a plan of action to implement the required changes. Ensure the following items are in effect for the ACID(s) assigned to the TCP/IP address space(s): \n\n1) Named TCPIP or, in the case of multiple instances, prefixed with TCPIP \n\n2) Has the STC facility\n\n3) z/OS UNIX attributes: UID(0), HOME directory '/', shell program /bin/sh \n\nEnsure the following items are in effect for the ACID assigned to the EZAZSSI started task: \n\n1) Named EZAZSSI \n\n2) Has the STC facility \n\nFor example:\n\nThe following commands can be used to create the user accounts and assign the privileges that are required for the TCP/IP address space and the EZAZSSI started task:\n\nTSS CREATE(TCPIP) TYPE(USER) NAME(TCPIP)\nDEPT(existing-dept) FACILITY(STC) PASSWORD(password,0)\nTSS ADD(TCPIP) DFLTGRP(STCTCPX) GROUP(STCTCPX)\nTSS ADD(TCPIP) SOURCE(INTRDR)\nTSS ADD(TCPIP) UID(0) HOME(/) OMVSPGM(/bin/sh)\nTSS ADD(TCPIP) MASTFAC(TCP)\nTSS ADD(STC) PROCNAME(TCPIP) ACID(TCPIP)\nTSS PERMIT(TCPIP) IBMFAC(BPX.DAEMON) ACCESS(READ)\n\nTSS CREATE(EZAZSSI) TYPE(USER) NAME(EZAZSSI)\nDEPT(existing-dept) FACILITY(STC) PASSWORD(password,0)\nTSS ADD(EZAZSSI) DFLTGRP(STCTCPX) GROUP(STCTCPX)\nTSS ADD(EZAZSSI) SOURCE(INTRDR)\nTSS ADD(EZAZSSI) UID(non-zero) HOME(/) OMVSPGM(/bin/sh)\nTSS ADD(EZAZSSI) MASTFAC(TCP)\nTSS ADD(STC) PROCNAME(EZAZSSI) ACID(EZAZSSI)",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following: \n\n1) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n2) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-TC-000060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

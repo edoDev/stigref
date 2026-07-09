@@ -1,0 +1,53 @@
+{
+  "id": "SV-214685r385489_rule",
+  "full_rule_id": "SV-214685r385489_rule",
+  "rule_id": "SV-214685",
+  "rule_revision": "385489",
+  "group_id": "V-214685",
+  "group_title": "SRG-NET-000138",
+  "title": "The Juniper SRX Services Gateway VPN must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system. \n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses except the following.\n\n(i) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and \n\n(ii) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.\n\nThis requirement only applies to components where this is specific to the function of the device or has the concept of an organizational user (e.g., VPN or proxy capability). This does not apply to authentication for the purpose of configuring the device itself (i.e., device management).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Ask the site to identify the VPN access profile. Verify the access profile uses LDAP, not password configuration, for user remote access to the network. Ask the site representative if group accounts are allowed or configured.\n\n[edit]\nshow security access profile <VPN-LDAP-PROFILE-NAME>\n\nIf an access profile that uses LDAP is not configured as the first option in the authentication order, this is a finding.\n\nIf group accounts are allowed for VPN logon, this is a finding.",
+  "fix": "Configure the LDAP access profile. The LDAP server must use DoD PKI for authentication of users.\n\n[edit]\nset access profile <VPN-LDAP-PROFILE-NAME> authentication-order ldap\nset access profile <VPN-LDAP-PROFILE-NAME> address-assignment pool dyn-vpn-pool\nset access profile <VPN-LDAP-PROFILE-NAME> ldap-options base-distinguished-name CN=Users, DC=firewall, DC=com (Location from where LDAP will start searching for users)\n\nset access profile <VPN-LDAP-PROFILE-NAME> ldap-options search search-filter sAMAccountName= \nset access profile <VPN-LDAP-PROFILE-NAME> ldap-options search admin-search distinguished-name CN=Administrator, CN=Users, DC=firewall, DC=com (User who is authorized to search the ldap tree)\nset access profile <VPN-LDAP-PROFILE-NAME> ldap-options search admin-search password <Administrator Password>\nset access profile <VPN-LDAP-PROFILE-NAME> ldap-server <AD Server IP address> port 389/636 \nset access firewall-authentication pass-through default-profile <VPN-LDAP-PROFILE-NAME>\nset access firewall-authentication web-authentication default-profile <VPN-LDAP-PROFILE-NAME>\n\nNote: To find the user or administrator base DN, use any LDAP browser. On an Internet search engine, search for ldp.exe, which is a very basic LDAP browser.\n\nWhen using LDAP groups to authenticate a user, or a user belonging to a group in the active directory, include the following statement:\n\nset access profile <VPN-LDAP-PROFILE-NAME> session-options client-group <group-name>\n\nNote: Without the above statement, users are not searched based on the group name or group string.\n\nThe IP address pool configuration is as follows (the user will be assigned the IP from this pool):\n\nset access address-assignment pool dyn-vpn-pool family inet network <IP Network for Dynamic-VPN User> (e.g.. 192.168.100.0/24)\nset access address-assignment pool dyn-vpn-pool family inet range dyn-vpn-pool-range low <Starting IP address for Dynamic-VPN User> (e.g.. 192.168.100.1)\nset access address-assignment pool dyn-vpn-pool family inet range dyn-vpn-pool-range high <ending IP address for Dynamic-VPN User> (e.g.. 192.168.100.100)\n\nNote: The IP network used for dynamic VPN users should be different from the IP network of the external interface used in the IKE configuration.\n\nThe access profile is linked to the xauth of the gateway for dynamic VPN.\n\nset security ike gateway <VPN-GATEWAY> xauth access-profile <VPN-LDAP-PROFILE-NAME> \n\nUnder security >> dynamic-vpn, add all the users that are going to use the dynamic VPN. The command is as follows:\n\nset security dynamic-vpn clients all user\n\nNote: For users who are going to use dynamic VPN, this will be the AD user logon name for each user.",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system. \n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses except the following.\n\n(i) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and \n\n(ii) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.\n\nThis requirement only applies to components where this is specific to the function of the device or has the concept of an organizational user (e.g., VPN or proxy capability). This does not apply to authentication for the purpose of configuring the device itself (i.e., device management).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-VN-000018",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0",
+      "name": "Juniper SRX Services Gateway VPN Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0"
+  ]
+}

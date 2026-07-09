@@ -1,0 +1,53 @@
+{
+  "id": "SV-213520r960963_rule",
+  "full_rule_id": "SV-213520r960963_rule",
+  "rule_id": "SV-213520",
+  "rule_revision": "960963",
+  "group_id": "V-213520",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "JBoss process owner execution permissions must be limited.",
+  "severity": "high",
+  "description": "<VulnDiscussion>JBoss EAP application server can be run as the OS admin, which is not advised.  Running the application server with admin privileges increases the attack surface by granting the application server more rights than it requires in order to operate.  If the server is compromised, the attacker will have the same rights as the application server, which in that case would be admin rights.  The JBoss EAP server must not be run as the admin user.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The script that is used to start JBoss determines the mode in which JBoss will operate, which will be in either in standalone mode or domain mode.  Both scripts are installed by default in the <JBOSS_HOME>/bin/ folder.\n\nIn addition to running the JBoss server as an interactive script launched from the command line, JBoss can also be started as a service.\n\nThe scripts used to start JBoss are:\nRed Hat: \nstandalone.sh\ndomain.sh\n\nWindows: \nstandalone.bat\ndomain.bat\n\nUse the relevant OS commands to determine JBoss ownership.\n\nWhen running as a process: \nRed Hat: \"ps -ef|grep -i jboss\".\nWindows: \"services.msc\".\n\nSearch for the JBoss process, which by default is named \"JBOSSEAP6\". \n\nIf the user account used to launch the JBoss script or start the JBoss process has admin rights on the system, this is a finding.",
+  "fix": "Run the JBoss server with non-admin rights.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "JBoss EAP application server can be run as the OS admin, which is not advised.  Running the application server with admin privileges increases the attack surface by granting the application server more rights than it requires in order to operate.  If the server is compromised, the attacker will have the same rights as the application server, which in that case would be admin rights.  The JBoss EAP server must not be run as the admin user.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JBOS-AS-000230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9",
+      "name": "JBoss Enterprise Application Platform 6.3 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-254027r945863_rule",
+  "full_rule_id": "SV-254027r945863_rule",
+  "rule_id": "SV-254027",
+  "rule_revision": "945863",
+  "group_id": "V-254027",
+  "group_title": "SRG-NET-000230-RTR-000003",
+  "title": "The Juniper router must be configured to use keys with a duration not exceeding 180 days for authenticating routing protocol messages.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the keys used for routing protocol authentication are guessed, the malicious user could create havoc within the network by advertising incorrect routes and redirecting traffic. Some routing protocols allow the use of key chains for authentication. A key chain is a set of keys that is used in succession, with each having a lifetime of no more than 180 days. Changing the keys frequently reduces the risk of them eventually being guessed.\n\nKeys cannot be used during time periods for which they are not activated. If a time period occurs during which no key is activated, neighbor authentication cannot occur, and therefore routing updates will fail. Therefore, ensure that for a given key chain, key activation times overlap to avoid any period of time during which no key is activated.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nFor each authenticated routing protocol session, review the configured key expiration dates.\n[edit security]\nauthentication-key-chains {\n    key-chain <name> {\n        key 1 {\n            secret \"$9$vNbM7Vg4ZjkPJGn/AtOB7-d\"; ## SECRET-DATA\n            start-time \"2021-1-1.00:00:00 -0700\";\n            algorithm md5;\n        }\n        key 2 {\n            secret \"$9$MAQL7VgoGqmTwYmTz3tpWLxNwY4aZjk.\"; ## SECRET-DATA\n            start-time \"2021-5-31.00:00:00 -0700\";\n            algorithm md5;\n        }\n    }\n}\n[edit protocols]\nbgp {\n    group eBGP {\n        authentication-key-chain <name>;\n        neighbor 1.2.3.4 {\n            authentication-key-chain <name>;\n        }\n    }\n    authentication-key-chain <name>;\n}\n\nNote: BGP supports authentication globally, at the group level, and individually for each neighbor. The most specific authentication configuration is applied.\nospf {\n    area 0.0.0.2 {\n        interface ge-0/0/0.0 {\n            authentication {\n                md5 0 key \"$9$vG08xd24Zk.5bs.5QFAtM8X7bsgoJDHq\" start-time \"2021-1-1.00:00:00 -0700\"; ## SECRET-DATA\n                md5 1 key \"$9$m5z6p0IreW9AeWLxwsP5QF9AuO1hyl\" start-time \"2021-5-31.00:00:00 -0700\"; ## SECRET-DATA\n            }\n        }\n    }                                   \n}\n\nIf any key has a lifetime of more than 180 days, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nFor each authenticated routing protocol session, configure each key to have a lifetime of no more than 180 days.\n\nset security authentication-key-chains key-chain <name> key <number-1> secret <key value>\nset security authentication-key-chains key-chain <name> key <number-1> start-time <YYYY-MM-DD.HH:MM>\nset security authentication-key-chains key-chain <name> key <number-1> algorithm md5\nset security authentication-key-chains key-chain <name> key <number-2> secret <key value>\nset security authentication-key-chains key-chain <name> key <number-2> start-time <YYYY-MM-DD.HH:MM>\nset security authentication-key-chains key-chain <name> key <number-2> algorithm md5\n\nset protocols bgp group <name> authentication-key-chain <name>\nset protocols bgp group <name> neighbor <neighbor address> authentication-key-chain <name>\nset protocols bgp authentication-key-chain <name>\n\nset protocols ospf area <area number> interface <interface name>.<logical unit> authentication md5 <number> key <key value>\nset protocols ospf area <area number> interface <interface name>.<logical unit> authentication md5 <number> start-time <YYYY-MM-DD.HH:MM>\nset protocols ospf area <area number> interface <interface name>.<logical unit> authentication md5 <number> key <key value>\nset protocols ospf area <area number> interface <interface name>.<logical unit> authentication md5 <number> start-time <YYYY-MM-DD.HH:MM>",
+  "ccis": [
+    "CCI-000366",
+    "CCI-002205"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the keys used for routing protocol authentication are guessed, the malicious user could create havoc within the network by advertising incorrect routes and redirecting traffic. Some routing protocols allow the use of key chains for authentication. A key chain is a set of keys that is used in succession, with each having a lifetime of no more than 180 days. Changing the keys frequently reduces the risk of them eventually being guessed.\n\nKeys cannot be used during time periods for which they are not activated. If a time period occurs during which no key is activated, neighbor authentication cannot occur, and therefore routing updates will fail. Therefore, ensure that for a given key chain, key activation times overlap to avoid any period of time during which no key is activated.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000550",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

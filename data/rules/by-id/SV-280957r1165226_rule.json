@@ -1,0 +1,53 @@
+{
+  "id": "SV-280957r1165226_rule",
+  "full_rule_id": "SV-280957r1165226_rule",
+  "rule_id": "SV-280957",
+  "rule_revision": "1165226",
+  "group_id": "V-280957",
+  "group_title": "SRG-OS-000297-GPOS-00115",
+  "title": "RHEL 10 must employ a deny-all, allow-by-exception policy for allowing connections to other systems.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failure to restrict network connectivity only to authorized systems permits inbound connections from malicious systems. It also permits outbound connections that may facilitate exfiltration of DOD data.\n\nRHEL 10 incorporates the \"firewalld\" daemon, which allows for many different configurations. One of these configurations is zones. Zones can be used in a deny-all, allow-by-exception approach. The default \"drop\" zone will drop all incoming network packets unless it is explicitly allowed by the configuration file or is related to an outgoing network connection.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 is configured so that \"firewalld\" employs a deny-all, allow-by-exception policy for allowing connections to other systems with the following commands (using ens133 as an example interface):\n\n$ sudo  firewall-cmd --state\nrunning\n\n$ sudo firewall-cmd --get-active-zones\ndrop (default)\n   interfaces: ens33\n\n$  sudo firewall-cmd --info-zone=drop | grep target\n  target: DROP\n\n$ sudo firewall-cmd --permanent --info-zone=drop | grep target\n   target: DROP\n\nIf no zones are active on the RHEL 10 interfaces or if runtime and permanent targets are set to an option other than \"DROP\", this is a finding.\n\nVerify the permanent configuration is valid and there are no misconfigured zones or rules with the following command:\n\n$ sudo firewall-cmd --check-config\nsuccess\n\nIf this command does not return \"success\", this is a finding.",
+  "fix": "Configure RHEL 10 so that the \"firewalld\" daemon employs a deny-all, allow-by-exception policy with the following commands (using ens133 as an example interface):\n\nStart by adding the exceptions that are required for mission functionality to the \"drop\" zone. If SSH access on port 22 is needed, for example, run the following: \n\n$ sudo firewall-cmd --permanent --add-service=ssh --zone=drop\n\nReload the firewall rules to update the runtime configuration from the \"--permanent\" changes made above:\n\n$ sudo firewall-cmd --reload\n\nSet the default zone to the drop zone:\n\n$ sudo firewall-cmd --set-default-zone=drop\nNote: This is a runtime and permanent change.\n\nAdd any interfaces to the newly modified \"drop\" zone:\n\n$ sudo firewall-cmd --permanent --zone=drop --change-interface=ens33\n\nReload the firewall rules for changes to take effect:\n\n$ sudo firewall-cmd --reload",
+  "ccis": [
+    "CCI-002314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to restrict network connectivity only to authorized systems permits inbound connections from malicious systems. It also permits outbound connections that may facilitate exfiltration of DOD data.\n\nRHEL 10 incorporates the \"firewalld\" daemon, which allows for many different configurations. One of these configurations is zones. Zones can be used in a deny-all, allow-by-exception approach. The default \"drop\" zone will drop all incoming network packets unless it is explicitly allowed by the configuration file or is related to an outgoing network connection.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-200532",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

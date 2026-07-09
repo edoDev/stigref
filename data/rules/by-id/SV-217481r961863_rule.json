@@ -1,0 +1,54 @@
+{
+  "id": "SV-217481r961863_rule",
+  "full_rule_id": "SV-217481r961863_rule",
+  "rule_id": "SV-217481",
+  "rule_revision": "961863",
+  "group_id": "V-217481",
+  "group_title": "SRG-APP-000516-NDM-000340",
+  "title": "The HP FlexFabric Switch must support organizational requirements to conduct backups of system level information contained in the information system when changes occur or weekly, whichever is sooner.",
+  "severity": "low",
+  "description": "<VulnDiscussion>System-level information includes default and customized settings and security attributes, including ACLs that relate to the HP FlexFabric Switch configuration, as well as software required for the execution and operation of the device. Information system backup is a critical step in ensuring system integrity and availability. If the system fails and there is no backup of the system-level information, a denial of service condition is possible for all who utilize this critical network component.\n\nThis control requires the HP FlexFabric Switch to support the organizational central backup process for system-level information associated with the HP FlexFabric Switch. This function may be provided by the HP FlexFabric Switch itself; however, the preferred best practice is a centralized backup rather than each network device performing discrete backups.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the HP FlexFabric Switch configuration to determine if it is configured to back up its configuration file on a weekly basis.\n\nIf a schedule does not exist, this is a finding.\n\n[HP] display scheduler job\n\nJob name: system_backup\ntftp 192.168.1.13 put hp5900.cfg",
+  "fix": "Configure the HP FlexFabric Switch to back up its configuration to a TFTP/FTP server:\n\n[HP] scheduler job config_backup\n[HP-job-config_backup] command 1 tftp 15.252.76.13 put 5900.cfg [HP-job-config_backup] quit [HP] scheduler schedule 5900-backup [HP-schedule-5900-backup] user-role network-admin [HP-schedule-5900-backup]  job test [HP-schedule-5900-backup]  time repeating at 14:14 week-day Thu",
+  "ccis": [
+    "CCI-000366",
+    "CCI-000537"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "System-level information includes default and customized settings and security attributes, including ACLs that relate to the HP FlexFabric Switch configuration, as well as software required for the execution and operation of the device. Information system backup is a critical step in ensuring system integrity and availability. If the system fails and there is no backup of the system-level information, a denial of service condition is possible for all who utilize this critical network component.\n\nThis control requires the HP FlexFabric Switch to support the organizational central backup process for system-level information associated with the HP FlexFabric Switch. This function may be provided by the HP FlexFabric Switch itself; however, the preferred best practice is a centralized backup rather than each network device performing discrete backups.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-ND-000137",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881",
+      "name": "HP FlexFabric Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881"
+  ]
+}

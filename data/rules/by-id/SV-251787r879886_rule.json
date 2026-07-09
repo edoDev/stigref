@@ -1,0 +1,53 @@
+{
+  "id": "SV-251787r879886_rule",
+  "full_rule_id": "SV-251787r879886_rule",
+  "rule_id": "SV-251787",
+  "rule_revision": "879886",
+  "group_id": "V-251787",
+  "group_title": "SRG-APP-000515-NDM-000325",
+  "title": "The NSX-T Manager must be configured to send logs to a central log server.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOffloading is a common process in information systems with limited audit storage capacity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an NSX-T Manager shell, run the following command(s):\n\n> get logging-servers\n\nIf any configured logging-servers are not configured with protocol of \"tcp\", \"li-tls\", or \"tls\" and level of \"info\", this is a finding.\n\nIf no logging-servers are configured, this is a finding.\n\nNote: This check must be run from each NSX-T Manager as they are configured individually.",
+  "fix": "(Optional) From an NSX-T Manager shell, run the following command(s) to clear any existing incorrect logging-servers:\n\n> clear logging-servers\n\nFrom an NSX-T Manager shell, run the following command(s) to configure a tcp syslog server:\n\n> set logging-server <server-ip or server-name> proto tcp level info\n\nFrom an NSX-T Manager shell, run the following command(s) to configure a tls syslog server:\n\n> set logging-server <server-ip or server-name> proto tls level info serverca ca.pem clientca ca.pem certificate cert.pem key key.pem\n\nFrom an NSX-T Manager shell, run the following command(s) to configure an li-tls syslog server:\n\n> set logging-server <server-ip or server-name> proto li-tls level info serverca root-ca.crt\n\nNote: If using the protocols TLS or LI-TLS to configure a secure connection to a log server, the server and client certificates must be stored in /image/vmware/nsx/file-store on each NSX-T Manager appliance.",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOffloading is a common process in information systems with limited audit storage capacity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TNDM-3X-000088",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-t-manager-ndm-security-technical-implementation-guide-v1r3-a6224326",
+      "name": "VMware NSX-T Manager NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-t-manager-ndm-security-technical-implementation-guide-v1r3-a6224326"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-268517r1137691_rule",
+  "full_rule_id": "SV-268517r1137691_rule",
+  "rule_id": "SV-268517",
+  "rule_revision": "1137691",
+  "group_id": "V-268517",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "The macOS system must disable Media Sharing.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Media Sharing must be disabled.\n\nWhen Media Sharing is enabled, the computer starts a network listening service that shares the contents of the user's music collection with other users in the same subnet.\n\nThe information system must be configured to provide only essential capabilities. Disabling Media Sharing helps prevent the unauthorized connection of devices and unauthorized transfer of information. Disabling Media Sharing mitigates this risk.\n\nNote: The Media Sharing preference panel will still allow \"Home Sharing\" and \"Share media with guests\" to be checked, but the service will not be enabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to disable Media Sharing with the following commands:\n\n/usr/bin/osascript -l JavaScript << EOS\nfunction run() {\nlet pref1 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\\\n.objectForKey('allowMediaSharing'))\nlet pref2 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\\\n.objectForKey('allowMediaSharingModification'))\nif ( pref1 == false && pref2 == false ) {\nreturn(\"true\")\n} else {\nreturn(\"false\")\n}\n}\nEOS\n\nIf the result is not \"true\", this is a finding.",
+  "fix": "Configure the macOS system to disable Media Sharing by installing the \"com.apple.applicationaccess\" configuration profile.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Media Sharing must be disabled.\n\nWhen Media Sharing is enabled, the computer starts a network listening service that shares the contents of the user's music collection with other users in the same subnet.\n\nThe information system must be configured to provide only essential capabilities. Disabling Media Sharing helps prevent the unauthorized connection of devices and unauthorized transfer of information. Disabling Media Sharing mitigates this risk.\n\nNote: The Media Sharing preference panel will still allow \"Home Sharing\" and \"Share media with guests\" to be checked, but the service will not be enabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-15-002100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66",
+      "name": "Apple macOS 15 (Sequoia) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66"
+  ]
+}

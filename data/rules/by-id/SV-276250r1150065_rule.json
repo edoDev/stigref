@@ -1,0 +1,53 @@
+{
+  "id": "SV-276250r1150065_rule",
+  "full_rule_id": "SV-276250r1150065_rule",
+  "rule_id": "SV-276250",
+  "rule_revision": "1150065",
+  "group_id": "V-276250",
+  "group_title": "SRG-APP-000211-DB-000122",
+  "title": "Azure SQL Managed Instance must separate user functionality (including user interface services) from database management functionality.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information system management functionality includes functions necessary to administer databases, network components, workstations, or servers and typically requires privileged user access. \n\nThe separation of user functionality from information system management functionality is either physical or logical and is accomplished by using different computers, different central processing units, different instances of the operating system, different network addresses, combinations of these methods, or other methods, as appropriate. \n\nAn example of this type of separation is observed in web administrative interfaces that use separate authentication methods for users of any other information system resources. \n\nThis may include isolating the administrative interface on a different domain and with additional access controls.\n\nIf administrative functionality or information regarding Azure SQL Managed Instance management is presented on an interface available for users, information on Azure SQL Managed Instance settings may be inadvertently made available to the user.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To validate Azure role-based access controls (RBAC) for a specific resource, use the PowerShell script below: \n\n$ManagedInstanceName = '<ManagedInstanceName>'\n$SqlMI = Get-AzSqlInstance -Name $ManagedInstanceName\nGet-AzRoleAssignment -Scope $SqlMI.Id | Select-Object DisplayName,SignInName,RoleDefinitionName,ObjectType\n  \nIf a user not assigned information system management responsibilities has membership in any of the following roles, this is a finding: \n\n- SQL Managed Instance.\n- Contributor. \n- SQL Security Manager. \n- SqlMI Migration Role. \n- User Access Administrator. \n- Owner. \n- Reader. \n- Role Based Access Control.\n- Administrator.",
+  "fix": "To remove an Azure RBAC role assignment, use the Remove-AzRoleAssignment PowerShell command. Example command: \n  \n$userPrincipalName =\n'Fourth.Coffee@contoso.onmicrosoft.us' \n$RoleDefinitionName = 'SQL Managed Instance Contributor' \n$ResourceGroupName ='stigtestingrg' \n$ResourceName ='fourthcoffeemi' \n$userObjectId =(Get-AzAdUser -UserPrincipalName $userPrincipalName).Id \n$ResourceID =(Get-AzSqlInstance -ResourceGroupName $ResourceGroupName -Name $ManagedInstanceName).Id \n\nRemove-AzRoleAssignment -Scope $ResourceID -RoleDefinitionName $RoleDefinitionName -ObjectId $userObjectId",
+  "ccis": [
+    "CCI-001082"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information system management functionality includes functions necessary to administer databases, network components, workstations, or servers and typically requires privileged user access. \n\nThe separation of user functionality from information system management functionality is either physical or logical and is accomplished by using different computers, different central processing units, different instances of the operating system, different network addresses, combinations of these methods, or other methods, as appropriate. \n\nAn example of this type of separation is observed in web administrative interfaces that use separate authentication methods for users of any other information system resources. \n\nThis may include isolating the administrative interface on a different domain and with additional access controls.\n\nIf administrative functionality or information regarding Azure SQL Managed Instance management is presented on an interface available for users, information on Azure SQL Managed Instance settings may be inadvertently made available to the user.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MSQL-00-008900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb",
+      "name": "Microsoft Azure SQL Managed Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb"
+  ]
+}

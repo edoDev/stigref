@@ -1,0 +1,53 @@
+{
+  "id": "SV-258964r934550_rule",
+  "full_rule_id": "SV-258964r934550_rule",
+  "rule_id": "SV-258964",
+  "rule_revision": "934550",
+  "group_id": "V-258964",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must disable CDP/LLDP on distributed switches.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The vSphere Distributed Virtual Switch can participate in Cisco Discovery Protocol (CDP) or Link Layer Discovery Protocol (LLDP), as a listener, advertiser, or both. The information is sensitive, including IP addresses, system names, software versions, and more. It can be used by an adversary to gain a better understanding of your environment, and to impersonate devices. It is also transmitted unencrypted on the network, and as such the recommendation is to disable it.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If distributed switches are not used, this is not applicable.\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Configure >> Settings >> Properties.\n\nReview the \"Discovery Protocol\" configuration.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-VDSwitch | Select Name,LinkDiscoveryProtocolOperation\n\nIf any distributed switch does not have \"Discovery Protocols\" disabled, this is a finding.",
+  "fix": "From the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Configure >> Settings >> Properties.\n\nClick \"Edit\".\n\nSelect the advanced tab and update the \"Type\" under \"Discovery Protocol\" to disabled and click \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-VDSwitch -Name \"DSwitch\" | Set-VDSwitch -LinkDiscoveryProtocolOperation \"Disabled\"",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The vSphere Distributed Virtual Switch can participate in Cisco Discovery Protocol (CDP) or Link Layer Discovery Protocol (LLDP), as a listener, advertiser, or both. The information is sensitive, including IP addresses, system names, software versions, and more. It can be used by an adversary to gain a better understanding of your environment, and to impersonate devices. It is also transmitted unencrypted on the network, and as such the recommendation is to disable it.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000299",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

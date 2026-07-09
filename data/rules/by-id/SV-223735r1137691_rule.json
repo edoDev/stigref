@@ -1,0 +1,53 @@
+{
+  "id": "SV-223735r1137691_rule",
+  "full_rule_id": "SV-223735r1137691_rule",
+  "rule_id": "SV-223735",
+  "rule_revision": "1137691",
+  "group_id": "V-223735",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS data sets for the FTP server must be properly protected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>MVS data sets of the FTP Server provide the configuration and operational characteristics of this product. Failure to properly secure these data sets may lead to unauthorized access resulting in the compromise of the integrity and availability of customer data and some system services.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to the FTP server Started task (usually FTPD). Refer to the dataset defined on the SYSFTPD DD statement.\n\nIf WRITE and ALLOCATE access to the data set containing the FTP Data configuration file is restricted to systems programming personnel, this is not a finding.\n\nNote: READ access to all authenticated users is permitted.\n\nIf WRITE and ALLOCATE access to the data set containing the FTP Data configuration file is logged, this is not a finding.\n\nIf WRITE and ALLOCATE access to the data set containing the FTP banner file is restricted to systems programming personnel, this is not a finding.\n\nNote: READ access to the data set containing the FTP banner file is permitted to all authenticated users.\n\nNotes: The MVS data sets mentioned above are not used in every configuration. Absence of a data set will not be considered a finding. The data set containing the FTP Data configuration file is determined by checking the SYSFTPD DD statement in the FTP started task JCL. The data set containing the FTP banner file is determined by checking the BANNER statement in the FTP Data configuration file.",
+  "fix": "Review the data set access authorizations defined to the ACP for the FTP.DATA and FTP.BANNER files. Configure these data sets to be protected as follows:\n\nThe data set containing the FTP.DATA configuration file allows read access to all authenticated users and all other access is restricted to systems programming personnel.\n\nAll Write and Allocate access to the data set containing the FTP.DATA configuration file is logged.\n\nThe data set containing the FTP banner file allows read access to all authenticated users and all other access is restricted to systems programming personnel.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "MVS data sets of the FTP Server provide the configuration and operational characteristics of this product. Failure to properly secure these data sets may lead to unauthorized access resulting in the compromise of the integrity and availability of customer data and some system services.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-FT-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

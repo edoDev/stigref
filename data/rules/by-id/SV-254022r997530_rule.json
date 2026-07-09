@@ -1,0 +1,54 @@
+{
+  "id": "SV-254022r997530_rule",
+  "full_rule_id": "SV-254022r997530_rule",
+  "rule_id": "SV-254022",
+  "rule_revision": "997530",
+  "group_id": "V-254022",
+  "group_title": "SRG-NET-000205-RTR-000014",
+  "title": "The Juniper perimeter router must be configured to restrict it from accepting outbound IP packets that contain an illegitimate address in the source address field via egress filter or by enabling Unicast Reverse Path Forwarding (uRPF).",
+  "severity": "high",
+  "description": "<VulnDiscussion>A compromised host in an enclave can be used by a malicious platform to launch cyberattacks on third parties. This is a common practice in \"botnets\", which are a collection of compromised computers using malware to attack other computers or networks. DDoS attacks frequently leverage IP source address spoofing to send packets to multiple hosts that in turn will then send return traffic to the hosts with the IP addresses that were forged. This can generate significant amounts of traffic. Therefore, protection measures to counteract IP source address spoofing must be taken. When uRPF is enabled in strict mode, the packet must be received on the interface that the device would use to forward the return packet; thereby mitigating IP source address spoofing.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to verify uRPF or an egress filter has been configured on all internal interfaces to restrict the router from accepting outbound IP packets that contain an illegitimate address in the source address field.\n\n[edit interfaces]\n<internal interface name> {\n    unit <number> {\n        family inet {\n            rpf-check;\n            address <IPv4 address>/<mask>;         \n        }                               \n        family inet6 {                  \n            rpf-check;\n            address <IPv6 address>/<prefix>;     \n        }                               \n    }                                   \n}\n\nFor those platforms that do not support uRPF, verify an egress stateless firewall filter is applied to all internal interfaces. In this example, the egress (from the enclave) filter is applied in the input direction of internal interfaces to prevent the router from accepting packets sourced from any address except the internal subnets. For example:\n[edit policy-options]\nprefix-list internal-prefixes-ipv4 {\n    192.0.2.0/24;\n}\nprefix-list internal-prefixes-ipv6 {\n    2001:0:2::/64;\n}\n[edit firewall]\nfamily inet {\n    filter internal-inbound-ipv4 {\n        term 1 {\n            from {\n                source-prefix-list {\n                    internal-prefixes-ipv4;\n                }\n            }\n            then accept;\n        }\n        term default {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\nfamily inet6 {\n    filter internal-inbound-ipv6 {\n        term 1 {\n            from {\n                source-prefix-list {\n                    internal-prefixes-ipv6;\n                }\n            }\n            then accept;\n        }\n        term default {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\n\nVerify the appropriate filter is applied to each internal interface. For example:\n[edit interfaces]\n<internal interface name> {\n    unit <number> {\n        family inet {\n            filter {\n                input internal-inbound-ipv4;\n            }                           \n            address <IPv4 address>/<mask>;       \n        }                               \n        family inet6 {                  \n            filter {                    \n                input internal-inbound-ipv6;\n            }                           \n            address <IPv6 address>/<prefix>;     \n        }                               \n    }                                   \n}\n\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf uRPF or an egress filter to restrict the router from accepting outbound IP packets that contain an illegitimate address in the source address field has not been configured on all internal interfaces, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the router to ensure that an egress filter or uRPF is configured to restrict the router from accepting any outbound IP packet that contains an external IP address in the source field.\n\nset interfaces <internal interface name> unit <number> family inet rpf-check\nset interfaces <internal interface name> unit <number> family inet6 rpf-check\n\nFor example, configure firewall filter and apply to internal interfaces:\nset policy-options prefix-list internal-prefixes-ipv4 192.0.2.0/24\nset policy-options prefix-list internal-prefixes-ipv6 2001:0:2::/64\n\nset firewall family inet filter internal-inbound-ipv4 term 1 from source-prefix-list internal-prefixes-ipv4\nset firewall family inet filter internal-inbound-ipv4 term 1 then accept\nset firewall family inet filter internal-inbound-ipv4 term default then log\nset firewall family inet filter internal-inbound-ipv4 term default then syslog\nset firewall family inet filter internal-inbound-ipv4 term default then discard\nset firewall family inet6 filter internal-inbound-ipv6 term 1 from source-prefix-list internal-prefixes-ipv6\nset firewall family inet6 filter internal-inbound-ipv6 term 1 then accept\nset firewall family inet6 filter internal-inbound-ipv6 term default then log\nset firewall family inet6 filter internal-inbound-ipv6 term default then syslog\nset firewall family inet6 filter internal-inbound-ipv6 term default then discard\n\nset interfaces ge-0/0/0 unit 0 family inet filter input internal-inbound-ipv4\nset interfaces ge-0/0/0 unit 0 family inet6 filter input internal-inbound-ipv6",
+  "ccis": [
+    "CCI-001094",
+    "CCI-004866"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A compromised host in an enclave can be used by a malicious platform to launch cyberattacks on third parties. This is a common practice in \"botnets\", which are a collection of compromised computers using malware to attack other computers or networks. DDoS attacks frequently leverage IP source address spoofing to send packets to multiple hosts that in turn will then send return traffic to the hosts with the IP addresses that were forged. This can generate significant amounts of traffic. Therefore, protection measures to counteract IP source address spoofing must be taken. When uRPF is enabled in strict mode, the packet must be received on the interface that the device would use to forward the return packet; thereby mitigating IP source address spoofing.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

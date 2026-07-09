@@ -1,0 +1,53 @@
+{
+  "id": "SV-254047r844174_rule",
+  "full_rule_id": "SV-254047r844174_rule",
+  "rule_id": "SV-254047",
+  "rule_revision": "844174",
+  "group_id": "V-254047",
+  "group_title": "SRG-NET-000364-RTR-000111",
+  "title": "The Juniper perimeter router must be configured to have Link Layer Discovery Protocols (LLDPs) disabled on all external interfaces.",
+  "severity": "low",
+  "description": "<VulnDiscussion>LLDPs are primarily used to obtain protocol addresses of neighboring devices and discover platform capabilities of those devices. Use of SNMP with the LLDP Management Information Base (MIB) allows network management applications to learn the device type and the SNMP agent address of neighboring devices, thereby enabling the application to send SNMP queries to those devices. LLDPs are also media- and protocol-independent as they run over the data link layer; therefore, two systems that support different network-layer protocols can still learn about each other. Allowing LLDP messages to reach external network nodes is dangerous as it provides an attacker a method to obtain information of the network infrastructure that can be useful to plan an attack.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview all router configurations to ensure LLDPs are not included in the global configuration or LLDPs are not included for each active external interface. Examples of LLDPs are Cisco Discovery Protocol (CDP), Link Layer Discovery Protocol (LLDP), and Link Layer Discovery Protocol - Media Endpoint Discovery (LLDP-MED). Junos does not support CDP, but supports both LLDP and LLDP-MED, configured at [edit protocols]. Verify external interfaces are either not configured or explicitly disabled. For example:\n\nTo globally disable LLDP and LLDP-MED:\n[edit protocols]\n<no LLDP or LLDP-MED hierarchy>\n-or-\nlldp {\n    interface all {\n        disable;\n    }\n}\nlldp-med {\n    interface all {\n        disable;\n    }\n}\n\nIf LLDP or LLDP-MED is authorized, verify external interfaces are not configured or are explicitly disabled. For example:\n[edit protocols]\nlldp {\n    interface all {\n        disable;\n    }\n    interface ge-0/0/0; <<< Verify ge-0/0/0 is not an external interface.\n    interface ge-0/0/1 {\n        disable; <<< Assuming ge-0/0/1 is an external interface, it is disabled globally (interface all disable) or explicitly disabled as shown.\n    }\n}\nlldp-med {\n    interface all {\n        disable;\n    interface ge-0/0/0; <<< Verify ge-0/0/0 is not an external interface.\n    interface ge-0/0/1 {\n        disable; <<< Assuming ge-0/0/1 is an external interface, it is disabled globally (interface all disable) or explicitly disabled as shown.\n    }\n}\n\nNote: Both LLDP and LLDP-MED are globally disabled on all interfaces but Junos will apply the most specific configuration. Therefore, both LLDP and LLDP-MED are enabled only on ge-0/0/0 and disabled on all other interfaces as configured in the example.\n\nIf LLDPs are configured globally or on any external interface, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nDisable LLDPs on all external interfaces.\n\nset protocols lldp interface all disable\nset protocols lldp interface <interior interface>\nset protocols lldp interface <exterior interface> disable\n\nset protocols lldp-med interface all disable\nset protocols lldp-med interface <interior interface>\nset protocols lldp-med interface <exterior interface> disable\n\nNote: The <exterior interface> disable command is not required if LLDP and LLDP-MED are globally disabled. However, the configured protocol status may be more apparent if each exterior interface is explicitly disabled.",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "LLDPs are primarily used to obtain protocol addresses of neighboring devices and discover platform capabilities of those devices. Use of SNMP with the LLDP Management Information Base (MIB) allows network management applications to learn the device type and the SNMP agent address of neighboring devices, thereby enabling the application to send SNMP queries to those devices. LLDPs are also media- and protocol-independent as they run over the data link layer; therefore, two systems that support different network-layer protocols can still learn about each other. Allowing LLDP messages to reach external network nodes is dangerous as it provides an attacker a method to obtain information of the network infrastructure that can be useful to plan an attack.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000750",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

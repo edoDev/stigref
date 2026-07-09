@@ -1,0 +1,53 @@
+{
+  "id": "SV-270533r1065215_rule",
+  "full_rule_id": "SV-270533r1065215_rule",
+  "rule_id": "SV-270533",
+  "rule_revision": "1065215",
+  "group_id": "V-270533",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "Oracle application administration roles must be disabled if not required and authorized.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Application administration roles, which are assigned system or elevated application object privileges, must be protected from default activation. Application administration roles are determined by system privilege assignment (create/alter/drop user) and application user role ADMIN OPTION privileges.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Run the SQL query:\n\nselect grantee, granted_role from dba_role_privs\nwhere default_role='YES'\nand granted_role in\n(select grantee from dba_sys_privs where upper(privilege) like '%USER%') \nand grantee not in\n(<list of nonapplicable accounts>)\nand grantee not in (select distinct owner from dba_tables)\nand grantee not in\n(select distinct username from dba_users where upper(account_status) like\n'%LOCKED%');\n\nWith respect to the list of special accounts that are excluded from this requirement, it is expected that the database administrator (DBA) will maintain the list to suit local circumstances, adding special accounts as necessary and removing any that are not supposed to be in use in the Oracle deployment that is under review.\n\nReview the list of accounts reported for this check and ensures that they are authorized application administration roles.\n\nIf any are not authorized application administration roles, this is a finding.",
+  "fix": "For each role assignment returned, issue:\n\nFrom SQL*Plus:\n\nalter user [username] default role all except [role];\n\nIf the user has more than one application administration role assigned, then remove assigned roles from default assignment and assign individually the appropriate default roles.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Application administration roles, which are assigned system or elevated application object privileges, must be protected from default activation. Application administration roles are determined by system privilege assignment (create/alter/drop user) and application user role ADMIN OPTION privileges.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-010100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-268138r1131081_rule",
+  "full_rule_id": "SV-268138r1131081_rule",
+  "rule_id": "SV-268138",
+  "rule_revision": "1131081",
+  "group_id": "V-268138",
+  "group_title": "SRG-OS-000109-GPOS-00056",
+  "title": "NixOS must not allow direct login to the root account.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To ensure individual accountability and prevent unauthorized access, organizational users must be individually identified and authenticated.\n\nA group authenticator is a generic account used by multiple individuals. Use of a group authenticator alone does not uniquely identify individual users. Examples of the group authenticator are the UNIX OS \"root\" user account, the Windows \"Administrator\" account, the \"sa\" account, or a \"helpdesk\" account.\n\nFor example, the UNIX and Windows operating systems offer a \"switch user\" capability allowing users to authenticate with their individual credentials and, when needed, \"switch\" to the administrator role. This method provides for unique individual authentication prior to using a group authenticator.\n\nUsers (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses other than those explicitly identified and documented by the organization, which outlines specific user actions that can be performed on the operating system without identification or authentication.\n\nRequiring individuals to be authenticated with an individual authenticator prior to using a group authenticator allows for traceability of actions, as well as adding an additional level of protection of the actions that can be taken with group account knowledge.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the NixOS operating system prevents directly logging in to the root account with the following command:\n\n$ sudo passwd -S root\n\nroot L 01/02/1970 -1 -1 -1 -1\n\nIf the second field in the output is not \"L\" or \"NP\", then the root account is not locked and has a password configured, and this is a finding.",
+  "fix": "Configure NixOS to ensure the root user is locked.\n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\nusers.mutableUsers = false;\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-004045"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To ensure individual accountability and prevent unauthorized access, organizational users must be individually identified and authenticated.\n\nA group authenticator is a generic account used by multiple individuals. Use of a group authenticator alone does not uniquely identify individual users. Examples of the group authenticator are the UNIX OS \"root\" user account, the Windows \"Administrator\" account, the \"sa\" account, or a \"helpdesk\" account.\n\nFor example, the UNIX and Windows operating systems offer a \"switch user\" capability allowing users to authenticate with their individual credentials and, when needed, \"switch\" to the administrator role. This method provides for unique individual authentication prior to using a group authenticator.\n\nUsers (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses other than those explicitly identified and documented by the organization, which outlines specific user actions that can be performed on the operating system without identification or authentication.\n\nRequiring individuals to be authenticated with an individual authenticator prior to using a group authenticator allows for traceability of actions, as well as adding an additional level of protection of the actions that can be taken with group account knowledge.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

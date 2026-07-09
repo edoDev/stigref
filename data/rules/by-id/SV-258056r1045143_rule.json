@@ -1,0 +1,54 @@
+{
+  "id": "SV-258056r1045143_rule",
+  "full_rule_id": "SV-258056r1045143_rule",
+  "rule_id": "SV-258056",
+  "rule_revision": "1045143",
+  "group_id": "V-258056",
+  "group_title": "SRG-OS-000329-GPOS-00128",
+  "title": "RHEL 9 must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000329-GPOS-00128, SRG-OS-000021-GPOS-00005</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If the system administrator demonstrates the use of an approved centralized account management method that locks an account after three unsuccessful logon attempts within a period of 15 minutes, this requirement is Not Applicable.\n\nVerify RHEL 9 locks an account after three unsuccessful logon attempts within a period of 15 minutes with the following command:\n\n$ sudo grep fail_interval /etc/security/faillock.conf \n\nfail_interval = 900\n\nIf the \"fail_interval\" option is not set to \"900\" or less (but not \"0\"), the line is commented out, or the line is missing, this is a finding.",
+  "fix": "To configure RHEL 9 to lock out the \"root\" account after a number of incorrect logon attempts within 15 minutes using \"pam_faillock.so\", enable the feature using the following command:\n \n$ sudo authselect enable-feature with-faillock  \n\nThen edit the \"/etc/security/faillock.conf\" file as follows:\n\nfail_interval = 900",
+  "ccis": [
+    "CCI-000044",
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000329-GPOS-00128, SRG-OS-000021-GPOS-00005",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-411085",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

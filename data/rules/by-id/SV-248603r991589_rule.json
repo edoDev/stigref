@@ -1,0 +1,53 @@
+{
+  "id": "SV-248603r991589_rule",
+  "full_rule_id": "SV-248603r991589_rule",
+  "rule_id": "SV-248603",
+  "rule_revision": "991589",
+  "group_id": "V-248603",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The OL 8 SSH daemon must perform strict mode checking of home directory configuration files.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If other users have access to modify user-specific SSH configuration files, they may be able to log on to the system as another user.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SSH daemon performs strict mode checking of home directory configuration files with the following command:\n\n$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*strictmodes'\n\nStrictModes yes\n\nIf \"StrictModes\" is set to \"no\" or is missing, or if the returned line is commented out, this is a finding. \n\nIf conflicting results are returned, this is a finding.",
+  "fix": "Configure SSH to perform strict mode checking of home directory configuration files.  \n \nUncomment the \"StrictModes\" keyword in \"/etc/ssh/sshd_config\" and set the value to \"yes\": \n \nStrictModes yes \n \nThe SSH daemon must be restarted for the changes to take effect. To restart the SSH daemon, run the following command: \n \n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If other users have access to modify user-specific SSH configuration files, they may be able to log on to the system as another user.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL08-00-010500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96",
+      "name": "Oracle Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96"
+  ]
+}

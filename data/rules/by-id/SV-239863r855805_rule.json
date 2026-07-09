@@ -1,0 +1,53 @@
+{
+  "id": "SV-239863r855805_rule",
+  "full_rule_id": "SV-239863r855805_rule",
+  "rule_id": "SV-239863",
+  "rule_revision": "855805",
+  "group_id": "V-239863",
+  "group_title": "SRG-NET-000335-FW-000017",
+  "title": "The Cisco ASA must be configured to generate a real-time alert to organization-defined personnel and/or the firewall administrator in the event communication with the central audit server is lost.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without a real-time alert (less than a second), security personnel may be unaware of an impending failure of the audit functions and system operation may be adversely impacted. Alerts provide organizations with urgent messages. Automated alerts can be conveyed in a variety of ways, including via a regularly monitored console, telephonically, via electronic mail, via text message, or via websites.\n\nLog processing failures include software/hardware errors, failures in the log capturing mechanisms, and log storage capacity being reached or exceeded. Most firewalls use UDP to send audit records to the server and cannot tell if the server has received the transmission, thus the site should either implement a connection-oriented communications solution (e.g., TCP) or implement a heartbeat with the central audit server and send an alert if it is unreachable. The ISSM or ISSO may designate the firewall/system administrator or other authorized personnel to receive the alert within the specified time, validate the alert, and then forward only validated alerts to the ISSM and ISSO.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the ASA configuration to determine if it will send an email alert to organization-defined personnel and/or the firewall administrator if  communication with the central audit server is lost as shown in the example below.\n\nlogging enable\nlogging host NDM_INTERFACE 10.1.22.2 6/1514\nlogging permit-hostdown\nlogging mail errors\nlogging from-address firewall@mail.mil\nlogging recipient-address OurFWadmin@mail.mil level errors\nlogging recipient-address OurISSO@mail.mil level errors\n…\n…\n…\nsmtp-server 10.1.12.33\n\nNote: Severity level must be set at 3 (errors) or higher as the following message is seen when an ASA loses communication with the syslog server: %ASA-3-201008 or %ASA-3-414003: Disallowing new connections.\n\nIf the ASA is not configured to generate a real-time alert to organization-defined personnel and/or the firewall administrator if communication with the central audit server is lost, this is a finding.",
+  "fix": "Configure the ASA to send an email alert to the organization-defined personnel and/or firewall administrator for syslog messages at severity level 3.\n\nASA(config)# logging mail 3 \nASA(config)# logging recipient-address OurFWadmin@mail.mil\nASA(config)# logging recipient-address OurISSO@mail.mil\nASA(config)# logging from-address firewall@mail.mil\nASA(config)# smtp-server 10.1.12.33\nASA(config)# end",
+  "ccis": [
+    "CCI-001858"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without a real-time alert (less than a second), security personnel may be unaware of an impending failure of the audit functions and system operation may be adversely impacted. Alerts provide organizations with urgent messages. Automated alerts can be conveyed in a variety of ways, including via a regularly monitored console, telephonically, via electronic mail, via text message, or via websites.\n\nLog processing failures include software/hardware errors, failures in the log capturing mechanisms, and log storage capacity being reached or exceeded. Most firewalls use UDP to send audit records to the server and cannot tell if the server has received the transmission, thus the site should either implement a connection-oriented communications solution (e.g., TCP) or implement a heartbeat with the central audit server and send an alert if it is unreachable. The ISSM or ISSO may designate the firewall/system administrator or other authorized personnel to receive the alert within the specified time, validate the alert, and then forward only validated alerts to the ISSM and ISSO.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-FW-000210",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-firewall-security-technical-implementation-guide-v2r1-a0d2d852",
+      "name": "Cisco ASA Firewall Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-firewall-security-technical-implementation-guide-v2r1-a0d2d852"
+  ]
+}

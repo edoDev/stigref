@@ -1,0 +1,53 @@
+{
+  "id": "SV-234844r991560_rule",
+  "full_rule_id": "SV-234844r991560_rule",
+  "rule_id": "SV-234844",
+  "rule_revision": "991560",
+  "group_id": "V-234844",
+  "group_title": "SRG-OS-000259-GPOS-00100",
+  "title": "The SUSE operating system must have system commands group-owned by root or a system account.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the SUSE operating system were to allow any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.\n\nThis requirement applies to SUSE operating systems with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs which execute with escalated privileges. Only qualified and authorized individuals must be allowed to obtain access to information system components for purposes of initiating changes, including upgrades and modifications.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the system commands contained in the following directories are group-owned by root or a system account:\n\n/bin\n/sbin\n/usr/bin\n/usr/sbin\n/usr/local/bin\n/usr/local/sbin\n\nRun the check with the following command:\n\n> sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -type f -exec stat -c \"%n %G\" '{}' \\;\n\nIf any system commands are returned that are not Set Group ID upon execution (SGID) files and group-owned by a required system account, this is a finding.",
+  "fix": "Configure the system commands to be protected from unauthorized access. Run the following command, replacing \"[FILE]\" with any system command file not group-owned by \"root\" or a required system account.\n\n> sudo chgrp root [FILE]",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the SUSE operating system were to allow any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.\n\nThis requirement applies to SUSE operating systems with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs which execute with escalated privileges. Only qualified and authorized individuals must be allowed to obtain access to information system components for purposes of initiating changes, including upgrades and modifications.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-010361",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

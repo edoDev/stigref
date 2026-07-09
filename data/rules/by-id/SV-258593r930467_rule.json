@@ -1,0 +1,53 @@
+{
+  "id": "SV-258593r930467_rule",
+  "full_rule_id": "SV-258593r930467_rule",
+  "rule_id": "SV-258593",
+  "rule_revision": "930467",
+  "group_id": "V-258593",
+  "group_title": "SRG-NET-000335-VPN-001270",
+  "title": "The ICS must be configured to forward all log failure events where the detection and/or prevention function is unable to write events to local log record or send an SNMP trap that can be forwarded to the SCA and ISSO.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without a real-time alert, security personnel may be unaware of an impending failure of the audit capability and system operation may be adversely affected.\n\nAlerts provide organizations with urgent messages. Automated alerts can be conveyed in a variety of ways, including, for example, telephonically, via electronic mail, via text message, or via websites. Log processing failures include software/hardware errors, failures in the log capturing mechanisms, and log storage capacity being reached or exceeded.\n\nThe VPN daemon facility and log facility are messages in the log, which capture actions performed or errors encountered by system processes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If SNMP is used, verify the configuration is compliant. If SNMP is not used, this is not a finding.\n\nIn the ICS Web UI, navigate to System >> Log/Monitoring >> SNMP.\n1. Under \"Agent Properties\", verify \"SNMP Traps\" is checked.\n2. Under \"SNMP Version data\", verify \"v3\" is selected.\n3. Under \"User 1\", verify a user configuration in AuthPriv is using at least SHA and CFB-AES-128.\n4. Verify \"Optional Traps Critical and Major Log Events\" are checked.\n5. Verify the SNMP server IPv4/IPv6 address is configured under \"SNMP Trap Servers\".\n\nIf SNMP is incorrectly configured, this is a finding.",
+  "fix": "Event logs are also updated to local logs by default in addition to the central syslog server. However, if the site uses SNMP, the following must be configured since SNMP is disabled by default.\n\nIn the ICS Web UI, navigate to System >> Log/Monitoring >> SNMP.\n1. Under \"SNMP Version data\", select \"v3\".\n2. Under \"Agent Properties\", check \"SNMP Traps\".\n3. Under \"Agent Properties\", configure a System Name, Location, and Contact.\n4. Under \"User 1\", type in a valid username. Select \"AuthPriv\".\n- The auth protocol must be set to at least SHA. Type the Auth Password.\n- The priv protocol must be set to at least CFB-AES-128. Type in the priv password.\n5. Under \"Trap Thresholds\", ensure \"Check Frequency\" is 180 seconds, \"Log Capacity\" is 75%, \"Users\" is 100%, \"Physical Memory\" is 0%, \"Swap Memory\" is 0%, \"Disk\" is 75%, \"CPU\" is 0%, and \"Meeting Users\" is 100%.\n6. Under \"Optional Traps\", check the boxes for \"Critical and Major Log Events\".\n7. Under \"SNMP Trap Servers\", configure an IPv4/IPv6 address for the valid trap server/receiver, type in the port (default is 162), and select the user to use (use the user from step #4 above).",
+  "ccis": [
+    "CCI-001858"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without a real-time alert, security personnel may be unaware of an impending failure of the audit capability and system operation may be adversely affected.\n\nAlerts provide organizations with urgent messages. Automated alerts can be conveyed in a variety of ways, including, for example, telephonically, via electronic mail, via text message, or via websites. Log processing failures include software/hardware errors, failures in the log capturing mechanisms, and log storage capacity being reached or exceeded.\n\nThe VPN daemon facility and log facility are messages in the log, which capture actions performed or errors encountered by system processes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IVCS-VN-000310",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f",
+      "name": "Ivanti Connect Secure VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f"
+  ]
+}

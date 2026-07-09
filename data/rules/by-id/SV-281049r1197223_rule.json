@@ -1,0 +1,54 @@
+{
+  "id": "SV-281049r1197223_rule",
+  "full_rule_id": "SV-281049r1197223_rule",
+  "rule_id": "SV-281049",
+  "rule_revision": "1197223",
+  "group_id": "V-281049",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "RHEL 10 must ensure that all local interactive user home directories are group-owned by the home directory owner's primary group.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the group identifier (GID) of a local interactive user's home directory is not the same as the primary GID of the user, this would allow unauthorized access to the user's files. Users who share the same group may not be able to access files that they legitimately should be able to access.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000420-GPOS-00186</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 interactive users' home directories are group-owned by the user's primary GID with the following command:\n\nNote: This may miss local interactive users that have been assigned a privileged user identifier (UID). Evidence of interactive use may be obtained from several log files containing system login information. The returned directory \"/home/disauser\" is used as an example.\n\n$ sudo ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)\ndrwxr-x--- 2 disauser admin 4096 Jun 5 12:41 disauser\n\nCheck the user's primary group with the following command:\n\n$ sudo grep $(grep disauser /etc/passwd | awk -F: '{print $4}') /etc/group\nadmin:x:250:disauser,doduser,nsauser\n\nIf the user home directory referenced in \"/etc/passwd\" is not group-owned by that user's primary GID, this is a finding.",
+  "fix": "Configure RHEL 10 interactive users' home directories to be group-owned by the user's primary GID.\n\nChange the group owner of a local interactive user's home directory to the group found in \"/etc/passwd\". To change the group owner of a local interactive user's home directory, use the following command:\n\nNote: The example will be for the user \"disauser\", who has a home directory of \"/home/disauser\" and has a primary group of users.\n\n$ sudo chgrp users /home/disauser",
+  "ccis": [
+    "CCI-000213",
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the group identifier (GID) of a local interactive user's home directory is not the same as the primary GID of the user, this would allow unauthorized access to the user's files. Users who share the same group may not be able to access files that they legitimately should be able to access.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000420-GPOS-00186",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-400160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

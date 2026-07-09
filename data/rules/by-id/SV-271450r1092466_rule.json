@@ -1,0 +1,54 @@
+{
+  "id": "SV-271450r1092466_rule",
+  "full_rule_id": "SV-271450r1092466_rule",
+  "rule_id": "SV-271450",
+  "rule_revision": "1092466",
+  "group_id": "V-271450",
+  "group_title": "SRG-OS-000114-GPOS-00059",
+  "title": "OL 9 must be configured to disable USB mass storage.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>USB mass storage permits easy introduction of unknown devices, thereby facilitating malicious activity.\n\nSatisfies: SRG-OS-000114-GPOS-00059, SRG-OS-000378-GPOS-00163</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 disables the ability to load the USB Storage kernel module with the following command:\n\n$ grep -r usb-storage /etc/modprobe.conf /etc/modprobe.d/* \ninstall usb-storage /bin/false\nblacklist usb-storage\n\nIf the command does not return any output, or the line is commented out, and use of USB Storage is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "Configure OL 9 to prevent the usb-storage kernel module from being loaded.\n\nAdd the following line to the file /etc/modprobe.d/usb-storage.conf (or create usb-storage.conf if it does not exist):\n\ninstall usb-storage /bin/false\nblacklist usb-storage",
+  "ccis": [
+    "CCI-000778",
+    "CCI-001958"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "USB mass storage permits easy introduction of unknown devices, thereby facilitating malicious activity.\n\nSatisfies: SRG-OS-000114-GPOS-00059, SRG-OS-000378-GPOS-00163",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-000047",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-273851r1110853_rule",
+  "full_rule_id": "SV-273851r1110853_rule",
+  "rule_id": "SV-273851",
+  "rule_revision": "1110853",
+  "group_id": "V-273851",
+  "group_title": "SRG-APP-000925-NDM-000330",
+  "title": "The RUCKUS ICX device must be configured to compare the internal system clocks on an organization-defined frequency with two organization-defined authoritative time sources.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Synchronization of internal system clocks with an authoritative source provides uniformity of time stamps for systems with multiple system clocks and systems connected over a network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NTP is configured and synchronizing with two peers:\n\ndevice#show ntp association\naddress                                   Domain name                             Reference Clock  st  when  poll  Reach delay  offset   disp  \n*~ 216.239.35.8                            None                                     GOOG             1    56    64   377 30.444   2.0021  2.884\n+~ 23.150.40.242                         pool.ntp.org                         204.9.54.119     2    61    64   377 44.339  -0.6625  1.220\n* synced, # selected, + candidate, - outlayer, x falseticker, ~ configured, **More characters in domain name",
+  "fix": "Configure NTP clock synchronization.\n\nConfigure NTP:\ndevice#configure terminal\ndevice(config)# ntp \ndevice(config-ntp)#server 216.239.35.8 (example IP)\ndevice(config-ntp)# write memory\n\nConfigure NTP with authentication:\ndevice#configure terminal\ndevice(config)# ntp \ndevice(config-ntp)#server 216.239.35.8 (example IP)\ndevice(config-ntp)#authentication-key key-id 1234 sha1 testntpsession\ndevice(config-ntp)# write memory",
+  "ccis": [
+    "CCI-004923"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Synchronization of internal system clocks with an authoritative source provides uniformity of time stamps for systems with multiple system clocks and systems connected over a network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-NDM-001150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1",
+      "name": "RUCKUS ICX NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1"
+  ]
+}

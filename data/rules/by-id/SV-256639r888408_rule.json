@@ -1,0 +1,53 @@
+{
+  "id": "SV-256639r888408_rule",
+  "full_rule_id": "SV-256639r888408_rule",
+  "rule_id": "SV-256639",
+  "rule_revision": "888408",
+  "group_id": "V-256639",
+  "group_title": "SRG-APP-000357-WSR-000150",
+  "title": "Performance Charts must properly configure log sizes and rotation.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To ensure the logging mechanism used by the web server has sufficient storage capacity in which to write the logs, the logging mechanism must be able to allocate log record storage capacity. Performance Charts properly sizes and configures log rotation during installation. This default configuration must be verified.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# rpm -V VMware-perfcharts|grep log4j|grep \"^..5......\"\n\nIf the command returns any output, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/vmware-perfcharts/log4j.properties\n\nEnsure the appender.rolling entries are configured as follows:\n\nappender.rolling.type = RollingFile\nappender.rolling.name = FileLog\nappender.rolling.fileName = /var/log/vmware/perfcharts/stats.log\nappender.rolling.filePattern = /var/log/vmware/perfcharts/stats-%i.log\nappender.rolling.policies.type = Policies\nappender.rolling.policies.size.type = SizeBasedTriggeringPolicy\nappender.rolling.policies.size.size = 5MB\nappender.rolling.strategy.type = DefaultRolloverStrategy\nappender.rolling.strategy.max = 10\nappender.rolling.layout.type = PatternLayout\nappender.rolling.layout.pattern = %d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} [%t %-5p %c] %m%n\nappender.rolling.level = info\n\nNote: This fix is currently only applicable to 7.0 U2+ and is different in older versions.",
+  "ccis": [
+    "CCI-001849"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To ensure the logging mechanism used by the web server has sufficient storage capacity in which to write the logs, the logging mechanism must be able to allocate log record storage capacity. Performance Charts properly sizes and configures log rotation during installation. This default configuration must be verified.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPF-70-000029",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-1202da0d",
+      "name": "VMware vSphere 7.0 vCenter Appliance Perfcharts Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-1202da0d"
+  ]
+}

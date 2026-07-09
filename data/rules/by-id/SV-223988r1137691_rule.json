@@ -1,0 +1,53 @@
+{
+  "id": "SV-223988r1137691_rule",
+  "full_rule_id": "SV-223988r1137691_rule",
+  "rule_id": "SV-223988",
+  "rule_revision": "1137691",
+  "group_id": "V-223988",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS JES2 input sources must be properly controlled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nTSS WHOOWNS JESINPUT(*)\nFor each resource owned \n\nIf all of the TSS resources and/or generic equivalent identified above are defined with access restricted to the appropriate personnel, this is not a finding.\n\nIf any of the TSS resources and/or generic equivalent identified above are not defined with access restricted to the appropriate personnel, this is a finding.\n\nFrom the ISPF Command Shell enter:\nTSS LIST RDT(*)\n\nIf the JESINPT RESOURCE does not have DEFPROT as an attribute, this is a finding.",
+  "fix": "Configure access authorization for resources defined to the JESINPUT resource class to be restricted to the appropriate personnel.\n\nGrant read access to authorized users for each of the following input sources:\n\nINTRDR\nnodename\nOFFn.*\nOFFn.JR\nOFFn.SR\nRnnnn.RDm\nRDRnn\nSTCINRDR\nTSUINRDR and/or TSOINRDR\n\nThe resource definition will be generic if all of the resources of the same type have identical access controls (e.g., if all off load receivers are equivalent). The default access will be NONE except for sources that are permitted to submit jobs for all users. Those resources may be defined as either NONE or READ.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-JS-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

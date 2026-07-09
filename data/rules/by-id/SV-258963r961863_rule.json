@@ -1,0 +1,53 @@
+{
+  "id": "SV-258963r961863_rule",
+  "full_rule_id": "SV-258963r961863_rule",
+  "rule_id": "SV-258963",
+  "rule_revision": "961863",
+  "group_id": "V-258963",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must separate authentication and authorization for administrators.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Many organizations do both authentication and authorization using a centralized directory service such as Active Directory. Attackers who compromise an identity source can often add themselves to authorization groups, and simply log into systems they should not otherwise have access to. Additionally, reliance on central identity systems means that the administrators of those systems are potentially infrastructure administrators, too, as they can add themselves to infrastructure access groups at will.\n\nThe use of local SSO groups for authorization helps prevent this avenue of attack by allowing the centralized identity source to still authenticate users but moving authorization into vCenter itself.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Administration >> Access Control >> Roles.\n\nView the Administrator role and any other role providing administrative access to vCenter to verify the users and/or groups assigned to it by clicking on \"Usage\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-VIPermission | Sort Role | Select Role,Principal,Entity,Propagate,IsGroup | FT -Auto\n\nIf any user or group is directly assigned a role with administrative access to vCenter that is from an identity provider, this is a finding.\n\nNote: Users and/or groups assigned to roles should be from the \"VSPHERE.LOCAL\" identity source.",
+  "fix": "To add groups from an identity provider to the local SSO Administrators group, as an example, do the following:\n\nFrom the vSphere Client, go to Administration >> Single Sign On >> Groups.\n\nSelect the Administrators group and click \"Edit\".\n\nIn the \"Add Members\" section, select the identity source and type the name of the target user/group in the search bar.\n\nSelect the target user/group to add them and click \"Save\".\n\nNote: A new SSO group or groups can be created as needed and used to provide authorization to vCenter.\n\nTo remove identity provider users/groups from a role, do the following:\n\nFrom the vSphere Client, go to Administration >> Access Control >> Global Permissions.\n\nSelect the offending user/group and click \"Delete\".\n\nNote: If permissions are assigned on a specific object, then the role must be updated where it is assigned (for example, at the cluster level).",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Many organizations do both authentication and authorization using a centralized directory service such as Active Directory. Attackers who compromise an identity source can often add themselves to authorization groups, and simply log into systems they should not otherwise have access to. Additionally, reliance on central identity systems means that the administrators of those systems are potentially infrastructure administrators, too, as they can add themselves to infrastructure access groups at will.\n\nThe use of local SSO groups for authorization helps prevent this avenue of attack by allowing the centralized identity source to still authenticate users but moving authorization into vCenter itself.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000298",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3"
+  ]
+}

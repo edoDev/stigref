@@ -1,0 +1,53 @@
+{
+  "id": "SV-266703r1040640_rule",
+  "full_rule_id": "SV-266703r1040640_rule",
+  "rule_id": "SV-266703",
+  "rule_revision": "1040640",
+  "group_id": "V-266703",
+  "group_title": "SRG-NET-000070",
+  "title": "When AOS is used as a wireless local area network (WLAN) controller, WLAN Extensible Authentication Protocol-Transport Layer Security (EAP-TLS) implementation must use certificate-based public key infrastructure (PKI) authentication to connect to DOD networks.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DOD certificate-based PKI authentication is strong, two-factor authentication that relies on carefully evaluated cryptographic modules. Implementations of EAP-TLS that are not integrated with certificate-based PKI could have security vulnerabilities. \n\nFor example, an implementation that uses a client certificate on a laptop without a second factor could enable an adversary with access to the laptop to connect to the WLAN without a PIN or password. Systems that do not use the certificate-based PKI are also much more likely to be vulnerable to weaknesses in the underlying public key infrastructure (PKI) that supports EAP-TLS.\n\nCertificate-based PKI authentication must be used to connect WLAN client devices to DOD networks. The certificate-based PKI authentication should directly support the WLAN EAP-TLS implementation. \n\nAt least one layer of user authentication must enforce network authentication requirements (e.g., CAC authentication) before the user is able to access DOD information resources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration using the web interface:\n \n1. Navigate to Configuration >> WLANs and select the desired WLAN in the WLANs field. \n2. Under the selected WLAN, select \"Security\". Note which Auth servers are configured. \n3. Navigate to Configuration >> Authentication. \n4. In the \"All Servers\" field, select each WLAN authentication server noted earlier. \n5. Verify each configured authentication server is configured to support EAP-TLS with DOD PKI. \n\nIf each WLAN authentication server is not configured to support EAP-TLS with DOD PKI, this is a finding.",
+  "fix": "Configure AOS using the web interface: \n\n1. Navigate to Configuration >> Authentication. \n2. Click the plus sign (+) under the \"All Servers\" field. \n3. Add enterprise RADIUS servers by providing the Name and IP address/hostname. \n4. Click on the added RADIUS server. Configure the Shared key. \n5. Click Submit >> Pending Changes >> Deploy Changes. \n6. Navigate to Configuration >> WLANs and select the desired WLAN in the \"WLANs\" field. \n7. Under the selected WLAN, select \"Security\". \n8. Click the plus sign (+) in the \"Auth servers:\" field and add the previously created enterprise RADIUS servers. \n9. Click Submit >> Pending Changes >> Deploy Changes.",
+  "ccis": [
+    "CCI-001444"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DOD certificate-based PKI authentication is strong, two-factor authentication that relies on carefully evaluated cryptographic modules. Implementations of EAP-TLS that are not integrated with certificate-based PKI could have security vulnerabilities. \n\nFor example, an implementation that uses a client certificate on a laptop without a second factor could enable an adversary with access to the laptop to connect to the WLAN without a PIN or password. Systems that do not use the certificate-based PKI are also much more likely to be vulnerable to weaknesses in the underlying public key infrastructure (PKI) that supports EAP-TLS.\n\nCertificate-based PKI authentication must be used to connect WLAN client devices to DOD networks. The certificate-based PKI authentication should directly support the WLAN EAP-TLS implementation. \n\nAt least one layer of user authentication must enforce network authentication requirements (e.g., CAC authentication) before the user is able to access DOD information resources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-NT-001590",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-wireless-security-technical-implementation-guide-v1r2-fabfc0cf",
+      "name": "HPE Aruba Networking AOS Wireless Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-wireless-security-technical-implementation-guide-v1r2-fabfc0cf"
+  ]
+}

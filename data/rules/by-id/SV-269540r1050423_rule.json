@@ -1,0 +1,54 @@
+{
+  "id": "SV-269540r1050423_rule",
+  "full_rule_id": "SV-269540r1050423_rule",
+  "rule_id": "SV-269540",
+  "rule_revision": "1050423",
+  "group_id": "V-269540",
+  "group_title": "SRG-OS-000057-GPOS-00027",
+  "title": "AlmaLinux OS 9 audit logs must have 0600 permissions to prevent unauthorized read access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.\n\nAudit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000059-GPOS-00029</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the audit log files have 0600 (u=rw-) permissions.\n\nFirst determine where the audit logs are stored with the following command:\n\n$ grep -w log_file /etc/audit/auditd.conf\n\nlog_file = /var/log/audit/audit.log\n\nThen using the location of the audit log file, determine if the audit logs have 0600 permissions using the following command:\n\n$ stat -c \"%U:%G %#a %n\" /var/log/audit/*\n\nroot:root 0600 /var/log/audit/audit.log\n\nIf the audit log files do not have 0600 permissions, this is a finding.",
+  "fix": "Change the audit logs to have 0600 permissions:\n\n$ chmod 0600 /var/log/audit/*",
+  "ccis": [
+    "CCI-000162",
+    "CCI-000164"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.\n\nAudit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000059-GPOS-00029",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-056120",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

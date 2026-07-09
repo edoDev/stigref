@@ -1,0 +1,53 @@
+{
+  "id": "SV-216304r959010_rule",
+  "full_rule_id": "SV-216304r959010_rule",
+  "rule_id": "SV-216304",
+  "rule_revision": "959010",
+  "group_id": "V-216304",
+  "group_title": "SRG-OS-000480",
+  "title": "Run control scripts must not execute world writable programs or scripts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>World writable files could be modified accidentally or maliciously to compromise system integrity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the permissions on the files or scripts executed from system startup scripts to see if they are world writable.\n\nCreate a list of all potential run command level scripts.\n\n# ls -l /etc/init.d/* /etc/rc* | tr '\\011' ' ' | tr -s ' ' | cut -f 9,9 -d \" \"\n\nCreate a list of world writable files.\n\n# find / -perm -002 -type f >> WorldWritableFileList\n\nDetermine if any of the world writeable files in \"WorldWritableFileList\" are called from the run command level scripts.\n\nNote: Depending upon the number of scripts vs. world writable files, it may be easier to inspect the scripts manually.\n\n# more `ls -l /etc/init.d/* /etc/rc* | tr '\\011' ' ' | tr -s ' ' | cut -f 9,9 -d \" \"`\n\nIf any system startup script executes any file or script that is world writable, this is a finding.",
+  "fix": "Remove the world writable permission from programs or scripts executed by run control scripts.\n\nProcedure:\n\n# chmod o-w <program or script executed from run control script>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "World writable files could be modified accidentally or maliciously to compromise system integrity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-020350",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

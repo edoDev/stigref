@@ -1,0 +1,53 @@
+{
+  "id": "SV-223725r998349_rule",
+  "full_rule_id": "SV-223725r998349_rule",
+  "rule_id": "SV-223725",
+  "rule_revision": "998349",
+  "group_id": "V-223725",
+  "group_title": "SRG-OS-000070-GPOS-00038",
+  "title": "IBM RACF exit ICHPWX01 must be installed and properly configured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.\n\nSatisfies: SRG-OS-000070-GPOS-00038, SRG-OS-000071-GPOS-00039, SRG-OS-000072-GPOS-00040, SRG-OS-000266-GPOS-00101, SRG-OS-000480-GPOS-00225</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From a system console screen, issue the following modify command:\nF AXR,IRRPWREX LIST\n\nReview the results of the modify command. \n\nIf the following options are listed, this is not a finding.\n\n-The number of required character types is 4\n(ensures that at least one uppercase, one lowercase, one number, and one special character is used in password)\n\n-The user's name cannot be contained in the password.\n(Only three consecutive characters of the user's name are allowed)\n\n-The minimum word length checked is eight.\n\n-The user ID cannot be contained in the password.\n(Only three consecutive characters of the user ID are allowed)\n\n-Only three unchanged positions of the current password are allowed.\n(These positions need to be consecutive to cause a failure and this check is not case sensitive)\n\n-No more than zero pairs of repeating characters are allowed.\n(This check is not case sensitive)\n\n-A minimum list of 33 restricted prefix strings is being checked:\nAPPL APR AUG ASDF BASIC CADAM DEC DEMO FEB FOCUS GAME IBM JAN JUL\nJUN LOG MAR MAY NET NEW NOV OCT PASS ROS SEP SIGN SYS TEST TSO\nVALID VTAM XXX 1234\n\nIf the modify command fails or returns the following message in the system log, this is a finding.\n\nIRX0406E REXX exec load file REXXLIB does not contain exec member IRRPWREX.",
+  "fix": "Evaluate the impact associated with implementation of the control option. Develop a plan of action to implement the control option as specified in the example below:\n\nFor z/OS release 1.12 through z/OS release 2.1 APARs OA43998 and OA43999 must be applied.\n\nInstall exit IRRPWREX according to the following guidelines:\nREXX Parameter Setting\nSTIG_Compliant 'yes' \nPwd_minlen 8\nnumbers '0123456789'\nLower_letters 'abcdefghijklmnopqrstuvwxyz'\nUpper_letters 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'\nspecial '$@#.<+|&!*-%_>?:'\nPwd_allowed_chars numbers||Upper_letters||special\nPwd_req_types 4\nPwd_name_allowed 'no'\nPwd_name_minlen 8\nPwd_name_chars 4\nPwd_min_unique 3\nPwd_min_unique_upper 'yes'\nPwd_max_unchanged 3\nPwd_max_unchanged_upper 'yes'\nPwd_max_unchanged_consecutive 'yes'\nPwd_all_unique 'no'\nPwd_no_consecutive 'no'\nPwd_no_consecutive_upper 'yes'\nPwd_min_new 4\nPwd_userID_allowed 'no'\nPwd_userID_chars 4\nPwd_repeat_chars 0\nPwd_repeat_upper 'yes'\nPwd_dict.0 8 /* Change this as words are added and deleted */\nPwd_dict.1 'IBM'\nPwd_dict.2 'RACF'\nPwd_dict.3 'PASSWORD'\nPwd_dict.4 'PHRASE'\nPwd_dict.5 'SECRET'\nPwd_dict.6 'IBMUSER'\nPwd_dict.7 'SYS1'\nPwd_dict.8 '12345678'\nPwd_dict.9 '99999999'\nPwd_prefix.0 33 /* Change this as values are added and deleted\nPwd_prefix.1 'APPL'\nPwd_prefix.2 'APR'\nPwd_prefix.3 'AUG'\nPwd_prefix.4 'ASDF'\nPwd_prefix.5 'BASIC'\nPwd_prefix.6 'CADAM'\nPwd_prefix.7 'DEC'\nPwd_prefix.8 'DEMO'\nPwd_prefix.9 'FEB'\nPwd_prefix.10 'FOCUS'\nPwd_prefix.11 'GAME'\nPwd_prefix.12 'IBM'\nPwd_prefix.13 'JAN'\nPwd_prefix.14 'JUL'\nPwd_prefix.15 'JUN'\nPwd_prefix.16 'LOG'\nPwd_prefix.17 'MAR'\nPwd_prefix.18 'MAY'\nPwd_prefix.19 'NET'\nPwd_prefix.20 'NEW'\nPwd_prefix.21 'NOV'\nPwd_prefix.22 'OCT'\nPwd_prefix.23 'PASS'\nPwd_prefix.24 'ROS'\nPwd_prefix.25 'SEP'\nPwd_prefix.26 'SIGN'\nPwd_prefix.27 'SYS'\nPwd_prefix.28 'TEST'\nPwd_prefix.29 'TSO'\nPwd_prefix.30 'VALID'\nPwd_prefix.31 'VTAM'\nPwd_prefix.32 'XXX'\nPwd_prefix.33 '1234'\n\nNote: RACF exit ICHPWX01 is coded to call a System REXX named IRRPWREX, so the name cannot be changed without a corresponding change to ICHPWX01.\n\nSystem REXX requires that this exec (IRRPWREX) reside in the REXXLIB concatenation.\n\nUpdate parameters in IRRPWREX according to table Parameters for RACF IRRPWREX as listed above.",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.\n\nSatisfies: SRG-OS-000070-GPOS-00038, SRG-OS-000071-GPOS-00039, SRG-OS-000072-GPOS-00040, SRG-OS-000266-GPOS-00101, SRG-OS-000480-GPOS-00225",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000780",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

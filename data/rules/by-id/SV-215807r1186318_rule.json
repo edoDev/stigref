@@ -1,0 +1,53 @@
+{
+  "id": "SV-215807r1186318_rule",
+  "full_rule_id": "SV-215807r1186318_rule",
+  "rule_id": "SV-215807",
+  "rule_revision": "1186318",
+  "group_id": "V-215807",
+  "group_title": "SRG-APP-000001-NDM-000200",
+  "title": "The Cisco router must be configured to limit the number of concurrent management sessions to an organization-defined number.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Device management includes the ability to control the number of administrators and management sessions that manage a device. Limiting the number of allowed administrators and sessions per administrator based on account type, role, or access type is helpful in limiting risks related to denial-of-service (DoS) attacks.\n\nThis requirement addresses concurrent sessions for administrative accounts and does not address concurrent sessions by a single administrator via multiple administrative accounts. The maximum number of concurrent sessions should be defined based upon mission needs and the operational environment for each system. At a minimum, limits must be set for SSH, HTTPS, account of last resort, and root account sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This requirement is not applicable to file transfer actions such as FTP, SCP, and SFTP.\n\nReview the router configuration to determine if concurrent management sessions are limited as shown in the example below:\n\nip http secure-server \nip http max-connections 2 \n… \n… \n… \n\nFor platforms that support the session-limit command:\n\nline vty 0 4\nsession-limit 2\ntransport input ssh\n\nFor those platforms that do not support the session-limit command, the sessions can also be limited by reducing the number of active vty lines as shown in the example below.\n\nline vty 0 1\ntransport input ssh\nline vty 2 4\ntransport input none \n\nIf the router is not configured to limit the number of concurrent management sessions, this is a finding.",
+  "fix": "Configure the router to limit the number of concurrent management sessions to an organization-defined number as shown in the example below.\n\nR4(config)#ip http max-connections 2 \nR4(config)#line vty 0 1 \nR4(config-line)#transport input ssh\nR4(config-line)#exit\nR4(config)#line vty 2 4 \nR4(config-line)# transport input none  \nR4(config-line)#end\n\nTo configure session limiting, use the example below.\n\nR4(config)#line vty 0 4\nR4(config-line)#session-limit 2\nR4(config-line)#transport input ssh",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Device management includes the ability to control the number of administrators and management sessions that manage a device. Limiting the number of allowed administrators and sessions per administrator based on account type, role, or access type is helpful in limiting risks related to denial-of-service (DoS) attacks.\n\nThis requirement addresses concurrent sessions for administrative accounts and does not address concurrent sessions by a single administrator via multiple administrative accounts. The maximum number of concurrent sessions should be defined based upon mission needs and the operational environment for each system. At a minimum, limits must be set for SSH, HTTPS, account of last resort, and root account sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-ND-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-router-ndm-security-technical-implementation-guide-v3r7-3b0aff84",
+      "name": "Cisco IOS XE Router NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-router-ndm-security-technical-implementation-guide-v3r7-3b0aff84"
+  ]
+}

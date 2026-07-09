@@ -1,0 +1,53 @@
+{
+  "id": "SV-219973r958726_rule",
+  "full_rule_id": "SV-219973r958726_rule",
+  "rule_id": "SV-219973",
+  "rule_revision": "958726",
+  "group_id": "V-219973",
+  "group_title": "SRG-OS-000324",
+  "title": "The system must restrict the ability of users to assume excessive privileges to members of a defined group and prevent unauthorized users from accessing administrative tools.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Allowing any user to elevate their privileges can allow them excessive control of the system tools.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the root user is configured as a role, rather than a normal user. \n\n# userattr type root\n\nIf the command does not return the word \"role\", this is a finding.\n\nVerify at least one local user has been assigned the root role.\n\n# grep '[:;]roles=root[^;]*' /etc/user_attr\n\nIf no lines are returned, or no users are permitted to assume the root role, this is a finding.",
+  "fix": "The root role is required.\n\nConvert the root user into a role. \n\n# usermod -K type=role root\n\nAdd the root role to authorized users' logins. \n\n# usermod -R +root [username]\n\nRemove the root role from users who should not be authorized to assume it.\n\n# usermod -R -root [username]",
+  "ccis": [
+    "CCI-001170"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Allowing any user to elevate their privileges can allow them excessive control of the system tools.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

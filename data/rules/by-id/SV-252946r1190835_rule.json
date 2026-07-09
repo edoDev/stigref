@@ -1,0 +1,53 @@
+{
+  "id": "SV-252946r1190835_rule",
+  "full_rule_id": "SV-252946r1190835_rule",
+  "rule_id": "SV-252946",
+  "rule_revision": "1190835",
+  "group_id": "V-252946",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "TOSS must enforce the limit of five consecutive invalid logon attempts by a user during a 15-minute time period.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the \"/etc/security/faillock.conf\" file is configured to lock an account after three unsuccessful logon attempts within 15 minutes:\n\n$ sudo grep -e \"deny =\" -e \"fail_interval =\" /etc/security/faillock.conf\ndeny = 3\nfail_interval = 900\n\nIf the \"deny\" option is set to \"0\", more than \"3\", is missing, or is commented out, this is a finding.\nIf the \"fail_interval\" option is set to less than \"900\", is missing, or is commented out, this is a finding.",
+  "fix": "Configure the operating system to lock an account when three unsuccessful logon attempts occur in 15 minutes.\n\nAdd/Modify the \"/etc/security/faillock.conf\" file to match the following lines:\n\ndeny = 3\nfail_interval = 900",
+  "ccis": [
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-020000",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

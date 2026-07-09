@@ -1,0 +1,53 @@
+{
+  "id": "SV-270725r1101789_rule",
+  "full_rule_id": "SV-270725r1101789_rule",
+  "rule_id": "SV-270725",
+  "rule_revision": "1101789",
+  "group_id": "V-270725",
+  "group_title": "SRG-OS-000073-GPOS-00041",
+  "title": "Ubuntu 24.04 LTS must store only encrypted representations of passwords.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed per policy requirements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the Ubuntu operating system stores only encrypted representations of passwords with the following command:\n\n$ grep pam_unix.so /etc/pam.d/common-password\npassword [success=1 default=ignore] pam_unix.so obscure sha512 shadow rounds=100000\n\nIf \"sha512\" is missing from the \"pam_unix.so\" line, or if the \"rounds\" is set to less than 100000, this is a finding.",
+  "fix": "Configure Ubuntu 24.04 LTS to store encrypted representations of passwords.\n\nAdd or modify the \"sha512\" parameter value to the following line in \"/etc/pam.d/common-password\" file:\n\npassword [success=1 default=ignore] pam_unix.so obscure sha512 shadow rounds=100000",
+  "ccis": [
+    "CCI-004062"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed per policy requirements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-400220",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-274444r1137654_rule",
+  "full_rule_id": "SV-274444r1137654_rule",
+  "rule_id": "SV-274444",
+  "rule_revision": "1137654",
+  "group_id": "V-274444",
+  "group_title": "SRG-APP-000033-DB-000084",
+  "title": "The SQL Server default account [sa] must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>SQL Server's [sa] account has special privileges required to administer the database. The [sa] account is a well-known SQL Server account and is likely to be targeted by attackers and thus more prone to providing unauthorized access to the database. \n\nThis [sa] default account is administrative and could lead to catastrophic consequences, including the complete loss of control over SQL Server. If the [sa] default account is not disabled, an attacker might be able to gain access through the account. SQL Server by default disables the [sa] account at installation. \n\nSome applications that run on SQL Server require the [sa] account to be enabled for the application to function properly. These applications that require the [sa] account to be enabled are usually legacy systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check SQL Server settings to determine if the [sa] (system administrator) account has been disabled by executing the following query: \nUSE master;\nGO\nSELECT name, is_disabled\nFROM sys.sql_logins\nWHERE principal_id = 1;\nGO\n\nVerify that the \"name\" column contains the current name of the [sa] database server account.\n\nIf the \"is_disabled\" column is not set to \"1\", this is a finding.",
+  "fix": "Modify the enabled flag of SQL Server's [sa] (system administrator) account by running the following script:\nUSE master; \nGO \nALTER LOGIN [sa] DISABLE; \nGO",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "SQL Server's [sa] account has special privileges required to administer the database. The [sa] account is a well-known SQL Server account and is likely to be targeted by attackers and thus more prone to providing unauthorized access to the database. \n\nThis [sa] default account is administrative and could lead to catastrophic consequences, including the complete loss of control over SQL Server. If the [sa] default account is not disabled, an attacker might be able to gain access through the account. SQL Server by default disables the [sa] account at installation. \n\nSome applications that run on SQL Server require the [sa] account to be enabled for the application to function properly. These applications that require the [sa] account to be enabled are usually legacy systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLI-22-016200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b",
+      "name": "Microsoft SQL Server 2022 Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b"
+  ]
+}

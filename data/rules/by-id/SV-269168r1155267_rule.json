@@ -1,0 +1,53 @@
+{
+  "id": "SV-269168r1155267_rule",
+  "full_rule_id": "SV-269168r1155267_rule",
+  "rule_id": "SV-269168",
+  "rule_revision": "1155267",
+  "group_id": "V-269168",
+  "group_title": "SRG-OS-000366-GPOS-00153",
+  "title": "AlmaLinux OS 9 must prevent the loading of a new kernel for later execution.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Changes to any software components can have significant effects on the overall security of the operating system. This requirement ensures the software has not been tampered with and that it has been provided by a trusted vendor.\n\nDisabling kexec_load prevents an unsigned kernel image (that could be a windows kernel or modified vulnerable kernel) from being loaded. Kexec can be used subvert the entire secureboot process and should be avoided at all costs especially since it can load unsigned kernel images.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify AlmaLinux OS 9 is configured to disable kernel image loading.\n\nCheck the status of the kernel.kexec_load_disabled kernel parameter with the following command:\n\n$ sysctl kernel.kexec_load_disabled\n\nkernel.kexec_load_disabled = 1\n\nIf \"kernel.kexec_load_disabled\" is not set to \"1\" or is missing, this is a finding.\n\nCheck that the configuration files are present to enable this kernel parameter with the following command:\n\n$ /usr/lib/systemd/systemd-sysctl --cat-config | grep kernel.kexec_load_disabled\n\nkernel.kexec_load_disabled = 1\n\nIf \"kernel.kexec_load_disabled\" is not set to \"1\" or is missing, this is a finding.",
+  "fix": "Add or edit the following line in a system configuration file in the \"/etc/sysctl.d/\" directory:\n\nkernel.kexec_load_disabled = 1\n\nLoad settings from all system configuration files with the following command:\n\n$ sysctl –system",
+  "ccis": [
+    "CCI-003992"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Changes to any software components can have significant effects on the overall security of the operating system. This requirement ensures the software has not been tampered with and that it has been provided by a trusted vendor.\n\nDisabling kexec_load prevents an unsigned kernel image (that could be a windows kernel or modified vulnerable kernel) from being loaded. Kexec can be used subvert the entire secureboot process and should be avoided at all costs especially since it can load unsigned kernel images.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-010140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

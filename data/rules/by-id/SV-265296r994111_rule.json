@@ -1,0 +1,55 @@
+{
+  "id": "SV-265296r994111_rule",
+  "full_rule_id": "SV-265296r994111_rule",
+  "rule_id": "SV-265296",
+  "rule_revision": "994111",
+  "group_id": "V-265296",
+  "group_title": "SRG-APP-000080-NDM-000220",
+  "title": "The NSX Manager must be configured to integrate with an identity provider that supports multifactor authentication (MFA).",
+  "severity": "high",
+  "description": "<VulnDiscussion>Common attacks against single-factor authentication are attacks on user passwords. These attacks include brute force password guessing, password spraying, and password credential stuffing. This requirement also supports nonrepudiation of actions taken by an administrator.\n\nThis requirement ensures the NSX Manager is configured to use a centralized authentication services to authenticate users prior to granting administrative access.\n\nAs of NSX 4.1 and vCenter 8.0 Update 2, NSX Manager administrator access can also be configured by connecting VMware NSX to the Workspace ONE Access Broker in VMware vCenter for federated identity. Refer to the NSX product documentation to configure this access option.\n\nSatisfies: SRG-APP-000080-NDM-000220, SRG-APP-000149-NDM-000247, SRG-APP-000516-NDM-000336</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the NSX Manager web interface, go to System >> Settings >> Users Management >> Authentication Providers.\n\nVerify that the \"VMware Identity Manager\" and \"OpenID Connect\" tabs are configured.\n\nIf NSX is not configured to integrate with an identity provider that supports MFA, this is a finding.",
+  "fix": "To configure NSX to integrate with VMware Identity Manager or Workspace ONE Access, as the authentication source, do the following:\n\nFrom the NSX Manager web interface, go to System >> Users and Roles >> VMware Identity Manager and click \"Edit\".\n\nIf using an external load balancer for the NSX Management cluster, enable \"External Load Balancer Integration\". If using a cluster VIP, leave this disabled.\n\nClick the toggle button to enable \"VMware Identity Manager Integration\".\n\nEnter the VMware Identity Manager or Workspace ONE Access appliance name, OAuth Client ID, OAuth Client Secret, and certificate thumbprint as provided by the administrators.\n\nEnter the NSX Appliance FQDN. For a cluster, enter the load balancer FQDN or cluster VIP FQDN.\n\nClick \"Save\", import users and groups, and then assign them roles. (The users are not actually local and remain in the authentication/AAA server.)\n\nNote: As of NSX 4.1 and vCenter 8.0 Update 2, NSX Manager administrator access can also be configured by connecting VMware NSX to the Workspace ONE Access Broker in VMware vCenter for federated identity. Refer to the NSX product documentation to configure this access option.\n\nEnsure the identity provider administrators have configured the provider to support multi-factor authentication.",
+  "ccis": [
+    "CCI-000166",
+    "CCI-000765",
+    "CCI-000370"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Common attacks against single-factor authentication are attacks on user passwords. These attacks include brute force password guessing, password spraying, and password credential stuffing. This requirement also supports nonrepudiation of actions taken by an administrator.\n\nThis requirement ensures the NSX Manager is configured to use a centralized authentication services to authenticate users prior to granting administrative access.\n\nAs of NSX 4.1 and vCenter 8.0 Update 2, NSX Manager administrator access can also be configured by connecting VMware NSX to the Workspace ONE Access Broker in VMware vCenter for federated identity. Refer to the NSX product documentation to configure this access option.\n\nSatisfies: SRG-APP-000080-NDM-000220, SRG-APP-000149-NDM-000247, SRG-APP-000516-NDM-000336",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NMGR-4X-000015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-4-x-manager-ndm-security-technical-implementation-guide-v1r2-ead63637",
+      "name": "VMware NSX 4.x Manager NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-4-x-manager-ndm-security-technical-implementation-guide-v1r2-ead63637"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-216123r959010_rule",
+  "full_rule_id": "SV-216123r959010_rule",
+  "rule_id": "SV-216123",
+  "rule_revision": "959010",
+  "group_id": "V-216123",
+  "group_title": "SRG-OS-000480",
+  "title": "Unauthorized use of the at or cron capabilities must not be permitted.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>On many systems, only the system administrator needs the ability to schedule jobs.\n\nEven though a given user is not listed in the \"cron.allow\" file, cron jobs can still be run as that user. The \"cron.allow\" file only controls administrative access to the \"crontab\" command for scheduling and modifying cron jobs. Much more effective access controls for the cron system can be obtained by using Role-Based Access Controls (RBAC).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check that \"at\" and \"cron\" users are configured correctly.\n\n# ls /etc/cron.d/cron.deny\n\nIf cron.deny exists, this is a finding.\n\n# ls /etc/cron.d/at.deny\n\nIf at.deny exists, this is a finding.\n\n# cat /etc/cron.d/cron.allow\n\ncron.allow should have a single entry for \"root\", or the cron.allow file is removed if using RBAC.  \n \nIf any accounts other than root that are listed and they are not properly documented with the IA staff, this is a finding.\n\n# wc -l /etc/cron.d/at.allow | awk '{ print $1 }'\n\nIf the output is non-zero, this is a finding, or the at.allow file is removed if using RBAC.",
+  "fix": "The root role is required.\n\nModify the cron configuration files.\n\n# mv /etc/cron.d/cron.deny /etc/cron.d/cron.deny.temp\n# mv /etc/cron.d/at.deny /etc/cron.d/at.deny.temp\n\nSkip the remaining steps only if using the “solaris.jobs.user” RBAC role.\n\n# echo root > /etc/cron.d/cron.allow\n# cp /dev/null /etc/cron.d/at.allow\n# chown root:root /etc/cron.d/cron.allow /etc/cron.d/at.allow\n# chmod 400 /etc/cron.d/cron.allow /etc/cron.d/at.allow",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "On many systems, only the system administrator needs the ability to schedule jobs.\n\nEven though a given user is not listed in the \"cron.allow\" file, cron jobs can still be run as that user. The \"cron.allow\" file only controls administrative access to the \"crontab\" command for scheduling and modifying cron jobs. Much more effective access controls for the cron system can be obtained by using Role-Based Access Controls (RBAC).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040420",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

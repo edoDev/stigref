@@ -1,0 +1,54 @@
+{
+  "id": "SV-265370r994353_rule",
+  "full_rule_id": "SV-265370r994353_rule",
+  "rule_id": "SV-265370",
+  "rule_revision": "994353",
+  "group_id": "V-265370",
+  "group_title": "SRG-NET-000333-FW-000014",
+  "title": "The NSX Tier-0 Gateway Firewall must be configured to send traffic log entries to a central log server.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without the ability to centrally manage the content captured in the traffic log entries, identification, troubleshooting, and correlation of suspicious behavior would be difficult and could lead to a delayed or incomplete analysis of an ongoing attack.\n\nThe DOD requires centralized management of all network component audit record content. Network components requiring centralized traffic log management must have the ability to support centralized management. The content captured in traffic log entries must be managed from a central location (necessitating automation). Centralized management of traffic log records and logs provides for efficiency in maintenance and management of records, as well as the backup and archiving of those records. \n\nEnsure at least one syslog server is configured on the firewall.\n\nIf the product inherently has the ability to store log records locally, the local log must also be secured. However, this requirement is not met since it calls for a use of a central audit server.\n\nSatisfies: SRG-NET-000333-FW-000014, SRG-NET-000098-FW-000021</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an NSX Edge Node shell hosting the Tier-0 Gateway, run the following command:\n\n> get logging-servers\n\nNote: This check must be run from each NSX Edge Node hosting a Tier-0 Gateway, as they are configured individually.\n\nor\n\nIf Node Profiles are used, from the NSX Manager web interface, go to System >> Configuration >> Fabric >> Profiles >> Node Profiles.\n\nClick \"All NSX Nodes\" and verify the syslog servers listed.\n\nIf any configured logging servers are configured with a protocol of \"udp\", this is a finding.\n\nIf any logging servers are not configured with a level of \"info\", this is a finding.\n\nIf no logging servers are configured, this is a finding.",
+  "fix": "To configure a profile to apply syslog servers to all NSX Edge Nodes, do the following:\n\nFrom the NSX Manager web interface, go to System >> Configuration >> Fabric >> Profiles >> Node Profiles.\n\nClick \"All NSX Nodes\" and then under \"Syslog Servers\", click \"Add\".\n\nEnter the syslog server details, choose \"Information\" for the log level, and click \"Add\".\n\nor\n\n(Optional) From an NSX Edge Node shell, run the following command to clear any existing incorrect logging servers:\n\n> clear logging-servers\n\nFrom an NSX Edge Node shell, run the following command to configure a TCP syslog server:\n\n> set logging-server <server-ip or server-name> proto tcp level info\n\nFrom an NSX Edge Node shell, run the following command to configure a primary and backup TLS syslog server:\n\n> set logging-server <server-ip or server-name> proto tls level info serverca ca.pem clientca ca.pem certificate cert.pem key key.pem\n\nFrom an NSX Edge Node shell, run the following command to configure an LI-TLS syslog server:\n\n> set logging-server <server-ip or server-name> proto li-tls level info serverca root-ca.crt\n\nNote: If using the protocols TLS or LI-TLS to configure a secure connection to a log server, the server and client certificates must be stored in /var/vmware/nsx/file-store/ on each NSX Edge Node appliance.\n\nNote: Configure the syslog to send an alert if the events server is unable to receive events from the NSX-T and also if denial-of-service (DoS) incidents are detected. This is true if the events server is STIG compliant.",
+  "ccis": [
+    "CCI-001851",
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without the ability to centrally manage the content captured in the traffic log entries, identification, troubleshooting, and correlation of suspicious behavior would be difficult and could lead to a delayed or incomplete analysis of an ongoing attack.\n\nThe DOD requires centralized management of all network component audit record content. Network components requiring centralized traffic log management must have the ability to support centralized management. The content captured in traffic log entries must be managed from a central location (necessitating automation). Centralized management of traffic log records and logs provides for efficiency in maintenance and management of records, as well as the backup and archiving of those records. \n\nEnsure at least one syslog server is configured on the firewall.\n\nIf the product inherently has the ability to store log records locally, the local log must also be secured. However, this requirement is not met since it calls for a use of a central audit server.\n\nSatisfies: SRG-NET-000333-FW-000014, SRG-NET-000098-FW-000021",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NT0F-4X-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-4-x-tier-0-gateway-firewall-security-technical-implementation-guide-v1r2-d4fd99bc",
+      "name": "VMware NSX 4.x Tier-0 Gateway Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-4-x-tier-0-gateway-firewall-security-technical-implementation-guide-v1r2-d4fd99bc"
+  ]
+}

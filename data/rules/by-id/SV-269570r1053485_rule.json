@@ -1,0 +1,54 @@
+{
+  "id": "SV-269570r1053485_rule",
+  "full_rule_id": "SV-269570r1053485_rule",
+  "rule_id": "SV-269570",
+  "rule_revision": "1053485",
+  "group_id": "V-269570",
+  "group_title": "SRG-APP-000001",
+  "title": "Xylok Security Suite must limit system resources consumed by the application.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Not limiting system resources to Xylok presents a denial-of-service (DoS) risk. Each open instance of Xylok periodically retrieves a list of background tasks. Open sessions, even sessions not being actively used, consume a small amount of server resources and could result in Xylok becoming slow or entirely responsive. \n\nIn addition, this risk impacts the host system for the container by consuming excessive CPU, allowing a DoS attack on Xylok to also impact other software hosted on the same physical machine.\n\nSatisfies: SRG-APP-000001, SRG-APP-000435</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if Xylok is configured to limit its maximum CPU and memory usage with the following command, run from the host machine as a normal user:\n\n$ grep LIMIT_ /etc/xylok.conf\n\nVerify the following settings are configured:\n- LIMIT_MEM set to less than 100 percent of the host machine's memory.\n\n- LIMIT_CPU set to less than 1000.\n\nIf any of the above settings are not present or are blank, this is a finding.",
+  "fix": "Configure the Xylok Security Suite to limit CPU and memory usage using this procedure on the host machine. As root, open /etc/xylok.conf in a text editor.\n\n1. Add the following settings if not present. All settings should be in the format \"NAME=value\". For example, the first required setting might appear as \"LIMIT_MEM=4096m\" in the configuration file, with no quotes.\n- LIMIT_MEM: Set to 2048m or greater, and less than 100 percent of the host machine's memory.\n- LIMIT_CPU: Set to 128 or greater, not to exceed 1000. This value can range from 1 to 1024, where 1024 allows usage of 100 percent of the CPU.\n\n2. Save configuration file. \n\n3. Restart Xylok to apply settings:\n    # systemctl restart xylok",
+  "ccis": [
+    "CCI-000054",
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Not limiting system resources to Xylok presents a denial-of-service (DoS) risk. Each open instance of Xylok periodically retrieves a list of background tasks. Open sessions, even sessions not being actively used, consume a small amount of server resources and could result in Xylok becoming slow or entirely responsive. \n\nIn addition, this risk impacts the host system for the container by consuming excessive CPU, allowing a DoS attack on Xylok to also impact other software hosted on the same physical machine.\n\nSatisfies: SRG-APP-000001, SRG-APP-000435",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "XYLK-20-000001",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "xylok-security-suite-20-x-security-technical-implementation-guide-v1r2-31f543fd",
+      "name": "Xylok Security Suite 20.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "xylok-security-suite-20-x-security-technical-implementation-guide-v1r2-31f543fd"
+  ]
+}

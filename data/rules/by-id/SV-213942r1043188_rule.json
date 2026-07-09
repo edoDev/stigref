@@ -1,0 +1,53 @@
+{
+  "id": "SV-213942r1043188_rule",
+  "full_rule_id": "SV-213942r1043188_rule",
+  "rule_id": "SV-213942",
+  "rule_revision": "1043188",
+  "group_id": "V-213942",
+  "group_title": "SRG-APP-000109-DB-000049",
+  "title": "SQL Server must by default shut down upon audit failure, to include the unavailability of space for more audit log records; or must be configurable to shut down upon audit failure.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical that when SQL Server is at risk of failing to process audit logs as required, it takes action to mitigate the failure. Audit processing failures include: software/hardware errors; failures in the audit capturing mechanisms; and audit storage capacity being reached or exceeded. Responses to audit failure depend upon the nature of the failure mode.  \n \nWhen the need for system availability does not outweigh the need for a complete audit trail, SQL Server should shut down immediately, rolling back all in-flight transactions. \n \nSystems where audit trail completeness is paramount will most likely be at a lower MAC level than MAC I; the final determination is the prerogative of the application owner, subject to Authorizing Official concurrence. In any case, sufficient auditing resources must be allocated to avoid a shutdown in all but the most extreme situations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the system documentation indicates that availability takes precedence over audit trail completeness, this is not applicable (NA).  \n \nIf SQL Server Audit is in use, review the defined server audits by running the statement:  \n \nSELECT * FROM sys.server_audits;  \n \nBy observing the [name] and [is_state_enabled] columns, identify the row or rows in use.  \n \nIf the [on_failure_desc] is \"SHUTDOWN SERVER INSTANCE\" on this/these row(s), this is not a finding. Otherwise, this is a finding.",
+  "fix": "If SQL Server Audit is in use, configure SQL Server Audit to shut SQL Server down upon audit failure, to include running out of space for audit logs.  \n \nRun this T-SQL script for each identified audit:  \n \nALTER SERVER AUDIT [AuditNameHere] WITH (STATE = OFF);  \nGO  \nALTER SERVER AUDIT [AuditNameHere] WITH (ON_FAILURE = SHUTDOWN);  \nGO  \nALTER SERVER AUDIT [AuditNameHere] WITH (STATE = ON);  \nGO",
+  "ccis": [
+    "CCI-000140"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical that when SQL Server is at risk of failing to process audit logs as required, it takes action to mitigate the failure. Audit processing failures include: software/hardware errors; failures in the audit capturing mechanisms; and audit storage capacity being reached or exceeded. Responses to audit failure depend upon the nature of the failure mode.  \n \nWhen the need for system availability does not outweigh the need for a complete audit trail, SQL Server should shut down immediately, rolling back all in-flight transactions. \n \nSystems where audit trail completeness is paramount will most likely be at a lower MAC level than MAC I; the final determination is the prerogative of the application owner, subject to Authorizing Official concurrence. In any case, sufficient auditing resources must be allocated to avoid a shutdown in all but the most extreme situations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQL6-D0-005600",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a",
+      "name": "MS SQL Server 2016 Instance Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a"
+  ]
+}

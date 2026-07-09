@@ -1,0 +1,53 @@
+{
+  "id": "SV-273646r1111039_rule",
+  "full_rule_id": "SV-273646r1111039_rule",
+  "rule_id": "SV-273646",
+  "rule_revision": "1111039",
+  "group_id": "V-273646",
+  "group_title": "SRG-NET-000364-RTR-000113",
+  "title": "The RUCKUS ICX perimeter router must be configured to block all outbound management traffic.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>For in-band management, the management network must have its own subnet to enforce control and access boundaries provided by layer 3 network nodes, such as routers and firewalls. Management traffic between the managed network elements and the management network is routed via the same links and nodes as that used for production or operational traffic. Safeguards must be implemented to ensure the management traffic does not leak past the perimeter of the managed network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nThe perimeter router of the managed network must be configured with an access control list (ACL) or filter on the egress interface to block all management traffic.\n\nVerify all external interfaces have been configured with an outbound ACL as shown in the example below:\n\nEXTERNAL_ACL_OUTBOUND: 5 entries\n10: deny tcp any any eq radius\n20: deny tcp any any eq sshow log\n30: deny tcp any any eq snmp log\n40: deny udp any any eq syslog log\n50: deny ip any any log\n\ninterface ethernet x/x/x\n  ip access-group EXTERNAL_ACL_OUTBOUND out logging enable\n\nIf management traffic is not blocked at the perimeter, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the perimeter router of the managed network with an ACL or filter on the egress interface to block all outbound management traffic.\n\nConfigure an ACL to block egress management traffic, as shown in the example below:\n\nICX(config)#ip access-list extended EXTERNAL_ACL_OUTBOUND\nICX(config-ext-ipacl-EXTERNAL_ACL_OUTBOUND)#deny tcp any any eq radius log\nICX(config-ext-ipacl-EXTERNAL_ACL_OUTBOUND)#deny tcp any any eq sshow log\nICX(config-ext-ipacl-EXTERNAL_ACL_OUTBOUND)#deny udp any any eq snmp log\nICX(config-ext-ipacl-EXTERNAL_ACL_OUTBOUND)#deny udp any any eq syslog log\nICX(config-ext-ipacl-EXTERNAL_ACL_OUTBOUND)#deny ip any any log\nICX(config-ext-ipacl-EXTERNAL_ACL_OUTBOUND)#exit\n\nConfigure the external interfaces with the outbound ACL, as shown in the example below:\n\nICX(config)#interface ethernet x/x/x\nICX(Config-if-e10000-x/x/x)#ip access-group EXTERNAL_ACL_OUTBOUND out logging enable",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "For in-band management, the management network must have its own subnet to enforce control and access boundaries provided by layer 3 network nodes, such as routers and firewalls. Management traffic between the managed network elements and the management network is routed via the same links and nodes as that used for production or operational traffic. Safeguards must be implemented to ensure the management traffic does not leak past the perimeter of the managed network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000790",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

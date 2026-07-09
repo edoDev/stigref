@@ -1,0 +1,53 @@
+{
+  "id": "SV-274062r1120174_rule",
+  "full_rule_id": "SV-274062r1120174_rule",
+  "rule_id": "SV-274062",
+  "rule_revision": "1120174",
+  "group_id": "V-274062",
+  "group_title": "SRG-OS-000383-GPOS-00166",
+  "title": "Amazon Linux 2023 must prohibit the use of cached authenticators after one day.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If cached authentication information is out-of-date, the validity of the authentication information may be questionable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 is configured so that the System Security Services Daemon (SSSD) prohibits the use of cached authentications after one day.\n\nNote: Cached authentication settings should be configured even if smart card authentication is not used on the system.\n\nCheck that SSSD allows cached authentications with the following command:\n\n$ sudo grep -ir cache_credentials /etc/sssd/sssd.conf /etc/sssd/conf.d/\n/etc/sssd/sssd.conf:cache_credentials = true\n\nIf \"cache_credentials\" is set to \"false\" or missing from the configuration file, this is not a finding and no further checks are required.\n\nIf \"cache_credentials\" is set to \"true\", check that SSSD prohibits the use of cached authentications after one day with the following command:\n\n$ sudo grep -ir offline_credentials_expiration /etc/sssd/sssd.conf /etc/sssd/conf.d/\n/etc/sssd/sssd.conf:offline_credentials_expiration = 1\n\nIf \"offline_credentials_expiration\" is not set to a value of \"1\", this is a finding.",
+  "fix": "Configure Amazon Linux 2023 SSSD service to prohibit the use of cached authentications after one day.\n\nAdd or change the following line in \"/etc/sssd/sssd.conf\" just below the line [pam]:\n\noffline_credentials_expiration = 1",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If cached authentication information is out-of-date, the validity of the authentication information may be questionable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-001305",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

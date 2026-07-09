@@ -1,0 +1,53 @@
+{
+  "id": "SV-276247r1150045_rule",
+  "full_rule_id": "SV-276247r1150045_rule",
+  "rule_id": "SV-276247",
+  "rule_revision": "1150045",
+  "group_id": "V-276247",
+  "group_title": "SRG-APP-000148-DB-000103",
+  "title": "Azure SQL Managed Instance must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To ensure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system. \n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses, except the following:\n\n(i) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and \n(ii) Accesses that occur through authorized use of group authenticators without individual authentication. \n\nOrganizations may require unique identification of individuals using shared accounts, for detailed accountability of individual activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review Azure SQL Managed Instance users to determine whether shared accounts exist. (This does not include the case where Azure SQL Managed Instance has a guest or public account that is providing access to publicly available information.) \n\nIf accounts are determined to be shared, determine if individuals are first individually authenticated. Where an application connects to Azure SQL Managed Instance using a standard, shared account, ensure it also captures the individual user identification and passes it to Azure SQL Managed Instance. \n\nIf individuals are not individually authenticated before using the shared account (e.g., by the operating system or possibly by an application making calls to the database), this is a finding. \n\nIf accounts are determined to be shared, determine if they are directly accessible to end users. If so, this is a finding.",
+  "fix": "Remove user-accessible shared accounts and use individual user IDs. \n\nIf necessary, use the DROP USER command to remove user-accessible shared accounts. Example provided below. \n\nDROP USER [SharedAccount];",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To ensure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system. \n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses, except the following:\n\n(i) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and \n(ii) Accesses that occur through authorized use of group authenticators without individual authentication. \n\nOrganizations may require unique identification of individuals using shared accounts, for detailed accountability of individual activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MSQL-00-007800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb",
+      "name": "Microsoft Azure SQL Managed Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb"
+  ]
+}

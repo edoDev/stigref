@@ -1,0 +1,54 @@
+{
+  "id": "SV-252931r1050791_rule",
+  "full_rule_id": "SV-252931r1050791_rule",
+  "rule_id": "SV-252931",
+  "rule_revision": "1050791",
+  "group_id": "V-252931",
+  "group_title": "SRG-OS-000373-GPOS-00158",
+  "title": "TOSS must require reauthentication when using the \"sudo\" command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the organization requires the user to reauthenticate when using the \"sudo\" command.\n\nIf the value is set to an integer less than 0, the user's time stamp will not expire and the user will not have to reauthenticate for privileged actions until the user's session is terminated.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the operating system requires reauthentication when using the \"sudo\" command to elevate privileges.\n\n$ sudo egrep -ir 'timestamp_timeout' /etc/sudoers /etc/sudoers.d\n/etc/sudoers:Defaults timestamp_timeout=0\n\nIf \"timestamp_timeout\" is set to a negative number, is commented out, or no results are returned, this is a finding.",
+  "fix": "Configure the \"sudo\" command to require reauthentication.\n\nEdit the /etc/sudoers file:\n$ sudo visudo\n\nAdd or modify the following line:\nDefaults timestamp_timeout=0",
+  "ccis": [
+    "CCI-004895",
+    "CCI-002038"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the organization requires the user to reauthenticate when using the \"sudo\" command.\n\nIf the value is set to an integer less than 0, the user's time stamp will not expire and the user will not have to reauthenticate for privileged actions until the user's session is terminated.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-010230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

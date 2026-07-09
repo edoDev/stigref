@@ -1,0 +1,53 @@
+{
+  "id": "SV-256533r1050789_rule",
+  "full_rule_id": "SV-256533r1050789_rule",
+  "rule_id": "SV-256533",
+  "rule_revision": "1050789",
+  "group_id": "V-256533",
+  "group_title": "SRG-OS-000373-GPOS-00156",
+  "title": "The Photon operating system must require users to reauthenticate for privilege escalation.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the user reauthenticate.\n\nSatisfies: SRG-OS-000373-GPOS-00156, SRG-OS-000373-GPOS-00157, SRG-OS-000373-GPOS-00158</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following commands:\n\n# grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v \"^#\"|grep -v \"^%\"|awk '{print $1}'\n\n# awk -F: '($2 != \"x\" && $2 != \"!\") {print $1}' /etc/shadow\n\nIf any account listed in the first output is also listed in the second output and is not documented, this is a finding.",
+  "fix": "Check the configuration of the \"/etc/sudoers\" and \"/etc/sudoers.d/*\" files with the following command:\n\n# visudo\n\nOR\n\n# visudo -f /etc/sudoers.d/<file name>\n\nRemove any occurrences of \"NOPASSWD\" tags associated with user accounts with a password hash.",
+  "ccis": [
+    "CCI-002038"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the user reauthenticate.\n\nSatisfies: SRG-OS-000373-GPOS-00156, SRG-OS-000373-GPOS-00157, SRG-OS-000373-GPOS-00158",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-30-000062",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28",
+      "name": "VMware vSphere 7.0 vCenter Appliance Photon OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28"
+  ]
+}

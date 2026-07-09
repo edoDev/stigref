@@ -1,0 +1,53 @@
+{
+  "id": "SV-255981r991775_rule",
+  "full_rule_id": "SV-255981r991775_rule",
+  "rule_id": "SV-255981",
+  "rule_revision": "991775",
+  "group_id": "V-255981",
+  "group_title": "SRG-NET-000512-L2S-000008",
+  "title": "The Arista MLS layer 2 switch must not have the default VLAN assigned to any host-facing switch ports.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In a VLAN-based network, switches use the default VLAN (i.e., VLAN 1) for in-band management and to communicate with other networking devices using Spanning-Tree Protocol (STP), Dynamic Trunking Protocol (DTP), VLAN Trunking Protocol (VTP), and Port Aggregation Protocol (PAgP)—all untagged traffic. As a consequence, the default VLAN may unwisely span the entire network if not appropriately pruned. If its scope is large enough, the risk of compromise can increase significantly.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista MLS switch configurations and verify no access switch ports have been assigned membership to the default VLAN (i.e., VLAN 1).\n \nswitch(config)#sh vlan\nVLAN  Name                             Status    Ports\n----- -------------------------------- --------- -------------------------------\n1     default                                              \n8     VLAN0008                        active    Cpu\n25    VLAN0025                       active    Cpu\n100   VLAN0100                      active    Cpu\n1000  VLAN1000                     active    Eth1, Eth2\n\nIf access switch ports are assigned to the default VLAN, this is a finding.",
+  "fix": "Configure the Arista MLS switch to remove the assignment of the default VLAN from all access switch ports.\n\nStep 1: Configure the Default VLAN 1 to shut down by using the following command:\n\nswitch:(config#)interface vlan 1\nswitch(config-int-vlan1)#shutdown\n\nStep 2: Configure all access switch ports to be placed in a VLAN other than the default (1):\n\nswitch(config)#interface ethernet 8\nswitch(config-eth8)#switchport access vlan 1000\nswitch(config-eth8)#exit",
+  "ccis": [
+    "CCI-004891"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In a VLAN-based network, switches use the default VLAN (i.e., VLAN 1) for in-band management and to communicate with other networking devices using Spanning-Tree Protocol (STP), Dynamic Trunking Protocol (DTP), VLAN Trunking Protocol (VTP), and Port Aggregation Protocol (PAgP)—all untagged traffic. As a consequence, the default VLAN may unwisely span the entire network if not appropriately pruned. If its scope is large enough, the risk of compromise can increase significantly.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-L2-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-l2s-security-technical-implementation-guide-v2r3-9875898d",
+      "name": "Arista MLS EOS 4.X L2S Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-l2s-security-technical-implementation-guide-v2r3-9875898d"
+  ]
+}

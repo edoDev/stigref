@@ -1,0 +1,53 @@
+{
+  "id": "SV-223664r1137691_rule",
+  "full_rule_id": "SV-223664r1137691_rule",
+  "rule_id": "SV-223664",
+  "rule_revision": "1137691",
+  "group_id": "V-223664",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM Sensitive Utility Controls must be properly defined and protected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the RACF resource access authorizations for the following sensitive utilities restrict access to the appropriate personnel according to the site security plan, this is not a finding.\n\nIf all access for these sensitive utilities is audited, this is not a finding.\n\nSensitive Utility Controls\nProgram Product Function \nAHLGTF z/OS System Activity Tracing \nHHLGTF\nIHLGTF \n\nICPIOCP z/OS System Configuration \nIOPIOCP\nIXPIOCP\nIYPIOCP\nIZPIOCP \n\nBLSROPTR z/OS Data Management \n\nDEBE OS/DEBE Data Management \n\nDITTO OS/DITTO Data Management \n\nFDRZAPOP FDR Product Internal Modification \n\nGIMSMP SMP/E Change Management Product \n\nICKDSF z/OS DASD Management \n\nIDCSC01 z/OS IDCAMS Set Cache Module \n\nIEHINITT z/OS Tape Management \n\nIFASMFDP z/OS SMF Data Dump Utility \n\nIND$FILE z/OS PC to Mainframe File Transfer\n(Applicable only for classified systems) \n\nCSQJU003 IBM WebSphereMQ\nCSQJU004\nCSQUCVX\nCSQ1LOGP\nCSQUTIL \n\nWHOIS z/OS Share MOD to identify user name from USERID. \nRestricted to data center personnel only.",
+  "fix": "Note: The resources and/or resource prefixes identified below are examples of a possible installation. The actual resource type, resources, and/or resource prefixes are determined when the product is actually installed on a system through the product's installation guide and can be site specific.\n\nEnsure that all Sensitive Utility Controls resources and/or generic equivalent are properly protected according to the site security plan.\n\nUse Sensitive Utility Controls table below that lists the resources, access requirements, and logging requirements for Sensitive Utilities, ensuring the following guidelines are followed:\n\nSensitive Utility Controls\nProgram Product Function \nAHLGTF z/OS System Activity Tracing \nHHLGTF\nIHLGTF \n\nICPIOCP z/OS System Configuration \nIOPIOCP\nIXPIOCP\nIYPIOCP\nIZPIOCP \n\nBLSROPTR z/OS Data Management \n\nDEBE OS/DEBE Data Management \n\nDITTO OS/DITTO Data Management \n\nFDRZAPOP FDR Product Internal Modification \n\nGIMSMP SMP/E Change Management Product \n\nICKDSF z/OS DASD Management \n\nIDCSC01 z/OS IDCAMS Set Cache Module \n\nIEHINITT z/OS Tape Management \n\nIFASMFDP z/OS SMF Data Dump Utility \n\nIND$FILE z/OS PC to Mainframe File Transfer\n (Applicable only for classified systems) \n\nCSQJU003 IBM WebSphereMQ\nCSQJU004\nCSQUCVX\nCSQ1LOGP\nCSQUTIL \n\nWHOIS z/OS Share MOD to identify user name from USERID. \n Restricted to data center personnel only.\n\nThe RACF resources as designated in the table above are defined with a default access of NONE.\n\nThe RACF resource access authorizations restrict access to the appropriate personnel as designated in the table above.\n\nThe RACF resource rules for the resources designated in the table above specify UACC(NONE) and NOWARNING.\n\nThe following commands are provided as a sample for implementing resource controls:\n\nRDEF PROGRAM AHLGTF ADDMEM('SYS1.LINKLIB'//NOPADCHK) - \nDATA('ADDED PER SRR PDI RACF0770 ') - \nAUDIT(ALL(READ)) UACC(NONE) OWNER(ADMIN)\nPERMIT AHLGTF CLASS(PROGRAM) ID(stcgsmpl)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

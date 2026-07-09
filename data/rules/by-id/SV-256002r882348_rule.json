@@ -1,0 +1,53 @@
+{
+  "id": "SV-256002r882348_rule",
+  "full_rule_id": "SV-256002r882348_rule",
+  "rule_id": "SV-256002",
+  "rule_revision": "882348",
+  "group_id": "V-256002",
+  "group_title": "SRG-NET-000019-RTR-000008",
+  "title": "The Arista perimeter router must be configured to protect an enclave connected to an alternate gateway by using an inbound filter that only permits packets with destination addresses within the sites address space.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Enclaves with alternate gateway connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's alternate gateway, the perimeter router could be routing transit data from the internet into the NIPRNet. This could also make the perimeter router vulnerable to a denial-of-service (DoS) attack as well as provide a back door into the NIPRNet. The DOD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an Approved Gateway is secure through filters permitting packets with a destination address belonging to the DOD enclave's address block.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nReview the Arista router configuration of each router interface connecting to an alternate gateway.\n\nVerify each permit statement of the ingress filter only permits packets with destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the alternate gateway network service provider.\n\nStep 1: Verify an inbound ACL is configured to permit the packets with the destination addresses of the site's NIPRNet address space. Verify IP access lists are configured. Execute the command \"show ip access-lists\".\n\nip access-list NIPRNet_ACL\n permit tcp any host 10.51.12.34 eq www\n permit icmp host 10.51.12.25 host 10.51.12.65 echo\n permit icmp host 10.51.12.25 host 10.51.12.65 echo-reply\n permit 50 any host 10.51.12.28\n permit gre any host 10.51.12.28\n deny ip any any log\n\nStep 2: Verify the ACL is applied inbound to the service provider-facing interface. Verify interfaces are configured. Execute the command \"show run int YY\".\n\ninterface ethernet 3\n ip access-group NIPRNet_ACL in\n\nIf the ingress filter permits packets with addresses other than those specified, such as destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the alternate gateway network service provider, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure the router for ingress filter of the perimeter router connected to an alternate gateway to only permit packets with destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the alternate gateway network service provider.\n\nStep 1: Configure an ACL inbound to the interface-facing service provider.\n\nLEAF-1A(config)#ip access-list NIPRNet_ACL\nLEAF-1A(config-acl-NIPRNet_ACL)#permit tcp any host 10.51.12.34 eq www\nLEAF-1A(config-acl-NIPRNet_ACL)#permit icmp host 10.51.12.25 host 10.51.12.65 echo\nLEAF-1A(config-acl-NIPRNet_ACL)#permit icmp host 10.51.12.25 host 10.51.12.65 echo-reply\nLEAF-1A(config-acl-NIPRNet_ACL)#permit 50 any host 10.51.12.28\nLEAF-1A(config-acl-NIPRNet_ACL)#permit gre any host 10.51.12.28\nLEAF-1A(config-acl-NIPRNet_ACL)#deny ip any any log\n\nStep 2: Apply the ACL to the internet service provider-facing interface.\n\nLEAF-1A(config)#interface ethernet 3\nLEAF-1A(config-if-Et3)#ip access-group NIPRNet_ACL in",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enclaves with alternate gateway connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's alternate gateway, the perimeter router could be routing transit data from the internet into the NIPRNet. This could also make the perimeter router vulnerable to a denial-of-service (DoS) attack as well as provide a back door into the NIPRNet. The DOD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an Approved Gateway is secure through filters permitting packets with a destination address belonging to the DOD enclave's address block.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

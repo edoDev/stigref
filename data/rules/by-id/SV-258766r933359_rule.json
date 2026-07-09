@@ -1,0 +1,53 @@
+{
+  "id": "SV-258766r933359_rule",
+  "full_rule_id": "SV-258766r933359_rule",
+  "rule_id": "SV-258766",
+  "rule_revision": "933359",
+  "group_id": "V-258766",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host Secure Shell (SSH) daemon must set a timeout interval on idle sessions.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Automatically logging out idle users guards against compromises via hijacked administrative sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an ESXi shell, run the following command:\n\n# esxcli system ssh server config list -k clientaliveinterval\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\n$esxcli = Get-EsxCli -v2\n$esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'clientaliveinterval'}\n\nExample result:\n\nclientaliveinterval 200\n\nIf \"clientaliveinterval\" is not configured to \"200\", this is a finding.",
+  "fix": "From an ESXi shell, run the following command:\n\n# esxcli system ssh server config set -k clientaliveinterval -v 200\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\n$esxcli = Get-EsxCli -v2\n$arguments = $esxcli.system.ssh.server.config.set.CreateArgs()\n$arguments.keyword = 'clientaliveinterval'\n$arguments.value = '200'\n$esxcli.system.ssh.server.config.set.Invoke($arguments)",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Automatically logging out idle users guards against compromises via hijacked administrative sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000211",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99"
+  ]
+}

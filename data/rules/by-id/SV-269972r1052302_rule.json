@@ -1,0 +1,54 @@
+{
+  "id": "SV-269972r1052302_rule",
+  "full_rule_id": "SV-269972r1052302_rule",
+  "rule_id": "SV-269972",
+  "rule_revision": "1052302",
+  "group_id": "V-269972",
+  "group_title": "SRG-NET-000715-L2S-000120",
+  "title": "The Dell OS10 Switch must implement physically or logically separate subnetworks to isolate organization-defined critical system components and functions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Separating critical system components and functions from other noncritical system components and functions through separate subnetworks may be necessary to reduce susceptibility to a catastrophic or debilitating breach or compromise that results in system failure. For example, physically separating the command-and-control function from the in-flight entertainment function through separate subnetworks in a commercial aircraft provides an increased level of assurance in the trustworthiness of critical system functions.\n\nSatisfies: SRG-NET-000715-L2S-000120, SRG-NET-000512-L2S-000012</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configurations and verify that no access switch ports have been assigned membership to the default VLAN (i.e., VLAN 1). VLAN assignments can be verified via the “show vlan” command:\n\nOS10# show vlan\nCodes: * - Default VLAN, M - Management VLAN, R - Remote Port Mirroring VLANs,\n       @ - Attached to Virtual Network, P - Primary, C - Community, I - Isolated,\n       S - VLAN-Stack VLAN\nQ: A - Access (Untagged), T - Tagged\n    NUM    Status    Description                     Q Ports\n*   1      Inactive\n    30     Inactive  Management VLAN\n    100    Inactive                                  A Eth1/1/1\n    200    Inactive                                  A Eth1/1/3-1/1/58\n    201    Inactive                                  A Eth1/1/2\nOS10#\n\nIf there are access switch ports assigned to the default VLAN, this is a finding.",
+  "fix": "Remove the assignment of the default VLAN from all access switch ports:\n\nOS10(config)# interface range eth1/1/4-1/1/58\nOS10(conf-range-eth1/1/4-1/1/58)# switchport mode access\nOS10(conf-range-eth1/1/4-1/1/58)# switchport access vlan 200",
+  "ccis": [
+    "CCI-004891",
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Separating critical system components and functions from other noncritical system components and functions through separate subnetworks may be necessary to reduce susceptibility to a catastrophic or debilitating breach or compromise that results in system failure. For example, physically separating the command-and-control function from the in-flight entertainment function through separate subnetworks in a commercial aircraft provides an increased level of assurance in the trustworthiness of critical system functions.\n\nSatisfies: SRG-NET-000715-L2S-000120, SRG-NET-000512-L2S-000012",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-L2S-000300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff",
+      "name": "Dell OS10 Switch Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff"
+  ]
+}

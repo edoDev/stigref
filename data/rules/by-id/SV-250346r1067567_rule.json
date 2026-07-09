@@ -1,0 +1,53 @@
+{
+  "id": "SV-250346r1067567_rule",
+  "full_rule_id": "SV-250346r1067567_rule",
+  "rule_id": "SV-250346",
+  "rule_revision": "1067567",
+  "group_id": "V-250346",
+  "group_title": "SRG-APP-000428-AS-000265",
+  "title": "The WebSphere Liberty Server LTPA keys password must be changed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The default location of the automatically generated Lightweight Third Party Authentication (LTPA) keys file is ${server.output.dir}/resources/security/ltpa.keys. \n\nThe LTPA keys are encrypted with a randomly generated key and a default password of WebAS is initially used to protect the keys. The password is required when importing the LTPA keys into another server. To protect the security of the LTPA keys, change the password. \n\nWhen the LTPA keys are exchanged between servers, this password must match across the servers for Single Sign On (SSO) to work.\n\nAutomated LTPA key generation can create unplanned outages. Plan to change the LTPA keys during a scheduled outage and do not use automated key changes. Distribute the new keys to all nodes in the cell and to all external systems/cells during this outage window.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If LTPA is not used, this requirement is not a finding.\n\nAs a privileged user with access to ${server.config.dir}/server.xml file, review the server.xml file and locate LTPA settings. If the LTPA settings do not exist, this is not a finding.\n\nEXAMPLE:\ngrep -i \"<ltpa\" server.xml\n\n <ltpa keysFileName=\"LTPA.keys\" keysPassword=\"myLTPAkeysPassword\" expiration=\"120\" monitorInterval=\"5s\" />\n\nIf the LTPA setting exists and the password is set to \"WebAS\", this is a finding.",
+  "fix": "To update key password and force a regeneration of keys follow these steps. To obtain encoded values, use the Liberty \"securityUtility encode\" command.\n\n1. Shut down the server.\n\n2. Configure the <ltpa> element in the server.xml file as follows, replacing the sample values in the example with local values. The password may be encoded or encrypted.\n\n<ltpa keysFileName=\"yourLTPAKeysFileName.keys\" keysPassword=\"yourkeysPassword\" expiration=\"120\" />\n\n3. Delete the existing ${wlp.server.dir}/resources/security/ltpa.keys file.\n\n4. Sync changes with all servers in the cell.\n\n5. Start the servers.",
+  "ccis": [
+    "CCI-002475"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The default location of the automatically generated Lightweight Third Party Authentication (LTPA) keys file is ${server.output.dir}/resources/security/ltpa.keys. \n\nThe LTPA keys are encrypted with a randomly generated key and a default password of WebAS is initially used to protect the keys. The password is required when importing the LTPA keys into another server. To protect the security of the LTPA keys, change the password. \n\nWhen the LTPA keys are exchanged between servers, this password must match across the servers for Single Sign On (SSO) to work.\n\nAutomated LTPA key generation can create unplanned outages. Plan to change the LTPA keys during a scheduled outage and do not use automated key changes. Distribute the new keys to all nodes in the cell and to all external systems/cells during this outage window.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IBMW-LS-001050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6",
+      "name": "IBM WebSphere Liberty Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6"
+  ]
+}

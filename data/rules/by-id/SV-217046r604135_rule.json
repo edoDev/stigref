@@ -1,0 +1,53 @@
+{
+  "id": "SV-217046r604135_rule",
+  "full_rule_id": "SV-217046r604135_rule",
+  "rule_id": "SV-217046",
+  "rule_revision": "604135",
+  "group_id": "V-217046",
+  "group_title": "SRG-NET-000019-RTR-000011",
+  "title": "The Juniper out-of-band management (OOBM) gateway router must be configured to have separate IGP instances for the managed network and management network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate Interior Gateway Protocol routing instances is critical on the router to segregate traffic from each network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DoDIN Backbone.\n\nVerify that the OOBM interface is an adjacency in the IGP domain for the management network via separate VRF as shown in the example below.\n\n}\nprotocols {\n    ospf {\n        area 0.0.0.0 {\n            interface ge-2/0/0;\n            interface ge-2/1/0;\n        }\n    }\n}\nrouting-instances {\n    VRF_MGMT {\n        instance-type vrf;\n        interface ge-1/0/0;\n        interface ge-1/1/0;\n        route-distinguisher 10.1.12.0:12;\n        vrf-target {\n            import target:1234:4567;\n            export target:1234:4567;\n        }\n        routing-options {\n            router-id 11.11.11.11;\n        }\n        protocols {\n            ospf {\n                area 0.0.0.0 {\n                    interface ge-1/0/0;\n                    interface ge-1/1/0;\n                }\n            }\n        }\n    }\n}\n\nIf the router is not configured to have separate IGP instances for the managed network and management network, this is a finding.",
+  "fix": "This requirement is not applicable for the DoDIN Backbone.\n\nConfigure the router to have a separate IGP instance for the management network as shown in the example below.\n\n[edit routing-instances]\nset VRF_MGMT instance-type vrf\nset VRF_MGMT route-distinguisher 10.1.12.0:12\nset VRF_MGMT vrf-target import target:1234:4567\nset VRF_MGMT vrf-target export target:1234:4567\nset VRF_MGMT interface ge-1/0/0\nset VRF_MGMT interface ge-1/1/0\nset VRF_MGMT protocols ospf area 0.0.0.0 interface ge-1/0/0\nset VRF_MGMT protocols ospf area 0.0.0.0 interface ge-1/1/0\nset VRF_MGMT routing-options router-id 11.11.11.11",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate Interior Gateway Protocol routing instances is critical on the router to segregate traffic from each network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000410",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

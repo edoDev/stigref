@@ -1,0 +1,53 @@
+{
+  "id": "SV-257292r961287_rule",
+  "full_rule_id": "SV-257292r961287_rule",
+  "rule_id": "SV-257292",
+  "rule_revision": "961287",
+  "group_id": "V-257292",
+  "group_title": "SRG-APP-000318-CTR-000740",
+  "title": "Rancher MCM must enforce organization-defined circumstances and/or usage conditions for organization-defined accounts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Rancher MCM must verify the certificate used for Rancher's ingress is a valid DOD certificate. This is achieved by verifying the helm installation contains correct parameters.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify helm installation contains correct parameters:\nNavigate to Triple Bar Symbol(Global) >>  <local cluster>.\nFrom the kubectl shell (>_) Execute:\n`helm get values rancher -n cattle-system`\n\nThe output must contain:\n```\nprivateCA: true\ningress:\ntls:\nsource: secret\n```\nIf the output source is not \"secret\", this is a finding.\n\nVerify contents of certificates are correct: \nFrom the console, type:\nkubectl -n cattle-system get secret tls-rancher-ingress -o 'jsonpath={.data.tls\\.crt}' | base64 --decode | openssl x509 -noout -text\n\nkubectl -n cattle-system get secret tls-ca -o 'jsonpath={.data.cacerts\\.pem}' | base64 --decode | openssl x509 -noout -text",
+  "fix": "Update the secrets to contain valid certificates.\n\nPut the correct and valid DOD certificate and key in files called \"tls.crt\" and \"tls.key\", respectively, and then run:\nkubectl -n cattle-system create secret tls tls-rancher-ingress \\  --cert=tls.crt \\   --key=tls.key                         \n\nUpload the CA required for the certs by creating another file called \"cacerts.pem\" and running: \nkubectl -n cattle-system create secret generic tls-ca \\   --from-file=cacerts.pem=./cacerts.pem \n\nThe helm chart values need to be updated to include the check section: \nprivateCA: true   \ningress:            \ntls:                                                                        \nsource: secret   \n\nRerun helm upgrade with the new values for the certs to take effect.",
+  "ccis": [
+    "CCI-002145"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Rancher MCM must verify the certificate used for Rancher's ingress is a valid DOD certificate. This is achieved by verifying the helm installation contains correct parameters.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-RM-000970",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "rancher-government-solutions-multi-cluster-manager-security-technical-implementa-v2r2-da8eddf6",
+      "name": "Rancher Government Solutions Multi-Cluster Manager Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "rancher-government-solutions-multi-cluster-manager-security-technical-implementa-v2r2-da8eddf6"
+  ]
+}

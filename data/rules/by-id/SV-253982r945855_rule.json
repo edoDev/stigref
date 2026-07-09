@@ -1,0 +1,53 @@
+{
+  "id": "SV-253982r945855_rule",
+  "full_rule_id": "SV-253982r945855_rule",
+  "rule_id": "SV-253982",
+  "rule_revision": "945855",
+  "group_id": "V-253982",
+  "group_title": "SRG-NET-000018-RTR-000010",
+  "title": "The Juniper router configured for BGP must reject route advertisements from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Verifying the path a route has traversed will ensure that the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration to verify the router is configured to deny updates received from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.\n\nReview the router configuration and verify that there is an as-path access-list statement defined. \n\nEach peer requires a regular expression (REGEX) defining the expected AS_PATH attribute. Each neighbor has an import policy applied to filter updates that do not match the expected path attribute. Assuming AS 65535 is an authorized neighbor's originating AS, verify an as-path REGEX is defined ('.* 65535') and a policy-statement configured to accept that REGEX.\n\n[edit policy-options]\npolicy-statement bgp_originate_65535 {\n    term 1 {\n        from as-path orig_65535;\n        then accept;\n    }\n    term 2 {\n        then reject;\n    }\n}\nas-path orig_65535 \".* 65535\";\nNote: The REGEX matches zero or more prepended AS in the AS_PATH beginning with the defined AS number (the originator is the right-most AS in the path). The AS_PATH attribute is a space-delimited list, so a space between the leading AS numbers (.*) and the originating AS (65535) is required.\n\nVerify that the as-path access list is referenced by the filter-list inbound for the appropriate BGP neighbors.\n\n[edit protocols bgp]\ngroup eBGP {\n    neighbor <address> {\n        import bgp_originate_65535;\n    }\n}\n\nIf the router is not configured to reject updates from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer, this is a finding.",
+  "fix": "Configure the router to reject updates from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.\n\nset policy-options policy-statement bgp_originate_65535 term 1 from as-path orig_65535\nset policy-options policy-statement bgp_originate_65535 term 1 then accept\nset policy-options policy-statement bgp_originate_65535 term 2 then reject\nset policy-options as-path orig_65535 \".* 65535\"\n\nset protocols bgp group eBGP neighbor <address> import bgp_originate_65535",
+  "ccis": [
+    "CCI-000032"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Verifying the path a route has traversed will ensure that the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-256495r958438_rule",
+  "full_rule_id": "SV-256495r958438_rule",
+  "rule_id": "SV-256495",
+  "rule_revision": "958438",
+  "group_id": "V-256495",
+  "group_title": "SRG-OS-000059-GPOS-00029",
+  "title": "The Photon operating system audit log must be group-owned by root.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.\n\nUnauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command:\n\n# (audit_log_file=$(grep \"^log_file\" /etc/audit/auditd.conf|sed s/^[^\\/]*//) && if [ -f \"${audit_log_file}\" ] ; then printf \"Log(s) found in \"${audit_log_file%/*}\":\\n\"; stat -c \"%n is group owned by %G\" ${audit_log_file%}*; else printf \"audit log file(s) not found\\n\"; fi)\n\nIf any audit log file is not group owned by root, this is a finding.",
+  "fix": "At the command line, run the following command:\n\n#  chown root:root <audit log file>\n\nReplace <audit log file> with the log files not group owned by root.",
+  "ccis": [
+    "CCI-000164"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Audit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.\n\nUnauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-30-000018",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28",
+      "name": "VMware vSphere 7.0 vCenter Appliance Photon OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28"
+  ]
+}

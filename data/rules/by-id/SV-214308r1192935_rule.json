@@ -1,0 +1,58 @@
+{
+  "id": "SV-214308r1192935_rule",
+  "full_rule_id": "SV-214308r1192935_rule",
+  "rule_id": "SV-214308",
+  "rule_revision": "1192935",
+  "group_id": "V-214308",
+  "group_title": "SRG-APP-000014-WSR-000006",
+  "title": "The Apache web server must use encryption strength in accordance with the categorization of data hosted by the Apache web server when remote connections are provided.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Apache web server has several remote communications channels. Examples are user requests via http/https, communication to a backend database, and communication to authenticate users. The encryption used to communicate must match the data that is being retrieved or presented.\n\nMethods of communication are \"http\" for publicly displayed information, \"https\" to encrypt when user data is being transmitted, VPN tunneling, or other encryption methods to a database.\n\nSatisfies: SRG-APP-000014-WSR-000006, SRG-APP-000015-WSR-000014, SRG-APP-000033-WSR-000169, SRG-APP-000179-WSR-000110, SRG-APP-000179-WSR-000111, SRG-APP-000439-WSR-000152, SRG-APP-000439-WSR-000154, SRG-APP-000439-WSR-000188, SRG-APP-000442-WSR-000182</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In a command line, navigate to \"<'INSTALLED PATH'>\\bin\". Run \"httpd -M\" to view a list of installed modules.\n\nIf the \"ssl_module\" is not enabled, this is a finding.\n\nReview the <'INSTALL PATH'>\\conf\\httpd-ssl.conf file to determine if the \"SSLProtocol\" directive exists and looks like the following:\n\nSSLProtocol -SSLv2 -SSLv3 -TLSv1 +TLSv1.2 +TLSv1.3\n\nIf the directive does not exist, or exists but does not contain \"-SSLv2 -SSLv3 -TLSv1 +TLSv1.2 +TLSv1.3\", this is a finding.",
+  "fix": "Ensure the \"ssl_module\" is loaded in the \"httpd.conf\" file (not commented out).\n\nEnsure the \"SSLProtocol\" is added and looks like the following in the <'INSTALL PATH'>\\conf\\httpd-ssl.conf file:\n\nSSLProtocol -SSLv2 -SSLv3 -TLSv1 +TLSv1.2 +TLSv1.3\n\nRestart the Apache service.",
+  "ccis": [
+    "CCI-000068",
+    "CCI-000213",
+    "CCI-000803",
+    "CCI-001453",
+    "CCI-002418",
+    "CCI-002422"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Apache web server has several remote communications channels. Examples are user requests via http/https, communication to a backend database, and communication to authenticate users. The encryption used to communicate must match the data that is being retrieved or presented.\n\nMethods of communication are \"http\" for publicly displayed information, \"https\" to encrypt when user data is being transmitted, VPN tunneling, or other encryption methods to a database.\n\nSatisfies: SRG-APP-000014-WSR-000006, SRG-APP-000015-WSR-000014, SRG-APP-000033-WSR-000169, SRG-APP-000179-WSR-000110, SRG-APP-000179-WSR-000111, SRG-APP-000439-WSR-000152, SRG-APP-000439-WSR-000154, SRG-APP-000439-WSR-000188, SRG-APP-000442-WSR-000182",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-W1-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-windows-server-security-technical-implementation-guide-v3r4-7588f99e",
+      "name": "Apache Server 2.4 Windows Server Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-windows-server-security-technical-implementation-guide-v3r4-7588f99e"
+  ]
+}

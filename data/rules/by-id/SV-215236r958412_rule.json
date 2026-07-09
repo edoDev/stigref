@@ -1,0 +1,54 @@
+{
+  "id": "SV-215236r958412_rule",
+  "full_rule_id": "SV-215236r958412_rule",
+  "rule_id": "SV-215236",
+  "rule_revision": "958412",
+  "group_id": "V-215236",
+  "group_title": "SRG-OS-000037-GPOS-00015",
+  "title": "AIX must produce audit records containing information to establish what the date, time, and type of events that occurred.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without establishing what type of events occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.\n\nAudit record content that may be necessary to satisfy this requirement includes, for example, time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.\n\nAssociating event types with detected events in AIX audit logs provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured operating system.\n\nSatisfies: SRG-OS-000037-GPOS-00015, SRG-OS-000038-GPOS-00016</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check if audit is turned on by running the following command:\n\n# audit query | grep -i auditing\nauditing on\n\nThe command should yield the following output:\nauditing on\n\nIf the command shows \"auditing off\", this is a finding.\n\nThe log file can be set by the \"trail\" variable in /etc/security/audit/config.\n# grep trail /etc/security/audit/config\n        trail = /audit/trail\n\nNote: The default log file is \"/audit/trail\".\n\nUse the following command to display the audit events:\n\n# /usr/sbin/auditpr -i <audit log file> -helRtcp \n\nevent                     login    status      time                                          command      process  \n--------------- -------- ----------- ------------------------ ------------------------------- -------- \nPROC_Delete     root     OK           Wed Oct 31 23:01:37 2018    audit             9437656  \nFILE_Close           root     OK           Wed Oct 31 23:01:37 2018    auditbin      12255562 \nFILE_Open          root      OK           Wed Oct 31 23:01:37 2018    auditbin      12255562 \nFILE_Read           root      OK           Wed Oct 31 23:01:37 2018    auditbin      12255562 \nFILE_Close          root      OK           Wed Oct 31 23:01:37 2018    auditbin      12255562 \nPROC_Create    root      OK           Wed Oct 31 23:01:44 2018     ksh                12976466 \nFILE_Close          root     OK           Wed Oct 31 23:01:44 2018      ksh                9437658  \nFILE_Open          root     OK           Wed Oct 31 23:01:44 2018     ksh                 9437658  \nFILE_Read           root     OK           Wed Oct 31 23:01:44 2018     ksh                9437658  \nFILE_Close          root     OK           Wed Oct 31 23:01:44 2018     ksh                9437658  \nPROC_Execute  root     OK           Wed Oct 31 23:01:44 2018    ls                    9437658  \nFILE_Open          root     OK           Wed Oct 31 23:01:44 2018    ls                    9437658  \n\nIf event type is not displayed, this is a finding. \n\nMore information on the command options used above: \n            -e the audit event.\n            -l the login name of the user.\n            -R the audit status.\n            -t the time the record was written.\n            -c the command name.\n            -p the process ID.",
+  "fix": "Reset the audit system with the following command:\n# /usr/sbin/audit shutdown\n\nStart the audit system with the following command:\n# /usr/sbin/audit start",
+  "ccis": [
+    "CCI-000130",
+    "CCI-000131"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without establishing what type of events occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.\n\nAudit record content that may be necessary to satisfy this requirement includes, for example, time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.\n\nAssociating event types with detected events in AIX audit logs provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured operating system.\n\nSatisfies: SRG-OS-000037-GPOS-00015, SRG-OS-000038-GPOS-00016",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002001",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

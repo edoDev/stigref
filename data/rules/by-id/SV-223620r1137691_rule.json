@@ -1,0 +1,53 @@
+{
+  "id": "SV-223620r1137691_rule",
+  "full_rule_id": "SV-223620r1137691_rule",
+  "rule_id": "SV-223620",
+  "rule_revision": "1137691",
+  "group_id": "V-223620",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS UNIX MVS HFS directory(s) with other write permission bit set must be properly defined.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Access control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "On the OMVS Command line enter the following command string:\nfind / -type d -perm -0002 ! -perm -1000 -exec ls -aldWE {} \\;\n\nIf there are no directories that have the other write permission bit set on without the sticky bit set on, this is not a finding.\n\nNOTE: In the symbolic permission bit display, the sticky bit is indicated as a \"t\" or \"T\" in the execute portion of the other permissions. For example, a display of the permissions of a directory with the sticky bit on could be \"drwxrwxrwt\".\n\nIf all directories that have the other write permission bit set on do not contain any files with the setuid bit set on, this is not a finding.\n\nNOTE: In the symbolic permission bit display, the setuid bit is indicated as an \"s\" or \"S\" in the execute portion of the owner permissions. For example, a display of the permissions of a file with the setuid bit on could be \"-rwsrwxrwx\".\n\nIf all directories that have the other write permission bit set on do not contain any files with the setgid bit set on, this is not a finding.\n\nNOTE: In the symbolic permission bit display, the setgid bit is indicated as an \"s\" or \"S\" in the execute portion of the group permissions. For example, a display of the permissions of a file with the setgid bit on could be \"-rwxrwsrwx\".",
+  "fix": "Configure directory permissions as follows:\nThere are no directories that have the other Write permission bit set on without the sticky bit set on.\n\nNOTE: In the symbolic permission bit display, the sticky bit is indicated as a \"t\" or \"T\" in the execute portion of the other permissions. For example, a display of the permissions of a directory with the sticky bit on could be \"drwxrwxrwt\".\n\nAll directories that have the other write permission bit set on do not contain any files with the setuid bit set on.\n\nNOTE: In the symbolic permission bit display, the setuid bit is indicated as an \"s\" or \"S\" in the execute portion of the owner permissions. For example, a display of the permissions of a file with the setuid bit on could be \"-rwsrwxrwx\".\n\nAll directories that have the other write permission bit set on do not contain any files with the setgid bit set on.\n\nNOTE: In the symbolic permission bit display, the setgid bit is indicated as an \"s\" or \"S\" in the execute portion of the group permissions. For example, a display of the permissions of a file with the setgid bit on could be \"-rwxrwsrwx\".",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Access control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ACF2-US-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad",
+      "name": "IBM z/OS ACF2 Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-258969r934565_rule",
+  "full_rule_id": "SV-258969r934565_rule",
+  "rule_id": "SV-258969",
+  "rule_revision": "934565",
+  "group_id": "V-258969",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must enable data in transit encryption for vSAN.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Transit encryption must be enabled to prevent unauthorized disclosure information and to protect the confidentiality of organizational information.\n\nvSAN data-in-transit encryption has the following characteristics:\n-vSAN uses AES-256 bit encryption on data in transit.\n-Forward secrecy is enforced for vSAN data-in-transit encryption.\n-Traffic between data hosts and witness hosts is encrypted.\n-File service data traffic between the VDFS proxy and VDFS server is encrypted.\n-vSAN file services inter-host connections are encrypted.\n-vSAN uses symmetric keys that are generated dynamically and shared between hosts. Hosts dynamically generate an encryption key when they establish a connection, and they use the key to encrypt all traffic between the hosts. You do not need a key management server to perform data-in-transit encryption.\n\nEach host is authenticated when it joins the cluster, ensuring connections only to trusted hosts are allowed. When a host is removed from the cluster, it is authentication certificate is removed.\n\nvSAN data-in-transit encryption is a cluster-wide setting. When enabled, all data and metadata traffic is encrypted as it transits across hosts.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If no clusters are enabled for vSAN, this is not applicable.\n\nFrom the vSphere Client, go to Host and Clusters.\n\nSelect the vCenter Server >> Select the cluster >> Configure >> vSAN >> Services >> Data Services.\n\nReview the \"Data-in-transit encryption\" status.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\n$vsanclusterconf = Get-VsanView -Id VsanVcClusterConfigSystem-vsan-cluster-config-system\n$vsanclusterconf.VsanClusterGetConfig((Get-Cluster -Name <cluster name>).ExtensionData.MoRef).DataInTransitEncryptionConfig\n\nRepeat these steps for each vSAN enabled cluster in the environment.\n\nIf \"Data-In-Transit encryption\" is not enabled, this is a finding.",
+  "fix": "From the vSphere Client, go to Host and Clusters.\n\nSelect the vCenter Server >> Select the target cluster >> Configure >> vSAN >> Services >> Data Services.\n\nClick \"Edit\".\n\nEnable \"Data-In-Transit encryption\" and choose a rekey interval suitable for the environment then click \"Apply\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Transit encryption must be enabled to prevent unauthorized disclosure information and to protect the confidentiality of organizational information.\n\nvSAN data-in-transit encryption has the following characteristics:\n-vSAN uses AES-256 bit encryption on data in transit.\n-Forward secrecy is enforced for vSAN data-in-transit encryption.\n-Traffic between data hosts and witness hosts is encrypted.\n-File service data traffic between the VDFS proxy and VDFS server is encrypted.\n-vSAN file services inter-host connections are encrypted.\n-vSAN uses symmetric keys that are generated dynamically and shared between hosts. Hosts dynamically generate an encryption key when they establish a connection, and they use the key to encrypt all traffic between the hosts. You do not need a key management server to perform data-in-transit encryption.\n\nEach host is authenticated when it joins the cluster, ensuring connections only to trusted hosts are allowed. When a host is removed from the cluster, it is authentication certificate is removed.\n\nvSAN data-in-transit encryption is a cluster-wide setting. When enabled, all data and metadata traffic is encrypted as it transits across hosts.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000304",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

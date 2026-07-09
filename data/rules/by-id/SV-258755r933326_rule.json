@@ -1,0 +1,53 @@
+{
+  "id": "SV-258755r933326_rule",
+  "full_rule_id": "SV-258755r933326_rule",
+  "rule_id": "SV-258755",
+  "rule_revision": "933326",
+  "group_id": "V-258755",
+  "group_title": "SRG-OS-000095-VMM-000480",
+  "title": "The ESXi host must be configured to disable nonessential capabilities by disabling the ESXi shell.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ESXi Shell is an interactive command line environment available locally from the Direct Console User Interface (DCUI) or remotely via SSH. Activities performed from the ESXi Shell bypass vCenter role-based access control (RBAC) and audit controls.\n\nThe ESXi shell must only be turned on when needed to troubleshoot/resolve problems that cannot be fixed through the vSphere client.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Services.\n\nUnder Services, locate the \"ESXi Shell\" service and verify it is \"Stopped\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-VMHostService | Where {$_.Label -eq \"ESXi Shell\"}\n\nIf the ESXi Shell service is \"Running\", this is a finding.",
+  "fix": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Services.\n\nUnder \"Services\", select the \"ESXi Shell\" service and click the \"Stop\" button.\n\nClick the \"Edit Startup policy...\" button.\n\nSelect the \"Start and stop manually\" radio button.\n\nClick \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\nGet-VMHost | Get-VMHostService | Where {$_.Label -eq \"ESXi Shell\"} | Set-VMHostService -Policy Off\nGet-VMHost | Get-VMHostService | Where {$_.Label -eq \"ESXi Shell\"} | Stop-VMHostService",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ESXi Shell is an interactive command line environment available locally from the Direct Console User Interface (DCUI) or remotely via SSH. Activities performed from the ESXi Shell bypass vCenter role-based access control (RBAC) and audit controls.\n\nThe ESXi shell must only be turned on when needed to troubleshoot/resolve problems that cannot be fixed through the vSphere client.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000194",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99"
+  ]
+}

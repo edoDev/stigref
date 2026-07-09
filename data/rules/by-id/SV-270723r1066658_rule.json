@@ -1,0 +1,53 @@
+{
+  "id": "SV-270723r1066658_rule",
+  "full_rule_id": "SV-270723r1066658_rule",
+  "rule_id": "SV-270723",
+  "rule_revision": "1066658",
+  "group_id": "V-270723",
+  "group_title": "SRG-OS-000377-GPOS-00162",
+  "title": "Ubuntu 24.04 LTS must electronically verify Personal Identity Verification (PIV) credentials.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access. \n \nDOD has mandated the use of the common access card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu 24.04 LTS electronically verifies PIV credentials via certificate status checking with the following command: \n \n$ sudo grep use_pkcs11_module /etc/pam_pkcs11/pam_pkcs11.conf | awk '/pkcs11_module opensc {/,/}/' /etc/pam_pkcs11/pam_pkcs11.conf | grep cert_policy | grep ocsp_on \n \ncert_policy = ca,signature,ocsp_on; \n \nIf every returned \"cert_policy\" line is not set to \"ocsp_on\", or the line is commented out, this is a finding.",
+  "fix": "Configure Ubuntu 24.04 LTS to do certificate status checking for multifactor authentication. \n \nModify all of the \"cert_policy\" lines in \"/etc/pam_pkcs11/pam_pkcs11.conf\" to include \"ocsp_on\".",
+  "ccis": [
+    "CCI-001954"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access. \n \nDOD has mandated the use of the common access card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-400060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

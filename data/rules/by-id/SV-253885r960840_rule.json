@@ -1,0 +1,53 @@
+{
+  "id": "SV-253885r960840_rule",
+  "full_rule_id": "SV-253885r960840_rule",
+  "rule_id": "SV-253885",
+  "rule_revision": "960840",
+  "group_id": "V-253885",
+  "group_title": "SRG-APP-000065-NDM-000214",
+  "title": "The Juniper EX switch must be configured to enforce the limit of three consecutive invalid logon attempts for any given user, after which time it must block any login attempt for that user for 15 minutes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Introducing a lockout period significantly increases the time required for each brute-force attack and increases the likelihood that security personnel will identify (and can respond to) an ongoing attack and/or that the authorized owner will recognize and report the unauthorized activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Juniper switches maintain the number of failed login attempts per user until the session is restarted or, if lockout-period is configured, until the next successful login. If the permissible number of failed login attempts is reached, the switch prevents logging in for the duration of the lockout-period (1..43200 minutes) regardless whether the account is locally or externally authenticated and across all management access methods (e.g., local console and SSH).\n\nReview the device configuration to verify that it enforces the limit of three consecutive invalid logon attempts before introducing a 15 minute lockout period.\n\n[edit system login]\nretry-options {\n    tries-before-disconnect 3;\n    lockout-period 15;\n}\n\nIf the device is not configured to enforce the limit of three consecutive invalid logon attempts before introducing a 15-minute block on subsequent login attempts, this is a finding.",
+  "fix": "Configure the network device to enforce the limit of three consecutive invalid logon attempts and to block subsequent login attempts for 15 minutes.\n\nset system login retry-options tries-before-disconnect 3\nset system login retry-options lockout-period 15",
+  "ccis": [
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Introducing a lockout period significantly increases the time required for each brute-force attack and increases the likelihood that security personnel will identify (and can respond to) an ongoing attack and/or that the authorized owner will recognize and report the unauthorized activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-NM-000080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685",
+      "name": "Juniper EX Series Switches Network Device Management Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685"
+  ]
+}

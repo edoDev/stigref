@@ -1,0 +1,53 @@
+{
+  "id": "SV-256604r887598_rule",
+  "full_rule_id": "SV-256604r887598_rule",
+  "rule_id": "SV-256604",
+  "rule_revision": "887598",
+  "group_id": "V-256604",
+  "group_title": "SRG-APP-000226-DB-000147",
+  "title": "VMware Postgres must write log entries to disk prior to returning operation success or failure.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failure to a known secure state helps prevent a loss of confidentiality, integrity, or availability in the event of a failure of the information system or a component of the system. Preserving system state information helps to facilitate system restart and return to the operational mode of the organization with less disruption of mission/business processes. \n\nAggregating log writes saves on performance but leaves a window for log data loss. The logging system inside VMware Postgres is capable of writing logs to disk fully and completely before the associated operation is returned to the client. This ensures database activity is always captured, even in the event of a system crash during or immediately after a given operation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');\"\n\nExpected result:\n\nfsync              | on\nfull_page_writes   | on\nsynchronous_commit | on\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "At the command prompt, run the following commands for each setting returned as \"off\" in the check:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET <name> TO 'on';\"\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT pg_reload_conf();\"\n\nNote: Substitute <name> with the incorrectly set parameter (fsync, full_page_writes, synchronous_commit).",
+  "ccis": [
+    "CCI-001665"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to a known secure state helps prevent a loss of confidentiality, integrity, or availability in the event of a failure of the information system or a component of the system. Preserving system state information helps to facilitate system restart and return to the operational mode of the organization with less disruption of mission/business processes. \n\nAggregating log writes saves on performance but leaves a window for log data loss. The logging system inside VMware Postgres is capable of writing logs to disk fully and completely before the associated operation is returned to the client. This ensures database activity is always captured, even in the event of a system crash during or immediately after a given operation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-70-000014",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497",
+      "name": "VMware vSphere 7.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497"
+  ]
+}

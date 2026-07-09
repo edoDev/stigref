@@ -1,0 +1,53 @@
+{
+  "id": "SV-253998r844027_rule",
+  "full_rule_id": "SV-253998r844027_rule",
+  "rule_id": "SV-253998",
+  "rule_revision": "844027",
+  "group_id": "V-253998",
+  "group_title": "SRG-NET-000078-RTR-000001",
+  "title": "The Juniper router must be configured to log all packets that have been dropped.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Auditing and logging are key components of any security architecture. It is essential for security personnel to know what is being done or attempted to be done, and by whom, to compile an accurate risk assessment. Auditing the actions on network devices provides a means to recreate an attack or identify a configuration mistake on the device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router interface firewall filters to verify all deny statements are logged. At a minimum, all discarding filter terms must have the \"syslog\" action enabled.\n\nVerify all discarding firewall filter terms are configured with (minimally) the \"syslog\" action:\n[edit firewall]\nfamily inet {\n    filter <filter name> {\n        term <name> {\n            from {\n                <match conditions>;\n            }\n            then {\n                log;\n                syslog; <<< Must be enabled for local and external syslog.\n                discard;\n            }\n        }\n    }\n}\nfamily inet6 {\n    filter <filter name> {\n        term <name> {\n            from {\n                <match conditions>;\n            }\n            then {\n                log;\n                syslog; <<< Must be enabled for local and external syslog.\n                discard;\n            }\n        }\n    }\n}\n\nIf packets being dropped are not logged, this is a finding.",
+  "fix": "Configure interface firewall filters to log all deny statements.\n\nAll discarding firewall filter terms:\n<filter terms and match conditions>\nset firewall family inet filter <filter name> term <name> then log\nset firewall family inet filter <filter name> term <name> then syslog <<< Minimally must be configured for all discarding filter terms.\nset firewall family inet filter <filter name> term <name> then discard\n\n<filter terms and match conditions>\nset firewall family inet6 filter <filter name> term <name> then log\nset firewall family inet6 filter <filter name> term <name> then syslog <<< Minimally must be configured for all discarding filter terms.\nset firewall family inet6 filter <filter name> term <name> then discard",
+  "ccis": [
+    "CCI-000134"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Auditing and logging are key components of any security architecture. It is essential for security personnel to know what is being done or attempted to be done, and by whom, to compile an accurate risk assessment. Auditing the actions on network devices provides a means to recreate an attack or identify a configuration mistake on the device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

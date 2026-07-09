@@ -1,0 +1,53 @@
+{
+  "id": "SV-254020r844093_rule",
+  "full_rule_id": "SV-254020r844093_rule",
+  "rule_id": "SV-254020",
+  "rule_revision": "844093",
+  "group_id": "V-254020",
+  "group_title": "SRG-NET-000205-RTR-000011",
+  "title": "The Juniper out-of-band management (OOBM) gateway router must be configured to block any traffic destined to itself that is not sourced from the OOBM network or the NOC.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the gateway router is not a dedicated device for the OOBM network, several safeguards must be implemented for containment of management and production traffic boundaries. It is imperative that hosts from the managed network are not able to access the OOBM gateway router.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the firewall filter for the router receive path.\n\nVerify that only traffic sourced from the OOBM network or the NOC is allowed to access the router.\n\n[edit policy-options]\nprefix-list OOBM-ipv4 {\n    <IPv4 address>/<mask>;\n}\nprefix-list OOBM-ipv6 {\n    <IPv6 address>/<prefix>;\n}\nprefix-list router-ipv4 {\n    <IPv4 address>/<mask>;\n}\nprefix-list router-ipv6 {\n    <IPv6 address>/<prefix>;\n}\n\n[edit firewall]\nfamily inet {\n    filter protect-re-ipv4 {\n        term 1 {\n            from {\n                source-prefix-list OOBM-ipv4;\n                destination-prefix-list router-ipv4;\n            }\n            then accept;\n        }\n        <additional terms for authorized traffic like OSPF or BGP>\n        term default {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\nfamily inet6 {\n    filter protect-re-ipv6 {\n        term 1 {\n            from {\n                source-prefix-list OOBM-ipv6;\n                destination-prefix-list router-ipv6;\n            }\n            then accept {\n        }\n        <additional terms for authorized traffic like OSPF or BGP>\n        term default {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\n\nVerify the firewall filter is applied to the loopback interface.\n[edit interfaces]\nlo0 {\n    unit 0 {\n        family inet {\n            filter {\n                input protect-re-ipv4;   \n            }                           \n            address <IPv4 address/mask>;         \n        }                               \n        family inet6 {                  \n            filter {                    \n                input protect-re-ipv6;   \n            }                           \n            address <IPv6 address/prefix>;     \n        }                               \n    }                                   \n}\n\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf the router does not block any traffic destined to itself that is not sourced from the OOBM network or the NOC, this is a finding.\n\nNote: If the platform does not support the receive path filter, verify that all non-OOBM interfaces have an ingress firewall filter to restrict access to that interface address or any of the router’s loopback addresses to only traffic sourced from the management network. An exception would be to allow packets destined to these interfaces used for troubleshooting, such as ping and traceroute.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nEnsure that traffic from the managed network is not able to access the OOBM gateway router using either receive path or interface firewall filters.\n\nset policy-options prefix-list OOBM-ipv4 <IPv4 address>/<mask>\nset policy-options prefix-list OOBM-ipv6 <IPv6 address>/<prefix>\n\nset firewall family inet filter protect-re-ipv4 term 1 from source-prefix-list OOBM-ipv4\nset firewall family inet filter protect-re-ipv4 term 1 from destination-prefix-list router-ipv4\nset firewall family inet filter protect-re-ipv4 term 1 then accept\n<additional terms for authorized traffic like OSPF or BGP>\nset firewall family inet filter protect-re-ipv4 term default then log\nset firewall family inet filter protect-re-ipv4 term default then syslog\nset firewall family inet filter protect-re-ipv4 term default then discard\n\nset firewall family inet filter protect-re-ipv6 term 1 from source-prefix-list OOBM-ipv6\nset firewall family inet filter protect-re-ipv6 term 1 from destination-prefix-list router-ipv6\nset firewall family inet filter protect-re-ipv6 term 1 then accept\n<additional terms for authorized traffic like OSPF or BGP>\nset firewall family inet filter protect-re-ipv6 term default then log\nset firewall family inet filter protect-re-ipv6 term default then syslog\nset firewall family inet filter protect-re-ipv6 term default then discard\n\nset interfaces lo0 unit 0 family inet filter input protect-re-ipv4\nset interfaces lo0 unit 0 family inet address <IPv4 address>/<mask>\nset interfaces lo0 unit 0 family inet6 filter input protect-re-ipv6\nset interfaces lo0 unit 0 family inet6 address <IPv6 address>/<prefix>",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the gateway router is not a dedicated device for the OOBM network, several safeguards must be implemented for containment of management and production traffic boundaries. It is imperative that hosts from the managed network are not able to access the OOBM gateway router.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

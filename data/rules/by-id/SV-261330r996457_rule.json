@@ -1,0 +1,53 @@
+{
+  "id": "SV-261330r996457_rule",
+  "full_rule_id": "SV-261330r996457_rule",
+  "rule_id": "SV-261330",
+  "rule_revision": "996457",
+  "group_id": "V-261330",
+  "group_title": "SRG-OS-000480-GPOS-00229",
+  "title": "SLEM 5 must not allow unattended or automatic logon via SSH.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Failure to restrict system access via SSH to authenticated users negatively impacts SLEM 5 security.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 disables unattended or automatic logon via SSH with the following command:\n\n     > sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iEH '^\\s*(permit(.*?)(passwords|environment))'\n     /etc/ssh/sshd_config:PermitEmptyPasswords no\n     /etc/ssh/sshd_config:PermitUserEnvironment no\n\nIf \"PermitEmptyPasswords\" or \"PermitUserEnvironment\" keywords are not set to \"no\", are commented out, or are missing completely, this is a finding.",
+  "fix": "Configure SLEM 5 disables unattended or automatic logon via SSH.\n\nAdd or modify the following lines in the \"/etc/ssh/sshd_config\" file:\n\nPermitEmptyPasswords no\nPermitUserEnvironment no",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to restrict system access via SSH to authenticated users negatively impacts SLEM 5 security.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-255025",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

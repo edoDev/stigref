@@ -1,0 +1,53 @@
+{
+  "id": "SV-251385r806110_rule",
+  "full_rule_id": "SV-251385r806110_rule",
+  "rule_id": "SV-251385",
+  "rule_revision": "806110",
+  "group_id": "V-251385",
+  "group_title": "NET2002",
+  "title": "Label Distribution Protocol (LDP) must be synchronized with the Interior Gateway Protocol (IGP) to minimize packet loss when an IGP adjacency is established prior to LDP peers completing label exchange.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Packet loss can occur when an IGP adjacency is established and the router begins forwarding packets using the new adjacency before the LDP label exchange completes between the peers on that link. Packet loss can also occur if an LDP session closes and the router continues to forward traffic using the link associated with the LDP peer rather than an alternate pathway with a fully synchronized LDP session. The MPLS LDP-IGP Synchronization feature provides a means to synchronize LDP with OSPF or IS-IS to minimize MPLS packet loss. When an IGP adjacency is established on a link but LDP-IGP synchronization is not yet achieved or is lost, the IGP will advertise the max-metric on that link.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration and verify that the \"mpls ldp sync\" command is configured on the IS-IS or OSPF configuration as shown in the following example: \n\nmpls ip\nmpls label protocol ldp\n!\ninterface POS0/3\nip router isis\nmpls ip\n...\n...\n...\nrouter isis\nmpls ldp sync\n\nIf not all MPLS routers synchronize IGP and LDP, this is a finding.\n\nNote: If the LDP peer is reachable, the IGP waits indefinitely (by default) for synchronization to be achieved. To limit the length of time the IGP session must wait, enter the \"mpls ldp igp sync holddown\" command. If the LDP peer is not reachable, the IGP establishes the adjacency to enable the LDP session to be established.",
+  "fix": "Configure the MPLS router to synchronize IGP and LDP, minimizing packet loss when an IGP adjacency is established prior to LDP peers completing label exchange.",
+  "ccis": [
+    "CCI-001549"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Packet loss can occur when an IGP adjacency is established and the router begins forwarding packets using the new adjacency before the LDP label exchange completes between the peers on that link. Packet loss can also occur if an LDP session closes and the router continues to forward traffic using the link associated with the LDP peer rather than an alternate pathway with a fully synchronized LDP session. The MPLS LDP-IGP Synchronization feature provides a means to synchronize LDP with OSPF or IS-IS to minimize MPLS packet loss. When an IGP adjacency is established on a link but LDP-IGP synchronization is not yet achieved or is lost, the IGP will advertise the max-metric on that link.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NET2002",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "network-infrastructure-policy-security-technical-implementation-guide-v10r7-c8dc0fed",
+      "name": "Network Infrastructure Policy Security Technical Implementation Guide",
+      "version": "10",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "network-infrastructure-policy-security-technical-implementation-guide-v10r7-c8dc0fed"
+  ]
+}

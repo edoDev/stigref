@@ -1,0 +1,53 @@
+{
+  "id": "SV-273604r1110881_rule",
+  "full_rule_id": "SV-273604r1110881_rule",
+  "rule_id": "SV-273604",
+  "rule_revision": "1110881",
+  "group_id": "V-273604",
+  "group_title": "SRG-NET-000202-RTR-000001",
+  "title": "The RUCKUS ICX perimeter router must be configured to deny network traffic by default and allow network traffic by exception.",
+  "severity": "high",
+  "description": "<VulnDiscussion>A deny-all, permit-by-exception network communications traffic policy ensures that only connections that are essential and approved are allowed.\n\nThis requirement applies to both inbound and outbound network communications traffic. All inbound and outbound traffic must be denied by default. Firewalls and perimeter routers should only allow traffic through that is explicitly permitted. The initial defense for the internal network is to block any traffic at the perimeter that is attempting to make a connection to a host residing on the internal network. In addition, allowing unknown or undesirable outbound traffic by the firewall or router will establish a state that will permit the return of this undesirable traffic inbound.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Confirm that external interfaces are configured with ACLs that permit traffic by exception.  \n\nip access-list extended EXT-ACL\n sequence 10 permit sshow host x.x.x.x host y.y.y.y log\n sequence 20 permit ip x.x.x.0 0.0.0.255 any\n sequence 30 deny ip any any log\n\ninterface ethernet x/x/x\n  ip access-group EXT-ACL in logging enable\n\nIf the ACL or filter is not configured to allow specific ports and protocols and deny all other traffic, this is a finding.\n\nIf the filter is not configured inbound on all external interfaces, this is a finding.",
+  "fix": "Apply ACL configuration to apply desired traffic restrictions:\n\nip access-list extended EXT-ACL\n sequence 10 permit sshow host x.x.x.x host y.y.y.y log\n sequence 20 permit ip x.x.x.0 0.0.0.255 any\n sequence 30 deny ip any any log\n\ninterface ethernet x/x/x\n  ip access-group EXT-ACL in logging enable",
+  "ccis": [
+    "CCI-001109"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A deny-all, permit-by-exception network communications traffic policy ensures that only connections that are essential and approved are allowed.\n\nThis requirement applies to both inbound and outbound network communications traffic. All inbound and outbound traffic must be denied by default. Firewalls and perimeter routers should only allow traffic through that is explicitly permitted. The initial defense for the internal network is to block any traffic at the perimeter that is attempting to make a connection to a host residing on the internal network. In addition, allowing unknown or undesirable outbound traffic by the firewall or router will establish a state that will permit the return of this undesirable traffic inbound.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

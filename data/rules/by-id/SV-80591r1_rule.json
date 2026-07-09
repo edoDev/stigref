@@ -1,0 +1,53 @@
+{
+  "id": "SV-80591r1_rule",
+  "full_rule_id": "SV-80591r1_rule",
+  "rule_id": "SV-80591",
+  "rule_revision": "1",
+  "group_id": "V-66101",
+  "group_title": "SRG-NET-000019-RTR-000009",
+  "title": "The HP FlexFabric Switch must protect an enclave connected to an Alternate Gateway by using an inbound filter that only permits packets with destination addresses within the sites address space.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Enclaves with Alternate Gateway (AG) connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's AG, the perimeter router could be routing transit data from the Internet into the NIPRNet. This could also make the perimeter router vulnerable to a DoS attack as well as provide a backdoor into the NIPRNet. The DoD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an AG is secure through filters permitting packets with a destination address belonging to the DoD enclave's address block.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of each HP FlexFabric Switch interface connecting to an Alternate Gateway.\n\nVerify that the ACL configured to block unauthorized networks are configured on the interface.\n\nVerify each permit statement of the ingress filter only permits packets with destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the Alternate Gateway network service provider. \n\nIf the ACL is not configured to only permit packets with destination addresses within the sites address space, this is a finding.\n\n[HP]display interface gig0/1\n\ninterface GigabitEthernet0/1\n port link-mode route\n ip address 192.168.10.1 255.255.255.0\n packet-filter 3010 inbound",
+  "fix": "Configure the ingress filter of the perimeter HP FlexFabric Switch connected to an Alternate Gateway to only permit packets with destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the Alternate Gateway network service provider.\n\n[HP] acl advanced 3010\n[HP-acl-ipv4-adv-3010] rule 1 permit ip destination 192.168.1.0 0.0.0.255\n[HP-acl-ipv4-adv-3010] rule 2 permit ip destination 192.168.2.0 0.0.0.255\n[HP-acl-ipv4-adv-3010] rule 3 permit ip destination 192.168.3.0 0.0.0.255\n[HP-acl-ipv4-adv-3010] rule 4 permit ip destination 192.168.4.0 0.0.0.255\n[HP-acl-ipv4-adv-3010] rule 5 deny    ip destination any\n\n[HP] interface gig0/1\n[HP-GigabitEthernet0/1] packet-filter 3010 inbound",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enclaves with Alternate Gateway (AG) connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's AG, the perimeter router could be routing transit data from the Internet into the NIPRNet. This could also make the perimeter router vulnerable to a DoS attack as well as provide a backdoor into the NIPRNet. The DoD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an AG is secure through filters permitting packets with a destination address belonging to the DoD enclave's address block.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-RT-000003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225",
+      "name": "HP FlexFabric Switch RTR Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225"
+  ]
+}

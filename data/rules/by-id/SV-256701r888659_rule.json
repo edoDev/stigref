@@ -1,0 +1,54 @@
+{
+  "id": "SV-256701r888659_rule",
+  "full_rule_id": "SV-256701r888659_rule",
+  "rule_id": "SV-256701",
+  "rule_revision": "888659",
+  "group_id": "V-256701",
+  "group_title": "SRG-APP-000358-WSR-000163",
+  "title": "Rsyslog must be configured to monitor and ship ESX Agent Manager log files.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>ESX Agent Manager has a number of logs that must be offloaded from the originating system. This information can then be used for diagnostic, forensics, or other purposes relevant to ensuring the availability and integrity of the hosted application.\n\nSatisfies: SRG-APP-000358-WSR-000163, SRG-APP-000125-WSR-000071</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# rpm -V VMware-visl-integration|grep vmware-services-eam.conf|grep \"^..5......\"\n\nIf the command returns any output, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/vmware-syslog/vmware-services-eam.conf\n\nCreate the file if it does not exist.\n\nSet the contents of the file as follows:\n\n#eam.log\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/eam/eam.log\"\n      Tag=\"eam-main\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#eam web access logs\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/eam/web/localhost_access.log\"\n      Tag=\"eam-access\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#eam jvm logs\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/eam/jvm.log.stdout\"\n      Tag=\"eam-stdout\"\n      Severity=\"info\"\n      Facility=\"local0\")\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/eam/jvm.log.stderr\"\n      Tag=\"eam-stderr\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#eam catalina logs\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/eam/web/catalina.log\"\n      Tag=\"eam-catalina\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#eam catalina localhost logs\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/eam/web/localhost.log\"\n      Tag=\"eam-catalina\"\n      Severity=\"info\"\n      Facility=\"local0\")\n#eam firstboot logs\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/firstboot/eam_firstboot.py*.log\"\n      Tag=\"eam-firstboot\"\n      Severity=\"info\"\n      Facility=\"local0\")",
+  "ccis": [
+    "CCI-001348",
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ESX Agent Manager has a number of logs that must be offloaded from the originating system. This information can then be used for diagnostic, forensics, or other purposes relevant to ensuring the availability and integrity of the hosted application.\n\nSatisfies: SRG-APP-000358-WSR-000163, SRG-APP-000125-WSR-000071",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCEM-70-000029",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-eam-security-technical-implementation-guide-v1r2-b15827fc",
+      "name": "VMware vSphere 7.0 vCenter Appliance EAM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-eam-security-technical-implementation-guide-v1r2-b15827fc"
+  ]
+}

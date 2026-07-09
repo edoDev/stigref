@@ -1,0 +1,53 @@
+{
+  "id": "SV-276300r1149809_rule",
+  "full_rule_id": "SV-276300r1149809_rule",
+  "rule_id": "SV-276300",
+  "rule_revision": "1149809",
+  "group_id": "V-276300",
+  "group_title": "SRG-APP-000141-DB-000093",
+  "title": "Access to xp_cmdshell must be disabled for Azure SQL Server Managed Instance unless specifically required and approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).  \n \nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives.  \n \nApplications must adhere to the principles of least functionality by providing only essential capabilities. \n \nAzure SQL Managed Instance may spawn additional external processes to execute procedures that are defined in the Azure SQL Managed Instance but stored in external host files (external procedures). The spawned process used to execute the external procedure may operate within a different OS security context than Azure SQL Managed Instance and provide unauthorized access to the host system. \n \nThe xp_cmdshell extended stored procedure allows execution of host executables outside the controls of database access permissions. This access may be exploited by malicious users who have compromised the integrity of the Azure SQL Managed Instance database process to control the host operating system to perpetrate additional malicious activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The xp_cmdshell extended stored procedure allows execution of host executables outside the controls of database access permissions. This access may be exploited by malicious users who have compromised the integrity of the Azure SQL Managed Instance database process to control the host operating system to perpetrate additional malicious activity. \n \nTo determine if xp_cmdshell is enabled, execute the following command:  \n\nSELECT name, value, value_in_use\nFROM sys.configurations\nWHERE name = 'xp_cmdshell'\n  \nIf \"value_in_use\" is a \"1\", review the system documentation to determine whether the use of xp_cmdshell is approved. If it is not approved, this is a finding.",
+  "fix": "Disable use of or remove any external application executable object definitions that are not approved.\n   \nTo disable the use of xp_cmdshell, from the query prompt: \n \nEXEC SP_CONFIGURE 'show advanced options', 1;  \nRECONFIGURE WITH OVERRIDE;\nEXEC SP_CONFIGURE 'xp_cmdshell', 0;\nRECONFIGURE WITH OVERRIDE;\nEXEC SP_CONFIGURE 'show advanced options', 0;  \nRECONFIGURE WITH OVERRIDE;",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).  \n \nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives.  \n \nApplications must adhere to the principles of least functionality by providing only essential capabilities. \n \nAzure SQL Managed Instance may spawn additional external processes to execute procedures that are defined in the Azure SQL Managed Instance but stored in external host files (external procedures). The spawned process used to execute the external procedure may operate within a different OS security context than Azure SQL Managed Instance and provide unauthorized access to the host system. \n \nThe xp_cmdshell extended stored procedure allows execution of host executables outside the controls of database access permissions. This access may be exploited by malicious users who have compromised the integrity of the Azure SQL Managed Instance database process to control the host operating system to perpetrate additional malicious activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MSQL-D0-007200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb",
+      "name": "Microsoft Azure SQL Managed Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb"
+  ]
+}

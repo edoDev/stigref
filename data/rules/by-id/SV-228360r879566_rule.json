@@ -1,0 +1,53 @@
+{
+  "id": "SV-228360r879566_rule",
+  "full_rule_id": "SV-228360r879566_rule",
+  "rule_id": "SV-228360",
+  "rule_revision": "879566",
+  "group_id": "V-228360",
+  "group_title": "SRG-APP-000098",
+  "title": "Exchange Circular Logging must be disabled.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Logging provides a history of events performed and can also provide evidence of tampering or attack. Failure to create and preserve logs adds to the risk that suspicious events may go unnoticed and raises the potential that insufficient history will be available to investigate them. \n\nThis setting controls how log files are written. If circular logging is enabled, one log file is stored with a default size of 1024 KB. Once the size limit has been reached, additional log entries overwrite the oldest log entries. If circular logging is disabled, once a log file reaches the size limit, a new log file is created. \n\nMailbox should not use circular logging. Logs should be written to a partition separate from the operating system, with log protection and backups being incorporated into the overall System Security Plan.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Open the Exchange Management Shell and enter the following command:\n\nGet-MailboxDatabase | Select Name, Identity, CircularLoggingEnabled\n\nIf the value of \"CircularLoggingEnabled\" is not set to \"False\", this is a finding.",
+  "fix": "Open the Exchange Management Shell and enter the following command:\n\nSet-MailboxDatabase -Identity <'IdentityName'> -CircularLoggingEnabled $false\n\nNote: The <IdentityName> value must be in single quotes.",
+  "ccis": [
+    "CCI-000133"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Logging provides a history of events performed and can also provide evidence of tampering or attack. Failure to create and preserve logs adds to the risk that suspicious events may go unnoticed and raises the potential that insufficient history will be available to investigate them. \n\nThis setting controls how log files are written. If circular logging is enabled, one log file is stored with a default size of 1024 KB. Once the size limit has been reached, additional log entries overwrite the oldest log entries. If circular logging is disabled, once a log file reaches the size limit, a new log file is created. \n\nMailbox should not use circular logging. Logs should be written to a partition separate from the operating system, with log protection and backups being incorporated into the overall System Security Plan.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX16-MB-000070",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5",
+      "name": "Microsoft Exchange 2016 Mailbox Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5"
+  ]
+}

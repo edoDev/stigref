@@ -1,0 +1,53 @@
+{
+  "id": "SV-270565r1136921_rule",
+  "full_rule_id": "SV-270565r1136921_rule",
+  "rule_id": "SV-270565",
+  "rule_revision": "1136921",
+  "group_id": "V-270565",
+  "group_title": "SRG-APP-000172-DB-000075",
+  "title": "If passwords are used for authentication, the Oracle Database must transmit only encrypted representations of passwords.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The DOD standard for authentication is DOD-approved public key infrastructure (PKI) certificates.\n\nAuthentication based on user ID and password may be used only when it is not possible to employ a PKI certificate, and requires authorizing official (AO) approval.\n\nIn such cases, passwords need to be protected at all times, and encryption is the standard method for protecting passwords during transmission.\n\nDatabase management system (DBMS) passwords sent in clear text format across the network are vulnerable to discovery by unauthorized users. Disclosure of passwords may easily lead to unauthorized access to the database.\n\nTransport Layer Security (TLS) is the successor protocol to Secure Sockets Layer (SSL). Although the Oracle configuration parameters have names including \"SSL\", such as SSL_VERSION and SSL_CIPHER_SUITES, they refer to TLS.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If all accounts are authenticated by the OS or an enterprise-level authentication/access mechanism and not by Oracle, this is not a finding.\n\nReview configuration settings for encrypting passwords in transit across the network. If passwords are not encrypted, this is a finding. \n\nThe database supports PKI-based authentication by using digital certificates over TLS in addition to the native encryption and data integrity capabilities of these protocols.\n\nOracle provides a complete PKI that is based on RSA Security, Inc., Public-Key Cryptography Standards, and interoperates with Oracle servers and clients. The database uses a wallet that is a container used to store authentication and signing credentials, including private keys, certificates, and trusted certificates needed by TLS. In an Oracle environment, every entity that communicates over TLS must have a wallet containing an X.509 version 3 certificate, private key, and list of trusted certificates.\n\nVerify the $ORACLE_HOME/network/admin/sqlnet.ora contains entries similar to the following to confirm TLS is installed: \n\nWALLET_LOCATION = (SOURCE=\n(METHOD = FILE) \n(METHOD_DATA = \nDIRECTORY=/wallet)\n\nSSL_CIPHER_SUITES=(SSL_cipher_suiteExample) \nSSL_VERSION = 1.1 or 1.2\nSSL_CLIENT_AUTHENTICATION=TRUE\n\nIf the sqlnet.ora file does not contain such entries, this is a finding.",
+  "fix": "Configure encryption for transmission of passwords across the network.\n\nConfigure the database to support TLS protocols and the Oracle Wallet to store authentication and signing credentials, including private keys. \n\nMore information can be found at https://docs.oracle.com/en/database/oracle/oracle-database/19/dbseg/configuring-secure-sockets-layer-authentication.html#GUID-EF8DEC69-C8BE-462B-ABDD-E621914E617E.",
+  "ccis": [
+    "CCI-000197"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DOD standard for authentication is DOD-approved public key infrastructure (PKI) certificates.\n\nAuthentication based on user ID and password may be used only when it is not possible to employ a PKI certificate, and requires authorizing official (AO) approval.\n\nIn such cases, passwords need to be protected at all times, and encryption is the standard method for protecting passwords during transmission.\n\nDatabase management system (DBMS) passwords sent in clear text format across the network are vulnerable to discovery by unauthorized users. Disclosure of passwords may easily lead to unauthorized access to the database.\n\nTransport Layer Security (TLS) is the successor protocol to Secure Sockets Layer (SSL). Although the Oracle configuration parameters have names including \"SSL\", such as SSL_VERSION and SSL_CIPHER_SUITES, they refer to TLS.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-014900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

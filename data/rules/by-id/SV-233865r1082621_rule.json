@@ -1,0 +1,53 @@
+{
+  "id": "SV-233865r1082621_rule",
+  "full_rule_id": "SV-233865r1082621_rule",
+  "rule_id": "SV-233865",
+  "rule_revision": "1082621",
+  "group_id": "V-233865",
+  "group_title": "SRG-APP-000516-DNS-000088",
+  "title": "All authoritative DNS service members for a zone must have the same version of zone information.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The only protection approach for content control of DNS zone file is the use of a zone file integrity checker. The effectiveness of integrity checking using a zone file integrity checker depends on the database of constraints built into the checker. The deployment process consists of developing these constraints with the right logic, and the only determinant of the truth value of these logical predicates is the parameter values for certain key fields in the format of various RRTypes.\n\nThe serial number in the SOA RDATA is used to indicate to secondary name servers that a change to the zone has occurred and a zone transfer should be performed. It should always be increased whenever a change is made to the zone data. DNS NOTIFY must be enabled on the master authoritative name server.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review DNS zone data to validate the SOA on all authoritative DNS service members. Remote DNS service members that do not have the same serial number as the primary DNS service member may have network issues or misconfiguration blocking updates.  \n\nUse either the \"nslookup\" or \"dig\" utility to review the serial number returned from each DNS service member. \n\nExample: \nUsing the \"dig\" utility, enter the command line as follows: \"dig @NAMESERVER-IP ZONE SOA\".   $ dig @192.168.0.1 blue.org SOA  ;; ANSWER SECTION: blue.org.  28800 IN SOA ns.blue.org. postmaster.blue.org. 20200922 10800 3600 2419200 900  \n\nThe SOA RR specifies the serial number as the third RDATA field. In this example, it is 20200922.  \n\nIf any serial numbers for the same zone do not match, this is a finding.",
+  "fix": "Serial numbers are updated automatically when changes are made to a zone through the Infoblox Grid, as well as through the notify process for external DNS service members. If a serial number mismatch is discovered, troubleshooting of both server configurations and network will be required. Protocol configuration issues will be logged in the Infoblox Grid Members SYSLOG.\n\n1. Navigate to Administration >> Logs >> Syslog.\n2. Infoblox Grid Members can be selected using the drop-down menu.\n3. Stand-alone systems will not display a drop-down menu; the log data will be displayed automatically.\n4. Review the SYSLOG data and resolve the issue that is preventing updates.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The only protection approach for content control of DNS zone file is the use of a zone file integrity checker. The effectiveness of integrity checking using a zone file integrity checker depends on the database of constraints built into the checker. The deployment process consists of developing these constraints with the right logic, and the only determinant of the truth value of these logical predicates is the parameter values for certain key fields in the format of various RRTypes.\n\nThe serial number in the SOA RDATA is used to indicate to secondary name servers that a change to the zone has occurred and a zone transfer should be performed. It should always be increased whenever a change is made to the zone data. DNS NOTIFY must be enabled on the master authoritative name server.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDNS-8X-400007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46",
+      "name": "Infoblox 8.x DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46"
+  ]
+}

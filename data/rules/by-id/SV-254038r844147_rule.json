@@ -1,0 +1,53 @@
+{
+  "id": "SV-254038r844147_rule",
+  "full_rule_id": "SV-254038r844147_rule",
+  "rule_id": "SV-254038",
+  "rule_revision": "844147",
+  "group_id": "V-254038",
+  "group_title": "SRG-NET-000362-RTR-000118",
+  "title": "The Juniper BGP router must be configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The effects of prefix deaggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix deaggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration to verify that there is a filter to reject inbound route advertisements that are greater than /24, or the least significant prefixes issued to the customer, whichever is larger. Verify each BGP neighbor implements an import policy. BGP import policies are supported in three locations: Global (at [edit protocols bgp]), group (at [edit protocols bgp group <name>]), and for each neighbor (at [edit protocols bgp group <name> neighbor <neighbor address>]) with the most specific import statement being applied. Multiple policy statements may be necessary to address each customer's requirements.\n\n[edit policy-options]\npolicy-statement reject-long-prefixes {\n    term 1 {\n        from {\n            route-filter 0.0.0.0/0 prefix-length-range /25-/32;\n        }\n        then reject;\n    }\n    <additional terms>\n}\n[edit protocols]\nbgp {\n    group <group name> {\n        type external;\n        import <policy statement name>; << Applied instead of global BGP policy unless a more specific neighbor import filter exists. Excludes all terms in the global filter.\n        local-as <local AS number>;\n        neighbor <neighbor 1 address> {\n            import <policy statement name>; << Most specific import filter. If configured, only this filter applies to this neighbor (all other terms in all other filters ignored).\n            authentication-key \"$8$aes256-gcm$hmac-sha2-256$100$cFQ99Gy83Og$SCMVXvnfna7/cZqH9fCECQ$bCVokm+es94xFJONmbKFNA$4561Uc/r\"; ## SECRET-DATA\n        }\n        neighbor <neighbor 2 address> {\n            import <policy statement name>; << Most specific import filter. If configured, only this filter applies to this neighbor (all other terms in all other filters ignored).\n            ipsec-sa <SA name>;\n        }\n    }\n    import <policy statement name>; << Least specific import filter.\n}\n\nIf the router is not configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer, this is a finding.",
+  "fix": "Configure all eBGP routers to use the prefix limit feature to protect against route table flooding and prefix deaggregation attacks.\n\nset policy-options policy-statement <statement name> term 1 from route-filter 0.0.0.0/0 prefix-length-range /25-/32\nset policy-options policy-statement <statement name> term 1 then reject\n\nset protocols bgp group <group name> type external\nset protocols bgp group <group name> import <statement name>\nset protocols bgp group <group name> local-as <local AS number>\nset protocols bgp group <group name> neighbor <neighbor 1 address> import <statement name>\nset protocols bgp group <group name> neighbor <neighbor 1 address> authentication-key <PSK value>\nset protocols bgp group <group name> neighbor <neighbor 2 address> import <statement name>\nset protocols bgp group <group name> neighbor <neighbor 2 address> ipsec-sa <SA name>\nset protocols bgp import <statement name>",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix deaggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix deaggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000660",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

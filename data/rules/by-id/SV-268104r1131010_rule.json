@@ -1,0 +1,53 @@
+{
+  "id": "SV-268104r1131010_rule",
+  "full_rule_id": "SV-268104r1131010_rule",
+  "rule_id": "SV-268104",
+  "rule_revision": "1131010",
+  "group_id": "V-268104",
+  "group_title": "SRG-OS-000046-GPOS-00022",
+  "title": "NixOS must take action when allocated audit record storage volume reaches 90 percent of the repository maximum audit record storage capacity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If security personnel are not notified immediately when storage volume reaches 90 percent utilization, they are unable to plan for audit record storage capacity expansion.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS takes action when allocated audit record storage volume reaches 90 percent of the repository maximum audit record storage capacity with the following commands:\n\n$ sudo grep -w admin_space_left /etc/audit/auditd.conf\n\nadmin_space_left = 10%\n\nIf the value of the \"admin_space_left\" keyword is not set to \"10%\" or if the line is commented out, this is a finding.",
+  "fix": "Configure the operating system to initiate an action to notify the system administrator (SA) and information system security officer (ISSO) (at a minimum) when allocated audit record storage volume reaches 90 percent of the repository maximum audit record storage capacity.\n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\n environment.etc.\"audit/auditd.conf\".text = [\n  ''\n   admin_space_left = 10%\n  ''\n ];\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-000139"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If security personnel are not notified immediately when storage volume reaches 90 percent utilization, they are unable to plan for audit record storage capacity expansion.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000430",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

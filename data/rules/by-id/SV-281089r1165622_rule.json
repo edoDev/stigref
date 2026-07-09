@@ -1,0 +1,53 @@
+{
+  "id": "SV-281089r1165622_rule",
+  "full_rule_id": "SV-281089r1165622_rule",
+  "rule_id": "SV-281089",
+  "rule_revision": "1165622",
+  "group_id": "V-281089",
+  "group_title": "SRG-OS-000368-GPOS-00154",
+  "title": "RHEL 10 must prevent files with the \"setuid\" and \"setgid\" bit set from being executed on file systems that contain user home directories.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The \"nosuid\" mount option causes the system to not execute \"setuid\" and \"setgid\" files with owner privileges. This option must be used for mounting any file system not containing approved \"setuid\" and \"setguid\" files. Executing files from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 is configured so that \"/home\" is mounted with the \"nosuid\" option with the following command:\n\nNote: If a separate file system has not been created for the user home directories (user home directories are mounted under \"/\"), this is automatically a finding, as the \"nosuid\" option cannot be used on the \"/\" system.\n\n$ mount | grep /home\n/dev/mapper/luks-ca2261ed-7b00-4b7b-84cd-8cd6d8fa4b28 on /home type xfs (rw,nodev,nosuid,noexec,seclabel)\n\nIf the \"/home\" file system is mounted without the \"nosuid\" option, this is a finding.",
+  "fix": "Configure RHEL 10 to prevent files with the \"setuid\" and \"setgid\" bit set from being executed on file systems that contain user home directories.\n\nModify \"/etc/fstab\" to use the \"nosuid\" option on the \"/home\" directory.",
+  "ccis": [
+    "CCI-001764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The \"nosuid\" mount option causes the system to not execute \"setuid\" and \"setgid\" files with owner privileges. This option must be used for mounting any file system not containing approved \"setuid\" and \"setguid\" files. Executing files from untrusted file systems increases the opportunity for nonprivileged users to attain unauthorized administrative access.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-400360",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

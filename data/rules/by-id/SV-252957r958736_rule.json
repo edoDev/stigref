@@ -1,0 +1,53 @@
+{
+  "id": "SV-252957r958736_rule",
+  "full_rule_id": "SV-252957r958736_rule",
+  "rule_id": "SV-252957",
+  "rule_revision": "958736",
+  "group_id": "V-252957",
+  "group_title": "SRG-OS-000329-GPOS-00128",
+  "title": "TOSS must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts in 15 minutes occur.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nDue to the scale of HPC systems and the number of users in question, it is impractical to require an administrator to unlock the user's account manually. Strong controls around automatic lock out, and typical (though not universal) use of strong MFA to enter an HPC system mitigate the concerns of a brute force attack being successful.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check that the system locks an account after three unsuccessful logon attempts within a period of 15 minutes until released by an administrator with the following commands.\n\nNote: If a centralized authentication platform (AD, IdM, LDAP, etc) is utilized for authentication, then this requirement is not applicable, to allow the centralized platform to solely manage user lockout.\n\nVerify the pam_faillock.so module is present in the \"/etc/pam.d/system-auth\" and \" /etc/pam.d/password-auth\" files:\n\n$ sudo grep pam_faillock.so /etc/pam.d/system-auth /etc/pam.d/password-auth\n\n/etc/pam.d/system-auth:auth required pam_faillock.so preauth\n/etc/pam.d/system-auth:auth required pam_faillock.so authfail\n/etc/pam.d/system-auth:account required pam_faillock.so\n/etc/pam.d/password-auth:auth required pam_faillock.so preauth\n/etc/pam.d/password-auth:auth required pam_faillock.so authfail\n/etc/pam.d/password-auth:account required pam_faillock.so preauth\n\nIf the pam_failllock.so module is not present in the \"/etc/pam.d/system-auth\" and \" /etc/pam.d/password-auth\" files, this is a finding.\n\nVerify the \"/etc/security/faillock.conf\" file is configured to lock an account until released by an administrator after three unsuccessful logon attempts:\n\n$ sudo grep 'unlock_time =' /etc/security/faillock.conf\nunlock_time = 0\n\nIf the \"unlock_time\" option is not set to \"0\", is missing or commented out, this is a finding.",
+  "fix": "Configure the operating system to lock an account until released by an administrator when three unsuccessful logon attempts occur in 15 minutes.\n\nAdd and/or modify the appropriate sections of the \"/etc/pam.d/system-auth\" and \"/etc/pam.d/password-auth\" files to match the following lines:\n\nauth required pam_faillock.so preauth\nauth required pam_faillock.so authfail\naccount required pam_faillock.so\n\nAdd and/or modify the \"/etc/security/faillock.conf\" file to match the following line:\n\nunlock_time = 0",
+  "ccis": [
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nDue to the scale of HPC systems and the number of users in question, it is impractical to require an administrator to unlock the user's account manually. Strong controls around automatic lock out, and typical (though not universal) use of strong MFA to enter an HPC system mitigate the concerns of a brute force attack being successful.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-020170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

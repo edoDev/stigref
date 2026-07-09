@@ -1,0 +1,54 @@
+{
+  "id": "SV-271690r1092634_rule",
+  "full_rule_id": "SV-271690r1092634_rule",
+  "rule_id": "SV-271690",
+  "rule_revision": "1092634",
+  "group_id": "V-271690",
+  "group_title": "SRG-OS-000028-GPOS-00009",
+  "title": "OL 9 must be able to directly initiate a session lock for all connection types using smart card when the smart card is removed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.\n\nThe session lock is implemented at the point where session activity can be determined. Rather than be forced to wait for a period of time to expire before the user session can be locked, OL 9 needs to provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.\n\nSatisfies: SRG-OS-000028-GPOS-00009, SRG-OS-000030-GPOS-00011</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement assumes the use of the OL 9 default graphical user interface—the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.\n\nVerify that OL 9 enables a user's session lock until that user reestablishes access using established identification and authentication procedures with the following command:\n\n$ grep -R removal-action /etc/dconf/db/*\n/etc/dconf/db/distro.d/20-authselect:removal-action='lock-screen'\n\nIf the \"removal-action='lock-screen'\" setting is missing or commented out from the dconf database files, this is a finding.",
+  "fix": "Configure OL 9 to enable a user's session lock until that user reestablishes access using established identification and authentication procedures.\n\nSelect or create an authselect profile and incorporate the \"with-smartcard-lock-on-removal\" feature with the following example:\n\n$ sudo authselect select sssd with-smartcard with-smartcard-lock-on-removal\n\nAlternatively, the dconf settings can be edited in the /etc/dconf/db/* location.\n\nAdd or update the [org/gnome/settings-daemon/peripherals/smartcard] section of the /etc/dconf/db/local.d/00-security-settings\" database file and add or update the following lines:\n\n[org/gnome/settings-daemon/peripherals/smartcard]\nremoval-action='lock-screen'\n\nUpdate the dconf system databases:\n\n$ sudo dconf update",
+  "ccis": [
+    "CCI-000056",
+    "CCI-000057"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.\n\nThe session lock is implemented at the point where session activity can be determined. Rather than be forced to wait for a period of time to expire before the user session can be locked, OL 9 needs to provide users with the ability to manually invoke a session lock so users can secure their session if it is necessary to temporarily vacate the immediate physical vicinity.\n\nSatisfies: SRG-OS-000028-GPOS-00009, SRG-OS-000030-GPOS-00011",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

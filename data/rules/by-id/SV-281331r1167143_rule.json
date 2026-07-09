@@ -1,0 +1,53 @@
+{
+  "id": "SV-281331r1167143_rule",
+  "full_rule_id": "SV-281331r1167143_rule",
+  "rule_id": "SV-281331",
+  "rule_revision": "1167143",
+  "group_id": "V-281331",
+  "group_title": "SRG-OS-000383-GPOS-00166",
+  "title": "RHEL 10 must prohibit the use of cached authenticators after one day.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If cached authentication information is out of date, the validity of the authentication information may be questionable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 System Security Services Daemon (SSSD) prohibits the use of cached authentications after one day with the following command:\n\nNote: Cached authentication settings should be configured even if smart card authentication is not used on the system.\n\nDetermine if SSSD allows cached authentications with the following command:\n\n$ sudo grep -irs cache_credentials /etc/sssd/sssd.conf /etc/sssd/conf.d/ | grep -v \"^#\"\ncache_credentials = true\n\nIf \"cache_credentials\" is set to \"false\" or missing from the configuration file, this is not a finding and no further checks are required.\n\nIf \"cache_credentials\" is set to \"true\", check that SSSD prohibits the use of cached authentications after one day with the following command:\n\n$ sudo grep -irs offline_credentials_expiration /etc/sssd/sssd.conf /etc/sssd/conf.d/ | grep -v \"^#\"\noffline_credentials_expiration = 1\n\nIf \"offline_credentials_expiration\" is not set to a value of \"1\", this is a finding.",
+  "fix": "Configure RHEL 10 SSSD to prohibit the use of cached authentications after one day.\n\nEdit the file \"/etc/sssd/sssd.conf\" or a configuration file in \"/etc/sssd/conf.d\" and add or edit the following line just below the line [pam]:\n\noffline_credentials_expiration = 1\n\nRestart the \"sssd\" service with the following command for the changes to take effect: \n\n$ sudo systemctl restart sssd.service",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If cached authentication information is out of date, the validity of the authentication information may be questionable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-701290",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

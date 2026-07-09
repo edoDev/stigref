@@ -1,0 +1,53 @@
+{
+  "id": "SV-239985r878134_rule",
+  "full_rule_id": "SV-239985r878134_rule",
+  "rule_id": "SV-239985",
+  "rule_revision": "878134",
+  "group_id": "V-239985",
+  "group_title": "SRG-NET-000565-VPN-002390",
+  "title": "The Cisco ASA VPN remote access server must be configured to use an approved High Assurance Commercial Solution for Classified (CSfC) cryptographic algorithm for remote access to a classified network.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Use of improperly configured or lower assurance equipment and solutions could compromise high-value information.\n\nThe National Security Agency/Central Security Service's (NSA/CSS) CSfC program enables commercial products to be used in layered solutions to protect classified National Security Systems (NSS) data. Based on an analysis of the impact of quantum computing, cryptographic algorithms specified by CNSSP-15 and approved for use in products in the CSfC program have been changed to more stringent protocols and configured with increased bit sizes and other secure characteristics to protect against quantum computing threats. The Commercial National Security Algorithm Suite (CNSA Suite) replaces Suite B.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the ASA uses an approved High Assurance CSfC cryptographic algorithm for remote access to a classified network.\n\nStep 1: Verify IKE Phase 1 is configured in compliance with CSNA/CNSSP-15 parameters as shown in the example below.\n \ncrypto ikev2 policy 2\n encryption aes-256\n integrity null\n group 19\n prf sha384\n\nStep 2: Determine the crypto map for IKE Phase 2 used is in compliance with CSNA/CNSSP-15 as in the example below.\n\ncrypto map CSNA_MAP 10 set ikev2 ipsec-proposal AES-256\n\nStep 3: Verify the proposal specifies CSNA/CNSSP-15 parameters.\n\ncrypto ipsec ikev2 ipsec-proposal AES-256\n protocol esp encryption aes-256\n\nIf the ASA is not configured to use an approved High Assurance CSfC cryptographic algorithm for remote access to a classified network, this is a finding.",
+  "fix": "Configure the ASA to use an approved High Assurance CSfC cryptographic algorithm for remote access to a classified network.\n\nStep 1: Configure the IKE Phase 1.\n\nASA2(config)# crypto ikev2 policy 2\nASA2(config-ikev2-policy)# encryption aes-256\nASA2(config-ikev2-policy)# integrity null\nASA2(config-ikev2-policy)# group 20\nASA2(config-ikev2-policy)# prf sha384\nASA2(config-ikev2-policy)# exit\n\nStep 2: Configure the IPsec proposal in compliance with CNSA/CNSSP-15 and apply to a crypto map as shown in the example below.\n\nASA2(config-ipsec-proposal)# protocol esp encryption aes-256\nASA2(config-ipsec-proposal)# exit\nASA2(config)# crypto map CSNA_MAP 10 set ikev2 ipsec-proposal AES-256\nASA2(config)# end",
+  "ccis": [
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of improperly configured or lower assurance equipment and solutions could compromise high-value information.\n\nThe National Security Agency/Central Security Service's (NSA/CSS) CSfC program enables commercial products to be used in layered solutions to protect classified National Security Systems (NSS) data. Based on an analysis of the impact of quantum computing, cryptographic algorithms specified by CNSSP-15 and approved for use in products in the CSfC program have been changed to more stringent protocols and configured with increased bit sizes and other secure characteristics to protect against quantum computing threats. The Commercial National Security Algorithm Suite (CNSA Suite) replaces Suite B.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000760",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

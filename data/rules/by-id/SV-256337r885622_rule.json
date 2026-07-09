@@ -1,0 +1,57 @@
+{
+  "id": "SV-256337r885622_rule",
+  "full_rule_id": "SV-256337r885622_rule",
+  "rule_id": "SV-256337",
+  "rule_revision": "885622",
+  "group_id": "V-256337",
+  "group_title": "SRG-APP-000291",
+  "title": "The vCenter Server must provide an immediate real-time alert to the system administrator (SA) and information system security officer (ISSO), at a minimum, on every Single Sign-On (SSO) account action.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Once an attacker establishes initial access to a system, they often attempt to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create a new account. They may also try to hijack an existing account by changing a password or enabling a previously disabled account. Therefore, all actions performed on accounts in the SSO domain much be alerted on in vCenter at a minimum and ideally on a Security Information and Event Management (SIEM) system as well.\n\nTo ensure the appropriate personnel are alerted about SSO account actions, create a new vCenter alarm for the \"com.vmware.sso.PrincipalManagement\" event ID and configure the alert mechanisms appropriately.\n\nSatisfies: SRG-APP-000291, SRG-APP-000292, SRG-APP-000293, SRG-APP-000294, SRG-APP-000320</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Host and Clusters.\n\nSelect a vCenter Server >> Configure >> Security >> Alarm Definitions.\n\nVerify an alarm has been created to alert upon all SSO account actions.\n\nThe alarm name may vary, but it is suggested to name it \"SSO account actions - com.vmware.sso.PrincipalManagement\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-AlarmDefinition | Where {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq \"com.vmware.sso.PrincipalManagement\"} | Select Name,Enabled,@{N=\"EventTypeId\";E={$_.ExtensionData.Info.Expression.Expression.EventTypeId}}\n\nIf an alarm is not created to alert on SSO account actions, this is a finding.",
+  "fix": "From the vSphere Client, go to Host and Clusters.\n\nSelect a vCenter Server >> Configure >> Security >> Alarm Definitions.\n\nClick \"Add\".\n\nProvide the alarm name of \"SSO account actions - com.vmware.sso.PrincipalManagement\" and an optional description.\n\nFrom the \"Target type\" drop-down menu, select \"vCenter Server\".\n\nClick \"Next\".\n\nPaste \"com.vmware.sso.PrincipalManagement\" (without quotes) in the line after \"IF\" and press \"Enter\".\n\nNext to \"Trigger the alarm and\", select \"Show as Warning\".\n\nConfigure the desired notification actions that will inform the SA and ISSO of the event.\n\nClick \"Next\". Click \"Next\" again. Click \"Create\".",
+  "ccis": [
+    "CCI-001683",
+    "CCI-001684",
+    "CCI-001685",
+    "CCI-001686",
+    "CCI-002132"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Once an attacker establishes initial access to a system, they often attempt to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create a new account. They may also try to hijack an existing account by changing a password or enabling a previously disabled account. Therefore, all actions performed on accounts in the SSO domain much be alerted on in vCenter at a minimum and ideally on a Security Information and Event Management (SIEM) system as well.\n\nTo ensure the appropriate personnel are alerted about SSO account actions, create a new vCenter alarm for the \"com.vmware.sso.PrincipalManagement\" event ID and configure the alert mechanisms appropriately.\n\nSatisfies: SRG-APP-000291, SRG-APP-000292, SRG-APP-000293, SRG-APP-000294, SRG-APP-000320",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-70-000123",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8",
+      "name": "VMware vSphere 7.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8"
+  ]
+}

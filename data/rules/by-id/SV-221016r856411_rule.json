@@ -1,0 +1,53 @@
+{
+  "id": "SV-221016r856411_rule",
+  "full_rule_id": "SV-221016r856411_rule",
+  "rule_id": "SV-221016",
+  "rule_revision": "856411",
+  "group_id": "V-221016",
+  "group_title": "SRG-NET-000364-RTR-000111",
+  "title": "The Cisco perimeter switch must be configured to have Link Layer Discovery Protocol (LLDP) disabled on all external interfaces.",
+  "severity": "low",
+  "description": "<VulnDiscussion>LLDP is a neighbor discovery protocol used to advertise device capabilities, configuration information, and device identity. LLDP is media-and-protocol-independent as it runs over layer 2; therefore, two network nodes that support different layer 3 protocols can still learn about each other. Allowing LLDP messages to reach external network nodes provides an attacker a method to obtain information of the network infrastructure that can be useful to plan an attack.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Step 1: Verify LLDP is not enabled globally via the command. \n\nlldp run\n\nBy default LLDP is not enabled globally. If LLDP is enabled, proceed to Step 2.\n\nStep 2: Verify LLDP is not enabled on any external interface as shown in the example below:\n\ninterface GigabitEthernet0/1\n ip address x.1.12.1 255.255.255.252\n no lldp transmit\n\nNote: LLDP is enabled by default on all interfaces once it is enabled globally; hence the command \"lldp transmit\" will not be visible on the interface configuration.\n\nIf LLDP transmit is enabled on any external interface, this is a finding.",
+  "fix": "Disable LLDP transmit on all external interfaces as shown in the example below:\n\nSW1(config)#int g0/1\nSW1(config-if)#no lldp transmit",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "LLDP is a neighbor discovery protocol used to advertise device capabilities, configuration information, and device identity. LLDP is media-and-protocol-independent as it runs over layer 2; therefore, two network nodes that support different layer 3 protocols can still learn about each other. Allowing LLDP messages to reach external network nodes provides an attacker a method to obtain information of the network infrastructure that can be useful to plan an attack.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000360",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887",
+      "name": "Cisco IOS XE Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887"
+  ]
+}

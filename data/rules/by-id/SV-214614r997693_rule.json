@@ -1,0 +1,54 @@
+{
+  "id": "SV-214614r997693_rule",
+  "full_rule_id": "SV-214614r997693_rule",
+  "rule_id": "SV-214614",
+  "rule_revision": "997693",
+  "group_id": "V-214614",
+  "group_title": "SRG-NET-000192-IDPS-00140",
+  "title": "The Juniper Networks SRX Series Gateway IDPS must block outbound traffic containing known and unknown DoS attacks by ensuring that rules are applied to outbound communications traffic.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The IDPS must include protection against DoS attacks that originate from inside the enclave which can affect either internal or external systems. These attacks may use legitimate or rogue endpoints from inside the enclave. \n\nInstallation of IDPS detection and prevention components (i.e., sensors) at key boundaries in the architecture mitigates the risk of DoS attacks. These attacks can be detected by matching observed communications traffic with patterns of known attacks and monitoring for anomalies in traffic volume/type.\n\nTo comply with this requirement, the IDPS must inspect outbound traffic for indications of known and unknown DoS attacks. Sensor log capacity management along with techniques which prevent the logging of redundant information during an attack also guard against DoS attacks. This requirement is used in conjunction with other requirements which require configuration of security policies, signatures, rules, and anomaly detection techniques and are applicable to both inbound and outbound traffic.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine the names of the IDP policies by asking the site representative. From operational mode, enter the following command to verify outbound zones are configured with an IDP policy. \n\nshow security policies\n\nIf zones bound to the outbound interfaces, including VPN zones, are not configured with an IDP policy, this is a finding.",
+  "fix": "To enable IDP services on outbound traffic on the device, first create a security policy for the traffic flowing in one direction, then specify the action to be taken on traffic that matches conditions specified in the policy.\n\n[edit security policies from-zone <trusted-zone1-name> to-zone <untrusted-zone-name> policy idp-app-policy-1]\nset match source-address any destination-address any application any\n\n[edit security policies from-zone <trusted-zone-name> to-zone untrusted-zone-name> policy <idp-app-policy-name>]\nset then permit application-services idp",
+  "ccis": [
+    "CCI-001095",
+    "CCI-004866"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The IDPS must include protection against DoS attacks that originate from inside the enclave which can affect either internal or external systems. These attacks may use legitimate or rogue endpoints from inside the enclave. \n\nInstallation of IDPS detection and prevention components (i.e., sensors) at key boundaries in the architecture mitigates the risk of DoS attacks. These attacks can be detected by matching observed communications traffic with patterns of known attacks and monitoring for anomalies in traffic volume/type.\n\nTo comply with this requirement, the IDPS must inspect outbound traffic for indications of known and unknown DoS attacks. Sensor log capacity management along with techniques which prevent the logging of redundant information during an attack also guard against DoS attacks. This requirement is used in conjunction with other requirements which require configuration of security policies, signatures, rules, and anomaly detection techniques and are applicable to both inbound and outbound traffic.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-IP-000005",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-idps-security-technical-implementation-guide-v2r1-7cfae184",
+      "name": "Juniper SRX Services Gateway IDPS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-idps-security-technical-implementation-guide-v2r1-7cfae184"
+  ]
+}

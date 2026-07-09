@@ -1,0 +1,53 @@
+{
+  "id": "SV-230374r1069293_rule",
+  "full_rule_id": "SV-230374r1069293_rule",
+  "rule_id": "SV-230374",
+  "rule_revision": "1069293",
+  "group_id": "V-230374",
+  "group_title": "SRG-OS-000123-GPOS-00064",
+  "title": "RHEL 8 must automatically expire temporary accounts within 72 hours.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Temporary accounts are privileged or nonprivileged accounts that are established during pressing circumstances, such as new software or hardware configuration or an incident response, where the need for prompt account activation requires bypassing normal account authorization procedures. If any inactive temporary accounts are left enabled on the system and are not either manually removed or automatically expired within 72 hours, the security posture of the system will be degraded and exposed to exploitation by unauthorized users or insider threat actors.\n\nTemporary accounts are different from emergency accounts. Emergency accounts, also known as \"last resort\" or \"break glass\" accounts, are local logon accounts enabled on the system for emergency use by authorized system administrators to manage a system when standard logon methods are failing or not available. Emergency accounts are not subject to manual removal or scheduled expiration requirements.\n\nThe automatic expiration of temporary accounts may be extended as needed by the circumstances but it must not be extended indefinitely. A documented permanent account should be established for privileged users who need long-term maintenance accounts.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If temporary accounts do not exist or are not used this is not applicable.\n\nVerify temporary accounts have been provisioned with an expiration date of 72 hours.\n\nFor every existing temporary account, run the following command to obtain its account expiration information:\n\n     $ sudo chage -l <temporary_account_name> | grep -i \"account expires\"\n\nVerify each of these accounts has an expiration date set within 72 hours.\nIf any temporary accounts have no expiration date set or do not expire within 72 hours, this is a finding.",
+  "fix": "Configure the operating system to expire temporary accounts after 72 hours with the following command:\n\n     $ sudo chage -E $(date -d +3days +%Y-%m-%d) <temporary_account_name>",
+  "ccis": [
+    "CCI-001682"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Temporary accounts are privileged or nonprivileged accounts that are established during pressing circumstances, such as new software or hardware configuration or an incident response, where the need for prompt account activation requires bypassing normal account authorization procedures. If any inactive temporary accounts are left enabled on the system and are not either manually removed or automatically expired within 72 hours, the security posture of the system will be degraded and exposed to exploitation by unauthorized users or insider threat actors.\n\nTemporary accounts are different from emergency accounts. Emergency accounts, also known as \"last resort\" or \"break glass\" accounts, are local logon accounts enabled on the system for emergency use by authorized system administrators to manage a system when standard logon methods are failing or not available. Emergency accounts are not subject to manual removal or scheduled expiration requirements.\n\nThe automatic expiration of temporary accounts may be extended as needed by the circumstances but it must not be extended indefinitely. A documented permanent account should be established for privileged users who need long-term maintenance accounts.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-020270",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-215278r991592_rule",
+  "full_rule_id": "SV-215278r991592_rule",
+  "rule_id": "SV-215278",
+  "rule_revision": "991592",
+  "group_id": "V-215278",
+  "group_title": "SRG-OS-000480-GPOS-00230",
+  "title": "All files and directories contained in users home directories on AIX must be group-owned by a group in which the home directory owner is a member.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the Group Identifier (GID) of the home directory is not the same as the GID of the user, this would allow unauthorized access to files.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the contents of user home directories for files group-owned by a group of which the home directory's owner is not a member. \n\nList the user accounts: \n\n# cut -d : -f 1 /etc/passwd \nroot\ndaemon\nbin\nsys\nadm\nuucp\nnobody\ninvscout\nsnapp\nipsec\nsrvproxy\nesaadmin\nsshd\ndoejohn\ndirtjoe\n\nFor each user account, get a list of group names for files in the user's home directory: \n\n# find < users home directory > -exec ls -lLd {} \\;\n\nObtain the list of group names associated with the user's account:\n\n# lsuser -a groups < user name > \ndoejohn groups=staff\n\nCheck the group name lists:\n\n# cat /etc/group\nsystem:!:0:root,srvproxy,esaadmin\nstaff:!:1:ipsec,srvproxy,esaadmin,sshd,doejohn\nbin:!:2:root,bin\nsys:!:3:root,bin,sys\nadm:!:4:bin,adm\nmail:!:6:\nsecurity:!:7:root\ncron:!:8:root\naudit:!:10:root\necs:!:28:\nnobody:!:4294967294:nobody,lpd\nusr:!:100:dirtjoe\nperf:!:20:\nshutdown:!:21:\ninvscout:!:12:invscout\nsnapp:!:13:snapp\nipsec:!:200:\nsshd:!:201:sshd\n\nIf there are group names in the file list not present in the user list, this is a finding.",
+  "fix": "Change the group of a file not group-owned by a group where the home directory's owner is a member using command: \n# chgrp [user's primary group] [file with bad group ownership]",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the Group Identifier (GID) of the home directory is not the same as the GID of the user, this would allow unauthorized access to files.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002087",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

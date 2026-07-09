@@ -1,0 +1,54 @@
+{
+  "id": "SV-258042r1045133_rule",
+  "full_rule_id": "SV-258042r1045133_rule",
+  "rule_id": "SV-258042",
+  "rule_revision": "1045133",
+  "group_id": "V-258042",
+  "group_title": "SRG-OS-000076-GPOS-00044",
+  "title": "RHEL 9 user account passwords must have a 60-day maximum password lifetime restriction.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any password, no matter how complex, can eventually be cracked; therefore, passwords need to be changed periodically. If RHEL 9 does not limit the lifetime of passwords and force users to change their passwords, there is the risk that RHEL 9 passwords could be compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the maximum time period for existing passwords is restricted to 60 days with the following commands:\n\n$ sudo awk -F: '$5 > 60 {printf \"%s %d\\n\", $1, $5}' /etc/shadow\n\n$ sudo awk -F: '$5 <= 0 {printf \"%s %d\\n\", $1, $5}' /etc/shadow\n\nIf any results are returned that are not associated with a system account, this is a finding.",
+  "fix": "Configure noncompliant accounts to enforce a 60-day maximum password lifetime restriction.\n\npasswd -x 60 [user]",
+  "ccis": [
+    "CCI-004066",
+    "CCI-000199"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any password, no matter how complex, can eventually be cracked; therefore, passwords need to be changed periodically. If RHEL 9 does not limit the lifetime of passwords and force users to change their passwords, there is the risk that RHEL 9 passwords could be compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-411015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

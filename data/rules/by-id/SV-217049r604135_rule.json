@@ -1,0 +1,53 @@
+{
+  "id": "SV-217049r604135_rule",
+  "full_rule_id": "SV-217049r604135_rule",
+  "rule_id": "SV-217049",
+  "rule_revision": "604135",
+  "group_id": "V-217049",
+  "group_title": "SRG-NET-000205-RTR-000012",
+  "title": "The Juniper router must be configured to only permit management traffic that ingresses and egresses the OOBM interface.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The OOBM access switch will connect to the management interface of the managed network elements. The management interface can be a true OOBM interface or a standard interface functioning as the management interface. In either case, the management interface of the managed network element will be directly connected to the OOBM network.\n\nAn OOBM interface does not forward transit traffic, thereby providing complete separation of production and management traffic. Since all management traffic is immediately forwarded into the management network, it is not exposed to possible tampering. The separation also ensures that congestion or failures in the managed network do not affect the management of the device. If the device does not have an OOBM port, the interface functioning as the management interface must be configured so that management traffic does not leak into the managed network and that production traffic does not leak into the management network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the managed interface has an inbound and outbound filter configured. \n\ninterfaces {\n    …\n    …\n    …\n    ge-0/0/0 {\n        description \"OOBM Network\";\n        unit 0 {\n            family inet {\n                filter {\n                    input OOBM_INBOUND;\n                    output OOBM_OUTBOUND;\n                }\n                address 10.2.14.1/24;\n            }\n        }\n    }\n\nVerify that the ingress filter only allows management and ICMP traffic. \n\nfirewall {\n    family inet {\n        …\n        …\n        …\n        filter OOBM_INBOUND {\n            term ALLOW_SNMP {\n                from {\n                    protocol udp;\n                    port snmp;\n                }\n                then accept;\n            }\n            term ALLOW_TACACS {\n                from {\n                    protocol tcp;\n                    port tacacs;\n                }\n                then accept;\n            }\n            term ALLOW_ICMP {\n                from {\n                    protocol icmp;\n                }\n                then accept;\n            }\n            term ALLOW_SSH {\n                from {\n                    protocol tcp;\n                    port ssh;\n                }\n                then accept;\n            }\n            term ALLOW_NTP {\n                from {\n                    protocol tcp;\n                    port ntp;\n                }\n                then accept;\n            }\n            term DENY_OTHER {\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n        }\n    }\n}\n\nVerify that the ingress filter only allows management and ICMP traffic. \n\nfirewall {\n    family inet {\n        …\n        …\n        …\n        filter OOBM_OUTBOUND {\n            term ALLOW_SNMP {\n                from {\n                    protocol udp;\n                    port [ snmp snmptrap ];\n                }\n                then accept;\n            }\n            term ALLOW_TACACS {\n                from {\n                    protocol tcp;\n                    port tacacs;\n                }\n                then accept;\n            }\n            term ALLOW_SSH {\n                from {\n                    protocol tcp;\n                    port ssh;\n                }\n                then accept;\n            }\n            term ALLOW_NTP {\n                from {\n                    protocol udp;\n                    port ntp;\n                }\n                then accept;\n            }\n            term ALLOW_SYSLOG {\n                from {\n                    protocol udp;\n                    port syslog;\n                }\n                then accept;\n            }\n            term ALLOW_NETFLOW {\n                from {\n                    protocol udp;\n                    port [ 2055 9995 9996 ];\n                }\n                then accept;\n            }\n            term DENY_OTHER {\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n        }\n    }\n}\n\nCaveat: If the management interface is a true OOBM interface, this requirement is not applicable.\n\nIf the router does not restrict traffic that ingresses and egresses the management interface, this is a finding.",
+  "fix": "If the management interface is not a dedicated OOBM interface, it must be configured with both an ingress and egress filter.\n\nConfigure an inbound filter a shown in the example below.\n\n[edit firewall family inet]\nset filter OOBM_INBOUND term ALLOW_SNMP from protocol udp port snmp\nset filter OOBM_INBOUND term ALLOW_SNMP then accept\nset filter OOBM_INBOUND term ALLOW_TACACS from protocol tcp port tacacs\nset filter OOBM_INBOUND term ALLOW_TACACS then accept\nset filter OOBM_INBOUND term ALLOW_SSH from protocol tcp port ssh\nset filter OOBM_INBOUND term ALLOW_SSH then accept\nset filter OOBM_INBOUND term ALLOW_NTP from protocol udp port ntp\nset filter OOBM_INBOUND term ALLOW_NTP then accept\nset filter OOBM_INBOUND term ALLOW_ICMP from protocol icmp\nset filter OOBM_INBOUND term ALLOW_ICMP then accept\nset filter OOBM_INBOUND term DENY_OTHER then syslog discard\n\nConfigure an outbound filter a shown in the example below.\n\nset filter OOBM_OUTBOUND term ALLOW_SNMP from protocol udp port [snmp snmptrap]\nset filter OOBM_OUTBOUND term ALLOW_SNMP then accept\nset filter OOBM_OUTBOUND term ALLOW_TACACS from protocol tcp port tacacs\nset filter OOBM_OUTBOUND term ALLOW_TACACS then accept\nset filter OOBM_OUTBOUND term ALLOW_SSH from protocol tcp port ssh\nset filter OOBM_OUTBOUND term ALLOW_SSH then accept\nset filter OOBM_OUTBOUND term ALLOW_NTP from protocol udp port ntp\nset filter OOBM_OUTBOUND term ALLOW_NTP then accept\nset filter OOBM_OUTBOUND term ALLOW_SYSLOG from protocol udp port \nset filter OOBM_OUTBOUND term ALLOW_SYSLOG then accept\nset filter OOBM_OUTBOUND term ALLOW_NETFLOW from protocol udp port [2055 9995 9996]\nset filter OOBM_OUTBOUND term ALLOW_NETFLOW then accept\nset filter OOBM_OUTBOUND term DENY_OTHER then syslog discard\n\nApply the filters to the OOBM interfaces.\n\n[edit interfaces ge-0/0/0  unit 0 family inet]\nset filter input OOBM_INBOUND\nset filter output OOBM_OUTBOUND",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The OOBM access switch will connect to the management interface of the managed network elements. The management interface can be a true OOBM interface or a standard interface functioning as the management interface. In either case, the management interface of the managed network element will be directly connected to the OOBM network.\n\nAn OOBM interface does not forward transit traffic, thereby providing complete separation of production and management traffic. Since all management traffic is immediately forwarded into the management network, it is not exposed to possible tampering. The separation also ensures that congestion or failures in the managed network do not affect the management of the device. If the device does not have an OOBM port, the interface functioning as the management interface must be configured so that management traffic does not leak into the managed network and that production traffic does not leak into the management network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000440",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

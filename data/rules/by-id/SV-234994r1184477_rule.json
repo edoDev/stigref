@@ -1,0 +1,53 @@
+{
+  "id": "SV-234994r1184477_rule",
+  "full_rule_id": "SV-234994r1184477_rule",
+  "rule_id": "SV-234994",
+  "rule_revision": "1184477",
+  "group_id": "V-234994",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "All SUSE operating system local interactive user home directories must be group-owned by the home directory owner's primary group.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the Group Identifier (GID) of a local interactive user’s home directory is not the same as the primary GID of the user, this would allow unauthorized access to the user’s files, and users that share the same group may not be able to access files that they legitimately should.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the assigned home directory of all SUSE operating system local interactive users is group-owned by that user's primary GID.\n\nCheck the home directory assignment for all nonprivileged users on the system with the following command:\n\nNote: This may miss local interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information. The returned directory \"/home/doduser\" is used as an example.\n\n> awk -F: '($3>=1000)&&($7 !~ /nologin/){print $4, $6}' /etc/passwd)\n250:/home/doduser\n\nCheck the user's primary group with the following command:\n\n> grep users /etc/group\nusers:x:250:doduser,doduser,nsauser\n\nIf the user home directory referenced in \"/etc/passwd\" is not group-owned by that user's primary GID, this is a finding.",
+  "fix": "Change the group owner of a SUSE operating system local interactive user's home directory to the group found in \"/etc/passwd\". To change the group owner of a local interactive user's home directory, use the following command:\n\nNote: The example will be for the user \"doduser\", who has a home directory of \"/home/doduser\", and has a primary group of users.\n\n> sudo chgrp users /home/doduser",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the Group Identifier (GID) of a local interactive user’s home directory is not the same as the primary GID of the user, this would allow unauthorized access to the user’s files, and users that share the same group may not be able to access files that they legitimately should.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-040100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

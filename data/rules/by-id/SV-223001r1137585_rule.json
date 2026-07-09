@@ -1,0 +1,53 @@
+{
+  "id": "SV-223001r1137585_rule",
+  "full_rule_id": "SV-223001r1137585_rule",
+  "rule_id": "SV-223001",
+  "rule_revision": "1137585",
+  "group_id": "V-223001",
+  "group_title": "SRG-APP-000514-AS-000137",
+  "title": "Application servers must use NIST-approved or NSA-approved key management technology and processes.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Class 3 PKI certificates are used for servers and software signing rather than for identifying individuals. Class 4 certificates are used for business-to-business transactions. Utilizing unapproved certificates not issued or approved by DoD or CNS creates an integrity risk. The application server must utilize approved DoD or CNS Class 3 or Class 4 certificates for software signing and business-to-business transactions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For the systemd Ubuntu OS, check the tomcat.service file to read the content of the JAVA_OPTS environment variable setting.\n\nsudo cat /etc/systemd/system/tomcat.service |grep -i truststore\n\nEXAMPLE output:\nset JAVA_OPTS=\"-Djavax.net.ssl.trustStore=/path/to/truststore\" \"-Djavax.net.ssl.trustStorePassword=************\"\n\nIf the variable is not set, use the default location command below. If the variable is set, use the alternate location command below and include the path and truststore file. \n\n-Default location:\nkeytool -list -cacerts -v | grep -i issuer\n\n-Alternate location:\nkeytool -list -keystore <location of trust store file> -v |grep -i issuer\n\nIf there are no CA certificates issued by a Certificate Authority (CA) that is part of the DoD PKI/PKE, this is a finding.",
+  "fix": "Obtain and install the DoD PKI CA certificate bundles by accessing the DoD PKI office website at cyber.mil/pki-pke.\n\nImport the DoD CA certificates.",
+  "ccis": [
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Class 3 PKI certificates are used for servers and software signing rather than for identifying individuals. Class 4 certificates are used for business-to-business transactions. Utilizing unapproved certificates not issued or approved by DoD or CNS creates an integrity risk. The application server must utilize approved DoD or CNS Class 3 or Class 4 certificates for software signing and business-to-business transactions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-001640",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-276263r1150070_rule",
+  "full_rule_id": "SV-276263r1150070_rule",
+  "rule_id": "SV-276263",
+  "rule_revision": "1150070",
+  "group_id": "V-276263",
+  "group_title": "SRG-APP-000507-DB-000356",
+  "title": "Azure SQL Managed Instance must be able to generate audit records when access to objects occur.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without tracking all or selected types of access to all or selected objects (tables, views, procedures, functions, etc.), it would be difficult to establish, correlate, and investigate the events relating to an incident, or identify those responsible for one. \n\nIn an Azure SQL Managed Instance environment, types of access include, but are not necessarily limited to:\nSELECT\nINSERT\nUPDATE\nDELETE\nEXECUTE\n\nSatisfies: SRG-APP-000507-DB-000356, SRG-APP-000507-DB-000357</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review Azure SQL Managed Instance configuration to verify audit records are produced when successful accesses to objects occur.  \n\nRun this TSQL command to determine if SQL Auditing AuditActionGroups are configured: \n\nSELECT a.name AS 'AuditName',  s.name AS 'SpecName',  \nd.audit_action_name AS 'ActionName', \nd.audited_result AS 'Result'  \nFROM sys.server_audit_specifications s  \nJOIN sys.server_audits a ON s.audit_guid = a.audit_guid  \nJOIN sys.server_audit_specification_details d ON s.server_specification_id = d.server_specification_id  \nWHERE a.is_state_enabled = 1 \nAND d.audit_action_name = 'SCHEMA_OBJECT_ACCESS_GROUP'    \n \nIf no values are listed for AuditActionGroups, this is a finding.",
+  "fix": "Deploy an Azure SQL Managed Instance audit. Refer to the supplemental file \"AzureSQLMIAudit.sql\" script. \n\nReference: https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/auditing-configure?view=azuresql-mi",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without tracking all or selected types of access to all or selected objects (tables, views, procedures, functions, etc.), it would be difficult to establish, correlate, and investigate the events relating to an incident, or identify those responsible for one. \n\nIn an Azure SQL Managed Instance environment, types of access include, but are not necessarily limited to:\nSELECT\nINSERT\nUPDATE\nDELETE\nEXECUTE\n\nSatisfies: SRG-APP-000507-DB-000356, SRG-APP-000507-DB-000357",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MSQL-00-015300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb",
+      "name": "Microsoft Azure SQL Managed Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb"
+  ]
+}

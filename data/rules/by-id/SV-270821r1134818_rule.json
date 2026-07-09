@@ -1,0 +1,54 @@
+{
+  "id": "SV-270821r1134818_rule",
+  "full_rule_id": "SV-270821r1134818_rule",
+  "rule_id": "SV-270821",
+  "rule_revision": "1134818",
+  "group_id": "V-270821",
+  "group_title": "SRG-OS-000257-GPOS-00098",
+  "title": "Ubuntu 24.04 LTS must configure audit tools with a mode of \"0755\" or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information. \n \nOperating systems providing tools to interface with audit information will leverage user permissions, roles identifying the user accessing the tools, and the corresponding user rights to make decisions regarding access to audit tools. \n \nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000257-GPOS-00098, SRG-OS-000256-GPOS-00097</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu 24.04 LTS configures the audit tools to have a file permission of \"0755\" or less to prevent unauthorized access with the following command: \n \n$ stat -c \"%n %a\" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd* /sbin/augenrules\n/sbin/auditctl 755 \n/sbin/aureport 755 \n/sbin/ausearch 755 \n/sbin/autrace 755 \n/sbin/auditd 755 \n/sbin/augenrules 755 \n \nIf any of the audit tools have a mode more permissive than \"0755\", this is a finding.",
+  "fix": "Configure the audit tools on Ubuntu 24.04 LTS to be protected from unauthorized access by setting the correct permissive mode using the following command: \n \n$ sudo chmod 0755 [audit_tool] \n \nReplace \"[audit_tool]\" with the audit tool that does not have the correct permissions.",
+  "ccis": [
+    "CCI-001494",
+    "CCI-001493"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information. \n \nOperating systems providing tools to interface with audit information will leverage user permissions, roles identifying the user accessing the tools, and the corresponding user rights to make decisions regarding access to audit tools. \n \nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000257-GPOS-00098, SRG-OS-000256-GPOS-00097",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-901230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

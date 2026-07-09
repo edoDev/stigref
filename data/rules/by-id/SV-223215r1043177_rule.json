@@ -1,0 +1,53 @@
+{
+  "id": "SV-223215r1043177_rule",
+  "full_rule_id": "SV-223215r1043177_rule",
+  "rule_id": "SV-223215",
+  "rule_revision": "1043177",
+  "group_id": "V-223215",
+  "group_title": "SRG-APP-000142-NDM-000245",
+  "title": "The Juniper SRX Services Gateway must be configured with only one local user account to be used as the account of last resort.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without centralized management, credentials for some network devices will be forgotten, leading to delays in administration, which itself leads to delays in remediating production problems and in addressing compromises in a timely fashion. Maintaining local administrator accounts for daily usage on each network device without centralized management is not scalable or feasible. \n\nLocal accounts are configured using the local password authentication method which does not meet the multifactor authentication criteria. The account of last resort is a group authenticator which does not provide nonrepudiation, thus must be used only rare cases where the device must be accessed using the local console and an individual authenticator is not possible, including when network access is not available.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify only a single local account has an authentication stanza and that the name is the account of last resort.\n\n[edit]\nshow system login\n\nuser <account of last resort> {\n  uid 2001;\n  class <appropriate class name>;\n  authentication { <--- This stanza permits local login\n    encrypted-password \"$sha2$22895$aVBPaRVa$o6xIqNSYg9D7yt8pI47etAjZV9uuwHrhAFT6R021HNsy\"; ## SECRET-DATA\n  }\n}\n\nOR\n\nuser <template account> {\n  uid 2001;\n  class <appropriate class name>;\n}\n\nIf accounts other than the account of last resort contain an authentication stanza, and that account is not documented, this is a finding.",
+  "fix": "If more than one account has an authentication stanza, and it is not documented, delete the authentication stanza (if the account is a template account) or the entire account (if the account is unauthorized or no longer needed).\n\nTo delete a template account:\n\n[edit]\ndelete system login user <account name> authentication\ncommit\n\nTo delete an unneeded or unauthorized account:\n\n[edit]\ndelete system login user <account name>",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without centralized management, credentials for some network devices will be forgotten, leading to delays in administration, which itself leads to delays in remediating production problems and in addressing compromises in a timely fashion. Maintaining local administrator accounts for daily usage on each network device without centralized management is not scalable or feasible. \n\nLocal accounts are configured using the local password authentication method which does not meet the multifactor authentication criteria. The account of last resort is a group authenticator which does not provide nonrepudiation, thus must be used only rare cases where the device must be accessed using the local console and an individual authenticator is not possible, including when network access is not available.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000115",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

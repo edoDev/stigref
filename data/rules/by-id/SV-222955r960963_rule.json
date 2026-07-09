@@ -1,0 +1,53 @@
+{
+  "id": "SV-222955r960963_rule",
+  "full_rule_id": "SV-222955r960963_rule",
+  "rule_id": "SV-222955",
+  "rule_revision": "960963",
+  "group_id": "V-222955",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "The deployXML attribute must be set to false in hosted environments.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Host element controls deployment. Automatic deployment allows for simpler management, but also makes it easier for an attacker to deploy a malicious application. Automatic deployment is controlled by the autoDeploy and deployOnStartup attributes. If both are false, only Contexts defined in server.xml will be deployed, and any changes will require a Tomcat restart.\n\nIn a hosted environment where web applications may not be trusted, set the deployXML attribute to false to ignore any context.xml packaged with the web application that may try to assign increased privileges to the web application. Note that if the security manager is enabled that the deployXML attribute will default to false.\n\nThis requirement is NA for test and development systems on non-production networks. For DevSecOps application environments, the ISSM may authorize autodeploy functions on a production Tomcat system if the mission need specifies it and an application security vulnerability testing and assurance regimen is included in the DevSecOps process.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the SSP associated with the Host contains ISSM documented approvals for deployXML, this is not a finding.\n\nFrom the Tomcat server as a privileged user:\n\nsudo grep -i deployXML $CATALINA_BASE/conf/server.xml\ndeployXML=\"false\"\n\nIf the deployXML=\"true\" and there is no documented authorization to allow automatic deployment of applications, this is a finding.\n\nIf no results are generated, confirm the default behavior is \"false\". For example: If the attribute is not set and security manager is not enabled, the default value is \"true\". When security manager is enabled, the default value is \"false\". \n\nIf the default value is \"true\", this is a finding.",
+  "fix": "Document authorization for application auto deployment in the System Security Plan (SSP).\n\nFrom the Tomcat server as a privileged user, edit the $CATALINA_BASE/conf/server.xml file.\n\nsudo nano $CATALINA_BASE/conf/server.xml\n\nLocate each <host> element in the server xml file.  \n\nIf the deployXML=\"true\" ensure each host is authorized for application auto deployment and document the authorization in the system security plan.\n\nIf authorization is not provided, set the deployXML=\"false\".",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Host element controls deployment. Automatic deployment allows for simpler management, but also makes it easier for an attacker to deploy a malicious application. Automatic deployment is controlled by the autoDeploy and deployOnStartup attributes. If both are false, only Contexts defined in server.xml will be deployed, and any changes will require a Tomcat restart.\n\nIn a hosted environment where web applications may not be trusted, set the deployXML attribute to false to ignore any context.xml packaged with the web application that may try to assign increased privileges to the web application. Note that if the security manager is enabled that the deployXML attribute will default to false.\n\nThis requirement is NA for test and development systems on non-production networks. For DevSecOps application environments, the ISSM may authorize autodeploy functions on a production Tomcat system if the mission need specifies it and an application security vulnerability testing and assurance regimen is included in the DevSecOps process.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000530",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

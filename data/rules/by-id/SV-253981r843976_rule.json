@@ -1,0 +1,53 @@
+{
+  "id": "SV-253981r843976_rule",
+  "full_rule_id": "SV-253981r843976_rule",
+  "rule_id": "SV-253981",
+  "rule_revision": "843976",
+  "group_id": "V-253981",
+  "group_title": "SRG-NET-000018-RTR-000009",
+  "title": "The Juniper router configured for MSDP must limit the amount of source-active messages it accepts on per-peer basis.",
+  "severity": "low",
+  "description": "<VulnDiscussion>To reduce any risk of a denial-of-service (DoS) attack from a rogue or misconfigured MSDP router, the router must be configured to limit the number of source-active messages it accepts from each peer.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if it is configured to limit the amount of source-active messages it accepts on a per-peer basis.\n\n[edit protocols]\nmsdp {\n    active-source-limit {\n        maximum <1..1000000>;\n        threshold <1..1000000>;\n        log-warning <percent to log warning>;\n    }\n    local-address <lo0 address>;\n    <additional configuration>\n    peer <address> {\n        active-source-limit {\n            maximum <1..1000000>;\n            threshold <1..1000000>;\n            log-warning <percent to log warning>;\n        }\n        authentication-key \"hashed PSK\"; ## SECRET-DATA\n    }\n}\nNote: Both the global, and the peer limit, are applied to every MSDP peer, and Junos applies the most restrictive limit. The maximum value sets the upper limit for source-active messages and the threshold value determines when Junos begins Random Early Detection (RED) dropping to alleviate congestion. The log-warning value is a percent where Junos begins generating syslog messages.\n\nIf the router is not configured to limit the source-active messages it accepts, this is a finding.",
+  "fix": "Configure the MSDP router to limit the amount of source-active messages it accepts from each peer.\n\nset protocols msdp active-source-limit maximum <1..1000000>\nset protocols msdp active-source-limit threshold <1..1000000>\nset protocols msdp active-source-limit log-warning <percent to log warning>\n<additional configuration>\nset protocols msdp peer <address> active-source-limit maximum <1..1000000>\nset protocols msdp peer <address> active-source-limit threshold <1..1000000>\nset protocols msdp peer <address> active-source-limit log-warning <percent to log warning>",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To reduce any risk of a denial-of-service (DoS) attack from a rogue or misconfigured MSDP router, the router must be configured to limit the number of source-active messages it accepts from each peer.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-272381r1124039_rule",
+  "full_rule_id": "SV-272381r1124039_rule",
+  "rule_id": "SV-272381",
+  "rule_revision": "1124039",
+  "group_id": "V-272381",
+  "group_title": "SRG-APP-000516-DNS-000092",
+  "title": "On a BIND 9.x server in a split DNS configuration, where separate name servers are used between the external and internal networks, the external name server must be configured to not be reachable from inside resolvers.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Instead of having the same set of authoritative name servers serve different types of clients, an enterprise could have two different sets of authoritative name servers. \n\nOne set, called external name servers, can be located within a DMZ. These would be the only name servers that are accessible to external clients and would serve RRs pertaining to hosts with public services (web servers that serve external web pages or provide B2C services, mail servers, etc.).\n\nThe other set, called internal name servers, must be located within the firewall. They must be configured so they are not reachable from outside and therefore provide naming services exclusively to internal clients.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the BIND 9.x name server is not configured for split DNS, this is not applicable.\n\nVerify that the external view of the BIND 9.x server is configured to only serve external hosts.\n\nInspect the \"named.conf\" file for the following:\n\nview \"external\" {\nmatch-clients { <ip_address> | <address_match_list>; };\n};\n\nIf the \"match-clients\" sub-statement does not limit the external view to external hosts only, this is a finding.",
+  "fix": "Edit the \"named.conf\" file.\n\nConfigure the external view statement to server external hosts only:\n\nview \"external\" {\nmatch-clients { <ip_address> | <address_match_list>; };\n};\n\nRestart the BIND 9.x process.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Instead of having the same set of authoritative name servers serve different types of clients, an enterprise could have two different sets of authoritative name servers. \n\nOne set, called external name servers, can be located within a DMZ. These would be the only name servers that are accessible to external clients and would serve RRs pertaining to hosts with public services (web servers that serve external web pages or provide B2C services, mail servers, etc.).\n\nThe other set, called internal name servers, must be located within the firewall. They must be configured so they are not reachable from outside and therefore provide naming services exclusively to internal clients.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BIND-9X-001240",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460",
+      "name": "BIND 9.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460"
+  ]
+}

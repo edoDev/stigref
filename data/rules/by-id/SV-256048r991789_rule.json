@@ -1,0 +1,53 @@
+{
+  "id": "SV-256048r991789_rule",
+  "full_rule_id": "SV-256048r991789_rule",
+  "rule_id": "SV-256048",
+  "rule_revision": "991789",
+  "group_id": "V-256048",
+  "group_title": "SRG-NET-000512-RTR-000001",
+  "title": "The Arista BGP router must be configured to use its loopback address as the source address for iBGP peering sessions.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Using a loopback address as the source address offers a multitude of uses for security, access, management, and scalability of the BGP routers. It is easier to construct appropriate ingress filters for router management plane traffic destined to the network management subnet since the source addresses will be from the range used for loopback interfaces instead of a larger range of addresses used for physical interfaces. Log information recorded by authentication and syslog servers will record the router's loopback address instead of the numerous physical interface addresses.\n\nWhen the loopback address is used as the source for eBGP peering, the BGP session will be harder to hijack since the source address to be used is not known globally—making it more difficult for a hacker to spoof an eBGP neighbor. By using traceroute, a hacker can easily determine the addresses for an eBGP speaker when the IP address of an external interface is used as the source address. The routers within the iBGP domain should also use loopback addresses as the source address when establishing BGP sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router configuration to verify a loopback address has been configured.\n\nVerify a loopback interface is used as the source address for all iBGP sessions.\n\nStep 1: To verify the Loopback interface is defined, execute the command \"sh run int loopback YY\".\n\ninterface loopback 0\n  ip address 10.1.1.1/32\n\nStep 2: To verify a loopback interface is used as the source address for all iBGP sessions, execute the command \"sh run sec router bgp\".\n\nrouter bgp 65001\n   router-id 10.1.1.1\n   neighbor Peer_Leaf peer group\n   neighbor Peer_Leaf remote-as 65001\n   neighbor Peer_Leaf update-source Loopback0\n   neighbor 10.2.2.2 peer group Peer_Leaf\n   \nIf the Arista router does not use its loopback address as the source address for all iBGP sessions, this is a finding.",
+  "fix": "Ensure the Arista router's loopback address is used as the source address when originating traffic.\n\nStep 1: Configure the Loopback interface.\n\nLEAF-1A(config)#interface Loopback0\nLEAF-1A(config-if-Lo0)#ip address 10.1.1.1/32\n\nStep 2: Configure the loopback interface as source for all iBGP sessions.\n\nrouter bgp 65001\nLEAF-1A(config-router-bgp)#\nLEAF-1A(config-router-bgp)#neighbor Peer_Leaf peer group\nLEAF-1A(config-router-bgp)#Peer_Leaf remote-as 65001\nLEAF-1A(config-router-bgp)#Peer_Leaf update-source Loopback0\nLEAF-1A(config-router-bgp)#10.2.2.2 peer group Peer_Leaf",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using a loopback address as the source address offers a multitude of uses for security, access, management, and scalability of the BGP routers. It is easier to construct appropriate ingress filters for router management plane traffic destined to the network management subnet since the source addresses will be from the range used for loopback interfaces instead of a larger range of addresses used for physical interfaces. Log information recorded by authentication and syslog servers will record the router's loopback address instead of the numerous physical interface addresses.\n\nWhen the loopback address is used as the source for eBGP peering, the BGP session will be harder to hijack since the source address to be used is not known globally—making it more difficult for a hacker to spoof an eBGP neighbor. By using traceroute, a hacker can easily determine the addresses for an eBGP speaker when the IP address of an external interface is used as the source address. The routers within the iBGP domain should also use loopback addresses as the source address when establishing BGP sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000690",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

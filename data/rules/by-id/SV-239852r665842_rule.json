@@ -1,0 +1,53 @@
+{
+  "id": "SV-239852r665842_rule",
+  "full_rule_id": "SV-239852r665842_rule",
+  "rule_id": "SV-239852",
+  "rule_revision": "665842",
+  "group_id": "V-239852",
+  "group_title": "SRG-NET-000019-FW-000003",
+  "title": "The Cisco ASA must be configured to filter outbound traffic, allowing only authorized ports and services.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Information flow control regulates where information is allowed to travel within a network and between interconnected networks. Blocking or restricting detected harmful or suspicious communications between interconnected networks enforces approved authorizations for controlling the flow of traffic.\n\nThe firewall that filters traffic outbound to interconnected networks with different security policies must be configured to permit or block traffic based on organization-defined traffic authorizations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the ASA configuration to determine if it only permits outbound traffic using authorized ports and services.\n\nStep 1: Verify that an ingress ACL has been applied to all internal interfaces as shown in the example below.\n\n interface GigabitEthernet0/0\n nameif INSIDE\n security-level 100\n ip address 10.1.11.1 255.255.255.0\n…\n…\n…\naccess-group INSIDE _IN in interface INSIDE \n\nStep 2: Verify that the ingress ACL only allows outbound traffic using authorized ports and services as shown in the example below.\n\naccess-list INSIDE _IN extended permit tcp any any eq www \naccess-list INSIDE _IN extended permit tcp any any eq https \naccess-list INSIDE _IN extended permit tcp any any eq …\naccess-list INSIDE _IN extended deny ip any any log\n\nIf the ASA is not configured to only allow outbound traffic using authorized ports and services, this is a finding.",
+  "fix": "Step 1: Configure the ingress ACL similar to the example below.\n\nASA(config)# access-list INSIDE_INextended permit tcp any any eq https\nASA(config)# access-list INSIDE_INextended permit tcp any any eq http\nASA(config)# access-list INSIDE_INextended permit tcp any any eq …\nASA(config)# access-list INSIDE_INextended deny ip any any log      \n\nStep 2: Apply the ACL inbound on all internal interfaces as shown in the example below.\n\nASA(config)# access-group INSIDE_IN in interface INSIDE\nASA(config)# end",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information flow control regulates where information is allowed to travel within a network and between interconnected networks. Blocking or restricting detected harmful or suspicious communications between interconnected networks enforces approved authorizations for controlling the flow of traffic.\n\nThe firewall that filters traffic outbound to interconnected networks with different security policies must be configured to permit or block traffic based on organization-defined traffic authorizations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-FW-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-firewall-security-technical-implementation-guide-v2r1-a0d2d852",
+      "name": "Cisco ASA Firewall Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-firewall-security-technical-implementation-guide-v2r1-a0d2d852"
+  ]
+}

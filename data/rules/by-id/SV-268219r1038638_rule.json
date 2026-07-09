@@ -1,0 +1,53 @@
+{
+  "id": "SV-268219r1038638_rule",
+  "full_rule_id": "SV-268219r1038638_rule",
+  "rule_id": "SV-268219",
+  "rule_revision": "1038638",
+  "group_id": "V-268219",
+  "group_title": "SRG-APP-000001-NDM-000200",
+  "title": "The HYCU virtual appliance must limit the number of concurrent sessions to an organization-defined number for each administrator account and/or administrator account type.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Device management includes the ability to control the number of administrators and management sessions that manage a device. Limiting the number of allowed administrators and sessions per administrator based on account type, role, or access type is helpful in limiting risks related to denial-of-service (DoS) attacks.\n\nThis requirement addresses concurrent sessions for administrative accounts and does not address concurrent sessions by a single administrator via multiple administrative accounts. The maximum number of concurrent sessions should be defined based upon mission needs and the operational environment for each system. At a minimum, limits must be set for SSH, HTTPS, account of last resort, and root account sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In the HYCU Web UI, only one login can be used at a time. \n\nIf the user is still logged into the HYCU Web UI upon logging in to the Web UI again, in a different browser tab, with the same credentials, this is a finding.\n\nLog in to the HYCU VM console. To check the number of allowed concurrent session connections, grep file \"/etc/security/limits.conf\" by executing the following command:\ngrep maxlogins /etc/security/limits.conf\n\nVerify the following line exists:\nhycu            hard    maxlogins       1\n\nIf the \"maxlogins\" value is not set to 1 or is missing, this is a finding.",
+  "fix": "The Web UI will only always allow one user session at a time.\n\nFor CLI, configure the operating system to limit the max number of concurrent sessions to 1 by adding the following line to \"/etc/security/limits.conf\":\n\nhycu            hard    maxlogins       1",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Device management includes the ability to control the number of administrators and management sessions that manage a device. Limiting the number of allowed administrators and sessions per administrator based on account type, role, or access type is helpful in limiting risks related to denial-of-service (DoS) attacks.\n\nThis requirement addresses concurrent sessions for administrative accounts and does not address concurrent sessions by a single administrator via multiple administrative accounts. The maximum number of concurrent sessions should be defined based upon mission needs and the operational environment for each system. At a minimum, limits must be set for SSH, HTTPS, account of last resort, and root account sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HYCU-ND-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hycu-protege-security-technical-implementation-guide-v1r2-57a24ef6",
+      "name": "HYCU Protege Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hycu-protege-security-technical-implementation-guide-v1r2-57a24ef6"
+  ]
+}

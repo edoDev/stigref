@@ -1,0 +1,53 @@
+{
+  "id": "SV-256716r888739_rule",
+  "full_rule_id": "SV-256716r888739_rule",
+  "rule_id": "SV-256716",
+  "rule_revision": "888739",
+  "group_id": "V-256716",
+  "group_title": "SRG-APP-000141-WSR-000075",
+  "title": "Lookup Service must be configured to limit access to internal packages.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The \"package.access\" entry in the \"catalina.properties\" file implements access control at the package level. When properly configured, a Security Exception will be reported if an errant or malicious webapp attempts to access the listed internal classes directly or if a new class is defined under the protected packages. \n\nThe Lookup Service comes preconfigured with the appropriate packages defined in \"package.access\", and this configuration must be maintained.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# grep \"package.access\" /usr/lib/vmware-lookupsvc/conf/catalina.properties\n\nExpected result:\n\npackage.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.\n\nIf the output of the command does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties\n\nEnsure the \"package.access\" line is configured as follows:\n\npackage.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.\n\nRestart the service with the following command:\n\n# vmon-cli --restart lookupsvc",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The \"package.access\" entry in the \"catalina.properties\" file implements access control at the package level. When properly configured, a Security Exception will be reported if an errant or malicious webapp attempts to access the listed internal classes directly or if a new class is defined under the protected packages. \n\nThe Lookup Service comes preconfigured with the appropriate packages defined in \"package.access\", and this configuration must be maintained.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCLU-70-000011",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2",
+      "name": "VMware vSphere 7.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2"
+  ]
+}

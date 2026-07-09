@@ -1,0 +1,53 @@
+{
+  "id": "SV-230485r1017269_rule",
+  "full_rule_id": "SV-230485r1017269_rule",
+  "rule_id": "SV-230485",
+  "rule_revision": "1017269",
+  "group_id": "V-230485",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "RHEL 8 must disable the chrony daemon from acting as a server.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.\n\nMinimizing the exposure of the server functionality of the chrony daemon diminishes the attack surface.\n\nRHEL 8 utilizes the \"timedatectl\" command to view the status of the \"systemd-timesyncd.service\". The \"timedatectl\" status will display the local time, UTC, and the offset from UTC.\n\nNote that USNO offers authenticated NTP service to DOD and U.S. Government agencies operating on the NIPR and SIPR networks. Visit https://www.usno.navy.mil/USNO/time/ntp/DOD-customers for more information.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If the system is approved and documented by the information system security officer (ISSO) to function as an NTP time server, this requirement is Not Applicable.\n\nVerify RHEL 8 disables the chrony daemon from acting as a server with the following command:\n\n$ sudo grep -w 'port' /etc/chrony.conf\nport 0\n\nIf the \"port\" option is not set to \"0\", is commented out or missing, this is a finding.",
+  "fix": "Configure the operating system to disable the chrony daemon from acting as a server by adding or modifying the following line in the \"/etc/chrony.conf\" file:\n\nport 0",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.\n\nMinimizing the exposure of the server functionality of the chrony daemon diminishes the attack surface.\n\nRHEL 8 utilizes the \"timedatectl\" command to view the status of the \"systemd-timesyncd.service\". The \"timedatectl\" status will display the local time, UTC, and the offset from UTC.\n\nNote that USNO offers authenticated NTP service to DOD and U.S. Government agencies operating on the NIPR and SIPR networks. Visit https://www.usno.navy.mil/USNO/time/ntp/DOD-customers for more information.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-030741",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

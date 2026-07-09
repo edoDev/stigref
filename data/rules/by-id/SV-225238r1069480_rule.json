@@ -1,0 +1,53 @@
+{
+  "id": "SV-225238r1069480_rule",
+  "full_rule_id": "SV-225238r1069480_rule",
+  "rule_id": "SV-225238",
+  "rule_revision": "1069480",
+  "group_id": "V-225238",
+  "group_title": "SRG-APP-000383",
+  "title": "Update and configure the .NET Framework to support TLS.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of the RC4 cipher in TLS could allow an attacker to perform man-in-the-middle attacks and recover plaintext from encrypted sessions. Applications that target .Net version 4.x running on multiple Windows versions could be vulnerable to these types of attacks. The registry settings in this requirement will prevent .Net applications that target the 4.x framework from selecting and utilizing the Schannel.dll RC4 cipher for TLS connections. Applications that use TLS when connecting to remote systems will perform a handshake and negotiate the TLS version and cipher that is to be used between the client and the server. This is standard protocol for all TLS connections. If the server and client are not configured to use the same TLS version and cipher, the TLS connection may fail. Applications should be tested with these registry settings prior to production implementation of the fix in order to avoid application outages.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In older Windows systems (Windows Server 2012 or earlier), TLS 1.2 must be enabled systemwide by setting \"SchUseStrongCrypto\".\n\nSystemDefaultTlsVersions is a configuration switch in .NET Framework (starting from 4.6) that allows the application to use the default TLS version supported by the underlying Windows operating system instead of hardcoding a specific TLS version (like TLS 1.2).\n\nCheck Registry:\nUse regedit to review the following Windows registry keys:\nFor 32-bit systems: HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\.NETFramework\\v4.0.30319\\\n\nFor 64 bit systems:\nHKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\.NETFramework\\v4.0.30319\\\nHKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\.NETFramework\\v4.0.30319\\\n\n1. If the \"SchUseStrongCrypto\" value name does not exist, or is not a REG_DWORD type set to \"1\", this is a finding.\n\n2. For .NET Framework >4.6, use the default TLS version supported by the underlying Windows operating system.\nIf the \"SystemDefaultTlsVersions\" value name does not exist, or is not a REG_DWORD type set to \"1\", this is a finding.\n\nNote: The SchUseStrongCrypto setting allows .NET to use TLS 1.1 and TLS 1.2. The SystemDefaultTlsVersions setting allows .NET to use the OS configuration.",
+  "fix": "1. SchUseStrongCrypto enabled:\n\nUse regedit to access the following registry key.\n\nFor 32-bit systems:\nHKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\.NETFramework\\v4.0.30319\\\n\nFor 64-bit systems: \nHKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\.NETFramework\\v4.0.30319\\\nHKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\.NETFramework\\v4.0.30319\\\n\nModify or create the following Windows registry value: SchUseStrongCrypto.\n\nSet SchUseStrongCrypto to a REG_DWORD value of \"1\".\n\n2. SystemDefaultTlsVersions enabled (.NET Framework >4.6):\nFor 64-bit Windows, create a .reg file with the following content and apply it:\nWindows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\.NETFramework\\v4.0.30319]\n\"SystemDefaultTlsVersions\"=dword:00000001\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Microsoft\\.NETFramework\\v4.0.30319]\n\"SystemDefaultTlsVersions\"=dword:00000001\n\n3. Restart the system for changes to take effect.",
+  "ccis": [
+    "CCI-001762"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of the RC4 cipher in TLS could allow an attacker to perform man-in-the-middle attacks and recover plaintext from encrypted sessions. Applications that target .Net version 4.x running on multiple Windows versions could be vulnerable to these types of attacks. The registry settings in this requirement will prevent .Net applications that target the 4.x framework from selecting and utilizing the Schannel.dll RC4 cipher for TLS connections. Applications that use TLS when connecting to remote systems will perform a handshake and negotiate the TLS version and cipher that is to be used between the client and the server. This is standard protocol for all TLS connections. If the server and client are not configured to use the same TLS version and cipher, the TLS connection may fail. Applications should be tested with these registry settings prior to production implementation of the fix in order to avoid application outages.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPNET0075",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-dotnet-framework-4-0-security-technical-implementation-guide-v2r8-cf94354a",
+      "name": "Microsoft DotNet Framework 4.0 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-dotnet-framework-4-0-security-technical-implementation-guide-v2r8-cf94354a"
+  ]
+}

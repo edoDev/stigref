@@ -1,0 +1,53 @@
+{
+  "id": "SV-251766r863248_rule",
+  "full_rule_id": "SV-251766r863248_rule",
+  "rule_id": "SV-251766",
+  "rule_revision": "863248",
+  "group_id": "V-251766",
+  "group_title": "SRG-NET-000333-FW-000014",
+  "title": "The NSX-T Tier-1 Gateway Firewall must be configured to send traffic log entries to a central audit server for management and configuration of the traffic log entries.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without the ability to centrally manage the content captured in the traffic log entries, identification, troubleshooting, and correlation of suspicious behavior would be difficult and could lead to a delayed or incomplete analysis of an ongoing attack.\n\nThe DoD requires centralized management of all network component audit record content. Network components requiring centralized traffic log management must have the ability to support centralized management. The content captured in traffic log entries must be managed from a central location (necessitating automation). Centralized management of traffic log records and logs provides for efficiency in maintenance and management of records, as well as the backup and archiving of those records. \n\nEnsure at least one syslog server is configured on the firewall.\n\nIf the product inherently has the ability to store log records locally, the local log must also be secured. However, this requirement is not met since it calls for a use of a central audit server.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This check must be run from each NSX-T Edge Node hosting the Tier-1 Gateway, as they are configured individually.\n\nFrom an NSX-T Edge Node shell hosting the Tier-1 Gateway, run the following command(s):\n\n> get logging-servers\n\nIf any configured logging-servers are not configured with protocol of \"li-tls\" or \"tls\" and level of \"info\", this is a finding.\n\nIf no logging-servers are configured, this is a finding.",
+  "fix": "(Optional) From an NSX-T Edge Gateway shell, run the following command(s) to clear any existing incorrect logging-servers:\n\n> clear logging-servers\n\nFrom an NSX-T Edge Node shell, run the following command(s) to configure a tls syslog server:\n\n> set logging-server <server-ip or server-name> proto tls level info serverca ca.pem clientca ca.pem certificate cert.pem key key.pem\n\nFrom an NSX-T Edge Node shell, run the following command(s) to configure a li-tls syslog server:\n\n> set logging-server <server-ip or server-name> proto li-tls level info serverca root-ca.crt\n\nNote: Configure the syslog or SNMP server to send an alert if the events server is unable to receive events from the NSX-T and also if DoS incidents are detected. This is true if the events server is STIG compliant.\n\nNote: If using the protocols TLS or LI-TLS to configure a secure connection to a log server, the server and client certificates must be stored in /var/vmware/nsx/file-store/ on each NSX-T Edge Gateway appliance.",
+  "ccis": [
+    "CCI-001844"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without the ability to centrally manage the content captured in the traffic log entries, identification, troubleshooting, and correlation of suspicious behavior would be difficult and could lead to a delayed or incomplete analysis of an ongoing attack.\n\nThe DoD requires centralized management of all network component audit record content. Network components requiring centralized traffic log management must have the ability to support centralized management. The content captured in traffic log entries must be managed from a central location (necessitating automation). Centralized management of traffic log records and logs provides for efficiency in maintenance and management of records, as well as the backup and archiving of those records. \n\nEnsure at least one syslog server is configured on the firewall.\n\nIf the product inherently has the ability to store log records locally, the local log must also be secured. However, this requirement is not met since it calls for a use of a central audit server.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "T1FW-3X-000026",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-t-tier-1-gateway-firewall-security-technical-implementation-guide-v1r3-10d08a79",
+      "name": "VMware NSX-T Tier 1 Gateway Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-t-tier-1-gateway-firewall-security-technical-implementation-guide-v1r3-10d08a79"
+  ]
+}

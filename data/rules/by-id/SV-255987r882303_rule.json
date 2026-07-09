@@ -1,0 +1,53 @@
+{
+  "id": "SV-255987r882303_rule",
+  "full_rule_id": "SV-255987r882303_rule",
+  "rule_id": "SV-255987",
+  "rule_revision": "882303",
+  "group_id": "V-255987",
+  "group_title": "SRG-NET-000018-RTR-000001",
+  "title": "The Arista router must be configured to enforce approved authorizations for controlling the flow of information within the network based on organization-defined information flow control policies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information flow control regulates where information is allowed to travel within a network and between interconnected networks. The flow of all network traffic must be monitored and controlled so it does not introduce any unacceptable risk to the network infrastructure or data. Information flow control policies and enforcement mechanisms are commonly employed by organizations to control the flow of information between designated sources and destinations (e.g., networks, individuals, and devices) within information systems.\n\nEnforcement occurs, for example, in boundary protection devices (e.g., gateways, routers, guards, encrypted tunnels, and firewalls) that employ rule sets or establish configuration settings that restrict information system services, provide a packet filtering capability based on header information, or provide a message filtering capability based on message content (e.g., implementing key word searches or using document characteristics).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nVerify that for the Arista router configuration, access control lists (ACLs) and filters are configured to allow or deny traffic for specific source and destination addresses as well as ports and protocols. These filters must be applied inbound or outbound on the appropriate external and internal interfaces.\n\nExample:\n\nrouter# show ip access-lists\n\nVerify IP access list configuration ACLs and filter are configured to allow or deny specific traffic.\n\n!\nip access-list STIG\n   10 deny ip 172.16.50.0/30 10.10.100.0/24\n   20 permit ip any any\n!\n\nVerify the IP access list ACLs are applied to the specific Ethernet interface.\n\n!\nrouter# show ethernet Interface Eth3\n!\nInterface Ethernet 3\ndescription BGP Link to Gateway Router\nno router port\nip address 192.168.1.1/30\n   ip access-group STIG in\n!\n\nIf the Arista router is not configured to enforce approved authorizations for controlling the flow of information within the network based on organization-defined information flow control policies, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure the Arista routers to enforce ACLs and filters to allow or deny traffic for specific source and destination addresses as well as ports and protocols for controlling information flow.\n\nTo configure an IP access list to fulfill this function, enter the following commands, substituting organizational values for the bracketed variables and values.\n\nStep 1:\nIp access-list [name]\n[permit/deny] [protocol] [source address] [source port] [destination address] [destination port]\nExit\n\nStep 2:\nApply the filters inbound or outbound on the appropriate external and internal interfaces.\n\nInterface [type] [number]\nIp access-group [name] [direction]\n\nNote: Policy-based routing can also be implemented if needed.",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information flow control regulates where information is allowed to travel within a network and between interconnected networks. The flow of all network traffic must be monitored and controlled so it does not introduce any unacceptable risk to the network infrastructure or data. Information flow control policies and enforcement mechanisms are commonly employed by organizations to control the flow of information between designated sources and destinations (e.g., networks, individuals, and devices) within information systems.\n\nEnforcement occurs, for example, in boundary protection devices (e.g., gateways, routers, guards, encrypted tunnels, and firewalls) that employ rule sets or establish configuration settings that restrict information system services, provide a packet filtering capability based on header information, or provide a message filtering capability based on message content (e.g., implementing key word searches or using document characteristics).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

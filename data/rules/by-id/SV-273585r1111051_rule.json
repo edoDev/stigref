@@ -1,0 +1,53 @@
+{
+  "id": "SV-273585r1111051_rule",
+  "full_rule_id": "SV-273585r1111051_rule",
+  "rule_id": "SV-273585",
+  "rule_revision": "1111051",
+  "group_id": "V-273585",
+  "group_title": "SRG-NET-000019-RTR-000008",
+  "title": "The RUCKUS ICX perimeter router must be configured to protect an enclave connected to an alternate gateway by using an inbound filter that only permits packets with destination addresses within the site's address space.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Enclaves with alternate gateway connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's alternate gateway, the perimeter router could be routing transit data from the internet into the NIPRNet. This could also make the perimeter router vulnerable to a denial-of-service (DoS) attack as well as provide a back door into the NIPRNet. The DOD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an Approved Gateway is secure through filters permitting packets with a destination address belonging to the DOD enclave's address block.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the configuration of each router interface connecting to an alternate gateway.\n\n1. Verify an ACL exists to allow only desired traffic (example includes SSL hosts).\nip access-list extended FILTER_ISP\n sequence 10 permit tcp any any established\n sequence 20 permit icmp host x.12.1.16 host x.12.1.17 echo\n sequence 30 permit icmp host x.12.1.16 host x.12.1.17 echo-reply\n sequence 40 permit tcp any host x.12.1.22 eq ssl\n sequence 50 permit tcp any host x.12.1.23 eq ssl\n sequence 60 permit esp any host x.12.1.24\n sequence 70 permit ahp any host x.12.1.24\n sequence 80 deny ip any any log\n!\n\n2. Check that ACL is applied to alternative gateway interface.\ninterface ethernet 1/1/10\n ip address x.12.1.10 255.255.255.0\n ip access-group FILTER_ISP in\n!\n\nIf the alternative gateway interface is not configured with an ACL permitting only the destination addresses in the sites address space, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone. \n\nConfigure the ingress filter of the perimeter router connected to an alternate gateway to only permit packets with destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the alternate gateway network service provider.\n\n1. Configure an ACL that exists to allow only desired traffic (example includes SSL hosts).\nip access-list extended FILTER_ISP\n sequence 10 permit tcp any any established\n sequence 20 permit icmp host x.12.1.16 host x.12.1.17 echo\n sequence 30 permit icmp host x.12.1.16 host x.12.1.17 echo-reply\n sequence 40 permit tcp any host x.12.1.22 eq ssl\n sequence 50 permit tcp any host x.12.1.23 eq ssl\n sequence 60 permit esp any host x.12.1.24\n sequence 70 permit ahp any host x.12.1.24\n sequence 80 deny ip any any log\n!\n\n2. Apply the ACL to alternative gateway interface.\ninterface ethernet 1/1/10\n ip address x.12.1.10 255.255.255.0\n ip access-group FILTER_ISP in\n!",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enclaves with alternate gateway connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's alternate gateway, the perimeter router could be routing transit data from the internet into the NIPRNet. This could also make the perimeter router vulnerable to a denial-of-service (DoS) attack as well as provide a back door into the NIPRNet. The DOD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an Approved Gateway is secure through filters permitting packets with a destination address belonging to the DOD enclave's address block.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

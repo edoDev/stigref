@@ -1,0 +1,53 @@
+{
+  "id": "SV-243477r1153405_rule",
+  "full_rule_id": "SV-243477r1153405_rule",
+  "rule_id": "SV-243477",
+  "rule_revision": "1153405",
+  "group_id": "V-243477",
+  "group_title": "SRG-OS-000480",
+  "title": "User accounts with domain level administrative privileges must be members of the Protected Users group in domains with a domain functional level of Windows 2012 R2 or higher.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>User accounts with domain level administrative privileges are highly prized in Pass-the-Hash/credential theft attacks. The Protected Users group provides extra protections to accounts such as preventing authentication using NTLM.\n\nThese accounts include Enterprise and Domain Admins as well as other accounts that may have domain level privileges.\n\nThe Protected Users group requires a domain functional level of at least Windows 2012 R2 to provide domain level protections.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Open \"Windows PowerShell\".\n\nEnter \"Get-ADDomain | FL DomainMode\" to determine the domain functional level.\n\nOpen \"Active Directory Users and Computers\" (available from various menus or run \"dsa.msc\"). \n\nCompare membership of the Protected Users group to membership of the following groups. By default, the groups are under the node referenced; however, it is possible to move those under \"Users\" to another location.\n\nEnterprise Admins (Users node)\nDomain Admins (Users node)\nSchema Admins (Users node)\nAdministrators (Builtin node)\nAccount Operators (Builtin node)\nBackup Operators (Builtin node)\n\nIt is recommended that one account be excluded to ensure availability if there are issues with Kerberos.\n\nExcluding the account left out for availability, if all user accounts from the local domain that are members of the domain level groups above are not also members of the Protected Users group, this is a finding. (User accounts is referring to accounts for personnel, not service accounts.)",
+  "fix": "Add user accounts from the local domain that are members of the domain level administrative groups listed below to the Protected Users group. One account may excluded to ensure availability if there are issues with Kerberos.\n\nEnterprise Admins (Users node)\nDomain Admins (Users node)\nSchema Admins (Users node)\nAdministrators (Builtin node)\nAccount Operators (Builtin node)\nBackup Operators (Builtin node)\n\nThe use of the Protected Users group should be thoroughly tested before fully implementing.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "User accounts with domain level administrative privileges are highly prized in Pass-the-Hash/credential theft attacks. The Protected Users group provides extra protections to accounts such as preventing authentication using NTLM.\n\nThese accounts include Enterprise and Domain Admins as well as other accounts that may have domain level privileges.\n\nThe Protected Users group requires a domain functional level of at least Windows 2012 R2 to provide domain level protections.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AD.0017",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "active-directory-domain-security-technical-implementation-guide-v3r7-bf0c1d17",
+      "name": "Active Directory Domain Security Technical Implementation Guide",
+      "version": "3",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "active-directory-domain-security-technical-implementation-guide-v3r7-bf0c1d17"
+  ]
+}

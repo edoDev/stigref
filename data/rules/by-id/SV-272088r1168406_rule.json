@@ -1,0 +1,53 @@
+{
+  "id": "SV-272088r1168406_rule",
+  "full_rule_id": "SV-272088r1168406_rule",
+  "rule_id": "SV-272088",
+  "rule_revision": "1168406",
+  "group_id": "V-272088",
+  "group_title": "SRG-NET-000362-RTR-000117",
+  "title": "The BGP Cisco ACI must be configured to use the maximum prefixes feature to protect against route table flooding and prefix de-aggregation attacks.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.\n\nMaximum prefix limits on peer connections combined with aggressive prefix-size filtering of customers' reachability advertisements will effectively mitigate the de-aggregation risk. BGP maximum prefix must be used on all eBGP routers to limit the number of prefixes it should receive from a particular neighbor, whether customer or peering AS. Consider each neighbor and how many routes that will be advertised and set a threshold slightly higher than the number expected.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the BGP configuration for each tenant:\n\nTenants >> {{your_Tenant}} >> Networking >> L3Out >> {{your_l3out}} >> Logical Node Profiles >> {{your_Logical_node_Profile}} >> Logical Interface Profiles >> {{your_logical_interface_profile}} >> BGP peer x.x.x.x >> Policy >> BGP Peer Prefix Policy.\n\nIf the router is not configured to control the number of prefixes received from each peer to protect against route table flooding and prefix de-aggregation attacks, this is a finding.",
+  "fix": "Configure the router to use the maximum prefixes feature to protect against route table flooding and prefix de-aggregation attacks as shown in the example below:\n\nFor each BGP peer, navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Out >> {{your_l3out}} >> Logical Node Profiles >> {{your_Logical_node_Profile}} >> Logical Interface Profiles >> {{your_logical_interface_profile}} >> BGP peer x.x.x.x >> Policy >> BGP Peer Prefix.\n\nCreate a policy within the BGP configuration section, where <peer-ip> is the IP address of the BGP peer and <number of prefixes> is the desired maximum prefix limit to be set; the default maximum prefix limit is typically 20,000 prefixes.",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.\n\nMaximum prefix limits on peer connections combined with aggressive prefix-size filtering of customers' reachability advertisements will effectively mitigate the de-aggregation risk. BGP maximum prefix must be used on all eBGP routers to limit the number of prefixes it should receive from a particular neighbor, whether customer or peering AS. Consider each neighbor and how many routes that will be advertised and set a threshold slightly higher than the number expected.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CACI-RT-000028",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251",
+      "name": "Cisco ACI Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251"
+  ]
+}

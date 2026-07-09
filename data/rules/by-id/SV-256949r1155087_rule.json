@@ -1,0 +1,53 @@
+{
+  "id": "SV-256949r1155087_rule",
+  "full_rule_id": "SV-256949r1155087_rule",
+  "rule_id": "SV-256949",
+  "rule_revision": "1155087",
+  "group_id": "V-256949",
+  "group_title": "SRG-APP-000141-WSR-000081",
+  "title": "All Automation Controller NGINX web servers must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Controlling what a user of a hosted application can access is part of the security posture of the Automation Controller NGINX web server.\n\nAny time a user can access more functionality than is needed for the operation of the hosted application, it  poses a security issue. A user with too much access can view information that is not needed for the user's job role, or the user could use the function in an unintentional manner.\n\nA MIME tells the Automation Controller NGINX web servers what type of program various file types and extensions are and what external utilities or programs are needed to execute the file type.\n\nA shell is a program that serves as the basic interface between the user and the operating system, so hosted application users must not have access to these programs. Shell programs may execute shell escapes and can then perform unauthorized activities that could damage the security posture of Automation Controller.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As a system administrator (SA) for each Automation Controller NGINX web server, check the allowed mime types and associated shell applications:\n\nNGINXCONF=`nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}' ` ; MIME_TYPES=`grep mime $NGINXCONF | awk '{printf $2}' | sed 's/;$//' ` ; disallowed_mime_types=('application.*\\sbin' 'application.*\\sexe' 'application.*\\srpm' 'application.*\\smsi' 'application.*\\smsp application.*\\smsm' ) ; echo \"${disallowed_mime_types[*]}\" | tr ' ' '\\n' >tempfile ; cat $MIME_TYPES | grep -f tempfile 1>/dev/null && echo \"FAILED\"; rm -f tempfile\n\nIf \"FAILED\" is displayed, this is a finding.",
+  "fix": "As an SA for each Automation Controller NGINX web server, remove the disallowed mime types:\n\nNGINXCONF=`nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}' ` ; \nMIME_TYPES=`grep mime $NGINXCONF | awk '{printf $2}' | sed 's/;$//' ` ;\n disallowed_mime_types=('application.*\\sbin' 'application.*\\sexe' 'application.*\\srpm' 'application.*\\smsi' 'application.*\\smsp application.*\\smsm') ; \necho \"${disallowed_mime_types[*]}\" | tr ' ' '\\n' >tempfile ; cat $MIME_TYPES | grep -vf tempfile >$MIME_TYPES; rm -f tempfile\n\nRestart NGINX.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Controlling what a user of a hosted application can access is part of the security posture of the Automation Controller NGINX web server.\n\nAny time a user can access more functionality than is needed for the operation of the hosted application, it  poses a security issue. A user with too much access can view information that is not needed for the user's job role, or the user could use the function in an unintentional manner.\n\nA MIME tells the Automation Controller NGINX web servers what type of program various file types and extensions are and what external utilities or programs are needed to execute the file type.\n\nA shell is a program that serves as the basic interface between the user and the operating system, so hosted application users must not have access to these programs. Shell programs may execute shell escapes and can then perform unauthorized activities that could damage the security posture of Automation Controller.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APWS-AT-000310",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65",
+      "name": "Red Hat Ansible Automation Controller Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65"
+  ]
+}

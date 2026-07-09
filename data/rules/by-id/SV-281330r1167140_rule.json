@@ -1,0 +1,53 @@
+{
+  "id": "SV-281330r1167140_rule",
+  "full_rule_id": "SV-281330r1167140_rule",
+  "rule_id": "SV-281330",
+  "rule_revision": "1167140",
+  "group_id": "V-281330",
+  "group_title": "SRG-OS-000068-GPOS-00036",
+  "title": "RHEL 10 must map the authenticated identity to the user or group account for public key infrastructure (PKI)-based authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without mapping the certificate used to authenticate to the user account, the ability to determine the identity of the individual user or group will not be available for forensic analysis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If the system administrator (SA) demonstrates the use of an approved alternate multifactor authentication method, this requirement is not applicable.\n\nVerify RHEL 10 maps the authenticated identity to the user or group account for PKI-based authentication.\n\nVerify the certificate of the user or group is mapped to the corresponding user or group in the \"sssd.conf\" file with the following command:\n\n$ sudo find /etc/sssd/sssd.conf /etc/sssd/conf.d/ -type f -exec cat {} \\;\n[certmap/testing.test/rule_name]\nmatchrule =<SAN>.*EDIPI@mil\nmaprule = (userCertificate;binary={cert!bin})\ndomains = testing.test\n\nIf the certmap section does not exist, ask the SA to indicate how certificates are mapped to accounts.\n\nIf there is no evidence of certificate mapping, this is a finding.",
+  "fix": "Configure RHEL 10 to map the authenticated identity to the user or group account by adding or modifying the certmap section of the \"/etc/sssd/sssd.conf\" file based on the following example:\n\n[certmap/testing.test/rule_name]\nmatchrule = .*EDIPI@mil\nmaprule = (userCertificate;binary={cert!bin})\ndomains = testing.test\n\nRestart the \"sssd\" service with the following command for the changes to take effect:\n\n$ sudo systemctl restart sssd.service",
+  "ccis": [
+    "CCI-000187"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without mapping the certificate used to authenticate to the user account, the ability to determine the identity of the individual user or group will not be available for forensic analysis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-701280",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

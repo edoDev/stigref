@@ -1,0 +1,53 @@
+{
+  "id": "SV-213539r961353_rule",
+  "full_rule_id": "SV-213539r961353_rule",
+  "rule_id": "SV-213539",
+  "rule_revision": "961353",
+  "group_id": "V-213539",
+  "group_title": "SRG-APP-000340-AS-000185",
+  "title": "The application server must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Preventing non-privileged users from executing privileged functions mitigates the risk that unauthorized individuals or processes may gain unnecessary access to information or privileges.\n\nRestricting non-privileged users also prevents an attacker who has gained access to a non-privileged account, from elevating privileges, creating accounts, and performing system checks and maintenance.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log on to the OS of the JBoss server with OS permissions that allow access to JBoss.\nUsing the relevant OS commands and syntax, cd to the <JBOSS_HOME>/bin/ folder.\nRun the jboss-cli script.\nConnect to the server and authenticate.\n\nRun the following command:\n\nFor standalone servers:\n\"ls /core-service=management/access=authorization/\"\n\nFor managed domain installations:\n\"ls /host=master/core-service=management/access=authorization/\"\n\nIf the \"provider\" attribute is not set to \"rbac\", this is a finding.",
+  "fix": "Run the following command.\n<JBOSS_HOME>/bin/jboss-cli.sh -c -> connect -> cd /core-service=management/access-authorization :write-attribute(name=provider, value=rbac)\n\nRestart JBoss.\n\nMap users to roles by running the following command.  Upper-case words are variables.\n\nrole-mapping=ROLENAME/include=ALIAS:add(name-USERNAME, type=USER ROLE)",
+  "ccis": [
+    "CCI-002235"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Preventing non-privileged users from executing privileged functions mitigates the risk that unauthorized individuals or processes may gain unnecessary access to information or privileges.\n\nRestricting non-privileged users also prevents an attacker who has gained access to a non-privileged account, from elevating privileges, creating accounts, and performing system checks and maintenance.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JBOS-AS-000475",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9",
+      "name": "JBoss Enterprise Application Platform 6.3 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9"
+  ]
+}

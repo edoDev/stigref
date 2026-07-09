@@ -1,0 +1,53 @@
+{
+  "id": "SV-268541r1131242_rule",
+  "full_rule_id": "SV-268541r1131242_rule",
+  "rule_id": "SV-268541",
+  "rule_revision": "1131242",
+  "group_id": "V-268541",
+  "group_title": "SRG-OS-000079-GPOS-00047",
+  "title": "The macOS system must remove password hints from user accounts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>User accounts must not contain password hints.\n\nPassword hints leak information about passwords in use and can lead to loss of confidentiality.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to remove password hints from user accounts with the following command:\n\nHINT=$(/usr/bin/dscl . -list /Users hint | /usr/bin/awk '{ print $2 }')\n\nif [ -z \"$HINT\" ]; then\necho \"PASS\"\nelse\necho \"FAIL\"\nfi\n\nIf the result is not \"PASS\", this is a finding.",
+  "fix": "Configure the macOS system to remove password hints from user accounts with the following command:\n\nfor u in $(/usr/bin/dscl . -list /Users UniqueID | /usr/bin/awk '$2 > 500 {print $1}'); do\n/usr/bin/dscl . -delete /Users/$u hint\ndone",
+  "ccis": [
+    "CCI-000206"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "User accounts must not contain password hints.\n\nPassword hints leak information about passwords in use and can lead to loss of confidentiality.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-15-003014",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66",
+      "name": "Apple macOS 15 (Sequoia) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66"
+  ]
+}

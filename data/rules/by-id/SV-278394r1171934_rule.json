@@ -1,0 +1,53 @@
+{
+  "id": "SV-278394r1171934_rule",
+  "full_rule_id": "SV-278394r1171934_rule",
+  "rule_id": "SV-278394",
+  "rule_revision": "1171934",
+  "group_id": "V-278394",
+  "group_title": "SRG-APP-000246",
+  "title": "NGINX must restrict the ability of individuals to launch denial-of-service (DoS) attacks against other information systems.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DoS is a condition in which a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity. \n\nIndividuals of concern can include hostile insiders or external adversaries that have successfully breached the information system and are using the system as a platform to launch cyberattacks on third parties.\n\nApplications and application developers must take the steps needed to ensure users cannot use an authorized application to launch DoS attacks against other systems and networks. For example, applications may include mechanisms that throttle network traffic so users are not able to generate unlimited network traffic via the application. Limiting system resources allocated to any user to a bare minimum may also reduce the ability of users to launch some DoS attacks.\n\nThe methods employed to counter this risk will be dependent upon the application layer methods that can be used to exploit it.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine the path to NGINX config file(s):\n\n# nginx -qT | grep \"# configuration\"\n# configuration file /etc/nginx/nginx.conf:\n\nNote: The default NGINX configuration is \"/etc/nginx/nginx.conf\", though various files may also be included.\n\nVerify timeouts and send timeouts exist in config file and the timeout value of 10 seconds (or less) has been configured for client headers and body. \n\nnginx -c <path to nginx config> -qT | grep timeout\n    client_body_timeout 10s;\n    client_header_timeout 10s;\n    send_timeout 10s;\n\nIf the client_header_timeout, client_body_timeout and send_timeout are unset or have values greater than 10, this is a finding.",
+  "fix": "Determine the path to NGINX config file(s):\n\n# nginx -qT | grep \"# configuration\"\n# configuration file /etc/nginx/nginx.conf:\n\nNote: The default NGINX configuration is \"/etc/nginx/nginx.conf\", though various files may also be included.\n\nAdd or modify the client_body_timeout, client_header_timeout and send_timeout directives to have a value of 10 seconds or lower. Setting this value in the http context will cover everything unless overridden in subsequent server or location contexts.\n\n    client_body_timeout 10s;\n    client_header_timeout 10s;\n    send_timeout 10s;\n\nAfter saving the configuration, reload NGINX:\n\n# nginx -s reload",
+  "ccis": [
+    "CCI-001094"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DoS is a condition in which a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity. \n\nIndividuals of concern can include hostile insiders or external adversaries that have successfully breached the information system and are using the system as a platform to launch cyberattacks on third parties.\n\nApplications and application developers must take the steps needed to ensure users cannot use an authorized application to launch DoS attacks against other systems and networks. For example, applications may include mechanisms that throttle network traffic so users are not able to generate unlimited network traffic via the application. Limiting system resources allocated to any user to a bare minimum may also reduce the ability of users to launch some DoS attacks.\n\nThe methods employed to counter this risk will be dependent upon the application layer methods that can be used to exploit it.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NGNX-APP-001030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55",
+      "name": "F5 NGINX Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55"
+  ]
+}

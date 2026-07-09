@@ -1,0 +1,53 @@
+{
+  "id": "SV-255376r961839_rule",
+  "full_rule_id": "SV-255376r961839_rule",
+  "rule_id": "SV-255376",
+  "rule_revision": "961839",
+  "group_id": "V-255376",
+  "group_title": "SRG-APP-000508-DB-000358",
+  "title": "Azure SQL Database must generate audit records for all direct access to the database(s).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In this context, direct access is any query, command, or call to Azure SQL Database that comes from any source other than the application(s) that it supports. Examples would be the command line or a database management utility program. The intent is to capture all activity from administrative and nonstandard sources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review Azure SQL Database configuration to verify that audit records are produced for all direct access to the database(s).\n\nTo determine if an audit PredicateExpression (filter) exists, execute the following PowerShell script. \n1. In the Azure Portal, open a Cloud Shell session.\n2. Run this PowerShell command to determine the PredicateExpression:\n\n$ResourceGroup = \"myResourceGroup\"\n$ServerName = \"myServerName\"\n$FormatEnumerationLimit=-1\nGet-AzSqlServerAudit -ResourceGroupName $ResourceGroup -ServerName $ServerName\n\nIf a PredicateExpression is returned, review the associated filters to determine whether administrative activities are being excluded. \n\nIf any audits are configured to exclude administrative activities, this is a finding.",
+  "fix": "Check the system documentation for required Azure SQL Database Audits. Remove any Audit filters that exclude or reduce required auditing. Update filters to ensure administrative activity is not excluded.",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In this context, direct access is any query, command, or call to Azure SQL Database that comes from any source other than the application(s) that it supports. Examples would be the command line or a database management utility program. The intent is to capture all activity from administrative and nonstandard sources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ASQL-00-015500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-database-security-technical-implementation-guide-v2r3-dea2fe81",
+      "name": "Microsoft Azure SQL Database Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-database-security-technical-implementation-guide-v2r3-dea2fe81"
+  ]
+}

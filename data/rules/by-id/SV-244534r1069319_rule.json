@@ -1,0 +1,53 @@
+{
+  "id": "SV-244534r1069319_rule",
+  "full_rule_id": "SV-244534r1069319_rule",
+  "rule_id": "SV-244534",
+  "rule_revision": "1069319",
+  "group_id": "V-244534",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "RHEL 8 must configure the use of the pam_faillock.so module in the /etc/pam.d/password-auth file.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.\n\nIn RHEL 8.2 the \"/etc/security/faillock.conf\" file was incorporated to centralize the configuration of the pam_faillock.so module.  Also introduced is a \"local_users_only\" option that will only track failed user authentication attempts for local users in /etc/passwd and ignore centralized (AD, IdM, LDAP, etc.) users to allow the centralized platform to solely manage user lockout.\n\nFrom \"faillock.conf\" man pages: Note that the default directory that \"pam_faillock\" uses is usually cleared on system boot so the access will be reenabled after system reboot. If that is undesirable a different tally directory must be set with the \"dir\" option.\nThe preauth argument must be used when the module is called before the modules which ask for the user credentials such as the password.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This check applies to RHEL versions 8.2 or newer, if the system is RHEL version 8.0 or 8.1, this check is not applicable.\n\nVerify the pam_faillock.so module is present and is listed before the pam.unix.so line in the \"/etc/pam.d/password-auth\" file:\nNote: The first field in the output is the line number of the entry\n\n$ sudo grep -E -n 'pam_faillock.so|pam_unix.so' /etc/pam.d/password-auth\n\n7:auth required pam_faillock.so preauth silent\n11:auth sufficient pam_unix.so\n15:auth required pam_faillock.so authfail\n19:account required pam_faillock.so\n20:account required pam_unix.so\n31:password sufficient pam_unix.so sha512 shadow use_authtok\n40:session required pam_unix.so\n\nIf the pam_faillock.so module is not present in the \"/etc/pam.d/password-auth\" file with the \"preauth\" line listed before pam_unix.so, this is a finding.",
+  "fix": "Configure the operating system to include the use of the pam_faillock.so module in the /etc/pam.d/password-auth file.\n\nAdd/Modify the appropriate sections of the \"/etc/pam.d/password-auth\" file to match the following lines:\nNote: The \"preauth\" line must be listed before pam_unix.so.\n\nauth required pam_faillock.so preauth\nauth required pam_faillock.so authfail\naccount required pam_faillock.so",
+  "ccis": [
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.\n\nIn RHEL 8.2 the \"/etc/security/faillock.conf\" file was incorporated to centralize the configuration of the pam_faillock.so module.  Also introduced is a \"local_users_only\" option that will only track failed user authentication attempts for local users in /etc/passwd and ignore centralized (AD, IdM, LDAP, etc.) users to allow the centralized platform to solely manage user lockout.\n\nFrom \"faillock.conf\" man pages: Note that the default directory that \"pam_faillock\" uses is usually cleared on system boot so the access will be reenabled after system reboot. If that is undesirable a different tally directory must be set with the \"dir\" option.\nThe preauth argument must be used when the module is called before the modules which ask for the user credentials such as the password.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-020026",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

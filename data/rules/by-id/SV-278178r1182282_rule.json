@@ -1,0 +1,53 @@
+{
+  "id": "SV-278178r1182282_rule",
+  "full_rule_id": "SV-278178r1182282_rule",
+  "rule_id": "SV-278178",
+  "rule_revision": "1182282",
+  "group_id": "V-278178",
+  "group_title": "SRG-OS-000134-GPOS-00068",
+  "title": "Windows Server 2025 local administrator accounts must have their privileged token filtered to prevent elevated privileges from being used over the network on domain-joined member servers.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A compromised local administrator account can provide means for an attacker to move laterally between domain systems.\n\nWith User Account Control enabled, filtering the privileged token for local administrator accounts will prevent the elevated privileges of these accounts from being used over the network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This applies to member servers. For domain controllers and stand-alone or nondomain-joined systems, this is not applicable.\n\nIf the following registry value does not exist or is not configured as specified, this is a finding:\n\nRegistry HiveHKEY_LOCAL_MACHINE\nRegistry Path\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\n\nValue NameLocalAccountTokenFilterPolicy\n\nTypeREG_DWORD\nValue: 0x00000000 (0)\n\nThis setting may cause issues with some network scanning tools if local administrative accounts are used remotely. Scans must use domain accounts where possible. If a local administrative account must be used, temporarily enabling the privileged token by configuring the registry value to \"1\" may be required.",
+  "fix": "Configure the policy value for Computer Configuration >> Administrative Templates >> MS Security Guide >> Apply UAC restrictions to local accounts on network logons to \"Enabled\".\n\nThis policy setting requires the installation of the SecGuide custom templates included with the STIG package. \"SecGuide.admx\" and \" SecGuide.adml\" must be copied to the \\Windows\\PolicyDefinitions and \\Windows\\PolicyDefinitions\\en-US directories respectively.",
+  "ccis": [
+    "CCI-001084"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A compromised local administrator account can provide means for an attacker to move laterally between domain systems.\n\nWith User Account Control enabled, filtering the privileged token for local administrator accounts will prevent the elevated privileges of these accounts from being used over the network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN25-MS-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2025-security-technical-implementation-guide-v1r1-e1e76802",
+      "name": "Microsoft Windows Server 2025 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2025-security-technical-implementation-guide-v1r1-e1e76802"
+  ]
+}

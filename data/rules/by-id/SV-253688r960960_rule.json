@@ -1,0 +1,53 @@
+{
+  "id": "SV-253688r960960_rule",
+  "full_rule_id": "SV-253688r960960_rule",
+  "rule_id": "SV-253688",
+  "rule_revision": "960960",
+  "group_id": "V-253688",
+  "group_title": "SRG-APP-000133-DB-000200",
+  "title": "Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MariaDB, etc.) must be owned by database/MariaDB principals authorized for ownership.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definers rights. This allows anyone who uses the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.\n\nConversely, if critical tables or other objects rely on unauthorized owner accounts, these objects may be lost when an account is removed.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review system documentation to identify accounts authorized to have privileges against database objects. Review account privileges on objects in the database(s).\n \nTo show the list of system privileges that the MariaDB server supports, run:\nMariaDB> SHOW PRIVILEGES;\n \nGather a list of SHOW GRANTS commands. SHOW GRANTS will list the privileges granted to the account.\n\nRun this database query to create the SHOW GRANTS script for each user: \n\nMariaDB> SELECT DISTINCT CONCAT( 'SHOW GRANTS FOR ', user,'@', host,';') AS grantQuery FROM mysql.user WHERE is_role = 'N';\n\nRun each SHOW GRANTS command for each user.\n\nMariaDB> SHOW GRANTS FOR 'user'@'host';\n\nVerify that all users have the correct privileges, if they do not, this is a finding.\n\nOnly DEFINERS of routines (functions and procedures) can change routines. To view the DEFINERS of all functions and procedures, as database administrator run the following SQL:\n \nMariaDB>  SELECT * FROM mysql.proc \\G\n \nOnly DEFINERS of triggers can change triggers. To view all triggers and their DEFINERS, as database administrator run the following SQL: \n\nMariaDB>  SELECT * FROM information_schema.triggers \\G\n \nIf any database users are found to have unauthorized privileges on database objects, this is a finding.",
+  "fix": "Assign ownership of authorized objects to authorized object owner accounts.",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definers rights. This allows anyone who uses the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.\n\nConversely, if critical tables or other objects rely on unauthorized owner accounts, these objects may be lost when an account is removed.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-002900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

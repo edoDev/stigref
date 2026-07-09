@@ -1,0 +1,54 @@
+{
+  "id": "SV-256512r958528_rule",
+  "full_rule_id": "SV-256512r958528_rule",
+  "rule_id": "SV-256512",
+  "rule_revision": "958528",
+  "group_id": "V-256512",
+  "group_title": "SRG-OS-000142-GPOS-00071",
+  "title": "The Photon operating system must use Transmission Control Protocol (TCP) syncookies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A TCP SYN flood attack can cause a denial of service by filling a system's TCP connection table with connections in the SYN_RCVD state. Syncookies can be used to track a connection when a subsequent ACK is received, verifying the initiator is attempting a valid connection and is not a flood source. This feature is activated when a flood condition is detected and enables the system to continue servicing valid connection requests.\n\nSatisfies: SRG-OS-000142-GPOS-00071, SRG-OS-000420-GPOS-00186</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command:\n\n# /sbin/sysctl -a --pattern tcp_syncookies\n\nExpected result:\n\nnet.ipv4.tcp_syncookies = 1\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "At the command line, run the following commands:\n\n# sed -i -e \"/^net.ipv4.tcp_syncookies/d\" /etc/sysctl.conf\n# echo net.ipv4.tcp_syncookies=1>>/etc/sysctl.conf\n# /sbin/sysctl --load",
+  "ccis": [
+    "CCI-001095",
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A TCP SYN flood attack can cause a denial of service by filling a system's TCP connection table with connections in the SYN_RCVD state. Syncookies can be used to track a connection when a subsequent ACK is received, verifying the initiator is attempting a valid connection and is not a flood source. This feature is activated when a flood condition is detected and enables the system to continue servicing valid connection requests.\n\nSatisfies: SRG-OS-000142-GPOS-00071, SRG-OS-000420-GPOS-00186",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-30-000036",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28",
+      "name": "VMware vSphere 7.0 vCenter Appliance Photon OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28"
+  ]
+}

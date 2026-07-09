@@ -1,0 +1,53 @@
+{
+  "id": "SV-259106r960888_rule",
+  "full_rule_id": "SV-259106r960888_rule",
+  "rule_id": "SV-259106",
+  "rule_revision": "960888",
+  "group_id": "V-259106",
+  "group_title": "SRG-APP-000092-AS-000053",
+  "title": "The vCenter UI service must initiate session logging upon startup.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Logging must be started as soon as possible when a service starts and as late as possible when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# grep StreamRedirectFile /etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json\n\nExpected output:\n\n\"StreamRedirectFile\" : \"%VMWARE_LOG_DIR%/vmware/vsphere-ui/logs/vsphere-ui-runtime.log\",\n\nIf no log file is specified for the \"StreamRedirectFile\" setting, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json\n\nBelow the last line of the \"PreStartCommandArg\" block, add the following line:\n\n\"StreamRedirectFile\" : \"%VMWARE_LOG_DIR%/vmware/vsphere-ui/logs/vsphere-ui-runtime.log\",\n\nRestart the service with the following command:\n\n# vmon-cli --restart vsphere-ui",
+  "ccis": [
+    "CCI-001464"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Logging must be started as soon as possible when a service starts and as late as possible when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCUI-80-000013",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-user-interface-ui-security-technical-implem-v2r1-f07232d5",
+      "name": "VMware vSphere 8.0 vCenter Appliance User Interface (UI) Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-user-interface-ui-security-technical-implem-v2r1-f07232d5"
+  ]
+}

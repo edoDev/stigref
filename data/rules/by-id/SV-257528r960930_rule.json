@@ -1,0 +1,53 @@
+{
+  "id": "SV-257528r960930_rule",
+  "full_rule_id": "SV-257528r960930_rule",
+  "rule_id": "SV-257528",
+  "rule_revision": "960930",
+  "group_id": "V-257528",
+  "group_title": "SRG-APP-000118-CTR-000240",
+  "title": "OpenShift must protect system journal file from any type of unauthorized access by setting file permissions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is a fundamental security practice to enforce the principle of least privilege, where only the necessary permissions are granted to authorized entities. OpenShift must protect the system journal file from any type of unauthorized access by setting file permissions. \n\nThe system journal file contains important log data that helps in troubleshooting and monitoring the system. Unauthorized access or tampering with the journal file can compromise the integrity of this data. By setting appropriate file permissions, OpenShift ensures that only authorized users or processes have access to the journal file, maintaining the integrity and reliability of system logs.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the system journal file has mode \"0640\" or less permissive by executing the following:\n\nfor node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n \"$HOSTNAME \"; machine_id=$(systemd-machine-id-setup --print); stat -c \"%a %n\" /var/log/journal/$machine_id/system.journal' 2>/dev/null; done\n\nIf a value of \"0640\" or less permissive is not returned, this is a finding.",
+  "fix": "Correct journal file permissions by executing the following:\n\nfor node in $(oc get node -oname); do oc debug $node -- chroot /host /bin/bash -c 'echo -n \"$HOSTNAME \"; machine_id=$(systemd-machine-id-setup --print); chmod 640 /var/log/journal/$machine_id/system.journal' 2>/dev/null; done",
+  "ccis": [
+    "CCI-000162"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is a fundamental security practice to enforce the principle of least privilege, where only the necessary permissions are granted to authorized entities. OpenShift must protect the system journal file from any type of unauthorized access by setting file permissions. \n\nThe system journal file contains important log data that helps in troubleshooting and monitoring the system. Unauthorized access or tampering with the journal file can compromise the integrity of this data. By setting appropriate file permissions, OpenShift ensures that only authorized users or processes have access to the journal file, maintaining the integrity and reliability of system logs.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-OS-000260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2",
+      "name": "Red Hat OpenShift Container Platform 4.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2"
+  ]
+}

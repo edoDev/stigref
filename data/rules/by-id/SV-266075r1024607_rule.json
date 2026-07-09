@@ -1,0 +1,55 @@
+{
+  "id": "SV-266075r1024607_rule",
+  "full_rule_id": "SV-266075r1024607_rule",
+  "rule_id": "SV-266075",
+  "rule_revision": "1024607",
+  "group_id": "V-266075",
+  "group_title": "SRG-APP-000515-NDM-000325",
+  "title": "The F5 BIG-IP appliance must generate audit records and send records to redundant central syslog servers that are separate from the appliance.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nWithout generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nMCP audit records are generated from various components within the network device. For example, it logs the creation of DNS objects and DNSSEC configuration, including key creations.\n\nSatisfies: SRG-APP-000515-NDM-000325, SRG-APP-000360-NDM-000295, SRG-APP-000516-NDM-000350</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the BIG-IP GUI:\n1. System.\n2. Logs.\n3. Configuration.\n4. Remote Logging.\n\nFrom the BIG-IP Console, issue the following command:\n\ntmsh list sys syslog remote-servers\n\nNote: This must return at least two remote IP addresses of syslog server.\n\nIf the BIG-IP appliance does not send audit records to one or more central syslog servers that are separate from the appliance, this is a finding.",
+  "fix": "Configure two or more central syslog servers.\n\nFrom the BIG-IP GUI:\n1. System.\n2. Logs.\n3. Configuration.\n4. Remote Logging.\n5. Add the IP address of a syslog server in the \"Remote IP\" field, modify the port if necessary, and click \"Add\".\n6. Click \"Update\".\n\nFrom the BIG-IP Console, issue the following commands:\n\n     tmsh modify sys syslog remote-servers add { <name> { host <ip address> remote-port <port> } }\n     tmsh save sys config",
+  "ccis": [
+    "CCI-001851",
+    "CCI-001858",
+    "CCI-002605"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nWithout generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nMCP audit records are generated from various components within the network device. For example, it logs the creation of DNS objects and DNSSEC configuration, including key creations.\n\nSatisfies: SRG-APP-000515-NDM-000325, SRG-APP-000360-NDM-000295, SRG-APP-000516-NDM-000350",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-DM-300034",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-ndm-security-technical-implementation-guide-v1r2-1787aa3e",
+      "name": "F5 BIG-IP TMOS NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-ndm-security-technical-implementation-guide-v1r2-1787aa3e"
+  ]
+}

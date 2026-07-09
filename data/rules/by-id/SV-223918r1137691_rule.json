@@ -1,0 +1,53 @@
+{
+  "id": "SV-223918r1137691_rule",
+  "full_rule_id": "SV-223918r1137691_rule",
+  "rule_id": "SV-223918",
+  "rule_revision": "1137691",
+  "group_id": "V-223918",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS system commands must be properly protected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From a command screen enter:\nTSS WHOHAS OPERCMDS(MVS)\n\nIf any of below is untrue for any z/OS system command resource, this is a finding.\n\nAccess to MVS resource of the OPERCMDS class is restricted to a limited number of authorized users, and all access logged.\nAccess to \"MVS.**\" is not allowed.\n\nAccess to z/OS system commands as defined in the table entitled MVS commands, RACF access authorities, and resource names, in the IBM z/OS MVS System Commands manual, is restricted to the appropriate personnel (e.g., operations staff, systems programming personnel, general users).\n\nNOTE: Use the GROUP category specified in the table referenced above as a guideline to determine appropriate personnel access to system commands.\n\nNOTE: The (MVS.SEND) Command will not be a finding if used by all.\n\nAccess to specific z/OS system commands is logged as indicated in the table entitled MVS commands, RACF access authorities, and resource names, in the IBM z/OS MVS System Commands manual.",
+  "fix": "Ensure access to the MVS resource of the OPERCMDS class is restricted to a limited number of authorized users, and all access is logged. Ensure access to z/OS system commands as defined in the table entitled MVS commands, RACF access authorities, and resource names, in the IBM z/OS MVS System Commands manual is restricted to the appropriate personnel (e.g., operations staff, systems programming personnel, general users). \n\nEnsure no access is granted at level MVS.**.\nNOTE: Use the GROUP category specified in the table referenced above as a guideline to determine appropriate personnel access to system commands. \nNOTE: The (MVS.SEND) Command will not be a finding if used by all. \n\nExample:\nTSS ADDTO(deptacid) OPERCMDS(MVS.)\nTSS PERMIT(usracid) OPERCMDS(MVS.ACTIVATE) ACTION(AUDIT)\nTSS PERMIT(usracid) OPERCMDS(MVS.CANCEL.JOB.) ACTION(AUDIT)\nTSS PERMIT(usracid) OPERCMDS(MVS.CONTROL.) ACCESS(UPDATE)\nACTION(AUDIT)\nTSS PERMIT(usracid) OPERCMDS(MVS.DISPLAY.) ACCESS(READ)\nTSS PERMIT(usracid) OPERCMDS(MVS.MONITOR) ACCESS(READ)\nTSS PERMIT(usracid) OPERCMDS(MVS.STOPMN) ACCESS(READ)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-ES-000450",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

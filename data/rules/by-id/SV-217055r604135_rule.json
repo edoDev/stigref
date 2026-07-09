@@ -1,0 +1,53 @@
+{
+  "id": "SV-217055r604135_rule",
+  "full_rule_id": "SV-217055r604135_rule",
+  "rule_id": "SV-217055",
+  "rule_revision": "604135",
+  "group_id": "V-217055",
+  "group_title": "SRG-NET-000018-RTR-000004",
+  "title": "The Juniper BGP router must be configured to reject inbound route advertisements from a customer edge (CE) Juniper router for prefixes that are not allocated to that customer.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>As a best practice, a service provider should only accept customer prefixes that have been assigned to that customer and any peering autonomous systems. A multi-homed customer with BGP speaking routers connected to the Internet or other external networks could be breached and used to launch a prefix de-aggregation attack. Without ingress route filtering of customers, the effectiveness of such an attack could impact the entire IP core and its customers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that there are filters defined to only accept routes for prefixes that belong to specific customers. \n\nVerify prefix list has been configured containing prefixes belonging to each customer as shown in the example below.\n\npolicy-options {\n    …\n    …\n    …\n    prefix-list CUST1_PREFIXES {\n        x.x.x.x/24;\n        x.x.x.x/24;\n    }\n    prefix-list CUST2_PREFIXES {\n        x.x.x.x/24;\n    }\n\nVerify that a policy has been configured to only accept routes belonging to the customer.\n\npolicy-options {\n    …\n    …\n    …\n    policy-statement FILTER_CUST1_ROUTES {\n        term ACCEPT-ROUTES {\n            from {\n                prefix-list CUST1_PREFIXES;\n            }\n            then accept;\n        }\n        term REJECT_OTHER {\n            then reject;\n        }\n    }\n    policy-statement FILTER_CUST2_ROUTES {\n        term ACCEPT_ROUTES {\n            from {\n                prefix-list CUST2_PREFIXES;\n            }\n            then accept;\n        }\n        term REJECT_OTHER {\n            then reject;\n        }\n    }\n}\n\nVerify that the configured policy to filter customer prefixes has been applied to customer BGP peers as shown in the example below.\n\nprotocols {\n    bgp {\n        …\n        …\n        …\n        }\n        group CUST1 {\n            type external;\n            import FILTER_CUST1_ROUTES;\n            peer-as 55;\n            neighbor x.x.x.x;\n            neighbor x.x.x.x;\n        }\n        group CUST2 {\n            type external;\n            import FILTER_CUST2_ROUTES;\n            peer-as 44;\n            neighbor x.x.x.x;\n            neighbor x.x.x.x;\n        }\n    }\n    …\n    …\n    …\n}\n\nNote: Routes to PE-CE links within a VPN are needed for troubleshooting end-to-end connectivity across the MPLS/IP backbone. Hence, these prefixes are an exception to this requirement.\n\nIf the router is not configured to reject inbound route advertisements from each CE router for prefixes that are not allocated to that customer, this is a finding.",
+  "fix": "Configure the router to reject inbound route advertisements from a CE router for prefixes that are not allocated to that customer.\n\nConfigure a prefix list containing prefixes belonging to the customers.\n\n[edit policy-options]\nset prefix-list CUST1_PREFIXES x.x.x.x/24\nset prefix-list CUST1_PREFIXES x.x.x.x/24\nset prefix-list CUST2_PREFIXES x.x.x.x/24\nset prefix-list CUST2_PREFIXES x.x.x.x/24\n\nConfigure a policy-statement to filter customer routes.\n\nset policy-statement FILTER_CUST1_ROUTES term ACCEPT_ROUTES from prefix-list CUST1_PREFIXES\nset policy-statement FILTER_CUST1_ROUTES term then accept\nset policy-statement FILTER_CUST1_ROUTES term REJECT_OTHER then reject\nset policy-statement FILTER_CUST2_ROUTES term ACCEPT_ROUTES from prefix-list CUST2_PREFIXES\nset policy-statement FILTER_CUST2_ROUTES term then accept\nset policy-statement FILTER_CUST2_ROUTES term REJECT_OTHER then reject\n\nApply the import policy to filter received routes for each customer group.\n\n[edit protocols bgp group CUST1]\nset import FILTER_CUST1_ROUTES \n[edit protocols bgp group CUST2]\nset import FILTER_CUST2_ROUTES",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "As a best practice, a service provider should only accept customer prefixes that have been assigned to that customer and any peering autonomous systems. A multi-homed customer with BGP speaking routers connected to the Internet or other external networks could be breached and used to launch a prefix de-aggregation attack. Without ingress route filtering of customers, the effectiveness of such an attack could impact the entire IP core and its customers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

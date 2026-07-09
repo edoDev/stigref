@@ -1,0 +1,53 @@
+{
+  "id": "SV-222956r960963_rule",
+  "full_rule_id": "SV-222956r960963_rule",
+  "rule_id": "SV-222956",
+  "rule_revision": "960963",
+  "group_id": "V-222956",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "Autodeploy must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Tomcat allows auto-deployment of applications while Tomcat is running. This can allow untested or malicious applications to be automatically loaded into production. Autodeploy must be disabled in production. \n\nThis requirement is NA for test and development systems on non-production networks. For DevSecOps application environments, the ISSM may authorize autodeploy functions on a production Tomcat system if the mission need specifies it and an application security vulnerability testing and assurance regimen is included in the DevSecOps process.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the SSP associated with the Host contains ISSM-documented approvals for AutoDeploy, this is not a finding.\n\nFrom the Tomcat server, run the following OS command:\n\nsudo cat $CATALINA_BASE/conf/server.xml | grep -i -C2 autodeploy \n\nIf the command returns no results, this is not a finding.\n\nReview the results for the autoDeploy parameter in each Host element. \n\n<Host name=\"YOUR HOST NAME\" appbase=\"webapps\" unpackWARs=\"true\" autoDeploy=\"false\"> \n\nIf autoDeploy =\"true\" or if autoDeploy is not set, this is a finding.",
+  "fix": "From the Tomcat server as a privileged user, edit the $CATALINA_BASE/conf/server.xml file.\n\nExamine each <Host> </Host> element, if the element contains autoDeploy=\"true\", modify the statement to read \", autoDeploy=\"false\".\n\nsudo systemctl restart tomcat\nsudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Tomcat allows auto-deployment of applications while Tomcat is running. This can allow untested or malicious applications to be automatically loaded into production. Autodeploy must be disabled in production. \n\nThis requirement is NA for test and development systems on non-production networks. For DevSecOps application environments, the ISSM may authorize autodeploy functions on a production Tomcat system if the mission need specifies it and an application security vulnerability testing and assurance regimen is included in the DevSecOps process.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000540",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

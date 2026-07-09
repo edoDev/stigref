@@ -1,0 +1,55 @@
+{
+  "id": "SV-268139r1131083_rule",
+  "full_rule_id": "SV-268139r1131083_rule",
+  "rule_id": "SV-268139",
+  "rule_revision": "1131083",
+  "group_id": "V-268139",
+  "group_title": "SRG-OS-000114-GPOS-00059",
+  "title": "NixOS must enable USBguard.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.\n\nPeripherals include, but are not limited to, such devices as flash drives, external storage, and printers.\n\nSatisfies: SRG-OS-000114-GPOS-00059, SRG-OS-000378-GPOS-00163, SRG-OS-000690-GPOS-00140</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS had enabled the use of the USBGuard with the following command:\n\n$ systemctl status usbguard\n\n usbguard.service - USBGuard daemon\nLoaded: loaded (/etc/systemd/system/usbguard.service; enabled; present: enabled)\nActive: active (running) since Sat 2022-06-04 02:51:43 UTC; 13min ago\n\nIf the usbguard.service is not \"active\" and \"running\", this is a finding.",
+  "fix": "Configure NixOS to enable USBGuard and generate a USBGuard ruleset.\n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\n services.usbguard.enable = true;\n\nRebuild the system configuration by running the following command:\n\n$ sudo nixos-rebuild switch\n\nAs root, generate a usbguard configuration. Using the \"usbguard\" command, use \"usbguard list-devices\" to list connected USB devices, \"usbguard block-device\" to block a device, and \"usbguard allow-device\" to allow a device. Note that the default behavior is to block devices.\n\nWhen all connected USB devices have been permitted, generate a ruleset by running the following command as root:\n\n# usbguard generate-policy\n\nEdit the NixOS config to add the policy:\n\n services.usbguard.rules = ''\n  allow id 1d6b:0001 serial \"0000:00:01.2\" name \"UHCI Host Controller\" hash \"FRDEjz7OhdJbNjmJ8zityiNX/LuO+ovKC07I0bOFjao=\" parent-hash \"9+Zsfvo9IR/AEQ/Fn4mzdoPGk0rqpjku6uErfS09K4c=\" with-interface 09:00:00 with-connect-type \"\"\n\n  allow id 0627:0001 serial \"28754-0000:00:01.2-1\" name \"QEMU USB Tablet\" hash \"5TyVK8wyL5GmiIbZV2Sf/ehIRMCP83miy4kOzG6O+2M=\" parent-hash \"FRDEjz7OhdJbNjmJ8zityiNX/LuO+ovKC07I0bOFjao=\" with-interface 03:00:00 with-connect-type \"unknown\"\n '';\n\nNote: This ruleset is only an example; generate a policy using the process described above.\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-000778",
+    "CCI-001958",
+    "CCI-003959"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.\n\nPeripherals include, but are not limited to, such devices as flash drives, external storage, and printers.\n\nSatisfies: SRG-OS-000114-GPOS-00059, SRG-OS-000378-GPOS-00163, SRG-OS-000690-GPOS-00140",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000930",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

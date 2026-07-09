@@ -1,0 +1,53 @@
+{
+  "id": "SV-270643r1052343_rule",
+  "full_rule_id": "SV-270643r1052343_rule",
+  "rule_id": "SV-270643",
+  "rule_revision": "1052343",
+  "group_id": "V-270643",
+  "group_title": "SRG-APP-000516",
+  "title": "The Dell OS10 Switch must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the OS10 switch configuration to verify the device is configured to use at least two authentication servers as primary source for authentication.  Verify that multiple radius servers are configured and that AAA login authentication is configured to use remote authentication.\n\nOS10#\nOS10# show running-configuration radius-server\nradius-server host 10.120.60.23 tls security-profile PROFILE-1 key 9 ****\nradius-server host 10.120.80.82 tls security-profile PROFILE1 key 9 ****\nOS10#\nOS10# show running-configuration aaa\n!\naaa authentication login default group radius local\naaa authentication login console local group radius\nOS10#\n\nIf the OS10 switch is not configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access, this is a finding.",
+  "fix": "Configure the network device to use at least two authentication servers. The authentication order is determined by the order in which the radius-server entries are configured.\n\nOS10(config)#\nOS10(config)# radius-server host 10.120.60.23 tls security-profile PROFILE1 key ******************\nOS10(config)# radius-server host 10.120.80.82 tls security-profile PROFILE1 key ******************\nOS10(config)#\nOS10(config)# aaa authentication login default group radius local\nOS10(config)# aaa authentication login console group radius local\nOS10(config)#\n\nConfigure all network connections associated with a device management to use the authentication servers for the purpose of login authentication.\nOS10(config)# aaa authentication login default group radius local\n\nOptionally, configure the local console access to try local authentication before attempting remote authentication servers.\nOS10(config)# aaa authentication login console local group radius",
+  "ccis": [
+    "CCI-000370"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000930",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

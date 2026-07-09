@@ -1,0 +1,53 @@
+{
+  "id": "SV-269877r1052016_rule",
+  "full_rule_id": "SV-269877r1052016_rule",
+  "rule_id": "SV-269877",
+  "rule_revision": "1052016",
+  "group_id": "V-269877",
+  "group_title": "SRG-NET-000205-RTR-000006",
+  "title": "The Dell OS10 BGP router must be configured to reject outbound route advertisements for any prefixes belonging to the IP core.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a nonoptimized path.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that there is a filter defined to block route advertisements for prefixes that belong to the IP core. \n\nThe prefix filter must be referenced outbound on the appropriate BGP neighbor statements.\n\nStep 1: Verify a prefix list has been configured containing the current IP core prefixes as shown in the example below.\n\nip prefix-list CORE_PREFIX_FILTER seq  5 deny 20.0.0.0/24 ge 8 le 32\nip prefix-list CORE_PREFIX_FILTER seq 10 deny 30.0.0.0/24 ge 8 le 32\nip prefix-list CORE_PREFIX_FILTER seq 15 permit 0.0.0.0/0 ge 8\n\nStep 2: Verify the route map applied to the external neighbors references the configured prefix list shown above.\n\n!\nroute-map CORE_PREFIX_FILTER_MAP permit 10\n match ip address prefix-list CORE_PREFIX_FILTER\n \n!\nrouter bgp 10\n !\n neighbor 40.1.1.10\n  !\n  address-family ipv4 unicast\n   route-map CORE_PREFIX_FILTER_MAP OUT\n\nIf the router is not configured to reject outbound route advertisements that belong to the IP core, this is a finding.",
+  "fix": "Configure all eBGP routers to filter outbound route advertisements belonging to the IP core.\n\nStep 1: Add to the prefix filter list those prefixes belonging to the IP core.\n\nOS10(config)# ip prefix-list CORE_PREFIX_FILTER seq  5 deny 20.0.0.0/24 ge 8 le 32\nOS10(config)# ip prefix-list CORE_PREFIX_FILTER seq 10 deny 30.0.0.0/24 ge 8 le 32\nOS10(config)# ip prefix-list CORE_PREFIX_FILTER seq 15 permit 0.0.0.0/0 ge 8\n\nStep 2: Configure the route map referencing the configured prefix list.\n\nOS10(config)# route-map CORE_PREFIX_FILTER_MAP 10\nOS10(config-route-map)# match ip address prefix-list CORE_PREFIX_FILTER\nOS10(config-route-map)# exit\n\nStep 3: Apply the route-map inbound to each external BGP neighbor.\n\nOS10(config)# router bgp 10\nOS10(config-router-bgp-10)# neighbor 40.1.1.10\nOS10(config-router-neighbor)# address-family ipv4 unicast\nOS10(config-router-bgp-neighbor-af)# route-map CORE_PREFIX_FILTER_MAP out\nOS10(config-router-bgp-neighbor-af)# exit\nOS10(config-router-neighbor)# exit\nOS10(config-router-bgp-10)# template ebgp\nOS10(config-router-template)# address-family ipv4 unicast\nOS10(config-router-bgp-template-af)# route-map CORE_PREFIX_FILTER_MAP out\nOS10(config-router-bgp-template-af)# exit\nOS10(config-router-template)# exit\nOS10(config-router-bgp-10)# exit",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a nonoptimized path.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000430",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

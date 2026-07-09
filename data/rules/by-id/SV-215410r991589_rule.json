@@ -1,0 +1,53 @@
+{
+  "id": "SV-215410r991589_rule",
+  "full_rule_id": "SV-215410r991589_rule",
+  "rule_id": "SV-215410",
+  "rule_revision": "991589",
+  "group_id": "V-215410",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "AIX must be configured to only boot from the system boot device.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ability to boot from removable media is the same as being able to boot into single user or maintenance mode without a password. This ability could allow a malicious user to boot the system and perform changes possibly compromising or damaging the system. It could also allow the system to be used for malicious purposes by a malicious anonymous user.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the system is configured to boot from devices other than the system startup media by running command: \n# bootlist -m normal -o \n\nThe returned values should be \"hdisk{x}\". \n\nIf the system is setup to boot from a non-hard disk device, this is a finding. \n\nAdditionally, ask the SA if the machine is setup for \"multi-boot\" in the SMS application. If multi-boot is enabled, the firmware will stop at boot time and request which image to boot from the user. \n\nIf \"multi-boot\" is enabled, this is a finding.",
+  "fix": "Configure the system to only boot from system startup media:\n# bootlist -m normal hdisk<x> \n\nSet \"multi-boot\" to \"off\" in the SMS application.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ability to boot from removable media is the same as being able to boot into single user or maintenance mode without a password. This ability could allow a malicious user to boot the system and perform changes possibly compromising or damaging the system. It could also allow the system to be used for malicious purposes by a malicious anonymous user.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003112",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

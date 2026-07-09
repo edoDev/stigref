@@ -1,0 +1,54 @@
+{
+  "id": "SV-253989r997520_rule",
+  "full_rule_id": "SV-253989r997520_rule",
+  "rule_id": "SV-253989",
+  "rule_revision": "997520",
+  "group_id": "V-253989",
+  "group_title": "SRG-NET-000019-RTR-000008",
+  "title": "The Juniper perimeter router must be configured to protect an enclave connected to an alternate gateway by using an inbound filter that only permits packets with destination addresses within the site's address space.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Enclaves with alternate gateway connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's alternate gateway, the perimeter router could be routing transit data from the internet into the NIPRNet. This could also make the perimeter router vulnerable to a denial-of-service (DoS) attack as well as provide a back door into the NIPRNet. The DOD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an Approved Gateway is secure through filters permitting packets with a destination address belonging to the DOD enclave's address block.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the configuration of each router interface connecting to an alternate gateway.\n\nVerify each permit statement of the ingress filter only permits packets with destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the alternate gateway network service provider. Verify each permit statement \"from\" stanza (filter match conditions) references either the \"destination-address\" or \"destination-prefix-list\" directive. Using prefix lists makes management easier because managing interior addresses must only be configured in one location (the prefix-list) vice many locations (each permitting filter term). For example:\n[edit policy-options]\nprefix-list inside_addresses-ipv4 {\n    <IPv4 subnet / mask>;\n}\nprefix-list inside_addresses-ipv6 {\n    <IPv6 subnet / prefix>;\n}\n[edit firewall]\nfamily inet {\n    filter inbound-ipv4 {\n        <deny terms>;\n        permit-term1 {\n            from {\n                <match conditions>;\n                destination-prefix-list inside_addresses-ipv4;\n            }\n            then accept;\n        }\n        <additional permit terms with a destination address definition>\n    }\n}\nfamily inet6 {\n    filter inbound-ipv6 {\n        <deny terms>;\n        permit-term1 {\n            from {\n                <match conditions>;\n                destination-prefix-list inside_addresses-ipv6;\n            }\n            then accept;\n        }\n        <additional permit terms with a destination address definition>\n    }\n}\n\nVerify the filter is applied inbound on exterior-facing interfaces. For example:\n[edit interfaces]\n<interface name> {\n    unit <number> {\n        family inet {\n            filter {\n                input inbound-ipv4;\n            }\n            address <IPv4 address / mask>;\n        }\n        family inet6 {\n            filter {\n                input inbound-ipv6;\n            }\n            address <IPv6 address / prefix>;\n        }\n    }\n}\n\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter.\n\nIf the ingress filter permits packets with addresses other than those specified, such as destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the alternate gateway network service provider, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the ingress filter of the perimeter router connected to an alternate gateway to only permit packets with destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the alternate gateway network service provider. For example:\n\nset policy-options prefix-list inside_addresses-ipv4 <IPv4 subnet / mask>\nset policy-options prefix-list inside_addresses-ipv6 <IPv6 subnet / prefix>\n\nset firewall family inet filter inbound-ipv4 <deny terms>\nset firewall family inet filter inbound-ipv4 <permit term> from <match conditions>\nset firewall family inet filter inbound-ipv4 <permit term> from destination-prefix-list inside_addresses-ipv4\nset firewall family inet filter inbound-ipv4 <permit term> then accept\n\nset firewall family inet6 filter inbound-ipv6 <deny terms>\nset firewall family inet6 filter inbound-ipv6 <permit term> from <match conditions>\nset firewall family inet6 filter inbound-ipv6 <permit term> from destination-prefix-list inside_addresses-ipv6\nset firewall family inet6 filter inbound-ipv6 <permit term> then accept",
+  "ccis": [
+    "CCI-001414",
+    "CCI-004866"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enclaves with alternate gateway connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's alternate gateway, the perimeter router could be routing transit data from the internet into the NIPRNet. This could also make the perimeter router vulnerable to a denial-of-service (DoS) attack as well as provide a back door into the NIPRNet. The DOD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an Approved Gateway is secure through filters permitting packets with a destination address belonging to the DOD enclave's address block.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

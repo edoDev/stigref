@@ -1,0 +1,54 @@
+{
+  "id": "SV-255265r961863_rule",
+  "full_rule_id": "SV-255265r961863_rule",
+  "rule_id": "SV-255265",
+  "rule_revision": "961863",
+  "group_id": "V-255265",
+  "group_title": "SRG-APP-000516-WSR-000174",
+  "title": "SSMC web server must enable strict two-factor authentication for access to the webUI.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Accounts secured with only a password are subject to multiple forms of attack, from brute force, to social engineering. By enforcing strict two-factor authentication, this reduces the risk of account compromise by requiring an additional factor that is not a password.\nStrict two-factor authentication is enabled by default. However, this is enforced only when two-factor authentication is configured and active. This blocks access to web administrator console for ssmcadmin as this is a local account authenticated using password credentials. To allow access to administrator console, disable this strict two-factor authentication setting.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SSMC is configured to enforce strict two-factor authentication by doing the following:\n\n1. Log on to SSMC appliance as ssmcadmin.\n\n2. Navigate to the Advanced Features section of the TUI by pressing \"9\" then \"2\".\n\nIf the Advanced Features sections displays \"Enable strict two-factor authentication\", this is a finding.\n\n3. Escape to the bash shell by pressing \"X\".\n\n4. Check the two-factor authentication property values in the /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties file with the following command:\n\n$ grep ^security.twofactor /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties\nsecurity.twofactor.strict = true\nsecurity.twofactor.enabled = true\n\nIf the properties for \"security.twofactor.strict\" and \"security.twofactor.enabled\" are not set to \"true\" or are missing, this is a finding.",
+  "fix": "Configure SSMC to enforce strict two-factor authentication by doing the following:\n\n1. Log on to SSMC appliance as ssmcadmin.\n\n2. Navigate to the Advanced Features section of the TUI by pressing \"9\" then \"2\". Press \"1\"  to \"Enable strict two-factor authentication\" and \"Y\" to confirm.\n\n3. Escape to the bash shell by pressing \"X\".\n\n4. Enable and enforce strict two-factor authentication by setting these two properties in /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties:\n\nsecurity.twofactor.enabled = true\nsecurity.twofactor.strict = true",
+  "ccis": [
+    "CCI-000765",
+    "CCI-000766"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Accounts secured with only a password are subject to multiple forms of attack, from brute force, to social engineering. By enforcing strict two-factor authentication, this reduces the risk of account compromise by requiring an additional factor that is not a password.\nStrict two-factor authentication is enabled by default. However, this is enforced only when two-factor authentication is configured and active. This blocks access to web administrator console for ssmcadmin as this is a local account authenticated using password credentials. To allow access to administrator console, disable this strict two-factor authentication setting.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SSMC-WS-020010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0",
+      "name": "HPE 3PAR SSMC Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0"
+  ]
+}

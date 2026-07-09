@@ -1,0 +1,53 @@
+{
+  "id": "SV-220994r856401_rule",
+  "full_rule_id": "SV-220994r856401_rule",
+  "rule_id": "SV-220994",
+  "rule_revision": "856401",
+  "group_id": "V-220994",
+  "group_title": "SRG-NET-000362-RTR-000109",
+  "title": "The Cisco switch must not be configured to have any zero-touch deployment feature enabled when connected to an operational network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Network devices that are configured via a zero-touch deployment or auto-loading feature can have their startup configuration or image pushed to the device for installation via TFTP or Remote Copy (rcp). Loading an image or configuration file from the network is taking a security risk because the file could be intercepted by an attacker who could corrupt the file, resulting in a denial of service.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the device configuration to determine if auto-configuration or zero-touch deployment via Cisco Networking Services (CNS) is enabled. \n\nAuto-Configuration Example:\n\nversion 15.0\nservice config\n…\n…\n…\nboot-start-marker\nboot network tftp://x.x.x.x/R5-config\nboot-end-marker\n\nCNS Zero-Touch Example:\n\ncns trusted-server config x.x.x.x\ncns trusted-server image x.x.x.x\ncns config initial x.x.x.x 80\ncns exec 80\ncns image\n\nIf a configuration auto-loading feature or zero-touch deployment feature is enabled, this is a finding. \n\nNote: Auto-configuration or zero-touch deployment features can be enabled when the switch is offline for the purpose of image loading or building out the configuration. In addition, this would not be applicable to the provisioning of virtual switches via a software-defined network (SDN) orchestration system.",
+  "fix": "Disable configuration auto-loading if enabled using the following commands:\n\nSW1(config)#no boot network\nSW1(config)#no service config\n\nDisable CNS zero-touch deployment if enabled as shown in the example below:\n\nSW2(config)#no cns config initial\nSW2(config)#no cns exec\nSW2(config)#no cns image\nSW2(config)#no cns trusted-server config x.x.x.x\nSW2(config)#no cns trusted-server image x.x.x.x",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Network devices that are configured via a zero-touch deployment or auto-loading feature can have their startup configuration or image pushed to the device for installation via TFTP or Remote Copy (rcp). Loading an image or configuration file from the network is taking a security risk because the file could be intercepted by an attacker who could corrupt the file, resulting in a denial of service.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887",
+      "name": "Cisco IOS XE Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887"
+  ]
+}

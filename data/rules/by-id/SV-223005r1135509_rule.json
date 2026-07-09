@@ -1,0 +1,53 @@
+{
+  "id": "SV-223005r1135509_rule",
+  "full_rule_id": "SV-223005r1135509_rule",
+  "rule_id": "SV-223005",
+  "rule_revision": "1135509",
+  "group_id": "V-223005",
+  "group_title": "SRG-APP-000516-AS-000237",
+  "title": "ENFORCE_ENCODING_IN_GET_WRITER must be set to true.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Some clients try to guess the character encoding of text media when the mandated default of ISO-8859-1 should be used. Some browsers will interpret as UTF-7 when the characters are safe for ISO-8859-1. This can create the potential for a XSS attack. To defend against this, enforce_encoding_in_get_writer must be set to true.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the Tomcat server as a privileged user, run the following command:\n\nsudo grep -i  enforce_encoding /etc/systemd/system/tomcat.service \n\nIf there are no results, or if the org.apache.catalina.connector.Response.ENFORCE_ENCODING_IN_GET_WRITER is not =\"true\", this is a finding.",
+  "fix": "From the Tomcat server as a privileged user: \n\nEdit the /etc/systemd/system/tomcat.service file, and either add or edit the org.apache.catalina.connector.Response.ENFORCE_ENCODING_IN_GET_WRITER setting.\n\nSet the org.apache.catalina.connector.Response.ENFORCE_ENCODING_IN_GET_WRITER=true \n\nEXAMPLE:\nEnvironment='CATALINA_OPTS -Dorg.apache.catalina.connector.Response.ENFORCE_ENCODING_IN_GET_WRITER=true'\n\nRestart the Tomcat server:\nsudo systemctl restart tomcat\nsudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Some clients try to guess the character encoding of text media when the mandated default of ISO-8859-1 should be used. Some browsers will interpret as UTF-7 when the characters are safe for ISO-8859-1. This can create the potential for a XSS attack. To defend against this, enforce_encoding_in_get_writer must be set to true.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-001690",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

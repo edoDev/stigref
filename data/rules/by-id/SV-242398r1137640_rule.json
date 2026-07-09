@@ -1,0 +1,53 @@
+{
+  "id": "SV-242398r1137640_rule",
+  "full_rule_id": "SV-242398r1137640_rule",
+  "rule_id": "SV-242398",
+  "rule_revision": "1137640",
+  "group_id": "V-242398",
+  "group_title": "SRG-APP-000033-CTR-000100",
+  "title": "Kubernetes DynamicAuditing must not be enabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting the audit data from change or deletion is important when an attack occurs. One way an attacker can cover their tracks is to change or delete audit records. This will either make the attack unnoticeable or make it more difficult to investigate how the attack took place and what changes were made. The audit data can be protected through audit log file protections and user authorization.\n\nOne way for an attacker to thwart these measures is to send the audit logs to another source and filter the audited results before sending them on to the original target. This can be done in Kubernetes through the configuration of dynamic audit webhooks through the DynamicAuditing flag.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "On the Control Plane, change to the manifests' directory at /etc/kubernetes/manifests and run the command:\ngrep -i feature-gates *\n\nReview the feature-gates setting, if one is returned.\n\nIf the feature-gates setting is available and contains the DynamicAuditing flag set to \"true\", this is a finding.\n\nOn each Control Plane and Worker node, run the command:\nps -ef | grep kubelet\n\nIf the \"--feature-gates\" option exists, this is a finding. \n\nNote the path to the config file (identified by: --config).\n\nInspect the content of the config file:\nIf the \"featureGates\" setting is present and has the \"DynamicAuditing\" flag set to \"true\", this is a finding.",
+  "fix": "On the Control Plane, change to the manifests' directory at /etc/kubernetes/manifests and run the command:\ngrep -i feature-gates *\n\nIf any \"--feature-gates\" setting is available and contains the \"DynamicAuditing\" flag, remove the flag or set it to false.\n\nOn the each Control Plane and Worker Node, run the command:\nps -ef | grep kubelet\n\nRemove the \"--feature-gates option\" if present.\n\nNote the path to the config file (identified by: --config).\n\nEdit the Kubernetes Kubelet config file: \nIf the \"featureGates\" setting is present, remove the \"DynamicAuditing\" flag or set the flag to false.\n\nRestart the kubelet service using the following command:\nservice kubelet restart",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting the audit data from change or deletion is important when an attack occurs. One way an attacker can cover their tracks is to change or delete audit records. This will either make the attack unnoticeable or make it more difficult to investigate how the attack took place and what changes were made. The audit data can be protected through audit log file protections and user authorization.\n\nOne way for an attacker to thwart these measures is to send the audit logs to another source and filter the audited results before sending them on to the original target. This can be done in Kubernetes through the configuration of dynamic audit webhooks through the DynamicAuditing flag.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-000450",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

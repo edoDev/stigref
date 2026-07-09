@@ -1,0 +1,53 @@
+{
+  "id": "SV-270535r1065307_rule",
+  "full_rule_id": "SV-270535r1065307_rule",
+  "rule_id": "SV-270535",
+  "rule_revision": "1065307",
+  "group_id": "V-270535",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "The Oracle _TRACE_FILES_PUBLIC parameter if present must be set to FALSE.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The _TRACE_FILES_PUBLIC parameter is used to make trace files used for debugging database applications and events available to all database users. Use of this capability precludes the discrete assignment of privileges based on job function. Additionally, its use may provide access to external files and data to unauthorized users.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From SQL*Plus:\n\nselect value from v$parameter where name = '_trace_files_public';\n\nIf the value returned is TRUE, this is a finding.\n\nIf the parameter does not exist or is set to FALSE, this is not a finding.",
+  "fix": "From SQL*Plus (shutdown database instance):\n\nshutdown immediate\n\nFrom SQL*Plus (create a pfile from spfile):\n\ncreate pfile='[PATH]init[SID].ora' from spfile;\n\nEdit the init[SID].ora file and remove the following line:\n\n*._trace_files_public=TRUE\n\nFrom SQL*Plus (update the spfile using the pfile):\n\ncreate spfile from pfile='[PATH]init[SID].ora';\n\nFrom SQL*Plus (start the database instance):\n\nstartup\n\nNote: [PATH] depends on the platform (Windows or Unix).\n\nEnsure the file is directed to a writable location.\n\n[SID] is equal to the oracle SID or database instance ID.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The _TRACE_FILES_PUBLIC parameter is used to make trace files used for debugging database applications and events available to all database users. Use of this capability precludes the discrete assignment of privileges based on job function. Additionally, its use may provide access to external files and data to unauthorized users.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-010500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

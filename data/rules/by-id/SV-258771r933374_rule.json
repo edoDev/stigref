@@ -1,0 +1,53 @@
+{
+  "id": "SV-258771r933374_rule",
+  "full_rule_id": "SV-258771r933374_rule",
+  "rule_id": "SV-258771",
+  "rule_revision": "933374",
+  "group_id": "V-258771",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host must configure virtual switch security policies to reject forged transmits.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the virtual machine (VM) operating system changes the Media Access Control (MAC) address, the operating system can send frames with an impersonated source MAC address at any time. This allows an operating system to stage malicious attacks on the devices in a network by impersonating a network adaptor authorized by the receiving network. \n \nThis means the virtual switch does not compare the source and effective MAC addresses. \n \nTo protect against MAC address impersonation, all virtual switches must have forged transmissions set to reject. Reject Forged Transmit can be set at the vSwitch and/or the Portgroup level. Switch-level settings can be overridden at the Portgroup level.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This control addresses ESXi standard switches. Distributed switches are addressed in the vCenter STIG. If there is no standard switch on the ESXi host, this is not applicable.\n\nFrom the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> Networking >> Virtual Switches.\n\nOn each standard switch, click the '...' button next to each port group and select \"Edit Settings\".\n\nClick the \"Security\" tab. Verify that \"Forged transmits\" is set to \"Reject\" and that \"Override\" is not checked.\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\nGet-VirtualSwitch | Get-SecurityPolicy\nGet-VirtualPortGroup | Get-SecurityPolicy | Select-Object *\n\nIf the \"Forged Transmits\" policy is set to \"Accept\" (or \"true\", via PowerCLI) or the security policy inherited from the virtual switch is overridden, this is a finding.",
+  "fix": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> Networking >> Virtual Switches.\n\nOn each standard switch, click \"Edit\" and select Security.\n\nSet \"Forged transmits\" to \"Reject\". Click \"OK\".\n\nFor each port group, click the '...' button and select \"Edit Settings\" then Security.\n\nSet \"Forged transmits\" to \"Reject\" and uncheck the \"Override\" box. Click \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\nGet-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmits $false\nGet-VirtualPortGroup | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmitsInherited $true",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the virtual machine (VM) operating system changes the Media Access Control (MAC) address, the operating system can send frames with an impersonated source MAC address at any time. This allows an operating system to stage malicious attacks on the devices in a network by impersonating a network adaptor authorized by the receiving network. \n \nThis means the virtual switch does not compare the source and effective MAC addresses. \n \nTo protect against MAC address impersonation, all virtual switches must have forged transmissions set to reject. Reject Forged Transmit can be set at the vSwitch and/or the Portgroup level. Switch-level settings can be overridden at the Portgroup level.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000216",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99"
+  ]
+}

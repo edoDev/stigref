@@ -1,0 +1,53 @@
+{
+  "id": "SV-271286r1108474_rule",
+  "full_rule_id": "SV-271286r1108474_rule",
+  "rule_id": "SV-271286",
+  "rule_revision": "1108474",
+  "group_id": "V-271286",
+  "group_title": "SRG-APP-000133-DB-000198",
+  "title": "SQL Server software installation account must be restricted to authorized users.",
+  "severity": "high",
+  "description": "<VulnDiscussion>When dealing with change control issues, it should be noted any changes to the hardware, software, and/or firmware components of the information system and/or application can have significant effects on the overall security of the system. \n\nIf the system were to allow any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process. Accordingly, only qualified and authorized individuals must be allowed access to information system components for purposes of initiating changes, including upgrades and modifications. \n\nDBA and other privileged administrative or application owner accounts are granted privileges that allow actions that can have a great impact on SQL Server security and operation. It is especially important to grant privileged access to only those persons who are qualified and authorized to use them.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the system documentation, obtain the list of accounts authorized to install/update SQL Server. Run the following PowerShell command to list all users who have installed/modified SQL Server 2022 software and compare the list against those persons who are qualified and authorized to use the software. \n \nsl \"C:\\Program files\\Microsoft SQL Server\\160\\Setup Bootstrap\\Log\" \nGet-ChildItem -Recurse | Select-String -Pattern \"LogonUser = \" \n \nIf any accounts are shown that are not authorized in the system documentation, this is a finding.",
+  "fix": "From a command prompt, open lusrmgr.msc. Navigate to \"Users\" and right-click \"Individual User\". Select \"Properties\", then \"Member Of\". \n \nConfigure SQL Server and OS settings and access controls to restrict user access to objects and data that the user is authorized to view/use.",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When dealing with change control issues, it should be noted any changes to the hardware, software, and/or firmware components of the information system and/or application can have significant effects on the overall security of the system. \n\nIf the system were to allow any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process. Accordingly, only qualified and authorized individuals must be allowed access to information system components for purposes of initiating changes, including upgrades and modifications. \n\nDBA and other privileged administrative or application owner accounts are granted privileges that allow actions that can have a great impact on SQL Server security and operation. It is especially important to grant privileged access to only those persons who are qualified and authorized to use them.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLI-22-006700",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b",
+      "name": "Microsoft SQL Server 2022 Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b"
+  ]
+}

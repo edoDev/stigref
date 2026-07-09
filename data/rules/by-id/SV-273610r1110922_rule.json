@@ -1,0 +1,53 @@
+{
+  "id": "SV-273610r1110922_rule",
+  "full_rule_id": "SV-273610r1110922_rule",
+  "rule_id": "SV-273610",
+  "rule_revision": "1110922",
+  "group_id": "V-273610",
+  "group_title": "SRG-NET-000205-RTR-000006",
+  "title": "The RUCKUS ICX BGP router must be configured to reject outbound route advertisements for any prefixes belonging to the IP core.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a nonoptimized path.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify there is a filter defined to block route advertisements for prefixes that belong to the IP core. \n\n1. Verify a prefix-list has been configured containing prefixes belonging to the IP core.\nip prefix-list FILTER_CORE_PREFIXES seq 10 deny x.1.1.0/24 le 32\nip prefix-list FILTER_CORE_PREFIXES seq 20 deny x.1.2.0/24 le 32\nip prefix-list FILTER_CORE_PREFIXES seq 30 permit 0.0.0.0/0 ge 8\n\n2. Verify the prefix-list has been applied to all external BGP peers as shown in the example below:\nrouter bgp\n local-as xxxx\n neighbor x.0.0.1 remote-as yy\n neighbor x.0.0.1 ao mykeychain\n\n address-family ipv4 unicast\n neighbor x.0.0.1 prefix-list FILTER_CORE_PREFIXES out\n\nIf the router is not configured to reject outbound route advertisements for prefixes belonging to the IP core, this is a finding.",
+  "fix": "Configure all eBGP routers to filter outbound route advertisements belonging to the IP core.\n\n1. Configure a prefix-list for containing all customer and local AS prefixes as shown in the example below:\nICX(config)#ip prefix-list FILTER_CORE_PREFIXES seq 10 deny x.1.1.0/24 le 32\nICX(config)#ip prefix-list FILTER_CORE_PREFIXES seq 20 deny x.1.2.0/24 le 32\nICX(config)#ip prefix-list FILTER_CORE_PREFIXES seq 30 permit 0.0.0.0/0 ge 8\n\n2. Apply the prefix-list filter outbound to each neighbor as shown in the following example:\nICX(config)#router bgp\nICX(config-bgp-router)#neighbor x.0.0.1 prefix-list FILTER_CORE_PREFIXES out",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a nonoptimized path.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000430",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

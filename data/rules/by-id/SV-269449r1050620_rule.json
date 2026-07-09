@@ -1,0 +1,53 @@
+{
+  "id": "SV-269449r1050620_rule",
+  "full_rule_id": "SV-269449r1050620_rule",
+  "rule_id": "SV-269449",
+  "rule_revision": "1050620",
+  "group_id": "V-269449",
+  "group_title": "SRG-OS-000433-GPOS-00192",
+  "title": "AlmaLinux OS 9 must implement nonexecutable data to protect its memory from unauthorized code execution.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>ExecShield uses the segmentation feature on all x86 systems to prevent execution in memory higher than a certain address. It writes an address as a limit in the code segment descriptor, to control where code can be executed, on a per-process basis.\n\nWhen the kernel places the memory regions of a process, such as the stack and heap, higher than this address, the hardware prevents execution in that address range.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify ExecShield is enabled on 64-bit AlmaLinux OS 9 systems with the following command:\n\n$ dmesg | grep '[NX|DX]*protection' \n\n[ 0.000000] NX (Execute Disable) protection: active\n\nIf \"dmesg\" does not show \"NX (Execute Disable) protection active\", this is a finding.",
+  "fix": "Update the GRUB 2 bootloader configuration to ensure the noexec kernel parameter is not enabled using the following command:\n\n$ grubby --update-kernel=ALL --remove-args=noexec\n\nEnable the NX bit execute protection in the system BIOS.",
+  "ccis": [
+    "CCI-002824"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ExecShield uses the segmentation feature on all x86 systems to prevent execution in memory higher than a certain address. It writes an address as a limit in the code segment descriptor, to control where code can be executed, on a per-process basis.\n\nWhen the kernel places the memory regions of a process, such as the stack and heap, higher than this address, the hardware prevents execution in that address range.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-044570",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

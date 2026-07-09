@@ -1,0 +1,58 @@
+{
+  "id": "SV-279541r1192389_rule",
+  "full_rule_id": "SV-279541r1192389_rule",
+  "rule_id": "SV-279541",
+  "rule_revision": "1192389",
+  "group_id": "V-279541",
+  "group_title": "SRG-OS-000004-GPOS-00004",
+  "title": "Nutanix OS must audit all account change actions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create an account. Auditing account creation actions provides logging that can be used for forensic purposes.\n\nTo address access requirements, many operating systems may be integrated with enterprise-level authentication/access/auditing mechanisms that meet or exceed access control policy requirements. \n\nSatisfies: SRG-OS-000004-GPOS-00004, SRG-OS-000239-GPOS-00089, SRG-OS-000240-GPOS-00090, SRG-OS-000241-GPOS-00091, SRG-OS-000303-GPOS-00120, SRG-OS-000001-GPOS-00001</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the OS is configured to audit all account change actions.\n\nRun the following command to verify account creation and modification is audited:\n\n$ sudo auditctl -l | grep \"audit_account_changes\"\n\nIf the command does not return the following output, this is a finding.\n\n-w /etc/group -p wa -k audit_account_changes\n-w /etc/passwd -p wa -k audit_account_changes\n-w /etc/gshadow -p wa -k audit_account_changes\n-w /etc/shadow -p wa -k audit_account_changes\n-w /etc/security/opasswd -p wa -k audit_account_changes",
+  "fix": "Configure Nutanix OS to audit all account change actions.\n\n1. For AOS, configure the audit rules.\n\n$ sudo salt-call state.sls security/CVM/auditCVM\n\n2. For Prism Central, configure the audit rules.\n\n$ sudo salt-call state.sls security/PCVM/auditPCVM\n\n3. For Files, configure the audit rules.\n\n$ sudo salt-call state.sls security/AFS/auditAFS\n\n4. For AHV, configure the audit rules.\n\n$ sudo salt-call state.sls security/KVM/auditKVM",
+  "ccis": [
+    "CCI-000018",
+    "CCI-001403",
+    "CCI-001404",
+    "CCI-001405",
+    "CCI-002130",
+    "CCI-000015"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create an account. Auditing account creation actions provides logging that can be used for forensic purposes.\n\nTo address access requirements, many operating systems may be integrated with enterprise-level authentication/access/auditing mechanisms that meet or exceed access control policy requirements. \n\nSatisfies: SRG-OS-000004-GPOS-00004, SRG-OS-000239-GPOS-00089, SRG-OS-000240-GPOS-00090, SRG-OS-000241-GPOS-00091, SRG-OS-000303-GPOS-00120, SRG-OS-000001-GPOS-00001",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000018",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

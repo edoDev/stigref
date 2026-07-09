@@ -1,0 +1,53 @@
+{
+  "id": "SV-269852r1137896_rule",
+  "full_rule_id": "SV-269852r1137896_rule",
+  "rule_id": "SV-269852",
+  "rule_revision": "1137896",
+  "group_id": "V-269852",
+  "group_title": "SRG-NET-000018-RTR-000004",
+  "title": "The Dell OS10 BGP router must be configured to reject inbound route advertisements from a customer edge (CE) router for prefixes that are not allocated to that customer.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>As a best practice, a service provider should only accept customer prefixes that have been assigned to that customer and any peering autonomous systems. A multihomed customer with BGP speaking routers connected to the internet or other external networks could be breached and used to launch a prefix deaggregation attack. Without ingress route filtering of customers, the effectiveness of such an attack could impact the entire IP core and its customers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that there are filters defined to only accept routes for prefixes that belong to specific customers. \n\nThe prefix filter must be referenced inbound on the appropriate BGP neighbor statement.\n\nStep 1: Verify prefix lists have been configured for each customer containing prefixes that belong to that customer.\n\nOS10# show running-configuration prefix-list\n!\n...\nip prefix-list PREFIX_FILTER_CUST1 seq 5 permit 50.10.10.0/24 le 32\nip prefix-list PREFIX_FILTER_CUST1 seq 10 deny 0.0.0.0/0 ge 8\nip prefix-list PREFIX_FILTER_CUST2 seq 5 permit 60.10.10.0/24 le 32\nip prefix-list PREFIX_FILTER_CUST2 seq 10 deny 0.0.0.0/0 ge 8\n...\n\nStep 2: Verify the route map applied to the external neighbors references the configured prefix list shown above.\n\nOS10# show running-configuration route-map\n!\nroute-map PREFIX_FILTER_CUST1_MAP permit 50\n match ip address prefix-list PREFIX_FILTER_CUST1\n!\nroute-map PREFIX_FILTER_CUST2_MAP permit 60\n match ip address prefix-list PREFIX_FILTER_CUST2\n! \n\nStep 3: Verify the route map applied to the external neighbors references the appropriate route maps shown above.\n \n!\nrouter bgp 10\n !\n neighbor 50.1.1.1\n  !\n  address-family ipv4 unicast\n   route-map PREFIX_FILTER_CUST1_MAP in\n neighbor 60.1.1.1\n  !\n  address-family ipv4 unicast\n   route-map PREFIX_FILTER_CUST2_MAP in\n\nIf the router is not configured to reject inbound route advertisements from each CE router for prefixes that are not allocated to that customer, this is a finding.",
+  "fix": "Configure all eBGP routers to reject inbound route advertisements from a CE router for prefixes that are not allocated to that customer.\n\nStep 1: Configure a prefix list for each customer containing prefixes belonging to each.\n\nOS10(config)# ip prefix-list PREFIX_FILTER_CUST1 seq 5 permit 50.10.10.0/24 le 32\nOS10(config)# ip prefix-list PREFIX_FILTER_CUST1 seq 10 deny 0.0.0.0/0 ge 8\nOS10(config)# ip prefix-list PREFIX_FILTER_CUST2 seq 5 permit 60.10.10.0/24 le 32\nOS10(config)# ip prefix-list PREFIX_FILTER_CUST2 seq 10 deny 0.0.0.0/0 ge 8\n\nStep 2: Configure the route map referencing the configured prefix list.\n\nOS10(config)# route-map PREFIX_FILTER_CUST1_MAP 50\nOS10(config-route-map)# match ip address prefix-list PREFIX_FILTER_CUST1\nOS10(config-route-map)# exit\nOS10(config)# route-map PREFIX_FILTER_CUST2_MAP 50\nOS10(config-route-map)# match ip address prefix-list PREFIX_FILTER_CUST2\nOS10(config-route-map)# exit\n\nStep 3: Apply the route-map inbound to each external BGP neighbor.\n\nOS10(config)# router bgp 10\nOS10(config-router-bgp-10)# neighbor 50.1.1.1\nOS10(config-router-neighbor)# address-family ipv4 unicast\nOS10(config-router-bgp-neighbor-af)# route-map PREFIX_FILTER_CUST1_MAP in\nOS10(config-router-bgp-neighbor-af)# exit\nOS10(config-router-neighbor)# exit\nOS10(config-router-bgp-10)# neighbor 60.1.1.1\nOS10(config-router-neighbor)# address-family ipv4 unicast\nOS10(config-router-bgp-neighbor-af)# route-map PREFIX_FILTER_CUST2_MAP in\nOS10(config-router-bgp-neighbor-af)# exit\nOS10(config-router-neighbor)# exit\nOS10(config-router-bgp-10)# exit",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "As a best practice, a service provider should only accept customer prefixes that have been assigned to that customer and any peering autonomous systems. A multihomed customer with BGP speaking routers connected to the internet or other external networks could be breached and used to launch a prefix deaggregation attack. Without ingress route filtering of customers, the effectiveness of such an attack could impact the entire IP core and its customers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

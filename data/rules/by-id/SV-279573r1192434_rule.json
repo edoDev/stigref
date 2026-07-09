@@ -1,0 +1,56 @@
+{
+  "id": "SV-279573r1192434_rule",
+  "full_rule_id": "SV-279573r1192434_rule",
+  "rule_id": "SV-279573",
+  "rule_revision": "1192434",
+  "group_id": "V-279573",
+  "group_title": "SRG-OS-000359-GPOS-00146",
+  "title": "Nutanix OS must configure redundant United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DOD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).",
+  "severity": "low",
+  "description": "<VulnDiscussion>Nutanix OS must compare internal information system clocks at least every 24 hours with a server synchronized to one of the redundant USNO time servers, or a time server designated for the appropriate DOD network (NIPRNet/SIPRNet), and/or the GPS to synchronize clocks between NetIM components.\n\nSatisfies: SRG-OS-000359-GPOS-00146, SRG-OS-000785-GPOS-00250, SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS is using Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).\n\n1. Verify the \"maxpoll\" option is set to 16 or fewer and is not commented out using the following command.\n\n$ sudo grep maxpoll /etc/chrony.conf\nserver 0.us.pool.ntp.mil maxpoll 10 iburst\n\n2. Verify the \"chrony.conf\" file is configured to an authoritative DOD time source using the following command.\n\n$ sudo grep -i server /etc/chrony.conf\nserver 0.us.pool.ntp.mil\n\nIf the parameter \"server\" is not set to an authoritative DOD time source, this is a finding.",
+  "fix": "Run the following command to add a list of DOD-approved NTP servers.\n\n$ ncli cluster add-to-ntp-servers servers=IP_1,IP_2,IP_3",
+  "ccis": [
+    "CCI-001890",
+    "CCI-004922",
+    "CCI-004923",
+    "CCI-004926"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Nutanix OS must compare internal information system clocks at least every 24 hours with a server synchronized to one of the redundant USNO time servers, or a time server designated for the appropriate DOD network (NIPRNet/SIPRNet), and/or the GPS to synchronize clocks between NetIM components.\n\nSatisfies: SRG-OS-000359-GPOS-00146, SRG-OS-000785-GPOS-00250, SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000113",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

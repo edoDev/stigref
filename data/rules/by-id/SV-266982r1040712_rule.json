@@ -1,0 +1,53 @@
+{
+  "id": "SV-266982r1040712_rule",
+  "full_rule_id": "SV-266982r1040712_rule",
+  "rule_id": "SV-266982",
+  "rule_revision": "1040712",
+  "group_id": "V-266982",
+  "group_title": "SRG-NET-000371-VPN-001640",
+  "title": "AOS, when used as an IPsec VPN Gateway, must specify Perfect Forward Secrecy (PFS) during Internet Key Exchange (IKE) negotiation.",
+  "severity": "high",
+  "description": "<VulnDiscussion>PFS generates each new encryption key independently from the previous key. Without PFS, compromise of one key will compromise all communications.\n\nThe phase 2 (Quick Mode) Security Association (SA) is used to create an IPsec session key. Hence, its rekey or key regeneration procedure is very important. The phase 2 rekey can be performed with or without Perfect Forward Secrecy (PFS). With PFS, every time a new IPsec Security Association is negotiated during the Quick Mode, a new Diffie-Hellman (DH) exchange occurs. The new DH shared secret will be included with original keying material (SYKEID_d, initiator nonce, and responder nonce} from phase 1 for generating a new IPsec session key. If PFS is not used, the IPsec session key will always be completely dependent on the original keying material from the Phase-1. Hence, if an older key is compromised at any time, it is possible that all new keys may be compromised.\n\nThe DH exchange is performed in the same manner as was done in phase 1 (Main or Aggressive Mode). However, the phase 2 exchange is protected by encrypting the phase 2 packets with the key derived from the phase 1 negotiation. Because DH negotiations during phase 2 are encrypted, the new IPsec session key has an added element of secrecy.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration with the following command: \nshow crypto-local ipsec-map\n \nIf each active IPsec map does not show PFS enabled, this is a finding.",
+  "fix": "Configure AOS with the following commands:\nconfigure terminal\ncrypto-local ipsec-map <map name> <priority #>\nset pfs group 19\nexit\nwrite memory",
+  "ccis": [
+    "CCI-002418"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "PFS generates each new encryption key independently from the previous key. Without PFS, compromise of one key will compromise all communications.\n\nThe phase 2 (Quick Mode) Security Association (SA) is used to create an IPsec session key. Hence, its rekey or key regeneration procedure is very important. The phase 2 rekey can be performed with or without Perfect Forward Secrecy (PFS). With PFS, every time a new IPsec Security Association is negotiated during the Quick Mode, a new Diffie-Hellman (DH) exchange occurs. The new DH shared secret will be included with original keying material (SYKEID_d, initiator nonce, and responder nonce} from phase 1 for generating a new IPsec session key. If PFS is not used, the IPsec session key will always be completely dependent on the original keying material from the Phase-1. Hence, if an older key is compromised at any time, it is possible that all new keys may be compromised.\n\nThe DH exchange is performed in the same manner as was done in phase 1 (Main or Aggressive Mode). However, the phase 2 exchange is protected by encrypting the phase 2 packets with the key derived from the phase 1 negotiation. Because DH negotiations during phase 2 are encrypted, the new IPsec session key has an added element of secrecy.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-VN-001640",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a",
+      "name": "HPE Aruba Networking AOS VPN Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a"
+  ]
+}

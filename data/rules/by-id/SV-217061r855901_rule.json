@@ -1,0 +1,53 @@
+{
+  "id": "SV-217061r855901_rule",
+  "full_rule_id": "SV-217061r855901_rule",
+  "rule_id": "SV-217061",
+  "rule_revision": "855901",
+  "group_id": "V-217061",
+  "group_title": "SRG-NET-000362-RTR-000118",
+  "title": "The Juniper BGP router must be configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration to determine if it is compliant with this requirement.\n\nVerify that a policy statement has been configured to reject prefixes longer than /24 or the least significant prefixes issued to the customers as shown in the example below.\n\npolicy-options {\n    …\n    …\n    …\n    }\n    policy-statement NO_LONG_PREFIXES {\n        from {\n            route-filter 0.0.0.0/0 prefix-length-range /25-/32 reject;\n        }\n    }\n\nNote: It may be necessary to configure separate policy statements depending on the address space issued to each customer.\n\nVerify that there is an import statement referencing the policy statement to filter prefix length.\n\nprotocols {\n    bgp {\n        …\n        …\n        …\n        }\n        group CUST1 {\n            type external;\n            import [ FILTER_CUST1_ROUTES NO_LONG_PREFIXES ];\n            peer-as 55;\n            neighbor x.x.x.x;\n            neighbor x.x.x.x;\n        }\n        group CUST2 {\n            type external;\n            import [ FILTER_CUST1_ROUTES NO_LONG_PREFIXES ];\n            peer-as 44;\n            neighbor x.x.x.x;\n            neighbor x.x.x.x;\n        }\n\nIf the router is not configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer, this is a finding.",
+  "fix": "Configure the router to limit the prefix size on any route advertisement to /24 or the least significant prefixes issued to the customer.\n\nConfigure a route filter to reject any prefix that is longer than /24.\n\n[edit policy-options]\nset policy-statement NO_LONG_PREFIXES from route-filter 0.0.0.0/0 prefix-length-range /25-/32 reject\n\nApply the policy statement to the BGP customer groups.\n\n[edit protocols bgp group CUST1]\nset import NO_LONG_PREFIXES\n[edit protocols bgp group CUST2]\nset import NO_LONG_PREFIXES",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000550",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-268174r1131156_rule",
+  "full_rule_id": "SV-268174r1131156_rule",
+  "rule_id": "SV-268174",
+  "rule_revision": "1131156",
+  "group_id": "V-268174",
+  "group_title": "SRG-OS-000118-GPOS-00060",
+  "title": "NixOS must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Inactive identifiers pose a risk to systems and applications because attackers may exploit an inactive identifier and potentially obtain undetected access to the system. Owners of inactive accounts will not notice if unauthorized access to their user account has been obtained.\n\nOperating systems need to track periods of inactivity and disable application identifiers after 35 days of inactivity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS disables account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity with the following command:\n\n$ grep -i inactive /etc/default/useradd\n\n    INACTIVE=35\n\nIf INACTIVE is not set to 35 or less, or is missing or commented out, this is a finding.",
+  "fix": "Configure NixOS to disable inactive users.\n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\nEnsure the lib functions are available:\n { config, lib, ... }:\n\n environment.etc.\"/default/useradd\".text = lib.mkForce\n   ''\n    INACTIVE=35\n   '';\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-003627"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Inactive identifiers pose a risk to systems and applications because attackers may exploit an inactive identifier and potentially obtain undetected access to the system. Owners of inactive accounts will not notice if unauthorized access to their user account has been obtained.\n\nOperating systems need to track periods of inactivity and disable application identifiers after 35 days of inactivity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-001930",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

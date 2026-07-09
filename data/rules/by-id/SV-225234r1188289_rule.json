@@ -1,0 +1,53 @@
+{
+  "id": "SV-225234r1188289_rule",
+  "full_rule_id": "SV-225234r1188289_rule",
+  "rule_id": "SV-225234",
+  "rule_revision": "1188289",
+  "group_id": "V-225234",
+  "group_title": "SRG-APP-000516",
+  "title": ".NET default proxy settings must be reviewed and approved.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The .Net framework can be configured to utilize a different proxy or altogether bypass the default proxy settings in the client's browser.  This may lead to the framework using a proxy that is not approved for use.  If the proxy is malicious, this could lead to a loss of application integrity and confidentiality.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Open Windows explorer and search for all \"*.exe.config\" and \"machine.config\" files.\n\nThe referenced file is in the WinSxS directory (original source component file used when the Windows component was installed).\n\nIf the files under WinSxS are read-only and cannot be modified, this is not a finding.\n\nSearch each file for the \"defaultProxy\" element.\n\n<defaultProxy\n  enabled=\"true|false\"\n  useDefaultCredentials=\"true|false\"\n  <bypasslist> … </bypasslist>\n  <proxy> … </proxy>\n  <module> … </module>\n/>\n\nIf the \"defaultProxy\" setting \"enabled=false\" or if the \"bypasslist\", \"module\", or \"proxy\" child elements have configuration entries and there are no documented approvals from the authorizing official (AO), this is a finding.\n\nIf the \"defaultProxy\" element is empty or if \"useSystemDefault =True” then the framework is using default browser settings, this is not a finding.",
+  "fix": "Open Windows explorer and search for all \"*.exe.config\" and \"machine.config\" files.\n\nSearch each file for the \"defaultProxy\" element.\n\nClear the values contained in the \"defaultProxy\" element, and the \"bypasslist\", \"module\", and \"proxy\" child elements.\n\nThe IAO must provide documented approvals of any non-default proxy servers.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The .Net framework can be configured to utilize a different proxy or altogether bypass the default proxy settings in the client's browser.  This may lead to the framework using a proxy that is not approved for use.  If the proxy is malicious, this could lead to a loss of application integrity and confidentiality.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPNET0066",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-dotnet-framework-4-0-security-technical-implementation-guide-v2r8-cf94354a",
+      "name": "Microsoft DotNet Framework 4.0 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-dotnet-framework-4-0-security-technical-implementation-guide-v2r8-cf94354a"
+  ]
+}

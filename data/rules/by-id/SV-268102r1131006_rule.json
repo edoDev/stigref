@@ -1,0 +1,53 @@
+{
+  "id": "SV-268102r1131006_rule",
+  "full_rule_id": "SV-268102r1131006_rule",
+  "rule_id": "SV-268102",
+  "rule_revision": "1131006",
+  "group_id": "V-268102",
+  "group_title": "SRG-OS-000046-GPOS-00022",
+  "title": "NixOS must notify the system administrator (SA) and information system security officer (ISSO) (at a minimum) when allocated audit record storage volume reaches 90 percent utilization.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If security personnel are not notified immediately when storage volume reaches 90 percent utilization, they are unable to plan for audit record storage capacity expansion.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS notifies the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 90 percent of the repository maximum audit record storage capacity with the following command:\n\n$ sudo grep -w admin_space_left_action /etc/audit/auditd.conf\n\nadmin_space_left_action = syslog\n\nIf the \"admin_space_left_action\" parameter is missing, commented out, or set to blanks, this is a finding.\n\nIf the \"admin_space_left_action\" is set to \"syslog\", the system logs the event, but does not generate a notification, this is a finding.\n\nIf the \"admin_space_left_action\" is set to \"exec\", the system executes a designated script. If this script does not inform the SA of the event, this is a finding.\n\nIf the \"admin_space_left_action\" is set to \"email\" check the value of the \"action_mail_acct\" parameter with the following command:\n\n$ sudo grep action_mail_acct /etc/audit/auditd.conf\n\naction_mail_acct root@localhost\n\nThe \"action_mail_acct\" parameter, if missing, defaults to \"root\". If the \"action_mail_acct\" parameter is not set to the email address of the SA and/or ISSO, this is a finding. \n\nNote: If the email address of the SA is on a remote system, a mail package must be available.",
+  "fix": "Configure NixOS to initiate an action to notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 90 percent of the repository maximum audit record storage capacity.\n\nIf the space_left_action parameter is set to \"syslog\", make sure the event being logged generates a notification to the SA and ISSO.\n\nIf the space_left_action parameter is set to \"exec\", make sure the command being execute notifies the SA and ISSO.\n\nIf the space_left_action parameter is set to \"email\", set the action_mail_acct parameter to an email address for the SA and ISSO.\n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\n  admin_space_left_action = syslog\n\nFor example, an updated configuration of 'environment.etc.\"audit/auditd.conf\".text' would look like the following ('...' denoting that the 'environment.etc.\"audit/auditd.conf\".text' configuration may have other options configured):\n\n environment.etc.\"audit/auditd.conf\".text = [\n  ''\n   ...\n   admin_space_left_action = syslog\n   ...\n  \n ''\n];\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-000139"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If security personnel are not notified immediately when storage volume reaches 90 percent utilization, they are unable to plan for audit record storage capacity expansion.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000410",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-216352r1155799_rule",
+  "full_rule_id": "SV-216352r1155799_rule",
+  "rule_id": "SV-216352",
+  "rule_revision": "1155799",
+  "group_id": "V-216352",
+  "group_title": "SRG-OS-000480",
+  "title": "Consecutive login attempts for SSH must be limited to 3.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Setting the authentication login limit to a low value will disconnect the attacker and force a reconnect, which severely limits the speed of such brute-force attacks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if consecutive login attempts are limited to 3, and that they are logged.\n\n# grep \"^MaxAuthTries\" /etc/ssh/sshd_config\n\nIf the output of this command is not \"MaxAuthTries 6\" and \"MaxAuthTriesLog 6\" this is a finding.\n\nNote: Solaris SSH MaxAuthTries of 6 maps to 3 actual failed attempts.",
+  "fix": "The root role is required.\n\nModify the sshd_config file.\n\n# pfedit /etc/ssh/sshd_config\n\nLocate the lines containing:\n\nMaxAuthTries\nMaxAuthTriesLog\n\nChange them to:\n\nMaxAuthTries 6\nMaxAuthTriesLog 6\n\nRestart the SSH service.\n\n# svcadm restart svc:/network/ssh\n\nNote: Solaris SSH MaxAuthTries of 6 maps to 3 actual failed attempts.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Setting the authentication login limit to a low value will disconnect the attacker and force a reconnect, which severely limits the speed of such brute-force attacks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040340",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

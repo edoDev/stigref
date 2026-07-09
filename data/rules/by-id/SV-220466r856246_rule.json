@@ -1,0 +1,53 @@
+{
+  "id": "SV-220466r856246_rule",
+  "full_rule_id": "SV-220466r856246_rule",
+  "rule_id": "SV-220466",
+  "rule_revision": "856246",
+  "group_id": "V-220466",
+  "group_title": "SRG-NET-000362-RTR-000122",
+  "title": "The Cisco multicast Designated switch (DR) must be configured to limit the number of mroute states resulting from Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Host Membership Reports.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The current multicast paradigm can let any host join any multicast group at any time by sending an IGMP or MLD membership report to the DR. In a Protocol Independent Multicast (PIM) Sparse Mode network, the DR will send a PIM Join message for the group to the RP. \n\nWithout any form of admission control, this can pose a security risk to the entire multicast domain, specifically the multicast switches along the shared tree from the DR to the RP that must maintain the mroute state information for each group join request. Hence, it is imperative that the DR is configured to limit the number of mroute state information that must be maintained to mitigate the risk of IGMP or MLD flooding.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the DR configuration to verify that it is limiting the number of mroute states via IGMP or MLD. \n\nVerify IGMP limits have been configured globally or on each host-facing Layer 3 and VLAN interface via the ip igmp limit command as shown in the example below: \n\ninterface Vlan3 \n ip address 10.3.3.3 255.255.255.0 \n… \n … \n … \nip igmp limit nn \n\nIf the DR is not limiting multicast join requests via IGMP or MLD on a global or interfaces basis, this is a finding.",
+  "fix": "Configure the DR on a global or interface basis to limit the number of mroute states resulting from IGMP or MLD membership reports. \n\nSW2(config)#int vlan3 \nSW2(config-if)#ip igmp limit 2",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The current multicast paradigm can let any host join any multicast group at any time by sending an IGMP or MLD membership report to the DR. In a Protocol Independent Multicast (PIM) Sparse Mode network, the DR will send a PIM Join message for the group to the RP. \n\nWithout any form of admission control, this can pose a security risk to the entire multicast domain, specifically the multicast switches along the shared tree from the DR to the RP that must maintain the mroute state information for each group join request. Hence, it is imperative that the DR is configured to limit the number of mroute state information that must be maintained to mitigate the risk of IGMP or MLD flooding.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000880",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-switch-rtr-security-technical-implementation-guide-v3r3-92115109",
+      "name": "Cisco IOS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-switch-rtr-security-technical-implementation-guide-v3r3-92115109"
+  ]
+}

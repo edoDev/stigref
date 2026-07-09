@@ -1,0 +1,53 @@
+{
+  "id": "SV-265986r1024860_rule",
+  "full_rule_id": "SV-265986r1024860_rule",
+  "rule_id": "SV-265986",
+  "rule_revision": "1024860",
+  "group_id": "V-265986",
+  "group_title": "SRG-APP-000516-DNS-000090",
+  "title": "The digital signature algorithm used for DNSSEC-enabled zones must be set to use RSA/SHA256 or RSA/SHA512.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The choice of digital signature algorithm will be based on recommended algorithms in well-known standards. NIST's Digital Signature Standard (DSS) (FIPS186) provides three algorithm choices:\n- Digital Signature Algorithm (DSA);\n- RSA;\n- Elliptic Curve DSA (ECDSA).\n\nOf these three algorithms, RSA and DSA are more widely available, and hence are considered candidates of choice for DNSSEC. In terms of performance, both RSA and DSA have comparable signature generation speeds, but DSA is much slower for signature verification. Hence, RSA is the recommended algorithm as far as this guideline is concerned. RSA with SHA-1 is currently the only cryptographic algorithm mandated to be implemented with DNSSEC, although other algorithm suites (e.g., RSA/SHA-256, ECDSA) are also specified. It can be expected that name servers and clients will be able to use the RSA algorithm at the minimum. It is suggested that at least one ZSK for a zone use the RSA algorithm.\n\nSHA-256, SHA-384, and SHA-512 are approved hash algorithms to be used as part of the algorithm suite for generating digital signatures. It is expected that there will be support for Elliptic Curve Cryptography in the DNSSEC.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify automatically managed zone-signing keys for BIG-IP DNS to use in the DNSSEC authentication process have been configured.\n\nOn the Main tab, click \"DNS Delivery Keys DNSSEC Key List\".\n\nThe DNSSEC Key List screen opens.\n\nIf the Digital signature algorithm used for DNSSEC-enabled zones is not set to use RSA/SHA256 or RSASHA512, this is a finding.",
+  "fix": "Create automatically managed zone-signing keys for BIG-IP DNS to use in the DNSSEC authentication process.\n\n1. On the Main tab, click \"DNS Delivery Keys DNSSEC Key List\". The DNSSEC Key List screen opens.\n2. Click \"Create\". The New DNSSEC Key screen opens.\n3. In the \"Name\" field, type a name for the key. Zone names are limited to 63 characters.\n4. From the \"Type\" list, select \"Zone Signing Key\".\n5. From the \"State\" list, select \"Enabled\".\n6. From the \"Hardware Security Module\" list, select \"None\".\n7. From the \"Algorithm\" list, select the digest algorithm the system uses to generate the key signature. Select RSA/SHA256 or RSA/SHA512.\n8. From the \"Key Management\" list, select \"Automatic\". The Key Settings area displays fields for key configuration.\n9. In the \"Bit Width\" field, type \"1024\".\n10. In the \"TTL\" field, accept the default value of 86400 (the number of seconds in one day.) This value specifies how long a client resolver can cache the key. This value must be less than the difference between the values of the rollover and expiration periods of the key; otherwise, a client can make a query and the system can send a valid key that the client cannot recognize.\n11. For the \"Rollover Period\" setting, in the \"Days\" field, type \"21\".\n12. For the \"Expiration Period\" setting, in the \"Days\" field, type \"30\". Zero seconds indicates not set, and thus the key does not expire.\n13. For the \"Signature Validity Period\" setting, accept the default value of seven days. This value must be greater than the value of the signature publication period. Zero seconds indicates not set, and thus the server verifying the signature never succeeds, because the signature is always expired.\n14. For the \"Signature Publication Period\" setting, accept the default value of four days and 16 hours. This value must be less than the value of the signature validity period. Zero seconds indicates not set, and thus the signature is not cached.\n15. Click \"Finished\".\n\nTo create a standby key for emergency rollover purposes, repeat these steps using a similar name, and select \"Disabled\" from the State list.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The choice of digital signature algorithm will be based on recommended algorithms in well-known standards. NIST's Digital Signature Standard (DSS) (FIPS186) provides three algorithm choices:\n- Digital Signature Algorithm (DSA);\n- RSA;\n- Elliptic Curve DSA (ECDSA).\n\nOf these three algorithms, RSA and DSA are more widely available, and hence are considered candidates of choice for DNSSEC. In terms of performance, both RSA and DSA have comparable signature generation speeds, but DSA is much slower for signature verification. Hence, RSA is the recommended algorithm as far as this guideline is concerned. RSA with SHA-1 is currently the only cryptographic algorithm mandated to be implemented with DNSSEC, although other algorithm suites (e.g., RSA/SHA-256, ECDSA) are also specified. It can be expected that name servers and clients will be able to use the RSA algorithm at the minimum. It is suggested that at least one ZSK for a zone use the RSA algorithm.\n\nSHA-256, SHA-384, and SHA-512 are approved hash algorithms to be used as part of the algorithm suite for generating digital signatures. It is expected that there will be support for Elliptic Curve Cryptography in the DNSSEC.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-DN-300017",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-dns-security-technical-implementation-guide-v1r1-79218d48",
+      "name": "F5 BIG-IP TMOS DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-dns-security-technical-implementation-guide-v1r1-79218d48"
+  ]
+}

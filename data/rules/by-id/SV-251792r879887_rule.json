@@ -1,0 +1,54 @@
+{
+  "id": "SV-251792r879887_rule",
+  "full_rule_id": "SV-251792r879887_rule",
+  "rule_id": "SV-251792",
+  "rule_revision": "879887",
+  "group_id": "V-251792",
+  "group_title": "SRG-APP-000516-NDM-000344",
+  "title": "The NSX-T Manager must obtain its public key certificates from an approved DoD certificate authority.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>For user certificates, each organization obtains certificates from an approved, shared service provider, as required by OMB policy. For Federal agencies operating a legacy public key infrastructure cross-certified with the Federal Bridge Certification Authority at medium assurance or higher, this Certification Authority will suffice.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "NSX-T Manager uses a certificate for each manager and one for the cluster VIP. In some cases these are the same, but each node and cluster VIP certificate must be checked individually.\n\nBrowse to the NSX-T Manager web interface for each node and cluster VIP and view the certificate and its issuer of the website.\n\nor\n\nFrom an NSX-T Manager shell, run the following command(s):\n\n> get certificate api\n> get certificate cluster\n\nSave the output to a .cer file to examine.\n\nIf the certificate the NSX-T Manager web interface or cluster is using is not issued by an approved DoD certificate authority and is not currently valid, this is a finding.",
+  "fix": "Obtain a certificate or certificates signed by an approved DoD certification authority. This can be done individually by generating CSRs through the NSX-T Manager web interface >> System >> Certificates >> CSRs >> Generate CSR or outside of NSX-T if a common manager and cluster certificate is desired.\n\nImport the certificate(s) into NSX-T by doing the following:\n\nFrom the NSX-T Manager web interface, go to System >> Certificates >> Import >> Import Certificate. Provide a name for the certificate and paste the certificates contents and key. Uncheck \"Service Certificate\" and click \"Import\".\n\nAfter import note the ID of the certificate(s).\n\nUsing curl or another REST API client perform the following API calls and replace the certificate IDs noted in the previous steps.\n\nTo replace a managers certificate: POST https://<nsx-mgr>/api/v1/node/services/http?action=apply_certificate&certificate_id=e61c7537-3090-4149-b2b6-19915c20504f\n\nTo replace the cluster certificate: POST https://<nsx-mgr>/api/v1/cluster/api-certificate?action=set_cluster_certificate&certificate_id=d60c6a07-6e59-4873-8edb-339bf75711ac\n\nNote: If an NSX Intelligence appliance is deployed with the NSX Manager cluster, update the NSX Manager node IP, certificate, and thumbprint information that is on the NSX Intelligence appliance. See VMware Knowledge Base article https://kb.vmware.com/s/article/78505 for more information.",
+  "ccis": [
+    "CCI-001159",
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "For user certificates, each organization obtains certificates from an approved, shared service provider, as required by OMB policy. For Federal agencies operating a legacy public key infrastructure cross-certified with the Federal Bridge Certification Authority at medium assurance or higher, this Certification Authority will suffice.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TNDM-3X-000095",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-t-manager-ndm-security-technical-implementation-guide-v1r3-a6224326",
+      "name": "VMware NSX-T Manager NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-t-manager-ndm-security-technical-implementation-guide-v1r3-a6224326"
+  ]
+}

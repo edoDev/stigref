@@ -1,0 +1,53 @@
+{
+  "id": "SV-256362r885697_rule",
+  "full_rule_id": "SV-256362r885697_rule",
+  "rule_id": "SV-256362",
+  "rule_revision": "885697",
+  "group_id": "V-256362",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must configure the vSAN Datastore name to a unique name.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A vSAN Datastore name by default is \"vsanDatastore\". If more than one vSAN cluster is present in vCenter, both datastores will have the same name by default, potentially leading to confusion and manually misplaced workloads.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If no clusters are enabled for vSAN, this is not applicable.\n\nFrom the vSphere Client, go to Host and Clusters.\n\nSelect a vSAN Enabled Cluster >> Datastores.\n\nReview the datastores and identify any datastores with \"vSAN\" as the datastore type.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\nIf($(Get-Cluster | where {$_.VsanEnabled} | Measure).Count -gt 0){\nWrite-Host \"vSAN Enabled Cluster found\"\nGet-Cluster | where {$_.VsanEnabled} | Get-Datastore | where {$_.type -match \"vsan\"}\n}\nelse{\nWrite-Host \"vSAN is not enabled, this finding is not applicable\"\n}\n\nIf vSAN is enabled and a datastore is named \"vsanDatastore\", this is a finding.",
+  "fix": "From the vSphere Client, go to Host and Clusters.\n\nSelect a vSAN Enabled Cluster >> Datastores.\n\nRight-click on the datastore named \"vsanDatastore\" and select \"Rename\".\n\nRename the datastore based on site-specific naming standards.\n\nClick \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\nIf($(Get-Cluster | where {$_.VsanEnabled} | Measure).Count -gt 0){\nWrite-Host \"vSAN Enabled Cluster found\"\n$Clusters = Get-Cluster | where {$_.VsanEnabled} \nForeach ($clus in $clusters){\n $clus | Get-Datastore | where {$_.type -match \"vsan\"} | Set-Datastore -Name $(($clus.name) + \"_vSAN_Datastore\")\n}\n}\nelse{\nWrite-Host \"vSAN is not enabled, this finding is not applicable\"\n}",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A vSAN Datastore name by default is \"vsanDatastore\". If more than one vSAN cluster is present in vCenter, both datastores will have the same name by default, potentially leading to confusion and manually misplaced workloads.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-70-000282",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8",
+      "name": "VMware vSphere 7.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8"
+  ]
+}

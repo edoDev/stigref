@@ -1,0 +1,53 @@
+{
+  "id": "SV-258899r933758_rule",
+  "full_rule_id": "SV-258899r933758_rule",
+  "rule_id": "SV-258899",
+  "rule_revision": "933758",
+  "group_id": "V-258899",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The Photon operating system must generate audit records for all access and modifications to the opasswd file.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without the capability to generate audit records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command to verify an audit rule exists to audit the opasswd file:\n\n# auditctl -l | grep -E /etc/security/opasswd\n\nExpected result:\n\n-w /etc/security/opasswd -p wa -k opasswd\n\nIf the opasswd file is not monitored for access or writes, this is a finding.\n\nNote: This check depends on the \"auditd\" service to be in a running state for accurate results. The \"auditd\" service is enabled in control PHTN-40-000016.",
+  "fix": "Navigate to and open:\n\n/etc/audit/rules.d/audit.STIG.rules\n\nAdd or update the following lines:\n\n-w /etc/security/opasswd -p wa -k opasswd\n\nAt the command line, run the following command to load the new audit rules:\n\n# /sbin/augenrules --load\n\nNote: An \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.\n\nNote: An older \"audit.STIG.rules\" may exist and may reference older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without the capability to generate audit records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000238",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

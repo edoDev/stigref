@@ -1,0 +1,53 @@
+{
+  "id": "SV-242387r1137639_rule",
+  "full_rule_id": "SV-242387r1137639_rule",
+  "rule_id": "SV-242387",
+  "rule_revision": "1137639",
+  "group_id": "V-242387",
+  "group_title": "SRG-APP-000033-CTR-000095",
+  "title": "The Kubernetes Kubelet must have the \"readOnlyPort\" flag disabled.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Kubelet serves a small REST API with read access to port 10255. The read-only port for Kubernetes provides no authentication or authorization security control. Providing unrestricted access on port 10255 exposes Kubernetes pods and containers to malicious attacks or compromise. Port 10255 is deprecated and should be disabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "On each Control Plane and Worker Node, run the command:\nps -ef | grep kubelet\n\nIf the \"--read-only-port\" option exists, this is a finding. \n\nNote the path to the config file (identified by --config).\n\nRun the command:\ngrep -i readOnlyPort <path_to_config_file>\n\nIf the setting \"readOnlyPort\" exists and is not set to \"0\", this is a finding.",
+  "fix": "On each Control Plane and Worker Node, run the command:\nps -ef | grep kubelet\n\nRemove the \"--read-only-port\" option if present.\n\nNote the path to the config file (identified by --config).\n\nEdit the config file: \nSet \"readOnlyPort\" to \"0\" or remove the setting.\n\nRestart the kubelet service using the following command:\nsystemctl daemon-reload && systemctl restart kubelet",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Kubelet serves a small REST API with read access to port 10255. The read-only port for Kubernetes provides no authentication or authorization security control. Providing unrestricted access on port 10255 exposes Kubernetes pods and containers to malicious attacks or compromise. Port 10255 is deprecated and should be disabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-000330",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

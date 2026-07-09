@@ -1,0 +1,53 @@
+{
+  "id": "SV-258886r933719_rule",
+  "full_rule_id": "SV-258886r933719_rule",
+  "rule_id": "SV-258886",
+  "rule_revision": "933719",
+  "group_id": "V-258886",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The Photon operating system must not forward IPv4 or IPv6 source-routed packets.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Source routing is an Internet Protocol mechanism that allows an IP packet to carry information, a list of addresses, that tells a router the path the packet must take. There is also an option to record the hops as the route is traversed.\n\nThe list of hops taken, the \"route record\", provides the destination with a return path to the source. This allows the source (the sending host) to specify the route, loosely or strictly, ignoring the routing tables of some or all of the routers. It can allow a user to redirect network traffic for malicious purposes and should therefore be disabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command to verify source-routed packets are not forwarded:\n\n# /sbin/sysctl -a --pattern \"net.ipv[4|6].conf.(all|default).accept_source_route\"\n\nExpected result:\n\nnet.ipv4.conf.all.accept_source_route = 0\nnet.ipv4.conf.default.accept_source_route = 0\nnet.ipv6.conf.all.accept_source_route = 0\nnet.ipv6.conf.default.accept_source_route = 0\n\nIf the \"accept_source_route\" kernel parameters are not set to \"0\", this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/sysctl.d/zz-stig-hardening.conf\n\nAdd or update the following lines:\n\nnet.ipv4.conf.all.accept_source_route = 0\nnet.ipv4.conf.default.accept_source_route = 0\nnet.ipv6.conf.all.accept_source_route = 0\nnet.ipv6.conf.default.accept_source_route = 0\n\nAt the command line, run the following command to load the new configuration:\n\n# /sbin/sysctl --load /etc/sysctl.d/zz-stig-hardening.conf\n\nNote: If the file zz-stig-hardening.conf does not exist, it must be created.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Source routing is an Internet Protocol mechanism that allows an IP packet to carry information, a list of addresses, that tells a router the path the packet must take. There is also an option to record the hops as the route is traversed.\n\nThe list of hops taken, the \"route record\", provides the destination with a return path to the source. This allows the source (the sending host) to specify the route, loosely or strictly, ignoring the routing tables of some or all of the routers. It can allow a user to redirect network traffic for malicious purposes and should therefore be disabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000223",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

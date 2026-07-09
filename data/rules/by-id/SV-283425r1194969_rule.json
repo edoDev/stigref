@@ -1,0 +1,57 @@
+{
+  "id": "SV-283425r1194969_rule",
+  "full_rule_id": "SV-283425r1194969_rule",
+  "rule_id": "SV-283425",
+  "rule_revision": "1194969",
+  "group_id": "V-283425",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "The HPE Alletra Storage ArcusOS device must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.\n\nSatisfies: SRG-APP-000516-NDM-000336, SRG-APP-000156-NDM-000250, SRG-APP-000177-NDM-000263</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the system is configured to use a primary and secondary authentication server with the following command:\n\ncli% showauthparam\nldap-type      MSAD\naccounts-dn          <accounts dn configuration>\nsuper-map              <super-map configuration>\nedit-map                  <edit-map configuration>\nbrowse-map           <browse-map configuration>\nservice-map           <service-map configuration>\nldap-StartTLS        require\nkerberos-realm       <Kerberos-realm configuration>\nldap-2FA-cert-field  subjectAlt:rfc822Name\nldap-2FA-object-attr mail\nldap-server          <server hostname>\nldap-server          <server hostname>\nldap-ssl-cacert:\n-----BEGIN CERTIFICATE-----\n\nIf the command output does not list authparams for ldap-type, kerberos-realm, accounts-dn, ldap-ssl-cacert, and at least one role map (e.g., super-map), this is a finding. \n\nIf there are not two ldap-server lines, this is a finding.\n\nldap-StartTLS must be set to require, if not, this is a finding.\n\nIf the ldap-reqcert authparam is not set to \"1\", this is a finding.",
+  "fix": "Use the following commands to configure the primary and secondary authentication servers.\n\ncli% setauthparam -f ldap-type <type>  where type is MSAD, RHDS or OPEN.\ncli% setauthparam ldap-server <primary hostname> <secondary hostname>\ncli% setauthparam -f accounts-dn <base of the ad subtree, such as CN=Users,DC=win2k12forest,DC=thisdomain,DC=com>\ncli% setauthparam -f kerberos-realm <Kerberos-realm configuration>\ncli% setauthparam -f ldap-reqcert 1\n\nSet up a super role such as the super role:\ncli% setauthparam -f super-map <customer-assigned name of \"super\" group>\n\nEnable TLS with:\ncli% setauthparam -f ldap-StartTLS require\nor\ncli% setauthparam -f ldap-ssl 1\n\nImport a TLS certificate:\ncli% importcert ldap -f stdin",
+  "ccis": [
+    "CCI-000370",
+    "CCI-001941",
+    "CCI-000187",
+    "CCI-000764",
+    "CCI-000166"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.\n\nSatisfies: SRG-APP-000516-NDM-000336, SRG-APP-000156-NDM-000250, SRG-APP-000177-NDM-000263",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ASMP-ND-001060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-alletra-storage-arcusos-network-device-management-security-technical-impleme-v1r1-cf71affe",
+      "name": "HPE Alletra Storage ArcusOS Network Device Management Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-alletra-storage-arcusos-network-device-management-security-technical-impleme-v1r1-cf71affe"
+  ]
+}

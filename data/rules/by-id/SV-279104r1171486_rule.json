@@ -1,0 +1,53 @@
+{
+  "id": "SV-279104r1171486_rule",
+  "full_rule_id": "SV-279104r1171486_rule",
+  "rule_id": "SV-279104",
+  "rule_revision": "1171486",
+  "group_id": "V-279104",
+  "group_title": "SRG-APP-000516-AS-000237",
+  "title": "The ColdFusion Root Administrator account must have a unique username.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ColdFusion Root Administrator account is an administrative account setup during the installation process. This account has privileges to view, update and delete data within the entire ColdFusion Administrator Console. The account is meant to be used to set up ColdFusion after installation but should only be used in emergency situations once user accounts are created. The account is similar to the Administrator account in Windows or the root account in Linux.\n\nTo help protect the account, the account username should not be admin or administrator. If set up with these usernames, an attacker already knows 50 percent of the information needed to gain access. A unique and not easily guessable username must be used to hinder the discovery of the account credentials.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the ColdFusion Root Administrator username is not set to a default or easily guessable value such as \"admin\" or \"administrator\" (in any case variation).\n\n1. Locate the neo-security.xml file. The file is typically located in the \"lib\" folder under the ColdFusion instance directory.\n\n2. For ColdFusion on Windows:\n\na. Open neo-security.xml in Notepad. Right-click the file and choose \"Open With Notepad\".\nTip: Enable Word Wrap under the \"Format\" menu for easier reading.\n\nb. Navigate to Edit >> Find and search for:\n'admin.userid.root'>\n\nc. Locate the <string> element immediately following this tag.\n<var name='admin.userid.root'><string>Administrator</string></var>\n\n3. For ColdFusion on Linux:\n\na. Navigate to the directory containing neo-security.xml.\n\nb. Run the following command to extract the relevant tag:\ngrep -ohE \"'admin.userid.root'><string>[^<]*</string>\" neo-security.xml\n\nc. Note the username displayed between <string> and </string>.\n\nIf the Root Administrator username is any uppercase or lowercase variation of \"admin\" or \"administrator\" (Examples: admin, Admin, ADmIN, admInistrAtor, Administrator, ADMINISTRATOR), this is a finding.",
+  "fix": "Change the Root Administrator username to a unique value that is not a variation of \"admin\" or \"administrator\".\n\n1. Locate the neo-security.xml file. The file is typically located in the \"lib\" folder under the ColdFusion instance directory.\n\n2. Make a backup copy of the file before making any modifications.\n\n3. For ColdFusion running on Windows:\n\na. Open neo-security.xml in Notepad. Right-click the file and choose \"Open With Notepad\".\nTip: Enable Word Wrap under the \"Format\" menu for easier reading.\n\nb. Navigate to Edit >> Find and search for:\n'admin.userid.root'>\n\nc. Locate the <string> element that contains the Root Administrator username:\n<var name='admin.userid.root'><string>Administrator</string></var>\n\nd. Replace the existing username with a unique name that is not any case variation of \"admin\" or \"administrator\".\n\ne. Save the file. \n\nf. Restart ColdFusion for the changes to take effect.\n\n4. For ColdFusion running on Linux:\n\na. Navigate to the directory containing neo-security.xml.\n\nb. Open the file neo-security.xml in a preferred text editor (e.g., nano, vim).\n\nc. Locate the <var name='admin.userid.root'> tag:\nThe username appears between the <string> and </string> tags\nExample:\n<var name='admin.userid.root'><string>Administrator</string></var>\n\nd. Replace the existing username with a unique name that is not any case variation of \"admin\" or \"administrator\".\n\ne. Save the file.\n\nf. Restart ColdFusion to apply the changes.\n\n5. Validate that the new username is being used and that the system is operating properly. \n\n6. Once validated, securely delete the backup neo-security.xml file created earlier.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ColdFusion Root Administrator account is an administrative account setup during the installation process. This account has privileges to view, update and delete data within the entire ColdFusion Administrator Console. The account is meant to be used to set up ColdFusion after installation but should only be used in emergency situations once user accounts are created. The account is similar to the Administrator account in Windows or the root account in Linux.\n\nTo help protect the account, the account username should not be admin or administrator. If set up with these usernames, an attacker already knows 50 percent of the information needed to gain access. A unique and not easily guessable username must be used to hinder the discovery of the account credentials.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APAS-CF-001015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878",
+      "name": "Adobe ColdFusion Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878"
+  ]
+}

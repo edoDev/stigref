@@ -1,0 +1,54 @@
+{
+  "id": "SV-271735r1091917_rule",
+  "full_rule_id": "SV-271735r1091917_rule",
+  "rule_id": "SV-271735",
+  "rule_revision": "1091917",
+  "group_id": "V-271735",
+  "group_title": "SRG-OS-000433-GPOS-00193",
+  "title": "OL 9 must enable mitigations against processor-based vulnerabilities.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Kernel page-table isolation is a kernel feature that mitigates the Meltdown security vulnerability and hardens the kernel against attempts to bypass kernel address space layout randomization (KASLR).\n\nSatisfies: SRG-OS-000433-GPOS-00193, SRG-OS-000095-GPOS-00049</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 enables kernel page-table isolation with the following command:\n\n$ sudo grubby --info=ALL | grep pti\nargs=\"ro crashkernel=auto resume=/dev/mapper/ol-swap rd.lvm.lv=ol/root rd.lvm.lv=ol/swap rhgb quiet fips=1 audit=1 audit_backlog_limit=8192 pti=on \n\nIf the \"pti\" entry does not equal \"on\", or is missing, this is a finding.\n\nCheck that kernel page-table isolation is enabled by default to persist in kernel updates: \n\n$ sudo grep pti /etc/default/grub\nGRUB_CMDLINE_LINUX=\"pti=on\"\n\nIf \"pti\" is not set to \"on\", is missing or commented out, this is a finding.",
+  "fix": "Configure OL 9 to enable kernel page-table isolation with the following command:\n\n$ sudo grubby --update-kernel=ALL --args=\"pti=on\"\n\nAdd or modify the following line in \"/etc/default/grub\" to ensure the configuration survives kernel updates:\n\nGRUB_CMDLINE_LINUX=\"pti=on\"",
+  "ccis": [
+    "CCI-002824",
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Kernel page-table isolation is a kernel feature that mitigates the Meltdown security vulnerability and hardens the kernel against attempts to bypass kernel address space layout randomization (KASLR).\n\nSatisfies: SRG-OS-000433-GPOS-00193, SRG-OS-000095-GPOS-00049",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002391",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

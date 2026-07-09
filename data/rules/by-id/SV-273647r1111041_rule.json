@@ -1,0 +1,53 @@
+{
+  "id": "SV-273647r1111041_rule",
+  "full_rule_id": "SV-273647r1111041_rule",
+  "rule_id": "SV-273647",
+  "rule_revision": "1111041",
+  "group_id": "V-273647",
+  "group_title": "SRG-NET-000364-RTR-000114",
+  "title": "The RUCKUS ICX multicast Designated Router (DR) must be configured to filter the Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Report messages to allow hosts to join only multicast groups that have been approved by the organization.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of the DR to verify it is filtering IGMP or MLD report messages, allowing hosts to only join multicast groups from sources that have been approved.\n\nNote: This requirement is only applicable to Source Specific Multicast (SSM) implementation. This requirement is not applicable to Any Source Multicast (ASM) since the filtering is being performed by the Rendezvous Pointerface router.\n\n1. Verify all host facing interfaces are configured to filter IGMP Membership Report messages (IGMP joins) as shown in the example below:\nICX(conf)#interface ethernet 1/2/1\nICX(config-if-e10000-1/2/1)#ip igmp ver 3\nICX(config-if-e10000-1/2/1)#ip igmp access-group IGMP_JOIN_FILTER\nICX(config-ig-e1000-1/2/1)#show access-list all\n\n2. Verify the output below (the access control list, or ACL) denies unauthorized groups or permits only authorized groups. The example below denies all groups from the 239.0.0.0/16 range.\nStandard IP access list IGMP_JOIN_FILTER: 2 entries\n10: deny 239.0.0.0 0.0.255.255\n20: permit any\n\nIf the DR is not filtering IGMP or MLD report messages, this is a finding.",
+  "fix": "Configure the DR to filter the IGMP and MLD report messages to allow hosts to join only those multicast groups from sources that have been approved.\n\n1. Configure the Access Control List (ACL) to filter IGMP membership report messages as shown in the example below:\nICX(config)#ip access-list standard IGMP_JOIN_FILTER\nICX(config-std-ipacl-IGMP_JOIN_FILTER)#deny 239.0.0.0/16\nICX(config-std-ipacl-IGMP_JOIN_FILTER)#permit any\nICX(config-std-ipacl-IGMP_JOIN_FILTER)#exit\n\n2. Apply the filter to all nonhost-facing interfaces.\nICX(config)interface ethernet 1/2/1\nICX(config-if-e1000-1/2/1)#ip igmp ver 3\nICX(config-if-e1000-1/2/1)#ip igmp access-group IGMP_JOIN_FILTER",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-274080r1120228_rule",
+  "full_rule_id": "SV-274080r1120228_rule",
+  "rule_id": "SV-274080",
+  "rule_revision": "1120228",
+  "group_id": "V-274080",
+  "group_title": "SRG-OS-000342-GPOS-00133",
+  "title": "Amazon Linux 2023 must be configured to off-load audit records onto a different system from the system being audited via syslog.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The auditd service does not include the ability to send audit records to a centralized server for management directly. However, it can use a plug-in for audit event multiplexor (audispd) to pass audit records to the local syslog server.\n\nSatisfies: SRG-OS-000342-GPOS-00133, SRG-OS-000479-GPOS-00224</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 off-loads audit records onto a different system with the following command:\n\n$ more /etc/systemd/journal-upload.conf\n[Upload]\nURL=192.168.21.2\nServerKeyFile=/etc/ssl/private/journal-upload.pem\nServerCertificateFile=/etc/ssl/certs/journal-upload.pem\nTrustedCertificateFile=/etc/ssl/ca/trusted.pem\n\nIf all of the entries do not have values, are commented out, or are missing, this is a finding.",
+  "fix": "Configure Amazon Linux 2023 to off-load audit records onto a different system or media from the system being audited.\n\nIf using systemd-journal-upload:\nEdit \"/etc/systemd/journal-upload.conf\" with the appropriate configuration:\n\n[Upload]\nURL=https://[server.domain]:[port]",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The auditd service does not include the ability to send audit records to a centralized server for management directly. However, it can use a plug-in for audit event multiplexor (audispd) to pass audit records to the local syslog server.\n\nSatisfies: SRG-OS-000342-GPOS-00133, SRG-OS-000479-GPOS-00224",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-002080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

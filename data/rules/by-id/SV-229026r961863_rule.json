@@ -1,0 +1,54 @@
+{
+  "id": "SV-229026r961863_rule",
+  "full_rule_id": "SV-229026r961863_rule",
+  "rule_id": "SV-229026",
+  "rule_revision": "961863",
+  "group_id": "V-229026",
+  "group_title": "SRG-APP-000516-NDM-000317",
+  "title": "The Juniper SRX Services Gateway must specify the order in which authentication servers are used.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Specifying an authentication order implements an authentication, authorization, and accounting methods list to be used, thus allowing the implementation of redundant or backup AAA servers. These commands also ensure that a default method or order will not be used by the device (e.g., local passwords).\n\nThe Juniper SRX must specify the order in which authentication is attempted by including the authentication-order statement in the authentication server configuration. \n\nRemote logon using password results in a CAT 1 finding (CCI-000765) for failure to use two-factor authentication. Thus, if the account of last resort uses only password authentication, this configuration prevents remote access. DoD policy is that redundant AAA servers are required to mitigate the risk of a failure of the primary AAA device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify a RADIUS or TACACS+ server order has been configured.\n\nFrom operational mode enter the command:\nshow system authentication-order\n\nIf the authentication-order for either or both RADIUS or TACACS+ server order has not been configured, this is a finding.\n\nIf the authentication-order includes the password method, this is a finding.",
+  "fix": "Add an external RADIUS or TACACS+ server, and specify the port number and shared secret of the server. Remote logon using password results in a CAT 1 finding (CCI-000765) for failure to use two-factor authentication. Thus, if the account of last resort uses only password authentication, this configuration prevents remote access. DoD policy is that redundant AAA servers are required to mitigate the risk of a failure of the primary AAA device.\n\n[edit]\nset system authentication-order tacplus\n\nor \n\n[edit]\nset system authentication-order radius\n\nFrom operational mode enter the command:\nshow system authentication-order\n\nIf password is set as an option, remove this command from the configuration.\n[edit]\ndelete system authentication-order password",
+  "ccis": [
+    "CCI-000366",
+    "CCI-000371"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Specifying an authentication order implements an authentication, authorization, and accounting methods list to be used, thus allowing the implementation of redundant or backup AAA servers. These commands also ensure that a default method or order will not be used by the device (e.g., local passwords).\n\nThe Juniper SRX must specify the order in which authentication is attempted by including the authentication-order statement in the authentication server configuration. \n\nRemote logon using password results in a CAT 1 finding (CCI-000765) for failure to use two-factor authentication. Thus, if the account of last resort uses only password authentication, this configuration prevents remote access. DoD policy is that redundant AAA servers are required to mitigate the risk of a failure of the primary AAA device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000098",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

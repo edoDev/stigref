@@ -1,0 +1,54 @@
+{
+  "id": "SV-274851r1143903_rule",
+  "full_rule_id": "SV-274851r1143903_rule",
+  "rule_id": "SV-274851",
+  "rule_revision": "1143903",
+  "group_id": "V-274851",
+  "group_title": "SRG-APP-001025",
+  "title": "The API must time-restrict access tokens in accordance with organization-defined identification and authentication policy.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>An API must time-restrict access tokens to enhance security by limiting the window of opportunity for unauthorized access. Access tokens typically have an expiration time to reduce the risks associated with token theft or misuse. \n\nWithout an API gateway to handle token expiration, the API itself must enforce token validity by ensuring tokens are only accepted for a limited period. This will mitigate the impact of a compromised token by preventing it from being used indefinitely. Time-restricting tokens also ensures that the API regularly re-validates user sessions, aligns with best security practices, and forces users to re-authenticate after a certain period, thereby reducing the chance of long-term unauthorized access.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Examine the organization's identification and authentication policy required lifespan of access tokens. This includes default expiration times, any conditions for shorter or longer durations, and rules for different user roles or access levels.\n\nReview the code or configuration responsible for generating access tokens to ensure it sets the exp (expiration) and iat (issued at) claims according to policy. Confirm that tokens are not issued with excessively long lifetimes unless explicitly allowed.\n\nAuthenticate and obtain access tokens under various scenarios (e.g., user login, system-to-system access). Decode the tokens (e.g., if JWT) and check the exp and iat fields to verify the validity period aligns with the organization's defined rules.\n\nWait until a token expires and attempt to use it with the API. Confirm the API correctly rejects expired tokens with appropriate error responses (e.g., HTTP 401 Unauthorized or 403 Forbidden).\n\nDetermine whether the API adjusts token lifespans based on risk factors, user roles, or sensitivity of requested resources. This must also comply with the organizational policy.\n\nEnsure the API validates the exp claim on each request and denies access to expired tokens.\n\nLook into API or identity provider configuration files to confirm that token timeout values match policy-defined thresholds.\n\nIf any misconfigurations are identified, this is a finding.",
+  "fix": "Build or configure the API to revoke access tokens in accordance with organization-defined identification and authentication policy.",
+  "ccis": [
+    "CCI-005168",
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "An API must time-restrict access tokens to enhance security by limiting the window of opportunity for unauthorized access. Access tokens typically have an expiration time to reduce the risks associated with token theft or misuse. \n\nWithout an API gateway to handle token expiration, the API itself must enforce token validity by ensuring tokens are only accepted for a limited period. This will mitigate the impact of a compromised token by preventing it from being used indefinitely. Time-restricting tokens also ensures that the API regularly re-validates user sessions, aligns with best security practices, and forces users to re-authenticate after a certain period, thereby reducing the chance of long-term unauthorized access.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SRG-APP-001025-API-001715",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "application-programming-interface-api-security-requirements-guide-v1r1-e602f3a2",
+      "name": "Application Programming Interface (API) Security Requirements Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "application-programming-interface-api-security-requirements-guide-v1r1-e602f3a2"
+  ]
+}

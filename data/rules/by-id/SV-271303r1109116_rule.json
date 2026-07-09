@@ -1,0 +1,53 @@
+{
+  "id": "SV-271303r1109116_rule",
+  "full_rule_id": "SV-271303r1109116_rule",
+  "rule_id": "SV-271303",
+  "rule_revision": "1109116",
+  "group_id": "V-271303",
+  "group_title": "SRG-APP-000142-DB-000094",
+  "title": "SQL Server must be configured to prohibit or restrict the use of organization-defined ports, as defined in the Ports, Protocols, and Services Management (PPSM) Category Assurance List (CAL) and vulnerability assessments.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports on information systems. \n \nApplications are capable of providing a wide variety of functions and services. Some of the functions and services provided by default may not be necessary to support essential organizational operations. Additionally, it is sometimes convenient to provide multiple services from a single component (e.g., email and web services); however, doing so increases risk over limiting the services provided by any one component. \n \nTo support the requirements and principles of least functionality, the application must support the organizational requirements providing only essential capabilities and limiting the use of ports to only those required, authorized, and approved to conduct official business or to address authorized quality of life issues. \n \nSQL Server using ports deemed unsafe is open to attack through those ports. This can allow unauthorized access to the database and through the database to other components of the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review SQL Server Configuration for the ports used by SQL Server. \n \nTo determine whether SQL Server is configured to use a fixed port or dynamic ports, in the right-side pane, double-click on the TCP/IP entry to open the Properties dialog. (The default fixed port is 1433.) \n\nAlternatively, run the following SQL query to determine the port used by SQL Server:\n\nSELECT ISNULL(CONVERT(VARCHAR(25),local_tcp_port),'Dynamic Ports are Enabled')\nFROM   sys.dm_exec_connections\nWHERE  session_id = @@SPID\n \nIf any ports in use are in conflict with PPSM guidance and not explained and approved in the system documentation, this is a finding.",
+  "fix": "Use SQL Server Configuration to change the ports used by SQL Server to comply with PPSM guidance, or document the need for other ports, and obtain written approval. Close ports no longer needed.",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports on information systems. \n \nApplications are capable of providing a wide variety of functions and services. Some of the functions and services provided by default may not be necessary to support essential organizational operations. Additionally, it is sometimes convenient to provide multiple services from a single component (e.g., email and web services); however, doing so increases risk over limiting the services provided by any one component. \n \nTo support the requirements and principles of least functionality, the application must support the organizational requirements providing only essential capabilities and limiting the use of ports to only those required, authorized, and approved to conduct official business or to address authorized quality of life issues. \n \nSQL Server using ports deemed unsafe is open to attack through those ports. This can allow unauthorized access to the database and through the database to other components of the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLI-22-007700",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b",
+      "name": "Microsoft SQL Server 2022 Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b"
+  ]
+}

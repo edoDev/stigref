@@ -1,0 +1,53 @@
+{
+  "id": "SV-215295r1009551_rule",
+  "full_rule_id": "SV-215295r1009551_rule",
+  "rule_id": "SV-215295",
+  "rule_revision": "1009551",
+  "group_id": "V-215295",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The AIX SSH daemon must be configured for IP filtering.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The SSH daemon must be configured for IP filtering to provide a layered defense against connection attempts from unauthorized addresses.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If the installed version of OpenSSH is 6.7 or above, this requirement is not applicable.\n\nCheck the TCP wrappers configuration files to determine if SSHD is configured to use TCP wrappers using commands: \n\n# grep sshd /etc/hosts.deny \nsshd : ALL\n\n# grep sshd /etc/hosts.allow \nsshd : 10.10.20.*\n\nIf no entries are returned, the TCP wrappers are not configured for SSHD, this is a finding.",
+  "fix": "Add appropriate IP restrictions for SSH to the \"/etc/hosts.deny\" and/or \"/etc/hosts.allow\" files. \n\nTCP Wrappers can be installed from the AIX Expansion Pack by installing fileset \"netsec.options.tcpwrappers\" using the following command (assume AIX Expansion Pack is mounted on /dev/cd0):\n# installp -aXYgd /dev/cd0 -e /tmp/install.log netsec.options.tcpwrappers",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The SSH daemon must be configured for IP filtering to provide a layered defense against connection attempts from unauthorized addresses.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002112",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

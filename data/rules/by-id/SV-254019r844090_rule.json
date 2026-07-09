@@ -1,0 +1,53 @@
+{
+  "id": "SV-254019r844090_rule",
+  "full_rule_id": "SV-254019r844090_rule",
+  "rule_id": "SV-254019",
+  "rule_revision": "844090",
+  "group_id": "V-254019",
+  "group_title": "SRG-NET-000205-RTR-000010",
+  "title": "The Juniper out-of-band management (OOBM) gateway router must be configured to forward only authorized management traffic to the Network Operations Center (NOC).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The OOBM network is an IP network used exclusively for the transport of OAM&P data from the network being managed to the OSS components located at the NOC. Its design provides connectivity to each managed network device, enabling network management traffic to flow between the managed network elements and the NOC. This allows the use of paths separate from those used by the managed network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the network topology diagram to determine connectivity between the managed network and the NOC.\n\nReview the OOBM gateway router configuration to validate the path that the management traffic traverses.\n\nVerify that only management traffic is forwarded through the OOBM interface or IPsec tunnel. Verify the destination address is configured either via a prefix-list or directly assigned addresses in each firewall filter term match condition.\n\n[edit policy-options]\nprefix-list NOC-ipv4 {\n    <IPv4 address>/<mask>;\n}\nprefix-list NOC-ipv6 {\n    <IPv6 address>/<prefix>;\n}\n[edit firewall]\nfamily inet {\n    filter permit-NOC-ipv4 {\n        term 1 {\n            from {\n                destination-prefix-list {\n                    NOC-ipv4;\n                }\n                protocol <protocol>;\n                destination-port [ <port 1> <port 2> ];\n            }\n            then accept;\n        }\n        <additional permitted traffic terms>\n        term default {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\nfamily inet6 {\n    filter permit-NOC-ipv6 {\n        term 1 {\n            from {\n                destination-prefix-list {\n                    NOC-ipv6;\n                }\n                next-header <protocol>;\n                destination-port [ <port 1> <port 2> ];\n            }\n            then accept;\n        }\n        <additional permitted traffic terms>\n        term default {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\n[edit interfaces]\n<OOBM interface> {\n    unit <number> {\n        family inet {\n            filter {\n                output NOC-ipv4;   \n            }                           \n            address <IPv4 address>/<mask>;         \n        }                               \n        family inet6 {                  \n            filter {                    \n                output NOC-ipv6;   \n            }                           \n            address <IPv6 address>/<prefix>;     \n        }                               \n    }                                   \n}\n\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf using an IPsec tunnel, verify the route with the tunnel interface as the next-hop destination.\n[edit routing-options]\nrib inet6.0 {\n    static {\n        route <NOC IPv6 network> next-hop <(tunnel interface | NOC IPv6 tunnel endpoint address)>;\n    }\n}\nstatic { \n    route <NOC IPv4 network> next-hop <(tunnel interface | NOC IPv6 tunnel endpoint address)>;\n}\n\nIf traffic other than authorized management traffic is permitted through the OOBM interface or IPsec tunnel, this is a finding.",
+  "fix": "Configure appropriate prefix lists and firewall filters. For example:\nset policy-options prefix-list NOC-ipv4 <IPv4 network>/<mask>\nset policy-options prefix-list NOC-ipv6 <IPv6 network>/<prefix>\n\nset firewall family inet filter permit-NOC-ipv4 term 1 from destination-prefix-list NOC-ipv4\nset firewall family inet filter permit-NOC-ipv4 term 1 from protocol <protocol>\nset firewall family inet filter permit-NOC-ipv4 term 1 from destination-port [ <port 1> <port 2> ]\nset firewall family inet filter permit-NOC-ipv4 term 1 then accept\n<additional permit terms>\nset firewall family inet filter permit-NOC-ipv4 term default then log\nset firewall family inet filter permit-NOC-ipv4 term default then syslog\nset firewall family inet filter permit-NOC-ipv4 term default then discard\n\nset firewall family inet6 filter permit-NOC-ipv6 term 1 from destination-prefix-list NOC-ipv6\nset firewall family inet6 filter permit-NOC-ipv6 term 1 from next-header <protocol>\nset firewall family inet6 filter permit-NOC-ipv6 term 1 from destination-port [ <port 1> <port 2> ]\nset firewall family inet6 filter permit-NOC-ipv6 term 1 then accept\n<additional permit terms>\nset firewall family inet6 filter permit-NOC-ipv6 term default then log\nset firewall family inet6 filter permit-NOC-ipv6 term default then syslog\nset firewall family inet6 filter permit-NOC-ipv6 term default then discard\n\nApply firewall filter to OOBM interface:\nset interfaces <OOBM interface> unit <number> family inet filter output NOC-ipv4\nset interfaces <OOBM interface> unit <number> family inet address <IPv4 address>/<mask>\nset interfaces <OOBM interface> unit <number> family inet6 filter output NOC-ipv6\nset interfaces <OOBM interface> unit <number> family inet6 address <IPv6 address>/<prefix>\n\nIf using IPsec tunnel:\nset rib inet6.0 static route <NOC IPv6 network> next-hop <(tunnel interface | NOC IPv6 tunnel endpoint address)>\nset static route <NOC IPv4 network> next-hop <(tunnel interface | NOC IPv4 tunnel endpoint address)>",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The OOBM network is an IP network used exclusively for the transport of OAM&P data from the network being managed to the OSS components located at the NOC. Its design provides connectivity to each managed network device, enabling network management traffic to flow between the managed network elements and the NOC. This allows the use of paths separate from those used by the managed network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000470",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-256953r961041_rule",
+  "full_rule_id": "SV-256953r961041_rule",
+  "rule_id": "SV-256953",
+  "rule_revision": "961041",
+  "group_id": "V-256953",
+  "group_title": "SRG-APP-000176-WSR-000096",
+  "title": "Only authenticated system administrators or the designated PKI Sponsor for an Automation Controller NGINX web server must have access to any Automation Controller NGINX web server's private key.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Each Automation Controller NGINX web server's private key is used to prove the identity of the server to clients and securely exchange the shared secret key used to encrypt communications between the Automation Controller NGINX web server and clients.\n\nBy gaining access to the private key, an attacker can pretend to be an authorized server and decrypt the SSL traffic between a client and the Automation Controller NGINX web server.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As a System Administrator for each Automation Controller NGINX web server host, verify the location of the NGINX configuration:\n\nNGINXCONF=`nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}' `\nTOWER_KEY=`sed -n 's/^\\s*ssl_certificate_key\\s*\\(.*\\);/\\1/p' $NGINXCONF`\nstat -c \"%a %U %G\" $TOWER_KEY| grep \"600 root awx\" || echo \"FAILED\" \n\nIf \"FAILED\" is displayed, this is a finding.",
+  "fix": "As a System Administrator for each Automation Controller NGINX web server host, set the permissions:\n\nNGINXCONF=`nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}' `\nTOWER_KEY=`sed -n 's/^\\s*ssl_certificate_key\\s*\\(.*\\);/\\1/p' $NGINXCONF`\nsudo chown root:awx $TOWER_KEY\nsudo chmod 600 $TOWER_KEY",
+  "ccis": [
+    "CCI-000186"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Each Automation Controller NGINX web server's private key is used to prove the identity of the server to clients and securely exchange the shared secret key used to encrypt communications between the Automation Controller NGINX web server and clients.\n\nBy gaining access to the private key, an attacker can pretend to be an authorized server and decrypt the SSL traffic between a client and the Automation Controller NGINX web server.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APWS-AT-000400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65",
+      "name": "Red Hat Ansible Automation Controller Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65"
+  ]
+}

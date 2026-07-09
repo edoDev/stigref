@@ -1,0 +1,53 @@
+{
+  "id": "SV-215306r991593_rule",
+  "full_rule_id": "SV-215306r991593_rule",
+  "rule_id": "SV-215306",
+  "rule_revision": "991593",
+  "group_id": "V-215306",
+  "group_title": "SRG-OS-000480-GPOS-00232",
+  "title": "If AIX SSH daemon is required, the SSH daemon must only listen on the approved listening IP addresses.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The SSH daemon should only listen on the approved listening IP addresses. Otherwise the SSH service could be subject to unauthorized access.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the command prompt, run the following command to check if \"ListenAddress\" is defined in SSH config file:\n\n# grep -i ListenAddress /etc/ssh/sshd_config | grep -v '^#'\nListenAddress  10.17.76.74\n\nIf no configuration is returned, or if a returned listen configuration contains addresses not permitted, this is a finding.",
+  "fix": "Edit the SSH daemon config file and add/modify the \"ListenAddress\" network addresses:\n# vi /etc/ssh/sshd_config\n\nRestart SSH daemon:\n# stopsrc -s sshd\n# startsrc -s sshd",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The SSH daemon should only listen on the approved listening IP addresses. Otherwise the SSH service could be subject to unauthorized access.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002124",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

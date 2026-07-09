@@ -1,0 +1,53 @@
+{
+  "id": "SV-213547r961632_rule",
+  "full_rule_id": "SV-213547r961632_rule",
+  "rule_id": "SV-213547",
+  "rule_revision": "961632",
+  "group_id": "V-213547",
+  "group_title": "SRG-APP-000439-AS-000155",
+  "title": "JBoss must be configured to use an approved TLS version.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Preventing the disclosure of transmitted information requires that the application server take measures to employ some form of cryptographic mechanism in order to protect the information during transmission.  This is usually achieved through the use of Transport Layer Security (TLS). \n\nJBoss relies on the underlying SSL implementation running on the OS.  This can be either Java based or OpenSSL.  The SSL protocol setting determines which SSL protocol is used.  SSL has known security vulnerabilities, so TLS should be used instead. \n\nIf data is transmitted unencrypted, the data then becomes vulnerable to disclosure.  The disclosure may reveal user identifier/password combinations, website code revealing business logic, or other user personal information.\n\nFIPS 140-2 approved TLS versions include TLS V1.2 or greater.\n\nTLS must be enabled, and non-FIPS-approved SSL versions must be disabled.  NIST SP 800-52 specifies the preferred configurations for government systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log on to the OS of the JBoss server with OS permissions that allow access to JBoss. \nUsing the relevant OS commands and syntax, cd to the <JBOSS_HOME>/bin/ folder. \nRun the jboss-cli script.  \nConnect to the server and authenticate. \n\nValidate that the TLS protocol is used for HTTPS connections.\nRun the command:\n\n\"ls /subsystem=web/connector=https/ssl=configuration\"\n\nIf a TLS V1.2 or higher protocol is not returned, this is a finding.",
+  "fix": "Reference section 4.6 of the JBoss EAP 6.3 Security Guide located on the Red Hat vendor's web site for step-by-step instructions on establishing SSL encryption on JBoss.\n\nThe overall steps include:\n\n1. Add an HTTPS connector.\n2. Configure the SSL encryption certificate and keys.\n3. Set the protocol to TLS V1.2 or greater.",
+  "ccis": [
+    "CCI-002418"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Preventing the disclosure of transmitted information requires that the application server take measures to employ some form of cryptographic mechanism in order to protect the information during transmission.  This is usually achieved through the use of Transport Layer Security (TLS). \n\nJBoss relies on the underlying SSL implementation running on the OS.  This can be either Java based or OpenSSL.  The SSL protocol setting determines which SSL protocol is used.  SSL has known security vulnerabilities, so TLS should be used instead. \n\nIf data is transmitted unencrypted, the data then becomes vulnerable to disclosure.  The disclosure may reveal user identifier/password combinations, website code revealing business logic, or other user personal information.\n\nFIPS 140-2 approved TLS versions include TLS V1.2 or greater.\n\nTLS must be enabled, and non-FIPS-approved SSL versions must be disabled.  NIST SP 800-52 specifies the preferred configurations for government systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JBOS-AS-000650",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9",
+      "name": "JBoss Enterprise Application Platform 6.3 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9"
+  ]
+}

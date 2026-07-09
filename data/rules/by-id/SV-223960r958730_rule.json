@@ -1,0 +1,53 @@
+{
+  "id": "SV-223960r958730_rule",
+  "full_rule_id": "SV-223960r958730_rule",
+  "rule_id": "SV-223960",
+  "rule_revision": "958730",
+  "group_id": "V-223960",
+  "group_title": "SRG-OS-000326-GPOS-00126",
+  "title": "CA-TSS must use propagation control to eliminate ACID inheritance.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In certain situations, software applications/programs need to execute with elevated privileges to perform required functions. However, if the privileges required for execution are at a higher level than the privileges assigned to organizational users invoking such applications/programs, those users are indirectly provided with greater privileges than assigned by the organizations.\n\nSome programs and processes are required to operate at a higher privilege level and therefore should be excluded from the organization-defined software list after review.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nTSS MODIFY FACILITY(ALL)\n\nenter\nTSS MODIFY FACILITY(<FACILITY>)\n\nIf no Facility is defined with both the \"MULTIUSER\" and \"ASUBM\" attributes further analysis is not needed.\n\nFor each Facility with \"MULTIUSER\" and \"ASUBM\" attribute, review the @ACIDS report to determine which ACID(s) has (have) the following:\n\n-A Master Facility of the Facility with \"MULTIUSER\" and \"ASUBM\" attribute, and,\n-The Facility of \"BATCH\"\n\nIf each ACID that has the Master Facility of the Facility with \"MULTIUSER\" and \"ASUBM\" attribute and the Facility of \"BATCH\" is defined to the \"PROPCNTL\" resource class, this is not a finding.",
+  "fix": "Ensure an associated ACID exists for all batch jobs and propagation control is being used. Evaluate the impact of correcting the deficiency. Develop a plan of action and implement the changes as required.\n\nThe following Example shows the CONTROL-M STC ACID being owned to the PROPCNTL resource class:\nTSS ADD(deptacid) PROPCNTL(control-m-acid)",
+  "ccis": [
+    "CCI-002233"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In certain situations, software applications/programs need to execute with elevated privileges to perform required functions. However, if the privileges required for execution are at a higher level than the privileges assigned to organizational users invoking such applications/programs, those users are indirectly provided with greater privileges than assigned by the organizations.\n\nSome programs and processes are required to operate at a higher privilege level and therefore should be excluded from the organization-defined software list after review.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-ES-000870",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-259177r935435_rule",
+  "full_rule_id": "SV-259177r935435_rule",
+  "rule_id": "SV-259177",
+  "rule_revision": "935435",
+  "group_id": "V-259177",
+  "group_title": "SRG-APP-000176-DB-000068",
+  "title": "The vCenter PostgreSQL service must enforce authorized access to all PKI private keys stored/utilized by PostgreSQL.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The DOD standard for authentication is DOD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.\n\nIf the private key is stolen, an attacker can use the private key(s) to impersonate the certificate holder. In cases where the database management system (DBMS)-stored private keys are used to authenticate the DBMS to the system’s clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man in the middle attacks against the DBMS system and its clients.\n\nBoth the holder of a digital certificate and the issuing authority must take careful measures to protect the corresponding private key. Private keys should always be generated and protected in FIPS 140-2 validated cryptographic modules.\n\nAll access to the private key(s) of the DBMS must be restricted to authorized and authenticated users. If unauthorized users have access to one or more of the DBMS's private keys, an attacker could gain access to the key(s) and use them to impersonate the database on the network or otherwise perform unauthorized actions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# stat -c \"%n is owned by %U:%G with permissions of %a\" /storage/db/vpostgres_ssl/server.key\n\nExample output:\n\n/storage/db/vpostgres_ssl/server.key is owned by vpostgres:vpgmongrp with permissions of 600\n\nIf the SSL key file is not owned by the user vpostgres and group vpgmongrp, this is a finding.\n\nIf the SSL key file has permissions more permissive than 0600, this is a finding.",
+  "fix": "At the command prompt, enter the following commands:\n\n# chmod 600 /storage/db/vpostgres_ssl/server.key\n# chown vpostgres:vpgmongrp /storage/db/vpostgres_ssl/server.key",
+  "ccis": [
+    "CCI-000186"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DOD standard for authentication is DOD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.\n\nIf the private key is stolen, an attacker can use the private key(s) to impersonate the certificate holder. In cases where the database management system (DBMS)-stored private keys are used to authenticate the DBMS to the system’s clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man in the middle attacks against the DBMS system and its clients.\n\nBoth the holder of a digital certificate and the issuing authority must take careful measures to protect the corresponding private key. Private keys should always be generated and protected in FIPS 140-2 validated cryptographic modules.\n\nAll access to the private key(s) of the DBMS must be restricted to authorized and authenticated users. If unauthorized users have access to one or more of the DBMS's private keys, an attacker could gain access to the key(s) and use them to impersonate the database on the network or otherwise perform unauthorized actions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-80-000041",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r1-e6e7fe9a",
+      "name": "VMware vSphere 8.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r1-e6e7fe9a"
+  ]
+}

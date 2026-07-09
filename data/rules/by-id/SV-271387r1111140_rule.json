@@ -1,0 +1,53 @@
+{
+  "id": "SV-271387r1111140_rule",
+  "full_rule_id": "SV-271387r1111140_rule",
+  "rule_id": "SV-271387",
+  "rule_revision": "1111140",
+  "group_id": "V-271387",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "The SQL Server Browser service must be disabled unless specifically required and approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The SQL Server Browser simplifies the administration of SQL Server, particularly when multiple instances of SQL Server coexist on the same computer. It avoids the need to hard-assign port numbers to the instances and to set and maintain those port numbers in client systems. It enables administrators and authorized users to discover database management system instances, and the databases they support, over the network. SQL Server uses the SQL Server Browser service to enumerate instances of the Database Engine installed on the computer. This enables client applications to browse for a server, and helps clients distinguish between multiple instances of the Database Engine on the same computer.\n\nThis convenience also presents the possibility of unauthorized individuals gaining knowledge of the available SQL Server resources. Therefore, it is necessary to consider whether the SQL Server Browser is needed. Typically, if only a single instance is installed, using the default name (MSSQLSERVER) and port assignment (1433), the Browser is not adding any value. The more complex the installation, the more likely SQL Server Browser is to be helpful. \n\nThis requirement is not intended to prohibit use of the Browser service in any circumstances. It calls for administrators and management to consider whether the benefits of its use outweigh the potential negative consequences of it being used by an attacker to browse the current infrastructure and retrieve a list of running SQL Server instances.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Open SQL Server Configuration Manager. Select SQL Server Services. Review the Start Mode and State of SQL Server Browser.\n\nIf its Start Type is shown as \"Disabled\", this is not a finding.\n\nIf the need for the SQL Server Browser service is documented and authorized, verify the SQL Instances that do not require use of the SQL Browser Service are hidden with the following SQL script:\nDECLARE @HiddenInstance INT \nEXEC master.dbo.Xp_instance_regread \n N'HKEY_LOCAL_MACHINE', \n N'Software\\Microsoft\\MSSQLServer\\MSSQLServer\\SuperSocketNetLib', \n N'HideInstance', \n @HiddenInstance output \n\nSELECT CASE \n        WHEN @HiddenInstance = 0 \n             AND Serverproperty('IsClustered') = 0 THEN 'No' \n        ELSE 'Yes' \n      END AS [Hidden]\n\nIf the value of \"Hidden\" is \"Yes\", this is not a finding.\n\nIf the value of \"Hidden\" is \"No\" and the startup type of the \"SQL Server Browser\" service is not \"Disabled\", this is a finding.",
+  "fix": "If SQL Server Browser is needed, document the justification and obtain the appropriate authorization. \n\nWhere SQL Server Browser is judged unnecessary, the Service can be disabled. \n\nTo disable, in the Services tool, double-click \"SQL Server Browser\". Set \"Startup Type\" to \"Disabled\". If \"Service Status\" is \"Running\", click \"Stop\" and then click \"OK\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The SQL Server Browser simplifies the administration of SQL Server, particularly when multiple instances of SQL Server coexist on the same computer. It avoids the need to hard-assign port numbers to the instances and to set and maintain those port numbers in client systems. It enables administrators and authorized users to discover database management system instances, and the databases they support, over the network. SQL Server uses the SQL Server Browser service to enumerate instances of the Database Engine installed on the computer. This enables client applications to browse for a server, and helps clients distinguish between multiple instances of the Database Engine on the same computer.\n\nThis convenience also presents the possibility of unauthorized individuals gaining knowledge of the available SQL Server resources. Therefore, it is necessary to consider whether the SQL Server Browser is needed. Typically, if only a single instance is installed, using the default name (MSSQLSERVER) and port assignment (1433), the Browser is not adding any value. The more complex the installation, the more likely SQL Server Browser is to be helpful. \n\nThis requirement is not intended to prohibit use of the Browser service in any circumstances. It calls for administrators and management to consider whether the benefits of its use outweigh the potential negative consequences of it being used by an attacker to browse the current infrastructure and retrieve a list of running SQL Server instances.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLI-22-017800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b",
+      "name": "Microsoft SQL Server 2022 Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b"
+  ]
+}

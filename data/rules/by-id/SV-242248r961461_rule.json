@@ -1,0 +1,53 @@
+{
+  "id": "SV-242248r961461_rule",
+  "full_rule_id": "SV-242248r961461_rule",
+  "rule_id": "SV-242248",
+  "rule_revision": "961461",
+  "group_id": "V-242248",
+  "group_title": "SRG-APP-000380-NDM-000304",
+  "title": "The TippingPoint SMS must enforce access restrictions associated with changes to device configuration.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failure to provide logical access restrictions associated with changes to device configuration may have significant effects on the overall security of the system. \n\nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the device can potentially have significant effects on the overall security of the device. \n\nAccordingly, only qualified and authorized individuals should be allowed to obtain access to device components for the purposes of initiating changes, including upgrades and modifications. \n\nLogical access restrictions include, for example, controls that restrict access to workflow automation, media libraries, abstract layers (e.g., changes implemented into third-party interfaces rather than directly into information systems), and change windows (e.g., changes occur only during specified times, making unauthorized changes easy to discover).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In the Trend Micro TippingPoint system, ensure the SMS client is using CAC authentication and LDAPS authorization.\n\n1. Log in to the SMS client. \n2. Navigate to Authentication and Authorization >> Authentication. \n\nIf \"Use CAC authentication\" is not selected, this is a finding.",
+  "fix": "Follow these configuration steps to enable CAC/LDAPS authentication and authorization to the Trend Micro TippingPoint SMS client. The Site's LDAPS/AD environment must be configured to audit all account actions.\n\nI. Certificate Load Steps: \n1. Log in to the SMS client. \n2. Select Certificate Management >> CA certificates >> Import. \n3. Find the CA signing certificate bundle for the LDAPS servers on your machine. \n4. Enter the name, then select browse to find the CA certificate.\n5. Click OK.\n6. Repeat steps for all other DoD Root and Intermediate CAs being used for the administrator’s admin-token/CACs.\n\nII. LDAP Authorization configuration steps: \n1. Select Authentication and Authorization >> Groups >> New.\n2. Type the name of the LDAP group exactly as it appears as the CN in the active directory domain. \n3. Add all site-specific details including which role to map superuser, admin, or operator. \n4. Under Active Directory Group Mapping ensure the item \"map this group to the same named group in active directory\" is selected. \n5. Select OK.\n\nIII. LDAPS Server configuration - ensure a DNS resolver has been configured in accordance with the admin guide, and this DNS resolver knows how to resolve the domain the SMS will log into: \n1. Under Admin, navigate to Authentication and CAC >> Edit. \n2. Enter the Server address: ensure it is the fully qualified domain name as the LDAPS certificate will likely have it.\n3. Enable SSL: must be checked for LDAPS. \n4. Current certificate: must be the intermediate root certificate/issuing CA certificate for the domain controllers - this is the CA certificate loaded in the first section. \n5. Port: 636 or your DoD LDAPS port, if different.\n6. Timeout: 30 seconds is the default.\n7. Admin name: the account that has privileges to access the directory schema – format is username@domain.name \n8. Admin password: password of previous admin account. \n9. User search base: this is the LDAP directory tree for the accounts that will be allowed. Example: ou=Trend Micro,dc=dod,dc=disa,dc=mil \n10. User search attribute: normally in DoD this is userPrincipalName.\n11. User display attribute: normally in DoD this is sAMAccountName.\n12. Group search base: this is the LDAP directory tree for the groups that will be allowed. Example: ou=Trend Micro,dc=dod,dc=disa,dc=mil \n13. Group name attribute: normally it is cn.\n14. Select the test button to ensure all configurations provided function correctly. \n15. Select OK.\n\nIV. Enable OCSP revocation checking: \n1. Under OCSP Settings, navigate to Certificate Management and Revocation >> New >> Certificate Authority. \n2. Type the full OCSP URI (e.g. http://ocsp.disa.mil).\n3. Repeat this step for all CA certificates in the CAC trust chain.\n4. Optionally, to add a CRL click New under Certificate Revocation Lists.\n5. Select the Certificate Authority. \n6. Type the full CRL path including to the specific CRL file (e.g. http://crl.disa.mil/certificate.crl).\n\nV. Enable CAC authentication/LDAPS authorization: \n1. Navigate to Admin >> Authentication and Groups >> Edit.\n2. Click Use CAC Authentication (ensure the local emergency user account is checked for local access in case of emergency troubleshooting). \n3. Select OK. \n4. Close the SMS client.\n\nVI. Test CAC authentication: \n1. Ensure one other smartcard reader is enabled in the device manager of the computer you are using. \n2. Open the SMS client. \n3. Type the hostname/IP of the SMS server.\n4. Ensuring the CAC/admin token is inserted in the reader, type the PIN of the CAC. \n5. Select the certificate to use to login.\n6. Select OK. \n7. User should be taken to the dashboard and configuration area of the SMS.\n\nVII. Troubleshooting: \n1. If you receive errors logging in with CAC go to the serial console of the SMS server. \n2. Login with the local account of last resort. \n3. Type the command \"set cac.disable = yes\" - this will give your local admin login access to the SMS client to troubleshoot any configuration errors.",
+  "ccis": [
+    "CCI-001813"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to provide logical access restrictions associated with changes to device configuration may have significant effects on the overall security of the system. \n\nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the device can potentially have significant effects on the overall security of the device. \n\nAccordingly, only qualified and authorized individuals should be allowed to obtain access to device components for the purposes of initiating changes, including upgrades and modifications. \n\nLogical access restrictions include, for example, controls that restrict access to workflow automation, media libraries, abstract layers (e.g., changes implemented into third-party interfaces rather than directly into information systems), and change windows (e.g., changes occur only during specified times, making unauthorized changes easy to discover).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TIPP-NM-000420",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "trend-micro-tippingpoint-ndm-security-technical-implementation-guide-v2r3-26c90aac",
+      "name": "Trend Micro TippingPoint NDM Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "trend-micro-tippingpoint-ndm-security-technical-implementation-guide-v2r3-26c90aac"
+  ]
+}

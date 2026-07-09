@@ -1,0 +1,53 @@
+{
+  "id": "SV-221118r999772_rule",
+  "full_rule_id": "SV-221118r999772_rule",
+  "rule_id": "SV-221118",
+  "rule_revision": "999772",
+  "group_id": "V-221118",
+  "group_title": "SRG-NET-000512-RTR-000006",
+  "title": "The Cisco PE switch must be configured to have each Virtual Routing and Forwarding (VRF) instance with the appropriate Route Target (RT).",
+  "severity": "high",
+  "description": "<VulnDiscussion>The primary security model for an MPLS L3VPN as well as a VRF-lite infrastructure is traffic separation. Each interface can only be associated to one VRF, which is the fundamental framework for traffic separation. Forwarding decisions are made based on the routing table belonging to the VRF. Control of what routes are imported into or exported from a VRF is based on the RT. It is critical that traffic does not leak from one COI tenant or L3VPN to another; hence, it is imperative that the correct RT is configured for each VRF.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the design plan for MPLS/L3VPN to determine what RTs have been assigned for each VRF. Review the switch configuration and verify that the correct RT is configured for each VRF. In the example below, route target 13:13 has been configured for customer 1.\n\nvrf context CUST1\n address-family ipv4 unicast\n route-target export 13:13\n route-target import 13:13\n\nIf there are VRFs configured with the wrong RT, this is a finding.",
+  "fix": "Configure the switch to have each VRF instance defined with the correct RT.\n\nSW1(config)# vrf context CUST1\nSW1(config-vrf)# address-family ipv4 unicast \nSW1(config-vrf-af-ipv4)# route-target import 13:13\nSW1(config-vrf-af-ipv4)# route-target export 13:13\nSW1(config-vrf-af-ipv4)# end",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The primary security model for an MPLS L3VPN as well as a VRF-lite infrastructure is traffic separation. Each interface can only be associated to one VRF, which is the fundamental framework for traffic separation. Forwarding decisions are made based on the routing table belonging to the VRF. Control of what routes are imported into or exported from a VRF is based on the RT. It is critical that traffic does not leak from one COI tenant or L3VPN to another; hence, it is imperative that the correct RT is configured for each VRF.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000640",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651",
+      "name": "Cisco NX OS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651"
+  ]
+}

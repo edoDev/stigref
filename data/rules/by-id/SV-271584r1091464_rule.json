@@ -1,0 +1,56 @@
+{
+  "id": "SV-271584r1091464_rule",
+  "full_rule_id": "SV-271584r1091464_rule",
+  "rule_id": "SV-271584",
+  "rule_revision": "1091464",
+  "group_id": "V-271584",
+  "group_title": "SRG-OS-000057-GPOS-00027",
+  "title": "OL 9 audit log directory must be owned by root to prevent unauthorized read access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000058-GPOS-00028, SRG-OS-000059-GPOS-00029, SRG-OS-000206-GPOS-00084</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 audit logs directory is owned by \"root\". \n\nFirst determine where the audit logs are stored with the following command:\n\n$ sudo grep -iw log_file /etc/audit/auditd.conf\nlog_file = /var/log/audit/audit.log\n\nThen using the location of the audit log file, determine if the audit log directory is owned by \"root\" using the following command:\n\n$ sudo ls -ld /var/log/audit\ndrwx------ 2 root root 23 Jun 11 11:56 /var/log/audit\n\nIf the audit log directory is not owned by \"root\", this is a finding.",
+  "fix": "Configure OL 9 to protect the audit log from unauthorized read access by setting the correct owner as \"root\" with the following command:\n\n$ sudo chown root /var/log/audit",
+  "ccis": [
+    "CCI-000162",
+    "CCI-000163",
+    "CCI-000164",
+    "CCI-001314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000058-GPOS-00028, SRG-OS-000059-GPOS-00029, SRG-OS-000206-GPOS-00084",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-000790",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

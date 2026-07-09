@@ -1,0 +1,53 @@
+{
+  "id": "SV-259619r1040909_rule",
+  "full_rule_id": "SV-259619r1040909_rule",
+  "rule_id": "SV-259619",
+  "rule_revision": "1040909",
+  "group_id": "V-259619",
+  "group_title": "SRG-APP-000261",
+  "title": "Exchange messages with a malformed From address must be rejected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Sender Identification (SID) is an email anti-spam sanitization process. Sender ID uses DNS MX record lookups to verify the Simple Mail Transfer Protocol (SMTP) sending server is authorized to send email for the originating domain.\n\nFailure to implement Sender ID risks that spam could be admitted into the email domain that originates from rogue servers. Most spam content originates from domains where the IP address has been spoofed prior to sending, thereby avoiding detection. For example, messages with malformed or incorrect \"purported responsible sender\" data in the message header could be (best case) created by using RFI noncompliant software but is more likely to be spam.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If this server is in a SIPR Enclave, this requirement is Not Applicable.\n\nNote: If third-party anti-spam product is being used, the anti-spam product must be configured to meet the requirement.\n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-SenderIdConfig | Select-Object -Property Name, Identity, SpoofedDomainAction\n\nIf the value of \"SpoofedDomainAction\" is not set to \"Reject\", this is a finding.",
+  "fix": "Open the Exchange Management Shell and enter the following command:\n\nSet-SenderIdConfig -SpoofedDomainAction Reject",
+  "ccis": [
+    "CCI-001308"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Sender Identification (SID) is an email anti-spam sanitization process. Sender ID uses DNS MX record lookups to verify the Simple Mail Transfer Protocol (SMTP) sending server is authorized to send email for the originating domain.\n\nFailure to implement Sender ID risks that spam could be admitted into the email domain that originates from rogue servers. Most spam content originates from domains where the IP address has been spoofed prior to sending, thereby avoiding detection. For example, messages with malformed or incorrect \"purported responsible sender\" data in the message header could be (best case) created by using RFI noncompliant software but is more likely to be spam.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-ED-000133",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac",
+      "name": "Microsoft Exchange 2019 Edge Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac"
+  ]
+}

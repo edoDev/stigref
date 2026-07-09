@@ -1,0 +1,53 @@
+{
+  "id": "SV-280981r1165298_rule",
+  "full_rule_id": "SV-280981r1165298_rule",
+  "rule_id": "SV-280981",
+  "rule_revision": "1165298",
+  "group_id": "V-280981",
+  "group_title": "SRG-OS-000404-GPOS-00183",
+  "title": "RHEL 10 must be configured so that the file integrity tool verifies Access Control Lists (ACLs).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>RHEL 10 installation media ships with an optional file integrity tool called Advanced Intrusion Detection Environment (AIDE). AIDE is highly configurable at install time. This requirement assumes the \"aide.conf\" file is under the \"/etc\" directory.\n\nACLs can provide permissions beyond those permitted through the file mode and must be verified by the file integrity tools.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 AIDE is verifying ACLs.\n\nVerify ACL settings for all uncommented file and directory selection lists with the following command:\n\n$ sudo grep -E '^[^#]*acl' /etc/aide.conf\nFIPSR = p+i+n+u+g+s+m+growing+acl+selinux+xattrs+sha512\n/usr/sbin/auditctl p+i+n+u+g+s+b+acl+xattrs+sha512\n/usr/sbin/auditd p+i+n+u+g+s+b+acl+xattrs+sha512\n/usr/sbin/ausearch p+i+n+u+g+s+b+acl+xattrs+sha512\n/usr/sbin/aureport p+i+n+u+g+s+b+acl+xattrs+sha512\n/usr/sbin/augenrules p+i+n+u+g+s+b+acl+xattrs+sha512\nDIR = p+i+n+u+g+acl+selinux+xattrs\nPERMS = p+i+u+g+acl+selinux\n\nOpen the file and verify no additional uncommented file and directory selection lines are missing the \"acl\" rule.\n\nIf the \"acl\" rule is not being used on all uncommented selection lines in the \"/etc/aide.conf\" file, or ACLs are not being checked by another file integrity tool, this is a finding.",
+  "fix": "Configure RHEL 10 so that the file integrity tool checks file and directory ACLs.\n\nIf AIDE is installed, ensure the \"acl\" rule is present on all uncommented file and directory selection lists.",
+  "ccis": [
+    "CCI-002475"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "RHEL 10 installation media ships with an optional file integrity tool called Advanced Intrusion Detection Environment (AIDE). AIDE is highly configurable at install time. This requirement assumes the \"aide.conf\" file is under the \"/etc\" directory.\n\nACLs can provide permissions beyond those permitted through the file mode and must be verified by the file integrity tools.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-200634",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

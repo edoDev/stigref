@@ -1,0 +1,53 @@
+{
+  "id": "SV-259636r961587_rule",
+  "full_rule_id": "SV-259636r961587_rule",
+  "rule_id": "SV-259636",
+  "rule_revision": "961587",
+  "group_id": "V-259636",
+  "group_title": "SRG-APP-000424",
+  "title": "The Exchange Edge server must point to a trusted list of DNS servers for external and internal resolution.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of possible erroneous queries that may have been coopted by bad actors, the Exchange Edge server must use DNS servers that utilize DNSSEC to resolve external hosts and internal hosts before routing messages to the appropriate destination.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify in the EDSP or consult with the appropriate personnel who manage DNS which servers to use for Internal and External DNS resolution. \n\nIf the server is not multi-homed, this does not apply.\n\nIn Exchange Management Shell, run the following command:\n\nGet-TransportService |Format-List *dns*\n\nIf \"ExternalDNSAdapterEnabled : True\", and no GUID exists, this is a finding.\n\nIf \"ExternalDNSAdapterEnabled : False\", and the property \"ExternalDNSServers\" is not populated with the documented trusted DNS servers for External DNS queries, this is a finding.\n\nIf \"InternalDNSAdapterEnabled : True\" and no GUID exists, this is a finding.\n\nIf \"InternalDNSAdapterEnabled : False\" and the property \"InternalDNSServers\" is not populated the documented trusted DNS servers for Internal DNS queries, this is a finding.",
+  "fix": "Verify in the EDSP or consult with the appropriate personnel who manage which DNS servers to use for Internal and External DNS resolution.\n\nIf a GUID for the External and Internal network adapters are applicable, then gather the values to populate the appropriate properties with the following commands:\n\nnetsh lan show interfaces\n\nThis will provide the adapters and the GUIDs for each. Identify the external and internal adapters for the Edge server.\n\nOnce gathered, run the following:\n\nSet-TransportService -Identity <name of server> -ExternalDNSAdapterEnabled $true -ExternalDNSAdapterGuid <externalAdapterGUID> -InternalDNSAdapterEnabled $true -InternalDNSAdapterGuid <InternalAdapterGuid>\n\nIf the \"ExternalDNSAdapterEnabled\" or InternalDNSAdapterEnabled are set to false, use the following to set the DNS configuration:\n\nSet-TransportService -Identity  <name of server> -InternalDNSServers @{add=\"Trusted DNS IP1\",\"Trusted DNS IP2\"}\nSet-TransportService -Identity  <name of server> -ExternalDNSServers @{add=\"Trusted DNS IP1\",\"Trusted DNS IP2\"}",
+  "ccis": [
+    "CCI-002466"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of possible erroneous queries that may have been coopted by bad actors, the Exchange Edge server must use DNS servers that utilize DNSSEC to resolve external hosts and internal hosts before routing messages to the appropriate destination.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-ED-000224",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac",
+      "name": "Microsoft Exchange 2019 Edge Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac"
+  ]
+}

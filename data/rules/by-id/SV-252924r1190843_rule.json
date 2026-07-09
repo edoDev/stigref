@@ -1,0 +1,54 @@
+{
+  "id": "SV-252924r1190843_rule",
+  "full_rule_id": "SV-252924r1190843_rule",
+  "rule_id": "SV-252924",
+  "rule_revision": "1190843",
+  "group_id": "V-252924",
+  "group_title": "SRG-OS-000250-GPOS-00093",
+  "title": "The TOSS operating system must implement DOD-approved encryption to protect the confidentiality of SSH connections.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nRemote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.\n\nTOSS incorporates systemwide crypto policies by default. The SSH configuration file has no effect on the ciphers, MACs, or algorithms unless specifically defined in the /etc/sysconfig/sshd file. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/openssh.config file.\n\nBy specifying a cipher list with the order of ciphers being in a \"strongest to weakest\" orientation, the system will automatically attempt to use the strongest cipher for securing SSH connections.\n\nSatisfies: SRG-OS-000250-GPOS-00093, SRG-OS-000394-GPOS-00174</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SSH daemon is configured to use only ciphers employing FIPS 140-2-approved algorithms:\n\nVerify that systemwide crypto policies are in effect:\n\n$ sudo grep CRYPTO_POLICY /etc/sysconfig/sshd\n\n# CRYPTO_POLICY=\n\nIf the \"CRYPTO_POLICY\" is uncommented, this is a finding.\n\nVerify which systemwide crypto policy is in use:\n\n$ sudo update-crypto-policies --show\n\nFIPS\n\nCheck that the ciphers in the back-end configurations are FIPS 140-2-approved algorithms with the following command:\n\n$ sudo grep -i ciphers /etc/crypto-policies/back-ends/openssh.config /etc/crypto-policies/back-ends/opensshserver.config\n\n/etc/crypto-policies/back-ends/openssh.config:Ciphers aes256-ctr,aes192-ctr,aes128-ctr\n/etc/crypto-policies/back-ends/opensshserver.config:CRYPTO_POLICY='-oCiphers=aes256-ctr,aes192-ctr,aes128-ctr'\n/etc/crypto-policies/back-ends/opensshserver.config:CRYPTO_POLICY='-oCiphers=aes256-ctr,aes192-ctr,aes128-ctr'\n\nIf the cipher entries in the \"openssh.config\" and \"opensshserver.config\" files have any ciphers other than \"aes256-ctr,aes192-ctr,aes128-ctr\", the order differs from the example above, if they are missing, or commented out, this is a finding.",
+  "fix": "Configure the TOSS SSH daemon to use only ciphers employing FIPS 140-2-approved algorithms with the following command:\n\n$ sudo fips-mode-setup --enable\n\nNext, update the \"/etc/crypto-policies/back-ends/openssh.config\" and \"/etc/crypto-policies/back-ends/opensshserver.config\" files to include these ciphers employing FIPS 140-2-approved algorithms:\n\n/etc/crypto-policies/back-ends/openssh.config:Ciphers aes256-ctr,aes192-ctr,aes128-ctr\n/etc/crypto-policies/back-ends/opensshserver.config:CRYPTO_POLICY='-oCiphers=aes256-ctr,aes192-ctr,aes128-ctr'\n/etc/crypto-policies/back-ends/opensshserver.config:CRYPTO_POLICY='-oCiphers=aes256-ctr,aes192-ctr,aes128-ctr'\n\nA reboot is required for the changes to take effect.",
+  "ccis": [
+    "CCI-001453",
+    "CCI-003123"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nRemote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.\n\nTOSS incorporates systemwide crypto policies by default. The SSH configuration file has no effect on the ciphers, MACs, or algorithms unless specifically defined in the /etc/sysconfig/sshd file. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/openssh.config file.\n\nBy specifying a cipher list with the order of ciphers being in a \"strongest to weakest\" orientation, the system will automatically attempt to use the strongest cipher for securing SSH connections.\n\nSatisfies: SRG-OS-000250-GPOS-00093, SRG-OS-000394-GPOS-00174",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-010140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-207703r997613_rule",
+  "full_rule_id": "SV-207703r997613_rule",
+  "rule_id": "SV-207703",
+  "rule_revision": "997613",
+  "group_id": "V-207703",
+  "group_title": "SRG-NET-000362-IDPS-00196",
+  "title": "The Palo Alto Networks security platform must protect against or limit the effects of known and unknown types of denial-of-service (DoS) attacks by employing rate-based attack prevention behavior analysis (traffic thresholds).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the network does not provide safeguards against DoS attack, network resources will be unavailable to users.\n\nInstallation of IDPS detection and prevention components (i.e., sensors) at key boundaries in the architecture mitigates the risk of DoS attacks. These attacks can be detected by matching observed communications traffic with patterns of known attacks and monitoring for anomalies in traffic volume/type.\n\nDetection components that use rate-based behavior analysis can detect attacks when signatures for the attack do not exist or are not installed. These attacks include zero-day attacks which are new attacks for which vendors have not yet developed signatures. Rate-based behavior analysis can detect sophisticated, Distributed DoS (DDoS) attacks by correlating traffic information from multiple network segments or components.\n\nThis requirement applies to the communications traffic functionality of the IDPS as it pertains to handling communications traffic, rather than to the IDPS device itself.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Go to Objects >> Security Profiles >> DoS Protection.\nIf there are no DoS Protection Profiles configured, this is a finding.\n\nGo to Policies >> DoS Protection.\nIf there are no DoS Protection Policies, this is a finding.\n\nThere may be more than one configured DoS Protection Policy; ask the administrator which DoS Protection Policy is intended to protect internal networks and DMZ networks from externally-originated DoS attacks.\n\nIf there is no such DoS Protection Policy, this is a finding.\n\nIf the DoS Protection Policy has no DoS Protection Profile, this is a finding.",
+  "fix": "Go to Objects >> Security Profiles >> DoS Protection.\nSelect \"Add\" to create a new profile.\nIn the \"DoS Protection Profile\" window, complete the required fields.\nFor the \"Type\", select \"Classified\".\nIn the \"Flood Protection\" tab, \"Syn Flood\" tab, select the \"Syn Flood\" check box and select \"SYN Cookie\".\nIn the \"Flood Protection\" tab, \"UDP Flood\" tab, select the \"UDP Flood\" check box; complete the \"Alarm Rate\", \"Activate Rate\", \"Max Rate\", and \"Block Duration\" fields.\nIn the \"Flood Protection\" tab, \"ICMP Flood\" tab, select the \"ICMP Flood\" check box; complete the \"Alarm Rate\", \"Activate Rate\", \"Max Rate\", and \"Block Duration\" fields.\nIn the \"Flood Protection\" tab, \"ICMPv6 Flood\" tab, select the \"ICMPv6 Flood\" check box; complete the \"Alarm Rate\", \"Activate Rate\", \"Max Rate\", and \"Block Duration\" fields.\nIn the \"Flood Protection\" tab, \"Other IP Flood\" tab, select the \"Other IP Flood\" check box; complete the \"Alarm Rate\", \"Activate Rate\", \"Max Rate\", and \"Block Duration\" fields.\nIn the \"Resources Protection\" tab, select the \"Maximum Concurrent Sessions\" check box.\nIn the \"Resources Protection\" tab, complete the \"Max Concurrent Sessions\" field. If the DoS profile type is aggregate, this limit applies to the entire traffic hitting the DoS rule on which the DoS profile is applied. If the DoS profile type is classified, this limit applies to the entire traffic on a classified basis (source IP, destination IP or source-and-destination IP) hitting the DoS rule on which the DoS profile is applied.\nSelect \"OK\".\n\nGo to Policies >> DoS Protection.\nSelect \"Add\" to create a new policy.\nIn the \"DoS Rule\" Window, complete the required fields.\nIn the \"General\" tab, complete the \"Name\" and \"Description\" fields.\nIn the \"Source\" tab, for \"Zone\", select the \"External zone, for Source Address\", select \"Any\".\nIn the \"Destination\" tab, \"Zone\", select \"Internal zone, for Destination Address\", select \"Any\".\nIn the \"Option/Protection\" tab, \nFor \"Service\", select \"Any\".\nFor \"Action\", select \"Protect\".\nSelect the \"Classified\" check box.\nIn the \"Profile\" field, select the configured DoS Protection profile for inbound traffic.\nIn the \"Address\" field, select \"destination-ip-only\".\nCommit changes by selecting \"Commit\" in the upper-right corner of the screen. Select \"OK\" when the confirmation dialog appears.",
+  "ccis": [
+    "CCI-002385",
+    "CCI-004866"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the network does not provide safeguards against DoS attack, network resources will be unavailable to users.\n\nInstallation of IDPS detection and prevention components (i.e., sensors) at key boundaries in the architecture mitigates the risk of DoS attacks. These attacks can be detected by matching observed communications traffic with patterns of known attacks and monitoring for anomalies in traffic volume/type.\n\nDetection components that use rate-based behavior analysis can detect attacks when signatures for the attack do not exist or are not installed. These attacks include zero-day attacks which are new attacks for which vendors have not yet developed signatures. Rate-based behavior analysis can detect sophisticated, Distributed DoS (DDoS) attacks by correlating traffic information from multiple network segments or components.\n\nThis requirement applies to the communications traffic functionality of the IDPS as it pertains to handling communications traffic, rather than to the IDPS device itself.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PANW-IP-000041",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "palo-alto-networks-idps-security-technical-implementation-guide-v3r2-7cc74b58",
+      "name": "Palo Alto Networks IDPS Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "palo-alto-networks-idps-security-technical-implementation-guide-v3r2-7cc74b58"
+  ]
+}

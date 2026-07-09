@@ -1,0 +1,54 @@
+{
+  "id": "SV-251394r853656_rule",
+  "full_rule_id": "SV-251394r853656_rule",
+  "rule_id": "SV-251394",
+  "rule_revision": "853656",
+  "group_id": "V-251394",
+  "group_title": "NET2012",
+  "title": "Multicast register messages must be rate limited per each source-group (S, G) entry.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When a new source starts transmitting in a PIM Sparse Mode network, the DR will encapsulate the multicast packets into register messages and forward them to the Rendezvous Point (RP) using unicast. This process can be taxing on the CPU for both the DR and the RP if the source is running at a high data rate and there are many new sources starting at the same time. This scenario can potentially occur immediately after a network failover. The rate limit for the number of register messages should be set to a relatively low value based on the known number of multicast sources within the multicast domain.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of the DR to verify that it is rate limiting the number of multicast register messages.\n\nIf the DR is not limiting multicast register messages, this is a finding.\n\nThe following is a PIM sparse mode configuration example that limits the number of register messages for each (S, G) multicast entry to 10 per second.\n\nip multicast-routing\n! \ninterface FastEthernet 0/0 \ndescription link to core\nip address 192.168.123.2 255.255.255.0\nip pim sparse-mode \n! \ninterface FastEthernet 0/1\ndescription User LAN\nip address 192.168.122.1 255.255.255.0\nip pim sparse-mode \n!\nip pim rp-address 1.1.1.1\nip pim register-rate 10",
+  "fix": "Configure the Designated Router (DR) to rate limit the number of multicast register messages it will allow for each (S, G) entry.",
+  "ccis": [
+    "CCI-001095",
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When a new source starts transmitting in a PIM Sparse Mode network, the DR will encapsulate the multicast packets into register messages and forward them to the Rendezvous Point (RP) using unicast. This process can be taxing on the CPU for both the DR and the RP if the source is running at a high data rate and there are many new sources starting at the same time. This scenario can potentially occur immediately after a network failover. The rate limit for the number of register messages should be set to a relatively low value based on the known number of multicast sources within the multicast domain.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NET2012",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "network-infrastructure-policy-security-technical-implementation-guide-v10r7-c8dc0fed",
+      "name": "Network Infrastructure Policy Security Technical Implementation Guide",
+      "version": "10",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "network-infrastructure-policy-security-technical-implementation-guide-v10r7-c8dc0fed"
+  ]
+}

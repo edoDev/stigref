@@ -1,0 +1,54 @@
+{
+  "id": "SV-256614r888333_rule",
+  "full_rule_id": "SV-256614r888333_rule",
+  "rule_id": "SV-256614",
+  "rule_revision": "888333",
+  "group_id": "V-256614",
+  "group_title": "SRG-APP-000001-WSR-000002",
+  "title": "Performance Charts must protect cookies from cross-site scripting (XSS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Cookies are a common way to save session state over the HTTP(S) protocol. If an attacker can compromise session data stored in a cookie, they are better able to launch an attack against the server and its applications.\n\nWhen a cookie is tagged with the \"HttpOnly\" flag, it tells the browser that this particular cookie should only be accessed by the originating server. Any attempt to access the cookie from client script is strictly forbidden.\n\nSatisfies: SRG-APP-000001-WSR-000002, SRG-APP-000439-WSR-000154</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --format /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml | sed '2 s/xmlns=\".*\"//g' | xmllint --xpath '/web-app/session-config/cookie-config/http-only' -\n\nExpected result:\n\n<http-only>true</http-only>\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml\n\nNavigate to the <session-config> node and configure it as follows:\n\n<session-config>\n  <cookie-config>\n    <http-only>true</http-only>\n    <secure>true</secure>\n  </cookie-config>\n  <session-timeout>30</session-timeout>\n</session-config>\n\nRestart the service with the following command:\n\n# vmon-cli --restart perfcharts",
+  "ccis": [
+    "CCI-000054",
+    "CCI-002418"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Cookies are a common way to save session state over the HTTP(S) protocol. If an attacker can compromise session data stored in a cookie, they are better able to launch an attack against the server and its applications.\n\nWhen a cookie is tagged with the \"HttpOnly\" flag, it tells the browser that this particular cookie should only be accessed by the originating server. Any attempt to access the cookie from client script is strictly forbidden.\n\nSatisfies: SRG-APP-000001-WSR-000002, SRG-APP-000439-WSR-000154",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPF-70-000004",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-1202da0d",
+      "name": "VMware vSphere 7.0 vCenter Appliance Perfcharts Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-1202da0d"
+  ]
+}

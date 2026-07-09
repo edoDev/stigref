@@ -1,0 +1,53 @@
+{
+  "id": "SV-265984r1024858_rule",
+  "full_rule_id": "SV-265984r1024858_rule",
+  "rule_id": "SV-265984",
+  "rule_revision": "1024858",
+  "group_id": "V-265984",
+  "group_title": "SRG-APP-000516-DNS-000102",
+  "title": "The F5 BIG-IP DNS must use valid root name servers in the local root zone file.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>All caching name servers must be authoritative for the root zone because, without this starting point, they would have no knowledge of the DNS infrastructure and thus would be unable to respond to any queries. The security risk is that an adversary could change the root hints and direct the caching name server to a bogus root server. At that point, every query response from that name server is suspect, which would give the adversary substantial control over the network communication of the name servers' clients. When authoritative servers are sent queries for zones that they are not authoritative for, and they are configured as a noncaching server (as recommended), they can either be configured to return a referral to the root servers or they can be configured to refuse to answer the query. The recommendation is to configure authoritative servers to refuse to answer queries for any zones for which they are not authoritative. This is more efficient for the server and allows it to spend more of its resources doing what its intended purpose is, answering authoritatively for its zone.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This is only applicable if DNS recursion is being performed by the BIG-IP AND a custom root hint list must be defined.\n\nFrom the BIG-IP GUI:\n1. DNS.\n2. Zones.\n3. ZoneRunner.\n4. Zone List.\n5. Verify there is no Zone Name called \".\".\n6. If a \".\" Zone Name exists, log in to the BIG-IP CLI and run the following commands:\ncat /var/named/config/namedb/db.external.named.root.\n7. Verify valid root name servers are configured.\n\nIf the BIG-IP appliance is not configured to use valid root name servers in the local root zone file, this is a finding.",
+  "fix": "This is only applicable if DNS recursion is being performed by the BIG-IP AND a custom root hint list must be defined.\n\nEnable recursion for named:\nFrom the BIG-IP GUI:\n1. DNS.\n2. Zones.\n3. ZoneRunner.\n4. Named Configuration.\n5. Change the recursion option to \"recursion yes;\".\n6. Click \"Update\".\n\nCreate a hint zone using ZoneRunner:\nFrom the BIG-IP GUI:\n1. DNS.\n2. Zones.\n3. ZoneRunner.\n4. Zone List.\n5. Create.\n6. For the View Name option, select the view for which the hint zone will apply.\n7. For the Zone Name, enter a period character \".\" (without quotes).\n8. For the Zone Type, select \"Hint\".\n9. Change the Zone File Name to \"db.external.named.root.\" (without quotes).\n10. Click \"Finished\".\n\nEdit the hint zone file:\nFrom the BIG-IP CLI:\n1. Edit the root hint file:\nvi /var/named/config/namedb/db.external.named.root.\n2. Paste the list of valid root name servers. Note: A copy of the latest root server list can be found at the following location:\nhttp://www.internic.net/zones/named.cache.\n3. Save the file.\n4. Update the time stamp on: /var/named/config/named.conf\ntouch /var/named/config/named.conf\n5. Restart named:\ntmsh restart /sys service named\n6. Restart zrd:\ntmsh restart /sys service zrd\n\nNote: The hint zone does not display any information when viewed in the ZoneRunner Configuration utility. The information is used by named for the purpose of querying and receiving the most up-to-date list of root servers. It cannot be updated or modified using the ZoneRunner utility.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "All caching name servers must be authoritative for the root zone because, without this starting point, they would have no knowledge of the DNS infrastructure and thus would be unable to respond to any queries. The security risk is that an adversary could change the root hints and direct the caching name server to a bogus root server. At that point, every query response from that name server is suspect, which would give the adversary substantial control over the network communication of the name servers' clients. When authoritative servers are sent queries for zones that they are not authoritative for, and they are configured as a noncaching server (as recommended), they can either be configured to return a referral to the root servers or they can be configured to refuse to answer the query. The recommendation is to configure authoritative servers to refuse to answer queries for any zones for which they are not authoritative. This is more efficient for the server and allows it to spend more of its resources doing what its intended purpose is, answering authoritatively for its zone.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-DN-300015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-dns-security-technical-implementation-guide-v1r1-79218d48",
+      "name": "F5 BIG-IP TMOS DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-dns-security-technical-implementation-guide-v1r1-79218d48"
+  ]
+}

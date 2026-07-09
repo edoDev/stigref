@@ -1,0 +1,53 @@
+{
+  "id": "SV-260589r958406_rule",
+  "full_rule_id": "SV-260589r958406_rule",
+  "rule_id": "SV-260589",
+  "rule_revision": "958406",
+  "group_id": "V-260589",
+  "group_title": "SRG-OS-000032-GPOS-00013",
+  "title": "Ubuntu 22.04 LTS must monitor remote access methods.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk and make remote user access management difficult at best.  \n  \nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.  \n  \nAutomated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that Ubuntu 22.04 LTS monitors all remote access methods by using the following command:  \n  \n     $  grep -Er '^(auth\\.\\*,authpriv\\.\\*|daemon\\.\\*)' /etc/rsyslog.* \n     /etc/rsyslog.d/50-default.conf:auth.*,authpriv.* /var/log/secure \n     /etc/rsyslog.d/50-default.conf:daemon.* /var/log/messages \n  \nIf \"auth.*\", \"authpriv.*\", or \"daemon.*\" are not configured to be logged in at least one of the config files, this is a finding.",
+  "fix": "Configure Ubuntu 22.04 LTS to monitor all remote access methods. \n \nAdd or modify the following line in the \"/etc/rsyslog.d/50-default.conf\" file: \n \nauth.*,authpriv.* /var/log/secure  \ndaemon.* /var/log/messages  \n \nRestart \"rsyslog.service\" for the changes to take effect by using the following command:  \n  \n     $ sudo systemctl restart rsyslog.service",
+  "ccis": [
+    "CCI-000067"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk and make remote user access management difficult at best.  \n  \nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.  \n  \nAutomated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-22-652015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553",
+      "name": "Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553"
+  ]
+}

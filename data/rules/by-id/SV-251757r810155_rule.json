@@ -1,0 +1,53 @@
+{
+  "id": "SV-251757r810155_rule",
+  "full_rule_id": "SV-251757r810155_rule",
+  "rule_id": "SV-251757",
+  "rule_revision": "810155",
+  "group_id": "V-251757",
+  "group_title": "SRG-NET-000512-RTR-000001",
+  "title": "The NSX-T Tier-0 Gateway must be configured to use its loopback address as the source address for iBGP peering sessions.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Using a loopback address as the source address offers a multitude of uses for security, access, management, and scalability of the BGP routers. It is easier to construct appropriate ingress filters for router management plane traffic destined to the network management subnet since the source addresses will be from the range used for loopback interfaces instead of a larger range of addresses used for physical interfaces. Log information recorded by authentication and syslog servers will record the router’s loopback address instead of the numerous physical interface addresses.\n\nWhen the loopback address is used as the source for eBGP peering, the BGP session will be harder to hijack since the source address to be used is not known globally—making it more difficult for a hacker to spoof an eBGP neighbor. By using traceroute, a hacker can easily determine the addresses for an eBGP speaker when the IP address of an external interface is used as the source address. The routers within the iBGP domain should also use loopback addresses as the source address when establishing BGP sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the Tier-0 Gateway is not using iBGP, this is Not Applicable.\n\nFrom the NSX-T Manager web interface, go to Networking >> Tier-0 Gateways.\n\nFor every Tier-0 Gateway with BGP enabled, expand the Tier-0 Gateway.\n\nExpand BGP, click on the number next to BGP Neighbors, then view the source address for each neighbor.\n\nIf the Source Address is not configured as the NSX-T Tier-0 Gateway loopback address for the iBGP session, this is a finding.",
+  "fix": "To configure a loopback interface do the following:\n\nFrom the NSX-T Manager web interface, go to Networking >> Tier-0 Gateways and expand the target Tier-0 gateway.\n\nExpand interfaces and click \"Add Interface\".\n\nEnter a name, select \"Loopback\" as the Type, enter an IP address, select an Edge Node for the interface, and then click \"Save\".\n\nNote: More than one loopback may need to be configured depending on the routing architecture.\n\nTo set the source address for BGP neighbors do the following:\n\nFrom the NSX-T Manager web interface, go to Networking >> Tier-0 Gateways >> expand the target Tier-0 gateway.\n\nExpand BGP >> next to BGP Neighbors click on the number present to open the dialog >> select Edit on the target BGP Neighbor.\n\nUnder Source Addresses configure the source address with the loopback address and click Save.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using a loopback address as the source address offers a multitude of uses for security, access, management, and scalability of the BGP routers. It is easier to construct appropriate ingress filters for router management plane traffic destined to the network management subnet since the source addresses will be from the range used for loopback interfaces instead of a larger range of addresses used for physical interfaces. Log information recorded by authentication and syslog servers will record the router’s loopback address instead of the numerous physical interface addresses.\n\nWhen the loopback address is used as the source for eBGP peering, the BGP session will be harder to hijack since the source address to be used is not known globally—making it more difficult for a hacker to spoof an eBGP neighbor. By using traceroute, a hacker can easily determine the addresses for an eBGP speaker when the IP address of an external interface is used as the source address. The routers within the iBGP domain should also use loopback addresses as the source address when establishing BGP sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "T0RT-3X-000084",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-t-tier-0-gateway-rtr-security-technical-implementation-guide-v1r2-c90e0466",
+      "name": "VMware NSX-T Tier-0 Gateway RTR Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-t-tier-0-gateway-rtr-security-technical-implementation-guide-v1r2-c90e0466"
+  ]
+}

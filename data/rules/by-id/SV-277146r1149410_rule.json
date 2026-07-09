@@ -1,0 +1,53 @@
+{
+  "id": "SV-277146r1149410_rule",
+  "full_rule_id": "SV-277146r1149410_rule",
+  "rule_id": "SV-277146",
+  "rule_revision": "1149410",
+  "group_id": "V-277146",
+  "group_title": "SRG-OS-000078-GPOS-00046",
+  "title": "The macOS system must require a minimum password length of 14 characters.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The macOS must be configured to require that a minimum of 14 characters be used when a password is created.\n\nThis rule enforces password complexity by requiring users to set passwords that are less vulnerable to malicious users.\n\nNote: The guidance for password-based authentication in NIST 800-53 (Rev 5) and NIST 800-63B states that complexity rules must be organizationally defined. The values defined are based on common complexity values, but each organization may define its own password complexity rules.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to enforce a minimum 14-character password length with the following command:\n\n/usr/bin/pwpolicy -getaccountpolicies 2>/dev/null | tail +2 | grep -oE \"policyAttributePassword matches '.\\{[0-9]+,\" | awk -F'[{,]' -v ODV=14 '{if ($2 > max) max=$2} END {print (max >= ODV) ? \"pass\" : \"fail\"}'\n\nIf the result is not \"true\", this is a finding.",
+  "fix": "Configure the macOS system to enforce a 14-character password length by installing the \"com.apple.mobiledevice.passwordpolicy\" configuration profile.",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The macOS must be configured to require that a minimum of 14 characters be used when a password is created.\n\nThis rule enforces password complexity by requiring users to set passwords that are less vulnerable to malicious users.\n\nNote: The guidance for password-based authentication in NIST 800-53 (Rev 5) and NIST 800-63B states that complexity rules must be organizationally defined. The values defined are based on common complexity values, but each organization may define its own password complexity rules.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-26-003010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2",
+      "name": "Apple macOS 26 (Tahoe) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2"
+  ]
+}

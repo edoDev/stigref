@@ -1,0 +1,53 @@
+{
+  "id": "SV-256016r882390_rule",
+  "full_rule_id": "SV-256016r882390_rule",
+  "rule_id": "SV-256016",
+  "rule_revision": "882390",
+  "group_id": "V-256016",
+  "group_title": "SRG-NET-000205-RTR-000001",
+  "title": "The Arista router must be configured to restrict traffic destined to itself.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The route processor handles traffic destined to the router, the key component used to build forwarding paths that is also instrumental with all network management functions. Hence, any disruption or denial-of-service (DoS) attack to the route processor can result in mission-critical network outages.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the access control list (ACL) or filter for the Arista router receive path and verify that it will only process specific management plane and control plane traffic from specific sources.\n\nNote: If the platform does not support the receive path filter, verify all layer 3 interfaces have an ingress ACL to control what packets are allowed to be destined to the router for processing.\n\nStep 1: Review the Arista router configuration for Control Plane ACL, which can be modified to permit or deny additional protocols that can be matched via an extended access-list for management traffic. Sample Default CP ACL:\n\n!\nip access-list ENCLAVE_GATEWAY_FILTER\n   10 permit ip any 172.16.0.0/16\n!\nip access-list STIG\n   10 deny ip 172.16.50.0/30 10.10.100.0/24\n!\nip access-list control-plane-modified\n   !! Line 180 added for AMLS-L3-000260 which requires eBGP GTSM or equivalent\n   statistics per-entry\n   10 permit icmp any any\n   20 permit ip any any tracked\n   30 permit udp any any eq bfd ttl eq 255\n   40 permit udp any any eq bfd-echo ttl eq 254\n   50 permit ospf any any\n   60 permit tcp any any eq ssh telnet www snmp bgp https msdp\n   70 permit udp any any eq bootps bootpc snmp rip ntp\n   80 permit tcp any any eq mlag ttl eq 255\n   90 permit udp any any eq mlag ttl eq 255\n   100 permit vrrp any any\n   110 permit ahp any any\n   120 permit pim any any\n   130 permit igmp any any\n   140 permit tcp any any range 5900 5910\n   150 permit tcp any any range 50000 50100\n   160 permit udp any any range 51000 51100\n   170 permit tcp any any eq mlag-arp-sync ttl eq 255\n   180 permit tcp 192.168.1.0/30 192.168.1.0/30 eq bgp ttl eq 255 log \n\nStep 2: Verify the control plane policy is configured to restricting the LLDP traffic to CPU.\n\nrouter#show running-config | section policy-map\npolicy-map type copp copp-system-policy\n   class copp-system-lldp\n   bandwidth kbps 500\n\nStep 3: To verify the ACL is configured to allow the traffic per the requirement and deny all by default, execute the command \"sh ip access-list\".\n\nrouter#show ip access-list\nip access-list INBOUND\n   10 permit tcp 10.10.10.0/24 host 10.20.10.1 eq ssh telnet\n   20 permit tcp 10.10.10.0/24 any eq www https\n   30 permit udp 10.20.20.0/24 any eq bootps snmp\n\nStep 4: To verify the ACL is applied inbound on all external interfaces, execute the command \"sh run int Eth YY\".\n\nrouter#show running-config interface Ethernet 13\ninterface ethernet 13\n  ip access-group INBOUND in\n\nIf the Arista router is not configured with a receive-path filter to restrict traffic destined to itself, this is a finding.",
+  "fix": "Configure all Arista routers with receive path filters to restrict traffic destined to the router.\n\nStep 1: Configure the Control plane policy to restrict the LLDP traffic to CPU.\n\nrouter(config)#policy-map type copp copp-system-policy\nrouter(config-pmap-copp-system-policy)#class copp-system-lldp\nrouter(config-pmap-c-copp-system-policy-copp-system-lldp)#bandwidth kbps 500\n\nStep 2: Configure an ACL inbound to allow traffic per the requirement and deny all by default.\n\nip access-list INBOUND\n   10 permit tcp 10.10.10.0/24 host 10.20.10.1 eq ssh telnet\n   20 permit tcp 10.10.10.0/24 any eq www https\n   30 permit udp 10.20.20.0/24 any eq bootps snmp\n\nStep 3: Apply the ACL inbound on all external interfaces.\n\nrouter(config)#interface ethernet 13\nrouter(config-if-Et13)#ip access-group INBOUND in",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The route processor handles traffic destined to the router, the key component used to build forwarding paths that is also instrumental with all network management functions. Hence, any disruption or denial-of-service (DoS) attack to the route processor can result in mission-critical network outages.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000340",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

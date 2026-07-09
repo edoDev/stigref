@@ -1,0 +1,53 @@
+{
+  "id": "SV-214284r960963_rule",
+  "full_rule_id": "SV-214284r960963_rule",
+  "rule_id": "SV-214284",
+  "rule_revision": "960963",
+  "group_id": "V-214284",
+  "group_title": "SRG-APP-000141-WSR-000087",
+  "title": "Users and scripts running on behalf of users must be contained to the document root or home directory tree of the Apache web server.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A web server is designed to deliver content and execute scripts or applications on the request of a client or user. Containing user requests to files in the directory tree of the hosted web application and limiting the execution of scripts and applications guarantees that the user is not accessing information protected outside the application's realm. \n \nThe web server must also prohibit users from jumping outside the hosted application directory tree through access to the user's home directory, symbolic links or shortcuts, or through search paths for missing files.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file: \n \n# apachectl -V | egrep -i 'httpd_root|server_config_file'\n-D HTTPD_ROOT=\"/etc/httpd\"\n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\"\n\nNote: The apachectl front end is the preferred method for locating the Apache httpd file. For some Linux distributions \"apache2ctl -V\" or  \"httpd -V\" can also be used. \n \nVerify there is a single \"Require\" directive with the value of \"all denied\". \n \nVerify there are no \"Allow\" or \"Deny\" directives in the root <Directory> element. \n \nThe following may be useful in extracting root directory elements from the Apache configuration for auditing: \n \n# perl -ne 'print if /^ *<Directory *\\//i .. /<\\/Directory/i' $APACHE_PREFIX/conf/httpd.conf  \n \nIf there are \"Allow\" or \"Deny\" directives in the root <Directory> element, this is a finding.",
+  "fix": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file: \n \n# apachectl -V | egrep -i 'httpd_root|server_config_file' \n-D HTTPD_ROOT=\"/etc/httpd\" \n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\" \n \nSet the root directory directive as follows: \n \n<Directory> \n... \nRequire all denied \n... \n</Directory> \n \nRemove any \"Deny\" and \"Allow\" directives from the root <Directory> element. \n \nRestart Apache: apachectl restart",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A web server is designed to deliver content and execute scripts or applications on the request of a client or user. Containing user requests to files in the directory tree of the hosted web application and limiting the execution of scripts and applications guarantees that the user is not accessing information protected outside the application's realm. \n \nThe web server must also prohibit users from jumping outside the hosted application directory tree through access to the user's home directory, symbolic links or shortcuts, or through search paths for missing files.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U2-000350",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66",
+      "name": "Apache Server 2.4 UNIX Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66"
+  ]
+}

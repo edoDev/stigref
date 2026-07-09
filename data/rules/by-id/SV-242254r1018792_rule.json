@@ -1,0 +1,77 @@
+{
+  "id": "SV-242254r1018792_rule",
+  "full_rule_id": "SV-242254r1018792_rule",
+  "rule_id": "SV-242254",
+  "rule_revision": "1018792",
+  "group_id": "V-242254",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "The TippingPoint SMS must be configured to use an authentication server for the purpose of authenticating users prior to granting administrative access and to enforce access restrictions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.\n\nSatisfies: SRG-APP-000516-NDM-000336, SRG-APP-000516-NDM-000335, SRG-APP-000033-NDM-000212, SRG-APP-000038-NDM-000213, SRG-APP-000153-NDM-000249, SRG-APP-000329-NDM-000287 SRG-APP-000156-NDM-000250, SRG-APP-000340-NDM-000288, SRG-APP-000380-NDM-000304, SRG-APP-000408-NDM-000314</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Configure the Trend Micro TippingPoint system to ensure the SMS client is using CAC authentication and LDAPS authorization.\n\n1. Log in to the SMS client.\n2. Click on Authentication and Authorization.\n3. Click authentication.\n4. Ensure \"Use CAC authentication\" is currently selected. \n\nIf the TippingPoint SMS is not configured to use an authentication server for the purpose of authenticating users prior to granting administrative access, this is a finding.",
+  "fix": "Follow these configuration steps to enable CAC/LDAPS authentication and authorization to the Trend Micro TippingPoint SMS client. The Site's LDAPS/AD environment must be configured to audit all account actions.\n\nI. Certificate Load Steps: \n1. Log in to the SMS client. \n2. Select certificate management. \n3. Click CA certificates. \n4. Select import. \n5. Find the CA signing certificate bundle for the LDAPS servers on your machine. \n6. Enter the name, then select browse to find the CA certificate.\n7. Click OK.\n8. Repeat steps for all other DOD Root and Intermediate CAs being used for the administrator’s admin-token/CACs.\n\nII. LDAP Authorization configuration steps: \n1. Click Authentication and Authorization.\n2. Select Groups. \n3. Click New.\n4. Type the name of the LDAP group exactly as it appears as the CN in the active directory domain. \n5. Add all site-specific details including which role to map superuser, admin, or operator. \n6. Under Active Directory Group Mapping ensure the item \"map this group to the same named group in active directory\" is selected. \n7. Select OK.\n\nIII. LDAPS Server configuration - ensure a DNS resolver has been configured in accordance with the admin guide, and this DNS resolver knows how to resolve the domain the SMS will log into: \n1. Under Admin, click Authentication and CAC.\n2. Click edit. \n3. Enter the Server address: ensure it is the fully qualified domain name as the LDAPS certificate will likely have it.\n4. Enable SSL: must be checked for LDAPS. \n5. Current certificate: must be the intermediate root certificate/issuing CA certificate for the domain controllers - this is the CA certificate loaded in the first section. \n6. Port: 636 (or if your DOD LDAPS port is different add this).\n7. Timeout: 30 seconds is the default.\n8. Admin name: this must be the account that has privileges to access the directory schema – format is username@domain.name.\n9. Admin password: password of previous admin account. \n10. User search base: this is the LDAP directory tree for the accounts that will be allowed. Example: ou=Trend Micro,dc=dod,dc=disa,dc=mil \n11. User search attribute: normally in DOD this is userPrincipalName.\n12. User display attribute: normally in DOD this is sAMAccountName.\n13. Group search base: this is the LDAP directory tree for the groups that will be allowed. Example: ou=Trend Micro,dc=dod,dc=disa,dc=mil \n14. Group name attribute: normally it is cn.\n15. Select the test button to ensure all configurations provided function correctly. \n16. Select OK.\n\nIV. Enable OCSP revocation Checking: \n1. Select Certificate Management and Revocation.\n2. Click New under OCSP Settings.\n3. Select the Certificate Authority. Type the full OCSP URI (e.g. http://ocsp.disa.mil).\n4. Repeat this step for all CA certificates in the CAC trust chain.\n5. Optionally, to add a CRL click New under Certificate Revocation Lists. \n6. Select the Certificate Authority. \n7. Type the full CRL path including to the specific CRL file (e.g. http://crl.disa.mil/certificate.crl).\n\nV. Enable CAC authentication/LDAPS authorization: \n1. Click Admin, click Authentication and Groups.\n2. Select Edit.\n3. Click Use CAC Authentication (ensure the local emergency user account is checked for local access in case of emergency troubleshooting). \n4. Select OK. \n5. Close the SMS client.\n\nVI. Test CAC authentication: \n1. Ensure one other smartcard reader is enabled in the device manager of the computer you are using. \n2. Open the SMS client. \n3. Type the hostname/IP of the SMS server.\n4. Ensuring the CAC/admin token is inserted in the reader, type the PIN of the CAC. \n5. Select the certificate to use to login.\n6. Select OK. \n7. User should be taken to the dashboard and configuration area of the SMS.\n\nVII. Troubleshooting: \n1. If you receive errors logging in with CAC go to the serial console of the SMS server. \n2. Login with the local emergency user account. \n3. Type the command \"set cac.disable = yes\" - this will give your local admin login access to the SMS client to troubleshoot any configuration errors.\n\nVIII. Ensure the site's LDAP/Active Directory infrastructure is reconfigured to audit account creation, modification, disabling, and removals.",
+  "ccis": [
+    "CCI-000213",
+    "CCI-000345",
+    "CCI-000366",
+    "CCI-000370",
+    "CCI-004045",
+    "CCI-001368",
+    "CCI-002169",
+    "CCI-001813",
+    "CCI-001941",
+    "CCI-002235",
+    "CCI-002883",
+    "CCI-003627",
+    "CCI-003628",
+    "CCI-003831",
+    "CCI-004046",
+    "CCI-004047",
+    "CCI-004058",
+    "CCI-004059",
+    "CCI-004060",
+    "CCI-004061",
+    "CCI-004063",
+    "CCI-004064",
+    "CCI-004065",
+    "CCI-004068",
+    "CCI-000770"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.\n\nSatisfies: SRG-APP-000516-NDM-000336, SRG-APP-000516-NDM-000335, SRG-APP-000033-NDM-000212, SRG-APP-000038-NDM-000213, SRG-APP-000153-NDM-000249, SRG-APP-000329-NDM-000287 SRG-APP-000156-NDM-000250, SRG-APP-000340-NDM-000288, SRG-APP-000380-NDM-000304, SRG-APP-000408-NDM-000314",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TIPP-NM-000570",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "trend-micro-tippingpoint-ndm-security-technical-implementation-guide-v2r3-26c90aac",
+      "name": "Trend Micro TippingPoint NDM Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "trend-micro-tippingpoint-ndm-security-technical-implementation-guide-v2r3-26c90aac"
+  ]
+}

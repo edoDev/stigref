@@ -1,0 +1,53 @@
+{
+  "id": "SV-279563r1192423_rule",
+  "full_rule_id": "SV-279563r1192423_rule",
+  "rule_id": "SV-279563",
+  "rule_revision": "1192423",
+  "group_id": "V-279563",
+  "group_title": "SRG-OS-000476-GPOS-00221",
+  "title": "Nutanix OS must generate audit records for all account creations, modifications, disabling, and termination events.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nAudit records can be generated from various components within the information system (e.g., module or policy filter).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS generates audit records for all account creation, modifications, disabling and terminations using the following command.\n\n$ sudo grep /etc/passwd /etc/audit/audit.rules\n-w /etc/passwd -p wa -k audit_account_changes\n\nIf the command does not return a line, or the line is commented out, this is a finding.",
+  "fix": "1. For AOS, configure the audit rules.\n\n$ sudo salt-call state.sls security/CVM/auditCVM\n\n2. For Prism Central, configure the audit rules.\n\n$ sudo salt-call state.sls security/PCVM/auditPCVM\n\n3. For Files, configure the audit rules.\n\n$ sudo salt-call state.sls security/AFS/auditAFS\n\n4. For AHV, configure the audit rules.\n\n$ sudo salt-call state.sls security/KVM/auditKVM",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nAudit records can be generated from various components within the information system (e.g., module or policy filter).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000075",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

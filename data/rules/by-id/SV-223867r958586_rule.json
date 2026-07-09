@@ -1,0 +1,53 @@
+{
+  "id": "SV-223867r958586_rule",
+  "full_rule_id": "SV-223867r958586_rule",
+  "rule_id": "SV-223867",
+  "rule_revision": "958586",
+  "group_id": "V-223867",
+  "group_title": "SRG-OS-000228-GPOS-00088",
+  "title": "IBM z/OS UNIX Telnet server Startup parameters must be properly specified.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The z/OS UNIX Telnet Server (i.e., otelnetd) provides interactive access to the z/OS UNIX shell. During the initialization process, startup parameters are read to define the characteristics of each otelnetd instance. Some of these parameters have an impact on system security. Failure to specify the appropriate command options could result in degraded security. This exposure may result in unauthorized access impacting data integrity or the availability of some system services.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nISHELL\n\nEnter /etc/ for a pathname - you may need to issue a CD /etc/\nselect FILE NAME inetd.conf\n\nIf Option -D login is included on the otelnetd command, this is not a finding.\n\nIf Option -c 900 is included on the otelnetd command, this is not a finding.\n\nNOTE: \"900\" indicates a session timeout value of \"15\" minutes and is currently the maximum value allowed.",
+  "fix": "Configure the startup parameters in the inetd.conf file for otelnetd to conform to the specifications below.\n\nThe otelnetd startup command includes the options -D login and -c 900, where:\n\n-D login indicates that messages should be written to the syslogd facility for login and logout activity.\n\n-c 900 indicates that the Telnet session should be terminated after \"15\" minutes of inactivity.\n\nNOTE: \"900\" is the maximum value; any value between \"1\" and \"900\" is acceptable.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The z/OS UNIX Telnet Server (i.e., otelnetd) provides interactive access to the z/OS UNIX shell. During the initialization process, startup parameters are read to define the characteristics of each otelnetd instance. Some of these parameters have an impact on system security. Failure to specify the appropriate command options could result in degraded security. This exposure may result in unauthorized access impacting data integrity or the availability of some system services.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-UT-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

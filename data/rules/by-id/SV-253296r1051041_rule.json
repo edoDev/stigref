@@ -1,0 +1,54 @@
+{
+  "id": "SV-253296r1051041_rule",
+  "full_rule_id": "SV-253296r1051041_rule",
+  "rule_id": "SV-253296",
+  "rule_revision": "1051041",
+  "group_id": "V-253296",
+  "group_title": "SRG-OS-000355-GPOS-00143",
+  "title": "The Windows 11 time service must synchronize with an appropriate DOD time source.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The Windows Time Service controls time synchronization settings. Time synchronization is essential for authentication and auditing purposes. If the Windows Time Service is used, it must synchronize with a secure, authorized time source. Domain-joined systems are automatically configured to synchronize with domain controllers. If an NTP server is configured, it must synchronize with a secure, authorized time source.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Windows time service configuration.\n\nOpen an elevated \"Command Prompt\" (run as administrator).\n\nEnter \"W32tm /query /configuration\".\n\nDomain-joined systems (excluding the domain controller with the PDC emulator role):\n\nIf the value for \"Type\" under \"NTP Client\" is not \"NT5DS\", this is a finding.",
+  "fix": "Configure the system to synchronize time with an appropriate DOD time source.\n\nDomain-joined systems use NT5DS to synchronize time from other systems in the domain by default.\n\nIf the system needs to be configured to an NTP server, configure the system to point to an authorized time server by setting the policy value for Computer Configuration >> Administrative Templates >> System >> Windows Time Service >> Time Providers >> \"Configure Windows NTP Client\" to \"Enabled\", and configure the \"NtpServer\" field to point to an appropriate DOD time server.\n\nThe US Naval Observatory operates stratum 1 time servers, identified at https://www.cnmoc.usff.navy.mil/Our-Commands/United-States-Naval-Observatory/Precise-Time-Department/Network-Time-Protocol-NTP/. Time synchronization will occur through a hierarchy of time servers down to the local level. Clients and lower-level servers will synchronize with an authorized time server in the hierarchy.",
+  "ccis": [
+    "CCI-004923",
+    "CCI-001891"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Windows Time Service controls time synchronization settings. Time synchronization is essential for authentication and auditing purposes. If the Windows Time Service is used, it must synchronize with a secure, authorized time source. Domain-joined systems are automatically configured to synchronize with domain controllers. If an NTP server is configured, it must synchronize with a secure, authorized time source.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN11-00-000260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-11-security-technical-implementation-guide-v2r7-e8aa9373",
+      "name": "Microsoft Windows 11 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-11-security-technical-implementation-guide-v2r7-e8aa9373"
+  ]
+}

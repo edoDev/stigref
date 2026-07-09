@@ -1,0 +1,53 @@
+{
+  "id": "SV-279572r1192092_rule",
+  "full_rule_id": "SV-279572r1192092_rule",
+  "rule_id": "SV-279572",
+  "rule_revision": "1192092",
+  "group_id": "V-279572",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "Nutanix AHV must disable the use or cramfs kernel module.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.\n\nOperating systems can provide a wide variety of functions and services. Some of the functions and services provided may not be necessary to support essential organizational operations (e.g., key missions, functions).\n\nExamples of nonessential capabilities include, but are not limited to, games, software packages, tools, and demonstration software, not related to requirements or providing a wide array of functionality not required for every mission, but which cannot be disabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For AOS, Prism Central, or Files, this is not a finding.\n\n1. Verify Nutanix AHV disables the ability to load the cramfs kernel module using the following command.\n\n$ sudo grep -r cramfs /etc/modprobe.d/* | grep \"/bin/false\"\ninstall cramfs /bin/false\n\nIf the command does not return any output, or the line is commented out, and using the cramfs protocol is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.\n\n2. Verify the operating system disables the ability to use the cramfs kernel module. Check if the cramfs kernel module is disabled using the following command.\n\n$ sudo grep -r cramfs /etc/modprobe.d/* | grep \"blacklist\"\nblacklist cramfs\n\nIf the command does not return any output or the output is not \"blacklist cramfs\", and using the cramfs kernel module is not documented with the ISSO as an operational requirement, this is a finding.",
+  "fix": "Configure the AOS to disable the ability to use the cramfs kernel module.\n\n1. Add or update the following lines in the file \"/etc/modprobe.d/blacklist.conf\":\n\ninstall cramfs /bin/false\nblacklist cramfs\n\n2. Reboot the system for the settings to take effect.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.\n\nOperating systems can provide a wide variety of functions and services. Some of the functions and services provided may not be necessary to support essential organizational operations (e.g., key missions, functions).\n\nExamples of nonessential capabilities include, but are not limited to, games, software packages, tools, and demonstration software, not related to requirements or providing a wide array of functionality not required for every mission, but which cannot be disabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000103",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

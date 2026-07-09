@@ -1,0 +1,53 @@
+{
+  "id": "SV-239965r666301_rule",
+  "full_rule_id": "SV-239965r666301_rule",
+  "rule_id": "SV-239965",
+  "rule_revision": "666301",
+  "group_id": "V-239965",
+  "group_title": "SRG-NET-000166-VPN-000580",
+  "title": "The Cisco ASA remote access VPN server must be configured to use a separate authentication server than that used for administrative access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The VPN interacts directly with public networks and devices and should not contain user authentication information for all users. AAA network security services provide the primary framework through which a network administrator can set up access control and authorization on network points of entry or network access servers. It is not advisable to configure access control on the VPN gateway or remote access server. Separation of services provides added assurance to the network if the access control server is compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In the example below, radius server at 10.1.1.2 is used for administrative access authentication while the LDAP server will be used for granting remote access to the network.\n\naaa-server LDAP protocol ldap\naaa-server LDAP (INSIDE) host 10.1.1.1\n…\n…\n…\naaa-server RADIUS_GROUP protocol radius\naaa-server RADIUS_GROUP (INSIDE) host 10.1.1.2\n key *****\n…\n…\n…\naaa authentication serial console RADIUS_GROUP LOCAL\naaa authentication ssh console RADIUS_GROUP LOCAL\n\nIf the ASA is not configured to use a separate authentication server than that used for administrative access, this is a finding.",
+  "fix": "Configure the ASA to use a separate authentication server as shown in the example below.\n\nASA2(config)# aaa-server LDAP protocol ldap\nASA2(config)# aaa-server LDAP (INSIDE) host 10.1.1.1",
+  "ccis": [
+    "CCI-000187"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The VPN interacts directly with public networks and devices and should not contain user authentication information for all users. AAA network security services provide the primary framework through which a network administrator can set up access control and authorization on network points of entry or network access servers. It is not advisable to configure access control on the VPN gateway or remote access server. Separation of services provides added assurance to the network if the access control server is compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000390",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

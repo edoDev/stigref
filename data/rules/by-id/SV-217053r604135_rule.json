@@ -1,0 +1,53 @@
+{
+  "id": "SV-217053r604135_rule",
+  "full_rule_id": "SV-217053r604135_rule",
+  "rule_id": "SV-217053",
+  "rule_revision": "604135",
+  "group_id": "V-217053",
+  "group_title": "SRG-NET-000018-RTR-000002",
+  "title": "The Juniper BGP router must be configured to reject inbound route advertisements for any Bogon prefixes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Accepting route advertisements for Bogon prefixes can result in the local autonomous system (AS) becoming a transit for malicious traffic as it will in turn advertise these prefixes to neighbor autonomous systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that it will reject BGP routes for any Bogon prefixes.\n\nVerify a prefix list has been configured containing the current Bogon prefixes as shown in the example below.\n\npolicy-options {\n    prefix-list BOGON_PREFIXES {\n        0.0.0.0/8;\n        10.0.0.0/8;\n        100.64.0.0/10;\n        127.0.0.0/8;\n        169.254.0.0/16;\n        172.16.0.0/12;\n        192.0.0.0/24;\n        192.0.2.0/24;\n        192.168.0.0/16;\n        198.18.0.0/15;\n        198.51.100.0/24;\n        203.0.113.0/24;\n        224.0.0.0/4;\n        240.0.0.0/4;\n    }\n}\n\nVerify that a policy has been configured to reject the Bogon prefixes.\n\npolicy-options {\n    …\n    …\n    …\n    policy-statement FILTER_ROUTES {\n        term REJECT_BOGONS {\n            from {\n                prefix-list BOGON_PREFIXES;\n            }\n            then reject;\n        }\n        term ACCEPT_OTHERS {\n            then accept;\n        }\n    }\n}\n\nVerify that the configured policy to filter Bogons has been applied to external BGP peers as shown in the example below.\n\nprotocols {\n    bgp {\n        group GROUP_AS4 {\n            type external;\n            import FILTER_ROUTES;\n            peer-as 4;\n            neighbor x.x.x.x;\n        }\n    }\n\nIf the router is not configured to reject inbound route advertisements for any Bogon prefixes, this is a finding.",
+  "fix": "Configure the router to reject inbound route advertisements for any Bogon prefixes.\n\nConfigure a prefix list containing the current Bogon prefixes as shown below.\n\n[edit policy-options]\nset prefix-list BOGON_PREFIXES 0.0.0.0/8\nset prefix-list BOGON_PREFIXES 10.0.0.0/8\nset prefix-list BOGON_PREFIXES 100.64.0.0/10\nset prefix-list BOGON_PREFIXES 127.0.0.0/8\nset prefix-list BOGON_PREFIXES 169.254.0.0/16\nset prefix-list BOGON_PREFIXES 172.16.0.0/12\nset prefix-list BOGON_PREFIXES 192.0.0.0/24\nset prefix-list BOGON_PREFIXES 192.0.2.0/24\nset prefix-list BOGON_PREFIXES 192.168.0.0/16\nset prefix-list BOGON_PREFIXES 198.18.0.0/15\nset prefix-list BOGON_PREFIXES 198.51.100.0/24\nset prefix-list BOGON_PREFIXES 203.0.113.0/24\nset prefix-list BOGON_PREFIXES 224.0.0.0/4\nset prefix-list BOGON_PREFIXES 240.0.0.0/4\n\nConfigure a policy-statement to reject Bogon prefixes.\n\nset policy-statement FILTER_ROUTES term REJECT_BOGONS from prefix-list BOGON_PREFIXES\nset policy-statement FILTER_ROUTES term REJECT_BOGONS then reject\nset policy-statement FILTER_ROUTES term ACCEPT_OTHER then accept\n\nConfigure an import statement referencing the policy to reject Bogons on all external BGP peers.\n\n[edit protocols bgp group GROUP_AS4]\nset import FILTER_ROUTES",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Accepting route advertisements for Bogon prefixes can result in the local autonomous system (AS) becoming a transit for malicious traffic as it will in turn advertise these prefixes to neighbor autonomous systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

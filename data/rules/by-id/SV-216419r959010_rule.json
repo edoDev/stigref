@@ -1,0 +1,53 @@
+{
+  "id": "SV-216419r959010_rule",
+  "full_rule_id": "SV-216419r959010_rule",
+  "rule_id": "SV-216419",
+  "rule_revision": "959010",
+  "group_id": "V-216419",
+  "group_title": "SRG-OS-000480",
+  "title": "Permissions on user . (hidden) files must be 750 or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Group-writable or world-writable user configuration files may enable malicious users to steal or modify other users' data or to gain another user's system privileges.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The root role is required.\n\nEnsure that the permissions on user \".\" files are 750 or less permissive.\n\n# for dir in \\\n`logins -ox | awk -F: '($8 == \"PS\") { print $6 }'`; do\nfind ${dir}/.[A-Za-z0-9]* \\! -type l \\\n\\( -perm -0001 -o -perm -0002 -o -perm -0004 -o -perm -0020 \\) -ls\ndone\n\nIf output is produced, this is a finding.",
+  "fix": "The root role is required. \n\nChange the permissions on users' \".\" files to 750 or less permissive.\n\n# chmod 750 [file name]",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Group-writable or world-writable user configuration files may enable malicious users to steal or modify other users' data or to gain another user's system privileges.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-070030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

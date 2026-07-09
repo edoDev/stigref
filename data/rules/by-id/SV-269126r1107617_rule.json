@@ -1,0 +1,55 @@
+{
+  "id": "SV-269126r1107617_rule",
+  "full_rule_id": "SV-269126r1107617_rule",
+  "rule_id": "SV-269126",
+  "rule_revision": "1107617",
+  "group_id": "V-269126",
+  "group_title": "SRG-OS-000033-GPOS-00014",
+  "title": "AlmaLinux OS 9 must use the TuxCare FIPS packages and not the default encryption packages.",
+  "severity": "high",
+  "description": "<VulnDiscussion>FIPS 140-3-validated packages are available from TuxCare here: https://tuxcare.com/fips-for-almalinux/\n\nThe original community packages must be replaced with the versions that have gone through the CMVP.\n\nSatisfies: SRG-OS-000033-GPOS-00014, SRG-OS-000478-GPOS-00223, SRG-OS-000396-GPOS-00176, SRG-OS-000125-GPOS-00065</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that AlmaLinux OS 9 is using the TuxCare FIPS packages with the following command:\n\n$ rpm -qa | grep -E '^(gnutls|nettle|nss|openssl|libgcrypt|kernel)-[0-9]+' | grep -v tuxcare\n\nIf the command returns anything, this is a finding.",
+  "fix": "Ensure FIPS-validated packages are in use instead of OS defaults using the following commands:\n\n$ dnf -y upgrade\n$ reboot\n\nAfter rebooting into a FIPS kernel, remove the OS default kernel packages, using for example:\n\n$ dnf remove kernel-5.14.0-284.11.1.el9_2.x86_64 kernel-5.14.0-284.30.1.el9_2.x86_64\n$ dnf autoremove",
+  "ccis": [
+    "CCI-000068",
+    "CCI-002450",
+    "CCI-000877"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "FIPS 140-3-validated packages are available from TuxCare here: https://tuxcare.com/fips-for-almalinux/\n\nThe original community packages must be replaced with the versions that have gone through the CMVP.\n\nSatisfies: SRG-OS-000033-GPOS-00014, SRG-OS-000478-GPOS-00223, SRG-OS-000396-GPOS-00176, SRG-OS-000125-GPOS-00065",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-004320",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

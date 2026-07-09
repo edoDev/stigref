@@ -1,0 +1,53 @@
+{
+  "id": "SV-233622r961839_rule",
+  "full_rule_id": "SV-233622r961839_rule",
+  "rule_id": "SV-233622",
+  "rule_revision": "961839",
+  "group_id": "V-233622",
+  "group_title": "SRG-APP-000508-DB-000358",
+  "title": "PostgreSQL must generate audit records for all direct access to the database(s).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In this context, direct access is any query, command, or call to the DBMS that comes from any source other than the application(s) that it supports. Examples would be the command line or a database management utility program. The intent is to capture all activity from administrative and non-standard sources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As the database administrator, verify pgaudit is enabled by running the following SQL:\n\n$ sudo su - postgres\n$ psql -c \"SHOW shared_preload_libraries\"\n\nIf the output does not contain \"pgaudit\", this is a finding.\n\nVerify that connections and disconnections are being logged by running the following SQL:\n\n$ sudo su - postgres\n$ psql -c \"SHOW log_connections\"\n$ psql -c \"SHOW log_disconnections\"\n\nIf the output does not contain \"on\", this is a finding.",
+  "fix": "Note: The following instructions use the PGDATA and PGVER environment variables. See supplementary content APPENDIX-F for instructions on configuring PGDATA and APPENDIX-H for PGVER.\n\nTo ensure logging is enabled, review supplementary content APPENDIX-C for instructions on enabling logging.\n\nUsing pgaudit, PostgreSQL can be configured to audit these requests. See supplementary content APPENDIX-B for documentation on installing pgaudit.\n\nWith pgaudit installed, the following configurations should be made:\n\n$ sudo su - postgres\n$ vi ${PGDATA?}/postgresql.conf\n\nAdd the following parameters (or edit existing parameters):\n\npgaudit.log='ddl, role, read, write'\nlog_connections='on'\nlog_disconnections='on'\n\nNow, as the system administrator, reload the server with the new configuration:\n\n$ sudo systemctl reload postgresql-${PGVER?}",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In this context, direct access is any query, command, or call to the DBMS that comes from any source other than the application(s) that it supports. Examples would be the command line or a database management utility program. The intent is to capture all activity from administrative and non-standard sources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CD12-00-012700",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c",
+      "name": "Crunchy Data PostgreSQL Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c"
+  ]
+}

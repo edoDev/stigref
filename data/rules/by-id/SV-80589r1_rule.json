@@ -1,0 +1,53 @@
+{
+  "id": "SV-80589r1_rule",
+  "full_rule_id": "SV-80589r1_rule",
+  "rule_id": "SV-80589",
+  "rule_revision": "1",
+  "group_id": "V-66099",
+  "group_title": "SRG-NET-000019-RTR-000011",
+  "title": "The HP FlexFabric Switch must not redistribute static routes to alternate gateway service provider into an Exterior Gateway Protocol or Interior Gateway Protocol to the NIPRNet or to other Autonomous System.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the static routes to the alternate gateway are being redistributed into an Exterior Gateway Protocol or Interior Gateway Protocol to a NIPRNet gateway, this could make traffic on NIPRNet flow to that particular router and not to the Internet Access Point routers. This could not only wreak havoc with traffic flows on NIPRNet, but it could overwhelm the connection from the router to the NIPRNet gateway(s) and also cause traffic destined for outside of NIPRNet to bypass the defenses of the Internet Access Points.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the External/internal gateway protocol database on the HP FlexFabric Switch to ensure no static routes are being redistributed via these protocols. \n\nIf there are static routes being re-distributed, this is a finding.\n\n[HP] display ospf lsdb\n\n         OSPF Process 1 with HP FlexFabric Switch ID 5.9.2.0\n                 Link State Database\n\n\n                         Area: 0.0.0.1\n Type      LinkState ID    AdvHP FlexFabric Switch       Age   Len   Sequence  Metric\n HP FlexFabric Switch    1.1.1.1           1.1.1.1            1644  48    80000155  0\n HP FlexFabric Switch    5.9.2.0           5.9.2.0            233    48    8000013E  0\n HP FlexFabric Switch    2.2.2.2           2.2.2.2            294    72    8000014F  0\n\n                 AS External Database\n Type         LinkState ID    AdvHP FlexFabric Switch       Age  Len   Sequence  Metric\n External  16.0.0.0           5.9.2.0             233  36    80000001  1\n External  15.252.0.0      5.9.2.0             233  36    80000001  1\n\nNote: In the example above we see two external entries with the advertising HP FlexFabric Switch as the HP FlexFabric Switch. This exists when the HP FlexFabric Switch is configured to redistribute static route.",
+  "fix": "By default the HP FlexFabric switches do not redistribute static routes via External/Internak gateway protocols. If Static routes redistribution has been configure, use the command bellow to disable it.\n\n[HP] ospf 1\n[HP-ospf-1] undo import-route static",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the static routes to the alternate gateway are being redistributed into an Exterior Gateway Protocol or Interior Gateway Protocol to a NIPRNet gateway, this could make traffic on NIPRNet flow to that particular router and not to the Internet Access Point routers. This could not only wreak havoc with traffic flows on NIPRNet, but it could overwhelm the connection from the router to the NIPRNet gateway(s) and also cause traffic destined for outside of NIPRNet to bypass the defenses of the Internet Access Points.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-RT-000002",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225",
+      "name": "HP FlexFabric Switch RTR Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225"
+  ]
+}

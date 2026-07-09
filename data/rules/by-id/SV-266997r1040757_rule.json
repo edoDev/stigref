@@ -1,0 +1,53 @@
+{
+  "id": "SV-266997r1040757_rule",
+  "full_rule_id": "SV-266997r1040757_rule",
+  "rule_id": "SV-266997",
+  "rule_revision": "1040757",
+  "group_id": "V-266997",
+  "group_title": "SRG-NET-000337-VPN-001300",
+  "title": "AOS, when used as a VPN Gateway, must renegotiate the security association after 24 hours or less or as defined by the organization.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When a VPN gateway creates an IPsec security association (SA), resources must be allocated to maintain the SA. These resources are wasted during periods of IPsec endpoint inactivity, which could result in the gateway's inability to create new SAs for other endpoints, thereby preventing new sessions from connecting. \n\nThe Internet Key Exchange (IKE) idle timeout may also be set to allow SAs associated with inactive endpoints to be deleted before the SA lifetime has expired, although this setting is not recommended at this time. The value of one hour or less is a common best practice.\n\nSatisfies: SRG-NET-000337-VPN-001300, SRG-NET-000337-VPN-001290</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration with the following commands:\nshow crypto-local ipsec-map\nshow crypto dynamic-map\n \nIf the configured IPSec maps are not configured to support a security association lifetime of 28,800 seconds (8 hours), this is a finding.",
+  "fix": "Configure AOS with the following commands:\nconfigure terminal\ncrypto-local ipsec-map <name> <priority>\nset security-association lifetime seconds 28800\nexit\nwrite memory\n \ncrypto dynamic-map <name> <priority>\nset security-association lifetime seconds 28800\nexit\nwrite memory",
+  "ccis": [
+    "CCI-002038"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When a VPN gateway creates an IPsec security association (SA), resources must be allocated to maintain the SA. These resources are wasted during periods of IPsec endpoint inactivity, which could result in the gateway's inability to create new SAs for other endpoints, thereby preventing new sessions from connecting. \n\nThe Internet Key Exchange (IKE) idle timeout may also be set to allow SAs associated with inactive endpoints to be deleted before the SA lifetime has expired, although this setting is not recommended at this time. The value of one hour or less is a common best practice.\n\nSatisfies: SRG-NET-000337-VPN-001300, SRG-NET-000337-VPN-001290",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-VN-001300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a",
+      "name": "HPE Aruba Networking AOS VPN Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a"
+  ]
+}

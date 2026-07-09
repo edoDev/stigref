@@ -1,0 +1,53 @@
+{
+  "id": "SV-279583r1192449_rule",
+  "full_rule_id": "SV-279583r1192449_rule",
+  "rule_id": "SV-279583",
+  "rule_revision": "1192449",
+  "group_id": "V-279583",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "Nutanix OS must define default permissions for all authenticated users so the user can only read and modify their own files.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Setting the most restrictive default permissions ensures that when new accounts are created they do not have unnecessary access.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix AOS defines default permissions for all authenticated users in such a way that the user can only read and modify their own files using the following command.\n\n$ sudo grep -i umask /etc/login.defs\nUMASK 077\n\nIf the value for the \"UMASK\" parameter is not \"077\", or the \"UMASK\" parameter is missing, or commented out, this is a finding.",
+  "fix": "1. For AOS, configure the default permissions \"UMASK\" to \"077\" using the following command.\n\nsalt-call state.sls security/CVM/shellCVM\n\n2. For Prism Central, configure the default permissions \"UMASK\" to \"077\" using the following command.\n\nsalt-call state.sls security/PCVM/shellPCVM\n\n3. For Files, configure the default permissions \"UMASK\" to \"077\" using the following command.\n\nsalt-call state.sls security/AFS/shellAFS\n\n4. For AHV, configure the default permissions \"UMASK\" to \"077\" using the following command.\n\nsalt-call state.sls security/KVM/shellKVM",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Setting the most restrictive default permissions ensures that when new accounts are created they do not have unnecessary access.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

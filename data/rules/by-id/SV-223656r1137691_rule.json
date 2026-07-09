@@ -1,0 +1,53 @@
+{
+  "id": "SV-223656r1137691_rule",
+  "full_rule_id": "SV-223656r1137691_rule",
+  "rule_id": "SV-223656",
+  "rule_revision": "1137691",
+  "group_id": "V-223656",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM RACF must properly define users that have access to the CONSOLE resource in the TSOAUTH resource class.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>MCS consoles can be used to issue operator commands. Failure to properly control access to MCS consoles could result in unauthorized personnel issuing sensitive operator commands. This exposure may threaten the integrity and availability of the operating system environment, and compromise the confidentiality of customer data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the CONSOLE privilege is not defined to the TSOAUTH resource class, this is not a finding.\n\nAt the discretion of the site, users may be allowed to issue z/OS system commands from a TSO session. With this in mind, review the following items for users granted the CONSOLE resource in the TSOAUTH resource class:\n\nIf Userids are restricted to the INFO level on the AUTH parameter specified in the OPERPARM segment of their userid, this is not a finding.\n\nIf Userids are restricted to READ access to the MVS.MCSOPER.userid resource defined in the OPERCMDS resource class, this is not a finding.\n\nIf Userids and/or group IDs are restricted to READ access to the CONSOLE resource defined in the TSOAUTH resource class, this is not a finding.",
+  "fix": "Evaluate the impact of correcting any deficiencies. Develop a plan of action and implement the required changes. \nEnsure the following items are in effect for all MCS consoles:\n\nDefine a profile protecting the use of the CONSOLE command within TSO. A sample command to accomplish this is shown here: RDEF TSOAUTH CONSOLE UACC(NONE) OWNER(ADMIN) AUDIT(ALL(READ)) \n\nPermit only authorized users. A sample command to accomplish this is shown here: PE CONSOLE CL(TSOAUTH) ID(<syspsmpl>)\n\nSet up the OPERPARM segment in corresponding user-class entry. A sample command to accomplish this is shown here: ALU <authorized user> OPERPARM(AUTH(INFO))\n\nUserids are restricted to READ access to the MVS.MCSOPER.userid resource defined in the OPERCMDS resource class. A sample command to accomplish this is shown here using the GLOBAL class: \nRDEF GLOBAL OPERCMDS ADDMEM(MVS.MCSOPER.&RACUID/READ) OWNER(ADMIN)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "MCS consoles can be used to issue operator commands. Failure to properly control access to MCS consoles could result in unauthorized personnel issuing sensitive operator commands. This exposure may threaten the integrity and availability of the operating system environment, and compromise the confidentiality of customer data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

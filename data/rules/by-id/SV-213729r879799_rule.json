@@ -1,0 +1,53 @@
+{
+  "id": "SV-213729r879799_rule",
+  "full_rule_id": "SV-213729r879799_rule",
+  "rule_id": "SV-213729",
+  "rule_revision": "879799",
+  "group_id": "V-213729",
+  "group_title": "SRG-APP-000428-DB-000386",
+  "title": "DB2 must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DBMSs handling data requiring \"data at rest\" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest. These cryptographic mechanisms may be native to the DBMS or implemented via additional software or operating system/file system settings, as appropriate to the situation.\n\nSelection of a cryptographic mechanism is based on the need to protect the integrity of organizational information. The strength of the mechanism is commensurate with the security category and/or classification of the information. Organizations have the flexibility to either encrypt all information on storage devices (i.e., full disk encryption) or encrypt specific data structures (e.g., files, records, or fields). \n\nThe decision whether to employ cryptography is the responsibility of the information owner/steward, who exercises discretion within the framework of applicable rules, policies, and law.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the system documentation to determine whether the organization has defined the information at rest that is to be protected from disclosure; which must include, at a minimum, PII and classified information.\n\nIf the documentation indicates no information requires such protections, this is not a finding.\n\nDB2 native encryption can encrypt the data at rest; or third-party tools, like IBM Guardium, can provide encryption for data at rest.\n \nTo find if a database is encrypted with DB2 native encryption, run the following SQL Query:\nDB2> SELECT * FROM TABLE(SYSPROC.ADMIN_GET_ENCRYPTION_INFO())\n\nIf the value of Algorithm is NULL for the database, this is a finding. \n\nIf the database is not encrypted with native encryption or any third-party tool, this is a finding.",
+  "fix": "To create the database using DB2 native encryption run the following command:\n\n     $db2 create db <database name> encrypt\n\nSee the detailed instructions in the link in the note section below to create the encrypted database.\n\nNote: Select the following link for details on how to set up DB2 native encryption:\nhttp://www-01.ibm.com/support/knowledgecenter/SSEPGG_10.5.0/com.ibm.db2.luw.admin.sec.doc/doc/t0061766.html?lang=en \n\nIf a third-party tool is used for database encryption (IBM highly recommends using IBM Guardium) use the third-party tool's specific check and fix.",
+  "ccis": [
+    "CCI-002475"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DBMSs handling data requiring \"data at rest\" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest. These cryptographic mechanisms may be native to the DBMS or implemented via additional software or operating system/file system settings, as appropriate to the situation.\n\nSelection of a cryptographic mechanism is based on the need to protect the integrity of organizational information. The strength of the mechanism is commensurate with the security category and/or classification of the information. Organizations have the flexibility to either encrypt all information on storage devices (i.e., full disk encryption) or encrypt specific data structures (e.g., files, records, or fields). \n\nThe decision whether to employ cryptography is the responsibility of the information owner/steward, who exercises discretion within the framework of applicable rules, policies, and law.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "DB2X-00-008800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-db2-v10-5-luw-security-technical-implementation-guide-v2r1-19ef9f73",
+      "name": "IBM DB2 V10.5 LUW Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ibm-db2-v10-5-luw-security-technical-implementation-guide-v2r1-19ef9f73"
+  ]
+}

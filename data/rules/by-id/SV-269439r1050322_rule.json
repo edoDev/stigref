@@ -1,0 +1,53 @@
+{
+  "id": "SV-269439r1050322_rule",
+  "full_rule_id": "SV-269439r1050322_rule",
+  "rule_id": "SV-269439",
+  "rule_revision": "1050322",
+  "group_id": "V-269439",
+  "group_title": "SRG-OS-000425-GPOS-00189",
+  "title": "AlmaLinux OS 9 must not allow users to override SSH environment variables.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>SSH environment options potentially allow users to bypass access restriction in some configurations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SSH daemon prevents users from overriding SSH environment variables with the following command:\n\n$ sshd -T | grep permituserenvironment\n\npermituserenvironment no\n\nIf the \"PermitUserEnvironment\" keyword is set to \"yes\", or no output is returned, this is a finding.",
+  "fix": "To configure the system to prevent users from overriding SSH environment variables, add or modify the following line in \"/etc/ssh/sshd_config\":\n\nPermitUserEnvironment no\n\nAlternatively, add the setting to an include file if the line \"Include /etc/ssh/sshd_config.d/*.conf\" is found at the top of the \"/etc/ssh/sshd_config\" file:\n\n$ echo \"PermitUserEnvironment no\" > /etc/ssh/sshd_config.d/environment.conf\n\nRestart the SSH daemon for the settings to take effect:\n\n$ systemctl restart sshd.service",
+  "ccis": [
+    "CCI-002420"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "SSH environment options potentially allow users to bypass access restriction in some configurations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-043030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

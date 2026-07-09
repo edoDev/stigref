@@ -1,0 +1,53 @@
+{
+  "id": "SV-216799r856448_rule",
+  "full_rule_id": "SV-216799r856448_rule",
+  "rule_id": "SV-216799",
+  "rule_revision": "856448",
+  "group_id": "V-216799",
+  "group_title": "SRG-NET-000362-RTR-000119",
+  "title": "The Cisco PE router must be configured to implement Internet Group Management Protocol (IGMP) or Multicast Listener Discovery (MLD) snooping for each Virtual Private LAN Services (VPLS) bridge domain.",
+  "severity": "low",
+  "description": "<VulnDiscussion>IGMP snooping provides a way to constrain multicast traffic at Layer 2. By monitoring the IGMP membership reports sent by hosts within the bridge domain, the snooping application can set up Layer 2 multicast forwarding tables to deliver traffic only to ports with at least one interested member within the VPLS bridge, thereby significantly reducing the volume of multicast traffic that would otherwise flood an entire VPLS bridge domain. The IGMP snooping operation applies to both access circuits and pseudowires within a VPLS bridge domain.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that IGMP or MLD snooping has been configured for IPv4 and IPv6 multicast traffic respectively for each VPLS bridge domain. \n\nl2vpn\n bridge group L2GROUP\n  bridge-domain L2_BRIDGE_COI1\n   interface GigabitEthernet0/0/0/2\n    igmp snooping profile default\n\nIf the router is not configured to implement IGMP or MLD snooping for each VPLS bridge domain, this is a finding.",
+  "fix": "Configure IGMP or MLD snooping for IPv4 and IPv6 multicast traffic respectively for each VPLS bridge domain.\n\nRP/0/0/CPU0:R3(config)#l2vpn\nRP/0/0/CPU0:R3(config-l2vpn)#bridge group L2GROUP\nRP/0/0/CPU0:R3(config-l2vpn-bg)# bridge-domain L2_BRIDGE_COI1\nRP/0/0/CPU0:R3(config-l2vpn-bg-bd)#interface GigabitEthernet0/0/0/2\nRP/0/0/CPU0:R3(config-l2vpn-bg-bd-ac)#igmp snooping profile default\nRP/0/0/CPU0:R3(config-l2vpn-bg-bd-ac)#end",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "IGMP snooping provides a way to constrain multicast traffic at Layer 2. By monitoring the IGMP membership reports sent by hosts within the bridge domain, the snooping application can set up Layer 2 multicast forwarding tables to deliver traffic only to ports with at least one interested member within the VPLS bridge, thereby significantly reducing the volume of multicast traffic that would otherwise flood an entire VPLS bridge domain. The IGMP snooping operation applies to both access circuits and pseudowires within a VPLS bridge domain.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000710",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f",
+      "name": "Cisco IOS XR Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f"
+  ]
+}

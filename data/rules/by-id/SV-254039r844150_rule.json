@@ -1,0 +1,53 @@
+{
+  "id": "SV-254039r844150_rule",
+  "full_rule_id": "SV-254039r844150_rule",
+  "rule_id": "SV-254039",
+  "rule_revision": "844150",
+  "group_id": "V-254039",
+  "group_title": "SRG-NET-000362-RTR-000119",
+  "title": "The Juniper PE router must be configured to implement Internet Group Management Protocol (IGMP) or Multicast Listener Discovery (MLD) snooping for each Virtual Private LAN Services (VPLS) bridge domain.",
+  "severity": "low",
+  "description": "<VulnDiscussion>IGMP snooping provides a way to constrain multicast traffic at layer 2. By monitoring the IGMP membership reports sent by hosts within the bridge domain, the snooping application can set up layer 2 multicast forwarding tables to deliver traffic only to ports with at least one interested member within the VPLS bridge, thereby significantly reducing the volume of multicast traffic that would otherwise flood an entire VPLS bridge domain. The IGMP snooping operation applies to both access circuits and pseudowires within a VPLS bridge domain.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that IGMP or MLD snooping has been configured for IPv4 and IPv6 multicast traffic respectively for each VPLS bridge domain (VFI instance).\n\n[edit routing-instances <name>]\nprotocols {\n    igmp-snooping {\n        vlan <VLAN name>;\n    }\n    mld-snooping {\n        vlan <VLAN name>;\n    }\n}\n\nNote: Only EX9200-series devices currently support VPLS.\n\nIf the router is not configured to implement IGMP or MLD snooping for each VPLS bridge domain, this is a finding.",
+  "fix": "Configure IGMP or MLD snooping for IPv4 and IPv6 multicast traffic respectively for each VPLS bridge domain.\n\nset routing-instances <name> protocols igmp-snooping vlan <vlan ID>\nset routing-instances <name> protocols mld-snooping vlan <vlan ID>",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "IGMP snooping provides a way to constrain multicast traffic at layer 2. By monitoring the IGMP membership reports sent by hosts within the bridge domain, the snooping application can set up layer 2 multicast forwarding tables to deliver traffic only to ports with at least one interested member within the VPLS bridge, thereby significantly reducing the volume of multicast traffic that would otherwise flood an entire VPLS bridge domain. The IGMP snooping operation applies to both access circuits and pseudowires within a VPLS bridge domain.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000670",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

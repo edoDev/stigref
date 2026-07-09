@@ -1,0 +1,53 @@
+{
+  "id": "SV-215302r991591_rule",
+  "full_rule_id": "SV-215302r991591_rule",
+  "rule_id": "SV-215302",
+  "rule_revision": "991591",
+  "group_id": "V-215302",
+  "group_title": "SRG-OS-000480-GPOS-00229",
+  "title": "The AIX SSH daemon must be configured to disable empty passwords.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When password authentication is allowed, PermitEmptyPasswords specifies whether the server allows login to accounts with empty password strings. If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the SSH daemon configuration for allowed empty passwords using command: \n\n# grep -i PermitEmptyPasswords /etc/ssh/sshd_config | grep -v '^#' \nPermitEmptyPasswords no\n\nIf no lines are returned, or the returned \"PermitEmptyPasswords\" directive contains \"yes\", this is a finding.",
+  "fix": "Edit \"/etc/ssh/sshd_config\" and add or edit the \"PermitEmptyPasswords \" line as:\nPermitEmptyPasswords  no\n\nSave the change and restart ssh daemon:\n# stopsrc -s sshd\n# startsrc -s sshd",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When password authentication is allowed, PermitEmptyPasswords specifies whether the server allows login to accounts with empty password strings. If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002120",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

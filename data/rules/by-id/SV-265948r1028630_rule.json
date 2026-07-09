@@ -1,0 +1,53 @@
+{
+  "id": "SV-265948r1028630_rule",
+  "full_rule_id": "SV-265948r1028630_rule",
+  "rule_id": "SV-265948",
+  "rule_revision": "1028630",
+  "group_id": "V-265948",
+  "group_title": "SRG-APP-000441-DB-000378",
+  "title": "MongoDB must maintain the confidentiality and integrity of information during preparation for transmission.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information can be either unintentionally or maliciously disclosed or modified during preparation for transmission, including, for example, during aggregation, at protocol transformation points, and during packing/unpacking. These unauthorized disclosures or modifications compromise the confidentiality or integrity of the information.\n\nUse of this requirement will be limited to situations where the data owner has a strict requirement for ensuring data integrity and confidentiality is maintained at every step of the data transfer and handling process.\n\nWhen transmitting data, MongoDB, associated applications, and infrastructure must leverage transmission protection mechanisms.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the data owner does not have a strict requirement for ensuring data integrity and confidentiality is maintained at every step of the data transfer and handling process, this is not a finding. \n\nIf such a requirement is present, inspect the MongoDB configuration file (default location: /etc/mongod.conf) for the following entries:\n\nnet:\n  tls:\n    mode: requireTLS\n    certificateKeyFile: <PEM File>\n    CAFile: <PEM File>\n    allowInvalidCertificates: false\n    allowConnectionsWithoutCertificates: false\n    FIPSMode: true\n\nIf net.tls.mode is not set to \"requireTLS\", this is a finding.",
+  "fix": "Stop the MongoDB instance if it is running. \n\nObtain a certificate from a valid DOD certificate authority to be used for encrypted data transmission. \n\nModify the MongoDB configuration file to include the following TLS configuration options:\n\nnet:\n  tls:\n    mode: requireTLS\n    certificateKeyFile: <PEM File>\n    CAFile: <PEM File>\n    allowInvalidCertificates: false\n    allowConnectionsWithoutCertificates: false\n    FIPSMode: true\n\nSet \"net.tls.mode\" to the \"requireTLS\".\n<PEM File> is the fullpathnames to the certificates used for the option.\n\nStart/stop (restart) all mongod or mongos instances using the MongoDB configuration file (default location: /etc/mongod.conf).",
+  "ccis": [
+    "CCI-002420"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information can be either unintentionally or maliciously disclosed or modified during preparation for transmission, including, for example, during aggregation, at protocol transformation points, and during packing/unpacking. These unauthorized disclosures or modifications compromise the confidentiality or integrity of the information.\n\nUse of this requirement will be limited to situations where the data owner has a strict requirement for ensuring data integrity and confidentiality is maintained at every step of the data transfer and handling process.\n\nWhen transmitting data, MongoDB, associated applications, and infrastructure must leverage transmission protection mechanisms.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MD7X-00-008800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mongodb-enterprise-advanced-7-x-security-technical-implementation-guide-v1r1-f117b5bb",
+      "name": "MongoDB Enterprise Advanced 7.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mongodb-enterprise-advanced-7-x-security-technical-implementation-guide-v1r1-f117b5bb"
+  ]
+}

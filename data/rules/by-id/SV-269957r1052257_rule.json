@@ -1,0 +1,53 @@
+{
+  "id": "SV-269957r1052257_rule",
+  "full_rule_id": "SV-269957r1052257_rule",
+  "rule_id": "SV-269957",
+  "rule_revision": "1052257",
+  "group_id": "V-269957",
+  "group_title": "SRG-NET-000362-L2S-000023",
+  "title": "The Dell OS10 Switch must have STP Loop Guard enabled on all nondesignated STP switch ports.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Spanning Tree Protocol (STP) loop guard feature provides additional protection against STP loops. An STP loop is created when an STP blocking port in a redundant topology erroneously transitions to the forwarding state. In its operation, STP relies on continuous reception and transmission of Bridge Protocol Data Unit (BPDUs) based on the port role. The designated port transmits BPDUs, and the nondesignated port receives BPDUs. When one of the ports in a physically redundant topology no longer receives BPDUs, the STP conceives that the topology is loop free. Eventually, the blocking port from the alternate or backup port becomes a designated port and moves to a forwarding state. This situation creates a loop. The loop guard feature makes additional checks. If BPDUs are not received on a nondesignated port and loop guard is enabled, that port is moved into the STP loop-inconsistent blocking state.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify that STP Loop Guard is enabled on at least all nondesignated STP ports.\n\nVerify that the spanning-tree guard loop setting is enabled on each interface.\n\ninterface ethernet1/1/1\n no shutdown\n switchport mode trunk\n switchport access vlan 100\n flowcontrol receive off\n spanning-tree guard loop\n!\n\nIf STP Loop Guard is not configured globally or on nondesignated STP ports, this is a finding.",
+  "fix": "Configure the switch to have STP Loop Guard enabled globally, or at a minimum, on all nondesignated STP switch ports.\n\nOS10(config)# interface range ethernet 1/1/1-1/1/58\nOS10(conf-range-eth1/1/1-1/1/58)# spanning-tree guard loop",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Spanning Tree Protocol (STP) loop guard feature provides additional protection against STP loops. An STP loop is created when an STP blocking port in a redundant topology erroneously transitions to the forwarding state. In its operation, STP relies on continuous reception and transmission of Bridge Protocol Data Unit (BPDUs) based on the port role. The designated port transmits BPDUs, and the nondesignated port receives BPDUs. When one of the ports in a physically redundant topology no longer receives BPDUs, the STP conceives that the topology is loop free. Eventually, the blocking port from the alternate or backup port becomes a designated port and moves to a forwarding state. This situation creates a loop. The loop guard feature makes additional checks. If BPDUs are not received on a nondesignated port and loop guard is enabled, that port is moved into the STP loop-inconsistent blocking state.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-L2S-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff",
+      "name": "Dell OS10 Switch Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff"
+  ]
+}

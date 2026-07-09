@@ -1,0 +1,53 @@
+{
+  "id": "SV-253800r1099931_rule",
+  "full_rule_id": "SV-253800r1099931_rule",
+  "rule_id": "SV-253800",
+  "rule_revision": "1099931",
+  "group_id": "V-253800",
+  "group_title": "SRG-APP-000402",
+  "title": "The Tanium application must accept Personal Identity Verification (PIV) credentials from other federal agencies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Access may be denied to authorized users if federal agency PIV credentials are not accepted. \n\nPIV credentials are issued by federal agencies and conform to FIPS Publication 201 and supporting guidance documents. OMB Memorandum 11-11 requires federal agencies to continue implementing the requirements specified in HSPD-12 to enable agencywide use of PIV credentials.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Access the Tanium Server.\n\n2. Log on to the server with an account that has administrative privileges.\n\n3. Run regedit as Administrator.\n\n4. Navigate to HKEY_LOCAL_MACHINE >> SOFTWARE >> Wow6432Node >> Tanium >> Tanium Server.\n\n5. Validate the value for REG_DWORD \"ForceSOAPSSLClientCert\" is set to \"1\".\n\n6. Navigate to HKEY_LOCAL_MACHINE >> SOFTWARE >> Wow6432Node >> Tanium >> Tanium Server.\n\n7. Validate the following keys exist and are configured:\n\nREG_SZ \"ClientCertificateAuthField\"\nFor example: \nX509v3 Subject Alternative Name.\n\nREG_SZ \"ClientCertificateAuthRegex\"\nFor example-DoD:\n.+?Name:\\s*?(\\S+@[._a-zA-Z0-9]+).*\nNote: This regex may vary. \n\nREG_SZ \"ClientCertificateAuth\"\nFor example:\nC:\\Program Files\\Tanium\\Tanium Server\\dod.pem\n\nIf the value for REG_DWORD \"ForceSOAPSSLClientCert\" is not set to \"1\" and the remaining registry values are not configured, this is a finding.",
+  "fix": "Use the vendor documentation titled \"Smart card authentication\" to implement correct configuration settings for this requirement. \n\n\n1. Access the Tanium Server.\n\n2. Log on to the server with an account that has administrative privileges.\n\n3. Run regedit as Administrator.\n\n4. Navigate to HKEY_LOCAL_MACHINE >> SOFTWARE >> Wow6432Node >> Tanium >> Tanium Server.\n\n5. Validate the value for REG_DWORD \"ForceSOAPSSLClientCert\" is set to \"1\".\n\n6. Navigate to HKEY_LOCAL_MACHINE >> SOFTWARE >> Wow6432Node >> Tanium >> Tanium Server.\n\n7. Configure the following keys:\n\nREG_SZ \"ClientCertificateAuthField\"\nFor example: \nX509v3 Subject Alternative Name.\n\nREG_SZ \"ClientCertificateAuthRegex\"\nFor example-DoD:\n.+?Name:\\s*?(\\S+@[._a-zA-Z0-9]+).*\nNote: This regex may vary. \n\nREG_SZ \"ClientCertificateAuth\"\nFor example:\nC:\\Program Files\\Tanium\\Tanium Server\\dod.pem",
+  "ccis": [
+    "CCI-002009"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Access may be denied to authorized users if federal agency PIV credentials are not accepted. \n\nPIV credentials are issued by federal agencies and conform to FIPS Publication 201 and supporting guidance documents. OMB Memorandum 11-11 requires federal agencies to continue implementing the requirements specified in HSPD-12 to enable agencywide use of PIV credentials.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TANS-00-001455",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tanium-7-x-security-technical-implementation-guide-v2r3-b937a105",
+      "name": "Tanium 7.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "tanium-7-x-security-technical-implementation-guide-v2r3-b937a105"
+  ]
+}

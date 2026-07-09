@@ -1,0 +1,53 @@
+{
+  "id": "SV-217070r878055_rule",
+  "full_rule_id": "SV-217070r878055_rule",
+  "rule_id": "SV-217070",
+  "rule_revision": "878055",
+  "group_id": "V-217070",
+  "group_title": "SRG-NET-000343-RTR-000001",
+  "title": "The Juniper PE router providing MPLS Layer 2 Virtual Private Network (L2VPN) services must be configured to authenticate targeted Label Distribution Protocol (LDP) sessions used to exchange virtual circuit (VC) information using a FIPS-approved message authentication code algorithm.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>LDP provides the signaling required for setting up and tearing down pseudowires (virtual circuits used to transport Layer 2 frames) across an MPLS IP core network. Using a targeted LDP session, each PE router advertises a virtual circuit label mapping that is used as part of the label stack imposed on the frames by the ingress PE router during packet forwarding. Authentication provides protection against spoofed TCP segments that can be introduced into the LDP sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if LDP messages are being authenticated for the targeted LDP sessions. In the example below, the PE router is LDP peering with remote PE 8.8.8.8.\n\n    ldp {\n        interface ge-0/1/0.0;\n        interface ge-0/1/1.0;\n        session 8.8.8.8 {\n            authentication-algorithm hmac-sha-1-96;\n            authentication-key-chain LDP_KEY;\n        }\n    }\n\nIf authentication is not being used for the LDP targeted sessions using a FIPS-approved message authentication code algorithm, this is a finding.",
+  "fix": "Implement authentication for all targeted LDP sessions using a FIPS-approved message authentication code algorithm.\n\n[edit security authentication-key-chains]\nset key-chain LDP_KEY key 1 start-time 2018-05-01.12:00 secret xxxxxxxxxxxxx\nset key-chain LDP_KEY key 2 start-time 2018-09-01.12:00 secret xxxxxxxxxxxxx\nset key-chain LDP_KEY key 3 start-time 2019-01-01.12:00 secret xxxxxxxxxxxxx\n\n[edit protocols ldp]\nset session 8.8.8.8 authentication-algorithm hmac-sha-1-96 authentication-key-chain LDP_KEY",
+  "ccis": [
+    "CCI-001958"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "LDP provides the signaling required for setting up and tearing down pseudowires (virtual circuits used to transport Layer 2 frames) across an MPLS IP core network. Using a targeted LDP session, each PE router advertises a virtual circuit label mapping that is used as part of the label stack imposed on the frames by the ingress PE router during packet forwarding. Authentication provides protection against spoofed TCP segments that can be introduced into the LDP sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000640",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

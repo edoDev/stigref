@@ -1,0 +1,53 @@
+{
+  "id": "SV-253072r958478_rule",
+  "full_rule_id": "SV-253072r958478_rule",
+  "rule_id": "SV-253072",
+  "rule_revision": "958478",
+  "group_id": "V-253072",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "TOSS must disable mounting of cramfs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.\n\nRemoving support for unneeded filesystem types reduces the local attack surface of the server.\n\nCompressed ROM/RAM file system (or cramfs) is a read-only file system designed for simplicity and space efficiency. It is mainly used in embedded and small footprint systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the operating system disables the ability to load the cramfs kernel module.\n\n$ sudo grep -r cramfs /etc/modprobe.d/* | grep install\n\ninstall cramfs /bin/false\n\nIf the command does not return any output, or the line is commented out, and use of the cramfs protocol is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.\n\nVerify the operating system disables the ability to use the cramfs kernel module.\n\nCheck to see if the cramfs kernel module is disabled with the following command:\n\n$ sudo grep -r cramfs /etc/modprobe.d/* | grep \"blacklist\"\n\nblacklist cramfs\n\nIf the command does not return any output or the output is not \"blacklist cramfs\", and use of the cramfs kernel module is not documented with the Information System Security Officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "Configure the operating system to disable the ability to use the cramfs kernel module.\n\nAdd or update the following lines in the file \"/etc/modprobe.d/blacklist.conf\":\n\ninstall cramfs /bin/false\nblacklist cramfs\n\nReboot the system for the settings to take effect.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.\n\nRemoving support for unneeded filesystem types reduces the local attack surface of the server.\n\nCompressed ROM/RAM file system (or cramfs) is a read-only file system designed for simplicity and space efficiency. It is mainly used in embedded and small footprint systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-040170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

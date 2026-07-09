@@ -1,0 +1,53 @@
+{
+  "id": "SV-269899r1052082_rule",
+  "full_rule_id": "SV-269899r1052082_rule",
+  "rule_id": "SV-269899",
+  "rule_revision": "1052082",
+  "group_id": "V-269899",
+  "group_title": "SRG-NET-000364-RTR-000115",
+  "title": "The Dell OS10 multicast Designated Router (DR) must be configured to filter the Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Report messages to allow hosts to join a multicast group only from sources that have been approved by the organization.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of the DR to verify that it is filtering IGMP or MLD report messages, allowing hosts to only join multicast groups from sources that have been approved.\n\nNote: This requirement is only applicable to Source Specific Multicast (SSM) implementation.\n\nStep 1: Verify that SSM is in use. If not, this requirement is not applicable.\n\n!\nip access-list ssm-1\n seq 10 permit ip any 236.0.0.0/8\n \n!\nip pim ssm-range ssm-1\n\nStep 2: Verify that each interface applies an appropriate inbound IGMP filter that permits or denies IGMP messages.\n\n!\ninterface vlan100\n no shutdown\n ip access-group IGMP_FILTER in\n \n!\nip access-list IGMP_FILTER\n seq 10 deny 2 224.0.0.22  239.8.0.0/16 ttl eq 1\n seq 20 permit 2 224.0.0.0/24 238.5.0.0/16\n seq 30 permit ip any any\n\nIf the DR is not filtering IGMP or MLD report messages, this is a finding.",
+  "fix": "Configure the DR to filter the IGMP and MLD report messages to allow hosts to join only those multicast groups from sources that have been approved.\n\nOS10(config)# ip access-list IGMP_FILTER\nOS10(config-ipv4-acl)# deny 2 224.0.0.22 239.8.0.0/16 ttl eq 1\nOS10(config-ipv4-acl)# permit 2 224.0.0.0/24 238.5.0.0/16\nOS10(config-ipv4-acl)# permit ip any any\n\nOS10(config)# interface vlan 100\nOS10(conf-if-vl-100)# ip access-group IGMP_FILTER in",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000810",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

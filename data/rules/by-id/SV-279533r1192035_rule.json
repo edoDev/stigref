@@ -1,0 +1,53 @@
+{
+  "id": "SV-279533r1192035_rule",
+  "full_rule_id": "SV-279533r1192035_rule",
+  "rule_id": "SV-279533",
+  "rule_revision": "1192035",
+  "group_id": "V-279533",
+  "group_title": "SRG-OS-000033-GPOS-00014",
+  "title": "Nutanix OS must implement DOD-approved encryption to protect the confidentiality of SSH sessions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session.\n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nEncryption provides a means to secure the remote connection to prevent unauthorized access to the data traversing the remote access connection (e.g., RDP), thereby providing a degree of confidentiality. The encryption strength of a mechanism is selected based on the security categorization of the information.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix implements DOD-approved encryption to protect the confidentiality of remote access sessions.\n\n1. Verify FIPS mode is enabled using the following command.\n\n$ fips-mode-setup --check\nFIPS mode is enabled.\n\n2. If FIPS mode is \"enabled\", check if the kernel boot parameter is configured for FIPS mode using the following command.\n\n$ grub2-editenv list | grep fips\nkernelopts=crashkernel=1G-4G:192M,4G-64G:256M,64G-4096G:512M,4096G-:1G nomodeset biosdevname=0 rhgb quiet intel_iommu=on iommu=pt fips=1 audit=1 split_lock_detect=off audit_backlog_limit=8192 net.ifnames=0 systemd.unified_cgroup_hierarchy=1 boot=/dev/disk/by-label/boot ahv.platform=onprem l1tf=flush,nowarn retbleed=off page_poison=0 slub_debug=- spec_rstack_overflow=microcode\n\n3. If the kernel command line is configured to use FIPS mode, check if the system is in FIPS mode using the following command.\n\n$ sudo cat /proc/sys/crypto/fips_enabled \n1\n\nIf FIPS mode is not \"enabled\", the kernel boot parameter is not configured for FIPS mode, or the system does not have a value of \"1\" for \"fips_enabled\" in \"/proc/sys/crypto\", this is a finding.",
+  "fix": "Configure the system to run in FIPS mode.\n\n1. For AOS, configure FIPS mode.\n\n$ sudo salt-call state.sls security/CVM/fipsCVM\n\n2. For Prism Central, configure FIPS mode.\n\n$ sudo salt-call state.sls security/PCVM/fipsPCVM\n\n3. For Files, configure FIPS mode.\n\n$ sudo salt-call state.sls security/AFS/fipsAFS\n\n4. For AHV, configure FIPS mode.\n\n$ sudo salt-call state.sls security/KVM/fipsKVM",
+  "ccis": [
+    "CCI-000068"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session.\n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nEncryption provides a means to secure the remote connection to prevent unauthorized access to the data traversing the remote access connection (e.g., RDP), thereby providing a degree of confidentiality. The encryption strength of a mechanism is selected based on the security categorization of the information.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000009",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

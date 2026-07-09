@@ -1,0 +1,53 @@
+{
+  "id": "SV-258928r934442_rule",
+  "full_rule_id": "SV-258928r934442_rule",
+  "rule_id": "SV-258928",
+  "rule_revision": "934442",
+  "group_id": "V-258928",
+  "group_title": "SRG-APP-000427",
+  "title": "The vCenter Server Machine Secure Sockets Layer (SSL) certificate must be issued by a DOD certificate authority.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Untrusted certificate authorities (CA) can issue certificates, but they may be issued by organizations or individuals that seek to compromise DOD systems or by organizations with insufficient security controls. If the CA used for verifying the certificate is not a DOD-approved CA, trust of this CA has not been established.\n\nThe DOD will only accept public key infrastructure (PKI) certificates obtained from a DOD-approved internal or external certificate authority. Reliance on CAs for the establishment of secure sessions includes, for example, the use of Transport Layer Security (TLS) certificates.\n\nThe default self-signed, VMware Certificate Authority (VMCA)-issued vCenter reverse proxy certificate must be replaced with a DOD-approved certificate. The use of a DOD certificate on the vCenter reverse proxy and other services assures clients that the service they are connecting to is legitimate and trusted.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Administration >> Certificates >> Certificate Management >> Machine SSL Certificate.\n\nClick \"View Details\" and examine the \"Issuer Information\" block.\n\nIf the issuer specified is not a DOD approved certificate authority, this is a finding.",
+  "fix": "Obtain a DOD-issued certificate and private key for each vCenter in the system following the requirements below:\n\nKey size: 2048 bits or more (PEM encoded)\nCRT format (Base-64)\nx509 version 3\nSubjectAltName must contain DNS Name=<machine_FQDN>\nContains the following Key Usages: Digital Signature, Non Repudiation, Key Encipherment\n\nExport the entire certificate issuing chain up to the root in Base-64 format. Concatenate the individual certificates into one file with the \".cer\" extension.\n\nFrom the vSphere Client, go to Administration >> Certificates >> Certificate Management >> Machine SSL Certificate.\n\nClick Actions >> Import and Replace Certificate.\n\nSelect the \"Replace with external CA certificate\" radio button and click \"Next\".\n\nSupply the CA-issued certificate , the exported roots file, and the private key.\n\nClick \"Replace\".",
+  "ccis": [
+    "CCI-002470"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Untrusted certificate authorities (CA) can issue certificates, but they may be issued by organizations or individuals that seek to compromise DOD systems or by organizations with insufficient security controls. If the CA used for verifying the certificate is not a DOD-approved CA, trust of this CA has not been established.\n\nThe DOD will only accept public key infrastructure (PKI) certificates obtained from a DOD-approved internal or external certificate authority. Reliance on CAs for the establishment of secure sessions includes, for example, the use of Transport Layer Security (TLS) certificates.\n\nThe default self-signed, VMware Certificate Authority (VMCA)-issued vCenter reverse proxy certificate must be replaced with a DOD-approved certificate. The use of a DOD certificate on the vCenter reverse proxy and other services assures clients that the service they are connecting to is legitimate and trusted.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000195",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

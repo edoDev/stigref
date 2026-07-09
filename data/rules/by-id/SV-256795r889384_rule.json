@@ -1,0 +1,53 @@
+{
+  "id": "SV-256795r889384_rule",
+  "full_rule_id": "SV-256795r889384_rule",
+  "rule_id": "SV-256795",
+  "rule_revision": "889384",
+  "group_id": "V-256795",
+  "group_title": "SRG-APP-000223-WSR-000011",
+  "title": "vSphere UI must restrict its cookie path.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Cookies are used to exchange data between the web server and the client. Cookies, such as a session cookie, may contain session information and user credentials used to maintain a persistent connection between the user and the hosted application since HTTP/HTTPS is a stateless protocol. \n \nvSphere UI is bound to the \"/ui\" virtual path behind the reverse proxy, and its cookies are configured as such. This configuration must be confirmed and maintained.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/context.xml | xmllint --xpath '/Context/@sessionCookiePath' - \n \nExpected result: \n \nsessionCookiePath=\"/ui\" \n \nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open: \n \n/usr/lib/vmware-vsphere-ui/server/conf/context.xml \n \nAdd the following configuration to the <Context> node: \n \nsessionCookiePath=\"/ui\" \n \nExample: \n \n<Context useHttpOnly=\"true\" sessionCookieName=\"VSPHERE-UI-JSESSIONID\" sessionCookiePath=\"/ui\"> \n \nRestart the service with the following command: \n \n# vmon-cli --restart vsphere-ui",
+  "ccis": [
+    "CCI-001664"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Cookies are used to exchange data between the web server and the client. Cookies, such as a session cookie, may contain session information and user credentials used to maintain a persistent connection between the user and the hosted application since HTTP/HTTPS is a stateless protocol. \n \nvSphere UI is bound to the \"/ui\" virtual path behind the reverse proxy, and its cookies are configured as such. This configuration must be confirmed and maintained.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCUI-70-000018",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c",
+      "name": "VMware vSphere 7.0 vCenter Appliance UI Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c"
+  ]
+}

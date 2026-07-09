@@ -1,0 +1,53 @@
+{
+  "id": "SV-228859r831599_rule",
+  "full_rule_id": "SV-228859r831599_rule",
+  "rule_id": "SV-228859",
+  "rule_revision": "831599",
+  "group_id": "V-228859",
+  "group_title": "SRG-NET-000355-ALG-000117",
+  "title": "The Palo Alto Networks security platform being used for TLS/SSL decryption using PKI-based user authentication must only accept end entity certificates issued by DoD PKI or DoD-approved PKI Certificate Authorities (CAs) for the establishment of protected sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Non-DoD approved PKIs have not been evaluated to ensure that they have security controls and identity vetting procedures in place that are sufficient for DoD systems to rely on the identity asserted in the certificate. PKIs lacking sufficient security controls and identity vetting procedures risk being compromised and issuing certificates that enable adversaries to impersonate legitimate users.\n\nThe authoritative list of DoD-approved PKIs is published at http://iase.disa.mil/pki-pke/interoperability. DoD-approved PKI CAs may include Category I, II, and III certificates. Category I DoD-Approved External PKIs are PIV issuers. Category II DoD-Approved External PKIs are Non-Federal Agency PKIs cross certified with the Federal Bridge Certification Authority (FBCA). Category III DoD-Approved External PKIs are Foreign, Allied, or Coalition Partner PKIs.\n\nDeploying the ALG with TLS enabled will require the installation of DoD and/or DoD-Approved CA certificates in the trusted root certificate store of each proxy to be used for TLS traffic. If the Palo Alto Networks security platform is  used for TLS/SSL decryption, configure the Palo Alto Networks security platform to only accept end entity certificates issued by DoD PKI or DoD-approved PKI CAs for the establishment of protected sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the Palo Alto Networks security platform is not used for TLS/SSL decryption, this is not applicable.\n\nIf the Palo Alto Networks security platform accepts non-DoD approved PKI end entity certificates, this is a finding.",
+  "fix": "Import the intermediate CA certificates.\n\nTo load a CA certificate on the Palo Alto Networks firewall:\nGo to Device >> Certificate Management >> Certificates\nOn the \"Device Certificate\" tab, select \"Import\".\nIn the \"Import Certificate\" window, complete the required information.\nIn the \"Certificate Name\" field, enter the name of the certificate.\nIn the \"Certificate File\" field, select \"Browse\", then browse to and select the appropriate file.\nIn the \"File Format\"  field, select \"Base64 Encoded Certificate (PEM)\".\nSelect \"OK\".\n\nCreate a Client Certificate Profile:\nGo to Device >>Certificate Management>> Certificate Profile\nSelect \"Add\".\nIn the Certificate Profile, complete the required fields.\nIn the \"Name\" field, enter the name of the Certificate Profile.\nIn the \"Username\" field, select \"Subject\".\nNote: The adjacent field will contain common-name.\nAdd all of the DoD Intermediate Certificates.\nSelect the \"Use OCSP\" check box.\nSelect the \"Block session if certificate status is unknown\" check box.\nSelect the \"Block session if certificate status cannot be retrieved within timeout\".\n\nCreate an Authentication Profile:\nGo to Device >> Authentication Profile\nSelect, \"Add\".\nIn the \"Authentication Profile\" window, complete the required fields.\nIn the \"Authentication\" field, add either \"RADIUS\" or \"LDAP\" based on the local requirements. \nIn the Server Profile filed, select the server profile for the authentication server.",
+  "ccis": [
+    "CCI-002470"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Non-DoD approved PKIs have not been evaluated to ensure that they have security controls and identity vetting procedures in place that are sufficient for DoD systems to rely on the identity asserted in the certificate. PKIs lacking sufficient security controls and identity vetting procedures risk being compromised and issuing certificates that enable adversaries to impersonate legitimate users.\n\nThe authoritative list of DoD-approved PKIs is published at http://iase.disa.mil/pki-pke/interoperability. DoD-approved PKI CAs may include Category I, II, and III certificates. Category I DoD-Approved External PKIs are PIV issuers. Category II DoD-Approved External PKIs are Non-Federal Agency PKIs cross certified with the Federal Bridge Certification Authority (FBCA). Category III DoD-Approved External PKIs are Foreign, Allied, or Coalition Partner PKIs.\n\nDeploying the ALG with TLS enabled will require the installation of DoD and/or DoD-Approved CA certificates in the trusted root certificate store of each proxy to be used for TLS traffic. If the Palo Alto Networks security platform is  used for TLS/SSL decryption, configure the Palo Alto Networks security platform to only accept end entity certificates issued by DoD PKI or DoD-approved PKI CAs for the establishment of protected sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PANW-AG-000101",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "palo-alto-networks-alg-security-technical-implementation-guide-v3r4-36330904",
+      "name": "Palo Alto Networks ALG Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "palo-alto-networks-alg-security-technical-implementation-guide-v3r4-36330904"
+  ]
+}

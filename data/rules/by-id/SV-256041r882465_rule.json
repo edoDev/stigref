@@ -1,0 +1,53 @@
+{
+  "id": "SV-256041r882465_rule",
+  "full_rule_id": "SV-256041r882465_rule",
+  "rule_id": "SV-256041",
+  "rule_revision": "882465",
+  "group_id": "V-256041",
+  "group_title": "SRG-NET-000364-RTR-000110",
+  "title": "The Arista perimeter router must be configured to block inbound packets with source Bogon IP address prefixes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Bogons include IP packets on the public internet that contain addresses that are not in any range allocated or delegated by the Internet Assigned Numbers Authority (IANA) or a delegated regional internet registry (RIR) and allowed for public internet use. Bogons also include multicast, IETF reserved, and special purpose address space as defined in RFC 6890.\n\nSecurity of the internet's routing system relies on the ability to authenticate an assertion of unique control of an address block. Measures to authenticate such assertions rely on the validation the address block forms as part of an existing allocated address block, and must be a trustable and unique reference in the IANA address registries. The intended use of a Bogon address would only be for the purpose of address spoofing in denial-of-service attacks. Hence, it is imperative that IP packets with a source Bogon address are blocked at the network's perimeter.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nVerify the ingress filter is blocking packets with Bogon source addresses.\n\nReview the Arista router configuration to verify it is configured to block IP packets with a Bogon source address with \"show run | section prefix-list\".\n\nIPv4 Bogon Prefixes\n0.0.0.0/8\n10.0.0.0/8\n100.64.0.0/10\n127.0.0.0/8\n169.254.0.0/16\n172.16.0.0/12\n192.0.0.0/24\n192.0.2.0/24\n192.88.99.0/24\n192.168.0.0/16\n198.18.0.0/15 |\n198.51.100.0/24\n203.0.113.0/24\n224.0.0.0/4\n240.0.0.0/4\n\nIPv6 Bogon Prefixes\n::/128\n::1/128\n0::/96\n::ffff:0:0/96\n3ffe::/16\n64:ff9b::/96\n100::/64\n2001:10::/28\n2001:db8::/32\n2001:2::/48\n2001::/32\n2001::/23\n2002::/16\nfc00::/7\nfe80::/10\nfec0::/10\nff00::/8\n\nIf the Arista router is not configured to block inbound IP packets containing a Bogon source address, this is a finding.\n\nNote: At a minimum, IP packets containing a source address from the special purpose address space as defined in RFC 6890 must be blocked. The 6Bone prefix (3ffe::/16) is also considered a Bogon address. Perimeter routers connected to commercial ISPs for internet or other non-DOD network sources must be reviewed for a full Bogon list.\n\nStep 1: Verify the ACL is configured to block the IPv4 Bogon prefixes.\n\nip access-list BOGON_PREFIXES\ndeny ip 0.0.0.0/8 any\ndeny ip 10.0.0.0/8 any\ndeny ip 100.64.0.0/10 any\ndeny ip 127.0.0.0/8 any\ndeny ip 169.254.0.0/16 any\ndeny ip 172.16.0.0/12 any\ndeny ip 192.0.0.0/24 any\ndeny ip 192.0.2.0/24 any\ndeny ip 192.88.99.0/24 any\ndeny ip 192.168.0.0/16 any\ndeny ip 198.18.0.0/15 any\ndeny ip 198.51.100.0/24 any\ndeny ip 203.0.113.0/24 any\ndeny ip 224.0.0.0/4 any\ndeny ip 240.0.0.0/4 any\n\nStep 2: Verify the ACL is configured to block the IPv6 Bogon prefixes.\n\nipv6 access-list BOGON_PREFIXES\ndeny ipv6 ::/128 any\ndeny ipv6 ::1/128 any\ndeny ipv6 0::/96 any\ndeny ipv6 ::ffff:0:0/96 any\ndeny ipv6 3ffe::/16 any\ndeny ipv6 64:ff9b::/96 any\ndeny ipv6 100::/64 any\ndeny ipv6 2001:10::/28 any\ndeny ipv6 2001:db8::/32 any\ndeny ipv6 2001:2::/48 any\ndeny ipv6 2001::/32 any\ndeny ipv6 2001::/23 any\ndeny ipv6 2002::/16 any\ndeny ipv6 fc00::/7 any\ndeny ipv6 fe80::/10 any\ndeny ipv6 fec0::/10 any\ndeny ipv6 ff00::/8 any\n\nStep 3: Verify the IPv4 and IPv6 access lists are applied to the external interface.\n\ninterface ethernet 3\nip access-group BOGON_PREFIXES in\nipv6 access-group BOGON_PREFIXES in",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure the Arista router to block inbound packets with Bogon source addresses.\n\nStep 1: Configure the ACL to block the IPv4 Bogon prefixes.\n\nLEAF-1A(config)#ip access-list BOGON_PREFIXES\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 0.0.0.0/8 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 10.0.0.0/8 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 100.64.0.0/10 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 127.0.0.0/8 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 169.254.0.0/16 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 172.16.0.0/12 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 192.0.0.0/24 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 192.0.2.0/24 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 192.88.99.0/24 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 192.168.0.0/16 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 198.18.0.0/15 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 198.51.100.0/24 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 203.0.113.0/24 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 224.0.0.0/4 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#deny ip 240.0.0.0/4 any\nLEAF-1A(config-acl-BOGON_PREFIXES)#exit\n\nStep 2: Configure the ACL to block the ipv6 Bogon prefixes.\n\nLEAF-1A(config)#ipv6 access-list BOGON_PREFIXES\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 ::/128 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 ::1/128 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 0::/96 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 ::ffff:0:0/96 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 3ffe::/16 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 64:ff9b::/96 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 100::/64 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 2001:10::/28 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 2001:db8::/32 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 2001:2::/48 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 2001::/32 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 2001::/23 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 2002::/16 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 fc00::/7 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 fe80::/10 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 fec0::/10 any\nLEAF-1A(config-ipv6-acl-BOGON_PREFIXES)#deny ipv6 ff00::/8 any\n\nStep 3: Apply the IPv4 and IPv6 Bogon access lists to the external interface.\n\nLEAF-1A(config)#interface ethernet 3\nLEAF-1A(config-if-Et3)#ip access-group BOGON_PREFIXES in\nLEAF-1A(config-if-Et3)#ipv6 access-group BOGON_PREFIXES in",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Bogons include IP packets on the public internet that contain addresses that are not in any range allocated or delegated by the Internet Assigned Numbers Authority (IANA) or a delegated regional internet registry (RIR) and allowed for public internet use. Bogons also include multicast, IETF reserved, and special purpose address space as defined in RFC 6890.\n\nSecurity of the internet's routing system relies on the ability to authenticate an assertion of unique control of an address block. Measures to authenticate such assertions rely on the validation the address block forms as part of an existing allocated address block, and must be a trustable and unique reference in the IANA address registries. The intended use of a Bogon address would only be for the purpose of address spoofing in denial-of-service attacks. Hence, it is imperative that IP packets with a source Bogon address are blocked at the network's perimeter.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000620",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-223517r958406_rule",
+  "full_rule_id": "SV-223517r958406_rule",
+  "rule_id": "SV-223517",
+  "rule_revision": "958406",
+  "group_id": "V-223517",
+  "group_title": "SRG-OS-000032-GPOS-00013",
+  "title": "IBM z/OS SMF recording options for the FTP Server must be configured to write SMF records for all eligible events.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without establishing when events occurred, it is impossible to establish, correlate, and investigate the events leading up to an outage or attack.\n\nIn order to compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know when events occurred (date and time).\n\nAssociating event types with detected events in the operating system audit logs provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured operating system.\n\nSMF data collection is the basic unit of tracking of all system functions and actions. Included in this tracking data are the audit records from each of the ACPs and system. If the required SMF data record types are not being collected, then accountability cannot be monitored, and its use in the execution of a contingency plan could be compromised.\n\nThis requirement addresses auditing-related issues associated with maintenance tools used specifically for diagnostic and repair actions on organizational information systems.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the Internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.\n\nThis requirement applies to hardware/software diagnostic test equipment or tools. This requirement does not cover hardware/software components that may support information system maintenance, yet are a part of the system, for example, the software implementing \"ping,\" \"ls,\" \"ipconfig,\" or the hardware and software implementing the monitoring port of an Ethernet switch.\n\nSatisfies: SRG-OS-000032-GPOS-00013, SRG-OS-000392-GPOS-00172</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to the FTP.DATA file specified on the SYSFTPD DD statement in the FTP started task JCL. The SYSFTPD DD statement is optional. The search order for FTP.DATA is: \n /etc/ftp.data \n SYSFTPD DD statement \n jobname.FTP.DATA \n SYS1.TCPPARMS(FTPDATA) \n tcpip.FTP.DATA \n\nIf FTPDATA is configured with the following SMF statements, this is not a finding.\n\nFTP.DATA Configuration Statements\nSMF TYPE119\nSMFJES TYPE119\nSMFSQL TYPE119\nSMFAPPE [Not coded or commented out]\nSMFDEL [Not coded or commented out]\nSMFEXIT [Not coded or commented out]\nSMFLOGN [Not coded or commented out]\nSMFREN [Not coded or commented out]\nSMFRETR [Not coded or commented out]\nSMFSTOR [Not coded or commented out]",
+  "fix": "Configure SMF options to conform to the specifications in the FTPDATA Configuration Statements below or that they are commented out.\n\nSMF TYPE119\nSMFJES TYPE119\nSMFSQL TYPE119\nSMFAPPE [Not coded or commented out]\nSMFDEL [Not coded or commented out]\nSMFEXIT [Not coded or commented out]\nSMFLOGN [Not coded or commented out]\nSMFREN [Not coded or commented out]\nSMFRETR [Not coded or commented out]\nSMFSTOR [Not coded or commented out]\n\nThe FTP Server can provide audit data in the form of SMF records. SMF record type 119, the TCP/IP Statistics record, can be written with the following subtypes:\n\n70 - Append\n70 - Delete and Multiple Delete\n72 - Invalid Logon Attempt\n70 - Rename\n70 - Get (Retrieve) and Multiple Get\n70 - Put (Store and Store Unique) and Multiple Put\n\nSMF data produced by the FTP Server provides transaction information for both successful and unsuccessful FTP commands. This data may provide valuable information for security audit activities. Type 119 records use a more standard format and provide more information.",
+  "ccis": [
+    "CCI-000067",
+    "CCI-002884"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without establishing when events occurred, it is impossible to establish, correlate, and investigate the events leading up to an outage or attack.\n\nIn order to compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know when events occurred (date and time).\n\nAssociating event types with detected events in the operating system audit logs provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured operating system.\n\nSMF data collection is the basic unit of tracking of all system functions and actions. Included in this tracking data are the audit records from each of the ACPs and system. If the required SMF data record types are not being collected, then accountability cannot be monitored, and its use in the execution of a contingency plan could be compromised.\n\nThis requirement addresses auditing-related issues associated with maintenance tools used specifically for diagnostic and repair actions on organizational information systems.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the Internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.\n\nThis requirement applies to hardware/software diagnostic test equipment or tools. This requirement does not cover hardware/software components that may support information system maintenance, yet are a part of the system, for example, the software implementing \"ping,\" \"ls,\" \"ipconfig,\" or the hardware and software implementing the monitoring port of an Ethernet switch.\n\nSatisfies: SRG-OS-000032-GPOS-00013, SRG-OS-000392-GPOS-00172",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ACF2-FT-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad",
+      "name": "IBM z/OS ACF2 Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad"
+  ]
+}

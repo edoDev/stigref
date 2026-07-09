@@ -1,0 +1,53 @@
+{
+  "id": "SV-270539r1064895_rule",
+  "full_rule_id": "SV-270539r1064895_rule",
+  "rule_id": "SV-270539",
+  "rule_revision": "1064895",
+  "group_id": "V-270539",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "Network access to Oracle Database must be restricted to authorized personnel.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Restricting remote access to specific, trusted systems helps prevent access by unauthorized and potentially malicious users.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "IP address restriction may be defined for the database listener, by use of the Oracle Connection Manager or by an external network device.\n\nIdentify the method used to enforce address restriction (interview database administrator [DBA]) or review system documentation).\n\nIf enforced by the database listener, then review the SQLNET.ORA file located in the ORACLE_HOME/network/admin directory (this assumes that a single sqlnet.ora file, in the default location, is in use; SQLNET.ORA could also be the directory indicated by the TNS_ADMIN environment variable or registry setting).\n\nIf the following entries do not exist, then restriction by IP address is not configured and is a finding.\n\ntcp.validnode_checking=YES\ntcp.invited_nodes=(IP1, IP2, IP3)\n\nIf enforced by an Oracle Connection Manager, then review the CMAN.ORA file for the Connection Manager (located in the TNS_ADMIN or ORACLE_HOME/network/admin directory for the connection manager).\n\nIf a RULE entry allows all addresses (\"/32\") or does not match the address range specified in the system documentation, this is a finding.\n\n(rule=(src=[IP]/27)(dst=[IP])(srv=*)(act=accept))\n\nNote: An IP address with a \"/\" indicates acceptance by subnet mask where the number after the \"/\" is the left most number of bits in the address that must match for the rule to apply.",
+  "fix": "Configure the database listener to restrict access by IP address or set up an external device to restrict network access to the DBMS.\n\nMore information can be found at https://docs.oracle.com/en/database/oracle/oracle-database/19/netrf/parameters-for-the-sqlnet.ora.html#GUID-5C3AB641-7541-4CE9-BC9E-BA5DD30616A8.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Restricting remote access to specific, trusted systems helps prevent access by unauthorized and potentially malicious users.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-011200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

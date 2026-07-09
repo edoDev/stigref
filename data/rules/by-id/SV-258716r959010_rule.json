@@ -1,0 +1,53 @@
+{
+  "id": "SV-258716r959010_rule",
+  "full_rule_id": "SV-258716r959010_rule",
+  "rule_id": "SV-258716",
+  "rule_revision": "959010",
+  "group_id": "V-258716",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "Virtual machines (VMs) must enable encryption for vMotion.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>vMotion migrations in vSphere 6.0 and earlier transferred working memory and CPU state information in clear text over the vMotion network. As of vSphere 6.5, this transfer can be transparently encrypted using 256-bit AES-GCM with negligible performance impact.\n\nvSphere enables encrypted vMotion by default as \"Opportunistic\", meaning that encrypted channels are used where supported, but the operation will continue in plain text where encryption is not supported.\n\nFor example, when vMotioning between two hosts, encryption will always be used. However, because 6.0 and earlier releases do not support this feature, vMotion from a 7.0 host to a 6.0 host would be allowed but would not be encrypted. If the encryption is set to \"Required\", vMotions to unsupported hosts will fail. This must be set to \"Opportunistic\" or \"Required\".</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For each virtual machine do the following:\n\nFrom the vSphere Client, right-click the Virtual Machine and go to Edit Settings >> VM Options >> Encryption.\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:\n\nGet-VM | Where {($_.ExtensionData.Config.MigrateEncryption -eq \"disabled\")}\n\nIf the \"Encrypted vMotion\" setting does not have a value of \"Opportunistic\" or \"Required\", this is a finding.",
+  "fix": "For each virtual machine do the following:\n\nFrom the vSphere Client, right-click the Virtual Machine and go to Edit Settings >> VM Options >> Encryption.\n\nFor \"Encrypted vMotion\" set the value to \"Opportunistic\" or \"Required\". Click \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following commands:\n\n$spec = New-Object VMware.Vim.VirtualMachineConfigSpec\n$spec.MigrateEncryption = New-Object VMware.Vim.VirtualMachineConfigSpecEncryptedVMotionModes\n$spec.MigrateEncryption = $true\n(Get-VM -Name <vmname>).ExtensionData.ReconfigVM($spec)",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "vMotion migrations in vSphere 6.0 and earlier transferred working memory and CPU state information in clear text over the vMotion network. As of vSphere 6.5, this transfer can be transparently encrypted using 256-bit AES-GCM with negligible performance impact.\n\nvSphere enables encrypted vMotion by default as \"Opportunistic\", meaning that encrypted channels are used where supported, but the operation will continue in plain text where encryption is not supported.\n\nFor example, when vMotioning between two hosts, encryption will always be used. However, because 6.0 and earlier releases do not support this feature, vMotion from a 7.0 host to a 6.0 host would be allowed but would not be encrypted. If the encryption is set to \"Required\", vMotions to unsupported hosts will fail. This must be set to \"Opportunistic\" or \"Required\".",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VMCH-80-000203",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-virtual-machine-security-technical-implementation-guide-v2r1-85418f75",
+      "name": "VMware vSphere 8.0 Virtual Machine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-virtual-machine-security-technical-implementation-guide-v2r1-85418f75"
+  ]
+}

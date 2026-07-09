@@ -1,0 +1,53 @@
+{
+  "id": "SV-260554r958636_rule",
+  "full_rule_id": "SV-260554r958636_rule",
+  "rule_id": "SV-260554",
+  "rule_revision": "958636",
+  "group_id": "V-260554",
+  "group_title": "SRG-OS-000279-GPOS-00109",
+  "title": "Ubuntu 22.04 LTS must automatically exit interactive command shell user sessions after 15 minutes of inactivity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Terminating an idle interactive command shell user session within a short time period reduces the window of opportunity for unauthorized personnel to take control of it when left unattended in a virtual terminal or physical console.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu 22.04 LTS is configured to automatically exit interactive command shell user sessions after 15 minutes of inactivity or less by using the following command: \n  \n     $ sudo grep -E \"\\bTMOUT=[0-9]+\" /etc/bash.bashrc /etc/profile.d/* \n     /etc/profile.d/99-terminal_tmout.sh:TMOUT=900 \n  \nIf \"TMOUT\" is not set to \"900\" or less, is set to \"0\", is commented out, or missing, this is a finding.",
+  "fix": "Configure Ubuntu 22.04 LTS to exit interactive command shell user sessions after 15 minutes of inactivity. \n \nCreate and/or append a custom file under \"/etc/profile.d/\" by using the following command: \n \n     $ sudo su -c \"echo TMOUT=900 >> /etc/profile.d/99-terminal_tmout.sh\" \n  \nThis will set a timeout value of 15 minutes for all future sessions.  \n  \nTo set the timeout for the current sessions, execute the following command over the terminal session:  \n  \n     $ export TMOUT=900",
+  "ccis": [
+    "CCI-002361"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an idle interactive command shell user session within a short time period reduces the window of opportunity for unauthorized personnel to take control of it when left unattended in a virtual terminal or physical console.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-22-412030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553",
+      "name": "Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553"
+  ]
+}

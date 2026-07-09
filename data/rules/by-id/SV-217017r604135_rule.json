@@ -1,0 +1,53 @@
+{
+  "id": "SV-217017r604135_rule",
+  "full_rule_id": "SV-217017r604135_rule",
+  "rule_id": "SV-217017",
+  "rule_revision": "604135",
+  "group_id": "V-217017",
+  "group_title": "SRG-NET-000131-RTR-000035",
+  "title": "The Juniper router must be configured to have all non-essential capabilities disabled.",
+  "severity": "low",
+  "description": "<VulnDiscussion>A compromised router introduces risk to the entire network infrastructure, as well as data resources that are accessible via the network. The perimeter defense has no oversight or control of attacks by malicious users within the network. Preventing network breaches from within is dependent on implementing a comprehensive defense-in-depth strategy, including securing each device connected to the network. This is accomplished by following and implementing all security guidance applicable for each node type. A fundamental step in securing each router is to enable only the capabilities required for operation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if services not required for operation are enabled. Services such as finger, ftp, telnet must never be enabled; hence, they should not be shown under the system services hierarchy.\n\nIf J-web is not used for administrative access, the web-management services must not be configured as shown below.\n\nIf DHCP server is not being deployed on the router, the command dhcp-local-server must not be configured as shown below.\n\nsystem {\n    …\n    …\n    …\n    services {\n        web-management {\n           https {\n            interface ge-0/0/0.0;\n           }\n        }\n        finger;\n        ftp;\n        ssh {\n            protocol-version v2;\n            macs [ hmac-sha1-96 hmac-sha2-256 hmac-sha2-512 ];\n        }\n        telnet;\n        netconf {\n            ssh;\n        }\n        dhcp-local-server {\n            group DHCP_GROUP {\n                interface ge-0/1/0.0;\n            }\n        }\n    }\n\nIf unnecessary services and functions are enabled on the router, this is a finding.",
+  "fix": "Remove unneeded services and functions from the router as shown below.\n\n[edit system services]\ndelete telnet\n[edit system services]\ndelete finger\n[edit system services]\ndelete ftp",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A compromised router introduces risk to the entire network infrastructure, as well as data resources that are accessible via the network. The perimeter defense has no oversight or control of attacks by malicious users within the network. Preventing network breaches from within is dependent on implementing a comprehensive defense-in-depth strategy, including securing each device connected to the network. This is accomplished by following and implementing all security guidance applicable for each node type. A fundamental step in securing each router is to enable only the capabilities required for operation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000070",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

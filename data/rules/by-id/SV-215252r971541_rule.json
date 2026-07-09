@@ -1,0 +1,53 @@
+{
+  "id": "SV-215252r971541_rule",
+  "full_rule_id": "SV-215252r971541_rule",
+  "rule_id": "SV-215252",
+  "rule_revision": "971541",
+  "group_id": "V-215252",
+  "group_title": "SRG-OS-000337-GPOS-00129",
+  "title": "AIX must provide the function for assigned ISSOs or designated SAs to change the auditing to be performed on all operating system components, based on all selectable event criteria in near real time.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If authorized individuals do not have the ability to modify auditing parameters in response to a changing threat environment, the organization may not be able to effectively respond, and important forensic information may be lost.\n\nThis requirement enables organizations to extend or limit auditing as necessary to meet organizational requirements. Auditing that is limited to conserve information system resources may be extended to address certain threat situations. In addition, auditing may be limited to a specific set of events to facilitate audit reduction, analysis, and reporting.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that an audit admin role has been configured to include the authorizations for auditing, namely \"aix.security.audit,aix.security.user.audit,aix.security.role.audit\": \n\n# lsrole ALL |grep \"aix.security.audit\" |grep \"aix.security.user.audit\" |grep \"aix.security.role.audit\"\nauditadm authorizations=aix.security.audit,aix.security.user.audit,aix.security.role.audit rolelist= groups= visibility=1 screens=* dfltmsg=Audit Administrator msgcat=role_desc.cat msgnum=15 msgset=1 auth_mode=INVOKER id=16\n\nIf the above command has no output, this is a finding.",
+  "fix": "Create a role \"auditadm\" that is assigned with security related authorization with the following commend:\n# mkrole authorizations=\"aix.security.audit,aix.security.user.audit,aix.security.role.audit\" auditadm",
+  "ccis": [
+    "CCI-001914"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If authorized individuals do not have the ability to modify auditing parameters in response to a changing threat environment, the organization may not be able to effectively respond, and important forensic information may be lost.\n\nThis requirement enables organizations to extend or limit auditing as necessary to meet organizational requirements. Auditing that is limited to conserve information system resources may be extended to address certain threat situations. In addition, auditing may be limited to a specific set of events to facilitate audit reduction, analysis, and reporting.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002032",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-261958r1000879_rule",
+  "full_rule_id": "SV-261958r1000879_rule",
+  "rule_id": "SV-261958",
+  "rule_revision": "1000879",
+  "group_id": "V-261958",
+  "group_title": "SRG-APP-000504-DB-000354",
+  "title": "PostgreSQL must generate audit records for all privileged activities or other system-level access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without tracking privileged activity, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nSystem documentation should include a definition of the functionality considered privileged.\n\nA privileged function in this context is any operation that modifies the structure of the database, its built-in logic, or its security settings. This would include all Data Definition Language (DDL) statements and all security-related statements. In an SQL environment, it encompasses, but is not necessarily limited to:\nCREATE\nALTER\nDROP\nGRANT\nREVOKE\nDENY\n\nThere may also be Data Manipulation Language (DML) statements that, subject to context, should be regarded as privileged. Possible examples in SQL include:\n\nTRUNCATE TABLE;\nDELETE, or\nDELETE affecting more than n rows, for some n, or\nDELETE without a WHERE clause;\n\nUPDATE or\nUPDATE affecting more than n rows, for some n, or\nUPDATE without a WHERE clause;\n\nany SELECT, INSERT, UPDATE, or DELETE to an application-defined security table executed by other than a security principal.\n\nDepending on the capabilities of PostgreSQL and the design of the database and associated applications, audit logging may be achieved by means of PostgreSQL auditing features, database triggers, other mechanisms, or a combination of these.\n\nNote that it is particularly important to audit and tightly control any action that weakens the implementation of this requirement itself, since the objective is to have a complete audit trail of all administrative activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As the database administrator, verify pgaudit is enabled by running the following SQL:\n\n$ sudo su - postgres\n$ psql -c \"SHOW shared_preload_libraries\"\n\nIf the output does not contain pgaudit, this is a finding.\n\nVerify that role, read, write, and ddl auditing are enabled:\n\n$ psql -c \"SHOW pgaudit.log\"\n\nIf the output does not contain role, read, write, and ddl, this is a finding.",
+  "fix": "Note: The following instructions use the PGDATA and PGVER environment variables. Refer to APPENDIX-F for instructions on configuring PGDATA and APPENDIX-H for PGVER.\n\nPostgreSQL can be configured to audit these requests using pgaudit. Refer to supplementary content APPENDIX-B for documentation on installing pgaudit.\n\nWith pgaudit installed the following configurations can be made:\n\n$ sudo su - postgres\n$ vi ${PGDATA?}/postgresql.conf\n\nAdd the following parameters (or edit existing parameters):\nshared_preload_libraries = 'pgaudit'\npgaudit.log='ddl, role, read, write'\n\nAs the system administrator, reload the server with the new configuration:\n\n$ sudo systemctl reload postgresql-${PGVER?}",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without tracking privileged activity, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nSystem documentation should include a definition of the functionality considered privileged.\n\nA privileged function in this context is any operation that modifies the structure of the database, its built-in logic, or its security settings. This would include all Data Definition Language (DDL) statements and all security-related statements. In an SQL environment, it encompasses, but is not necessarily limited to:\nCREATE\nALTER\nDROP\nGRANT\nREVOKE\nDENY\n\nThere may also be Data Manipulation Language (DML) statements that, subject to context, should be regarded as privileged. Possible examples in SQL include:\n\nTRUNCATE TABLE;\nDELETE, or\nDELETE affecting more than n rows, for some n, or\nDELETE without a WHERE clause;\n\nUPDATE or\nUPDATE affecting more than n rows, for some n, or\nUPDATE without a WHERE clause;\n\nany SELECT, INSERT, UPDATE, or DELETE to an application-defined security table executed by other than a security principal.\n\nDepending on the capabilities of PostgreSQL and the design of the database and associated applications, audit logging may be achieved by means of PostgreSQL auditing features, database triggers, other mechanisms, or a combination of these.\n\nNote that it is particularly important to audit and tightly control any action that weakens the implementation of this requirement itself, since the objective is to have a complete audit trail of all administrative activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CD16-00-011400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "crunchy-data-postgres-16-security-technical-implementation-guide-v1r2-b53c97e5",
+      "name": "Crunchy Data Postgres 16 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "crunchy-data-postgres-16-security-technical-implementation-guide-v1r2-b53c97e5"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-271703r1091821_rule",
+  "full_rule_id": "SV-271703r1091821_rule",
+  "rule_id": "SV-271703",
+  "rule_revision": "1091821",
+  "group_id": "V-271703",
+  "group_title": "SRG-OS-000032-GPOS-00013",
+  "title": "OL 9 must log SSH connection attempts and failures to the server.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>SSH provides several logging levels with varying amounts of verbosity. \"DEBUG\" is specifically not recommended other than strictly for debugging SSH communications since it provides so much data that it is difficult to identify important security information. \"INFO\" or \"VERBOSE\" level is the basic level that only records login activity of SSH users. In many situations, such as Incident Response, it is important to determine when a particular user was active on a system. The logout record can eliminate those users who disconnected, which helps narrow the field.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 logs SSH connection attempts and failures to the server.\n\nCheck what the SSH daemon's \"LogLevel\" option is set to with the following command:\n\n$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*loglevel'\nLogLevel VERBOSE\n\nIf a value of \"VERBOSE\" is not returned, the line is commented out, or is missing, this is a finding.",
+  "fix": "Configure OL 9 to log connection attempts add or modify the following line in \"/etc/ssh/sshd_config\" or in a file in \"/etc/ssh/sshd_config.d\".\n\nLogLevel VERBOSE\n\nRestart the SSH daemon for the settings to take effect:\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000067"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "SSH provides several logging levels with varying amounts of verbosity. \"DEBUG\" is specifically not recommended other than strictly for debugging SSH communications since it provides so much data that it is difficult to identify important security information. \"INFO\" or \"VERBOSE\" level is the basic level that only records login activity of SSH users. In many situations, such as Incident Response, it is important to determine when a particular user was active on a system. The logout record can eliminate those users who disconnected, which helps narrow the field.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002340",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

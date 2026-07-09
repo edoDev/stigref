@@ -1,0 +1,53 @@
+{
+  "id": "SV-214686r954210_rule",
+  "full_rule_id": "SV-214686r954210_rule",
+  "rule_id": "SV-214686",
+  "rule_revision": "954210",
+  "group_id": "V-214686",
+  "group_title": "SRG-NET-000140",
+  "title": "The Juniper SRX Services Gateway VPN must use multifactor authentication (e.g., DoD PKI) for network access to non-privileged accounts.",
+  "severity": "high",
+  "description": "<VulnDiscussion>To assure accountability and prevent unauthenticated access, non-privileged users must utilize multifactor authentication to prevent potential misuse and compromise of the system. \n\nMultifactor authentication uses two or more factors to achieve authentication. Use of password for user remote access for non-privileged account is not authorized.\n\nFactors include:\n(i) Something you know (e.g., password/PIN); \n(ii) Something you have (e.g., cryptographic identification device, token); or \n(iii) Something you are (e.g., biometric). \n\nA non-privileged account is any information system account with authorizations of a non-privileged user. \n\nNetwork access is any access to an application by a user (or process acting on behalf of a user) where said access is obtained through a network connection.\n\nThe DoD CAC with DoD-approved PKI is an example of multifactor authentication.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Ask the site to identify the VPN access profile. Verify the access profile uses LDAP, not password configuration, for user remote access to the network. Ask the site if the LDAP server used authenticates users through PKI authentication.\n\n[edit]\nshow security access profile <dynamic-profile-name>\n\nIf an access profile that uses LDAP is not configured as the first option in the authentication order, this is a finding.\n\nIf password access is configured for VPN user access, this is a finding.\n\nIf the LDAP server used does not use PKI authentication, this is a finding.",
+  "fix": "Configure multifactor authentication by configuring an access profile for an authentication server or services to authenticate VPN users upon logon using DoD PKI.\n\nExample:\n[edit]\nset access profile dyn-vpn-ldap-xauth authentication-order ldap\nset access profile dyn-vpn-ldap-xauth address-assignment pool dyn-vpn-pool\nset access profile dyn-vpn-ldap-xauth ldap-options base-distinguished-name CN=Users, DC=firewall, DC=com (Location from where LDAP will start searching for users)\n\nset access profile dyn-vpn-ldap-xauth ldap-options search search-filter sAMAccountName= \nset access profile dyn-vpn-ldap-xauth ldap-options search admin-search distinguished-name CN=Administrator, CN=Users, DC=firewall, DC=com (User who is authorized to search the ldap tree)\nset access profile dyn-vpn-ldap-xauth ldap-options search admin-search password <Administrator Password>\nset access profile dyn-vpn-ldap-xauth ldap-server <AD Server IP address> port 389/636 \nset access firewall-authentication pass-through default-profile dyn-vpn-ldap-xauth\nset access firewall-authentication web-authentication default-profile dyn-vpn-ldap-xauth\n\nThe access profile is linked to the xauth of the gateway for dynamic VPN.\n\nset security ike gateway dyn-vpn-local-gw xauth access-profile dyn-vpn-ldap-xauth \n \nNote: Under security >> dynamic-vpn, add all the users that are going to use the dynamic VPN. The command is as follows:\n\nset security dynamic-vpn clients all user\n\nNote: For users who are going to use dynamic VPN, this will be the AD user logon name for each user.",
+  "ccis": [
+    "CCI-000766"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To assure accountability and prevent unauthenticated access, non-privileged users must utilize multifactor authentication to prevent potential misuse and compromise of the system. \n\nMultifactor authentication uses two or more factors to achieve authentication. Use of password for user remote access for non-privileged account is not authorized.\n\nFactors include:\n(i) Something you know (e.g., password/PIN); \n(ii) Something you have (e.g., cryptographic identification device, token); or \n(iii) Something you are (e.g., biometric). \n\nA non-privileged account is any information system account with authorizations of a non-privileged user. \n\nNetwork access is any access to an application by a user (or process acting on behalf of a user) where said access is obtained through a network connection.\n\nThe DoD CAC with DoD-approved PKI is an example of multifactor authentication.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-VN-000019",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0",
+      "name": "Juniper SRX Services Gateway VPN Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0"
+  ]
+}

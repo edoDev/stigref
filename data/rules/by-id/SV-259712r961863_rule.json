@@ -1,0 +1,53 @@
+{
+  "id": "SV-259712r961863_rule",
+  "full_rule_id": "SV-259712r961863_rule",
+  "rule_id": "SV-259712",
+  "rule_revision": "961863",
+  "group_id": "V-259712",
+  "group_title": "SRG-APP-000516",
+  "title": "Exchange must be configured in accordance with the security configuration settings based on DOD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Configuring Exchange to implement organization-wide security implementation guides and security checklists ensures compliance with federal standards and establishes a common security baseline across DOD that reflects the most restrictive security posture consistent with operational requirements.\n\nConfiguration settings are the set of parameters that can be changed that affect the security posture and/or functionality of the system. Security-related parameters are those parameters impacting the security state of the application, including the parameters required to satisfy other security control requirements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Open a Windows PowerShell Module and enter the following commands:\n\nGet-Website | Select-Object -Property Name\n\nGet-WebBinding -Name <'WebSiteName'> | Format-List\n\nIf the Web binding values returned are not on standard port 80 for HTTP connections or port 443 for HTTPS connections, this is a finding.\n\nNote: This is excluding the Exchange Back End website which uses 81/444.\n\nRepeat the process for each website.",
+  "fix": "Configure web ports to be ports 80 and 443, as specified by PPSM standards.\n\nIn an Exchange Management Shell, run the following cmdlet on the \"Default Web Site\":\n\nSet-WebBinding -Name 'Default Web Site' -BindingInformation \"127.0.0.1:443:\" -PropertyName Port -Value 443\n\nSet-WebBinding -Name 'Default Web Site' -BindingInformation \":443:\" -PropertyName Port -Value 443\n\nNote: This does not apply to the Exchange Back End website.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Configuring Exchange to implement organization-wide security implementation guides and security checklists ensures compliance with federal standards and establishes a common security baseline across DOD that reflects the most restrictive security posture consistent with operational requirements.\n\nConfiguration settings are the set of parameters that can be changed that affect the security posture and/or functionality of the system. Security-related parameters are those parameters impacting the security state of the application, including the parameters required to satisfy other security control requirements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-MB-000283",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-mailbox-server-security-technical-implementation-guide-v2r3-ea0ba475",
+      "name": "Microsoft Exchange 2019 Mailbox Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-mailbox-server-security-technical-implementation-guide-v2r3-ea0ba475"
+  ]
+}

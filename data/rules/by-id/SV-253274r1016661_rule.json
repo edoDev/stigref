@@ -1,0 +1,53 @@
+{
+  "id": "SV-253274r1016661_rule",
+  "full_rule_id": "SV-253274r1016661_rule",
+  "rule_id": "SV-253274",
+  "rule_revision": "1016661",
+  "group_id": "V-253274",
+  "group_title": "SRG-OS-000312-GPOS-00122",
+  "title": "Permissions for system files and directories must conform to minimum requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Changing the system's file and directory permissions allows the possibility of unauthorized and anonymous modification to the operating system and installed applications.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The default file system permissions are adequate when the Security Option \"Network access: Let Everyone permissions apply to anonymous users\" is set to \"Disabled\" (WN11-SO-000160).\n\nIf the default file system permissions are maintained and the referenced option is set to \"Disabled\", this is not a finding.\n\nVerify the default permissions for the sample directories below. Non-privileged groups such as Users or Authenticated Users must not have greater than read & execute permissions except where noted as defaults. (Individual accounts must not be used to assign permissions.)\n\nSelect the \"Security\" tab, and the \"Advanced\" button.\n\nC:\\\nType - \"Allow\" for all\nInherited from - \"None\" for all\nPrincipal - Access - Applies to\nAdministrators - Full control - This folder, subfolders, and files\nSYSTEM - Full control - This folder, subfolders, and files\nUsers - Read & execute - This folder, subfolders, and files\nAuthenticated Users - Modify - Subfolders and files only\nAuthenticated Users - Create folders / append data - This folder only\n\n\\Program Files\nType - \"Allow\" for all\nInherited from - \"None\" for all\nPrincipal - Access - Applies to\nTrustedInstaller - Full control - This folder and subfolders\nSYSTEM - Modify - This folder only\nSYSTEM - Full control - Subfolders and files only\nAdministrators - Modify - This folder only\nAdministrators - Full control - Subfolders and files only\nUsers - Read & execute - This folder, subfolders, and files\nCREATOR OWNER - Full control - Subfolders and files only\nALL APPLICATION PACKAGES - Read & execute - This folder, subfolders, and files\nALL RESTRICTED APPLICATION PACKAGES - Read & execute - This folder, subfolders, and files\n\n\\Windows\nType - \"Allow\" for all\nInherited from - \"None\" for all\nPrincipal - Access - Applies to\nTrustedInstaller - Full control - This folder and subfolders\nSYSTEM - Modify - This folder only\nSYSTEM - Full control - Subfolders and files only\nAdministrators - Modify - This folder only\nAdministrators - Full control - Subfolders and files only\nUsers - Read & execute - This folder, subfolders, and files\nCREATOR OWNER - Full control - Subfolders and files only\nALL APPLICATION PACKAGES - Read & execute - This folder, subfolders, and files\nALL RESTRICTED APPLICATION PACKAGES - Read & execute - This folder, subfolders, and files\n\nAlternately use icacls.\n\nRun \"CMD\" as administrator.\nEnter \"icacls\" followed by the directory.\n\nicacls c:\\\nicacls \"c:\\program files\"\nicacls c:\\windows\n\nThe following results will be displayed as each is entered:\n\nc:\\\nS-1-15-3-65536-1888954469-739942743-1668119174-2468466756-4239452838-1296943325-355587736-700089176 (S,RD,X,RA)\nBUILTIN\\Administrators:(OI)(CI)(F)\nNT AUTHORITY\\SYSTEM:(OI)(CI)(F)\nBUILTIN\\Users:(OI)(CI)(RX)\nNT AUTHORITY\\Authenticated Users:(OI)(CI)(IO)(M)\nNT AUTHORITY\\Authenticated Users:(AD)\nMandatory Label\\High Mandatory Level:(OI)(NP)(IO)(NW)\nSuccessfully processed 1 files; Failed processing 0 files\n\nc:\\program files \nNT SERVICE\\TrustedInstaller:(F)\nNT SERVICE\\TrustedInstaller:(CI)(IO)(F)\nNT AUTHORITY\\SYSTEM:(M)\nNT AUTHORITY\\SYSTEM:(OI)(CI)(IO)(F)\nBUILTIN\\Administrators:(M)\nBUILTIN\\Administrators:(OI)(CI)(IO)(F)\nBUILTIN\\Users:(RX)\nBUILTIN\\Users:(OI)(CI)(IO)(GR,GE)\nCREATOR OWNER:(OI)(CI)(IO)(F)\nAPPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES:(RX)\nAPPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES:(OI)(CI)(IO)(GR,GE)\nAPPLICATION PACKAGE AUTHORITY\\ALL RESTRICTED APPLICATION PACKAGES:(RX)\nAPPLICATION PACKAGE AUTHORITY\\ALL RESTRICTED APPLICATION PACKAGES:(OI)(CI)(IO)(GR,GE)\nSuccessfully processed 1 files; Failed processing 0 files\n\nc:\\windows\nNT SERVICE\\TrustedInstaller:(F)\nNT SERVICE\\TrustedInstaller:(CI)(IO)(F)\nNT AUTHORITY\\SYSTEM:(M)\nNT AUTHORITY\\SYSTEM:(OI)(CI)(IO)(F)\nBUILTIN\\Administrators:(M)\nBUILTIN\\Administrators:(OI)(CI)(IO)(F)\nBUILTIN\\Users:(RX)\nBUILTIN\\Users:(OI)(CI)(IO)(GR,GE)\nCREATOR OWNER:(OI)(CI)(IO)(F)\nAPPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES:(RX)\nAPPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES:(OI)(CI)(IO)(GR,GE)\nAPPLICATION PACKAGE AUTHORITY\\ALL RESTRICTED APPLICATION PACKAGES:(RX)\nAPPLICATION PACKAGE AUTHORITY\\ALL RESTRICTED APPLICATION PACKAGES:(OI)(CI)(IO)(GR,GE)\nSuccessfully processed 1 files; Failed processing 0 files",
+  "fix": "Maintain the default file system permissions and configure the Security Option: \"Network access: Let everyone permissions apply to anonymous users\" to \"Disabled\" (WN11-SO-000160).",
+  "ccis": [
+    "CCI-002165"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Changing the system's file and directory permissions allows the possibility of unauthorized and anonymous modification to the operating system and installed applications.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN11-00-000095",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-11-security-technical-implementation-guide-v2r7-e8aa9373",
+      "name": "Microsoft Windows 11 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-11-security-technical-implementation-guide-v2r7-e8aa9373"
+  ]
+}

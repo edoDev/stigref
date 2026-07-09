@@ -1,0 +1,53 @@
+{
+  "id": "SV-279602r1192485_rule",
+  "full_rule_id": "SV-279602r1192485_rule",
+  "rule_id": "SV-279602",
+  "rule_revision": "1192485",
+  "group_id": "V-279602",
+  "group_title": "SRG-OS-000114-GPOS-00059",
+  "title": "Nutanix OS must disable the ability to use USB mass storage devices.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.\n\nPeripherals include, but are not limited to, flash drives, external storage, and printers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS is set to disable the ability to use USB mass storage devices using the following command.\n\n$ sudo grep -i usb-storage /etc/modprobe.d/stig-reqs.conf \ninstall usb-storage /bin/false\n\n$ sudo grep -i usb-storage /etc/modprobe.d/blacklist.conf \nblacklist usb-storage\n\nIf the command does not return any output or the output is not \"blacklist usb-storage\", and use of USB storage devices is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "1. For AOS, disable USB mass storage and blacklist from executing using the following command.\n\n$ sudo salt-call state.sls security/CVM/modprobeCVM\n\n2. For Prism Central, disable USB mass storage and blacklist from executing using the following command.\n\n$ sudo salt-call state.sls security/PCVM/modprobePCVM\n\n3. For Files, disable USB mass storage and blacklist from executing using the following command.\n\n$ sudo salt-call state.sls security/AFS/modprobeAFS\n\n4. Configure AHV to disable USB mass storage and blacklist from executing using the following command.\n\n$ sudo salt-call state.sls security/KVM/modprobeKVM",
+  "ccis": [
+    "CCI-000778"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.\n\nPeripherals include, but are not limited to, flash drives, external storage, and printers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000158",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

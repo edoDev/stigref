@@ -1,0 +1,54 @@
+{
+  "id": "SV-234821r958480_rule",
+  "full_rule_id": "SV-234821r958480_rule",
+  "rule_id": "SV-234821",
+  "rule_revision": "958480",
+  "group_id": "V-234821",
+  "group_title": "SRG-OS-000096-GPOS-00050",
+  "title": "The SUSE operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services as defined in the Ports, Protocols, and Services Management (PPSM) Category Assignments List (CAL) and vulnerability assessments.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports/protocols on information systems.\n\nSUSE operating systems are capable of providing a wide variety of functions and services. Some of the functions and services provided by default may not be necessary to support essential organizational operations. Additionally, it is sometimes convenient to provide multiple services from a single component (e.g., VPN and IPS); however, doing so increases risk over limiting the services provided by any one component.\n\nTo support the requirements and principles of least functionality, the SUSE operating system must support the organizational requirements, providing only essential capabilities and limiting the use of ports, protocols, and/or services to only those required, authorized, and approved to conduct official business or address authorized quality-of-life issues.\n\nSatisfies: SRG-OS-000096-GPOS-00050, SRG-OS-000297-GPOS-00115, SRG-OS-000480-GPOS-00232</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SUSE operating system is configured to prohibit or restrict the use of functions, ports, protocols, and/or services as defined in the PPSM CAL and vulnerability assessments.\n\nCheck that the \"firewalld.service\" is enabled and running by running the following command:\n\n> systemctl status firewalld.service\n firewalld.service - firewalld - dynamic firewall daemon\n   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: disabled)\n   Active: active (running) since Wed 2019-11-06 10:58:11 CET; 24h ago\n     Docs: man:firewalld(1)\n Main PID: 1105 (firewalld)\n    Tasks: 2 (limit: 4915)\n   CGroup: /system.slice/firewalld.service\n           ??1105 /usr/bin/python3 -Es /usr/sbin/firewalld --nofork --nopid\n\nIf the service is not enabled, this is a finding.\n\nIf the service is not active, this is a finding.\n\nCheck the firewall configuration for any unnecessary or prohibited functions, ports, protocols, and/or services by running the following command:\n\n> sudo firewall-cmd --list-all\n\nAsk the System Administrator for the site or program PPSM Component Local Services Assessment (Component Local Services Assessment (CLSA). Verify the services allowed by the firewall match the PPSM CLSA. \n\nIf there are any additional ports, protocols, or services that are not included in the PPSM CLSA, this is a finding.\n\nIf there are any ports, protocols, or services that are prohibited by the PPSM CAL, this is a finding.",
+  "fix": "Configure the SUSE operating system is configured to prohibit or restrict the use of functions, ports, protocols, and/or services as defined in the PPSM CAL and vulnerability assessments.\n\nAdd/modify /etc/firewalld configuration files to comply with the PPSM CAL.\n\nEnable the \"firewalld.service\" by running the following command:\n\n> sudo systemctl enable firewalld.service\n\nStart the \"firewalld.service\" by running the following command:\n\n> sudo systemctl start firewalld.service",
+  "ccis": [
+    "CCI-000382",
+    "CCI-002314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports/protocols on information systems.\n\nSUSE operating systems are capable of providing a wide variety of functions and services. Some of the functions and services provided by default may not be necessary to support essential organizational operations. Additionally, it is sometimes convenient to provide multiple services from a single component (e.g., VPN and IPS); however, doing so increases risk over limiting the services provided by any one component.\n\nTo support the requirements and principles of least functionality, the SUSE operating system must support the organizational requirements, providing only essential capabilities and limiting the use of ports, protocols, and/or services to only those required, authorized, and approved to conduct official business or address authorized quality-of-life issues.\n\nSatisfies: SRG-OS-000096-GPOS-00050, SRG-OS-000297-GPOS-00115, SRG-OS-000480-GPOS-00232",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-010220",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-215221r987796_rule",
+  "full_rule_id": "SV-215221r987796_rule",
+  "rule_id": "SV-215221",
+  "rule_revision": "987796",
+  "group_id": "V-215221",
+  "group_title": "SRG-OS-000074-GPOS-00042",
+  "title": "AIX root passwords must never be passed over a network in clear text form.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if root has logged in over an unencrypted network connection: \n\n# last | grep \"root \" | egrep -v \"reboot|console\" | more \nroot      pts/1        10.74.17.76           Jul 4 16:44 - 17:39  (00:54)\n\nNext, determine if the SSH daemon is running: \n\n# ps -ef |grep sshd \nroot  3670408  6029762   0   Jan 24      -  0:00 /usr/sbin/sshd\n\nIf root has logged in over the network and SSHD is not running, this is a finding.",
+  "fix": "If OpenSSH server is not installed, install it from the from AIX DVD Volume 1 using the following command (assuming that the DVD device is /dev/cd0):\n# installp -aXYgd /dev/cd0 -e /tmp/install.log openssh.base.server\n\nStart SSH server if it is not started:\n# startsrc -s sshd\n\nEnable SSH on the system and use it for all remote connections used to attain root access. \n\nDisable direct root remote login:\n# chsec -f /etc/security/user -s root -a rlogin=false",
+  "ccis": [
+    "CCI-000197"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001124",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-256596r918971_rule",
+  "full_rule_id": "SV-256596r918971_rule",
+  "rule_id": "SV-256596",
+  "rule_revision": "918971",
+  "group_id": "V-256596",
+  "group_title": "SRG-APP-000133-DB-000200",
+  "title": "All vCenter database (VCDB) tables must be owned by the \"vc\" user account.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who uses the object to perform the actions if they are the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.\n\nVCDB is configured out of the box to be owned by the \"vc\" Postgres user. This configuration must be verified and maintained.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -d VCDB -U postgres -t -A -c \"\\dt;\" | grep -v 'table|vc'\n\nIf any tables are returned, this is a finding.\n\nNote: Upgrades may introduce new tables that are owned by the \"postgres\" user and can be updated to be owned by the \"vc\" user.",
+  "fix": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -d VCDB -U postgres -c \"ALTER TABLE <tablename> OWNER TO vc;\"\n\nReplace <tablename> with the name of the table discovered during the check.",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who uses the object to perform the actions if they are the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.\n\nVCDB is configured out of the box to be owned by the \"vc\" Postgres user. This configuration must be verified and maintained.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-70-000006",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497",
+      "name": "VMware vSphere 7.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497"
+  ]
+}

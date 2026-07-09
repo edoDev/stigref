@@ -1,0 +1,53 @@
+{
+  "id": "SV-277114r1149392_rule",
+  "full_rule_id": "SV-277114r1149392_rule",
+  "rule_id": "SV-277114",
+  "rule_revision": "1149392",
+  "group_id": "V-277114",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "The macOS system must disable Screen Sharing and Apple Remote Desktop.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Support for both Screen Sharing and Apple Remote Desktop is nonessential and must be disabled.\n\nThe information system must be configured to provide only essential capabilities. Disabling Screen Sharing and Apple Remote Desktop helps prevent unauthorized connection of devices, transfer of information, and tunneling.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to disable Screen Sharing and Apple Remote Desktop with the following command:\n\nresult=\"FAIL\"\n  enabled=$(/bin/launchctl print-disabled system | /usr/bin/grep '\"com.apple.screensharing\" => enabled')\n  running=$(/bin/launchctl print system/com.apple.screensharing 2>/dev/null)\n  \n  if [[ -z \"$running\" ]] && [[ -z \"$enabled\" ]]; then\n    result=\"PASS\"\n  elif [[ -n \"$running\" ]]; then\n    result=result+\" RUNNING\"\n  elif [[ -n \"$enabled\" ]]; then\n    result=result+\" ENABLED\"\n  fi\n  echo $result\n\nIf the result is not \"PASS\", this is a finding.",
+  "fix": "Configure the macOS system to disable Screen Sharing and Apple Remote Desktop with the following command:\n\n/bin/launchctl bootout system/com.apple.screensharing\n/bin/launchctl disable system/com.apple.screensharing\n\nNote: This will apply to the whole system.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Support for both Screen Sharing and Apple Remote Desktop is nonessential and must be disabled.\n\nThe information system must be configured to provide only essential capabilities. Disabling Screen Sharing and Apple Remote Desktop helps prevent unauthorized connection of devices, transfer of information, and tunneling.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-26-002050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2",
+      "name": "Apple macOS 26 (Tahoe) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2"
+  ]
+}

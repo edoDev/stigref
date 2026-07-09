@@ -1,0 +1,53 @@
+{
+  "id": "SV-217051r855898_rule",
+  "full_rule_id": "SV-217051r855898_rule",
+  "rule_id": "SV-217051",
+  "rule_revision": "855898",
+  "group_id": "V-217051",
+  "group_title": "SRG-NET-000362-RTR-000124",
+  "title": "The Juniper BGP router must be configured to enable the Generalized TTL Security Mechanism (GTSM).",
+  "severity": "low",
+  "description": "<VulnDiscussion>GTSM is designed to protect a router's IP-based control plane from DoS attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all Exterior Border Gateway Protocol speaking routers. \n\nGTSM is based on the fact that the vast majority of control plane peering is established between adjacent routers; that is, the Exterior Border Gateway Protocol peers are either between connecting interfaces or between loopback interfaces. Since TTL spoofing is considered nearly impossible, a mechanism based on an expected TTL value provides a simple and reasonably robust defense from infrastructure attacks based on forged control plane traffic.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that a filter has been configured to only allow BGP packets with a TTL of 255 as shown in the example below.\n\nfirewall {\n        …\n        …\n        …\n    filter GTSM_FILTER {\n        term TTL_SECURITY {\n            from {\n                protocol tcp;\n                ttl-except 255;\n                port bgp;\n            }\n            then {\n                syslog;\n                discard;\n            }\n        }\n        term ELSE_ACCEPT {\n            then accept;\n        }\n    }\n}\n\nVerify that the filter is applied to all interfaces connecting to eBGP peers.\n\ninterfaces {\n…\n…\n…\n  ge-0/0/0  {\n        unit 0 {\n            family inet {\n                filter {\n                    input-list [INBOUND_FILTER GTSM_FILTER];\n                }\n                address x.x.x.x/30;\n            }\n         }\n    }\n}\n\nConfigure the router to send all BGP packets with a TTL of 255 as shown in the example below.\n\nIf the router is not configured to use GTSM for all Exterior Border Gateway Protocol peering sessions, this is a finding.",
+  "fix": "Configure a filter to only accept bgp packets with a TTL of 255 as shown in the example below.\n\n[edit firewall]\nset filter GTSM_FILTER term TTL_SECURITY from protocol tcp port bgp ttl-except 255\nset filter GTSM_FILTER term TTL_SECURITY then syslog discard\nset filter GTSM_FILTER term ELSE_ACCEPT then accept\n\nApply the firewall filter to the inbound interface for all eBGP single-hop peer as shown in the example below.\n\n[edit interfaces   ge-0/0/0  unit 0 family inet] \nset filter input-list INBOUND_FILTER\nset filter input-list GTSM_FILTER",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "GTSM is designed to protect a router's IP-based control plane from DoS attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all Exterior Border Gateway Protocol speaking routers. \n\nGTSM is based on the fact that the vast majority of control plane peering is established between adjacent routers; that is, the Exterior Border Gateway Protocol peers are either between connecting interfaces or between loopback interfaces. Since TTL spoofing is considered nearly impossible, a mechanism based on an expected TTL value provides a simple and reasonably robust defense from infrastructure attacks based on forged control plane traffic.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000460",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

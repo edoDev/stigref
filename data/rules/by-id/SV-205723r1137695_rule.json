@@ -1,0 +1,53 @@
+{
+  "id": "SV-205723r1137695_rule",
+  "full_rule_id": "SV-205723r1137695_rule",
+  "rule_id": "SV-205723",
+  "rule_revision": "1137695",
+  "group_id": "V-205723",
+  "group_title": "SRG-OS-000138-GPOS-00069",
+  "title": "Windows Server 2019 data files owned by users must be on a different logical partition from the directory server data files.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When directory service data files, especially for directories used for identification, authentication, or authorization, reside on the same logical partition as user-owned files, the directory service data may be more vulnerable to unauthorized access or other availability compromises. Directory service and user-owned data files sharing a partition may be configured with less restrictive permissions in order to allow access to the user data. \n\nThe directory service may be vulnerable to a denial of service attack when user-owned files on a common partition are expanded to an extent preventing the directory service from acquiring more space for directory or audit data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This applies to domain controllers. It is NA for other systems.\n\nRun \"Regedit\".\n\nNavigate to \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\NTDS\\Parameters\".\n\nNote the directory locations in the values for \"DSA Database file\".\n\nOpen \"Command Prompt\".\n\nEnter \"net share\".\n\nNote the logical drive(s) or file system partition for any organization-created data shares.\n\nIgnore system shares (e.g., NETLOGON, SYSVOL, and administrative shares ending in $). User shares that are hidden (ending with $) should not be ignored.\n\nIf user shares are located on the same logical partition as the directory server data files, this is a finding.",
+  "fix": "Move shares used to store files owned by users to a different logical partition than the directory server data files.",
+  "ccis": [
+    "CCI-001090"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When directory service data files, especially for directories used for identification, authentication, or authorization, reside on the same logical partition as user-owned files, the directory service data may be more vulnerable to unauthorized access or other availability compromises. Directory service and user-owned data files sharing a partition may be configured with less restrictive permissions in order to allow access to the user data. \n\nThe directory service may be vulnerable to a denial of service attack when user-owned files on a common partition are expanded to an extent preventing the directory service from acquiring more space for directory or audit data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN19-DC-000120",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2019-security-technical-implementation-guide-v3r8-b8ffc6b1",
+      "name": "Microsoft Windows Server 2019 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2019-security-technical-implementation-guide-v3r8-b8ffc6b1"
+  ]
+}

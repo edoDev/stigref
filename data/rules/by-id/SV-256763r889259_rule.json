@@ -1,0 +1,53 @@
+{
+  "id": "SV-256763r889259_rule",
+  "full_rule_id": "SV-256763r889259_rule",
+  "rule_id": "SV-256763",
+  "rule_revision": "889259",
+  "group_id": "V-256763",
+  "group_title": "SRG-APP-000246-WSR-000149",
+  "title": "The Security Token Service must limit the number of allowed connections.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Limiting the number of established connections to the Security Token Service is a basic denial-of-service protection. Servers where the limit is too high or unlimited can potentially run out of system resources and negatively affect system availability.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# xmllint --xpath '/Server/Service/Connector[@port=\"${bio-custom.http.port}\"]/@acceptCount' /usr/lib/vmware-sso/vmware-sts/conf/server.xml \n \nExpected result: \n \nacceptCount=\"100\" \n \nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open: \n \n/usr/lib/vmware-sso/vmware-sts/conf/server.xml \n \nNavigate to the <Connector> configured with port=\"${bio-custom.http.port}\". \n \nAdd or change the following value: \n \nacceptCount=\"100\" \n \nRestart the service with the following command: \n \n# vmon-cli --restart sts",
+  "ccis": [
+    "CCI-001094"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Limiting the number of established connections to the Security Token Service is a basic denial-of-service protection. Servers where the limit is too high or unlimited can potentially run out of system resources and negatively affect system availability.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCST-70-000019",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-sts-security-technical-implementation-guide-v1r2-ef860c6a",
+      "name": "VMware vSphere 7.0 vCenter Appliance STS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-sts-security-technical-implementation-guide-v1r2-ef860c6a"
+  ]
+}

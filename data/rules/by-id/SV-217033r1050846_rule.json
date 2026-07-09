@@ -1,0 +1,53 @@
+{
+  "id": "SV-217033r1050846_rule",
+  "full_rule_id": "SV-217033r1050846_rule",
+  "rule_id": "SV-217033",
+  "rule_revision": "1050846",
+  "group_id": "V-217033",
+  "group_title": "SRG-NET-000019-RTR-000008",
+  "title": "The Juniper perimeter router must be configured to protect an enclave connected to an approved gateway by using an inbound filter that only permits packets with destination addresses within the site's address space.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Enclaves with approved gateway connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's alternate gateway, the perimeter router could be routing transit data from the internet into the NIPRNet. This could also make the perimeter router vulnerable to a denial-of-service (DoS) attack and provide a back door into the NIPRNet. The DOD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an approved gateway is secure through filters permitting packets with a destination address belonging to the DOD enclave's address block.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nVerify the interface connecting to the ISP has an inbound filter as shown in the example below.\n\ninterfaces {\n    ge-0/0/0 {\n        description \"Verizon ISP link\";\n        unit 0 {\n            family inet {\n                filter {\n                    input ISP_FILTER;\n                }\n                address 11.1.12.2/24;\n            }\n        }\n    }\n\nVerify that the filter only allows traffic to specific destination addresses (i.e., enclave’s NIPRNet address space) as shown in the example below.\n\nfirewall {\n    family inet {\n        filter ISP_FILTER {\n            term RESTRICT_DESTINATION {\n                from {\n                    destination-address {\n                        0.0.0.0/0;\n                        11.1.0.0/16 except;\n                    }\n                }\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n            term ALLOW_XYZ {\n                from {\n                    protocol xyz;\n                }\n                then accept;\n            }\n            …\n            …\n            …\n            term DENY_ALL_OTHER {\n                then {\n                    syslog;\n                    reject;\n                }\n            }\n        }\n\nIf the ingress filter bound to the interface connecting to an approved gateway permits packets with addresses other than those specified, such as destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the approved gateway network service provider, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure the ingress filter of the perimeter router connected to an approved gateway to only permit packets with destination addresses of the site's NIPRNet address space or a destination address belonging to the address block assigned by the approved gateway network service provider as shown in the example below.\n\n[edit firewall family inet filter ISP_FILTER]\nset term RESTRICT_DESTINATION from destination-address 0.0.0.0/0\nset term RESTRICT_DESTINATION from destination-address 11.1.0.0/16 except\nset term RESTRICT_DESTINATION then syslog discard\ninsert term RESTRICT_DESTINATION before term ALLOW_XYZ",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enclaves with approved gateway connections must take additional steps to ensure there is no compromise on the enclave network or NIPRNet. Without verifying the destination address of traffic coming from the site's alternate gateway, the perimeter router could be routing transit data from the internet into the NIPRNet. This could also make the perimeter router vulnerable to a denial-of-service (DoS) attack and provide a back door into the NIPRNet. The DOD enclave must ensure the ingress filter applied to external interfaces on a perimeter router connecting to an approved gateway is secure through filters permitting packets with a destination address belonging to the DOD enclave's address block.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000280",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

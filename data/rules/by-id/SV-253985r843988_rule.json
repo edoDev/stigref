@@ -1,0 +1,53 @@
+{
+  "id": "SV-253985r843988_rule",
+  "full_rule_id": "SV-253985r843988_rule",
+  "rule_id": "SV-253985",
+  "rule_revision": "843988",
+  "group_id": "V-253985",
+  "group_title": "SRG-NET-000019-RTR-000003",
+  "title": "The Juniper router must be configured to disable Protocol Independent Multicast (PIM) on all interfaces that are not required to support multicast routing.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel. Limiting where, within the network, a given multicast group's data is permitted to flow is an important first step in improving multicast security. \n\nA scope zone is an instance of a connected region of a given scope. Zones of the same scope cannot overlap while zones of a smaller scope will fit completely within a zone of a larger scope. For example, Admin-local scope is smaller than Site-local scope, so the administratively configured boundary fits within the bounds of a site. According to RFC 4007 IPv6 Scoped Address Architecture (section 5), scope zones are also required to be \"convex from a routing perspective\"; that is, packets routed within a zone must not pass through any links that are outside of the zone. This requirement forces each zone to be one contiguous island rather than a series of separate islands. \n\nAs stated in the DoD IPv6 IA Guidance for MO3, \"One should be able to identify all interfaces of a zone by drawing a closed loop on their network diagram, engulfing some routers and passing through some routers to include only some of their interfaces.\" Therefore, it is imperative that the network engineers have documented their multicast topology and thereby know which interfaces are enabled for multicast. Once this is done, the zones can be scoped as required.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If IPv4 or IPv6 multicast routing is enabled, verify all interfaces enabled for PIM are documented in the network's multicast topology diagram.\n\nReview the router configuration to determine if multicast routing is enabled and which interfaces are enabled for PIM.\n\nBy default, PIM is not enabled on any interface. If not a PIM router, verify there is no PIM stanza at [edit protocols], PIM is disabled globally and/or for all interfaces, or that the stanza is inactive.\n[edit protocols]\ninactive: pim { << Stanza is removed or marked inactive\n    disable; << If stanza is present and not inactive, verify globally disabled\n    interface all { << If stanza is present, not inactive, and not globally disabled, disable for all interfaces\n        disable;\n    }\n}\n\nFor PIM routers, verify only the required interfaces are configured. For example, the following configuration enables PIM on a specific interface and disables PIM for all others.\n[edit protocols]\npim {\n    interface <name>.<logical unit>;\n    interface all {\n        disable;\n    }\n}\n\nNote: More specific interface configuration statements are preferred. In the example, the interface configuration is more specific than interface \"all\", so PIM is enabled only on that interface.\n\nIf an interface is not required to support multicast routing and it is enabled, this is a finding.",
+  "fix": "Document all enabled interfaces for PIM in the network's multicast topology diagram. Disable support for PIM on interfaces that are not required to support it.\n\nFor non-PIM routers, verify there is no [edit protocols pim] stanza. If the stanza is present, delete or deactivate it.\ndelete protocols pim\ndeactivate protocols pim\n\nTo disable PIM globally or for all interfaces.\nset protocols pim disable\nset protocols pim interface all disable\n\nFor PIM routers verify only the required interfaces are configured and all others are disabled:\nset protocols pim interface <name>.<logical unit>\nset protocols pim interface all disable",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel. Limiting where, within the network, a given multicast group's data is permitted to flow is an important first step in improving multicast security. \n\nA scope zone is an instance of a connected region of a given scope. Zones of the same scope cannot overlap while zones of a smaller scope will fit completely within a zone of a larger scope. For example, Admin-local scope is smaller than Site-local scope, so the administratively configured boundary fits within the bounds of a site. According to RFC 4007 IPv6 Scoped Address Architecture (section 5), scope zones are also required to be \"convex from a routing perspective\"; that is, packets routed within a zone must not pass through any links that are outside of the zone. This requirement forces each zone to be one contiguous island rather than a series of separate islands. \n\nAs stated in the DoD IPv6 IA Guidance for MO3, \"One should be able to identify all interfaces of a zone by drawing a closed loop on their network diagram, engulfing some routers and passing through some routers to include only some of their interfaces.\" Therefore, it is imperative that the network engineers have documented their multicast topology and thereby know which interfaces are enabled for multicast. Once this is done, the zones can be scoped as required.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

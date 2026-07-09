@@ -1,0 +1,53 @@
+{
+  "id": "SV-279531r1192591_rule",
+  "full_rule_id": "SV-279531r1192591_rule",
+  "rule_id": "SV-279531",
+  "rule_revision": "1192591",
+  "group_id": "V-279531",
+  "group_title": "SRG-OS-000032-GPOS-00013",
+  "title": "Nutanix OS must monitor SSH access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk and make remote user access management difficult at best.\n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nAutomated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SSH access is monitored using the following command.\n\n$ sudo grep -i loglevel /etc/ssh/sshd_config\n\nIf the LogLevel is not set to \"VERBOSE\", this is a finding.",
+  "fix": "Configure SSH.\n\n1. For AOS, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/CVM/sshdCVM\n$ sudo systemctl restart sshd\n\n2. For Prism Central, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/PCVM/sshdPCVM\n$ sudo systemctl restart sshd\n\n3. For Files, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/AFS/sshdAFS\n$ sudo systemctl restart sshd\n\n4. For AHV, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/KVM/sshdKVM\n$ sudo systemctl restart sshd",
+  "ccis": [
+    "CCI-000067"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk and make remote user access management difficult at best.\n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nAutomated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

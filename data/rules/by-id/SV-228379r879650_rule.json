@@ -1,0 +1,53 @@
+{
+  "id": "SV-228379r879650_rule",
+  "full_rule_id": "SV-228379r879650_rule",
+  "rule_id": "SV-228379",
+  "rule_revision": "879650",
+  "group_id": "V-228379",
+  "group_title": "SRG-APP-000246",
+  "title": "Exchange Mail quota settings must not restrict receiving mail.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Mail quota settings control the maximum sizes of a user’s mailbox and the system’s response if these limits are exceeded. Mailbox data that is not monitored against a quota increases the risk of mail loss due to filled disk space, which can also render the system unavailable.\n\nFailure to allow mail receipt may impede users from receiving mission-critical data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Open the Exchange Management Shell and enter the following command:\n\nGet-MailboxDatabase | Select Name, Identity, ProhibitSendReceiveQuota\n\nIf the value of \"ProhibitSendReceiveQuota\" is not set to \"Unlimited\", this is a finding.\n\nor\n\nIf the value of \"ProhibitSendReceiveQuota\" is set to an alternate value and has signoff and risk acceptance in the EDSP, this is not a finding.",
+  "fix": "Open the Exchange Management Shell and enter the following command:\n\nSet-MailboxDatabase -Identity <'IdentityName'> -ProhibitSendReceiveQuota Unlimited\n\nNote: The <IdentityName> value must be in single quotes.\n\nor\n\nEnter the value as identified by the EDSP that has obtained a signoff with risk acceptance.",
+  "ccis": [
+    "CCI-001094"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Mail quota settings control the maximum sizes of a user’s mailbox and the system’s response if these limits are exceeded. Mailbox data that is not monitored against a quota increases the risk of mail loss due to filled disk space, which can also render the system unavailable.\n\nFailure to allow mail receipt may impede users from receiving mission-critical data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX16-MB-000310",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5",
+      "name": "Microsoft Exchange 2016 Mailbox Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5"
+  ]
+}

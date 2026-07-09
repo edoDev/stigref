@@ -1,0 +1,53 @@
+{
+  "id": "SV-256728r888775_rule",
+  "full_rule_id": "SV-256728r888775_rule",
+  "rule_id": "SV-256728",
+  "rule_revision": "888775",
+  "group_id": "V-256728",
+  "group_title": "SRG-APP-000266-WSR-000159",
+  "title": "Lookup Service must be configured to hide the server version.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Web servers will often display error messages to client users, including enough information to aid in the debugging of the error. The information given back in error messages may display the web server type, version, patches installed, plug-ins and modules installed, type of code being used by the hosted application, and any backends being used for data storage.\n\nThis information could be used by an attacker to blueprint what type of attacks might be successful. Therefore, Lookup Service must be configured to hide the server version at all times.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --xpath '/Server/Service/Connector[@port=\"${bio-custom.http.port}\"]/@server' /usr/lib/vmware-lookupsvc/conf/server.xml\n\nExpected result:\n\nserver=\"Anonymous\"\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-lookupsvc/conf/server.xml\n\nNavigate to each of the <Connector> nodes.\n\nConfigure each <Connector> node with 'server=\"Anonymous\"'.\n\nRestart the service with the following command:\n\n# vmon-cli --restart lookupsvc",
+  "ccis": [
+    "CCI-001312"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Web servers will often display error messages to client users, including enough information to aid in the debugging of the error. The information given back in error messages may display the web server type, version, patches installed, plug-ins and modules installed, type of code being used by the hosted application, and any backends being used for data storage.\n\nThis information could be used by an attacker to blueprint what type of attacks might be successful. Therefore, Lookup Service must be configured to hide the server version at all times.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCLU-70-000023",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2",
+      "name": "VMware vSphere 7.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-258845r935564_rule",
+  "full_rule_id": "SV-258845r935564_rule",
+  "rule_id": "SV-258845",
+  "rule_revision": "935564",
+  "group_id": "V-258845",
+  "group_title": "SRG-OS-000343-GPOS-00134",
+  "title": "The Photon operating system must immediately notify the SA and ISSO when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If security personnel are not notified immediately when storage volume reaches 75 percent utilization, they are unable to plan for audit record storage capacity expansion.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command to verify auditd is alerting when low disk space is detected:\n\n# grep '^space_left' /etc/audit/auditd.conf\n\nExpected result:\n\nspace_left = 25%\nspace_left_action = SYSLOG\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/audit/auditd.conf\n\nEnsure the \"space_left\" and \"space_left_action\" lines are uncommented and set to the following:\n\nspace_left = 25%\nspace_left_action = SYSLOG\n\nAt the command line, run the following command:\n\n# pkill -SIGHUP auditd",
+  "ccis": [
+    "CCI-001855"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If security personnel are not notified immediately when storage volume reaches 75 percent utilization, they are unable to plan for audit record storage capacity expansion.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000112",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

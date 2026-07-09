@@ -1,0 +1,53 @@
+{
+  "id": "SV-217432r960801_rule",
+  "full_rule_id": "SV-217432r960801_rule",
+  "rule_id": "SV-217432",
+  "rule_revision": "960801",
+  "group_id": "V-217432",
+  "group_title": "SRG-APP-000038-NDM-000213",
+  "title": "The HP FlexFabric Switch must enforce approved authorizations for controlling the flow of management information within the HP FlexFabric Switch based on information flow control policies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A mechanism to detect and prevent unauthorized communication flow must be configured or provided as part of the system design. If management information flow is not enforced based on approved authorizations, the HP FlexFabric Switch may become compromised. Information flow control regulates where management information is allowed to travel within a network device. The flow of all management information must be monitored and controlled so it does not introduce any unacceptable risk to the HP FlexFabric Switch or data. \n\nApplication-specific examples of enforcement occur in systems that employ rule sets or establish configuration settings that restrict information system services or message-filtering capability based on message content (e.g., implementing key word searches or using document characteristics).\n\nApplications providing information flow control must be able to enforce approved authorizations for controlling the flow of management information within the system in accordance with applicable policy.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the HP FlexFabric Switch configuration to determine if ACLs were configured for controlling the flow of management information within the HP FlexFabric Switch based on information flow control policies:\n\n[HP] display current-configuration \n\nacl number 3000\n description ACL to block traffic with invalid address\n rule 0 permit icmp source 10.0.0.0 0.255.255.255\n rule 1 deny ip source 172.16.0.0 0.15.255.255\n rule 2 deny ip source 192.168.0.0 0.0.255.255\n rule 3 deny ip source 169.254.0.0 0.0.255.255\n rule 6 deny ip source 127.0.0.0 0.255.255.255\n\nIf ACLs are not configured for controlling the flow of management information within the HP FlexFabric Switch based on information flow control policies , this is a finding.",
+  "fix": "Configure the HP FlexFabric Switch for controlling the flow of management information within the HP FlexFabric Switch based on information flow control policies. Below is an example for an ACL configuration:\n\n[HP] acl number 3000\n[HP-acl-adv-3000] description ACL to block traffic with invalid address\n[HP-acl-adv-3000] rule 0 permit icmp source 10.0.0.0 0.255.255.255\n[HP-acl-adv-3000] rule 1 deny ip source 172.16.0.0 0.15.255.255\n[HP-acl-adv-3000] rule 2 deny ip source 192.168.0.0 0.0.255.255\n[HP-acl-adv-3000]  rule 3 deny ip source 169.254.0.0 0.0.255.255\n[HP-acl-adv-3000]  rule 6 deny ip source 127.0.0.0 0.255.255.255\n\n[HP] interface Vlan-interface 192\n[HP-Vlan-interface192] packet-filter 3000 inbound",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A mechanism to detect and prevent unauthorized communication flow must be configured or provided as part of the system design. If management information flow is not enforced based on approved authorizations, the HP FlexFabric Switch may become compromised. Information flow control regulates where management information is allowed to travel within a network device. The flow of all management information must be monitored and controlled so it does not introduce any unacceptable risk to the HP FlexFabric Switch or data. \n\nApplication-specific examples of enforcement occur in systems that employ rule sets or establish configuration settings that restrict information system services or message-filtering capability based on message content (e.g., implementing key word searches or using document characteristics).\n\nApplications providing information flow control must be able to enforce approved authorizations for controlling the flow of management information within the system in accordance with applicable policy.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-ND-000014",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881",
+      "name": "HP FlexFabric Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881"
+  ]
+}

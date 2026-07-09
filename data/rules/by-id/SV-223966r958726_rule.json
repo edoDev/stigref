@@ -1,0 +1,53 @@
+{
+  "id": "SV-223966r958726_rule",
+  "full_rule_id": "SV-223966r958726_rule",
+  "rule_id": "SV-223966",
+  "rule_revision": "958726",
+  "group_id": "V-223966",
+  "group_title": "SRG-OS-000324-GPOS-00125",
+  "title": "CA-TSS Default ACID must be properly defined.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Preventing non-privileged users from executing privileged functions mitigates the risk that unauthorized individuals or processes may gain unnecessary access to information or privileges.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nTSS LIST STC\n\nIf *DEF* has action of *FAIL* this is not a finding.\n\nIf the default ACID is defined enter:\nTSS List(<defined ACID>)\n\nIf the ACID has no access to resources and no facility access and sourced to the internal reader, this is not a finding.\n\nIf any of the above is untrue, this is a finding.",
+  "fix": "Ensure the default STC ACID is defined in accordance with the following restrictions. Evaluate the impact of correcting the deficiency. Develop a plan of action and implement the changes as specified.\n\nAll STCs not defined to TSS will fail upon initiation. The following command may be used to associate all undefined STCs with a default action of FAIL:\n\nTSS ADD(STC) PROCNAME(DEFAULT) ACID(FAIL)\n\nIf a valid requirement exists to establish a default STC, the following restrictions also apply:\n\na. The ISSO will maintain the written request, justification, and authorization.\n\nb. The STC's ACID will have no other facilities permitted to it.\n\nc. The STC's ACID will have a permission of DSN(*****) ACCESS(NONE).\n\nTSS PERMIT(stc-acid) DSN(*****) ACCESS(NONE)\n\nd. The STC's ACID will not have any permission to the resources available to TSS.\n\ne. The STC's ACID will be sourced to the internal reader:\n\nADD(stc-acid) SOURCE(INTRDR)\n\nf. An entry will be made in the STC table identifying the default ACID name as follows (\"stc-acid\" site defined):\n\nTSS ADD(STC) PROCNAME(DEFAULT) ACID(stc-acid)",
+  "ccis": [
+    "CCI-002235"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Preventing non-privileged users from executing privileged functions mitigates the risk that unauthorized individuals or processes may gain unnecessary access to information or privileges.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-ES-000930",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

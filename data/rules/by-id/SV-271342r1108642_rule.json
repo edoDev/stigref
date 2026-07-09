@@ -1,0 +1,53 @@
+{
+  "id": "SV-271342r1108642_rule",
+  "full_rule_id": "SV-271342r1108642_rule",
+  "rule_id": "SV-271342",
+  "rule_revision": "1108642",
+  "group_id": "V-271342",
+  "group_title": "SRG-APP-000342-DB-000302",
+  "title": "Use of credentials and proxies must be restricted to necessary cases only.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In certain situations, to provide required functionality, a DBMS needs to execute internal logic (stored procedures, functions, triggers, etc.) and/or external code modules with elevated privileges. However, if the privileges required for execution are at a higher level than the privileges assigned to organizational users invoking the functionality applications/programs, those users are indirectly provided with greater privileges than assigned by organizations. \n \nPrivilege elevation must be used only where necessary and protected from misuse.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the server documentation to obtain a listing of accounts used for executing external processes. Execute the following to obtain a listing of accounts currently configured for use by external processes. \n \nSELECT C.name AS credential_name, C.credential_identity \nFROM sys.credentials C \nGO \n \nSELECT P.name AS proxy_name, C.name AS credential_name, C.credential_identity \nFROM sys.credentials C  \nJOIN msdb.dbo.sysproxies P ON C.credential_id = P.credential_id \nWHERE P.enabled = 1 \nGO \n \nIf any Credentials or SQL Agent Proxy accounts are returned that are not documented and authorized, this is a finding.",
+  "fix": "Remove any SQL Agent Proxy accounts and credentials that are not authorized. \n \nDROP CREDENTIAL <Credential Name> \nGO \n \nUSE [msdb] \nEXEC sp_delete_proxy @proxy_name = '<Proxy Name>' \nGO",
+  "ccis": [
+    "CCI-002233"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In certain situations, to provide required functionality, a DBMS needs to execute internal logic (stored procedures, functions, triggers, etc.) and/or external code modules with elevated privileges. However, if the privileges required for execution are at a higher level than the privileges assigned to organizational users invoking the functionality applications/programs, those users are indirectly provided with greater privileges than assigned by organizations. \n \nPrivilege elevation must be used only where necessary and protected from misuse.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLI-22-010500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b",
+      "name": "Microsoft SQL Server 2022 Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b"
+  ]
+}

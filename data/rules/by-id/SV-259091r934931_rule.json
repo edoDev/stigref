@@ -1,0 +1,53 @@
+{
+  "id": "SV-259091r934931_rule",
+  "full_rule_id": "SV-259091r934931_rule",
+  "rule_id": "SV-259091",
+  "rule_revision": "934931",
+  "group_id": "V-259091",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "The vCenter Perfcharts service shutdown port must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Tomcat by default listens on TCP port 8005 to accept shutdown requests. By connecting to this port and sending the SHUTDOWN command, all applications within Tomcat are halted. The shutdown port is not exposed to the network as it is bound to the loopback interface. Setting the port to \"-1\" in $CATALINA_BASE/conf/server.xml instructs Tomcat to not listen for the shutdown command.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following commands:\n\n# xmllint --xpath \"//Server/@port\" /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml\n# grep 'base.shutdown.port' /usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties\n\nExample results:\n\nport=\"${base.shutdown.port}\"\nbase.shutdown.port=-1\n\nIf \"port\" does not equal \"${base.shutdown.port}\", this is a finding.\n\nIf \"base.shutdown.port\" does not equal \"-1\", this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties\n\nAdd or modify the setting \"base.shutdown.port=-1\" in the \"catalina.properties\" file.\n\nNavigate to and open:\n\n/usr/lib/vmware-perfcharts/tc-instance/conf/server.xml\n\nConfigure the <Server> node with the value:\n\nport=\"${base.shutdown.port}\"\n\nRestart the service with the following command:\n\n# vmon-cli --restart perfcharts",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Tomcat by default listens on TCP port 8005 to accept shutdown requests. By connecting to this port and sending the SHUTDOWN command, all applications within Tomcat are halted. The shutdown port is not exposed to the network as it is bound to the loopback interface. Setting the port to \"-1\" in $CATALINA_BASE/conf/server.xml instructs Tomcat to not listen for the shutdown command.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPF-80-000134",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-9968729a",
+      "name": "VMware vSphere 8.0 vCenter Appliance Perfcharts Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-9968729a"
+  ]
+}

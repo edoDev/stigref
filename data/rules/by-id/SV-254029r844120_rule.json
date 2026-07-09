@@ -1,0 +1,53 @@
+{
+  "id": "SV-254029r844120_rule",
+  "full_rule_id": "SV-254029r844120_rule",
+  "rule_id": "SV-254029",
+  "rule_revision": "844120",
+  "group_id": "V-254029",
+  "group_title": "SRG-NET-000343-RTR-000002",
+  "title": "The Juniper Multicast Source Discovery Protocol (MSDP) router must be configured to authenticate all received MSDP packets.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>MSDP peering with customer network routers presents additional risks to the core, whether from a rogue or misconfigured MSDP-enabled router. MSDP password authentication is used to validate each segment sent on the TCP connection between MSDP peers, protecting the MSDP session against the threat of spoofed packets being injected into the TCP connection stream.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if received MSDP packets are authenticated.\n\n[edit protocols]\nmsdp {\n    active-source-limit {\n        maximum <1..1000000>;\n        threshold <1..1000000>;\n        log-warning <percent to log warning>;\n    }\n    <additional configuration>\n    peer <address> {\n        authentication-key \"hashed PSK\"; ## SECRET-DATA\n    }\n}\n\nIf the router does not require MSDP authentication, this is a finding.",
+  "fix": "Ensure all MSDP packets received by an MSDP router are authenticated.\n\nset protocols msdp active-source-limit maximum <1..1000000>\nset protocols msdp active-source-limit threshold <1..1000000>\nset protocols msdp active-source-limit log-warning <percent to log warning>\n<additional configuration>\nset protocols msdp peer <address> authentication-key <PSK>",
+  "ccis": [
+    "CCI-001958"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "MSDP peering with customer network routers presents additional risks to the core, whether from a rogue or misconfigured MSDP-enabled router. MSDP password authentication is used to validate each segment sent on the TCP connection between MSDP peers, protecting the MSDP session against the threat of spoofed packets being injected into the TCP connection stream.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000570",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

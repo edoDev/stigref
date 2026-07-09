@@ -1,0 +1,53 @@
+{
+  "id": "SV-273635r1110897_rule",
+  "full_rule_id": "SV-273635r1110897_rule",
+  "rule_id": "SV-273635",
+  "rule_revision": "1110897",
+  "group_id": "V-273635",
+  "group_title": "SRG-NET-000362-RTR-000118",
+  "title": "The RUCKUS ICX BGP router must be configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to determine if it is compliant with this requirement.\n\n1. Verify a route filter has been configured to reject prefixes longer than /24, or the least significant prefixes issued to the customers as shown in the example below:\nip prefix-list FILTER_PREFIX_LENGTH seq 5 permit 0.0.0.0/0 ge 8 le 24\nip prefix-list FILTER_PREFIX_LENGTH seq 10 deny 0.0.0.0/0 le 32\n\n2. Verify prefix filtering has been applied to each eBGP peer as shown in the following example:\nrouter bgp\nneighbor x.1.1.9 remote-as yy\nneighbor x.1.1.9 prefix-list FILTER_PREFIX_LENGTH in\n\nIf the router is not configured to limit the prefix size on any inbound route advertisement to /24, or the least significant prefixes issued to the customer, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the router to limit the prefix size on any route advertisement to /24 or the least significant prefixes issued to the customer.\n\n1. Configure a prefix list to reject any prefix that is longer than /24.\nICX(config)#ip prefix-list FILTER_PREFIX_LENGTH permit 0.0.0.0/0 ge 8 le 24\nICX(config)#ip prefix-list FILTER_PREFIX_LENGTH deny 0.0.0.0/0 le 32\n\n2. Apply the prefix list to all eBGP peers as shown in the example below:\nICX(config)#router bgp\nICX(config-bgp-router)#neighbor x.1.1.9 prefix-list FILTER_PREFIX_LENGTH in",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000680",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

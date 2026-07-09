@@ -1,0 +1,53 @@
+{
+  "id": "SV-221075r999684_rule",
+  "full_rule_id": "SV-221075r999684_rule",
+  "rule_id": "SV-221075",
+  "rule_revision": "999684",
+  "group_id": "V-221075",
+  "group_title": "SRG-NET-000168-RTR-000078",
+  "title": "The Cisco switch must be configured to authenticate all routing protocol messages using NIST-validated FIPS 198-1 message authentication code algorithm.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A rogue switch could send a fictitious routing update to convince a site's perimeter switch to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor switch authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack.\n\nSince MD5 is vulnerable to \"birthday\" attacks and may be compromised, routing protocol authentication must use FIPS 140-2 validated algorithms and modules to encrypt the authentication key. This requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and multicast-related protocols.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify it is using a NIST-validated FIPS 198-1 message authentication code algorithm to authenticate routing protocol messages.\n\nOSPF Example\n\nkey chain OSPF_KEY\n key 1\n key-string 7 070d2e4e4c10\n accept-lifetime 00:00:00 Oct 01 2019 01:05:00 Jan 01 2020\n send-lifetime 00:00:00 Oct 01 2019 23:59:59 Dec 31 2019\n cryptographic-algorithm hmac-sha-256\n key 2\n key-string 7 0704205e4b07\n accept-lifetime 23:55:00 Dec 31 2019 01:05:00 Apr 01 2020\n send-lifetime 00:00:00 Jan 01 2020 23:59:59 Mar 31 2020\n cryptographic-algorithm hmac-sha-256\n…\n…\n…\ninterface Ethernet2/2\n no switchport\n ip ospf authentication key-chain OSPF_KEY\n\nNote: BGP, RIP, EIGRP, IS-IS do not support any FIPS 198-1 HMAC algorithms.\n\nIf a NIST-validated FIPS 198-1 message authentication code algorithm is not being used to authenticate routing protocol messages, this is a finding.",
+  "fix": "Configure routing protocol authentication to use a NIST-validated FIPS 198-1 message authentication code algorithm as shown in the example below:\n\nSW1(config)# key chain OSPF_KEY\nSW1(config-keychain)# key 1\nSW1(config-keychain-key)# key-string xxxxxxxxxxxx\nSW1(config-keychain-key)# send-lifetime 00:00:00 Oct 1 2019 23:59:59 Dec 31 2019\nSW1(config-keychain-key)# accept-lifetime 00:00:00 Oct 1 2019 01:05:00 Jan 1 2020\nSW1(config-keychain-key)# cryptographic-algorithm hmac-sha-256\nSW1(config-keychain-key)# key 2\nSW1(config-keychain-key)# key-string kxxxxxxxxxxxxx\nSW1(config-keychain-key)# send-lifetime 00:00:00 Jan 1 2020 23:59:59 Mar 31 2020 \nSW1(config-keychain-key)# accept-lifetime 23:55:00 Dec 31 2019 01:05:00 Apr 1 2020\nSW1(config-keychain-key)# cryptographic-algorithm hmac-sha-256\nSW1(config-keychain-key)# end\nSW1(config)# int e2/2\nSW2(config-if)# ip ospf authentication key-chain OSPF_KEY",
+  "ccis": [
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A rogue switch could send a fictitious routing update to convince a site's perimeter switch to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor switch authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack.\n\nSince MD5 is vulnerable to \"birthday\" attacks and may be compromised, routing protocol authentication must use FIPS 140-2 validated algorithms and modules to encrypt the authentication key. This requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and multicast-related protocols.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651",
+      "name": "Cisco NX OS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651"
+  ]
+}

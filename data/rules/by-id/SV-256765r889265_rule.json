@@ -1,0 +1,53 @@
+{
+  "id": "SV-256765r889265_rule",
+  "full_rule_id": "SV-256765r889265_rule",
+  "rule_id": "SV-256765",
+  "rule_revision": "889265",
+  "group_id": "V-256765",
+  "group_title": "SRG-APP-000251-WSR-000157",
+  "title": "The Security Token Service must use the \"setCharacterEncodingFilter\" filter.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Invalid user input occurs when a user inserts data or characters into a hosted application's data entry field and the hosted application is unprepared to process that data. This results in unanticipated application behavior, potentially leading to an application compromise. Invalid user input is one of the primary methods employed when attempting to compromise an application.  \n \nAn attacker can also enter Unicode characters into hosted applications in an effort to break out of the document home or root home directory or to bypass security checks. VMware uses the standard Tomcat \"SetCharacterEncodingFilter\" to provide a layer of defense against character encoding attacks. Filters are Java objects that perform filtering tasks on the request to a resource (a servlet or static content), on the response from a resource, or both.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2 s/xmlns=\".*\"//g' | xmllint --xpath '/web-app/filter-mapping/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter-mapping' - \n \nExpected result: \n \n<filter-mapping> \n    <filter-name>setCharacterEncodingFilter</filter-name> \n    <url-pattern>/*</url-pattern> \n</filter-mapping> \n \nIf the output is does not match the expected result, this is a finding. \n \nAt the command prompt, run the following command: \n \n# xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2 s/xmlns=\".*\"//g' | xmllint --xpath '/web-app/filter/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter' - \n \nExpected result: \n \n   <filter> \n      <filter-name>setCharacterEncodingFilter</filter-name> \n      <filter-class> \n         org.apache.catalina.filters.SetCharacterEncodingFilter \n      </filter-class> \n      <init-param> \n         <param-name>encoding</param-name> \n         <param-value>UTF-8</param-value> \n      </init-param> \n      <init-param> \n         <param-name>ignore</param-name> \n         <param-value>true</param-value> \n      </init-param> \n      <async-supported>true</async-supported> \n   </filter> \n \nIf the output is does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open: \n \n/usr/lib/vmware-sso/vmware-sts/conf/web.xml \n \nConfigure the <web-app> node with the child nodes listed below: \n \n<filter-mapping> \n    <filter-name>setCharacterEncodingFilter</filter-name> \n    <url-pattern>/*</url-pattern> \n</filter-mapping> \n \n   <filter> \n      <filter-name>setCharacterEncodingFilter</filter-name> \n      <filter-class> \n         org.apache.catalina.filters.SetCharacterEncodingFilter \n      </filter-class> \n      <init-param> \n         <param-name>encoding</param-name> \n         <param-value>UTF-8</param-value> \n      </init-param> \n      <init-param> \n         <param-name>ignore</param-name> \n         <param-value>true</param-value> \n      </init-param> \n      <async-supported>true</async-supported> \n   </filter> \n \nRestart the service with the following command: \n \n# vmon-cli --restart sts",
+  "ccis": [
+    "CCI-001310"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Invalid user input occurs when a user inserts data or characters into a hosted application's data entry field and the hosted application is unprepared to process that data. This results in unanticipated application behavior, potentially leading to an application compromise. Invalid user input is one of the primary methods employed when attempting to compromise an application.  \n \nAn attacker can also enter Unicode characters into hosted applications in an effort to break out of the document home or root home directory or to bypass security checks. VMware uses the standard Tomcat \"SetCharacterEncodingFilter\" to provide a layer of defense against character encoding attacks. Filters are Java objects that perform filtering tasks on the request to a resource (a servlet or static content), on the response from a resource, or both.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCST-70-000021",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-sts-security-technical-implementation-guide-v1r2-ef860c6a",
+      "name": "VMware vSphere 7.0 vCenter Appliance STS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-sts-security-technical-implementation-guide-v1r2-ef860c6a"
+  ]
+}

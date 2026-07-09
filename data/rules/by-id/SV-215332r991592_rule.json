@@ -1,0 +1,53 @@
+{
+  "id": "SV-215332r991592_rule",
+  "full_rule_id": "SV-215332r991592_rule",
+  "rule_id": "SV-215332",
+  "rule_revision": "991592",
+  "group_id": "V-215332",
+  "group_title": "SRG-OS-000480-GPOS-00230",
+  "title": "The AIX user home directories must not have extended ACLs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Excessive permissions on home directories allow unauthorized access to user files.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify user home directories have no extended ACLs using command: \n\n# cat /etc/passwd | cut -f 6,6 -d \":\" | xargs -n1 aclget \n*\n* ACL_type   AIXC\n*\nattributes:\nbase permissions\n    owner(root):  rwx\n    group(system):  r-x\n    others:  r---\nextended permissions\n    disabled\n\nIf extended permissions are not disabled, this is a finding.",
+  "fix": "Remove the extended ACL from the user home directory and disable extended permissions: \n# acledit <directory>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Excessive permissions on home directories allow unauthorized access to user files.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003019",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

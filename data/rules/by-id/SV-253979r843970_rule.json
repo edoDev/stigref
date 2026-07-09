@@ -1,0 +1,53 @@
+{
+  "id": "SV-253979r843970_rule",
+  "full_rule_id": "SV-253979r843970_rule",
+  "rule_id": "SV-253979",
+  "rule_revision": "843970",
+  "group_id": "V-253979",
+  "group_title": "SRG-NET-000018-RTR-000007",
+  "title": "The Juniper router configured for Multicast Source Discovery Protocol (MSDP) must filter received source-active multicast advertisements for any undesirable multicast groups and sources.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The interoperability of BGP extensions for interdomain multicast routing and MSDP enables seamless connectivity of multicast domains between autonomous systems. MP-BGP advertises the unicast prefixes of the multicast sources used by Protocol Independent Multicast (PIM) routers to perform RPF checks and build multicast distribution trees. MSDP is a mechanism used to connect multiple PIM sparse-mode domains, allowing RPs from different domains to share information about active sources. When RPs in peering multicast domains hear about active sources, they can pass on that information to their local receivers, thereby allowing multicast data to be forwarded between the domains. Configuring an import policy to block multicast advertisements for reserved, martian, single-source multicast, and any other undesirable multicast groups, as well as any source-group (S, G) states with Bogon source addresses, would assist in avoiding unwanted multicast traffic from traversing the core.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if there is an import policy to block source-active multicast advertisements for any undesirable multicast groups, as well as any (S, G) states with undesirable source addresses. \n\nVerify that an inbound source-active filter is bound to each MSDP peer.\n\n[edit protocols msdp]\npeer <address> {\n    import source-active-filter;\n}\n\nReview the policy-statement referenced by the source-active filter to verify that undesirable multicast groups, auto-RP, single source multicast (SSM) groups, and advertisements from undesirable sources are blocked.\n\n[edit policy-options]\npolicy-statement source-active-filter {\n    term unauth-groups {\n        from {\n            route-filter 224.0.1.2/32 exact;\n            route-filter 224.0.2.2/32 exact;\n        }\n        then reject;\n    }\n    term unauth-sources {\n        from {\n            source-address-filter 10.0.0.0/8 orlonger;\n            source-address-filter 127.0.0.0/8 orlonger;\n        }\n        then reject;\n    }\n}\n\nIf the router is not configured with an import policy to block undesirable SA multicast advertisements, this is a finding.",
+  "fix": "Configure the MSDP router to implement an import policy to block multicast advertisements for undesirable multicast groups and sources.\n\nset protocols msdp peer <address> import source-active-filter\n\nset policy-options policy-statement source-active-filter term unauth-groups from route-filter 224.0.1.2/32 exact\nset policy-options policy-statement source-active-filter term unauth-groups from route-filter 224.0.2.2/32 exact\nset policy-options policy-statement source-active-filter term unauth-groups then reject\nset policy-options policy-statement source-active-filter term unauth-sources from source-address-filter 10.0.0.0/8 orlonger\nset policy-options policy-statement source-active-filter term unauth-sources from source-address-filter 127.0.0.0/8 orlonger\nset policy-options policy-statement source-active-filter term unauth-sources then reject",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The interoperability of BGP extensions for interdomain multicast routing and MSDP enables seamless connectivity of multicast domains between autonomous systems. MP-BGP advertises the unicast prefixes of the multicast sources used by Protocol Independent Multicast (PIM) routers to perform RPF checks and build multicast distribution trees. MSDP is a mechanism used to connect multiple PIM sparse-mode domains, allowing RPs from different domains to share information about active sources. When RPs in peering multicast domains hear about active sources, they can pass on that information to their local receivers, thereby allowing multicast data to be forwarded between the domains. Configuring an import policy to block multicast advertisements for reserved, martian, single-source multicast, and any other undesirable multicast groups, as well as any source-group (S, G) states with Bogon source addresses, would assist in avoiding unwanted multicast traffic from traversing the core.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000070",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

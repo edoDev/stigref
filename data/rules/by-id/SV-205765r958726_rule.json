@@ -1,0 +1,53 @@
+{
+  "id": "SV-205765r958726_rule",
+  "full_rule_id": "SV-205765r958726_rule",
+  "rule_id": "SV-205765",
+  "rule_revision": "958726",
+  "group_id": "V-205765",
+  "group_title": "SRG-OS-000324-GPOS-00125",
+  "title": "Windows Server 2019 Perform volume maintenance tasks user right must only be assigned to the Administrators group.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Inappropriate granting of user rights can provide system, administrative, and other high-level capabilities.\n\nAccounts with the \"Perform volume maintenance tasks\" user right can manage volume and disk configurations. This could be used to delete volumes, resulting in data loss or a denial of service.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the effective setting in Local Group Policy Editor.\n\nRun \"gpedit.msc\".\n\nNavigate to Local Computer Policy >> Computer Configuration >> Windows Settings >> Security Settings >> Local Policies >> User Rights Assignment.\n\nIf any accounts or groups other than the following are granted the \"Perform volume maintenance tasks\" user right, this is a finding:\n\n- Administrators\n\nFor server core installations, run the following command:\n\nSecedit /Export /Areas User_Rights /cfg c:\\path\\filename.txt\n\nReview the text file.\n\nIf any SIDs other than the following are granted the \"SeManageVolumePrivilege\" user right, this is a finding:\n\nS-1-5-32-544 (Administrators)",
+  "fix": "Configure the policy value for Computer Configuration >> Windows Settings >> Security Settings >> Local Policies >> User Rights Assignment >> \"Perform volume maintenance tasks\" to include only the following accounts or groups:\n\n- Administrators",
+  "ccis": [
+    "CCI-002235"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Inappropriate granting of user rights can provide system, administrative, and other high-level capabilities.\n\nAccounts with the \"Perform volume maintenance tasks\" user right can manage volume and disk configurations. This could be used to delete volumes, resulting in data loss or a denial of service.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN19-UR-000190",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2019-security-technical-implementation-guide-v3r8-b8ffc6b1",
+      "name": "Microsoft Windows Server 2019 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2019-security-technical-implementation-guide-v3r8-b8ffc6b1"
+  ]
+}

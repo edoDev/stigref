@@ -1,0 +1,53 @@
+{
+  "id": "SV-256009r882369_rule",
+  "full_rule_id": "SV-256009r882369_rule",
+  "rule_id": "SV-256009",
+  "rule_revision": "882369",
+  "group_id": "V-256009",
+  "group_title": "SRG-NET-000131-RTR-000035",
+  "title": "The Arista router must be configured to have all non-essential capabilities disabled.",
+  "severity": "low",
+  "description": "<VulnDiscussion>A compromised router introduces risk to the entire network infrastructure, as well as data resources that are accessible via the network. The perimeter defense has no oversight or control of attacks by malicious users within the network. Preventing network breaches from within is dependent on implementing a comprehensive defense-in-depth strategy, including securing each device connected to the network. This is accomplished by following and implementing all security guidance applicable for each node type. A fundamental step in securing each router is to enable only the capabilities required for operation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router configuration to determine if services or functions not required for operation or not related to router functionality (e.g., DNS, email client or server, FTP server, or web server) are enabled.\n\nThe Arista router commands can disable any individual features not required.\n\nrouter(config)#no ip ftp [source] interfaceno logging console\nno ip domain lookup source-interface lo0 \nno ntp\nno mlag configuration \nno dhcp server\nno dns domain\nsnmp-server community community1 ro\nvlan 1 trunk group DO_NOT_USE\nlogging trap 6\n\nThe Arista router configuration sample below demonstrates the default security configuration and available services that can be configured.\n\n!\nmanagement console\n   idle-timeout 0\n!\nmanagement ssh\n   idle-timeout 0\n!\nmanagement telnet\n   shutdown\n   idle-timeout 0\n!\naaa authentication login default local\nno aaa authentication login console\naaa authentication enable default local\nno aaa authorization console\nno aaa authorization exec default\nno aaa authorization commands all default\naaa authorization config-commands\nno aaa accounting exec console\nno aaa accounting commands all console\nno aaa accounting exec default\nno aaa accounting commands all default\n!\nno enable secret\nno aaa root\nno aaa authentication policy local allow-nopassword-remote-login\n!\nusername admin privilege 1 nopassword\n!\nno radius-server key\nradius-server timeout 5\nradius-server retransmit 3\nno radius-server deadtime\n!\nno snmp-server engineID local\nno snmp-server chassis-id\nno snmp-server contact\nno snmp-server location\nno snmp-server source-interface\nsnmp-server enable traps\ndefault snmp-server enable traps entity\ndefault snmp-server enable traps lldp\ndefault snmp-server enable traps snmp\ndefault snmp-server enable traps spanning-tree\ndefault snmp-server enable traps test\n!\nspanning-tree mode mstp\nspanning-tree max-age 20\nspanning-tree forward-time 15\nspanning-tree transmit hold-count 6\nspanning-tree max-hops 20\nno spanning-tree portfast bpduguard default\nno spanning-tree loopguard default\nspanning-tree bpduguard rate-limit default\nspanning-tree mst 0 priority 32768\n!\ncontrol-plane\n   ip access-group default-control-plane-acl in\n!\nno tacacs-server key\ntacacs-server timeout 5\n!\nno banner login\nno banner motd\n!\n \nNote that only SSH is enabled by default. All cleartext protocols (telnet, SNMP) are disabled by default.\n\nIf unnecessary services and functions are enabled on the Arista router, this is a finding.",
+  "fix": "Remove unneeded services and functions from the router. Removal is recommended because the service or function may be inadvertently enabled otherwise. However, if removal is not possible, disable the service or function.\n\nStep 1: Configure the Arista device to disable the features that are not required.\n\nno logging console\nno ip domain lookup source-interface lo0 \nno ntp\nno mlag configuration \nno dhcp server \n\nStep 2: Configure the Arista device to disable the use of VLAN 1.\n\nvlan 1 state suspend \ninterface e1\n!\n\nStep 3: Configure all unused ports to designated VLAN and suspend the VLAN to disable all unused ports.\n\n   routerport trunk native vlan 1000 \n   routerport trunk allowed vlan except 1",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A compromised router introduces risk to the entire network infrastructure, as well as data resources that are accessible via the network. The perimeter defense has no oversight or control of attacks by malicious users within the network. Preventing network breaches from within is dependent on implementing a comprehensive defense-in-depth strategy, including securing each device connected to the network. This is accomplished by following and implementing all security guidance applicable for each node type. A fundamental step in securing each router is to enable only the capabilities required for operation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

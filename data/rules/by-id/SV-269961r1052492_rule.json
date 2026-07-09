@@ -1,0 +1,53 @@
+{
+  "id": "SV-269961r1052492_rule",
+  "full_rule_id": "SV-269961r1052492_rule",
+  "rule_id": "SV-269961",
+  "rule_revision": "1052492",
+  "group_id": "V-269961",
+  "group_title": "SRG-NET-000362-L2S-000027",
+  "title": "The Dell OS10 Switch must have Dynamic Address Resolution Protocol (ARP) Inspection (DAI) enabled on all user VLANs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DAI intercepts ARP requests and verifies that each of these packets has a valid IP-to-MAC address binding before updating the local ARP cache and before forwarding the packet to the appropriate destination. Invalid ARP packets are dropped and logged. DAI determines the validity of an ARP packet based on valid IP-to-MAC address bindings stored in the DHCP snooping binding database. If the ARP packet is received on a trusted interface, the switch forwards the packet without any checks. On untrusted interfaces, the switch forwards the packet only if it is valid.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify that DAI feature is enabled on all user VLANs.\n\nVerify that each user VLAN has arp inspection enabled.\n\n!\ninterface vlan200\n no shutdown\n arp inspection\n!\ninterface vlan201\n no shutdown\n arp inspection\n\nIf ARP inspection is not enabled on all user VLANs, this is a finding.",
+  "fix": "Configure the switch to have DAI enabled on all user VLANs as shown in the example below:\n\nOS10(config)# interface range vlan 200-201\nOS10(conf-range-vl-200-201)# arp inspection",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DAI intercepts ARP requests and verifies that each of these packets has a valid IP-to-MAC address binding before updating the local ARP cache and before forwarding the packet to the appropriate destination. Invalid ARP packets are dropped and logged. DAI determines the validity of an ARP packet based on valid IP-to-MAC address bindings stored in the DHCP snooping binding database. If the ARP packet is received on a trusted interface, the switch forwards the packet without any checks. On untrusted interfaces, the switch forwards the packet only if it is valid.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-L2S-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff",
+      "name": "Dell OS10 Switch Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-216068r959010_rule",
+  "full_rule_id": "SV-216068r959010_rule",
+  "rule_id": "SV-216068",
+  "rule_revision": "959010",
+  "group_id": "V-216068",
+  "group_title": "SRG-OS-000480",
+  "title": "Run control scripts lists of preloaded libraries must contain only authorized paths.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The library preload list environment variable contains a list of libraries for the dynamic linker to load before loading the libraries required by the binary. If this list contains paths to libraries to the current working directory that have not been authorized, unintended libraries may be preloaded. This variable is formatted as a space-separated list of libraries. Paths starting with a slash (/) are absolute paths.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify run control scripts' library preload list. \n\nProcedure:\n\n# find /etc/rc* /etc/init.d -type f -print | xargs grep LD_PRELOAD\n\nThis variable is formatted as a colon-separated list of paths.\n\nIf there is an empty entry, such as a leading or trailing colon, or two consecutive colons, this is a finding. \n\nIf an entry begins with a character other than a slash (/), or has not been documented with the ISSO, this is a finding.",
+  "fix": "Edit the run control script and remove the relative path entries from the library preload variables that have not been documented with the ISSO.   \n\nEdit the run control script and remove any empty path entries from the file.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The library preload list environment variable contains a list of libraries for the dynamic linker to load before loading the libraries required by the binary. If this list contains paths to libraries to the current working directory that have not been authorized, unintended libraries may be preloaded. This variable is formatted as a space-separated list of libraries. Paths starting with a slash (/) are absolute paths.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-020340",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

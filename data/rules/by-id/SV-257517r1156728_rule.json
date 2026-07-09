@@ -1,0 +1,57 @@
+{
+  "id": "SV-257517r1156728_rule",
+  "full_rule_id": "SV-257517r1156728_rule",
+  "rule_id": "SV-257517",
+  "rule_revision": "1156728",
+  "group_id": "V-257517",
+  "group_title": "SRG-APP-000089-CTR-000150",
+  "title": "OpenShift must generate audit records for all DOD-defined auditable events within all components in the platform.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The OpenShift Platform supports three audit levels: Default, WriteRequestBodies, and AllRequestBodies. The identities of the users are logged for all three audit levels log level. The WriteRequestBodies will log the metadata and the request body for any create, update, or patch request. The AllRequestBodies will log the metadata and the request body for all read and write requests. As this generates a significant number of logs, this level is only to be used as needed. To capture sufficient data to investigate an issue, it is required to set the audit level to WriteRequestBodies.\n\nFor more detailed documentation on what is being logged, refer to https://docs.openshift.com/container-platform/4.8/security/audit-log-view.html.\n\nSatisfies: SRG-APP-000089-CTR-000150, SRG-APP-000090-CTR-000155, SRG-APP-000101-CTR-000205, SRG-APP-000510-CTR-001310, SRG-APP-000516-CTR-000790</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To determine at what level the OpenShift audit policy logging verbosity is configured, as a cluster-administrator execute the following command: \noc get apiserver.config.openshift.io/cluster -ojsonpath=&#039;{.spec.audit.profile}&#039;\n \nIf the output from the options does not return WriteRequestBodies or AllRequestBodies, this is a finding.\n\nWhere OpenShift Virtualization is enabled:\n$ oc get vm -ojson -A | jq '.items[] |\nselect(.spec.template.spec.domain.devices.disks[].errorPolicy ==\n\"ignore\")| .metadata.namespace + \"/\" + .metadata.name'\n\nIf the results show errorPolicy is set to \"ignore\", this is a finding.",
+  "fix": "As the cluster administrator, update the APIServer.config.openshift.io/cluster object to set the profile to the defined level of detail. For example, to configure the profile to WriteRequestBodies, meaning that all write requests to any API server object are logged in their entirety, execute the following:\noc patch apiserver.config.openshift.io/cluster --type=merge -p &#039;{&#039;spec&#039;: {&#039;audit&#039;: {&#039;profile&#039;: &#039;WriteRequestBodies&#039;}}}&#039;\n\nWhere OpenShift Virtualization is enabled:\n\nTo remove the errorPolicy flag on the first disk (index 0) of a given VM, use this command:\n$ oc patch vm <vm-name> --type='json' -p='[\n{\"op\": \"remove\", \"path\":\n\"/spec/template/spec/domain/devices/disks/0/errorPolicy\"},\n]'",
+  "ccis": [
+    "CCI-000135",
+    "CCI-000169",
+    "CCI-000171",
+    "CCI-000172",
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The OpenShift Platform supports three audit levels: Default, WriteRequestBodies, and AllRequestBodies. The identities of the users are logged for all three audit levels log level. The WriteRequestBodies will log the metadata and the request body for any create, update, or patch request. The AllRequestBodies will log the metadata and the request body for all read and write requests. As this generates a significant number of logs, this level is only to be used as needed. To capture sufficient data to investigate an issue, it is required to set the audit level to WriteRequestBodies.\n\nFor more detailed documentation on what is being logged, refer to https://docs.openshift.com/container-platform/4.8/security/audit-log-view.html.\n\nSatisfies: SRG-APP-000089-CTR-000150, SRG-APP-000090-CTR-000155, SRG-APP-000101-CTR-000205, SRG-APP-000510-CTR-001310, SRG-APP-000516-CTR-000790",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-OS-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2",
+      "name": "Red Hat OpenShift Container Platform 4.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2"
+  ]
+}

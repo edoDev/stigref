@@ -1,0 +1,53 @@
+{
+  "id": "SV-222999r1193098_rule",
+  "full_rule_id": "SV-222999r1193098_rule",
+  "rule_id": "SV-222999",
+  "rule_revision": "1193098",
+  "group_id": "V-222999",
+  "group_title": "SRG-APP-000504-AS-000229",
+  "title": "Changes to $CATALINA_BASE/conf/ folder must be logged.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The $CATALINA_BASE/conf folder contains configuration files for the Tomcat Catalina server. To provide forensic evidence in the event of file tampering, changes to contents in this folder must be logged. For Linux OS flavors other than Ubuntu, use the relevant OS commands. This can be done on the Ubuntu OS via the auditctl command. Using the -p wa flag set the permissions flag for a file system watch and logs file attribute and content change events into syslog.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the audit rules for the Tomcat folders. Run the following command from the Tomcat server as a privileged user:\n\nsudo auditctl -l | grep $CATALINA_HOME/conf\n\nIf the results do not include \"-w $CATALINA_BASE/conf -p wa -k tomcat\" or if there are no results, this is a finding.",
+  "fix": "From the Tomcat server as a privileged user:\n\n1. Identify the home folder for the Tomcat server:\n#grep -i -- 'catalina_home\\|catalina_base' /etc/systemd/system/tomcat.service\n\nLines similar to the following should be returned:\nEnvironment=\"CATALINA_HOME=/opt/tomcat\"\nEnvironment=\"CATALINA_BASE=/opt/tomcat\"\nwhere /opt/tomcat in the example will be referred to as <homefolderpath>\n\n2. Add rules to a rules file. These files will typically be /etc/audit/rules.d/audit.rules or stig.rules. Open the rules file <rulesfile> in a text editor.\n\n3. Alter or add the following line to the rules file, replacing <homefolderpath> with the actual path. (e.g., /opt/tomcat):\n-w <homefolderpath>/conf -p wa -k tomcat\n\n4. Load the rules, replacing <rulesfile> with the actual filename (e.g., audit.rules):\n#auditctl -R <rulesfile>\n\n5. Make the rules persistent:\n#augenrules --load",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The $CATALINA_BASE/conf folder contains configuration files for the Tomcat Catalina server. To provide forensic evidence in the event of file tampering, changes to contents in this folder must be logged. For Linux OS flavors other than Ubuntu, use the relevant OS commands. This can be done on the Ubuntu OS via the auditctl command. Using the -p wa flag set the permissions flag for a file system watch and logs file attribute and content change events into syslog.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-001591",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

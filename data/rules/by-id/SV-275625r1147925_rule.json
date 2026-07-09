@@ -1,0 +1,55 @@
+{
+  "id": "SV-275625r1147925_rule",
+  "full_rule_id": "SV-275625r1147925_rule",
+  "rule_id": "SV-275625",
+  "rule_revision": "1147925",
+  "group_id": "V-275625",
+  "group_title": "SRG-OS-000250-GPOS-00093",
+  "title": "Ubuntu OS must configure the SSH daemon to use Message Authentication Codes (MACs) employing FIPS 140-2/140-3 -approved cryptographic hashes to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without cryptographic integrity protections, information can be altered by unauthorized users without detection.   \n  \nRemote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network.   \n  \nLocal maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.   \n  \nEncrypting information for transmission protects information from unauthorized disclosure and modification. Cryptographic mechanisms implemented to protect information integrity include, for example, cryptographic hash functions, which have common application in digital signatures, checksums, and message authentication codes.\n\nSatisfies: SRG-OS-000250-GPOS-00093, SRG-OS-000393-GPOS-00173, SRG-OS-000424-GPOS-00188</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SSH server is configured to only use MACs that employ FIPS 140-2/140-3-approved ciphers by using the following command: \n \n     $ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH 'macs' \n     /etc/ssh/sshd_config:MACs hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com \n \nIf \"MACs\" does not contain only the hashes \"hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com\" in exact order, is commented out, is missing, or conflicting results are returned, this is a finding.",
+  "fix": "Configure the SSH server to only use MACs that employ FIPS 140-2/140-3-approved hashes.  \n  \nAdd or modify the following line in the \"/etc/ssh/sshd_config\" file: \n \nMACs hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com \n  \nRestart the SSH server for the changes to take effect:  \n  \n     $ sudo systemctl reload sshd.service",
+  "ccis": [
+    "CCI-001453",
+    "CCI-002421",
+    "CCI-002890"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without cryptographic integrity protections, information can be altered by unauthorized users without detection.   \n  \nRemote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network.   \n  \nLocal maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.   \n  \nEncrypting information for transmission protects information from unauthorized disclosure and modification. Cryptographic mechanisms implemented to protect information integrity include, for example, cryptographic hash functions, which have common application in digital signatures, checksums, and message authentication codes.\n\nSatisfies: SRG-OS-000250-GPOS-00093, SRG-OS-000393-GPOS-00173, SRG-OS-000424-GPOS-00188",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RIIM-OS-255055",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd",
+      "name": "Riverbed NetIM OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-271704r1091824_rule",
+  "full_rule_id": "SV-271704r1091824_rule",
+  "rule_id": "SV-271704",
+  "rule_revision": "1091824",
+  "group_id": "V-271704",
+  "group_title": "SRG-OS-000364-GPOS-00151",
+  "title": "OL 9 SSH daemon must not allow Generic Security Service Application Program Interface (GSSAPI) authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>GSSAPI authentication is used to provide additional authentication mechanisms to applications. Allowing GSSAPI authentication through SSH exposes the system's GSSAPI to remote hosts, increasing the attack surface of the system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 SSH daemon does not allow GSSAPI authentication with the following command:\n\n$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*gssapiauthentication'\nGSSAPIAuthentication no\n\nIf the value is returned as \"yes\", the returned line is commented out, no output is returned, and the use of GSSAPI authentication has not been documented with the information system security officer (ISSO), this is a finding.",
+  "fix": "Configure the SSH daemon to not allow GSSAPI authentication.\n\nAdd or uncomment the following line to \"/etc/ssh/sshd_config\" or to a file in \"/etc/ssh/sshd_config.d\" and set the value to \"no\":\n\nGSSAPIAuthentication no\n\nThe SSH service must be restarted for changes to take effect:\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-001813"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "GSSAPI authentication is used to provide additional authentication mechanisms to applications. Allowing GSSAPI authentication through SSH exposes the system's GSSAPI to remote hosts, increasing the attack surface of the system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002341",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

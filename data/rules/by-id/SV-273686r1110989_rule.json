@@ -1,0 +1,53 @@
+{
+  "id": "SV-273686r1110989_rule",
+  "full_rule_id": "SV-273686r1110989_rule",
+  "rule_id": "SV-273686",
+  "rule_revision": "1110989",
+  "group_id": "V-273686",
+  "group_title": "SRG-NET-000512-L2S-000003",
+  "title": "The RUCKUS ICX switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>STP is implemented on bridges and switches to prevent layer 2 loops when a broadcast domain spans multiple bridges and switches and when redundant links are provisioned to provide high availability in case of link failures. Convergence time can be significantly reduced using Rapid STP (802.1w) instead of STP (802.1d), resulting in improved availability. Rapid STP should be deployed by implementing either Rapid Per-VLAN-Spanning-Tree (Rapid-PVST) or Multiple Spanning-Tree Protocol (MSTP), the latter scales much better when there are many VLANs.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review configuration for VLANs that are not set for 802.1w (Rapid Spanning Tree).  \n\nvlan 10 name testing by port\n tagged ethernet 1/1/17\n untagged ethernet 1/1/18\n spanning-tree 802-1w\n!\n\nIf 802.1w is not configured on VLANs that span multiple switches with redundant links, this is a finding.",
+  "fix": "Configure Rapid STP at the access and distribution layers where VLANs span multiple switches.\n\nVLAN:\nRouter# configure terminal\nRouter (config)# vlan 10 \nRouter(config-vlan-10)#spanning-tree 802-1w \n(config-vlan-10)# spanning-tree 802-1w priority 256 \n\nOptional Per Port:\nRouter#configure terminal\nRouter(config) interface ethernet 1/1/1 \nRouter(config-if-e2500-1/1/1) spanning-tree 802-1w admin-pt2pt-mac \n<OR> \nspanning-tree 802-1w admin-edge-port",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "STP is implemented on bridges and switches to prevent layer 2 loops when a broadcast domain spans multiple bridges and switches and when redundant links are provisioned to provide high availability in case of link failures. Convergence time can be significantly reduced using Rapid STP (802.1w) instead of STP (802.1d), resulting in improved availability. Rapid STP should be deployed by implementing either Rapid Per-VLAN-Spanning-Tree (Rapid-PVST) or Multiple Spanning-Tree Protocol (MSTP), the latter scales much better when there are many VLANs.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-L2S-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-layer-2-switch-security-technical-implementation-guide-v1r1-9a6f99d6",
+      "name": "RUCKUS ICX Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-layer-2-switch-security-technical-implementation-guide-v1r1-9a6f99d6"
+  ]
+}

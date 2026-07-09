@@ -1,0 +1,53 @@
+{
+  "id": "SV-281311r1167083_rule",
+  "full_rule_id": "SV-281311r1167083_rule",
+  "rule_id": "SV-281311",
+  "rule_revision": "1167083",
+  "group_id": "V-281311",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "RHEL 10 must disable the \"kernel.core_pattern\".",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers trying to debug problems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 disables storing core dumps.\n\nCheck the status of the \"kernel.core_pattern\" kernel parameter with the following command:\n\n$ sudo sysctl kernel.core_pattern\nkernel.core_pattern = |/bin/false\n\nIf \"kernel.core_pattern\" is not set to \"|/bin/false\", or a line is not returned and the need for core dumps is not documented with the information system security officer as an operational requirement, this is a finding.",
+  "fix": "Configure RHEL 10 to disable storing core dumps. \n\nCreate a drop-in if it does not already exist:\n\n$ sudo vi /etc/sysctl.d/99-kernel_core_pattern.conf\n\nAdd the following to the file:\n\nkernel.core_pattern = |/bin/false\n\nReload settings from all system configuration files with the following command:\n\n$ sudo sysctl --system",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers trying to debug problems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-701090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

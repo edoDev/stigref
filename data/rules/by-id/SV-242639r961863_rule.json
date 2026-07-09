@@ -1,0 +1,54 @@
+{
+  "id": "SV-242639r961863_rule",
+  "full_rule_id": "SV-242639r961863_rule",
+  "rule_id": "SV-242639",
+  "rule_revision": "961863",
+  "group_id": "V-242639",
+  "group_title": "SRG-APP-000516-NDM-000344",
+  "title": "The Cisco ISE must use DoD-approved PKI rather than proprietary or self-signed device certificates.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs.\n\nThe Cisco ISE generates a key-pair and a CSR. The CSR is sent to the approved CA, who signs it and returns it as a certificate. That certificate is then installed. \n\nThe process to obtain a device PKI certificate requires the generation of a Certificate Signing Request (CSR), submission of the CSR to a CA, approval of the request by an RA, and retrieval of the issued certificate from the CA.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Choose Administration >> System >> Certificates >> System Certificates.\n\n1. The System Certificates page appears and provides information for the local certificates.\n2. Select a certificate and choose \"View\" to display the certificate details.\n\nIf the Cisco ISE does not obtain its public key certificates from an appropriate certificate policy through an approved service provider, this is a finding.",
+  "fix": "Replace the self-signed certificate with a CA-signed certificates for greater security. To obtain a CA-signed certificate:\n\nA. Generate a certificate signing request (CSR) to obtain a CA-signed certificate for the nodes in your deployment.\n1. Choose Administration >> System >> Certificates >> Certificate Signing Requests.\n2. Enter the values for generating a CSR.\nExamples:\nRSA:\nRequest security pki generate-key-pair certificate-id <cert name>> type rsa size <512 | 1024 | 2048 | 4096>>\nECDSA:\nRequest security pki generate-key-pair certificate-id <cert_name>> type ecdsa size <256 | 384>>\n3. Click \"Generate\" to generate the CSR.\n4. Click \"Export\" to open the CSR in a Notepad.\n5. Copy all the text from \"-----BEGIN CERTIFICATE REQUEST-----\" through \"-----END CERTIFICATE REQUEST-----.\"\n6. Paste the contents of the CSR into the certificate request. Generate a new key-pair from a DoD-approved certificate issuer. Sites must consult the PKI/PKI pages on the https://cyber.mil/ website for procedures for NIPRNet and SIPRNet.\n7. Download the signed certificate.\n\nB. Import the Root Certificates to the Trusted Certificate Store:\nAdministration >> System >> Certificates >> Trusted Certificates\n\nC. Bind the CA-Signed Certificate to the CSR.\n1. Choose Administration >> System >> Certificates >> Certificate Signing Requests. Check the check box next to the node for which you are binding the CSR with the CA-signed certificate.\n2.  Click \"Bind\".\n3.  Click \"Browse\" to choose the CA-signed certificate.\n4.  Specify a Friendly Name for the certificate.\n5.  Check the \"Validate Certificate Extensions\" check box if you want Cisco ISE to validate certificate extensions.\n6. Check the service for which this certificate will be used in the Usage area.\nThis information is auto populated if you have enabled the Usage option while generating the CSR. If you do not want to specify the usage at the time of binding the certificate, uncheck the Usage option. You can edit the certificate later and specify the usage.\n7. Click \"Submit\". If you have chosen to use this certificate for Cisco ISE internode communication, the application server on the Cisco ISE node is restarted.",
+  "ccis": [
+    "CCI-000366",
+    "CCI-001159"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs.\n\nThe Cisco ISE generates a key-pair and a CSR. The CSR is sent to the approved CA, who signs it and returns it as a certificate. That certificate is then installed. \n\nThe process to obtain a device PKI certificate requires the generation of a Certificate Signing Request (CSR), submission of the CSR to a CA, approval of the request by an RA, and retrieval of the issued certificate from the CA.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CSCO-NM-000340",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ise-ndm-security-technical-implementation-guide-v2r3-7badea39",
+      "name": "Cisco ISE NDM Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ise-ndm-security-technical-implementation-guide-v2r3-7badea39"
+  ]
+}

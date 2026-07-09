@@ -1,0 +1,53 @@
+{
+  "id": "SV-217043r1050852_rule",
+  "full_rule_id": "SV-217043r1050852_rule",
+  "rule_id": "SV-217043",
+  "rule_revision": "1050852",
+  "group_id": "V-217043",
+  "group_title": "SRG-NET-000364-RTR-000113",
+  "title": "The Juniper perimeter router must be configured to block all outbound management traffic.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>For in-band management, the management network must have its own subnet to enforce control and access boundaries provided by Layer 3 network nodes, such as routers and firewalls. Management traffic between the managed network elements and the management network is routed via the same links and nodes as that used for production or operational traffic. Safeguards must be implemented to ensure that the management traffic does not leak past the perimeter of the managed network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nThe perimeter router of the managed network must be configured with an outbound filter on the egress interface to block all management traffic as shown in the example below.\n\nVerify that the router has been configured with an outbound filter as shown in the example below.\n\ninterfaces {\n     description \"NIPRNet\";\n    ge-0/0/0 {\n        unit 0 {\n            family inet {\n                no-redirects;\n                filter {\n                    output OUTBOUND_FILTER;\n                }\n                address 10.1.12.2/24;\n            }\n        }\n    }\n\nVerify that the outbound filter discards or rejects management traffic as shown in the example below.\n\nfirewall {\n    family inet {\n        …\n        …\n        …\n        }\n        filter OUTBOUND_FILTER {\n            term BLOCK_TACACS {\n                from {\n                    protocol tcp;\n                    port tacacs;\n                }\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n            term BLOCK_SNMP {\n                from {\n                    protocol udp;\n                    port [ snmp snmptrap ];\n                }\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n            term BLOCK_NETFLOW {\n                from {\n                    protocol udp;\n                    port [ 2055 9995 9996 ];\n                }\n                then {\n                    syslog;\n                    discard;\n                }            \n             }\n            term ALLOW_OTHER {\n                then accept;\n            }\n        }\n    }\n\nIf management traffic is not blocked at the perimeter, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure the perimeter router of the managed network with an outbound filter on the egress interface to block all management traffic.\n\nConfigure a filter to block egress management traffic.\n\n[edit firewall family inet]\nSet filter OUTBOUND_FILTER term BLOCK_TACACS from protocol tcp port tacacs\nSet filter OUTBOUND_FILTER term BLOCK_TACACS then syslog discard\nSet filter OUTBOUND_FILTER term BLOCK_SNMP from protocol udp port [snmp snmptrap]\nSet filter OUTBOUND_FILTER term BLOCK_SNMP then syslog discard\nset filter OUTBOUND_FILTER term BLOCK_NETFLOW from protocol udp port [2055 9995 9996]\nset filter OUTBOUND_FILTER term BLOCK_NETFLOW then syslog discard \n\nConfigure the external interfaces with the outbound filter.\n\n[edit interfaces ge-0/0/0  unit 0 family inet]\nset filter output OUTBOUND_FILTER",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "For in-band management, the management network must have its own subnet to enforce control and access boundaries provided by Layer 3 network nodes, such as routers and firewalls. Management traffic between the managed network elements and the management network is routed via the same links and nodes as that used for production or operational traffic. Safeguards must be implemented to ensure that the management traffic does not leak past the perimeter of the managed network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000380",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

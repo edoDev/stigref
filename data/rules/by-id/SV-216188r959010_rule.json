@@ -1,0 +1,53 @@
+{
+  "id": "SV-216188r959010_rule",
+  "full_rule_id": "SV-216188r959010_rule",
+  "rule_id": "SV-216188",
+  "rule_revision": "959010",
+  "group_id": "V-216188",
+  "group_title": "SRG-OS-000480",
+  "title": "All home directories must be owned by the respective user assigned to it in /etc/passwd.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Since the user is accountable for files stored in the user's home directory, the user must be the owner of the directory.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The root role is required.\n\nCheck that home directories are owned by the correct user.\n\n# export IFS=\":\"; logins -uxo | while read user uid group gid gecos home rest; do result=$(find ${home} -type d -prune \\! -user $user -print 2>/dev/null); \nif [ ! -z \"${result}\" ]; then \necho \"User: ${user}\\tOwner: $(ls -ld $home | awk '{ print $3 }')\";\nfi;\ndone\n\nIf any output is produced, this is a finding.",
+  "fix": "The root role is required.\n\nCorrect the owner of any directory that does not match the password file entry for that user.\n\n# chown [user] [home directory]",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Since the user is accountable for files stored in the user's home directory, the user must be the owner of the directory.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-070090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

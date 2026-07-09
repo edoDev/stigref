@@ -1,0 +1,53 @@
+{
+  "id": "SV-242431r1043178_rule",
+  "full_rule_id": "SV-242431r1043178_rule",
+  "rule_id": "SV-242431",
+  "rule_revision": "1043178",
+  "group_id": "V-242431",
+  "group_title": "SRG-APP-000219-CTR-000550",
+  "title": "Kubernetes etcd must have a key file for secure communication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Kubernetes stores configuration and state information in a distributed key-value store called etcd. Anyone who can write to etcd can effectively control a Kubernetes cluster. Even just reading the contents of etcd could easily provide helpful hints to a would-be attacker. Using authenticity protection, the communication can be protected against man-in-the-middle attacks/session hijacking and the insertion of false information into sessions.\n\nThe communication session is protected by utilizing transport encryption protocols, such as TLS. TLS provides the Kubernetes API Server and etcd with a means to be able to authenticate sessions and encrypt traffic. \n\nTo enable encrypted communication for etcd, the parameter \"--etcd-keyfile\" must be set. This parameter gives the location of the key file used to secure etcd communication.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Change to the /etc/kubernetes/manifests directory on the Kubernetes Control Plane. Run the command:\ngrep -i etcd-keyfile * \n\nIf the setting \"--etcd-keyfile\" is not configured in the Kubernetes API Server manifest file, this is a finding.",
+  "fix": "Edit the Kubernetes API Server manifest file in the /etc/kubernetes/manifests directory on the Kubernetes Control Plane. \n\nSet the value of \"--etcd-keyfile\" to the certificate to be used for communication with etcd.",
+  "ccis": [
+    "CCI-001184"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Kubernetes stores configuration and state information in a distributed key-value store called etcd. Anyone who can write to etcd can effectively control a Kubernetes cluster. Even just reading the contents of etcd could easily provide helpful hints to a would-be attacker. Using authenticity protection, the communication can be protected against man-in-the-middle attacks/session hijacking and the insertion of false information into sessions.\n\nThe communication session is protected by utilizing transport encryption protocols, such as TLS. TLS provides the Kubernetes API Server and etcd with a means to be able to authenticate sessions and encrypt traffic. \n\nTo enable encrypted communication for etcd, the parameter \"--etcd-keyfile\" must be set. This parameter gives the location of the key file used to secure etcd communication.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-001530",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

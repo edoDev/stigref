@@ -1,0 +1,53 @@
+{
+  "id": "SV-273623r1110932_rule",
+  "full_rule_id": "SV-273623r1110932_rule",
+  "rule_id": "SV-273623",
+  "rule_revision": "1110932",
+  "group_id": "V-273623",
+  "group_title": "SRG-NET-000230-RTR-000003",
+  "title": "The RUCKUS ICX router must be configured to use keys with a duration not exceeding 180 days for authenticating routing protocol messages.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the keys used for routing protocol authentication are guessed, the malicious user could create havoc within the network by advertising incorrect routes and redirecting traffic. Some routing protocols allow the use of key chains for authentication. A key chain is a set of keys used in succession, with each having a lifetime of no more than 180 days. Changing the keys frequently reduces the risk of them eventually being guessed.\n\nKeys cannot be used during time periods for which they are not activated. If a time period occurs during which no key is activated, neighbor authentication cannot occur, and therefore routing updates will fail. Therefore, ensure that for a given key chain, key activation times overlap to avoid any period of time during which no key is activated.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the start times for each key within the configured key chains used for routing protocol authentication as shown in the example below:\n\nkeychain OSPF_KEY_CHAIN\n  key-id 1\n    password xxxxxxx\n    send-lifetime start 03-05-24 00:00:00 end 09-01-24 00:00:00\n    accept-lifetime start 03-05-24 00:00:00 end 09-01-24 00:00:00\n\ninterface ethernet 1/1/1\n  ip ospf area 0\n  ip ospf authentication keychain OSPF_KEY_CHAIN\n\nNote: Keychains must be configured to authenticate routing protocol messages as it is the only way to set an expiration.\n\nIf any key has a lifetime of more than 180 days, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nFor each authenticated routing protocol session, configure each key to have a lifetime of no more than 180 days.\n\nICX(config)# keychain mykeychain\nICX(config-keychain-mykeychain)# key 1\nICX(config-keychain-mykeychain-key-1)# authentication-algorithm hmac-sha-256\nICX(config-keychain-mykeychain-key-1)# password pw_for_mykeychain\nICX(config-keychain-mykeychain-key-1)# send-id 1\nICX(config-keychain-mykeychain-key-1)# recv-id 1\nICX(config-keychain-mykeychain-key-1)# accept-lifetime start 03-05-24 10:10:10 end 15552000\n!!! 15552000 seconds = 180 days\nICX(config-keychain-mykeychain-key-1)# send-lifetime start 03-05-24 10:10:10 end 09-01-24 10:10:10\n\nICX(config-ospf-router)#interface ethernet 1/1/1\nICX(config-vif-12)#ip ospf area 0\n\nICX(config-vif-12)#ip ospf authentication keychain mykeychain",
+  "ccis": [
+    "CCI-001184"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the keys used for routing protocol authentication are guessed, the malicious user could create havoc within the network by advertising incorrect routes and redirecting traffic. Some routing protocols allow the use of key chains for authentication. A key chain is a set of keys used in succession, with each having a lifetime of no more than 180 days. Changing the keys frequently reduces the risk of them eventually being guessed.\n\nKeys cannot be used during time periods for which they are not activated. If a time period occurs during which no key is activated, neighbor authentication cannot occur, and therefore routing updates will fail. Therefore, ensure that for a given key chain, key activation times overlap to avoid any period of time during which no key is activated.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000560",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

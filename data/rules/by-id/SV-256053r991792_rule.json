@@ -1,0 +1,53 @@
+{
+  "id": "SV-256053r991792_rule",
+  "full_rule_id": "SV-256053r991792_rule",
+  "rule_id": "SV-256053",
+  "rule_revision": "991792",
+  "group_id": "V-256053",
+  "group_title": "SRG-NET-000512-RTR-000006",
+  "title": "The PE router must be configured to have each Virtual Routing and Forwarding (VRF) instance with the appropriate Route Target (RT).",
+  "severity": "high",
+  "description": "<VulnDiscussion>The primary security model for an MPLS L3VPN as well as a VRF-lite infrastructure is traffic separation. Each interface can only be associated to one VRF, which is the fundamental framework for traffic separation. Forwarding decisions are made based on the routing table belonging to the VRF. Control of what routes are imported into or exported from a VRF is based on the RT. It is critical that traffic does not leak from one COI tenant or L3VPN to another; hence, it is imperative that the correct RT is configured for each VRF.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the correct RT is configured for each VRF.\n\nReview the design plan for MPLS/L3VPN and VRF-lite to determine what RTs have been assigned for each VRF.\n\nReview the route-target import, route-target, or route-target export statements under each configured VRF and verify the correct RTs have been defined for each VRF.\n\nTo verify the correct RTs have been defined for each VRF on a PE router, execute the command \"sh run sec router bgp\".\n\nrouter bgp 65000\n   vrf PROD\n      rd 200:200\n      route-target import vpn-ipv4 200:200\n      route-target export vpn-ipv4 200:200\n\nNote: Import and export route-maps are normally used when finer granularity is required.\n\nIf VRFs are configured with the wrong RT, this is a finding.",
+  "fix": "Configure all J-PE Arista routers to have the correct VRF defined with the appropriate RT.\n\nConfigure the route-target's for import and export.\n\nPE11(config)#router bgp 65000\nPE11(config-router-bgp)#vrf PROD\nPE11(config-router-bgp-vrf-PROD)#rd 200:200\nPE11(config-router-bgp-vrf-PROD)#route-target import vpn-ipv4 200:200\nPE11(config-router-bgp-vrf-PROD)#route-target export vpn-ipv4 200:200",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The primary security model for an MPLS L3VPN as well as a VRF-lite infrastructure is traffic separation. Each interface can only be associated to one VRF, which is the fundamental framework for traffic separation. Forwarding decisions are made based on the routing table belonging to the VRF. Control of what routes are imported into or exported from a VRF is based on the RT. It is critical that traffic does not leak from one COI tenant or L3VPN to another; hence, it is imperative that the correct RT is configured for each VRF.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000740",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

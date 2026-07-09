@@ -1,0 +1,53 @@
+{
+  "id": "SV-272094r1168411_rule",
+  "full_rule_id": "SV-272094r1168411_rule",
+  "rule_id": "SV-272094",
+  "rule_revision": "1168411",
+  "group_id": "V-272094",
+  "group_title": "SRG-NET-000362-RTR-000124",
+  "title": "Cisco ACI must be configured so the BGP neighbor is directly connected and will not connect a BGP session to a directly connected neighbor device's loopback address.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Generalized Time To Live Security Mechanism (GTSM) is designed to protect a router's IP-based control plane from denial-of-service (DoS) attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all Exterior Border Gateway Protocol speaking routers. \n\nACI mitigates this risk in a different way, as currently there is no option for TTL-security or GTSM support; however, ACI, by default, is setup to validate that the BGP neighbor is directly connected and will not even connect a BGP session to a directly connected neighbor devices loopback address. </VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the BGP configuration to verify that TTL security has been configured to the default settings.\n\nNavigate to Tenants >> {{your_Tenant}} >> Networking >> L3Out >> {{your_l3out}} >> Logical Node Profiles >> {{your_Logical_node_Profile}} >> Logical Interface Profiles >> {{your_logical_interface_profile}} >> BGP peer x.x.x.x >> Policy.\n\nVerify the following in the policy:\n\nDisable Connected Check is unmarked\nEBGP Multihop TTL = 1\n\nIf the Cisco ACI is not configured to use GTSM for all Exterior BGP peering sessions, this is a finding.",
+  "fix": "If ACI is determined to be configured differently than the default settings, reconfigure to default settings by performing the actions on the BGP connectivity profile (path below). \n\nNavigate to Tenants >> {{your_Tenant}} >> Networking >> L3Out >> {{your_l3out}} >> Logical Node Profiles >> {{your_Logical_node_Profile}} >> Logical Interface Profiles >> {{your_logical_interface_profile}} >> BGP peer x.x.x.x >> Policy.\n\nReset the following in the policy:\n\nDisable Connected Check is unmarked\nEBGP Multihop TTL = 1",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Generalized Time To Live Security Mechanism (GTSM) is designed to protect a router's IP-based control plane from denial-of-service (DoS) attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all Exterior Border Gateway Protocol speaking routers. \n\nACI mitigates this risk in a different way, as currently there is no option for TTL-security or GTSM support; however, ACI, by default, is setup to validate that the BGP neighbor is directly connected and will not even connect a BGP session to a directly connected neighbor devices loopback address.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CACI-RT-000034",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251",
+      "name": "Cisco ACI Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251"
+  ]
+}

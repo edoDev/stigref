@@ -1,0 +1,53 @@
+{
+  "id": "SV-256033r882441_rule",
+  "full_rule_id": "SV-256033r882441_rule",
+  "rule_id": "SV-256033",
+  "rule_revision": "882441",
+  "group_id": "V-256033",
+  "group_title": "SRG-NET-000362-RTR-000114",
+  "title": "The Arista router must be configured to have Internet Control Message Protocol (ICMP) mask replies disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Mask Reply ICMP messages are commonly used by attackers for network mapping and diagnosis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista device configuration to determine if controls have been defined to ensure the router does not send ICMP Mask Reply messages out to any external interfaces.\n\nEOS by default does not respond to ICMP Type 17 or 18. \n\nStep 1: To verify the ACL is configured to determine the router does not send ICMP Mask Reply messages out to any external interfaces, execute the command \"sh ip access-list\".\n\nip access-group DENY_ICMP_MASK_REPLY\n deny icmp any any mask-reply\n permit ip any any\n\nStep 2: To verify the ACL is applied outbound on interfaces, execute the command \"sh run int Eth YY\".\n\ninterface Ethernet 2\n ip access-group DENY_ICMP_MASK_REPLY out\n\nIf ICMP Mask Reply messages are enabled on any external interfaces, this is a finding.",
+  "fix": "Step 1: Disable ICMP mask replies on all external interfaces.\n\nip access-group DENY_ICMP_MASK_REPLY\n deny icmp any any mask-reply\n permit ip any any\n\nStep 2: Apply the ACL outbound on interfaces.\n\ninterface Ethernet 2\n ip access-group DENY_ICMP_MASK_REPLY out",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Mask Reply ICMP messages are commonly used by attackers for network mapping and diagnosis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000540",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

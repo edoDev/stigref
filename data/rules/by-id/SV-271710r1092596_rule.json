@@ -1,0 +1,55 @@
+{
+  "id": "SV-271710r1092596_rule",
+  "full_rule_id": "SV-271710r1092596_rule",
+  "rule_id": "SV-271710",
+  "rule_revision": "1092596",
+  "group_id": "V-271710",
+  "group_title": "SRG-OS-000163-GPOS-00072",
+  "title": "OL 9 must be configured so that all network connections associated with SSH traffic are terminated after 10 minutes of becoming unresponsive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Terminating an unresponsive SSH session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle SSH session will also free up resources committed by the managed network element.\n\nTerminating network connections associated with communications sessions includes, for example, deallocating associated TCP/IP address/port pairs at the operating system level and deallocating networking assignments at the application level if multiple application sessions are using a single operating system-level network connection. This does not mean the operating system terminates all sessions or network access; it only ends the unresponsive session and releases the resources associated with that session.\n\nOL 9 uses /etc/ssh/sshd_config for configurations of OpenSSH. Within the sshd_config, the product of the values of \"ClientAliveInterval\" and \"ClientAliveCountMax\" are used to establish the inactivity threshold. The \"ClientAliveInterval\" is a timeout interval in seconds, after which if no data has been received from the client, SSHD will send a message through the encrypted channel to request a response from the client. The \"ClientAliveCountMax\" is the number of client alive messages that may be sent without SSHD receiving any messages back from the client. If this threshold is met, SSHD will disconnect the client. For more information on these settings and others, refer to the sshd_config man pages.\n\nSatisfies: SRG-OS-000163-GPOS-00072, SRG-OS-000279-GPOS-00109, SRG-OS-000395-GPOS-00175</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 is configured so that all network connections associated with SSH traffic are terminated after 10 minutes of becoming unresponsive.\n\nVerify that the \"ClientAliveInterval\" variable is set to a value of \"600\" or less by performing the following command:\n\n$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*clientaliveinterval'\nClientAliveInterval 600\n\nIf \"ClientAliveInterval\" does not exist, does not have a value of \"600\" or less in \"/etc/ssh/sshd_config\", or is commented out, this is a finding.",
+  "fix": "Note: This setting must be applied in conjunction with ClientAliveCountMax\" setting to function correctly.\n\nConfigure the SSH server to terminate a user session automatically after the SSH client has been unresponsive for 10 minutes.\n\nModify or append the following lines in the \"/etc/ssh/sshd_config\" or in a file in \"/etc/ssh/sshd_config.d\":\n\nClientAliveInterval 600\n\nIn order for the changes to take effect, the SSH daemon must be restarted.\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-001133",
+    "CCI-002361",
+    "CCI-002891"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an unresponsive SSH session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle SSH session will also free up resources committed by the managed network element.\n\nTerminating network connections associated with communications sessions includes, for example, deallocating associated TCP/IP address/port pairs at the operating system level and deallocating networking assignments at the application level if multiple application sessions are using a single operating system-level network connection. This does not mean the operating system terminates all sessions or network access; it only ends the unresponsive session and releases the resources associated with that session.\n\nOL 9 uses /etc/ssh/sshd_config for configurations of OpenSSH. Within the sshd_config, the product of the values of \"ClientAliveInterval\" and \"ClientAliveCountMax\" are used to establish the inactivity threshold. The \"ClientAliveInterval\" is a timeout interval in seconds, after which if no data has been received from the client, SSHD will send a message through the encrypted channel to request a response from the client. The \"ClientAliveCountMax\" is the number of client alive messages that may be sent without SSHD receiving any messages back from the client. If this threshold is met, SSHD will disconnect the client. For more information on these settings and others, refer to the sshd_config man pages.\n\nSatisfies: SRG-OS-000163-GPOS-00072, SRG-OS-000279-GPOS-00109, SRG-OS-000395-GPOS-00175",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002347",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

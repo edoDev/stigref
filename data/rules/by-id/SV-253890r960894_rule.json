@@ -1,0 +1,53 @@
+{
+  "id": "SV-253890r960894_rule",
+  "full_rule_id": "SV-253890r960894_rule",
+  "rule_id": "SV-253890",
+  "rule_revision": "960894",
+  "group_id": "V-253890",
+  "group_title": "SRG-APP-000096-NDM-000226",
+  "title": "The Juniper EX switch must be configured to produce audit records containing information to establish when (date and time) the events occurred.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is essential for security personnel to know what is being done, what was attempted, where it was done, when it was done, and by whom it was done in order to compile an accurate risk assessment. Logging the date and time of each detected event provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured network device. In order to establish and correlate the series of events leading up to an outage or attack, it is imperative the date and time are recorded in all log records.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the network device is configured to produce audit records containing information to establish when (date and time) the events occurred. \n\nJunos standard event log messages are configurable for time format, inclusion of logging facility and severity levels, and format. Setting \"structured-data\" automatically includes \"explicit-priority\" and \"time-format year millisecond\". Verify logging is enabled.\n\n[edit system]\nsyslog {\n    host <syslog IPv4 or IPv6 address> {\n        any info;\n        structured-data; <<< Includes 'explicit-priority' and 'time-format'\n    }\n    host <syslog IPv4 or IPv6 address> {\n        any info;\n        explicit-priority; <<< Includes logging facility and severity in standard format\n    }\n    file <file name> {\n        any info; <<< Uses only standard format\n    }\n    time-format year; <<< Applied only to standard format\n}\nNote: In the example, events sent to the first external syslog server include the year and time is expressed in milliseconds. The second syslog server and the file both include the year, but time is expressed in seconds.\n\nIf the network device does not produce audit records containing information to establish when the events occurred, this is a finding.",
+  "fix": "Configure the network device to produce audit records containing information to establish when (date and time) the events occurred.\n\nset system syslog host <syslog IPv4 or IPv6 address> any info\nset system syslog host <syslog IPv4 or IPv6 address> structured-data <<< Includes the 'explicit-priority' and 'time-format year millisecond' directives\nset system syslog file <file name> any info\nset system syslog file <file name> structured-data <<< Includes the 'explicit-priority' and 'time-format year millisecond' directives\n-or-\nset system syslog host <syslog IPv4 or IPv6 address> any info\nset system syslog host <syslog IPv4 or IPv6 address> explicit-priority <<< Only if log level and severity are required\nset system syslog file <file name> any info\nset system syslog file <file name> explicit-priority <<< Only if log level and severity are required\nset system syslog time-format year",
+  "ccis": [
+    "CCI-000131"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is essential for security personnel to know what is being done, what was attempted, where it was done, when it was done, and by whom it was done in order to compile an accurate risk assessment. Logging the date and time of each detected event provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured network device. In order to establish and correlate the series of events leading up to an outage or attack, it is imperative the date and time are recorded in all log records.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-NM-000130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685",
+      "name": "Juniper EX Series Switches Network Device Management Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685"
+  ]
+}

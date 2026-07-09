@@ -1,0 +1,53 @@
+{
+  "id": "SV-223716r958480_rule",
+  "full_rule_id": "SV-223716r958480_rule",
+  "rule_id": "SV-223716",
+  "rule_revision": "958480",
+  "group_id": "V-223716",
+  "group_title": "SRG-OS-000096-GPOS-00050",
+  "title": "IBM z/OS must properly protect MCS console userid(s).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In order to prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports/protocols on information systems.\n\nOperating systems are capable of providing a wide variety of functions and services. Some of the functions and services provided by default may not be necessary to support essential organizational operations. Additionally, it is sometimes convenient to provide multiple services from a single component (e.g., VPN and IPS); however, doing so increases risk over limiting the services provided by any one component.\n\nTo support the requirements and principles of least functionality, the operating system must support the organizational requirements, providing only essential capabilities and limiting the use of ports, protocols, and/or services to only those required, authorized, and approved to conduct official business or to address authorized quality of life issues.\n\nMCS consoles can be used to issue operator commands. Failure to properly control access to MCS consoles could result in unauthorized personnel issuing sensitive operator commands. This exposure may threaten the integrity and availability of the operating system environment, and compromise the confidentiality of customer data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to IEASYS00 to determine correct CONSOLxx member. \n\nExamine the CONSOLxx member.\n\nVerify that the MCS console userids are properly restricted. \n\nIf the following guidance is true, this is not a finding.\n\nEach console defined in the currently active CONSOLxx parmlib member in EXAM.RPT(PARMLIB) is associated with a valid RACF userid.\n\nEach console userid has no special privileges and/or attributes (e.g., SPECIAL, OPERATIONS, etc.).\nEach console userid has no accesses to interactive on-line facilities (e.g., TSO, CICS, etc.; excluding VTAM SMCS consoles).\n\nEach console userid will be restricted from accessing all data sets and resources except MVS.MCSOPER.consolename in the OPERCMDS resource class and console name in the CONSOLE resource class.\n\nEach console userid has the RACF default group that is an appropriate console group profile.\n\n\nNOTE:\tIf LOGON(AUTO) is specified in the currently active CONSOLxx parmlib member, additional access may be required. Permissions for the console userids and/or console group may be given with access READ to MVS.CONTROL, MVS.DISPLAY, MVS.MONITOR, and MVS.STOPMN OPERCMDS resource.\n\nNOTE:\tExecute the JCL in CNTL(IRRUT100) using the RACF console userids as SYSIN input. This report lists all occurrences of these userids within the RACF database, including data set and resource access lists.",
+  "fix": "Define all consoles identified in the currently active CONSOLxx parmlib member in EXAM.RPT(PARMLIB) to be defined to RACF.\n\nReview the MCS console resources defined to z/OS and RACF, and ensure they conform to those outlined below.\n\nEach console defined in the currently active CONSOLxx parmlib member in EXAM.RPT(PARMLIB) is associated with a valid RACF userid.\n\nEach console userid has no special privileges and/or attributes (e.g., SPECIAL, OPERATIONS, etc.).\n\nEach console userid has no accesses to interactive on-line facilities (e.g., TSO, CICS, etc.; excluding VTAM SMCS consoles).\n\nEach console userid will be restricted from accessing all data sets and resources except MVS.MCSOPER.consolename in the OPERCMDS resource class and consolename in the CONSOLE resource class.\n\nEach console userid has the RACF default group that is an appropriate console group profile.\n\nNOTE: If LOGON(AUTO) is specified in the currently active CONSOLxx parmlib member, additional access may be required. Permissions for the console userids and/or console group may be given with access READ to MVS.CONTROL, MVS.DISPLAY, MVS.MONITOR, and MVS.STOPMN OPERCMDS resource.\n\nNOTE: Execute the JCL in CNTL(IRRUT100) using the RACF console userids as SYSIN input. This report lists all occurrences of these userids within the RACF database, including data set and resource access lists.\n\nExamples: \nAG consautolog SUPGROUP(<syspsmpl>) OWNER(<syspsmpl>) -\nDATA(' group for console userids for autolog processing ')\n\nAG consnoautolog SUPGROUP(<syspsmpl>) OWNER(<syspsmpl>) -\nDATA('group for console userids for no autolog processing')\n\nAU consname NAME('CONSOLE USERID FOR consname') NOPASSWORD NOOIDCARD -\nDFLTGRP(consautolog) OWNER(consautolog) -\nDATA('ADDED TO SUPPORT THE CHANGE TO LOGON(AUTO) IN CONSOLXX')\n\nPERMIT MVS.CONTROL.** CL(OPERCMDS) ID(consautolog) ACCESS(READ)\nPERMIT MVS.DISPLAY.** CL(OPERCMDS) ID(consautolog) ACCESS(READ)\nPERMIT MVS.MONITOR.** CL(OPERCMDS) ID(consautolog) ACCESS(READ)\nPERMIT MVS.STOPMN.** CL(OPERCMDS) ID(consautolog) ACCESS(READ)\n\nPERMIT consname CL(CONSOLE) ID(consname)",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In order to prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports/protocols on information systems.\n\nOperating systems are capable of providing a wide variety of functions and services. Some of the functions and services provided by default may not be necessary to support essential organizational operations. Additionally, it is sometimes convenient to provide multiple services from a single component (e.g., VPN and IPS); however, doing so increases risk over limiting the services provided by any one component.\n\nTo support the requirements and principles of least functionality, the operating system must support the organizational requirements, providing only essential capabilities and limiting the use of ports, protocols, and/or services to only those required, authorized, and approved to conduct official business or to address authorized quality of life issues.\n\nMCS consoles can be used to issue operator commands. Failure to properly control access to MCS consoles could result in unauthorized personnel issuing sensitive operator commands. This exposure may threaten the integrity and availability of the operating system environment, and compromise the confidentiality of customer data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000690",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-279610r1192571_rule",
+  "full_rule_id": "SV-279610r1192571_rule",
+  "rule_id": "SV-279610",
+  "rule_revision": "1192571",
+  "group_id": "V-279610",
+  "group_title": "SRG-OS-000076-GPOS-00044",
+  "title": "Operating systems must enforce a 60-day maximum password lifetime restriction.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any password, no matter how complex, can eventually be cracked; therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify Nutanix AOS is configured to enforce a 60-day maximum password lifetime using the following command.\n\n$ sudo grep -i pass_max_days /etc/login.defs\nPASS_MAX_DAYS 60\n\nIf the \"PASS_MAX_DAYS\" parameter value is not 60 or less, or is commented out, this is a finding.\n\n2. Run the following command. \n\n$ sudo awk -F: '$5 > 60 {print $1 \" \" $5}' /etc/shadow\n\nIf any results are returned that are not associated with a system account, this is a finding.",
+  "fix": "Configure Nutanix OS to use complex password.\n\n1. For AOS, enter the following command.\n\n$ sudo salt-call state.sls security/CVM/pamCVM.sls\n\n2. For Prism Central, enter the following command.\n\n$ sudo salt-call state.sls security/PCVM/pamPCVM.sls\n\n3. For Files, enter the following command.\n\n$ sudo salt-call state.sls security/AFS/pamAFS.sls\n\n4. For AHV OS CVM, enter the following command.\n\n$ ncli cluster edit-hypervisor-security-params enable-high-strength-password=true",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any password, no matter how complex, can eventually be cracked; therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000167",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

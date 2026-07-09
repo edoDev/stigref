@@ -1,0 +1,53 @@
+{
+  "id": "SV-223822r1137691_rule",
+  "full_rule_id": "SV-223822r1137691_rule",
+  "rule_id": "SV-223822",
+  "rule_revision": "1137691",
+  "group_id": "V-223822",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS permission bits and user audit bits for HFS objects that are part of the Base TCP/IP component must be properly configured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>HFS directories and files of the Base TCP/IP component provide the configuration, operational, and executable properties of IBMs TCP/IP system product. Failure to properly secure these objects may lead to unauthorized access resulting in the compromise of the integrity and availability of the operating system environment, ACP, and customer data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nomvs\n\nAt the input line enter:\ncd /etc\nenter\nls -alW\n\nIf the following file permission and user Audit Bits are true, this is not a finding.\n\n/etc/hosts 0744 faf\n/etc/protocol 0744 faf\n/etc/resolv.conf 0744 faf\n/etc/services 0740 faf\n\ncd /usr\nls -alW\n\nIf the following file permission and user Audit Bits are true, this is not a finding.\n\n/usr/lpp/tcpip/sbin 0755 faf\n/usr/lpp/tcpip/bin 0755 faf\n\nNotes: Some of the files listed above are not used in every configuration. The absence of a file is not considered a finding.\n\nThe following represents a hierarchy for permission bits from least restrictive to most restrictive:\n\n7 rwx (least restrictive)\n6 rw-\n3 -wx\n2 -w-\n5 r-x\n4 r--\n1 --x\n0 --- (most restrictive)\n\nThe possible audit bits settings are as follows:\n\nf log for failed access attempts\na log for failed and successful access\n- no auditing",
+  "fix": "With the assistance of a systems programmer with UID(0) and/or SUPERUSER access, configure the UNIX permission bits and user audit bits on the HFS directories and files for the FTP Server to conform to the specifications in the table below:\n\nBASE TCP/IP HFS Object Security Settings\nFile Permission Bits User Audit Bits\n/etc/hosts 0744 faf\n/etc/protocol 0744 faf\n/etc/resolv.conf 0744 faf\n/etc/services 0740 faf\n/usr/lpp/tcpip/sbin 0755 faf\n/usr/lpp/tcpip/bin 0755 faf\n\nSome of the files listed above (e.g., /etc/resolv.conf) are not used in every configuration. While the absence of a file is generally not a security issue, the existence of a file that has not been properly secured can often be an issue. Therefore, all directories and files that do exist will have the specified permission and audit bit settings.\n\nThe following represents a hierarchy for permission bits from least restrictive to most restrictive:\n\n7 rwx (least restrictive)\n6 rw-\n3 -wx\n2 -w-\n5 r-x\n4 r--\n1 --x\n0 --- (most restrictive)\n\nThe possible audit bits settings are as follows:\n\nf log for failed access attempts\na log for failed and successful access\n- no auditing\n\nThe following commands can be used (from a user account with an effective UID(0)) to update the permission bits and audit bits:\n\nchmod 0744 /etc/hosts\nchaudit w=sf,rx+f /etc/hosts\nchmod 0744 /etc/protocol\nchaudit w=sf,rx+f /etc/protocol\nchmod 0744 /etc/resolv.conf\nchaudit w=sf,rx+f /etc/resolv.conf\nchmod 0740 /etc/services\nchaudit w=sf,rx+f /etc/services\nchmod 0755 /usr/lpp/tcpip/bin\nchaudit w=sf,rx+f /usr/lpp/tcpip/bin\nchmod 0755 /usr/lpp/tcpip/sbin\nchaudit w=sf,rx+f /usr/lpp/tcpip/sbin",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "HFS directories and files of the Base TCP/IP component provide the configuration, operational, and executable properties of IBMs TCP/IP system product. Failure to properly secure these objects may lead to unauthorized access resulting in the compromise of the integrity and availability of the operating system environment, ACP, and customer data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-TC-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

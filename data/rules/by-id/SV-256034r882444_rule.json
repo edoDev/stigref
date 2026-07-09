@@ -1,0 +1,53 @@
+{
+  "id": "SV-256034r882444_rule",
+  "full_rule_id": "SV-256034r882444_rule",
+  "rule_id": "SV-256034",
+  "rule_revision": "882444",
+  "group_id": "V-256034",
+  "group_title": "SRG-NET-000362-RTR-000115",
+  "title": "The Arista router must be configured to have Internet Control Message Protocol (ICMP) redirects disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Redirect ICMP messages are commonly used by attackers for network mapping and diagnosis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the device configuration to determine if controls have been defined to ensure the router does not send ICMP Redirect messages out to any external interfaces.\n\nStep 1: To verify the ACL is configured to determine the router does not send ICMP Redirect messages out to any external interfaces, execute the command \"sh ip access-list\".\n\nip access-group DENY_REDIRECT\n deny icmp any any redirect\n permit ip any any\n\nStep 2: To verify the ACL is applied outbound on interface, execute the command \"sh run int Eth YY\".\n\ninterface Ethernet 2\n ip access-group DENY_REDIRECT out\n\nIf ICMP Redirect messages are enabled on any external interfaces, this is a finding.",
+  "fix": "Step 1: Disable ICMP redirects on all external interfaces.\n\nip access-group DENY_REDIRECT\n deny icmp any any redirect\n permit ip any any\n\nStep 2: Apply the ACL outbound on interfaces.\n\ninterface Ethernet 2\ndescription EXTERNAL INTERFACE\n ip access-group DENY_REDIRECT in",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Redirect ICMP messages are commonly used by attackers for network mapping and diagnosis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000550",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

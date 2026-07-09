@@ -1,0 +1,53 @@
+{
+  "id": "SV-239982r1005432_rule",
+  "full_rule_id": "SV-239982r1005432_rule",
+  "rule_id": "SV-239982",
+  "rule_revision": "1005432",
+  "group_id": "V-239982",
+  "group_title": "SRG-NET-000369-VPN-001620",
+  "title": "The Cisco ASA VPN remote access server must be configured to disable split-tunneling for remote clients.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Split tunneling would in effect allow unauthorized external connections, making the system more vulnerable to attack and to exfiltration of organizational information.\n\nA VPN hardware or software client with split tunneling enabled provides an unsecured backdoor to the enclave from the internet. With split tunneling enabled, a remote client has access to the internet while at the same time has established a secured path to the enclave via an IPsec tunnel. A remote client connected to the internet that has been compromised by an attacker in the internet provides an attack base to the enclave’s private network via the IPsec tunnel. Hence, it is imperative that the VPN gateway enforces a no split-tunneling policy to all remote clients.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the ASA disables split-tunneling for remote clients VPNs as shown in the example below.\n\ngroup-policy ANY_CONNECT_GROUP attributes\n …\n …\n … \n split-tunnel-policy tunnelall\n\nIf the ASA does not disable split-tunneling for remote clients VPNs, this is a finding.\n\nNote: Certain cloud products require direct connectivity to operate correctly. These items may be excluded from the split tunneling restriction if documented and approved.\n\nIf split-tunneling for remote client VPNs is enabled by the above exception, verify only authorized external destinations are excluded from tunneling as shown in the example below:\n\nWebvpn\nanyconnect-custom-attr dynamic-split-exclude-domains description DoD IL5 Authorized Destinations\nanyconnect-custom-data dynamic-split-exclude-domains DoD-IL5 dod.teams.microsoft.us,azureedge.net,core.usgovcloudapi.net,streaming.media.usgovcloudapi.net,wvd.azure.us,cdn.office365.us\n\n anyconnect-custom dynamic-split-exclude-domains value DoD-IL5\n\n If any unauthorized exempted connections exist, this is a finding.",
+  "fix": "Configure the ASA to disable split-tunneling for remote clients VPNs as shown in the example below.\n\nASA2(config)# group-policy ANY_CONNECT_GROUP attributes\nASA2(config-group-policy)# split-tunnel-policy tunnelall\nASA2(config-group-policy)# end",
+  "ccis": [
+    "CCI-002397"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Split tunneling would in effect allow unauthorized external connections, making the system more vulnerable to attack and to exfiltration of organizational information.\n\nA VPN hardware or software client with split tunneling enabled provides an unsecured backdoor to the enclave from the internet. With split tunneling enabled, a remote client has access to the internet while at the same time has established a secured path to the enclave via an IPsec tunnel. A remote client connected to the internet that has been compromised by an attacker in the internet provides an attack base to the enclave’s private network via the IPsec tunnel. Hence, it is imperative that the VPN gateway enforces a no split-tunneling policy to all remote clients.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000700",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

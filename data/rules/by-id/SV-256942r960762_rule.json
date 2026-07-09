@@ -1,0 +1,53 @@
+{
+  "id": "SV-256942r960762_rule",
+  "full_rule_id": "SV-256942r960762_rule",
+  "rule_id": "SV-256942",
+  "rule_revision": "960762",
+  "group_id": "V-256942",
+  "group_title": "SRG-APP-000015-WSR-000014",
+  "title": "The Automation Controller NGINX web server must use cryptography on all remote connections.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Nondisplayed data on a web page may expose information that could put the organization at risk and negatively affect data integrity.\n\nAutomation Controller's web server must be configured such that all connections, regardless of their origin, between the server and the user are encrypted using cryptography.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As any user, execute the following command, substituting \"<controller_fqdn>\" for the hostname of the Automation Controller:\n\ncurl -s -w '%{redirect_url}\\n' -o /dev/null http://<controller_fqdn>/api/v2/ping/  | grep '^https' >/dev/null || echo FAILED\n\nIf \"FAILED\" is displayed, this is a finding.",
+  "fix": "As a System Administrator, locate the inventory file used to install Ansible Automation Platform (usually in the installer directory). Edit this file and ensure the \"nginx_disable_https\" variable is absent or is set to \"false\".\n\nRun the setup.sh command in the installer directory to reconfigure the controller to use the new setting:\n\nsudo ./setup.sh",
+  "ccis": [
+    "CCI-001453"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Nondisplayed data on a web page may expose information that could put the organization at risk and negatively affect data integrity.\n\nAutomation Controller's web server must be configured such that all connections, regardless of their origin, between the server and the user are encrypted using cryptography.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APWS-AT-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65",
+      "name": "Red Hat Ansible Automation Controller Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-273643r1111037_rule",
+  "full_rule_id": "SV-273643r1111037_rule",
+  "rule_id": "SV-273643",
+  "rule_revision": "1111037",
+  "group_id": "V-273643",
+  "group_title": "SRG-NET-000364-RTR-000110",
+  "title": "The RUCKUS ICX perimeter router must be configured to block inbound packets with source Bogon IP address prefixes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Bogons include IP packets on the public internet that contain addresses that are not in any range allocated or delegated by the Internet Assigned Numbers Authority (IANA) or a delegated regional internet registry (RIR) and allowed for public Internet use. Bogons also include multicast, IETF reserved, and special purpose address space as defined in RFC 6890.\n\nSecurity of the internet's routing system relies on the ability to authenticate an assertion of unique control of an address block. Measures to authenticate such assertions rely on the validation the address block forms as part of an existing allocated address block and must be a trustable and unique reference in the IANA address registries. The intended use of a Bogon address would only be for the purpose of address spoofing in denial-of-service attacks. Hence, it is imperative that IP packets with a source Bogon address are blocked at the network's perimeter.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to verify that an ingress Access Control List (ACL) applied to all external interfaces is blocking packets with Bogon source addresses.\n\n1. Verify an ACL has been configured containing the current Bogon prefixes as shown in the example below:\nip access-list extended FILTER_PERIMETER\n sequence 10 deny ip 0.0.0.0 0.255.255.255 any log\n sequence 20 deny ip 10.0.0.0 0.255.255.255 any log\n sequence 30 deny ip 100.64.0.0 0.63.255.255 any log\n sequence 40 deny ip 127.0.0.0 0.255.255.255 any log\n sequence 50 deny ip 169.254.0.0 0.0.255.255 any log\n sequence 60 deny ip 172.16.0.0 0.15.255.255 any log\n sequence 70 deny ip 192.0.0.0 0.0.0.255 any log\n sequence 80 deny ip 192.0.2.0 0.0.0.255 any log\n sequence 90 deny ip 192.168.0.0 0.0.255.255 any log\n sequence 100 deny ip 192.18.0.0 0.1.255.255 any log\n sequence 110 deny ip 192.51.100.0 0.0.0.255 any log\n sequence 120 deny ip 203.0.113.0 0.0.0.255 any log\n sequence 130 deny ip 224.0.0.0 31.255.255.255 any log\n sequence 140 permit tcp any any established\n sequence 150 permit tcp host x.0.1.2 host x.0.1.1 eq bgp\n sequence 160 permit tcp host x.0.1.1 eq bgp host x.0.1.2\n sequence 170 permit icmp host x.0.1.2 host x.0.1.1 echo\n sequence 180 permit icmp host x.0.1.1 host x.0.1.2 echo-reply\n...\n sequence 190 deny ip any any log\n\n2. Verify the inbound ACL applied to all external interfaces will block all traffic from Bogon source addresses.\ninterface ethernet 1/1/1\n port-name link_to_DISN\n ip access-group FILTER_PERIMETER in logging enable\n!\n\nIf the router is not configured to block inbound packets with source Bogon IP address prefixes, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nReview the configuration to verify the command below is not present:\n\n1. Configure an ACL containing the current Bogon prefixes as shown below:\nICX(config)#ip access-list ext FILTER_PERIMETER\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 0.0.0.0/8 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 10.0.0.0/8 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 100.64.0.0/10 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 127.0.0.0/8 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 169.254.0.0/16 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 172.16.0.0/12 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 192.0.0.0/24 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 192.0.2.0/24 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 192.168.0.0/16 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 192.18.0.0/15 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 192.51.100.0/24 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 203.0.113.0/24 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip 224.0.0.0/3 any log\nICX(config-ext-ipacl-FILTER_PERIMETER)#permit tcp any any established\nICX(config-ext-ipacl-FILTER_PERIMETER)#permit tcp host x.0.1.2 host x.0.1.1 eq bgp\nICX(config-ext-ipacl-FILTER_PERIMETER)#permit tcp host x.0.1.1 eq bgp host x.0.1.2\nICX(config-ext-ipacl-FILTER_PERIMETER)#permit icmp host x.0.1.2 host x.0.1.1 echo\nICX(config-ext-ipacl-FILTER_PERIMETER)#permit icmp host x.0.1.1 host x.0.1.2 echo-reply\nICX(config-ext-ipacl-FILTER_PERIMETER)#deny ip any any log\n\n2. Apply the ACL inbound on all external interfaces.\nICX(config)#interface ethernet x/x/x\nICX(config-if-e10000-x/x/x)#ip access-group FILTER_PERIMETER in logging enable",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Bogons include IP packets on the public internet that contain addresses that are not in any range allocated or delegated by the Internet Assigned Numbers Authority (IANA) or a delegated regional internet registry (RIR) and allowed for public Internet use. Bogons also include multicast, IETF reserved, and special purpose address space as defined in RFC 6890.\n\nSecurity of the internet's routing system relies on the ability to authenticate an assertion of unique control of an address block. Measures to authenticate such assertions rely on the validation the address block forms as part of an existing allocated address block and must be a trustable and unique reference in the IANA address registries. The intended use of a Bogon address would only be for the purpose of address spoofing in denial-of-service attacks. Hence, it is imperative that IP packets with a source Bogon address are blocked at the network's perimeter.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000760",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

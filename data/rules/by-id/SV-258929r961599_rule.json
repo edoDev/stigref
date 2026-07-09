@@ -1,0 +1,53 @@
+{
+  "id": "SV-258929r961599_rule",
+  "full_rule_id": "SV-258929r961599_rule",
+  "rule_id": "SV-258929",
+  "rule_revision": "961599",
+  "group_id": "V-258929",
+  "group_title": "SRG-APP-000428",
+  "title": "The vCenter Server must enable data at rest encryption for vSAN.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Applications handling data requiring \"data at rest\" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.\n\nData encryption is a common technique used in environments that require additional levels of security. It consists of a process to ensure that data can only be consumed by systems that have appropriate levels of access. Approved systems must have and use the appropriate cryptographic keys to encrypt and decrypt the data. Systems that do not have the keys will not be able to consume the data in any meaningful way, as it will remain encrypted in accordance with the commonly used Advanced Encryption Standard (AES) from the National Institute of Standards and Technology, or NIST.\n\nvSAN supports Data-At-Rest Encryption and Data-in-Transit Encryption and uses an AES 256 cipher. Data is encrypted after all other processing, such as deduplication, is performed. Data at rest encryption protects data on storage devices in case a device is removed from the cluster.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If no clusters are enabled for vSAN, this is not applicable.\n\nFrom the vSphere Client, go to Host and Clusters.\n\nSelect the vCenter Server >> Select the cluster >> Configure >> vSAN >> Services >> Data Services.\n\nReview the \"Data-at-rest encryption\" status.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-Cluster | Where-Object {$_.VsanEnabled -eq $true} | Get-VsanClusterConfiguration | Select-Object Name,EncryptionEnabled\n\nIf \"Data-At-Rest encryption\" is not enabled, this is a finding.",
+  "fix": "From the vSphere Client, go to Host and Clusters.\n\nSelect the vCenter Server >> Select the target cluster >> Configure >> vSAN >> Services >> Data Services.\n\nClick \"Edit\".\n\nEnable \"Data-At-Rest encryption\" and select a pre-configured key provider from the drop down. Click \"Apply\".\n\nNote: Before enabling, read and understand the operational implications of enabling data at rest encryption in vSAN and how it effects capacity, performance, and recovery scenarios.",
+  "ccis": [
+    "CCI-002475"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Applications handling data requiring \"data at rest\" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.\n\nData encryption is a common technique used in environments that require additional levels of security. It consists of a process to ensure that data can only be consumed by systems that have appropriate levels of access. Approved systems must have and use the appropriate cryptographic keys to encrypt and decrypt the data. Systems that do not have the keys will not be able to consume the data in any meaningful way, as it will remain encrypted in accordance with the commonly used Advanced Encryption Standard (AES) from the National Institute of Standards and Technology, or NIST.\n\nvSAN supports Data-At-Rest Encryption and Data-in-Transit Encryption and uses an AES 256 cipher. Data is encrypted after all other processing, such as deduplication, is performed. Data at rest encryption protects data on storage devices in case a device is removed from the cluster.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000196",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3"
+  ]
+}

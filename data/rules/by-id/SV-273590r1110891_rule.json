@@ -1,0 +1,53 @@
+{
+  "id": "SV-273590r1110891_rule",
+  "full_rule_id": "SV-273590r1110891_rule",
+  "rule_id": "SV-273590",
+  "rule_revision": "1110891",
+  "group_id": "V-273590",
+  "group_title": "SRG-NET-000019-RTR-000013",
+  "title": "The RUCKUS ICX multicast Rendezvous Pointerface (RP) router must be configured to filter Protocol Independent Multicast (PIM) Register messages received from the Designated Router (DR) for any undesirable multicast groups and sources.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that register messages are accepted only for authorized multicast groups and sources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check configuration for presence of accept-register filter for PIM:\n\nICX# show ip pim sparse\nGlobal PIM Sparse Mode Settings\n  Maximum Mcache         : 12288       Current Count              : 0\n  Hello interval         : 30          Neighbor timeout           : 105\n  Join/Prune interval    : 60          Inactivity interval        : 180\n  Hardware Drop Enabled  : Yes         Prune Wait Interval        : 3\n  Bootstrap Msg interval : 60          Candidate-RP Msg interval  : 60\n  Register Suppress Time : 60          Register Probe Time        : 10\n  Register Stop Delay    : 10          SPT Threshold              : 1\n  SSM Enabled            : No\n  Register Rate Limit    : 1 pps\n  Register Filter        : PIM_REG_FILTER\n  Route Precedence       : uc-non-default uc-default mc-non-default mc-default\n  Join/Prune Policy      : No\n  Slow Path Disable All  : No          Slow Path Enable SSM      : No\n  Slow Path Filter Acl   : None\n\nIf the RP router peering with PIM-SM routers is not configured with a policy to block registration messages for any undesirable multicast groups and sources, this is a finding.",
+  "fix": "Configure PIM register filter and apply to PIM configuration:\n\nICX(config)#ip access ext PIM_REG_FILTER\nICX(config-ext-ipacl-PIM_REG_FILTER)#deny ip any 239.5.0.0/16\nICX(config-ext-ipacl-PIM_REG_FILTER)#permit ip host 10.1.2.6 any\nICX(config-ext-ipacl-PIM_REG_FILTER)#permit ip host x.1.2.7 any\nICX(config-ext-ipacl-PIM_REG_FILTER)#deny ip any any\nICX(config-ext-ipacl-PIM_REG_FILTER)#exit\nICX(config)#router pim\nICX(config-pim-router)#rp-addres x.1.1.1\nICX(config-pim-router)#accept-register PIM_REG_FILTER",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that register messages are accepted only for authorized multicast groups and sources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000220",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

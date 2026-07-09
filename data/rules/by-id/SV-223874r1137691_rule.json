@@ -1,0 +1,53 @@
+{
+  "id": "SV-223874r1137691_rule",
+  "full_rule_id": "SV-223874r1137691_rule",
+  "rule_id": "SV-223874",
+  "rule_revision": "1137691",
+  "group_id": "V-223874",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "CA-TSS Security control ACIDs must be limited to the administrative authorities authorized and that require these privileges to perform their job duties.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The use of security policy filters provides protection for the confidentiality of data by restricting the flow of data. A crucial part of any flow control solution is the ability to configure policy filters. This allows the operating system to enforce multiple and different security policies. Policy filters serve to enact and enforce the organizational policy as it pertains to controlling data flow.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\n\nTSS LIST(ACIDS) DATA(ADMIN, BASIC)\n\nIf any ACIDs other than TYPE=CENTRAL (SCA/MSCA) has the following administrative authority, this is a finding.\n\nFACILITIES(ALL)\nPROGRAM(ALL)\nPROGRAM(OWN)\nRESOURCE(ALL)\nROSRES(ALL)\nVOLUME(ALL)\nVOLUME(OWN)\n\nMISC1(ALL)\nMISC1(LCF)\nMISC1(LTIME)\nMISC1(RDT)\nMISC1(USER)\n\nMISC2(ALL)\nMISC2(DLF)\nMISC2(NDT)\nMISC2(SMS)\n\nMISC4(ALL)\n\nMISC8(ALL)\nMISC8(LISTAPLU)\nMISC8(LISTRDT)\nMISC8(LISTSDT)\nMISC8(LISTSTC)\nMISC8(MCS)\n\nMISC9(ALL)\nMISC9(BYPASS)\nMISC9(CONSOLE)\nMISC9(GLOBAL)\nMISC9(MASTFAC)\nMISC9(MODE)\nMISC9(STC)\nMISC9(TRACE)",
+  "fix": "Review all security administrator ACIDs. Evaluate the impact of limiting the amount of excessive administrative authorities. Develop a plan of action and implement the changes.\n\nThe following are examples for other types (DCA, VCA, ZCA, LSCA) that require administrative authorities: (note: these are examples and does not mean everyone should have all of these levels).\n\ndata set(ALL)ACC(ALL)\ndata set(XAUTH,OWN,REPORT,AUDIT,INFO)ACC(ALL)\nOTRAN(ALL)ACC(ALL)\nACID(ALL)\nACID(INFO,MAINTAIN)\nMISC1(INSTDATA,SUSPEND,TSSSIM,NOATS)\nMISC2(TSO,TARGET)\nMISC8(PWMAINT,REMASUSP)\nMISC9(GENERIC)\nFACILITY(BATCH, TSO, ROSCOE, CICS, xxxx)\n\nWhere \"xxxx\" is a facility the application security team grants access into for their application users. This must not be STC, CA1, DFHSM, or other domain level mastfac/facility. This is only for those \"onlines\" that users truly log in to for access to their applications/data such as TSO, CICS regions, IDMS, ROSCOE, FTP, etc.\n\nTSS ADMIN(acid)RESOURCE(REPORT,INFO,AUDIT) can be allowed and is required to run TSSUTIL reports.\n\nNote: \"RESOURCE\" can specify a more specific Resource Class, such as \"OTRAN\", \"data set\", \"IDMSGON\", \"PROGRAM\" for non SCA/MSCA type of accounts. These administrators will not have \"RESOURCE\" specified in administrative authority. \n\nNote: \"ALL\" will display as \"*ALL*\" but also means approved for any single administrative authority under that specific item.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The use of security policy filters provides protection for the confidentiality of data by restricting the flow of data. A crucial part of any flow control solution is the ability to configure policy filters. This allows the operating system to enforce multiple and different security policies. Policy filters serve to enact and enforce the organizational policy as it pertains to controlling data flow.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-ES-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

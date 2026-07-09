@@ -1,0 +1,53 @@
+{
+  "id": "SV-254034r844135_rule",
+  "full_rule_id": "SV-254034r844135_rule",
+  "rule_id": "SV-254034",
+  "rule_revision": "844135",
+  "group_id": "V-254034",
+  "group_title": "SRG-NET-000362-RTR-000113",
+  "title": "The Juniper router must be configured to have Internet Control Message Protocol (ICMP) unreachable notifications disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Host unreachable ICMP messages are commonly used by attackers for network mapping and diagnosis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the device configuration to determine if controls have been defined to ensure the router does not send ICMP unreachable notifications out to any external interfaces.\n\n[edit policy-options]\nprefix-list router-address-ipv4 {\n    <external interface address>/32;\n    <internal subnet>/<mask>;\n}\n[edit firewall family inet]\nfilter <name> {\n    term 1 {\n        from {\n            source-prefix-list {\n                router-address-ipv4; \n            }\n            protocol icmp;\n            icmp-type unreachable;\n        }\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n    <additional terms>\n    term default {\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n}\n\n[edit interfaces]\n<external interface> {\n    unit <number> {\n        family inet {\n            filter {\n                output <filter name>;\n            }\n            address <IPv4 address>/<mask>;\n        }\n    }\n}\n\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf ICMP unreachable notifications are enabled on any external interfaces, this is a finding.",
+  "fix": "Disable ICMP unreachable notifications on all external interfaces.\n\nset policy-options prefix-list router-addresses-ipv4 <external interface address>/32\nset policy-options prefix-list router-addresses-ipv4 <internal subnet>/<mask>\n\nset firewall family inet filter <name> term 1 from source-prefix-list router-address-ipv4\nset firewall family inet filter <name> term 1 from protocol icmp\nset firewall family inet filter <name> term 1 from icmp-type unreachable\nset firewall family inet filter <name> term 1 then log\nset firewall family inet filter <name> term 1 then syslog\nset firewall family inet filter <name> term 1 then discard\n<additional terms>\nset firewall family inet filter <name> term default then log\nset firewall family inet filter <name> term default then syslog\nset firewall family inet filter <name> term default then discard\n\nset interfaces <interface name> unit <number> family inet filter output <filter name>\nset interfaces <interface name> unit <number> family inet address <IPv4 address>.<mask>",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Host unreachable ICMP messages are commonly used by attackers for network mapping and diagnosis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000620",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

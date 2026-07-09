@@ -1,0 +1,53 @@
+{
+  "id": "SV-80559r1_rule",
+  "full_rule_id": "SV-80559r1_rule",
+  "rule_id": "SV-80559",
+  "rule_revision": "1",
+  "group_id": "V-66069",
+  "group_title": "SRG-NET-000362-L2S-000024",
+  "title": "The HP FlexFabric Switch must have unknown storm-constrain enabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Access layer switches use the Content Addressable Memory (CAM) table to direct traffic to specific ports based on the VLAN number and the destination MAC address of the frame. When a router has an ARP entry for a destination host and forwards it to the access layer switch and there is no entry corresponding to the frame's destination MAC address in the incoming VLAN, the frame will be sent to all forwarding ports within the respective VLAN, which causes flooding. Large amounts of flooded traffic can saturate low-bandwidth links, causing network performance issues or complete connectivity outage to the connected devices. Unknown unicast flooding has been a nagging problem in networks that have asymmetric routing and default timers. To mitigate the risk of a connectivity outage, the storm-constrain feature must be implemented on all access layer switches. The storm-constrain feature will block unknown unicast traffic flooding and only permit egress traffic with MAC addresses that are known to exit on the port.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the HP FlexFabric Switch configuration to verify that unknown storm-constrain is enabled on all access switch ports.\n\nIf any access switch ports do not have storm-constrain enabled, this is a finding.\n\n[HP] display storm-constrain\n Abbreviation: BC - broadcast; MC - multicast; UC - unicast\n               FW - forwarding\n Flow Statistic Interval: 10 (in seconds)\nPort          Type Lower     Upper     Unit CtrlMode Status   Trap Log SwitchNum\n--------------------------------------------------------------------------------\nXGE1/0/10     UC   1         1         pps  shutdown FW       on   on  0",
+  "fix": "Configure the HP FlexFabric Switch to have unknown storm-constrain  enabled.\n\n[HP-GigabitEthernet1/0/1]storm-constrain unicast pps 1 1\n\n[HP-GigabitEthernet1/0/1]storm-constrain control shutdown",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Access layer switches use the Content Addressable Memory (CAM) table to direct traffic to specific ports based on the VLAN number and the destination MAC address of the frame. When a router has an ARP entry for a destination host and forwards it to the access layer switch and there is no entry corresponding to the frame's destination MAC address in the incoming VLAN, the frame will be sent to all forwarding ports within the respective VLAN, which causes flooding. Large amounts of flooded traffic can saturate low-bandwidth links, causing network performance issues or complete connectivity outage to the connected devices. Unknown unicast flooding has been a nagging problem in networks that have asymmetric routing and default timers. To mitigate the risk of a connectivity outage, the storm-constrain feature must be implemented on all access layer switches. The storm-constrain feature will block unknown unicast traffic flooding and only permit egress traffic with MAC addresses that are known to exit on the port.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-L2-000013",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-l2s-security-technical-implementation-guide-v1r3-0b7a302d",
+      "name": "HP FlexFabric Switch L2S Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-l2s-security-technical-implementation-guide-v1r3-0b7a302d"
+  ]
+}

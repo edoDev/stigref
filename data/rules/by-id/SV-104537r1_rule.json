@@ -1,0 +1,53 @@
+{
+  "id": "SV-104537r1_rule",
+  "full_rule_id": "SV-104537r1_rule",
+  "rule_id": "SV-104537",
+  "rule_revision": "1",
+  "group_id": "V-94707",
+  "group_title": "SRG-APP-000179-NDM-000265",
+  "title": "Symantec ProxySG must be configured to use only FIPS 140-2 approved algorithms for authentication to a cryptographic module with any application or protocol.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Unapproved mechanisms that are used for authentication to the cryptographic module are not validated and therefore cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised.\n\nThe Symantec ProxySG can be configured in FIPS-mode, but this is not recommended by the vendor or DoD. Instead, ensure that FIPS-compliant mechanisms are used for authenticating to cryptographic modules when not in FIPS-mode. This is true by default, but must be verified to prevent misconfiguration by an administrator.\n\nFIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DoD requirements. However, authentication algorithms must configure security processes to use only FIPS-approved and NIST-recommended authentication algorithms.\n\nTo protect the integrity of the authenticator and authentication mechanism used for the cryptographic module used by the network device, the application, operating system, or protocol must be configured to use one of the following hash functions for hashing the password or other authenticator in accordance with SP 800-131Ar1: SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, SHA-512/256, SHA3-224, SHA3-256, SHA3-384, and SHA3-512.\n\nApplications also include HMAC, KDFs, Random Bit Generation, and hash-only applications (e.g., hashing passwords and using SHA-1 or higher to compute a checksum). For digital signature verification, SP800-131Ar1 allows SHA-1 for legacy use where needed.\n\nCurrently, the AES block cipher algorithm is approved for use in DoD for both applying cryptographic protection (e.g., encryption) and removing or verifying the protection that was previously applied (e.g., decryption). NTP devices use MD5 authentication keys. The MD5 algorithm is not specified in either the FIPS or NIST recommendation; thus, a CAT 1 finding if used. However, MD5 is preferred to no authentication at all.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify only FIPS 140-2 approved algorithms are used.\n\n1. Log on to the CLI via SSH.\n2. Type \"show management services\", press \"Enter\".\n3. Ensure that the \"Cipher Suite\" attribute contains only FIPS 140-2 approved algorithms.\n\nIf Symantec ProxySG is not configured to use FIPS 140-2 approved algorithms for authentication to a cryptographic module for any protocol or application, this is a finding.",
+  "fix": "Configure the ProxySG to use only FIPS 140-2 approved algorithms.\n\n1. Log on to the CLI via SSH.\n2. Type \"enable\", press \"Enter\". \n3. Type \"configure\", press \"Enter\".\n4. Type \"management services\", press \"Enter\".\n5. Type \"edit https-console\", press \"Enter\".\n6. Type \"attribute cipher-suite\", press \"Enter\".\n7. From the list displayed, enter a list of cipher numbers (comma separated) that correspond to only FIPS 140-2 approved algorithms.",
+  "ccis": [
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unapproved mechanisms that are used for authentication to the cryptographic module are not validated and therefore cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised.\n\nThe Symantec ProxySG can be configured in FIPS-mode, but this is not recommended by the vendor or DoD. Instead, ensure that FIPS-compliant mechanisms are used for authenticating to cryptographic modules when not in FIPS-mode. This is true by default, but must be verified to prevent misconfiguration by an administrator.\n\nFIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DoD requirements. However, authentication algorithms must configure security processes to use only FIPS-approved and NIST-recommended authentication algorithms.\n\nTo protect the integrity of the authenticator and authentication mechanism used for the cryptographic module used by the network device, the application, operating system, or protocol must be configured to use one of the following hash functions for hashing the password or other authenticator in accordance with SP 800-131Ar1: SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, SHA-512/256, SHA3-224, SHA3-256, SHA3-384, and SHA3-512.\n\nApplications also include HMAC, KDFs, Random Bit Generation, and hash-only applications (e.g., hashing passwords and using SHA-1 or higher to compute a checksum). For digital signature verification, SP800-131Ar1 allows SHA-1 for legacy use where needed.\n\nCurrently, the AES block cipher algorithm is approved for use in DoD for both applying cryptographic protection (e.g., encryption) and removing or verifying the protection that was previously applied (e.g., decryption). NTP devices use MD5 authentication keys. The MD5 algorithm is not specified in either the FIPS or NIST recommendation; thus, a CAT 1 finding if used. However, MD5 is preferred to no authentication at all.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SYMP-NM-000280",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "symantec-proxysg-ndm-security-technical-implementation-guide-v1r2-5788060e",
+      "name": "Symantec ProxySG NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "symantec-proxysg-ndm-security-technical-implementation-guide-v1r2-5788060e"
+  ]
+}

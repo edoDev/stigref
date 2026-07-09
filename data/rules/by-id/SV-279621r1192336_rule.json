@@ -1,0 +1,55 @@
+{
+  "id": "SV-279621r1192336_rule",
+  "full_rule_id": "SV-279621r1192336_rule",
+  "rule_id": "SV-279621",
+  "rule_revision": "1192336",
+  "group_id": "V-279621",
+  "group_title": "SRG-OS-000185-GPOS-00079",
+  "title": "Nutanix OS must protect the confidentiality and integrity of all information at rest.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Information at rest refers to the state of information when it is located on a secondary storage device (e.g., disk drive and tape drive, when used for backups) within an operating system.\n\nThis requirement addresses protection of user-generated data, as well as operating system-specific configuration data. Organizations may choose to employ different mechanisms to achieve confidentiality and integrity protections, as appropriate, in accordance with the security category and/or classification of the information.\n\nSatisfies: SRG-OS-000185-GPOS-00079, SRG-OS-000404-GPOS-00183, SRG-OS-000405-GPOS-00184</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. For AOS, Prism Central, and Files, verify every persistent disk partition present is the type \"crytpo_LUKS\" using the following command.\n\n$ sudo blkid\n/dev/sdb4: UUID=\"990b15e8-64b1-4720-bc63-57d1ffdfef96\" TYPE=\"crypto_LUKS\" PARTLABEL=\"primary\" PARTUUID=\"860391ab-f6dd-4315-915c-9bf3f5aec840\"\n/dev/sdc1: UUID=\"a61e3060-a330-420f-be2e-dd25f4a4d5cc\" TYPE=\"crypto_LUKS\" PARTLABEL=\"primary\" PARTUUID=\"c685393a-1bea-4831-9058-7baadc5f5bfb\"\n/dev/sdd1: UUID=\"4a45d2a9-1022-4f12-b547-df565f21c10d\" TYPE=\"crypto_LUKS\" PARTLABEL=\"primary\" PARTUUID=\"7ec91c7a-211d-43cf-8766-1f976d1a2ee6\"\n/dev/sde1: UUID=\"7932a4d3-4e6b-44cc-a91b-2163e1a2ae08\" TYPE=\"crypto_LUKS\" PARTLABEL=\"primary\" PARTUUID=\"eea7b909-f533-47cf-af9a-fbe6547f1a81\"\n/dev/sdf1: UUID=\"fb191583-434d-4efe-af42-649b0a8d8d7e\" TYPE=\"crypto_LUKS\" PARTLABEL=\"primary\" PARTUUID=\"8db3b9f9-db7e-4e23-b13a-813cdd9fcac5\"\n/dev/md2: UUID=\"8f9f9b65-feeb-4008-8e6a-0fab3bc3b0cc\" TYPE=\"crypto_LUKS\"\n/dev/md1: UUID=\"c159835d-96de-4711-9090-4a2f3fa47b0c\" TYPE=\"crypto_LUKS\"\n/dev/md0: UUID=\"b3eaf528-eb28-4afd-b7c8-8e2d03fe4a5e\" TYPE=\"crypto_LUKS\"\n/dev/loop0: UUID=\"517f3cfa-1912-4ff0-94bb-c17d953947dc\" BLOCK_SIZE=\"4096\" TYPE=\"ext4\"\n/dev/loop1: UUID=\"e2fb344c-991b-4f50-ac8c-76b7a369737f\" BLOCK_SIZE=\"4096\" TYPE=\"ext4\"\n/dev/loop2: UUID=\"f9ca379d-74cb-49f4-9737-10852b04717d\" BLOCK_SIZE=\"4096\" TYPE=\"ext4\"\n/dev/loop3: UUID=\"f9521269-ad69-4ac1-98c1-989d258bb996\" BLOCK_SIZE=\"1024\" TYPE=\"ext4\"\n/dev/mapper/luks-b3eaf528-eb28-4afd-b7c8-8e2d03fe4a5e: UUID=\"90d4d623-919e-4d21-b4a3-66f10d23b76c\" B\n\n2. Verify that AHV is configured for data-at-rest encryption using LUKS Crypto modules using the following command.\n\nNote: A TPM hardware module is required on each AHV node.\n\n$ sudo blkid\n/dev/mapper/AHV-root: UUID=\"67b7d7fe-de60-6fd0-befb-e6748cf97743\" TYPE=\"crypto_LUKS\"\n\nEvery persistent disk partition present must be of type \"crypto_LUKS\". If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) are not type \"crypto_LUKS\", ask the administrator to indicate how the partitions are encrypted. \n\nIf partitions are not encrypted, this is a finding.",
+  "fix": "1. For AOS, Prism Central, and Files, file partition encryption is done during installation. During foundation, there is an installation option box to enable \"crypto_LUKS\", this must be ticked before proceeding with installation. If data-at-rest encryption is not enabled during installation, the system must be re-installed with the proper options selected.\n\n2. For AHV, configure data-at-rest encryption on partitions using Luks Crypto modules. Enabling partition encryption must be done during imaging using Foundation VM. On the foundation VM in the imaging deployment screen, select tick the option, then enter the following command.\n\nenable_luks=true",
+  "ccis": [
+    "CCI-001199",
+    "CCI-002475",
+    "CCI-002476"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information at rest refers to the state of information when it is located on a secondary storage device (e.g., disk drive and tape drive, when used for backups) within an operating system.\n\nThis requirement addresses protection of user-generated data, as well as operating system-specific configuration data. Organizations may choose to employ different mechanisms to achieve confidentiality and integrity protections, as appropriate, in accordance with the security category and/or classification of the information.\n\nSatisfies: SRG-OS-000185-GPOS-00079, SRG-OS-000404-GPOS-00183, SRG-OS-000405-GPOS-00184",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000188",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-268120r1131043_rule",
+  "full_rule_id": "SV-268120r1131043_rule",
+  "rule_id": "SV-268120",
+  "rule_revision": "1131043",
+  "group_id": "V-268120",
+  "group_title": "SRG-OS-000063-GPOS-00032",
+  "title": "NixOS audit configuration files must have a mode of 444 or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without the capability to restrict the roles and individuals that can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events. Misconfigured audits may degrade the system's performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the NixOS audit configuration and service files have a mode of 444 or less permissive with the following commands:\n\n$ sudo find -L /etc/audit -type f -exec stat -L -c \"%a %n\" {} \\;\n$ sudo find -L /etc/systemd/system -iname \"audit*\" -type f -exec stat -L -c \"%a %n\" {} \\;\n$ stat -c '%a %n' $(realpath /etc/systemd/system/audit*.service)\n\n444 /etc/audit/auditd.conf\n444 /etc/systemd/system/audit.service\n444 /etc/systemd/system/auditd.service\n444 /etc/systemd/system/basic.target.wants/audit.service\n444 /etc/systemd/system/sysinit.target.wants/audit.service\n444 /nix/store/dr3i90b3n1fb06fr1gw12jfg9wb8dkrc-unit-auditd.service/auditd.service\n444 /nix/store/dc6s6z7ykbmq70i5z8cff0agwsmp9jhm-unit-audit.service/audit.service\n\nIf the audit configuration files have a mode more permissive than 444, this is a finding.",
+  "fix": "Configure NixOS audit configuration and service files to have a mode of 444 or less permissive with the following command:\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-000171"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without the capability to restrict the roles and individuals that can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events. Misconfigured audits may degrade the system's performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000660",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

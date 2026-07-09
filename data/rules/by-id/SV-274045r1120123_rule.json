@@ -1,0 +1,53 @@
+{
+  "id": "SV-274045r1120123_rule",
+  "full_rule_id": "SV-274045r1120123_rule",
+  "rule_id": "SV-274045",
+  "rule_revision": "1120123",
+  "group_id": "V-274045",
+  "group_title": "SRG-OS-000364-GPOS-00151",
+  "title": "Amazon Linux 2023 SSH daemon must not allow Kerberos authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Kerberos authentication for SSH is often implemented using Generic Security Service Application Program Interface (GSSAPI). If Kerberos is enabled through SSH, the SSH daemon provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementations may be subject to exploitation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 is configured so that the SSH daemon does not allow Kerberos authentication with the following command:\n\n$ [ec2-user@ip-172-31-12-63 ~]$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*kerberosauthentication'\n/etc/ssh/sshd_config.d/93-KerberosAuthentication.conf:KerberosAuthentication no\n\nIf the value is returned as \"yes\", the returned line is commented out, no output is returned, and the use of Kerberos authentication has not been documented with the information system security officer (ISSO), this is a finding.",
+  "fix": "Configure Amazon Linux 2023 so that the SSH daemon does not allow Kerberos authentication.\n\nAdd the following line in \"/etc/ssh/sshd_config\" or to a file in \"/etc/ssh/sshd_config.d\" or uncomment the line and set the value to \"no\":\n\nKerberosAuthentication no\n\nThe SSH service must be restarted for changes to take effect:\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-001813"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Kerberos authentication for SSH is often implemented using Generic Security Service Application Program Interface (GSSAPI). If Kerberos is enabled through SSH, the SSH daemon provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementations may be subject to exploitation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-001220",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

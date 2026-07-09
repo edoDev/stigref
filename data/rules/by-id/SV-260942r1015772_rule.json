@@ -1,0 +1,55 @@
+{
+  "id": "SV-260942r1015772_rule",
+  "full_rule_id": "SV-260942r1015772_rule",
+  "rule_id": "SV-260942",
+  "rule_revision": "1015772",
+  "group_id": "V-260942",
+  "group_title": "SRG-APP-000386-CTR-000920",
+  "title": "MKE must only run signed images.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Controlling the sources where container images can be pulled from allows the organization to define what software can be run within MKE. Allowing any container image to be introduced and instantiated within MKE may introduce malicious code and vulnerabilities to the platform and the hosting system.\n\nMKE registry must deny all container images except for those signed by organizational-approved sources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "On each node, check that MKE is configured to only run images signed by applicable Orgs and Teams.\n\n1. Log in to the MKE web UI and navigate to admin >> Admin Settings >> Docker Content Trust.\n\nIf Content Trust Settings \"Run only signed images\" is disabled, this is a finding.\n\n2. Verify that the Orgs and Teams that images must be signed by in the drop-down matches the organizational policies.\n\nIf an Org or Team selected does not match organizational policies, this is a finding. \n\n3. Verify that all images sitting on an MKE cluster are signed.\n\nVia CLI:\nLinux: As an MKE Admin, execute the following commands using a client bundle:\n\ndocker trust inspect $(docker images | awk '{print $1 \":\" $2}')\n\nVerify that all image tags in the output have valid signatures. If the images are not signed, this is a finding.",
+  "fix": "On each node, enable Content Trust enforcement in MKE.\n\n1. Log in to the MKE web UI and navigate to admin >> Admin Settings >> Docker Content Trust.\n\nUnder Content Trust Settings section, enable \"Run only signed images\".\n\n2. Log in to the MKE web UI and navigate to admin >> Admin Settings >> Docker Content Trust.\n\nClick \"Add Team +\" and set the appropriate Orgs and Teams that must sign images. Use the drop-down (\"v\") that follows to match the organizational policies.\n\nRemove any unwanted teams by clicking the minus symbol.\n\nClick \"Save\".\n\n3. Manually remove any unsigned images sitting on an MKE cluster by executing the following:\n\ndocker rmi <IMAGE_ID>",
+  "ccis": [
+    "CCI-001774",
+    "CCI-003992",
+    "CCI-001749"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Controlling the sources where container images can be pulled from allows the organization to define what software can be run within MKE. Allowing any container image to be introduced and instantiated within MKE may introduce malicious code and vulnerabilities to the platform and the hosting system.\n\nMKE registry must deny all container images except for those signed by organizational-approved sources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-001380",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

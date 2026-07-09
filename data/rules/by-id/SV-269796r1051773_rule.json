@@ -1,0 +1,53 @@
+{
+  "id": "SV-269796r1051773_rule",
+  "full_rule_id": "SV-269796r1051773_rule",
+  "rule_id": "SV-269796",
+  "rule_revision": "1051773",
+  "group_id": "V-269796",
+  "group_title": "SRG-APP-000411-NDM-000330",
+  "title": "The Dell OS10 Switch must use FIPS-validated Keyed-Hash Message Authentication Code (HMAC) to protect the integrity of nonlocal maintenance and diagnostic communications.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. \n\nCurrently, HMAC is the only FIPS-approved algorithm for generating and verifying message/data authentication codes in accordance with FIPS 198-1. Products that are FIPS 140-2 validated will have an HMAC that meets specification; however, the option must be configured for use as the only message authentication code used for authentication to cryptographic modules.\n\nSeparate requirements for configuring applications and protocols used by each application (e.g., SNMPv3, SSHv2, NTP, HTTPS, and other protocols and applications that require server/client authentication) are required to implement this requirement. Where SSH is used, the SSHv2 protocol suite is required because it includes Layer 7 protocols such as SCP and SFTP, which can be used for secure file transfers. </VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the OS10 Switch uses FIPS-validated HMAC to protect the integrity of nonlocal maintenance and diagnostic communications.\n\nReview the FIPS status to verify that FIPS mode is enabled, as shown below:\n\nOS10# show fips status\n\nFIPS mode:           Enabled\nCrypto Library:      OpenSSL 1.0.2zg-fips  7 Feb 2023\nFIPS Object Module:  DELL OpenSSL FIPS Crypto Module v2.6 July 2021\nOS10#\n\nVerify that SSH is enabled for network access by reviewing the SSH server status:\n\nOS10# show ip ssh | grep \"SSH Server:\"\nSSH Server:                   Enabled\n\nVerify that telnet is disabled on the switch by verifying that the following is not in the running-configuration: \nip telnet server enable\n\n If FIPS mode is not enabled or if the SSH is not enabled or if telnet is enabled in the OS10 Switch, this is a finding.",
+  "fix": "Configure the OS10 Switch to use FIPS-validated HMAC to protect the integrity of nonlocal maintenance and diagnostic communications.\n\nOS10(config)# crypto fips enable\n\nWARNING: Upon committing this configuration, the system will regenerate SSH keys. Please consult documentation and toggle FIPS mode only if you know what you are doing!\nContinue? [yes/no(default)]:yes\nOS10(config)#\n\nDisable telnet if it has been enabled:\n\n OS10(config)# no ip telnet server enable\n\nEnable SSH if it has been disabled:\n\n OS10(config)# ip ssh server enable",
+  "ccis": [
+    "CCI-002890"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. \n\nCurrently, HMAC is the only FIPS-approved algorithm for generating and verifying message/data authentication codes in accordance with FIPS 198-1. Products that are FIPS 140-2 validated will have an HMAC that meets specification; however, the option must be configured for use as the only message authentication code used for authentication to cryptographic modules.\n\nSeparate requirements for configuring applications and protocols used by each application (e.g., SNMPv3, SSHv2, NTP, HTTPS, and other protocols and applications that require server/client authentication) are required to implement this requirement. Where SSH is used, the SSHv2 protocol suite is required because it includes Layer 7 protocols such as SCP and SFTP, which can be used for secure file transfers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000780",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

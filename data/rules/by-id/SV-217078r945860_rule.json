@@ -1,0 +1,53 @@
+{
+  "id": "SV-217078r945860_rule",
+  "full_rule_id": "SV-217078r945860_rule",
+  "rule_id": "SV-217078",
+  "rule_revision": "945860",
+  "group_id": "V-217078",
+  "group_title": "SRG-NET-000205-RTR-000016",
+  "title": "The Juniper PE router must be configured to ignore or block all packets with any IP options.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Packets with IP options are not fast switched and therefore must be punted to the router processor. Hackers who initiate denial-of-service (DoS) attacks on routers commonly send large streams of packets with IP options. Dropping the packets with IP options reduces the load of IP options packets on the router. The end result is a reduction in the effects of the DoS attack on the router and on downstream routers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if it will block all packets with IP options.\n\nfirewall {\n    family inet {\n        filter INGRESS_FILTER {\n            term BLOCK_TO_CORE {\n                from {\n                    destination-address {\n                        x.x.x.x/8;\n                    }\n                }\n                then {\n                    log;\n                    discard;\n                }\n            }\n            term BLOCK_IP_OPTIONS {\n                from {\n                    ip-options any;\n                }\n                then {\n                    discard;\n                }\n            }\n            term ALLOW_TRANSIT_TRAFFIC {\n                then accept;\n            }\n        }\n    }\n\nIf the router is not configured to drop all packets with IP options, this is a finding.",
+  "fix": "Configure the router to drop all packets with IP options.\n\n[edit firewall family inet filter INGRESS_FILTER]\nset term BLOCK_IP_OPTIONS from ip-options any\nset term BLOCK_IP_OPTIONS then discard\ninsert term BLOCK_IP_OPTIONS before term ALLOW_TRANSIT_TRAFFIC",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Packets with IP options are not fast switched and therefore must be punted to the router processor. Hackers who initiate denial-of-service (DoS) attacks on routers commonly send large streams of packets with IP options. Dropping the packets with IP options reduces the load of IP options packets on the router. The end result is a reduction in the effects of the DoS attack on the router and on downstream routers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000730",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-224048r958482_rule",
+  "full_rule_id": "SV-224048r958482_rule",
+  "rule_id": "SV-224048",
+  "rule_revision": "958482",
+  "group_id": "V-224048",
+  "group_title": "SRG-OS-000104-GPOS-00051",
+  "title": "The IBM z/OS Syslog daemon must be properly defined and secured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following: \n\n1) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n2) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nTSS LIST(SYSLOGD) SEGMENT(OMVS)\n\nIf the following guidance is true, this is not a finding.\n\n-The Syslog daemon userid is SYSLOGD.\n-The SYSLOGD userid has the STC facility.\n-The SYSLOGD userid has UID(0), HOME('/'), and PROGRAM('/bin/sh') specified in the OMVS segment.\n-The SYSLOGD started proc is assigned the SYSLOGD userid is in the Started Task Table.\n\nIf Syslog daemon is started from /etc/rc then from the ISPF Command Shell enter:\nOMVS\ncd /etc\ncat rc \n\nIf Syslog daemon is started from /etc/rc then ensure that the \"_BPX_JOBNAME\" and \"_BPX_USERID\" environment variables are assigned a value of SYSLOGD.\n\nIf the Syslog daemon is started from /etc/rc and the \"_BPX_JOBNAME\" and \"_BPX_USERID\" environment variables are not assigned a value of SYSLOGD, this is a finding.",
+  "fix": "Configure so that the Syslog daemon runs under its own user account. Specifically, it does not share the account defined for the z/OS UNIX kernel.\n\nThe Syslog daemon userid is SYSLOGD.\nThe SYSLOGD userid has the STC facility.\nThe SYSLOGD userid has UID(0), HOME('/'), and PROGRAM('/bin/sh') specified in the OMVS segment.\n\nTo set up and use as an MVS Started Proc, the following sample commands are provided:\n\nTSS CREATE(SYSLOGD) TYPE(USER) NAME(SYSLOGD) -\nDEPT(existing-dept) FACILITY(STC) -\nPASSWORD(password,0)\nTSS ADD(SYSLOGD) DFLTGRP(stctcpx) GROUP(stctcpx)\nTSS ADD(SYSLOGD) SOURCE(INTRDR)\nTSS ADD(SYSLOGD) UID(0) HOME(/) OMVSPGM(/bin/sh)\n\nThe SYSLOGD started proc is assigned the SYSLOGD userid is in the Started Task Table.\n\nTSS ADD(STC) PROCNAME(SYSLOGD) ACID(SYSLOGD)\n\nIf /etc/rc is used to start the Syslog daemon, ensure that the _BPX_JOBNAME and _BPX_ USERID environment variables are assigned a value of SYSLOGD.",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following: \n\n1) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n2) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-SL-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

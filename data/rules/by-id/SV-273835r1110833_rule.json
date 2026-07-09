@@ -1,0 +1,55 @@
+{
+  "id": "SV-273835r1110833_rule",
+  "full_rule_id": "SV-273835r1110833_rule",
+  "rule_id": "SV-273835",
+  "rule_revision": "1110833",
+  "group_id": "V-273835",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "The RUCKUS ICX device must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's RUCKUS ICX devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each RUCKUS ICX device.\n\nSatisfies: SRG-APP-000516-NDM-000336, SRG-APP-000700-NDM-000100, SRG-APP-000705-NDM-000110</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that AAA authentication and authorization are configured along with RADIUS/TACACS+ servers.\n\nSSH@ICX#show running-config | include (aaa|radius)\naaa authentication dot1x default radius\nradius-server host x.x.x.x auth-port 1812 acct-port 1813 default key 2 $VWlkRGkt dot1x mac-auth\nradius-server host y.y.y.y auth-port 1812 acct-port 1813 default key 2 $UGlkRGktdG5v dot1x mac-auth\nradius-server key 2 $UGlkRGktdG5v\naaa authentication login default radius local\naaa authorization commands 0 default radius\naaa authorization exec default radius\n\nIf two central authentication servers are not configured, this is a finding.",
+  "fix": "Configure AAA as needed:\n\nradius-server host x.x.x.x auth-port 1812 acct-port 1813 default key [shared_secret]\nradius-server host y.y.y.y auth-port 1812 acct-port 1813 default key [shared_secret]\naaa authentication login default radius local\naaa authorization commands 0 default radius\naaa authorization exec default radius",
+  "ccis": [
+    "CCI-000370",
+    "CCI-003627",
+    "CCI-003628"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's RUCKUS ICX devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each RUCKUS ICX device.\n\nSatisfies: SRG-APP-000516-NDM-000336, SRG-APP-000700-NDM-000100, SRG-APP-000705-NDM-000110",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-NDM-000920",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1",
+      "name": "RUCKUS ICX NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-256521r991555_rule",
+  "full_rule_id": "SV-256521r991555_rule",
+  "rule_id": "SV-256521",
+  "rule_revision": "991555",
+  "group_id": "V-256521",
+  "group_title": "SRG-OS-000254-GPOS-00095",
+  "title": "The Photon operating system must initiate auditing as part of the boot process.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Each process on the system carries an \"auditable\" flag, which indicates whether its activities can be audited. Although auditd takes care of enabling this for all processes that launch after it starts, adding the kernel argument ensures the flag is set at boot for every process on the system. This includes processes created before auditd starts.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command:\n\n# grep \"audit=1\" /proc/cmdline\n\nIf no results are returned, this is a finding.",
+  "fix": "Navigate to and open:\n\n/boot/grub2/grub.cfg\n\nLocate the boot command line arguments. An example follows:\n\nlinux /$photon_linux root=$rootpartition $photon_cmdline $systemd_cmdline\n\nAdd \"audit=1\" to the end of the line so it reads as follows:\n\nlinux /$photon_linux root=$rootpartition $photon_cmdline $systemd_cmdline audit=1\n\nNote: Do not copy/paste in this example argument line. This may change in future releases. Find the similar line and append \"audit=1\" to it.\n\nReboot the system for the change to take effect.",
+  "ccis": [
+    "CCI-001464"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Each process on the system carries an \"auditable\" flag, which indicates whether its activities can be audited. Although auditd takes care of enabling this for all processes that launch after it starts, adding the kernel argument ensures the flag is set at boot for every process on the system. This includes processes created before auditd starts.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-30-000046",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28",
+      "name": "VMware vSphere 7.0 vCenter Appliance Photon OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28"
+  ]
+}

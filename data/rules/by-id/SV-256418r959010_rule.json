@@ -1,0 +1,53 @@
+{
+  "id": "SV-256418r959010_rule",
+  "full_rule_id": "SV-256418r959010_rule",
+  "rule_id": "SV-256418",
+  "rule_revision": "959010",
+  "group_id": "V-256418",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host must configure the firewall to block network traffic by default.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In addition to service-specific firewall rules, ESXi has a default firewall rule policy to allow or deny incoming and outgoing traffic. Reduce the risk of attack by ensuring this is set to deny incoming and outgoing traffic.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an ESXi shell, run the following command:\n\n# esxcli network firewall get\n\nIf the \"Default Action\" does not equal \"DROP\", this is a finding.\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHostFirewallDefaultPolicy\n\nIf the Incoming or Outgoing policies are \"True\", this is a finding.",
+  "fix": "From an ESXi shell, run the following command:\n\n# esxcli network firewall set --default-action=false\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHostFirewallDefaultPolicy | Set-VMHostFirewallDefaultPolicy -AllowIncoming $false -AllowOutgoing $false",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In addition to service-specific firewall rules, ESXi has a default firewall rule policy to allow or deny incoming and outgoing traffic. Reduce the risk of attack by ensuring this is set to deny incoming and outgoing traffic.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-70-000057",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2",
+      "name": "VMware vSphere 7.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2"
+  ]
+}

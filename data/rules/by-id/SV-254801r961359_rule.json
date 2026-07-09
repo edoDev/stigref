@@ -1,0 +1,53 @@
+{
+  "id": "SV-254801r961359_rule",
+  "full_rule_id": "SV-254801r961359_rule",
+  "rule_id": "SV-254801",
+  "rule_revision": "961359",
+  "group_id": "V-254801",
+  "group_title": "SRG-APP-000342-CTR-000775",
+  "title": "Kubernetes must enable PodSecurity admission controller on static pods and Kubelets.",
+  "severity": "high",
+  "description": "<VulnDiscussion>PodSecurity admission controller is a component that validates and enforces security policies for pods running within a Kubernetes cluster. It is responsible for evaluating the security context and configuration of pods against defined policies. \n\nTo enable PodSecurity admission controller on Static Pods (kube-apiserver, kube-controller-manager, or kube-schedule), the argument \"--feature-gates=PodSecurity=true\" must be set.\n\nTo enable PodSecurity admission controller on Kubelets, the featureGates PodSecurity=true argument must be set.\n\n(Note: The PodSecurity feature gate is GA as of  v1.25.)</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "On the Control Plane, change to the manifests' directory at /etc/kubernetes/manifests and run the command:\ngrep -i feature-gates *\n\nFor each manifest file, if the \"--feature-gates\" setting does not exist, does not contain the \"--PodSecurity\" flag, or sets the flag to \"false\", this is a finding.\n\nOn each Control Plane and Worker Node, run the command:\nps -ef | grep kubelet\n\nIf the \"--feature-gates\" option exists, this is a finding. \n\nNote the path to the config file (identified by --config).\n\nInspect the content of the config file:\nIf the \"featureGates\" setting is not present, does not contain the \"PodSecurity\" flag, or sets the flag to \"false\", this is a finding.",
+  "fix": "On the Control Plane, change to the manifests' directory at /etc/kubernetes/manifests and run the command:\ngrep -i feature-gates *\n\nEnsure the argument \"--feature-gates=PodSecurity=true\" is present in each manifest file.\n\nOn each Control Plane and Worker Node, run the command:\nps -ef | grep kubelet\n\nRemove the \"--feature-gates\" option if present.\n\nNote the path to the config file (identified by --config).\n\nEdit the Kubernetes Kubelet config file: \nAdd a \"featureGates\" setting if one does not yet exist. Add the feature gate \"PodSecurity=true\".\n\nRestart the kubelet service using the following command:\nsystemctl daemon-reload && systemctl restart kubelet",
+  "ccis": [
+    "CCI-002263"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "PodSecurity admission controller is a component that validates and enforces security policies for pods running within a Kubernetes cluster. It is responsible for evaluating the security context and configuration of pods against defined policies. \n\nTo enable PodSecurity admission controller on Static Pods (kube-apiserver, kube-controller-manager, or kube-schedule), the argument \"--feature-gates=PodSecurity=true\" must be set.\n\nTo enable PodSecurity admission controller on Kubelets, the featureGates PodSecurity=true argument must be set.\n\n(Note: The PodSecurity feature gate is GA as of  v1.25.)",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-002001",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

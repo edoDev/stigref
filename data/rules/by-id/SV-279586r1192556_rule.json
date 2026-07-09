@@ -1,0 +1,54 @@
+{
+  "id": "SV-279586r1192556_rule",
+  "full_rule_id": "SV-279586r1192556_rule",
+  "rule_id": "SV-279586",
+  "rule_revision": "1192556",
+  "group_id": "V-279586",
+  "group_title": "SRG-OS-000480-GPOS-00232",
+  "title": "Nutanix OS must enable an application firewall.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Firewalls protect computers from network attacks by blocking or limiting access to open network ports. Application firewalls limit which applications are allowed to communicate over the network.\n\nSatisfies: SRG-OS-000480-GPOS-00232, SRG-OS-000368-GPOS-00154, SRG-OS-000370-GPOS-00155</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify AOS, Prism Central, and Files has \"fapolicyd\" installed and is configured for deny-all, permit by exception policy using the following command.\n\n$ sudo systemctl status fapolicyd.service \nfapolicyd.service - File Access Policy Daemon\n   Loaded: loaded (/usr/lib/systemd/system/fapolicyd.service; enabled; vendor preset: disabled)\n   Active: active (running)\n\n$ sudo grep permissive /etc/fapolicyd/fapolicyd.conf \npermissive = 0\n\n$sudo tail /etc/fapolicyd/compiled.rules\ndeny_audit perm=any pattern=ld_so : all\ndeny_audit perm=any all : ftype=application/x-bad-elf\nallow perm=open all : ftype=application/x-sharedlib trust=1\ndeny perm=any all : all\n\n2. For AHV, verify iptables services are \"Loaded\" and \"Active\".\n\n$ sudo service iptables status\niptables.service - IPv4 firewall with iptables\n   Loaded: loaded (/usr/lib/systemd/system/iptables.service; enabled; vendor preset: disabled)\n   Active: active (exited) since Mon 2021-08-02 15:02:12 CDT; 2 weeks 6 days ago\n Main PID: 1250 (code=exited, status=0/SUCCESS)\n   CGroup: /system.slice/iptables.service\n\n3. If IPv6 is in use, run the following command.\n\n$ sudo service ip6tables status\nip6tables.service - IPv6 firewall with ip6tables\n   Loaded: loaded (/usr/lib/systemd/system/ip6tables.service; enabled; vendor preset: disabled)\n   Active: active (exited) since Mon 2021-08-02 15:02:12 CDT; 2 weeks 6 days ago\n Main PID: 1313 (code=exited, status=0/SUCCESS)\n   CGroup: /system.slice/ip6tables.service\n\nIf an application firewall is not configured or is not installed or enabled, this is a finding.",
+  "fix": "1. For AOS, configure fapolicyd.service using the following command.\n\n$ sudo salt-call state.sls security/CVM/fapolicydCVM.sls\n\n2. For Prism Central, configure fapolicyd.service using the following command.\n\n$ sudo salt-call state.sls security/PCVM/fapolicydPCVM.sls\n\n3. For Files, configure fapolicyd.service using the following command.\n\n$ sudo salt-call state.sls security/AFS/fapolicydAFS.sls\n\n4. Configure AHV to restrict using SSH using the following command.\n\n$ sudo salt-call state.sls security/KVM/iptables/init",
+  "ccis": [
+    "CCI-001764",
+    "CCI-001774"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Firewalls protect computers from network attacks by blocking or limiting access to open network ports. Application firewalls limit which applications are allowed to communicate over the network.\n\nSatisfies: SRG-OS-000480-GPOS-00232, SRG-OS-000368-GPOS-00154, SRG-OS-000370-GPOS-00155",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000133",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

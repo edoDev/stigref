@@ -1,0 +1,56 @@
+{
+  "id": "SV-222948r960939_rule",
+  "full_rule_id": "SV-222948r960939_rule",
+  "rule_id": "SV-222948",
+  "rule_revision": "960939",
+  "group_id": "V-222948",
+  "group_title": "SRG-APP-000121-AS-000081",
+  "title": "$CATALINA_HOME/bin folder permissions must be set to 750.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Tomcat file permissions must be restricted. The standard configuration is to have all Tomcat files owned by root with group Tomcat. While root has read/write privileges, group only has read permissions, and world has no permissions. The exceptions are the logs, temp, and work directories that are owned by the Tomcat user rather than root. This means that even if an attacker compromises the Tomcat process, they cannot change the Tomcat configuration, deploy new web applications, or modify existing web applications. The Tomcat process runs with a umask of 0027 to maintain these permissions. Note that running Tomcat in a Docker environment can impact how file permissions and user ownership settings are applied. Due to associated Docker configuration complexities, the STIG is scoped for standalone rather than virtual Docker deployments.\n\nSatisfies: SRG-APP-000121-AS-000081, SRG-APP-000122-AS-000082, SRG-APP-000123-AS-000083, SRG-APP-000340-AS-000185</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Access the Tomcat server from the command line and execute the following OS command:\n\nsudo find $CATALINA_HOME/bin -follow -maxdepth 0 -type d \\( \\! -perm 750 \\) -ls\n\nIf no folders are displayed, this is not a finding.\n\nIf results indicate the $CATALINA_HOME/bin folder permissions are not set to 750, this is a finding.",
+  "fix": "Run the following command on the Tomcat server:\n\nsudo find $CATALINA_HOME/bin -follow -maxdepth 0 -type d -print0 | sudo xargs chmod 750 $CATALINA_HOME/bin",
+  "ccis": [
+    "CCI-001493",
+    "CCI-001494",
+    "CCI-001495",
+    "CCI-002235"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Tomcat file permissions must be restricted. The standard configuration is to have all Tomcat files owned by root with group Tomcat. While root has read/write privileges, group only has read permissions, and world has no permissions. The exceptions are the logs, temp, and work directories that are owned by the Tomcat user rather than root. This means that even if an attacker compromises the Tomcat process, they cannot change the Tomcat configuration, deploy new web applications, or modify existing web applications. The Tomcat process runs with a umask of 0027 to maintain these permissions. Note that running Tomcat in a Docker environment can impact how file permissions and user ownership settings are applied. Due to associated Docker configuration complexities, the STIG is scoped for standalone rather than virtual Docker deployments.\n\nSatisfies: SRG-APP-000121-AS-000081, SRG-APP-000122-AS-000082, SRG-APP-000123-AS-000083, SRG-APP-000340-AS-000185",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000390",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

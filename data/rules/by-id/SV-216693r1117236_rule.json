@@ -1,0 +1,53 @@
+{
+  "id": "SV-216693r1117236_rule",
+  "full_rule_id": "SV-216693r1117236_rule",
+  "rule_id": "SV-216693",
+  "rule_revision": "1117236",
+  "group_id": "V-216693",
+  "group_title": "SRG-NET-000018-RTR-000010",
+  "title": "The Cisco BGP router must be configured to reject route advertisements from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Verifying the path a route has traversed will ensure that the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to verify the router is configured to deny updates received from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.\n\nStep 1: Review router configuration and verify that there is an as-path access-list statement defined to only accept routes from a CE router whose AS did not originate the route. The configuration should look similar to the following:\n\nip as-path access-list 10 permit ^yy$\nip as-path access-list 10 deny .*\n\nNote: the characters “^” and “$” representing the beginning and the end of the expression respectively are optional and are implicitly defined if omitted.\n\nStep 2: Verify that the as-path access-list is referenced by the filter-list inbound for the appropriate BGP neighbors as shown in the example below:\n\nrouter bgp xx\nneighbor x.1.4.12 remote-as yy\nneighbor x.1.4.12 filter-list 10 in\n\nIf the router is not configured to reject updates from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the router to reject updates from CE routers with an originating AS in the AS_PATH attribute that do not belong to that customer.\n\nStep 1: Configure the as-path ACL as shown in the example below:\n\nR1(config)#ip as-path access-list 10 permit ^yy$\nR1(config)#ip as-path access-list 10 deny .*\n\nStep 2: Apply the as-path filter inbound as shown in the example below:\n\nR1(config)#router bgp xx\nR1(config-router)#neighbor x.1.4.12 filter-list 10 in",
+  "ccis": [
+    "CCI-000032"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Verifying the path a route has traversed will ensure that the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000550",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b",
+      "name": "Cisco IOS XE Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b"
+  ]
+}

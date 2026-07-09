@@ -1,0 +1,53 @@
+{
+  "id": "SV-217084r604135_rule",
+  "full_rule_id": "SV-217084r604135_rule",
+  "rule_id": "SV-217084",
+  "rule_revision": "604135",
+  "group_id": "V-217084",
+  "group_title": "SRG-NET-000019-RTR-000005",
+  "title": "The Juniper multicast edge router must be configured to establish boundaries for administratively scoped multicast traffic.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify it is blocking admin-scope multicast traffic (239.0.0.0/8) at the multicast domain edge as shown in the example below:\n\nrouting-options {\n    …\n    …\n    …\n    multicast {\n        scope ADMIN_SCOPE {\n            prefix 239.0.0.0/8;\n            interface [ ge-1/0/1.0 ge-1/1/1.0 ];\n        }\n    }\n}\n\nIf the router is not configured to block admin-scoped multicast traffic at the multicast domain edge, this is a finding.",
+  "fix": "Configure the router to block admin-scoped multicast traffic at the multicast domain edge as shown in the example below:\n\n[edit routing-options]\nset multicast scope ADMINL_SCOPE interface ge-1/0/1.0 prefix 239.0.0.0/8\nset multicast scope ADMINL_SCOPE interface ge-1/1/1.0 prefix 239.0.0.0/8",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

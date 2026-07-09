@@ -1,0 +1,53 @@
+{
+  "id": "SV-255961r961557_rule",
+  "full_rule_id": "SV-255961r961557_rule",
+  "rule_id": "SV-255961",
+  "rule_revision": "961557",
+  "group_id": "V-255961",
+  "group_title": "SRG-APP-000412-NDM-000331",
+  "title": "The Arista network device must be configured to implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data (including administrator passwords) at risk of compromise and potentially allowing hijacking of maintenance sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Validate that a FIPS validated SSH encryption algorithm is selected.\n\nNOTE: AES-CBC algorithms have been considered compromised and are no longer recommended for cryptographic algorithms. AES-CTR and AES-GCM are both superior algorithms and are recommended.\n\nsh run | section management ssh\ncipher aes256-ctr aes512-ctr aes128-ctr\n\nIf the Arista network device is not configured to implement cryptographic mechanisms to protect the confidentiality of remote maintenance sessions using a FIPS 140-2 approved algorithm, this is a finding.",
+  "fix": "Configure the Arista network device to use FIPS-approved algorithms to protect the confidentiality of remote maintenance sessions.\n\nswitch(config)#management ssh\nswitch(config-mgmt-ssh)#cipher aes256-ctr aes512-ctr aes128-ctr",
+  "ccis": [
+    "CCI-003123"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data (including administrator passwords) at risk of compromise and potentially allowing hijacking of maintenance sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-ND-000700",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-ndm-security-technical-implementation-guide-v2r2-273eebe1",
+      "name": "Arista MLS EOS 4.X NDM Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-ndm-security-technical-implementation-guide-v2r2-273eebe1"
+  ]
+}

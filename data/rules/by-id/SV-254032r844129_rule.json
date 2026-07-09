@@ -1,0 +1,53 @@
+{
+  "id": "SV-254032r844129_rule",
+  "full_rule_id": "SV-254032r844129_rule",
+  "rule_id": "SV-254032",
+  "rule_revision": "844129",
+  "group_id": "V-254032",
+  "group_title": "SRG-NET-000362-RTR-000111",
+  "title": "The Juniper router must be configured to have Gratuitous ARP disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A gratuitous ARP is an ARP broadcast in which the source and destination MAC addresses are the same. It is used to inform the network about a host IP address. A spoofed gratuitous ARP message can cause network mapping information to be stored incorrectly, causing network malfunction.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration to determine if gratuitous ARP is disabled on all external interfaces.\n[edit interfaces]\n<external interface> {\n    no-gratuitous-arp-reply;\n    no-gratuitous-arp-request;\n    unit <number> {\n        family inet {\n            address <IPv4 address>/<mask>;\n        }\n        family inet6 {\n            address <IPv6 address>/<mask>;\n        }\n    }\n}\n\nIf gratuitous ARP is enabled on any external interface, this is a finding.",
+  "fix": "Disable gratuitous ARP on all external interfaces.\n\nset interfaces <external interface> no-gratuitous-arp-reply\nset interfaces <external interface> no-gratuitous-arp-request\nset interfaces <external interface> unit <number> family inet address <IPv4 address>/<mask>\nset interfaces <external interface> unit <number> family inet6 address <IPv6 address>/<prefix>",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A gratuitous ARP is an ARP broadcast in which the source and destination MAC addresses are the same. It is used to inform the network about a host IP address. A spoofed gratuitous ARP message can cause network mapping information to be stored incorrectly, causing network malfunction.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000600",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

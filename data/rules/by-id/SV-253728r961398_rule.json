@@ -1,0 +1,53 @@
+{
+  "id": "SV-253728r961398_rule",
+  "full_rule_id": "SV-253728r961398_rule",
+  "rule_id": "SV-253728",
+  "rule_revision": "961398",
+  "group_id": "V-253728",
+  "group_title": "SRG-APP-000359-DB-000319",
+  "title": "MariaDB must provide a warning to appropriate support staff when allocated audit record storage volume reaches 75 percent of maximum audit record storage capacity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Organizations are required to use a central log management system, so, under normal conditions, the audit space allocated to the DBMS on its own server will not be an issue. However, space will still be required on the MariaDB server for audit records in transit, and, under abnormal conditions, this could fill up. Since a requirement exists to halt processing upon audit failure, a service outage would result.\n\nIf support personnel are not notified immediately upon storage volume utilization reaching 75 percent, they are unable to plan for storage capacity expansion. \n\nThe appropriate support staff include, at a minimum, the ISSO and the DBA/SA.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review OS, or third-party logging application settings to determine whether a warning will be provided when 75 percent of DBMS audit log storage capacity is reached.\n\nIf no warning will be provided, this is a finding.",
+  "fix": "Configure the system to notify appropriate support staff immediately upon storage volume utilization reaching 75 percent.\n\nMariaDB does not monitor storage, however, it is possible to monitor storage with a script.\n\n##### Example Monitoring Script\n\n#!/bin/bash\n\nDATADIR=/var/lib/psql/mysql\nCURRENT=$(df ${DATADIR?} | grep / | awk '{ print $5}' | sed 's/%//g')\nTHRESHOLD=75\n\nif [ \"$CURRENT\" -gt \"$THRESHOLD\" ] ; then\nmail -s 'Disk Space Alert' mail@support.com << EOF\nThe data directory volume is almost full. Used: $CURRENT\n%EOF\nfi\n\nSchedule this script in cron to run around the clock.",
+  "ccis": [
+    "CCI-001855"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Organizations are required to use a central log management system, so, under normal conditions, the audit space allocated to the DBMS on its own server will not be an issue. However, space will still be required on the MariaDB server for audit records in transit, and, under abnormal conditions, this could fill up. Since a requirement exists to halt processing upon audit failure, a service outage would result.\n\nIf support personnel are not notified immediately upon storage volume utilization reaching 75 percent, they are unable to plan for storage capacity expansion. \n\nThe appropriate support staff include, at a minimum, the ISSO and the DBA/SA.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-007400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

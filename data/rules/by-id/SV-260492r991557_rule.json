@@ -1,0 +1,54 @@
+{
+  "id": "SV-260492r991557_rule",
+  "full_rule_id": "SV-260492r991557_rule",
+  "rule_id": "SV-260492",
+  "rule_revision": "991557",
+  "group_id": "V-260492",
+  "group_title": "SRG-OS-000256-GPOS-00097",
+  "title": "Ubuntu 22.04 LTS must configure audit tools with a mode of \"755\" or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information.  \n  \nOperating systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys in order to make access decisions regarding the access to audit tools.  \n  \nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000256-GPOS-00097, SRG-OS-000257-GPOS-00098</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu 22.04 LTS configures the audit tools to have a file permission of \"755\" or less to prevent unauthorized access by using the following command:  \n  \n     $ stat -c \"%n %a\" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd* /sbin/augenrules \n     /sbin/auditctl 755 \n     /sbin/aureport 755 \n     /sbin/ausearch 755 \n     /sbin/autrace 755 \n     /sbin/auditd 755 \n     /sbin/audispd-zos-remote 755 \n     /sbin/augenrules 755 \n  \nIf any of the audit tools have a mode more permissive than \"0755\", this is a finding.",
+  "fix": "Configure the audit tools on Ubuntu 22.04 LTS to be protected from unauthorized access by setting the correct permissive mode using the following command:  \n  \n     $ sudo chmod 755 <audit_tool_name>  \n  \nReplace \"<audit_tool_name>\" with the audit tool that does not have the correct permissions.",
+  "ccis": [
+    "CCI-001493",
+    "CCI-001494"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information.  \n  \nOperating systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys in order to make access decisions regarding the access to audit tools.  \n  \nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000256-GPOS-00097, SRG-OS-000257-GPOS-00098",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-22-232035",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553",
+      "name": "Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553"
+  ]
+}

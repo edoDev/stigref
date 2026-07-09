@@ -1,0 +1,53 @@
+{
+  "id": "SV-215324r958566_rule",
+  "full_rule_id": "SV-215324r958566_rule",
+  "rule_id": "SV-215324",
+  "rule_revision": "958566",
+  "group_id": "V-215324",
+  "group_title": "SRG-OS-000206-GPOS-00084",
+  "title": "AIX log files must not have extended ACLs, except as needed to support authorized software.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify AIX or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nThe structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "With the assistance of the system administrator, identify all of the system log files.\n\nFor each system log file identified, verify that extended ACL's are disabled:\n\n#aclget <system_log_file>\n*\n* ACL_type   AIXC\n*\nattributes:\nbase permissions\n    owner(root):  rw-\n    group(system):  r--\n    others:  r--\nextended permissions\n    disabled\n\nIf \"extended permissions\" is set to \"enabled\" and is not documented, this is a finding.",
+  "fix": "Remove the extended ACL(s) from the system log file(s):\n# acledit <system_log_file>\n\nSet \"extended permissions\" to \"disabled\".",
+  "ccis": [
+    "CCI-001314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify AIX or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nThe structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

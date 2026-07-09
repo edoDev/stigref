@@ -1,0 +1,53 @@
+{
+  "id": "SV-266086r1024925_rule",
+  "full_rule_id": "SV-266086r1024925_rule",
+  "rule_id": "SV-266086",
+  "rule_revision": "1024925",
+  "group_id": "V-266086",
+  "group_title": "SRG-APP-000395-NDM-000347",
+  "title": "The F5 BIG-IP appliance must authenticate Network Time Protocol (NTP) sources using authentication that is cryptographically based.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If NTP is not authenticated, an attacker can introduce a rogue NTP server. This rogue server can then be used to send incorrect time information to network devices, which will make log timestamps inaccurate and affect scheduled actions. NTP authentication is used to prevent this tampering by authenticating the time source.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the BIG-IP Console:\ncat /etc/ntp/keys\n\n#Verify this key is installed on all the NTP servers and clients participating in the NTP time synchronization.\n\ntmsh list sys ntp include\n\n#Verify there is a line similar to the following:\n#server <ntp server> key <trusted key number matched to /etc/ntp/keys> iburst trustedkey <trusted key number matched to /etc/ntp/keys>\n\nIf the BIG-IP appliance is not configured to authenticate Network Time Protocol sources using authentication that is cryptographically based, this is a finding.",
+  "fix": "From the BIG-IP console, type the following commands:\n\necho \"1 M <passphrase> #MD5 Key\" > /etc/ntp/keys\n\nNote: This command assumes that no other keys have been previously configured in the /etc/ntp/keys file. Running this command will overwrite the file.\n\n#Make sure this key is installed on all the NTP servers and clients participating in the NTP time synchronization.\n\ntmsh edit sys ntp all-properties\n\n#Replace the \"include\" section with the following (add as many ntp server lines as necessary for the environment, but configure at least 2):\n\ninclude \"server <ntp server> key <trusted key number matched to /etc/ntp/keys> iburst trustedkey <trusted key number matched to /etc/ntp/keys>\nserver <ntp server> key <trusted key number matched to /etc/ntp/keys> iburst trustedkey <trusted key number matched to /etc/ntp/keys>\"\n\ntmsh save sys config",
+  "ccis": [
+    "CCI-001967"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If NTP is not authenticated, an attacker can introduce a rogue NTP server. This rogue server can then be used to send incorrect time information to network devices, which will make log timestamps inaccurate and affect scheduled actions. NTP authentication is used to prevent this tampering by authenticating the time source.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-DM-300048",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-ndm-security-technical-implementation-guide-v1r2-1787aa3e",
+      "name": "F5 BIG-IP TMOS NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-ndm-security-technical-implementation-guide-v1r2-1787aa3e"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "SV-274024r1190697_rule",
+  "full_rule_id": "SV-274024r1190697_rule",
+  "rule_id": "SV-274024",
+  "rule_revision": "1190697",
+  "group_id": "V-274024",
+  "group_title": "SRG-OS-000363-GPOS-00150",
+  "title": "Amazon Linux 2023 must have the Advanced Intrusion Detection Environment (AIDE) package installed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If security functions are not verified, they may not operate correctly and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.\n\nSatisfies: SRG-OS-000363-GPOS-00150, SRG-OS-000445-GPOS-00199, SRG-OS-000358-GPOS-00145</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 has the AIDE package installed with the following command:\n\n$ dnf list --installed aide\nInstalled Packages\naide.x86_64          0.18.6-1.amzn2023.0.1          @amazonlinux\n\nIf AIDE is not installed, ask the system administrator (SA) how file integrity checks are performed on the system. \n\nIf there is no application installed to perform integrity checks, this is a finding.\n\nIf AIDE is installed, check if it has been initialized with the following command:\n\n$ sudo /usr/sbin/aide --check\n\nIf the output is \"Couldn't open file /var/lib/aide/aide.db.gz for reading\", this is a finding.",
+  "fix": "Configure Amazon Linux 2023 to have the AIDE package installed.\n\nInstall AIDE:\n\n$ sudo dnf install -y aide\n\nInitialize AIDE:\n \n$ sudo /usr/sbin/aide --init\n\nThe new database must be renamed to be read by AIDE:\n\n$ sudo mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz\n\nPerform a manual check:\n\n$ sudo /usr/sbin/aide --check\nExample output:\n\n2023-06-05 10:16:08 -0600 (AIDE 0.16)\nAIDE found NO differences between database and filesystem. Looks okay!!",
+  "ccis": [
+    "CCI-001744",
+    "CCI-002696",
+    "CCI-001889"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If security functions are not verified, they may not operate correctly and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.\n\nSatisfies: SRG-OS-000363-GPOS-00150, SRG-OS-000445-GPOS-00199, SRG-OS-000358-GPOS-00145",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-001060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

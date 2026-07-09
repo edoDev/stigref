@@ -1,0 +1,53 @@
+{
+  "id": "SV-214231r961863_rule",
+  "full_rule_id": "SV-214231r961863_rule",
+  "rule_id": "SV-214231",
+  "rule_revision": "961863",
+  "group_id": "V-214231",
+  "group_title": "SRG-APP-000516-WSR-000174",
+  "title": "The Apache web server must have system logging enabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The server error logs are invaluable because they can also be used to identify potential problems and enable proactive remediation. Log data can reveal anomalous behavior such as “not found” or “unauthorized” errors that may be an evidence of attack attempts. Failure to enable error logging can significantly reduce the ability of Web Administrators to detect or remediate problems. The CustomLog directive specifies the log file, syslog facility, or piped logging utility.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file:\n\n# apachectl -V | egrep -i 'httpd_root|server_config_file'\n-D HTTPD_ROOT=\"/etc/httpd\"\n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\"\n\nNote: The apachectl front end is the preferred method for locating the Apache httpd file. For some Linux distributions, \"apache2ctl -V\" or  \"httpd -V\" can also be used.\n\nSearch for the directive \"CustomLog\" in the \"httpd.conf\" file:\n\n# cat /<path_to_file>/httpd.conf | grep -i \"CustomLog\"\n\nIf the \"CustomLog\" directive is missing, this is a finding:\n\nAn example CustomLog directive would be as follows:\nCustomLog \"logs/access_log\" common or CustomLog “log/access_log” combined\n(May also be \"Logs/access_log\")",
+  "fix": "Edit the \"httpd.conf\" file and enter the name, path and level for the CustomLog.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The server error logs are invaluable because they can also be used to identify potential problems and enable proactive remediation. Log data can reveal anomalous behavior such as “not found” or “unauthorized” errors that may be an evidence of attack attempts. Failure to enable error logging can significantly reduce the ability of Web Administrators to detect or remediate problems. The CustomLog directive specifies the log file, syslog facility, or piped logging utility.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U1-000065",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738",
+      "name": "Apache Server 2.4 UNIX Server Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738"
+  ]
+}

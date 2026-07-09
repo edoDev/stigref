@@ -1,0 +1,58 @@
+{
+  "id": "SV-279628r1192513_rule",
+  "full_rule_id": "SV-279628r1192513_rule",
+  "rule_id": "SV-279628",
+  "rule_revision": "1192513",
+  "group_id": "V-279628",
+  "group_title": "SRG-OS-000425-GPOS-00189",
+  "title": "Nutanix OS must install and use SSH for remote access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information can be either unintentionally or maliciously disclosed or modified during preparation for transmission, for example, during aggregation, at protocol transformation points, and during packing/unpacking. These unauthorized disclosures or modifications compromise the confidentiality or integrity of the information.\n\nEnsuring the confidentiality of transmitted information requires the operating system to take measures in preparing information for transmission. This can be accomplished via access control and encryption.\n\nSatisfies: SRG-OS-000425-GPOS-00189, SRG-OS-000074-GPOS-00042, SRG-OS-000425-GPOS-00189, SRG-OS-000113-GPOS-00058, SRG-OS-000426-GPOS-00190, SRG-OS-000112-GPOS-00057</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS has SSH loaded and active using the following command.\n\nNote: The default Protocol version of the ssh daemon is 2, which provides the necessary mitigations to prevent replay attacks.\n\n$ sudo systemctl status sshd\nsshd.service - OpenSSH server daemon\nLoaded: loaded (/usr/lib/systemd/system/sshd.service; enabled)\nActive: active (running) since Tue 2015-11-17 15:17:22 EST; 4 weeks 0 days ago\nMain PID: 1348 (sshd)\nCGroup: /system.slice/sshd.service\n1053 /usr/sbin/sshd -D\n\nIf \"sshd\" does not show a status of \"active\" and \"running\", this is a finding.\n\nIf the \"SSH server\" package is not installed, this is a finding.",
+  "fix": "However, Nutanix AOS has the OpenSSH-Server package preinstalled as part of its base package set. If the package is not installed, some corruption has taken place and the CVM must be rebuilt.\n\nConfigure SSH to meet DOD standard, if already installed on the OS instance. \n\n1. For AOS, configure SSH, then restart the SSH for the changes to take effect using the following command.\n\n$ sudo salt-call state.sls security/CVM/sshdCVM\n$ sudo systemctl restart sshd\n\n2. For Prism Central, configure SSH, then restart the SSH for the changes to take effect using the following command.\n\n$ sudo salt-call state.sls security/PCVM/sshdPCVM\n$ sudo systemctl restart sshd\n\n3. For Files, configure SSH, then restart the SSH for the changes to take effect using the following command.\n\n$ sudo salt-call state.sls security/AFS/sshdAFS\n$ sudo systemctl restart sshd\n\n4. For AHV configure SSH, then restart the SSH for the changes to take effect using the following command.\n\n$ sudo salt-call state.sls security/KVM/sshdKVM\n$ sudo systemctl restart sshd",
+  "ccis": [
+    "CCI-002420",
+    "CCI-002422",
+    "CCI-001941",
+    "CCI-002420",
+    "CCI-000197",
+    "CCI-001941"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information can be either unintentionally or maliciously disclosed or modified during preparation for transmission, for example, during aggregation, at protocol transformation points, and during packing/unpacking. These unauthorized disclosures or modifications compromise the confidentiality or integrity of the information.\n\nEnsuring the confidentiality of transmitted information requires the operating system to take measures in preparing information for transmission. This can be accomplished via access control and encryption.\n\nSatisfies: SRG-OS-000425-GPOS-00189, SRG-OS-000074-GPOS-00042, SRG-OS-000425-GPOS-00189, SRG-OS-000113-GPOS-00058, SRG-OS-000426-GPOS-00190, SRG-OS-000112-GPOS-00057",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000203",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

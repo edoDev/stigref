@@ -1,0 +1,53 @@
+{
+  "id": "SV-241791r960741_rule",
+  "full_rule_id": "SV-241791r960741_rule",
+  "rule_id": "SV-241791",
+  "rule_revision": "960741",
+  "group_id": "V-241791",
+  "group_title": "PP-MDM-411047",
+  "title": "The Jamf Pro EMM server or platform must be configured to initiate a session lock after a 15-minute period of inactivity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A session time-out lock is a temporary action taken when a user (MDM system administrator) stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their application session prior to vacating the vicinity, applications need to be able to identify when a user's application session has idled and take action to initiate the session lock.\n\nThe session lock is implemented at the point where session activity can be determined and/or controlled. This is typically at the operating system level and results in a system lock but may be at the application level where the application interface window is secured instead.\n\nSFR ID: FMT_SMF.1.1(2) i</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the Jamf Pro EMM server or platform is configured to initiate a session lock after a 15-minute period of inactivity.\n\nReview the variable in the Jamf Pro web.xml file.\n\nOn the Jamf Pro host server, open the web.xml file:\n\nIf using macOS, the web.xml file is located at the following filepath:\n/Library/JSS/Tomcat/webapps/ROOT/WEB-INF/\n\nIf using Windows, the web.xml file is located at the following filepath:\nC:\\Program Files\\JSS\\Tomcat\\webapps\\ROOT\\WEB-INF\\\n\nIf using Linux, the web.xml file is located at the following filepath:\n/usr/local/jss/tomcat/webapps/ROOT/WEB-INF/\n\nLocate the following setting:\n<session-config>\n<session-timeout>15</session-timeout> \n</session-config>\n\nEnsure that the code is not commented out. If the code is commented out, remove the comment tags <!--  --> that encase the code.\nNote: Session timeout is in minutes.\n\nIf the code is commented out or session-timeout is not configured to \"15\" minutes or less, this is a finding.",
+  "fix": "Perform the following procedure to configure the Jamf session lock to lock after a 15-minute period of inactivity.\n\nConfiguring the Variable in the JAMF web.xml File\n\nOn the  Jamf Pro EMM host server, open the web.xml file:\n\nIf using macOS, the web.xml file is located at the following filepath:\n/Library/JSS/Tomcat/webapps/ROOT/WEB-INF/\n\nIf using Windows, the web.xml file is located at the following filepath:\nC:\\Program Files\\JSS\\Tomcat\\webapps\\ROOT\\WEB-INF\\\n\nIf using Linux, the web.xml file is located at the following filepath:\n/usr/local/jss/tomcat/webapps/ROOT/WEB-INF/\n\nLocate the following setting:\n<session-config>\n<session-timeout>1</session-timeout> \n</session-config>\n\nEnsure that the code is not commented out. If the code is commented out, remove the comment tags <!--  -->  that encase the code.\n\nModify the session-timeout to a value from 1 to 15.\nNote: Session timeout is in minutes.\n\nRestart Tomcat after modifying anything within the web.xml file.\nSee Starting and Stopping Tomcat for instructions in the Jamf admin guide.",
+  "ccis": [
+    "CCI-000057"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A session time-out lock is a temporary action taken when a user (MDM system administrator) stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their application session prior to vacating the vicinity, applications need to be able to identify when a user's application session has idled and take action to initiate the session lock.\n\nThe session lock is implemented at the point where session activity can be determined and/or controlled. This is typically at the operating system level and results in a system lock but may be at the application level where the application interface window is secured instead.\n\nSFR ID: FMT_SMF.1.1(2) i",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JAMF-10-000460",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "jamf-pro-v10-x-emm-security-technical-implementation-guide-v3r1-2abf09e7",
+      "name": "Jamf Pro v10.x EMM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "jamf-pro-v10-x-emm-security-technical-implementation-guide-v3r1-2abf09e7"
+  ]
+}

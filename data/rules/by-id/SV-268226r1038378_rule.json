@@ -1,0 +1,53 @@
+{
+  "id": "SV-268226r1038378_rule",
+  "full_rule_id": "SV-268226r1038378_rule",
+  "rule_id": "SV-268226",
+  "rule_revision": "1038378",
+  "group_id": "V-268226",
+  "group_title": "SRG-APP-000343-NDM-000289",
+  "title": "The HYCU virtual appliance must audit the execution of privileged functions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the contents of the \"/var/log/audit/audit.log\" file.\n\nHYCU also maintains Event (Audit) information in the HYCU Web UI Events menu.\n\nVerify the audit log contains records showing when the execution of privileged functions occurred.\n\nIf the audit log is not configured or does not have the required contents, this is a finding.",
+  "fix": "Configure HYCU to audit the execution of the \"execve\" system call.\n\nAdd or update the following file system rules to \"/etc/audit/rules.d/audit.rules\":\n-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k execpriv\n-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv\n\n-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv\n-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv\n\nReboot the appliance to take effect.",
+  "ccis": [
+    "CCI-002234"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HYCU-ND-000080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hycu-protege-security-technical-implementation-guide-v1r2-57a24ef6",
+      "name": "HYCU Protege Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hycu-protege-security-technical-implementation-guide-v1r2-57a24ef6"
+  ]
+}

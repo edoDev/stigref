@@ -1,0 +1,53 @@
+{
+  "id": "SV-223921r1137691_rule",
+  "full_rule_id": "SV-223921r1137691_rule",
+  "rule_id": "SV-223921",
+  "rule_revision": "1137691",
+  "group_id": "V-223921",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS Operating system commands (MVS.) of the OPERCMDS resource class must be properly owned.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nTSS WHOOWNS OPERCMDS(MVS)\n\nIf the (MVS) resource is owned, this is not a finding.\n\nIf the (MVS) resource is not owned, this is a finding.\n\nTSS LIST RDT RESCLASS(OPERCMDS)\n\nIf the (MVS) resource is not OWNED and the OPERCMDS class does not have DEFPROT as an attribute, this is a finding.",
+  "fix": "z/OS system command controls are provided via resources in the OPERCMDS resource class. Configure (MVS) of the OPERCMDS resource class to be properly owned or at a minimum the OPERCMDS resource in the RDT specifies the DEFPROT attribute. Name the actual owning ACID specified for deptacid in accordance with installation recommendations. \n\nWhen protecting the facilities for z/OS system commands via the OPERCMDS class, use the following controls:\n\n(1) Prevent access to the z/OS resources by default, and log all access. Create generic and specific permissions with logging as required using the required controls for z/OS System Commands listed in ACP00282. \n\nFor example:\n\nTSS ADDTO(deptacid) OPERCMDS(MVS.)\nTSS PERMIT(usracid) OPERCMDS(MVS.ACTIVATE) ACTION(AUDIT)\nTSS PERMIT(usracid) OPERCMDS(MVS.CANCEL.JOB.) ACTION(AUDIT)\nTSS PERMIT(usracid) OPERCMDS(MVS.CONTROL.) ACCESS(UPDATE)\nACTION(AUDIT)\nTSS PERMIT(usracid) OPERCMDS(MVS.DISPLAY.) ACCESS(READ)\nTSS PERMIT(usracid) OPERCMDS(MVS.MONITOR) ACCESS(READ)\nTSS PERMIT(usracid) OPERCMDS(MVS.STOPMN) ACCESS(READ)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-ES-000480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

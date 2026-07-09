@@ -1,0 +1,53 @@
+{
+  "id": "SV-273683r1110986_rule",
+  "full_rule_id": "SV-273683r1110986_rule",
+  "rule_id": "SV-273683",
+  "rule_revision": "1110986",
+  "group_id": "V-273683",
+  "group_title": "SRG-NET-000362-L2S-000027",
+  "title": "The RUCKUS ICX switch must have Dynamic Address Resolution Protocol (ARP) Inspection (DAI) enabled on all user VLANs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DAI intercepts ARP requests and verifies that each of these packets has a valid IP-to-MAC address binding before updating the local ARP cache and before forwarding the packet to the appropriate destination. Invalid ARP packets are dropped and logged. DAI determines the validity of an ARP packet based on valid IP-to-MAC address bindings stored in the DHCP snooping binding database. If the ARP packet is received on a trusted interface, the switch forwards the packet without any checks. On untrusted interfaces, the switch forwards the packet only if it is valid.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review list of VLANs with ARP inspection configured.  \n\nICX#show ip arp inspection\nIP ARP inspection enabled on 1 VLAN(s):\n        VLAN(s): 16\n\nIf ARP Inspection is not enabled on all user VLANs, this is a finding.",
+  "fix": "Configure the switch to have Dynamic Address Resolution Protocol (ARP) Inspection (DAI) enabled on all user VLANs.\n\n1. Enter global configuration mode:\ndevice# configure terminal\ndevice(config)# ip arp inspection vlan 2\n\nOptional Step 2: Apply to multiple VLANs:\ndevice# configure terminal\ndevice(config)# ip arp inspection vlan 100 to 150 160 170 to 200",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DAI intercepts ARP requests and verifies that each of these packets has a valid IP-to-MAC address binding before updating the local ARP cache and before forwarding the packet to the appropriate destination. Invalid ARP packets are dropped and logged. DAI determines the validity of an ARP packet based on valid IP-to-MAC address bindings stored in the DHCP snooping binding database. If the ARP packet is received on a trusted interface, the switch forwards the packet without any checks. On untrusted interfaces, the switch forwards the packet only if it is valid.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-L2S-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-layer-2-switch-security-technical-implementation-guide-v1r1-9a6f99d6",
+      "name": "RUCKUS ICX Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-layer-2-switch-security-technical-implementation-guide-v1r1-9a6f99d6"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-221218r1043178_rule",
+  "full_rule_id": "SV-221218r1043178_rule",
+  "rule_id": "SV-221218",
+  "rule_revision": "1043178",
+  "group_id": "V-221218",
+  "group_title": "SRG-APP-000219",
+  "title": "Exchange internal Send connectors must use domain security (mutual authentication Transport Layer Security).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Simple Mail Transfer Protocol (SMTP) connector is used by Exchange to send and receive messages from server to server. Several controls work together to provide security between internal servers. This setting controls the authentication method used for communications between servers. With this feature enabled, only servers capable of supporting domain authentication will be able to send and receive mail within the domain.\n\nThe use of secure communication prevents eavesdroppers from reading or modifying communications between mail clients and servers. While sensitive message bodies should be encrypted by the sender at the client, requiring a secure connection from server to server adds protection by encrypting the sender and recipient information that cannot be encrypted by the sender.  \n\nIndividually, channel security and encryption can be compromised by attackers. Used together, email becomes a more difficult target, and security is heightened. Failure to enable this feature gives eavesdroppers an opportunity to read or modify messages between servers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Open the Exchange Management Shell and enter the following command:\n\nGet-SendConnector | Select Name, Identity, DomainSecureEnabled, DNSRoutingEnabled, RequireTLS, TlsAuthLevel \n\nFor each send connector: \n\nIf the send connector does not use a smarthost and the value of \"DomainSecureEnabled\" is not set to \"True\", this is a finding.\n\nIf the send connector does use a smarthost, \"DomainSecureEnabled\" will be set to \"False\".  \n\nIf the send connector does use a smarthost \"DNSRoutingEnabled\",  \"RequireTLS\", and \"TlsAuthLevel\" must be set.\n\nIf the send connector using a smart host has a value for “DNSRoutingEnabled” that is not set to “False”, this is a finding.\n\nIf the send connector using a smarthost has a value for “RequireTLS” that is not set to “True”, this is a finding.\n\nIf the send connector using a smarthost has a value for “TlsAuthLevel” that is not set to “DomainValidation”, this is a finding.",
+  "fix": "Open the Exchange Management Shell and enter the following command:\n\nSet-SendConnector <'IdentityName'> -DomainSecureEnabled $true\n\nNote: The <IdentityName> value must be in single quotes.\n\nRepeat the procedures for each send connector.\n\nThe following commands can be executed if smarthosts are used:\n\nSet-SendConnector <'IdentityName'> -RequireTLS $true -DNSRoutingEnabled $False -TlsAuthLevel $DomainValidation",
+  "ccis": [
+    "CCI-001184"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Simple Mail Transfer Protocol (SMTP) connector is used by Exchange to send and receive messages from server to server. Several controls work together to provide security between internal servers. This setting controls the authentication method used for communications between servers. With this feature enabled, only servers capable of supporting domain authentication will be able to send and receive mail within the domain.\n\nThe use of secure communication prevents eavesdroppers from reading or modifying communications between mail clients and servers. While sensitive message bodies should be encrypted by the sender at the client, requiring a secure connection from server to server adds protection by encrypting the sender and recipient information that cannot be encrypted by the sender.  \n\nIndividually, channel security and encryption can be compromised by attackers. Used together, email becomes a more difficult target, and security is heightened. Failure to enable this feature gives eavesdroppers an opportunity to read or modify messages between servers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX16-ED-000170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2016-edge-transport-server-security-technical-implementation-v2r6-7bfc98a9",
+      "name": "Microsoft Exchange 2016 Edge Transport Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2016-edge-transport-server-security-technical-implementation-v2r6-7bfc98a9"
+  ]
+}

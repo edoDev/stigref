@@ -1,0 +1,53 @@
+{
+  "id": "SV-223987r1137691_rule",
+  "full_rule_id": "SV-223987r1137691_rule",
+  "rule_id": "SV-223987",
+  "rule_revision": "1137691",
+  "group_id": "V-223987",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS JES2 input sources must be controlled in accordance with the proper security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer the JES2PARM member of SYS1.PARMLIB\nReview the following resources in the JESINPUT resource class:\n\nNOTE: If any of the following are not defined within the JES2 parameters, the resource in the JESINPUT resource class does not have to be owned.\nINTRDR (internal reader for batch jobs)\nnodename (NJE node)\nOFFn.* (spool offload receiver)\nRnnnn (RJE workstation)\nRDRnn (local card reader)\nSTCINRDR (internal reader for started tasks)\nTSUINRDR (internal reader for TSO logons)\n\nNote 1: Nodename is the NAME parameter in the NODE statement. Review the NJE node definitions by searching for \"NODE(\" in the report.\n\nNote 2: OFFn, where n is the number of the offload receiver. Review the spool offload receiver definitions by searching for \"OFF(\" in the report.\n\nNote 3: Rnnnn, where nnnn is the number of the remote workstation. Review the RJE node definitions by searching for \"RMT(\" in the report.\n\nNote 4: RDRnn, where nn is the number of the reader. Review the reader definitions by searching for \"RDR(\" in the report.\n\nFrom the ISPF Command Shell enter:\n\nTSS WHOOWNS JESINPUT(*)\nIf all of the resources above are owned by generic and/or fully qualified entries in the JESINPUT resource class, this is not a finding.\n\nIf any of the above resources are not owned, or are owned inappropriately, in the JESINPUT resource class, this is a finding.",
+  "fix": "Review the following resources in the JESINPUT resource class:\n\nINTRDR (internal reader for batch jobs)\nnodename (NJE node)\nOFFn.* (spool offload receiver)\nRnnnn (RJE workstation)\nRDRnn (local card reader)\nSTCINRDR (internal reader for started tasks)\nTSUINRDR (internal reader for TSO logons)\n\nNote: If any of the following are not defined within the JES2 parameters, the resource in the JESINPUT resource class does not have to be defined.\n\nNote 1: Nodename is the NAME parameter in the NODE statement. Review the JES2 parameters for NJE node definitions by searching for \"NODE(\" in the report.\n\nNote 2: OFFn, where n is the number of the offload receiver. Review the JES2 parameters for spool offload receiver definitions by searching for \"OFF(\" in the report.\n\nNote 3: Rnnnn, where nnnn is the number of the remote workstation. Review the JES2 parameters for RJE node definitions by searching for \"RMT(\" in the report.\n\nNote 4: RDRnn, where nn is the number of the reader. Review the JES2 parameters for reader definitions by searching for \"RDR(\" in the report.\n\nEnsure all of the defined resources above are owned by generic and/or fully qualified entries in the JESINPUT resource class. \n\nFor Example:\n\nThe following commands may be used to establish default protection for resources defined to the JESINPUT resource class:\n\nTSS ADDTO(deptacid) JESINPUT(OFFn.)\n\nGrant read access to authorized users for each of the resources defined to the JESINPUT resource class.\n\nThe following is an example of granting operators with a profile ACID of jesopracid permission to restore jobs into any SPOOL off load processor after obtaining permission from the ISSO:\n\nTSS PERMIT(jesopracid) JESINPUT(OFF*.) ACCESS(READ) ACTION(AUDIT) \n\nThe resource definition should be generic if all of the resources of the same type have identical access controls (e.g., if all off load receivers are equivalent).",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-JS-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

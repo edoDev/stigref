@@ -1,0 +1,53 @@
+{
+  "id": "SV-279606r1192492_rule",
+  "full_rule_id": "SV-279606r1192492_rule",
+  "rule_id": "SV-279606",
+  "rule_revision": "1192492",
+  "group_id": "V-279606",
+  "group_title": "SRG-OS-000070-GPOS-00038",
+  "title": "Nutanix OS must enforce password complexity by requiring at least one lowercase character be used.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Using a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.\n\nPassword complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix AOS is configured to require complex passwords. Note: The value to require a number of lowercase characters to be set is expressed as a negative number in \"/etc/security/pwquality.conf\".\n\nCheck the value for \"lcredit\" in \"/etc/security/pwquality.conf\" using the following command.\n\n$ sudo grep lcredit /etc/security/pwquality.conf \nlcredit = -1\n\nIf the value of \"lcredit\" is not set to a negative value, this is a finding.",
+  "fix": "Configure Nutanix OS to use complex passwords.\n\n1. For AOS, enter the following command.\n\n$ sudo salt-call state.sls security/CVM/pamCVM.sls\n\n2. For Prism Central, enter the following command.\n\n$ sudo salt-call state.sls security/PCVM/pamPCVM.sls\n\n3. For Files, enter the following command.\n\n$ sudo salt-call state.sls security/AFS/pamAFS.sls\n\n4. For AHV OS CVM, enter the following command.\n\n$ ncli cluster edit-hypervisor-security-params enable-high-strength-password=true",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.\n\nPassword complexity is one factor of several that determines how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000163",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

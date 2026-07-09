@@ -1,0 +1,53 @@
+{
+  "id": "SV-253743r961656_rule",
+  "full_rule_id": "SV-253743r961656_rule",
+  "rule_id": "SV-253743",
+  "rule_revision": "961656",
+  "group_id": "V-253743",
+  "group_title": "SRG-APP-000447-DB-000393",
+  "title": "When invalid inputs are received, MariaDB must behave in a predictable and documented manner that reflects organizational and system objectives.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A common vulnerability is unplanned behavior when invalid inputs are received. This requirement guards against adverse or unintended system behavior caused by invalid inputs, where information system responses to the invalid input may be disruptive or cause the system to fail into an unsafe state.\n\nThe behavior will be derived from the organizational and system requirements and includes, but is not limited to, notification of the appropriate personnel, creating an audit record, and rejecting invalid input.\n\nThis calls for inspection of application source code, which will require collaboration with the application developers. It is recognized that in many cases, the database administrator (DBA) is organizationally separate from the application developers, and may have limited, if any, access to source code. Nevertheless, protections of this type are so important to the secure operation of databases that they must not be ignored. At a minimum, the DBA must attempt to obtain assurances from the development organization that this issue has been addressed and must document what has been discovered.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As the database administrator, make a small SQL syntax error by running the following:\n \nMariaDB> CREAT TABLEincorrect_syntax(id INT) \nERROR 1064 (42000) at line 1: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near  CREAT TABLEincorrect_syntax(id INT)  at line 1\n  \nNow verify the syntax error was logged (change the log file name and part to suit the circumstances):\n\n$ cat $DATADIR/sql_errors.log\n\n2019-09-05 14:31:22 root[root] @ localhost [] ERROR 1064: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near  CREAT TABLEincorrect_syntax(id INT)  at line 1 : CREAT TABLEincorrect_syntax(id INT)\n\nReview security guide to determine how input errors from application to MariaDB are to be handled in general and if any special handling is defined for specific circumstances.\n\nIf it does not implement the documented behavior, this is a finding.",
+  "fix": "All errors and denials are logged to the sql errorlog. If the sql error log does not exist, install the sql error log plugin as follows:\n\nMariaDB> INSTALL SONAME 'sql_errlog';\n\nThe error log should by default be located as sql_errors.log within the data directory (/var/lib/mysql by default).",
+  "ccis": [
+    "CCI-002754"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A common vulnerability is unplanned behavior when invalid inputs are received. This requirement guards against adverse or unintended system behavior caused by invalid inputs, where information system responses to the invalid input may be disruptive or cause the system to fail into an unsafe state.\n\nThe behavior will be derived from the organizational and system requirements and includes, but is not limited to, notification of the appropriate personnel, creating an audit record, and rejecting invalid input.\n\nThis calls for inspection of application source code, which will require collaboration with the application developers. It is recognized that in many cases, the database administrator (DBA) is organizationally separate from the application developers, and may have limited, if any, access to source code. Nevertheless, protections of this type are so important to the secure operation of databases that they must not be ignored. At a minimum, the DBA must attempt to obtain assurances from the development organization that this issue has been addressed and must document what has been discovered.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-009100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

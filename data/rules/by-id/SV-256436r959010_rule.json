@@ -1,0 +1,53 @@
+{
+  "id": "SV-256436r959010_rule",
+  "full_rule_id": "SV-256436r959010_rule",
+  "rule_id": "SV-256436",
+  "rule_revision": "959010",
+  "group_id": "V-256436",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host must enable audit logging.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>ESXi offers both local and remote audit recordkeeping to meet the requirements of the NIAP Virtualization Protection Profile and Server Virtualization Extended Package. Local records are stored on any accessible local or VMFS path. Remote records are sent to the global syslog servers configured elsewhere.\n\nTo operate in the NIAP validated state, ESXi must enable and properly configure this audit system. This system is disabled by default.\n\nNote: Audit records can be viewed locally via the \"/bin/auditLogReader\" utility over SSH or at the ESXi shell.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an ESXi shell, run the following command:\n\n# esxcli system auditrecords get\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\n$esxcli = Get-EsxCli -v2\n$esxcli.system.auditrecords.get.invoke()|Format-List\n\nExample result:\n\nAuditRecordRemoteTransmissionActive : true\nAuditRecordStorageActive : true\nAuditRecordStorageCapacity : 100\nAuditRecordStorageDirectory : /scratch/auditLog\n\nNote: The \"Audit Record Storage Directory\" may differ from the default above, but it must still be located on persistent storage.\n\nIf audit record storage is not active and configured, this is a finding.",
+  "fix": "From an ESXi shell, run the following commands:\n\nOptional: Set the audit log location to persistent storage. This is set to \"/scratch/auditLog\" by default and does not normally need to be changed.\n\n# esxcli system auditrecords local set --directory=\"/full/path/here\"\n\nMandatory:\n\n# esxcli system auditrecords local set --size=100\n# esxcli system auditrecords local enable\n# esxcli system auditrecords remote enable\n# esxcli system syslog reload\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\n$esxcli = Get-EsxCli -v2\n$arguments = $esxcli.system.auditrecords.local.set.CreateArgs()\n*Optional* $arguments.directory = \"/full/path/here\"\n$arguments.size=\"100\"\n$esxcli.system.auditrecords.local.set.Invoke($arguments)\n$esxcli.system.auditrecords.local.enable.Invoke()\n$esxcli.system.auditrecords.remote.enable.Invoke()",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ESXi offers both local and remote audit recordkeeping to meet the requirements of the NIAP Virtualization Protection Profile and Server Virtualization Extended Package. Local records are stored on any accessible local or VMFS path. Remote records are sent to the global syslog servers configured elsewhere.\n\nTo operate in the NIAP validated state, ESXi must enable and properly configure this audit system. This system is disabled by default.\n\nNote: Audit records can be viewed locally via the \"/bin/auditLogReader\" utility over SSH or at the ESXi shell.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-70-000084",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2",
+      "name": "VMware vSphere 7.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2"
+  ]
+}

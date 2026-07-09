@@ -1,0 +1,53 @@
+{
+  "id": "SV-256720r888751_rule",
+  "full_rule_id": "SV-256720r888751_rule",
+  "rule_id": "SV-256720",
+  "rule_revision": "888751",
+  "group_id": "V-256720",
+  "group_title": "SRG-APP-000141-WSR-000086",
+  "title": "Lookup Service must be configured with memory leak protection.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Java Runtime environment can cause a memory leak or lock files under certain conditions. Without memory leak protection, Lookup Service can continue to consume system resources, which will lead to \"OutOfMemoryErrors\" when reloading web applications.\n\nMemory leaks occur when JRE code uses the context class loader to load a singleton as this will cause a memory leak if a web application class loader happens to be the context class loader at the time. The \"JreMemoryLeakPreventionListener\" class is designed to initialize these singletons when Tomcat's common class loader is the context class loader. Proper use of JRE memory leak protection will ensure that the hosted application does not consume system resources and cause an unstable environment.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n\n# grep JreMemoryLeakPreventionListener /usr/lib/vmware-lookupsvc/conf/server.xml\n\nExpected result:\n\n<Listener className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>\n\nIf the output of the command does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-lookupsvc/conf/server.xml\n\nNavigate to the <Server> node.\n\nAdd '<Listener className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>' to the <Server> node.\n\nRestart the service with the following command:\n\n# vmon-cli --restart lookupsvc",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Java Runtime environment can cause a memory leak or lock files under certain conditions. Without memory leak protection, Lookup Service can continue to consume system resources, which will lead to \"OutOfMemoryErrors\" when reloading web applications.\n\nMemory leaks occur when JRE code uses the context class loader to load a singleton as this will cause a memory leak if a web application class loader happens to be the context class loader at the time. The \"JreMemoryLeakPreventionListener\" class is designed to initialize these singletons when Tomcat's common class loader is the context class loader. Proper use of JRE memory leak protection will ensure that the hosted application does not consume system resources and cause an unstable environment.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCLU-70-000015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2",
+      "name": "VMware vSphere 7.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2"
+  ]
+}

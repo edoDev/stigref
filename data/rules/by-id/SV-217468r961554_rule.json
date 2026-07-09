@@ -1,0 +1,53 @@
+{
+  "id": "SV-217468r961554_rule",
+  "full_rule_id": "SV-217468r961554_rule",
+  "rule_id": "SV-217468",
+  "rule_revision": "961554",
+  "group_id": "V-217468",
+  "group_title": "SRG-APP-000411-NDM-000330",
+  "title": "Applications used for nonlocal maintenance sessions must implement cryptographic mechanisms to protect the integrity of nonlocal maintenance and diagnostic communications.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to manipulation, potentially allowing alteration and hijacking of maintenance sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the HP FlexFabric Switch implements cryptographic mechanisms to protect the integrity of nonlocal maintenance and diagnostic communications.\n\n[HP]display ssh server status\n\n SSH server: Enable\n SSH version : 2.0\n SSH authentication-timeout : 60 second(s)\n SSH server key generating interval : 0 hour(s)\n SSH authentication retries : 3 time(s)\n SFTP server: Enable\n SFTP Server Idle-Timeout: 10 minute(s)\n Netconf server: Disable\n\n[HP] display current | i sftp\n sftp server enable\n\nIf SSH and SFTP protocols are not configured for nonlocal device maintenance , this is a finding.",
+  "fix": "Configure the HP FlexFabric Switch to implement cryptographic mechanisms to protect the integrity of nonlocal maintenance and diagnostic communications.\n\nGenerate local RSA key pairs on the SSH server:\n[HP] public-key local create rsa Enable the SSH server function: \n\n[HP] ssh server enable\nEnable the SFTP server function:\n[HP] sftp server enable\n\nConfigure the user interfaces for SSH clients: \n\n[HP] user-interface vty 0 63\n[HP-ui-vty0-63] authentication-mode scheme\n\nConfigure a local device management user, assign password and enable service-type SSH: \n\n[HP] local-user admin\n[HP-luser-admin] password simple xxxxxxxx\n[HP-luser-admin] service-type ssh",
+  "ccis": [
+    "CCI-002890"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to manipulation, potentially allowing alteration and hijacking of maintenance sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-ND-000116",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881",
+      "name": "HP FlexFabric Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881"
+  ]
+}

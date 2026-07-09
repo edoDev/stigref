@@ -1,0 +1,54 @@
+{
+  "id": "SV-223917r1137691_rule",
+  "full_rule_id": "SV-223917r1137691_rule",
+  "rule_id": "SV-223917",
+  "rule_revision": "1137691",
+  "group_id": "V-223917",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS must protect dynamic lists in accordance with proper security requirements.",
+  "severity": "high",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000324-GPOS-00125</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to the CSV-prefixed resources defined below:\n\nCSVAPF.\nCSVAPF.MVS.SETPROG.FORMAT.DYNAMIC\nCSVAPF.MVS.SETPROG.FORMAT.STATIC\nCSVDYLPA.\nCSVDYNEX.\nCSVDYNEX.LIST\nCSVDYNL.\nCSVDYNL.UPDATE.LNKLST\nCSVLLA.\n\nIf the TSS IBMFAC resource class in the RDT has the DEFPROT attribute specified and/or the CSV resources and/or generic equivalent are owned this is not a finding.\n\nIf the TSS resources and/or generic equivalent identified above are defined with ACTION(AUDIT) and UPDATE access restricted to system programming personnel this is not a finding.\n\nIf the TSS CSVDYNEX.LIST resource and/or generic equivalent is defined with ACTION(AUDIT) and UPDATE access restricted to system programming personnel this is a finding.\n\nIf the TSS CSVDYNEX.LIST resource and/or generic equivalent are defined with READ access restricted to auditors this is not a finding.\n\nIf the products CICS and/or CONTROL-O are on the system, and the TSS access to the CSVLLA resource access to the CSVLLA resource and/or generic equivalent are defined with ACTION(AUDIT) and UPDATE access restricted to the CICS and CONTROL-O STC ACIDs this is not a finding.\n\nIf any software product requires access to dynamic LPA updates on the system, the TSS access to the CSVDYLPA resource and/or generic equivalent will be defined with ACTION(AUDIT) and UPDATE only after the product has been validated with the appropriate STIG or SRG for compliance AND receives documented and filed authorization that details the need and any accepted risks from the site ISSM or equivalent security authority.\n\nNote: In the above, UPDATE access can be substituted with ALL or CONTROL. Review the permissions in the TSS documentation when specifying UPDATE.",
+  "fix": "Configure TSS to ensure that the Dynamic List resources are defined to the IBMFAC resource class and protected. Only system programmers and a limited number of authorized users and Approved authorized Started Tasks are able to issue these commands. All access is logged.\n\nThe required CSV-prefixed Facility Class resources are listed below. These resources or generic equivalents should be defined and permitted as required with only z/OS systems programmers and logging enabled. Minimum required list of CSV-prefixed resources:\n\nCSVAPF.\nCSVAPF.MVS.SETPROG.FORMAT.DYNAMIC\nCSVAPF.MVS.SETPROG.FORMAT.STATIC\nCSVDYLPA.\nCSVDYLPA.ADD.\nCSVDYLPA.ADD.\nCSVDYNEX.\nCSVDYNEX.LIST\nCSVDYNL.\nCSVDYNL.UPDATE.LNKLST\nCSVLLA.\n\nIf DEFPROT is specified in the IBMFAC RDT the following command examples are not required. To prevent access to these resources, the CSV resources are protected using the following commands.\n\nThe following commands are provided for example only:\n\nTSS ADDTO(deptacid) IBMFAC(CSV)\nor\nTSS ADDTO(deptacid) IBMFAC(CSVAPF)\nTSS ADDTO(deptacid) IBMFAC(CSVDYLPA)\nTSS ADDTO(deptacid) IBMFAC(CSVDYNEX)\nTSS ADDTO(deptacid) IBMFAC(CSVDYNL)\nTSS ADDTO(deptacid) IBMFAC(CSVDYLPA)\nTSS ADDTO(deptacid) IBMFAC(CSVLLA)\n\nLimit authority to those resources to z/OS systems programmers. Restrict to the absolute minimum number of personnel with ACTION(AUDIT) and UPDATE access.\n\nSample commands are shown here to accomplish this:\n\nTSS PERMIT(syspsmpl) IBMFAC(CSVAPF.) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(syspsmpl) IBMFAC(CSVAPF.MVS.SETPROG) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(syspsmpl) IBMFAC(CSVAPF.MVS.SETPROG.FORMAT) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(syspsmpl) IBMFAC(CSVAPF.MVS.SETPROG.SETPROG.FORMAT.DYNAMIC) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(syspsmpl) IBMFAC(CSVAPF.MVS.SETPROG.SETPROG.FORMAT.STATIC) ACCESS(UPDATE) ACTION(AUDIT)\n\nThe CSVDYLPA.ADD resource will be permitted to BMC Mainview, CA 1, and CA Common Services STC ACIDs with ACTION(AUDIT) and UPDATE access.\n\nThe CSVDYLPA resource will be permitted to BMC Mainview, CA 1, and CA Common Services STC ACIDs with ACTION(AUDIT) and UPDATE access.\n\nSample commands are shown here to accomplish one set of resources:\n\nTSS PERMIT(syspsmpl) IBMFAC(CSVDYLPA.) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(BMC Mainview STC ACID) IBMFAC(CSVDYLPA.ADD.) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(CA 1 STC ACID) IBMFAC(CSVDYLPA.ADD.) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(CCS STC ACID) IBMFAC(CSVDYLPA.ADD.) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(CA 1 STC ACID) IBMFAC(CSVDYLPA.DELETE.) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(CCS STC ACID) IBMFAC(CSVDYLPA.DELETE.) ACCESS(UPDATE) ACTION(AUDIT)\n\nThe CSVDYNEX.LIST resource and/or generic equivalent will be defined with ACTION(AUDIT) and UPDATE access restricted to system programming personnel.\n\nThe CSVDYNEX.LIST resource and/or generic equivalent will be defined with READ access restricted to auditors.\n\nSample commands are shown here to accomplish this:\n\nTSS PERMIT(syspsmpl) IBMFAC(CSVDYNEX.) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(syspsmpl) IBMFAC(CSVDYNEX.LIST) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(smplsmpl) IBMFAC(CSVDYNEX.LIST) ACCESS(READ) \n\nThe CSVLLA resource will be permitted to CICS and CONTROL-O STC ACIDs with ACTION(AUDIT) and UPDATE access.\n\nSample commands are shown here to accomplish one set of resources:\n\nTSS PERMIT(syspsmpl) IBMFAC(CSVLLA.) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(CICS STC ACIDs) IBMFAC(CSVLLA.) ACCESS(UPDATE) ACTION(AUDIT)\nTSS PERMIT(CONTROL-O STC ACID) IBMFAC(CSVLLA.) ACCESS(UPDATE) ACTION(AUDIT)",
+  "ccis": [
+    "CCI-000213",
+    "CCI-002235"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000324-GPOS-00125",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-ES-000440",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

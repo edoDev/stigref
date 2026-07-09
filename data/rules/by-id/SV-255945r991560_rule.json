@@ -1,0 +1,53 @@
+{
+  "id": "SV-255945r991560_rule",
+  "full_rule_id": "SV-255945r991560_rule",
+  "rule_id": "SV-255945",
+  "rule_revision": "991560",
+  "group_id": "V-255945",
+  "group_title": "SRG-OS-000259-GPOS-00100",
+  "title": "IBM Integrated Crypto Service Facility (ICSF) STC data sets must be properly protected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>IBM Integrated Crypto Service Facility (ICSF) STC data sets have the ability to use privileged functions and/or have access to sensitive data.  Failure to properly restrict access to their data sets could result in violating the integrity of the base product which could result in compromising the operating system or sensitive data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that access to the IBM Integrated Crypto Service Facility (ICSF) STC data sets are properly restricted.  The data sets to be protected are identified in the data set referenced in the CSFPARM DD statement of the ICSF started task(s) and/or batch job(s), the entries for CKDSN and PKDSN specify the data sets.  \n If the ACF2 data set access authorizations does not restrict READ access to auditors this is a finding\n\nIf the  ACF2 data set access authorizations does not restrict WRITE and/or greater access to systems programming personnel this is a finding.\n\nIf the ACF2 data set access authorizations does not  restrict WRITE and/or greater access to the product STC(s) and/or batch job(s) this is a finding.",
+  "fix": "Ensure that WRITE and/or greater access to IBM Integrated Crypto Service Facility (ICSF) STC data sets are limited to system programmers and ICSF STC and/or batch jobs only. READ access can be given to auditors at the ISSOs discretion.\n\nThe installing Systems Programmer will identify and document the product data sets and categorize them according to who will have what type of access and if required which type of access is logged. The installing systems programmer will identify any additional groups requiring access to specific data sets, and once documented the installing systems programmer will work with the ISSO to see that they are properly restricted to the ACP (Access Control Program) active on the system.\n\n(Note: The data sets and/or data set prefixes identified below are examples of a possible installation. The actual data sets and/or prefixes are determined when the product is actually installed on a system through the product's installation guide and can be site specific.)\n\nThe data sets to be protected are identified in the data set referenced in the CSFPARM DD statement of the ICSF started task(s) and/or batch job(s), the entries for CKDSN and PKDSN specify the data sets.\n\nNote: Currently on most CSD systems the CKDSN specifies SYS3.CSF.CKDS and PKDSN specifies SYS3.CSF.PKDS.\n\nThe following commands are provided as a sample for implementing data set controls:\n\n$KEY(SYS3)\nCSF.-\tUID(syspaudt) R(A) W(A) A(A) E(A)\nCSF.-\tUID(tstcaudt) R(A) W(A) A(A) E(A)\nCSF.-\tUID(icsfstc) R(A) W(A) A(A) E(A)\nCSF.-\tUID(audtaudt) R(A) E(A)",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "IBM Integrated Crypto Service Facility (ICSF) STC data sets have the ability to use privileged functions and/or have access to sensitive data.  Failure to properly restrict access to their data sets could result in violating the integrity of the base product which could result in compromising the operating system or sensitive data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ACF2-IC-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad",
+      "name": "IBM z/OS ACF2 Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad"
+  ]
+}

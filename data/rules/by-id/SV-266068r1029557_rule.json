@@ -1,0 +1,70 @@
+{
+  "id": "SV-266068r1029557_rule",
+  "full_rule_id": "SV-266068r1029557_rule",
+  "rule_id": "SV-266068",
+  "rule_revision": "1029557",
+  "group_id": "V-266068",
+  "group_title": "SRG-APP-000343-NDM-000289",
+  "title": "The F5 BIG-IP appliance must be configured to audit the execution of privileged functions such as accounts additions and changes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.\n\nSatisfies: SRG-APP-000343-NDM-000289, SRG-APP-000026-NDM-000208, SRG-APP-000027-NDM-000209, SRG-APP-000028-NDM-000210, SRG-APP-000029-NDM-000211, SRG-APP-000319-NDM-000283, SRG-APP-000080-NDM-000220, SRG-APP-000516-NDM-000334, SRG-APP-000091-NDM-000223, SRG-APP-000495-NDM-000318, SRG-APP-000499-NDM-000319, SRG-APP-000503-NDM-000320, SRG-APP-000504-NDM-000321, SRG-APP-000095-NDM-000225, SRG-APP-000096-NDM-000226, SRG-APP-000097-NDM-000227, SRG-APP-000098-NDM-000228, SRG-APP-000099-NDM-000229, SRG-APP-000100-NDM-000230, SRG-APP-000101-NDM-000231, SRG-APP-000381-NDM-000305</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the BIG-IP GUI:\n1. System.\n2. Logs.\n3. Configuration.\n4. Options.\n5. Under Local Traffic Logging:\n a. MCP: Notice.\n b. SSL: Informational.\n c. Traffic Management OS: Informational.\n6. Under Audit Logging:\n a. MCP: Enable.\n\nFrom the BIG-IP console, type the following commands:\n\ntmsh list sys daemon-log-settings tmm os-log-level\n\nNote: This command must return a value of \"informational\".\n\ntmsh list sys daemon-log-settings tmm ssl-log-level\n\nNote: This must return a value of \"informational\":\n\ntmsh list sys daemon-log-settings mcpd audit\n\nNote: This must return a value of \"enabled\".\n\ntmsh list sys daemon-log-settings mcpd log-level\n\nNote: This must return a value of \"notice\".\n\ntmsh list sys db log.ssl.level value\n\nNote: This must return a value of \"informational\".\n\nIf the BIG-IP appliance is not configured to audit the execution of privileged functions, this is a finding.",
+  "fix": "From the BIG-IP GUI:\n1. System.\n2. Logs.\n3. Configuration.\n4. Options.\n5. Under \"Local Traffic Logging\":\n a. MCP: Notice.\n b. SSL: Informational.\n c. Traffic Management OS: Informational.\n6. Under \"Audit Logging\":\n a. MCP: Enable.\n7. Update.\n\nFrom the BIG-IP console, type the following commands:\n\ntmsh modify sys daemon-log-settings tmm os-log-level informational\ntmsh modify sys daemon-log-settings tmm ssl-log-level informational\ntmsh modify sys daemon-log-settings mcpd audit enabled\ntmsh modify sys daemon-log-settings mcpd log-level notice\ntmsh modify sys db log.ssl.level value informational\ntmsh save sys config",
+  "ccis": [
+    "CCI-002234",
+    "CCI-000018",
+    "CCI-001403",
+    "CCI-001404",
+    "CCI-001405",
+    "CCI-002130",
+    "CCI-000166",
+    "CCI-000169",
+    "CCI-000366",
+    "CCI-000172",
+    "CCI-000130",
+    "CCI-000131",
+    "CCI-000132",
+    "CCI-000133",
+    "CCI-000134",
+    "CCI-001487",
+    "CCI-000135",
+    "CCI-001814"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.\n\nSatisfies: SRG-APP-000343-NDM-000289, SRG-APP-000026-NDM-000208, SRG-APP-000027-NDM-000209, SRG-APP-000028-NDM-000210, SRG-APP-000029-NDM-000211, SRG-APP-000319-NDM-000283, SRG-APP-000080-NDM-000220, SRG-APP-000516-NDM-000334, SRG-APP-000091-NDM-000223, SRG-APP-000495-NDM-000318, SRG-APP-000499-NDM-000319, SRG-APP-000503-NDM-000320, SRG-APP-000504-NDM-000321, SRG-APP-000095-NDM-000225, SRG-APP-000096-NDM-000226, SRG-APP-000097-NDM-000227, SRG-APP-000098-NDM-000228, SRG-APP-000099-NDM-000229, SRG-APP-000100-NDM-000230, SRG-APP-000101-NDM-000231, SRG-APP-000381-NDM-000305",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-DM-300012",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-ndm-security-technical-implementation-guide-v1r2-1787aa3e",
+      "name": "F5 BIG-IP TMOS NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-ndm-security-technical-implementation-guide-v1r2-1787aa3e"
+  ]
+}

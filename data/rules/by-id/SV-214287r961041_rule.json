@@ -1,0 +1,53 @@
+{
+  "id": "SV-214287r961041_rule",
+  "full_rule_id": "SV-214287r961041_rule",
+  "rule_id": "SV-214287",
+  "rule_revision": "961041",
+  "group_id": "V-214287",
+  "group_title": "SRG-APP-000176-WSR-000096",
+  "title": "Only authenticated system administrators or the designated PKI Sponsor for the Apache web server must have access to the Apache web servers private key.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The web server's private key is used to prove the identity of the server to clients and securely exchange the shared secret key used to encrypt communications between the web server and clients. \n \nBy gaining access to the private key, an attacker can pretend to be an authorized server and decrypt the SSL traffic between a client and the web server.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the \"ssl module\" module is loaded\n# httpd -M | grep -i ssl_module\nOutput:  ssl_module (shared) \n\nIf the \"ssl_module\" is not enabled, this is a finding. \n\nDetermine the location of the ssl.conf file:\n# find / -name ssl.conf\nOutput: /etc/httpd/conf.d/ssl.conf\n\nSearch the ssl.conf file for the SSLCertificateKeyFile location.\n# cat <path to file>/ssl.conf | grep -i SSLCertificateKeyFile\nOutput: SSLCertificateKeyFile /etc/pki/tls/private/localhost.key\n\nIdentify the correct permission set and owner/group of the certificate key file.\n# ls -laH /etc/pki/tls/private/localhost.key\nOutput: -rw-------. 1 root root 1675 Sep 10  2020 /etc/pki/tls/private/localhost.key\n\nThe permission set must be 600 or more restrictive and the owner/group of the key file must be accessible to only authenticated system administrator and the designated PKI Sponsor.\n\nIf the correct permissions are not set or if the private key is accessible by unauthenticated or unauthorized users, this is a finding.",
+  "fix": "Determine the location of the ssl.conf file:\n# find / -name ssl.conf\nOutput: /etc/httpd/conf.d/ssl.conf\n\nSearch the ssl.conf file for the SSLCertificateKeyFile location.\n# cat <path to file>/ssl.conf | grep -i SSLCertificateKeyFile\nOutput: SSLCertificateKeyFile /etc/pki/tls/private/localhost.key\n\nBased on the \" SSLCertificateKeyFile\" directive path, configure the Apache web server to ensure only authenticated and authorized users can access the web server's private key.  \n\nPermissions must be 600 or more restrictive.",
+  "ccis": [
+    "CCI-000186"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The web server's private key is used to prove the identity of the server to clients and securely exchange the shared secret key used to encrypt communications between the web server and clients. \n \nBy gaining access to the private key, an attacker can pretend to be an authorized server and decrypt the SSL traffic between a client and the web server.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U2-000390",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66",
+      "name": "Apache Server 2.4 UNIX Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-223209r1043177_rule",
+  "full_rule_id": "SV-223209r1043177_rule",
+  "rule_id": "SV-223209",
+  "rule_revision": "1043177",
+  "group_id": "V-223209",
+  "group_title": "SRG-APP-000142-NDM-000245",
+  "title": "For nonlocal maintenance sessions, the Juniper SRX Services Gateway must remove or explicitly deny the use of nonsecure protocols.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to manipulation, potentially allowing alteration and hijacking of maintenance sessions.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the Internet) or an internal network. \n\nTools used for nonlocal management and diagnostics with the Juniper SRX include SSH but may also include compatible enterprise maintenance and diagnostics servers. Regardless of the tool used, the Juniper SRX must permit only the use of protocols with the capability to be configured securely with integrity protections. Specifically, use SSH instead of Telnet, SCP instead of FTP, and SNMPv3 rather than other versions SNMP.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify nonsecure protocols are not enabled for management access by viewing the enabled system services.\n\nFrom the operational hierarchy:\n\n> show config | match \"set system services\" | display set \n\nFrom the configuration hierarchy:\n\n[edit]\nshow snmp\nshow system services telnet\nshow system services ftp\nshow system services ssh\n\nIf nonsecure protocols and protocol versions such as Telnet, FTP, SNMPv1, SNMPv2c, or SSHv1 are enabled, this is a finding.",
+  "fix": "Remove or deny nonsecure protocols to prevent their usage for nonlocal management and diagnostic communications.\n\nUse the delete command to disable services that should not be enabled.\n\nExample deletion commands:\n\n[edit]\ndelete system services telnet\ndelete system services ftp\ndelete snmp v1\ndelete snmp v2c\ndelete set system services ssh protocol-version v1",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to manipulation, potentially allowing alteration and hijacking of maintenance sessions.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the Internet) or an internal network. \n\nTools used for nonlocal management and diagnostics with the Juniper SRX include SSH but may also include compatible enterprise maintenance and diagnostics servers. Regardless of the tool used, the Juniper SRX must permit only the use of protocols with the capability to be configured securely with integrity protections. Specifically, use SSH instead of Telnet, SCP instead of FTP, and SNMPv3 rather than other versions SNMP.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000109",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

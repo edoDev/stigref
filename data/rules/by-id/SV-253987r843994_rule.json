@@ -1,0 +1,53 @@
+{
+  "id": "SV-253987r843994_rule",
+  "full_rule_id": "SV-253987r843994_rule",
+  "rule_id": "SV-253987",
+  "rule_revision": "843994",
+  "group_id": "V-253987",
+  "group_title": "SRG-NET-000019-RTR-000005",
+  "title": "The Juniper multicast edge router must be configured to establish boundaries for administratively scoped multicast traffic.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration and verify that admin-scope multicast traffic is blocked at the external edge.\n\nVerify either a scope is defined for specific interfaces or a scope policy is applied.\n[edit routing-options multicast]\nscope <name IPv4> { \n    prefix 239.0.0.0/8;\n    interface [ <external interface 1> <external interface 2> ];\n}\nscope <name IPv6> { \n    prefix ff08::/16;\n    interface [ <external interface 1> <external interface 2> ];\n}\n\n-or-\n\n[edit policy-options]\npolicy-statement <name> {\n    term 1 {\n        from {\n            route-filter 239.0.0.0/8 orlonger;\n            route-filter ff08::/16 orlonger;\n        }\n        then reject;\n    }\n}\n[edit routing-options multicast]\nscope-policy <policy name>\n\nIf the router is not configured to establish boundaries for administratively scoped multicast traffic, this is a finding.",
+  "fix": "Configure the policy to deny packets with multicast administratively scoped destination addresses.\nset routing-options multicast scope <IPv4 scope name> prefix 239.0.0.0/8;\nset routing-options multicast scope <IPv6 scope name> prefix ff08::/16;\n\n-or-\n\nset policy-options policy-statement <policy name> term 1 from route-filter 239.0.0.0/8 orlonger\nset policy-options policy-statement <policy name> term 1 from route-filter ff08::/16 orlonger\n\nApply the multicast boundary at the appropriate interfaces.\nset routing-options multicast scope <IPv4 scope name> interface [ <external interface 1> <external interface 2> ]\nset routing-options multicast scope <IPv6 scope name> interface [ <external interface 1> <external interface 2> ]\n\n-or-\n\nset routing-options multicast scope-policy <policy name>",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

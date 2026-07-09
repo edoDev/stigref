@@ -1,0 +1,53 @@
+{
+  "id": "SV-215253r958752_rule",
+  "full_rule_id": "SV-215253r958752_rule",
+  "rule_id": "SV-215253",
+  "rule_revision": "958752",
+  "group_id": "V-215253",
+  "group_title": "SRG-OS-000341-GPOS-00132",
+  "title": "AIX must allocate audit record storage capacity to store at least one weeks worth of audit records, when audit records are not immediately sent to a central audit record storage facility.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In order to ensure operating systems have a sufficient storage capacity in which to write the audit logs, operating systems need to be able to allocate audit record storage capacity.\n\nThe task of allocating audit record storage capacity is usually performed during initial installation of AIX.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the file system size where the log file resides is greater than the organizationally defined size of audit logs for one week (1GB). \n\nFind out where the audit log resides: \n# grep trail /etc/security/audit/config \n        trail = /audit/trail\n\nFind out the available space in the file system hosting the audit logs. \n\n# df /audit/trail\nFilesystem    512-blocks      Free %Used    Iused %Iused Mounted on\n/dev/hd4         1966080   1792872    9%     3913     2% /\n\nIf the \"512-blocks\" multiplied by \"Free\" is less than the required size for the audit logs, this is a finding.",
+  "fix": "Increase the size of the file system hosting the audit logs (by 1GB).\n# chfs -a size=+1G <root of file system for audit logs>",
+  "ccis": [
+    "CCI-001849"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In order to ensure operating systems have a sufficient storage capacity in which to write the audit logs, operating systems need to be able to allocate audit record storage capacity.\n\nThe task of allocating audit record storage capacity is usually performed during initial installation of AIX.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002033",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

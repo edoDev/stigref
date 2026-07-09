@@ -1,0 +1,53 @@
+{
+  "id": "SV-269342r1050224_rule",
+  "full_rule_id": "SV-269342r1050224_rule",
+  "rule_id": "SV-269342",
+  "rule_revision": "1050224",
+  "group_id": "V-269342",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "AlmaLinux OS 9 must be configured to disable Bluetooth.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>This requirement applies to wireless peripheral technologies (e.g., wireless mice, keyboards, displays, etc.) used with AlmaLinux OS 9 systems.\n\nWireless peripherals (e.g., Wi-Fi/Bluetooth/IR keyboards, mice and pointing devices, and near field communications [NFC]) present a unique challenge by creating an open, unsecured port on a computer. Wireless peripherals must meet DOD requirements for wireless data transmission and be approved for use by the authorizing official (AO). Even though some wireless peripherals, such as mice and pointing devices, do not ordinarily carry information that need to be protected, modification of communications with these wireless peripherals may be used to compromise the AlmaLinux OS 9 operating system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that AlmaLinux OS 9 disables the ability to load the Bluetooth kernel module with the following command:\n\n$ grep -r bluetooth /etc/modprobe.conf /etc/modprobe.d/* \n\n/etc/modprobe.d/bluetooth.conf:install bluetooth /bin/false\n/etc/modprobe.d/bluetooth.conf:blacklist bluetooth\n\nIf the command does not return any output, or the line is commented out, and use of Bluetooth is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "To configure the system to prevent the Bluetooth kernel module from being loaded, run the following command:\n\n$ cat << EOF | tee  /etc/modprobe.d/bluetooth.conf \ninstall bluetooth /bin/false\nblacklist bluetooth\nEOF",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This requirement applies to wireless peripheral technologies (e.g., wireless mice, keyboards, displays, etc.) used with AlmaLinux OS 9 systems.\n\nWireless peripherals (e.g., Wi-Fi/Bluetooth/IR keyboards, mice and pointing devices, and near field communications [NFC]) present a unique challenge by creating an open, unsecured port on a computer. Wireless peripherals must meet DOD requirements for wireless data transmission and be approved for use by the authorizing official (AO). Even though some wireless peripherals, such as mice and pointing devices, do not ordinarily carry information that need to be protected, modification of communications with these wireless peripherals may be used to compromise the AlmaLinux OS 9 operating system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-029720",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

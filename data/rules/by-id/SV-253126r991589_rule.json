@@ -1,0 +1,53 @@
+{
+  "id": "SV-253126r991589_rule",
+  "full_rule_id": "SV-253126r991589_rule",
+  "rule_id": "SV-253126",
+  "rule_revision": "991589",
+  "group_id": "V-253126",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "TOSS must not forward IPv6 source-routed packets by default.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Source-routed packets allow the source of the packet to suggest that routers forward the packet along a different path than configured on the router, which can be used to bypass network security measures. This requirement applies only to the forwarding of source-routed traffic, such as when forwarding is enabled and the system is functioning as a router.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify TOSS does not accept IPv6 source-routed packets by default.\n\nNote: If IPv6 is disabled on the system, this requirement is Not Applicable.\n\nCheck the value of the accept source route variable with the following command:\n\n$ sudo sysctl net.ipv6.conf.default.accept_source_route\n\nnet.ipv6.conf.default.accept_source_route = 0\n\nIf the returned line does not have a value of \"0\", a line is not returned, or the line is commented out, this is a finding.",
+  "fix": "Configure TOSS to not forward IPv6 source-routed packets by default with the following command:\n\n$ sudo sysctl -w net.ipv6.conf.default.accept_source_route=0\n\nIf \"0\" is not the system's default value then add or update the following line in the appropriate file under \"/etc/sysctl.d\":\n\nnet.ipv6.conf.default.accept_source_route=0",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Source-routed packets allow the source of the packet to suggest that routers forward the packet along a different path than configured on the router, which can be used to bypass network security measures. This requirement applies only to the forwarding of source-routed traffic, such as when forwarding is enabled and the system is functioning as a router.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-040850",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

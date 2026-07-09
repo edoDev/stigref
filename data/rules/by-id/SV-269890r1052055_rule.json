@@ -1,0 +1,53 @@
+{
+  "id": "SV-269890r1052055_rule",
+  "full_rule_id": "SV-269890r1052055_rule",
+  "rule_id": "SV-269890",
+  "rule_revision": "1052055",
+  "group_id": "V-269890",
+  "group_title": "SRG-NET-000362-RTR-000117",
+  "title": "The Dell OS10 BGP router must be configured to use the maximum prefixes feature to protect against route table flooding and prefix deaggregation attacks.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The effects of prefix deaggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix deaggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.\n\nIn 1997, misconfigured routers in the Florida Internet Exchange network (AS7007) de-aggregated every prefix in their routing table and started advertising the first /24 block of each of these prefixes as their own. Faced with this additional burden, the internal routers became overloaded and crashed repeatedly. This caused prefixes advertised by these routers to disappear from routing tables and reappear when the routers came back online. As the routers came back after crashing, they were flooded with the routing table information by their neighbors. The flood of information would again overwhelm the routers and cause them to crash. This process of route flapping served to destabilize not only the surrounding network but also the entire internet. Routers trying to reach those addresses would choose the smaller, more specific /24 blocks first. This caused backbone networks throughout North America and Europe to crash.\n\nMaximum prefix limits on peer connections combined with aggressive prefix-size filtering of customers' reachability advertisements will effectively mitigate the deaggregation risk. BGP maximum prefix must be used on all eBGP routers to limit the number of prefixes that it should receive from a particular neighbor, whether customer or peering AS. Consider each neighbor and how many routes they should be advertising and set a threshold slightly higher than the number expected.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify the number of received prefixes from each eBGP neighbor is controlled.\n\nVerify that a maximum-prefix value is configured in the appropriate neighbor entries or templates.\n\nrouter bgp 10\n !\n template ebgp\n  !\n  address-family ipv4 unicast\n   maximum-prefix 10 50\n\nIf the router is not configured to control the number of prefixes received from each peer to protect against route table flooding and prefix deaggregation attacks, this is a finding.",
+  "fix": "Configure all eBGP routers to use the maximum prefixes feature to protect against route table flooding and prefix deaggregation attacks.\n\nOS10(config)#router bgp 10\nOS10(config-router-bgp-10)# template ebgp\nOS10(config-router-template)# address-family ipv4 unicast\nOS10(config-router-bgp-neighbor-af)# maximum-prefix 10 50",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix deaggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix deaggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.\n\nIn 1997, misconfigured routers in the Florida Internet Exchange network (AS7007) de-aggregated every prefix in their routing table and started advertising the first /24 block of each of these prefixes as their own. Faced with this additional burden, the internal routers became overloaded and crashed repeatedly. This caused prefixes advertised by these routers to disappear from routing tables and reappear when the routers came back online. As the routers came back after crashing, they were flooded with the routing table information by their neighbors. The flood of information would again overwhelm the routers and cause them to crash. This process of route flapping served to destabilize not only the surrounding network but also the entire internet. Routers trying to reach those addresses would choose the smaller, more specific /24 blocks first. This caused backbone networks throughout North America and Europe to crash.\n\nMaximum prefix limits on peer connections combined with aggressive prefix-size filtering of customers' reachability advertisements will effectively mitigate the deaggregation risk. BGP maximum prefix must be used on all eBGP routers to limit the number of prefixes that it should receive from a particular neighbor, whether customer or peering AS. Consider each neighbor and how many routes they should be advertising and set a threshold slightly higher than the number expected.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000670",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

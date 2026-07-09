@@ -1,0 +1,53 @@
+{
+  "id": "SV-233861r961863_rule",
+  "full_rule_id": "SV-233861r961863_rule",
+  "rule_id": "SV-233861",
+  "rule_revision": "961863",
+  "group_id": "V-233861",
+  "group_title": "SRG-APP-000516-DNS-000078",
+  "title": "The validity period for the Resource Record Signatures (RRSIGs) covering a zone's DNSKEY RRSet must be no less than two days and no more than one week.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The best way for a zone administrator to minimize the impact of a key compromise is by limiting the validity period of RRSIGs in the zone and in the parent zone. This strategy limits the time during which an attacker can take advantage of a compromised key to forge responses. An attacker that has compromised a Zone Signing Key (ZSK) can use that key only during the Key Signing Key's (KSK's) signature validity interval. An attacker that has compromised a KSK can use that key for only as long as the signature interval of the RRSIG covering the Delegation Signer (DS) RR in the delegating parent. These validity periods should be short, which will require frequent re-signing.\n\nTo minimize the impact of a compromised ZSK, a zone administrator should set a signature validity period of one week for RRSIGs covering the DNSKEY RRSet in the zone (the RRSet that contains the ZSK and KSK for the zone). The DNSKEY RRSet can be re-signed without performing a ZSK rollover, but scheduled ZSK rollover should still be performed at regular intervals.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: For Infoblox DNS systems on a classified network, this requirement is Not Applicable. \n\n1. Navigate to Data Management >> DNS >> Grid DNS properties. \n2. Toggle Advanced Mode, click on the \"DNSSEC\" tab, and review the \"Signature Validity\" setting.  \n3. Validate that the Signature Validity is configured for a range of no less than two days and no more than one week. \n4. When complete, click \"Cancel\" to exit the \"Properties\" screen.  \n\nIf the \"Signature Validity\" period is less than two days or greater than one week, this is a finding.",
+  "fix": "1. Navigate to Data Management >> DNS >> Grid DNS properties.  \n2. Toggle Advanced Mode, click on the \"DNSSEC\" tab, and edit the \"Signature Validity\" setting to a period between two days and one week. \n3. When complete, click \"Save & Close\" to save the changes and exit the \"Properties\" screen.  \n4. Any zones that used an incorrect value should perform a ZSK rollover to update the inception and expiration dates with the new value. \n5. Navigate to Data Management >> DNS and select the \"Zones\" tab. \n6. Using the zone selection check boxes and the DNSSEC drop-down menu, select \"Rollover Zone-Signing Key\".  \n7. When prompted, select \"Roll Over\".\n8. Perform a service restart if necessary.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The best way for a zone administrator to minimize the impact of a key compromise is by limiting the validity period of RRSIGs in the zone and in the parent zone. This strategy limits the time during which an attacker can take advantage of a compromised key to forge responses. An attacker that has compromised a Zone Signing Key (ZSK) can use that key only during the Key Signing Key's (KSK's) signature validity interval. An attacker that has compromised a KSK can use that key for only as long as the signature interval of the RRSIG covering the Delegation Signer (DS) RR in the delegating parent. These validity periods should be short, which will require frequent re-signing.\n\nTo minimize the impact of a compromised ZSK, a zone administrator should set a signature validity period of one week for RRSIGs covering the DNSKEY RRSet in the zone (the RRSet that contains the ZSK and KSK for the zone). The DNSKEY RRSet can be re-signed without performing a ZSK rollover, but scheduled ZSK rollover should still be performed at regular intervals.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDNS-8X-400003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46",
+      "name": "Infoblox 8.x DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46"
+  ]
+}

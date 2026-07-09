@@ -1,0 +1,53 @@
+{
+  "id": "SV-270681r1134806_rule",
+  "full_rule_id": "SV-270681r1134806_rule",
+  "rule_id": "SV-270681",
+  "rule_revision": "1134806",
+  "group_id": "V-270681",
+  "group_title": "SRG-OS-000032-GPOS-00013",
+  "title": "Ubuntu 24.04 LTS must monitor remote access methods.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk, and make remote user access management difficult at best. \n \nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. \n \nAutomated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that Ubuntu 24.04 LTS monitors all remote access methods with the following command: \n \n$  grep -E -r '^(auth,authpriv\\.\\*|daemon\\.\\*)' /etc/rsyslog.* \n/etc/rsyslog.d/50-default.conf:auth,authpriv.* /var/log/auth.log\n \nIf \"auth.*\", \"authpriv.*\", or \"daemon.*\" are not configured to be logged in at least one of the config files, this is a finding.",
+  "fix": "Configure Ubuntu 24.04 LTS to monitor all remote access methods by adding the following lines to the \"/etc/rsyslog.d/50-default.conf\" file: \n \nauth.*,authpriv.* /var/log/secure \ndaemon.* /var/log/messages \n \nFor the changes to take effect, restart the \"rsyslog\" service with the following command: \n \n$ sudo systemctl restart rsyslog.service",
+  "ccis": [
+    "CCI-000067"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk, and make remote user access management difficult at best. \n \nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. \n \nAutomated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-200090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-279585r1192452_rule",
+  "full_rule_id": "SV-279585r1192452_rule",
+  "rule_id": "SV-279585",
+  "rule_revision": "1192452",
+  "group_id": "V-279585",
+  "group_title": "SRG-OS-000312-GPOS-00123",
+  "title": "Nutanix OS must limit the ability of nonprivileged users to grant other users direct access to the contents of their home directories/folders.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Users' home directories/folders may contain information of a sensitive nature. Nonprivileged users should coordinate any sharing of information with a system administrator (SA) through shared resources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS has assigned home directory of all local interactive users has a mode of \"0750\" or less permissive using the following command.\n\n$ ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)\ndrwxr-x---.  3 admin   admin   4096 Nov  6  2020 /home/admin\ndrwxr-x---. 26 nutanix nutanix 4096 Aug 17 08:02 /home/nutanix\n\nIf home directories referenced in \"/etc/passwd\" do not have a mode of \"0750\" or less, this is a finding.",
+  "fix": "For AOS, Prism Central, and Files, configure any interactive users home directory to have a mode of 0750 or less using the following command.\n\n$ sudo chmod 0750 [path to interactive user's home directory]\n\nFor AHV, this setting is a default setting set by the vendor and is not supported to be changed in the field. If any interactive user accounts exist then something has been modified and the hypervisor OS VM must be rebuilt from source.",
+  "ccis": [
+    "CCI-002165"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Users' home directories/folders may contain information of a sensitive nature. Nonprivileged users should coordinate any sharing of information with a system administrator (SA) through shared resources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000132",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-278401r1171955_rule",
+  "full_rule_id": "SV-278401r1171955_rule",
+  "rule_id": "SV-278401",
+  "rule_revision": "1171955",
+  "group_id": "V-278401",
+  "group_title": "SRG-APP-000400",
+  "title": "NGINX must be configured to expire cached authenticators after an organization-defined time period.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If cached authentication information is out of date, the validity of the authentication information may be questionable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If a keyval store is not used to store tokens, this is not applicable.\n\nDetermine path to NGINX config file:\n\n# nginx -qT | grep \"# configuration\"\n# configuration file /etc/nginx/nginx.conf:\n\nNote: The default NGINX configuration is \"/etc/nginx/nginx.conf\", though various files may also be included.\n\nDetermine if a keyval store is used and no timeout is specified:\n\ngrep keyval <location of config>\n\nExample:\n\nkeyval_zone zone=oidc_access_tokens:1M state=/var/lib/nginx/state/oidc_access_tokens.json timeout=1h;\n\nIf a timeout is not specified to an organization defined timeout value, this is a finding.",
+  "fix": "Determine path to NGINX config file:\n\n# nginx -qT | grep \"# configuration\"\n# configuration file /etc/nginx/nginx.conf:\n\nNote: The default NGINX configuration is \"/etc/nginx/nginx.conf\", though various files may also be included.\n\nEdit the config and set a timeout on any keyval storing credentials:\n\nkeyval_zone zone=oidc_access_tokens:1M state=/var/lib/nginx/state/oidc_access_tokens.json timeout=1h;\n\nRestart NGINX:\n\nnginx -s reload",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If cached authentication information is out of date, the validity of the authentication information may be questionable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NGNX-APP-001690",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55",
+      "name": "F5 NGINX Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55"
+  ]
+}

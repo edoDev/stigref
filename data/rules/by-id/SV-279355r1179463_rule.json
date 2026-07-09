@@ -1,0 +1,54 @@
+{
+  "id": "SV-279355r1179463_rule",
+  "full_rule_id": "SV-279355r1179463_rule",
+  "rule_id": "SV-279355",
+  "rule_revision": "1179463",
+  "group_id": "V-279355",
+  "group_title": "SRG-APP-000211-DB-000122",
+  "title": "MongoDB must separate user functionality (including user interface services) from database management functionality.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information system management functionality includes functions necessary to administer databases, network components, workstations, or servers, and typically requires privileged user access. \n\nThe separation of user functionality from information system management functionality is either physical or logical and is accomplished by using different computers, different central processing units, different instances of the operating system, different network addresses, combinations of these methods, or other methods, as appropriate. \n\nAn example of this type of separation is observed in web administrative interfaces that use separate authentication methods for users of any other information system resources. \n\nThis may include isolating the administrative interface on a different domain and with additional access controls.\n\nIf administrative functionality or information regarding DBMS management is presented on an interface available for users, information on DBMS settings may be inadvertently made available to the user.\n\nSatisfies: SRG-APP-000180-DB-000115\n\nSatisfies: SRG-APP-000211-DB-000122, SRG-APP-000180-DB-000115</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "MongoDB grants access to data and commands through role-based authorization and provides built-in roles that provide the different levels of access commonly needed in a database system. User-defined roles can also be created.\n\nCheck a user's role to verify correct privileges for the function.\n\nPrerequisite: To view a user's roles, users must have the \"viewUser\" privilege.\n\nConnect to MongoDB.\n\nFor each database in the system, identify the user's roles for the database:\n\nuse <database>\ndb.getUser(\"[username]\")\n\nThe server will return a document with the user's roles.\n\nView a role's privileges.\n\nPrerequisite: To view a user's roles, users must have the \"viewUser\" privilege. \n\nFor each database, identify the privileges granted by a role:\n\nuse <database>\ndb.getRole( \"read\", { showPrivileges: true } )\n\nThe server will return a document with the \"privileges\" and \"inheritedPrivileges\" arrays. The \"privileges returned\" document lists the privileges directly specified by the role and excludes those privileges inherited from other roles. The \"inheritedPrivileges\" returned document lists all privileges granted by this role, both directly specified and inherited. If the role does not inherit from other roles, the two fields are the same.\n\nIf a user has a role with inappropriate privileges, this is a finding.",
+  "fix": "Administrators using MongoDB should document the appropriate privileges for various roles appropriate to the application.\n\nPrerequisite: To view a user's roles, users must have the \"viewUser\" privilege.\n\nConnect to MongoDB.\n\nFor each database, identify the user's roles for the database. \n\nuse <database>\ndb.getUser(\"[username]\")\n\nThe server will return a document with the user's roles.\n\nTo revoke a user's role from a database, use the db.revokeRolesFromUser() method.\n\nTo grant a role to a user, use the db.grantRolesToUser() method.",
+  "ccis": [
+    "CCI-001082",
+    "CCI-000804"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information system management functionality includes functions necessary to administer databases, network components, workstations, or servers, and typically requires privileged user access. \n\nThe separation of user functionality from information system management functionality is either physical or logical and is accomplished by using different computers, different central processing units, different instances of the operating system, different network addresses, combinations of these methods, or other methods, as appropriate. \n\nAn example of this type of separation is observed in web administrative interfaces that use separate authentication methods for users of any other information system resources. \n\nThis may include isolating the administrative interface on a different domain and with additional access controls.\n\nIf administrative functionality or information regarding DBMS management is presented on an interface available for users, information on DBMS settings may be inadvertently made available to the user.\n\nSatisfies: SRG-APP-000180-DB-000115\n\nSatisfies: SRG-APP-000211-DB-000122, SRG-APP-000180-DB-000115",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MD8X-00-004400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mongodb-enterprise-advanced-8-x-security-technical-implementation-guide-v1r1-76f1e3ed",
+      "name": "MongoDB Enterprise Advanced 8.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mongodb-enterprise-advanced-8-x-security-technical-implementation-guide-v1r1-76f1e3ed"
+  ]
+}

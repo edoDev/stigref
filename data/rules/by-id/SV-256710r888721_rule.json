@@ -1,0 +1,62 @@
+{
+  "id": "SV-256710r888721_rule",
+  "full_rule_id": "SV-256710r888721_rule",
+  "rule_id": "SV-256710",
+  "rule_revision": "888721",
+  "group_id": "V-256710",
+  "group_title": "SRG-APP-000016-WSR-000005",
+  "title": "Lookup Service must record user access in a format that enables monitoring of remote access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote access can be exploited by an attacker to compromise the server. By recording all remote access activities, it will be possible to determine the attacker's location, intent, and degree of success.\n\nTomcat can be configured with an \"AccessLogValve\", a component that can be inserted into the request processing pipeline to provide robust access logging. The \"AccessLogValve\" creates log files in the same format as those created by standard web servers. When \"AccessLogValve\" is properly configured, log files will contain all the forensic information necessary in the case of a security incident.\n\nSatisfies: SRG-APP-000016-WSR-000005, SRG-APP-000093-WSR-000053, SRG-APP-000095-WSR-000056, SRG-APP-000096-WSR-000057, SRG-APP-000097-WSR-000058, SRG-APP-000098-WSR-000059, SRG-APP-000098-WSR-000060, SRG-APP-000099-WSR-000061, SRG-APP-000100-WSR-000064, SRG-APP-000375-WSR-000171, SRG-APP-000374-WSR-000172</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --xpath '/Server/Service/Engine/Host/Valve[@className=\"org.apache.catalina.valves.AccessLogValve\"]/@pattern' /usr/lib/vmware-lookupsvc/conf/server.xml\n\nExpected result:\n\npattern=\"%t %I [RemoteIP] %{X-Forwarded-For}i %u [Request] %h:%{remote}p to local %{local}p - %H %m %U%q    [Response] %s - %b bytes    [Perf] process %Dms / commit %Fms / conn [%X]\"\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-lookupsvc/conf/server.xml\n\nInside the <Host> node, find the \"AccessLogValve\" <Valve> node and replace the \"pattern\" element as follows:\n\npattern=\"%t %I [RemoteIP] %{X-Forwarded-For}i %u [Request] %h:%{remote}p to local %{local}p - %H %m %U%q    [Response] %s - %b bytes    [Perf] process %Dms / commit %Fms / conn [%X]\"\n\nRestart the service with the following command:\n\n# vmon-cli --restart lookupsvc",
+  "ccis": [
+    "CCI-000067",
+    "CCI-000130",
+    "CCI-000131",
+    "CCI-000132",
+    "CCI-000133",
+    "CCI-000134",
+    "CCI-001462",
+    "CCI-001487",
+    "CCI-001889",
+    "CCI-001890"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote access can be exploited by an attacker to compromise the server. By recording all remote access activities, it will be possible to determine the attacker's location, intent, and degree of success.\n\nTomcat can be configured with an \"AccessLogValve\", a component that can be inserted into the request processing pipeline to provide robust access logging. The \"AccessLogValve\" creates log files in the same format as those created by standard web servers. When \"AccessLogValve\" is properly configured, log files will contain all the forensic information necessary in the case of a security incident.\n\nSatisfies: SRG-APP-000016-WSR-000005, SRG-APP-000093-WSR-000053, SRG-APP-000095-WSR-000056, SRG-APP-000096-WSR-000057, SRG-APP-000097-WSR-000058, SRG-APP-000098-WSR-000059, SRG-APP-000098-WSR-000060, SRG-APP-000099-WSR-000061, SRG-APP-000100-WSR-000064, SRG-APP-000375-WSR-000171, SRG-APP-000374-WSR-000172",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCLU-70-000005",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2",
+      "name": "VMware vSphere 7.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2"
+  ]
+}

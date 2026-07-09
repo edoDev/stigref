@@ -1,0 +1,53 @@
+{
+  "id": "SV-215184r991560_rule",
+  "full_rule_id": "SV-215184r991560_rule",
+  "rule_id": "SV-215184",
+  "rule_revision": "991560",
+  "group_id": "V-215184",
+  "group_title": "SRG-OS-000259-GPOS-00100",
+  "title": "AIX device files and directories must only be writable by users with a system account or as configured by the vendor.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>System device files in writable directories could be modified, removed, or used by an unprivileged user to control system hardware.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Find all device files existing anywhere on the system using commands:\n# find / -type b -print | xargs ls -l > devicelistB\n# find / -type c -print | xargs ls -l > devicelistC \n\nLook at devicelistB and devicelistC files to check the permissions on the device files and directories above the subdirectories containing device files.\n\nIf any of the device files or their parent directories are world-writable, excepting device files specifically intended to be world-writable, such as \"/dev/null\", this is a finding.",
+  "fix": "Remove the world-writable permission from the device file(s) using command:\n# chmod o-w <device file>",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "System device files in writable directories could be modified, removed, or used by an unprivileged user to control system hardware.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001019",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

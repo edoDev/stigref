@@ -1,0 +1,53 @@
+{
+  "id": "SV-255254r960762_rule",
+  "full_rule_id": "SV-255254r960762_rule",
+  "rule_id": "SV-255254",
+  "rule_revision": "960762",
+  "group_id": "V-255254",
+  "group_title": "SRG-APP-000015-WSR-000014",
+  "title": "SSMC web server must use cryptography to protect the integrity of remote sessions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Data exchanged between the user and the web server can range from static display data to credentials used to Log on to the hosted application. Even when data appears to be static, the nondisplayed logic in a web page may expose business logic or trusted system relationships. The integrity of all data being exchanged between the user and web server must always be trusted. To protect the integrity and trust, encryption methods should be used to protect the complete communication session.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SSMC encrypts log exports to a remote syslog server with the following command: \n\n$ sudo /ssmc/bin/config_security.sh -o remote_syslog_appliance -a status | grep tls\n\nssmc.rsyslog.server.tls-enabled=1\n\nIf \"ssmc.rsyslog.server.tls-enabled\" does not equal \"1\", this is a finding.",
+  "fix": "Configure SSMC to encrypt log exports to a remote syslog server:\n\n1. Configure rsyslog parameters in /ssmc/conf/security_config.properties like below (use vi editor):\nssmc.rsyslog.server.tls-enabled=1\n\n2. Execute \"sudo /ssmc/bin/config_security.sh -o remote_syslog_appliance -a set -f\" to commit the configuration and enable the service.",
+  "ccis": [
+    "CCI-001453"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Data exchanged between the user and the web server can range from static display data to credentials used to Log on to the hosted application. Even when data appears to be static, the nondisplayed logic in a web page may expose business logic or trusted system relationships. The integrity of all data being exchanged between the user and web server must always be trusted. To protect the integrity and trust, encryption methods should be used to protect the complete communication session.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SSMC-WS-010051",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0",
+      "name": "HPE 3PAR SSMC Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0"
+  ]
+}

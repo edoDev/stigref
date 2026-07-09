@@ -1,0 +1,53 @@
+{
+  "id": "SV-253750r961800_rule",
+  "full_rule_id": "SV-253750r961800_rule",
+  "rule_id": "SV-253750",
+  "rule_revision": "961800",
+  "group_id": "V-253750",
+  "group_title": "SRG-APP-000495-DB-000326",
+  "title": "MariaDB must generate audit records when privileges/permissions are added.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Changes in the permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized elevation or restriction of privileges could go undetected. Elevated privileges give users access to information and functionality that they should not have; restricted privileges wrongly deny access to authorized users.\n\nIn MariaDB, adding permissions is done via the GRANT command, or, in the negative, the REVOKE command.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the MariaDB Enterprise Audit plugin is loaded and actively logging:\n\nMariaDB> SHOW GLOBAL STATUS LIKE 'Server_audit_active';\n\nIf the MariaDB Enterprise Audit is not active, this is a finding.\n\nCheck what filters are in place by running the following as an administrative user: \n\nMariaDB> SELECT * FROM mysql.server_audit_filters;\n\nVerify query_events includes DCL or ALL in corresponding audit filters. If not, this is a finding.\n\nIn one terminal, tail the audit log file. For example: \n$ tail -F /var/lib/mysql/server_audit.log (default location)\n\nOpen a new terminal and connect to the database. \n\nAs the database administrator, create a user without special permissions:\nMariaDB> CREATE USER 'user_name_here'@'localhost' IDENTIFIED BY 'password_here';\n\nAs the database administrator, create a role by running the following SQL: \nMariaDB> CREATE ROLE 'role_name_here';\n\nAs the database administrator, GRANT role to testuser: \nMariaDB> GRANT 'role_name_here' TO 'user_name_here'@'localhost';\n\nAs the database administrator, add privileges to user_role for testdb, and add GRANT role to testuser:\nMariaDB> GRANT SELECT ON db_name_here TO 'user_name_here'@'localhost';\nMariaDB> GRANT SELECT ON db_name_here TO 'role_name_here';\n \nAs the database administrator, modify privileges for testuser and user_role:\nMariaDB> GRANT DELETE ON db_name_here TO 'user_name_here'@'localhost';\nMariaDB> GRANT DELETE ON db_name_here TO 'role_name_here';\n\nIf the audit records are not produced for successful attempts to modify privileges/permissions and roles in the first terminal, this is a finding.",
+  "fix": "The MariaDB Enterprise Audit plugin can be configured to audit these changes. \n\nUpdate necessary audit filters to include query_event ALL. Example: \n\nMariaDB> DELETE FROM mysql.server_audit_filters WHERE filtername = 'default';\n\nMariaDB> INSERT INTO mysql.server_audit_filters (filtername, rule)\n   VALUES ('default',\n      JSON_COMPACT(\n         '{\n            \"connect_event\": [\n               \"CONNECT\",\n               \"DISCONNECT\"\n            ],\n            \"query_event\": [\n                \"ALL\"\n            ]\n         }'\n      ));",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Changes in the permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized elevation or restriction of privileges could go undetected. Elevated privileges give users access to information and functionality that they should not have; restricted privileges wrongly deny access to authorized users.\n\nIn MariaDB, adding permissions is done via the GRANT command, or, in the negative, the REVOKE command.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-009800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-258902r933767_rule",
+  "full_rule_id": "SV-258902r933767_rule",
+  "rule_id": "SV-258902",
+  "rule_revision": "933767",
+  "group_id": "V-258902",
+  "group_title": "SRG-OS-000077-GPOS-00045",
+  "title": "The Photon operating system must be configured to use the pam_pwhistory.so module.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed as per policy requirements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command to verify the pam_pwhistory.so module is used:\n\n# grep '^password' /etc/pam.d/system-password\n\nExample result:\n\npassword  requisite   pam_pwquality.so  dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=15 difok=8 enforce_for_root dictcheck=1\npassword  required    pam_pwhistory.so  remember=5 retry=3 enforce_for_root use_authtok\npassword  required    pam_unix.so       sha512 use_authtok shadow try_first_pass\n\nIf the \"pam_pwhistory.so\" module is not present, this is a finding.\nIf \"use_authtok\" is not present for the \"pam_pwhistory.so\" module, this is a finding.\nIf \"conf\" or \"file\" are present for the \"pam_pwhistory.so\" module, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/pam.d/system-password\n\nAdd or update the pam_pwhistory.so module line as follows:\n\npassword  required    pam_pwhistory.so  remember=5 retry=3 enforce_for_root use_authtok\n\nNote: The line must be configured after pam_pwquality.so.\n\nNote: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.",
+  "ccis": [
+    "CCI-000200"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed as per policy requirements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000243",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-250345r961521_rule",
+  "full_rule_id": "SV-250345r961521_rule",
+  "rule_id": "SV-250345",
+  "rule_revision": "961521",
+  "group_id": "V-250345",
+  "group_title": "SRG-APP-000400-AS-000246",
+  "title": "The WebSphere Liberty Server must prohibit the use of cached authenticators after an organization-defined time period.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Larger authentication cache timeout values can increase security risks. For example, a user who is revoked can still log in by using a credential that is cached in the authentication cache until the cache is refreshed.\n\nSmaller authentication cache timeout values can affect performance. When this value is smaller, the Liberty Server accesses the user registry or repository more frequently.\n\nLarger numbers of entries in the authentication cache, which is caused by an increased number of users, increases the memory usage of the authentication cache. Thus, the application server might slow down and affect performance.\n\nIf cached authentication information is out of date, the validity of the authentication information may be questionable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review system security plan and identify the cache timeout parameters for authentication. The  value for admin timeout is 10 minutes. However, a case-by-case exception based on operational requirements can be configured with AO acceptance. \n\nAs a privileged user with access to server.xml, review the file and verify the authCache timeout parameter is configured for 10 minutes.\n\ngrep -i authcache server.xml\n\nEXAMPLE:\n<authCache initialSize=\"100\" maxSize=\"50000\" timeout=\"10m\"/>\n\nIf the authCache timeout parameter is not configured for 10 minutes, or the AO has not accepted the risk for extending the timeout period specified, this is a finding.",
+  "fix": "Edit the server.xml file and define the authCache timeout value as 10 minutes or AO approved value. Also ensure the appSecurity-2.0 feature is enabled.\n\nEXAMPLE:\n\n<featureManager> \n<feature>appSecurity-2.0</feature>\n</featureManager> \n\n<authCache initialSize=\"100\" maxSize=\"50000\" timeout=\"10m\"/>",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Larger authentication cache timeout values can increase security risks. For example, a user who is revoked can still log in by using a credential that is cached in the authentication cache until the cache is refreshed.\n\nSmaller authentication cache timeout values can affect performance. When this value is smaller, the Liberty Server accesses the user registry or repository more frequently.\n\nLarger numbers of entries in the authentication cache, which is caused by an increased number of users, increases the memory usage of the authentication cache. Thus, the application server might slow down and affect performance.\n\nIf cached authentication information is out of date, the validity of the authentication information may be questionable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IBMW-LS-000970",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6",
+      "name": "IBM WebSphere Liberty Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6"
+  ]
+}

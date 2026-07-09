@@ -1,0 +1,53 @@
+{
+  "id": "SV-259603r961155_rule",
+  "full_rule_id": "SV-259603r961155_rule",
+  "rule_id": "SV-259603",
+  "rule_revision": "961155",
+  "group_id": "V-259603",
+  "group_title": "SRG-APP-000247",
+  "title": "Exchange send connectors delivery retries must be controlled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>This setting controls the rate at which delivery attempts from the home domain are retried and user notifications are issued and notes the expiration time when the message will be discarded. \n\nIf delivery retry attempts are too frequent, servers will generate network congestion. If they are too far apart, messages may remain queued longer than necessary, potentially raising disk resource requirements.\n\nThe default values of these fields should be adequate for most environments. Administrators may wish to modify the values, but changes should be documented in the System Security Plan.\n\nNote: Transport configuration settings apply to the organization/global level of the Exchange SMTP path. By checking and setting them at the Hub server, the setting will apply to both Hub and Edge roles.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Email Domain Security Plan (EDSP).\n\nDetermine the value for Transient Failure Retry Count.\n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-TransportService | Select-Object -Property Name, Identity, TransientFailureRetryCount\n\nIf the value of \"TransientFailureRetryCount\" is not set to \"10\" or less, this is a finding.\n\nor\n\nIf the value of \"TransientFailureRetryCount\" is set to more than \"10\" or has signoff and risk acceptance in the EDSP, this is not a finding.",
+  "fix": "Update the EDSP to reflect the value for Transient Failure Retry Count.\n\nOpen the Exchange Management Shell and enter the following command:\n\nSet-TransportService -Identity <'IdentityName'> -TransientFailureRetryCount 10\n\nNote: The <IdentityName> value must be in quotes.\n\nor\n\nThe value as identified by the EDSP that has obtained a signoff with risk acceptance.",
+  "ccis": [
+    "CCI-001095"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This setting controls the rate at which delivery attempts from the home domain are retried and user notifications are issued and notes the expiration time when the message will be discarded. \n\nIf delivery retry attempts are too frequent, servers will generate network congestion. If they are too far apart, messages may remain queued longer than necessary, potentially raising disk resource requirements.\n\nThe default values of these fields should be adequate for most environments. Administrators may wish to modify the values, but changes should be documented in the System Security Plan.\n\nNote: Transport configuration settings apply to the organization/global level of the Exchange SMTP path. By checking and setting them at the Hub server, the setting will apply to both Hub and Edge roles.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-ED-000116",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac",
+      "name": "Microsoft Exchange 2019 Edge Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac"
+  ]
+}

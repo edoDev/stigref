@@ -1,0 +1,53 @@
+{
+  "id": "SV-257571r1137649_rule",
+  "full_rule_id": "SV-257571r1137649_rule",
+  "rule_id": "SV-257571",
+  "rule_revision": "1137649",
+  "group_id": "V-257571",
+  "group_title": "SRG-APP-000456-CTR-001125",
+  "title": "OpenShift must contain the latest images with most recent updates and execute within the container platform runtime as authorized by IAVM, CTOs, DTMs, and STIGs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical to the security and stability of the container platform and the software services running on the platform to ensure that images are deployed through a trusted software supply chain. The OpenShift platform can be configured to limit and control which image source repositories may be used by the platform and the users of the platform. By configuring this to only allow users to deploy images from trusted sources, lowers the risk for a user to deploy unsafe or untested images that would be detrimental to the security and stability of the platform.\n\nIn order to help users manage images, OpenShift uses image streams to provide a level of obstruction for the users. In this way the users can trigger automatic redeployments as images are updated. It is also possible to configure the image stream to periodically check the image source repository for any updates and automatically pull in the latest updates.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the image source policy is configured by executing the following:\n\n oc get image.config.openshift.io/cluster -o jsonpath='{.spec.registrySources}{\"\\nAllowedRegistriesForImport: \"}{.spec.allowedRegistriesForImport}{\"\\n\"}'\n\nIf nothing is returned, this is a finding. \n\nIf the registries listed under allowedRegistries, insecureRegistries, or AllowedRegistriesForImport are not from trusted sources as defined by the organization, this is a finding.",
+  "fix": "Edit the cluster image config resource to define the allowed registries by executing the following:\n\noc edit image.config.openshift.io/cluster\n\nThe following is an example configuration. For a detailed explanation of the configuration properties, refer to https://docs.openshift.com/container-platform/4.8/openshift_images/image-configuration.html.\n\n----------------------------------------------------------------------\napiVersion: config.openshift.io/v1\nkind: Image \nmetadata:\n  annotations:\n    release.openshift.io/create-only: \"true\"\n  creationTimestamp: \"2019-05-17T13:44:26Z\"\n  generation: 1\n  name: cluster\n  resourceVersion: \"8302\"\n  selfLink: /apis/config.openshift.io/v1/images/cluster\n  uid: e34555da-78a9-11e9-b92b-06d6c7da38dc\nspec:\n  allowedRegistriesForImport: \n    - domainName: quay.io\n      insecure: false\n  additionalTrustedCA: \n    name: myconfigmap\n  registrySources: \n    allowedRegistries:\n    - example.com\n    - quay.io\n    - registry.redhat.io\n    - image-registry.openshift-image-registry.svc:5000\n    - reg1.io/myrepo/myapp:latest\n    insecureRegistries:\n    - insecure.com\nstatus:\n  internalRegistryHostname: image-registry.openshift-image-registry.svc:5000\n----------------------------------------------------------------------",
+  "ccis": [
+    "CCI-002605"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical to the security and stability of the container platform and the software services running on the platform to ensure that images are deployed through a trusted software supply chain. The OpenShift platform can be configured to limit and control which image source repositories may be used by the platform and the users of the platform. By configuring this to only allow users to deploy images from trusted sources, lowers the risk for a user to deploy unsafe or untested images that would be detrimental to the security and stability of the platform.\n\nIn order to help users manage images, OpenShift uses image streams to provide a level of obstruction for the users. In this way the users can trigger automatic redeployments as images are updated. It is also possible to configure the image stream to periodically check the image source repository for any updates and automatically pull in the latest updates.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-OS-000890",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2",
+      "name": "Red Hat OpenShift Container Platform 4.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2"
+  ]
+}

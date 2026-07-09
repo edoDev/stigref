@@ -1,0 +1,53 @@
+{
+  "id": "SV-265468r994754_rule",
+  "full_rule_id": "SV-265468r994754_rule",
+  "rule_id": "SV-265468",
+  "rule_revision": "994754",
+  "group_id": "V-265468",
+  "group_title": "SRG-NET-000512-RTR-000001",
+  "title": "The NSX Tier-0 Gateway router must be configured to use its loopback address as the source address for Internal Border Gateway Protocol (IBGP) peering sessions.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Using a loopback address as the source address offers a multitude of uses for security, access, management, and scalability of the Border Gateway Protocol (BGP) routers. It is easier to construct appropriate ingress filters for router management plane traffic destined to the network management subnet since the source addresses will be from the range used for loopback interfaces instead of a larger range of addresses used for physical interfaces. Log information recorded by authentication and syslog servers will record the router’s loopback address instead of the numerous physical interface addresses.\n\nThe routers within the iBGP domain should also use loopback addresses as the source address when establishing BGP sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the Tier-0 Gateway is not using iBGP, this is Not Applicable.\n\nFrom the NSX Manager web interface, go to Networking >> Connectivity >> Tier-0 Gateways.\n\nFor every Tier-0 Gateway with BGP enabled, expand the Tier-0 Gateway.\n\nExpand BGP, click on the number next to BGP Neighbors, then view the source address for each neighbor.\n\nIf the Source Address is not configured as the Tier-0 Gateway loopback address for the iBGP session, this is a finding.",
+  "fix": "To configure a loopback interface, do the following:\n\nFrom the NSX Manager web interface, go to Networking >> Connectivity >> Tier-0 Gateways and expand the target Tier-0 gateway.\n\nExpand interfaces and click \"Add Interface\".\n\nEnter a name, select \"Loopback\" as the Type, enter an IP address, select an Edge Node for the interface, then click \"Save\".\n\nNote: More than one loopback may need to be configured depending on the routing architecture.\n\n\nTo set the source address for BGP neighbors, do the following:\n\nFrom the NSX Manager web interface, go to Networking >> Connectivity >> Tier-0 Gateways >> expand the target Tier-0 gateway.\n\nExpand BGP >> next to BGP Neighbors, click on the number present to open the dialog >> select \"Edit\" on the target BGP Neighbor.\n\nUnder Source Addresses, configure the source address with the loopback address and click \"Save\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using a loopback address as the source address offers a multitude of uses for security, access, management, and scalability of the Border Gateway Protocol (BGP) routers. It is easier to construct appropriate ingress filters for router management plane traffic destined to the network management subnet since the source addresses will be from the range used for loopback interfaces instead of a larger range of addresses used for physical interfaces. Log information recorded by authentication and syslog servers will record the router’s loopback address instead of the numerous physical interface addresses.\n\nThe routers within the iBGP domain should also use loopback addresses as the source address when establishing BGP sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NT0R-4X-000091",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-4-x-tier-0-gateway-router-security-technical-implementation-guide-v1r2-fac33993",
+      "name": "VMware NSX 4.x Tier-0 Gateway Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-4-x-tier-0-gateway-router-security-technical-implementation-guide-v1r2-fac33993"
+  ]
+}

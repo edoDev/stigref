@@ -1,0 +1,54 @@
+{
+  "id": "SV-224051r1137691_rule",
+  "full_rule_id": "SV-224051r1137691_rule",
+  "rule_id": "SV-224051",
+  "rule_revision": "1137691",
+  "group_id": "V-224051",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS DFSMS control data sets must be protected in accordance with security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to the logical parmlib data sets, example: SYS1.PARMLIB(IGDSMSxx), to identify the fully qualified file names for the following SMS data sets:\n\nSource Control Data Set (SCDS)\nActive Control Data Set (ACDS)\nCommunications Data Set (COMMDS)\nAutomatic Class Selection Routine Source Data Sets (ACS)\nACDS Backup\nCOMMDS Backup\n\nIf the TSS data set rules for the SCDS, ACDS, COMMDS, and ACS data sets restrict UPDATE and ALL access to only systems programming personnel, this is not a finding.\n\nIf the TSS data set rules for the SCDS, ACDS, COMMDS, and ACS data sets do not restrict UPDATE and ALL access to only systems programming personnel, this is a finding.\n\nNote: At the discretion of the ISSM, DASD administrators are allowed UPDATE access to the control data sets.",
+  "fix": "Review the logical parmlib data sets, example: SYS1.PARMLIB(IGDSMSxx), to identify the fully qualified file names for the following SMS data sets:\n\nSource Control Data Set (SCDS)\nActive Control Data Set (ACDS)\nCommunications Data Set (COMMDS)\nAutomatic Class Selection Routine Source Data Sets (ACS)\nACDS Backup\nCOMMDS Backup\n\nAssign ownership of the data sets, replacing user-id with a user, department, or division that administer access to the SMS control data sets, and data name with the prefix of the SMS control data sets:\n\nTSS ADD(user-id) DSN(data name)\n\nEnsure the TSS data set rules for the SCDS, ACDS, COMMDS, and ACS data sets restrict UPDATE and ALL access to only z/OS systems programming personnel.\n\nNote: At the discretion of the ISSM, DASD administrators are allowed UPDATE access to the control data sets.\n\nPermit access to those personnel who manage the SMS environment, replacing user-id with the userid of the user or a Group profile:\n\nTSS PERMIT(user-id) DSN(data name) ACC(UPDATE) ACTION(AUDIT)\n\nPermit access to those personnel that perform maintenance on these data sets:\n\nTSS PERMIT(user-id) DSN(data name) ACC(ALL) ACTION(AUDIT)",
+  "ccis": [
+    "CCI-000213",
+    "CCI-000549"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-SM-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

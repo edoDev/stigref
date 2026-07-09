@@ -1,0 +1,53 @@
+{
+  "id": "SV-269861r1137919_rule",
+  "full_rule_id": "SV-269861r1137919_rule",
+  "rule_id": "SV-269861",
+  "rule_revision": "1137919",
+  "group_id": "V-269861",
+  "group_title": "SRG-NET-000019-RTR-000009",
+  "title": "The perimeter router must be configured to not be a Border Gateway Protocol (BGP) peer to an alternate gateway service provider.",
+  "severity": "high",
+  "description": "<VulnDiscussion>ISPs use BGP to share route information with other autonomous systems (i.e., other ISPs and corporate networks). If the perimeter router was configured to BGP peer with an ISP, NIPRnet routes could be advertised to the ISP; thereby creating a backdoor connection from the internet to the NIPRnet.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the configuration of the router connecting to the alternate gateway.\n\nVerify there are no BGP neighbors configured to the remote AS that belongs to the alternate gateway service provider.\n\nOS10# show running-configuration bgp\n!\nrouter bgp 10\n !\n neighbor 50.1.1.1\n  !\n  address-family ipv4 unicast\n  ...\n !\n neighbor 120.100.5.2\n  !\n  address-family ipv6 unicast\n  ...\n !\n ...\n \nIf there are BGP neighbors connecting the remote AS of the alternate gateway service provider, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the router such that there are no BGP neighbors configured to the remote AS that belongs to the alternate gateway service provider.\n\nOS10(config)# router bgp 10\nOS10(config-router-bgp-10)# no neighbor 120.100.5.2",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ISPs use BGP to share route information with other autonomous systems (i.e., other ISPs and corporate networks). If the perimeter router was configured to BGP peer with an ISP, NIPRnet routes could be advertised to the ISP; thereby creating a backdoor connection from the internet to the NIPRnet.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

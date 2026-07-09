@@ -1,0 +1,53 @@
+{
+  "id": "SV-217067r992003_rule",
+  "full_rule_id": "SV-217067r992003_rule",
+  "rule_id": "SV-217067",
+  "rule_revision": "992003",
+  "group_id": "V-217067",
+  "group_title": "SRG-NET-000512-RTR-000005",
+  "title": "The Juniper PE router must be configured to have each Virtual Routing and Forwarding (VRF) instance bound to the appropriate physical or logical interfaces to maintain traffic separation between all MPLS L3VPNs.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The primary security model for an MPLS L3VPN infrastructure is traffic separation. The service provider must guarantee the customer that traffic from one VPN does not leak into another VPN or into the core, and that core traffic must not leak into any VPN. Hence, it is imperative that each CE-facing interface can only be associated to one VRF—that alone is the fundamental framework for traffic separation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the design plan for deploying L3VPN and VRF-lite. \n\nReview all CE-facing interfaces and verify that the proper VRF is defined. The example below depicts the CE-facing interface ge-0/1/0 bound to VRF titled L3VPN_CUST1. Notice that the PE router is peering OSPF with the CE router.\n\ninterfaces {\n    …\n    …\n    …\n    }\n    ge-0/1/0 {\n        description \"link to Customer 1\";\n        unit 0 {\n            family inet {\n                address 101.3.44.6/30;\n            }\n        }\n    }\n    …\n    …\n    …\n}\n\nrouting-instances {\n    L3VPN_CUST1 {\n        description \"Between PE1 & PE2\";\n        instance-type vrf;\n        interface ge-0/1/0.0;\n        route-distinguisher 33:33;\n        vrf-target target:33:33;\n        vrf-table-label;\n        protocols {\n            ospf {\n                area 0.0.0.1 {\n                    interface ge-0/1/0.0;\n                }\n            }\n        }\n    }\n}\n\nIf any VRFs are not bound to the appropriate physical or logical interface, this is a finding.",
+  "fix": "Configure the PE router to have each VRF bound to the appropriate physical or logical interfaces to maintain traffic separation between all MPLS L3VPNs as shown in the example below.\n\n[edit]\nset routing-instances L3VPN_CUST1 instance-type vrf\nset routing-instances L3VPN_CUST1 description \"Between PE1 & PE2\"\nset routing-instances L3VPN_CUST1 interface ge-0/1/0.0\nset routing-instances L3VPN_CUST1 protocols ospf interface area 1 ge-0/1/0.0\nset routing-instances L3VPN_CUST1 route-distinguisher 33:33\nset routing-instances L3VPN_CUST1 vrf-target target:33:33 \nset routing-instances L3VPN_CUST1 vrf-table-label",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The primary security model for an MPLS L3VPN infrastructure is traffic separation. The service provider must guarantee the customer that traffic from one VPN does not leak into another VPN or into the core, and that core traffic must not leak into any VPN. Hence, it is imperative that each CE-facing interface can only be associated to one VRF—that alone is the fundamental framework for traffic separation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000610",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

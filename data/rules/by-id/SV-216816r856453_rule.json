@@ -1,0 +1,53 @@
+{
+  "id": "SV-216816r856453_rule",
+  "full_rule_id": "SV-216816r856453_rule",
+  "rule_id": "SV-216816",
+  "rule_revision": "856453",
+  "group_id": "V-216816",
+  "group_title": "SRG-NET-000362-RTR-000122",
+  "title": "The Cisco multicast Designated Router (DR) must be configured to limit the number of mroute states resulting from Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Host Membership Reports.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The current multicast paradigm can let any host join any multicast group at any time by sending an IGMP or MLD membership report to the DR. In a Protocol Independent Multicast (PIM) Sparse Mode network, the DR will send a PIM Join message for the group to the RP. Without any form of admission control, this can pose a security risk to the entire multicast domain - specifically the multicast routers along the shared tree from the DR to the RP that must maintain the mroute state information for each group join request. Hence, it is imperative that the DR is configured to limit the number of mroute state information that must be maintained to mitigate the risk of IGMP or MLD flooding.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the DR configuration to verify that it is limiting the number of mroute states via IGMP or MLD.\n\nVerify IGMP limits have been configured globally or on each host-facing interface via the ip igmp limit command as shown in the example.\n\nrouter igmp\n interface GigabitEthernet0/0/0/0\n  access-group IGMP_JOIN_FILTER\n !\n interface GigabitEthernet0/0/0/1\n  access-group IGMP_JOIN_FILTER\n !\n maximum groups 200\n\n!Note: After the maximum groups value is met, all additional memberships learned are ignored. If not configured, the default is 5000 which would be an overage for a small to average size multicast deployment. \n\nIf the DR is not limiting multicast join requests via IGMP or MLD on a global or interfaces basis, this is a finding.",
+  "fix": "Configure the DR on a global or interface basis to limit the number of mroute states resulting from IGMP or MLD membership reports.\n\nRP/0/0/CPU0:R5(config)#router igmp \nRP/0/0/CPU0:R2(config-igmp)#maximum groups 200\nRP/0/0/CPU0:R5(config-igmp)#end",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The current multicast paradigm can let any host join any multicast group at any time by sending an IGMP or MLD membership report to the DR. In a Protocol Independent Multicast (PIM) Sparse Mode network, the DR will send a PIM Join message for the group to the RP. Without any form of admission control, this can pose a security risk to the entire multicast domain - specifically the multicast routers along the shared tree from the DR to the RP that must maintain the mroute state information for each group join request. Hence, it is imperative that the DR is configured to limit the number of mroute state information that must be maintained to mitigate the risk of IGMP or MLD flooding.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000880",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f",
+      "name": "Cisco IOS XR Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f"
+  ]
+}

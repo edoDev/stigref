@@ -1,0 +1,53 @@
+{
+  "id": "SV-216538r961506_rule",
+  "full_rule_id": "SV-216538r961506_rule",
+  "rule_id": "SV-216538",
+  "rule_revision": "961506",
+  "group_id": "V-216538",
+  "group_title": "SRG-APP-000395-NDM-000310",
+  "title": "The Cisco router must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without authenticating devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity. Bidirectional authentication provides stronger safeguards to validate the identity of other devices for connections that are of greater risk.\n\nA local connection is any connection with a device communicating without the use of a network. A network connection is any connection with a device that communicates through a network (e.g., local area or wide area network, Internet). A remote connection is any connection with a device communicating through an external network (e.g., the Internet).\n\nBecause of the challenges of applying this requirement on a large scale, organizations are encouraged to only apply the requirement to those limited number (and type) of devices that truly need to support this capability.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Cisco router configuration to verify that it is compliant with this requirement as shown in the example below.\n\nsnmp-server host x.x.x.x traps version 3 auth V3USER\nsnmp-server user V3USER V3GROUP v3 auth sha \nsnmp-server view V3READ iso included\nsnmp-server view V3WRITE iso included\nsnmp-server group V3GROUP v3 auth read V3READ write V3WRITE\n\nIf the Cisco router is not configured to authenticate SNMP messages using a FIPS-validated HMAC, this is a finding.",
+  "fix": "Configure the Cisco router to authenticate SNMP messages as shown in the example below.\n\nRP/0/0/CPU0:R3(config)#snmp-server group V3GROUP v3 auth read V3READ write V3WRITE\nRP/0/0/CPU0:R3(config)#snmp-server user V3USER V3GROUP v3 auth sha xxxxxx \nRP/0/0/CPU0:R3(config)#snmp-server view V3READ iso included\nRP/0/0/CPU0:R3(config)#snmp-server view V3WRITE iso included\nRP/0/0/CPU0:R3(config)#snmp-server host x.x.x.x version 3 auth V3USER",
+  "ccis": [
+    "CCI-001967"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without authenticating devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity. Bidirectional authentication provides stronger safeguards to validate the identity of other devices for connections that are of greater risk.\n\nA local connection is any connection with a device communicating without the use of a network. A network connection is any connection with a device that communicates through a network (e.g., local area or wide area network, Internet). A remote connection is any connection with a device communicating through an external network (e.g., the Internet).\n\nBecause of the challenges of applying this requirement on a large scale, organizations are encouraged to only apply the requirement to those limited number (and type) of devices that truly need to support this capability.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-ND-001130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xr-router-ndm-security-technical-implementation-guide-v3r6-41edbc45",
+      "name": "Cisco IOS XR Router NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xr-router-ndm-security-technical-implementation-guide-v3r6-41edbc45"
+  ]
+}

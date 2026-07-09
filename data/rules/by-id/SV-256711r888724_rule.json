@@ -1,0 +1,54 @@
+{
+  "id": "SV-256711r888724_rule",
+  "full_rule_id": "SV-256711r888724_rule",
+  "rule_id": "SV-256711",
+  "rule_revision": "888724",
+  "group_id": "V-256711",
+  "group_title": "SRG-APP-000089-WSR-000047",
+  "title": "Lookup Service must generate log records for system startup and shutdown.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Logging must be started as soon as possible when a service starts and when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.\n\nOn the vCenter Server Appliance (VCSA), the \"vmware-vmon\" service starts up the Java virtual machines (JVMs) for various vCenter processes, including Lookup Service, and the individual json configuration files control the early JVM logging. Ensuring these json files are configured correctly enables early Java \"stdout\" and \"stderr\" logging.\n\nSatisfies: SRG-APP-000089-WSR-000047, SRG-APP-000092-WSR-000055</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# grep StreamRedirectFile /etc/vmware/vmware-vmon/svcCfgfiles/lookupsvc.json\n\nExpected result:\n\n\"StreamRedirectFile\": \"%VMWARE_LOG_DIR%/vmware/lookupsvc/lookupsvc_stream.log\",\n\nIf no log file is specified for the \"StreamRedirectFile\" setting, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/vmware/vmware-vmon/svcCfgfiles/lookupsvc.json\n\nBelow the last line of the \"PreStartCommandArg\" block, add or reconfigure the following line:\n\n\"StreamRedirectFile\": \"%VMWARE_LOG_DIR%/vmware/lookupsvc/lookupsvc_stream.log\",\n\nRestart the appliance for changes to take effect.",
+  "ccis": [
+    "CCI-000169",
+    "CCI-001464"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Logging must be started as soon as possible when a service starts and when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.\n\nOn the vCenter Server Appliance (VCSA), the \"vmware-vmon\" service starts up the Java virtual machines (JVMs) for various vCenter processes, including Lookup Service, and the individual json configuration files control the early JVM logging. Ensuring these json files are configured correctly enables early Java \"stdout\" and \"stderr\" logging.\n\nSatisfies: SRG-APP-000089-WSR-000047, SRG-APP-000092-WSR-000055",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCLU-70-000006",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2",
+      "name": "VMware vSphere 7.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2"
+  ]
+}

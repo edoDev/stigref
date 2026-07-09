@@ -1,0 +1,53 @@
+{
+  "id": "SV-220690r991946_rule",
+  "full_rule_id": "SV-220690r991946_rule",
+  "rule_id": "SV-220690",
+  "rule_revision": "991946",
+  "group_id": "V-220690",
+  "group_title": "SRG-NET-000512-L2S-000007",
+  "title": "The Cisco switch must have all disabled switch ports assigned to an unused VLAN.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is possible that a disabled port that is assigned to a user or management VLAN becomes enabled by accident or by an attacker and as a result gains access to that VLAN as a member.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Step 1: Review the switch configurations and examine all access switch ports. Each access switch port not in use should have membership to an inactive VLAN. \n\ninterface Ethernet1/81\n shutdown\n switchport access vlan 999\n\ninterface Ethernet1/82\n shutdown\n switchport access vlan 999\n\ninterface Ethernet1/83\n shutdown\n switchport access vlan 999\n\nStep 2: Verify that traffic from the inactive VLAN is not allowed on any trunk links as shown in the example below:\n\ninterface Ethernet1/1\n switchport mode trunk\n switchport trunk allowed vlan 1-998,1000-4094\n\nNote: Switch ports configured for 802.1x are exempt from this requirement.\n\nIf there are any access switch ports not in use and not in an inactive VLAN, this is a finding.",
+  "fix": "Assign all switch ports not in use to an inactive VLAN.\n\nStep 1: Assign the disabled interfaces to an inactive VLAN.\n\nSW1(config)# int e1/81-128\nSW1(config-if-range)# switchport access vlan 999\nSW1(config-if-range)# end\n\nStep 2: Configure trunk links to not allow traffic from the inactive VLAN.\n\nSW1(config-if)# switchport trunk allowed vlan except 999\nSW1(config-if)# end",
+  "ccis": [
+    "CCI-004891"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is possible that a disabled port that is assigned to a user or management VLAN becomes enabled by accident or by an attacker and as a result gains access to that VLAN as a member.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-L2-000210",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-l2s-security-technical-implementation-guide-v3r2-c012221b",
+      "name": "Cisco NX OS Switch L2S Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-l2s-security-technical-implementation-guide-v3r2-c012221b"
+  ]
+}

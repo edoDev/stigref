@@ -1,0 +1,53 @@
+{
+  "id": "SV-269291r1050173_rule",
+  "full_rule_id": "SV-269291r1050173_rule",
+  "rule_id": "SV-269291",
+  "rule_revision": "1050173",
+  "group_id": "V-269291",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The root account must be the only account having unrestricted access to an AlmaLinux OS 9 system.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>An account has root authority if it has a user identifier (UID) of \"0\". Multiple accounts with a UID of \"0\" afford more opportunity for potential intruders to guess a password for a privileged account.\n\nProper configuration of sudo is recommended to afford multiple system administrators access to root privileges in an accountable manner.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that only the \"root\" account has a UID \"0\" assignment with the following command:\n\n$ awk -F: '$3 == 0 {print $1}' /etc/passwd\n\nroot\n\nIf any accounts other than \"root\" have a UID of \"0\", this is a finding.",
+  "fix": "Change the UID of any account on the system, other than root which has a UID of \"0\". \n\nIf the account is associated with system commands or applications, the UID should be changed to one greater than \"0\" but less than \"1000\". Otherwise, assign a UID of greater than \"1000\" that has not already been assigned.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "An account has root authority if it has a user identifier (UID) of \"0\". Multiple accounts with a UID of \"0\" afford more opportunity for potential intruders to guess a password for a privileged account.\n\nProper configuration of sudo is recommended to afford multiple system administrators access to root privileges in an accountable manner.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-023890",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

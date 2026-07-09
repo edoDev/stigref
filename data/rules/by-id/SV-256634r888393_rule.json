@@ -1,0 +1,53 @@
+{
+  "id": "SV-256634r888393_rule",
+  "full_rule_id": "SV-256634r888393_rule",
+  "rule_id": "SV-256634",
+  "rule_revision": "888393",
+  "group_id": "V-256634",
+  "group_title": "SRG-APP-000266-WSR-000159",
+  "title": "Performance Charts must be configured to show error pages with minimal information.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Web servers will often display error messages to client users, including enough information to aid in the debugging of the error. The information given back in error messages may display the web server type, version, patches installed, plug-ins and modules installed, type of code being used by the hosted application, and any backends being used for data storage.\n\nThis information could be used by an attacker to blueprint what type of attacks might be successful. Therefore, Performance Charts must be configured with a catchall error handler that redirects to a standard \"error.jsp\".</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n#  xmllint --format /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/error-page/exception-type[\"text()=java.lang.Throwable\"]/parent::error-page' -\n\nExpected result:\n\n<error-page>\n    <exception-type>java.lang.Throwable</exception-type>\n    <location>/http_error.jsp</location>\n</error-page>\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml\n\nAdd the following section under the <web-apps> node:\n\n<error-page>\n    <exception-type>java.lang.Throwable</exception-type>\n    <location>/http_error.jsp</location>\n</error-page>\n\nRestart the service with the following command:\n\n# vmon-cli --restart perfcharts",
+  "ccis": [
+    "CCI-001312"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Web servers will often display error messages to client users, including enough information to aid in the debugging of the error. The information given back in error messages may display the web server type, version, patches installed, plug-ins and modules installed, type of code being used by the hosted application, and any backends being used for data storage.\n\nThis information could be used by an attacker to blueprint what type of attacks might be successful. Therefore, Performance Charts must be configured with a catchall error handler that redirects to a standard \"error.jsp\".",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPF-70-000024",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-1202da0d",
+      "name": "VMware vSphere 7.0 vCenter Appliance Perfcharts Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-1202da0d"
+  ]
+}

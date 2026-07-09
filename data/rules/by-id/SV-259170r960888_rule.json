@@ -1,0 +1,53 @@
+{
+  "id": "SV-259170r960888_rule",
+  "full_rule_id": "SV-259170r960888_rule",
+  "rule_id": "SV-259170",
+  "rule_revision": "960888",
+  "group_id": "V-259170",
+  "group_title": "SRG-APP-000092-DB-000208",
+  "title": "The vCenter PostgreSQL service must initiate session auditing upon startup.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Session auditing is for use when a user's activities are under investigation. To be sure of capturing all activity during those periods when session auditing is in use, it needs to be in operation for the whole time the database management system (DBMS) is running.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW log_destination;\"\n\nExample result:\n\nstderr\n\nIf \"log_destination\" is not set to \"stderr\" or \"syslog\", this is a finding.",
+  "fix": "A script is included with vCenter to generate a PostgreSQL STIG configuration.\n\nAt the command prompt, run the following commands:\n\n# chmod +x /opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py\n# /opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py --action stig_enable --pg-data-dir /storage/db/vpostgres\n# chmod -x /opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py\n\nRestart the PostgreSQL service by running the following command:\n\n# vmon-cli --restart vmware-vpostgres",
+  "ccis": [
+    "CCI-001464"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Session auditing is for use when a user's activities are under investigation. To be sure of capturing all activity during those periods when session auditing is in use, it needs to be in operation for the whole time the database management system (DBMS) is running.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-80-000009",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v2r2-08a78339",
+      "name": "VMware vSphere 8.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v2r2-08a78339"
+  ]
+}

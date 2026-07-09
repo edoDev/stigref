@@ -1,0 +1,53 @@
+{
+  "id": "SV-277133r1148851_rule",
+  "full_rule_id": "SV-277133r1148851_rule",
+  "rule_id": "SV-277133",
+  "rule_revision": "1148851",
+  "group_id": "V-277133",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "The macOS system must disable Find My service.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Find My service must be disabled.\n\nA Mobile Device Management (MDM) solution must be used to carry out remote locking and wiping instead of Apple's Find My service.\n\nApple's Find My service uses a personal AppleID for authentication. Organizations must rely on MDM solutions, which have much more secure authentication requirements, to perform remote lock and remote wipe.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to disable Find My service with the following command:\n\n/usr/bin/osascript -l JavaScript << EOS\nfunction run() {\nlet pref1 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\\\n.objectForKey('allowFindMyDevice'))\nlet pref2 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\\\n.objectForKey('allowFindMyFriends'))\nlet pref3 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.icloud.managed')\\\n.objectForKey('DisableFMMiCloudSetting'))\nif ( pref1 == false && pref2 == false && pref3 == true ) {\nreturn(\"true\")\n} else {\nreturn(\"false\")\n}\n}\nEOS\n\nIf the result is not \"true\", this is a finding.",
+  "fix": "Configure the macOS system to disable Find My service by installing the \"com.apple.applicationaccess\" and \"com.apple.icloud.managed\"configuration profiles.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Find My service must be disabled.\n\nA Mobile Device Management (MDM) solution must be used to carry out remote locking and wiping instead of Apple's Find My service.\n\nApple's Find My service uses a personal AppleID for authentication. Organizations must rely on MDM solutions, which have much more secure authentication requirements, to perform remote lock and remote wipe.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-26-002180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2",
+      "name": "Apple macOS 26 (Tahoe) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2"
+  ]
+}

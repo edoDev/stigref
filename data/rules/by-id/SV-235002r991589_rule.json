@@ -1,0 +1,53 @@
+{
+  "id": "SV-235002r991589_rule",
+  "full_rule_id": "SV-235002r991589_rule",
+  "rule_id": "SV-235002",
+  "rule_revision": "991589",
+  "group_id": "V-235002",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "All SUSE operating system world-writable directories must be group-owned by root, sys, bin, or an application group.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If a world-writable directory has the sticky bit set and is not group-owned by a privileged Group Identifier (GID), unauthorized users may be able to modify files created by others.\n\nThe only authorized public directories are those temporary directories supplied with the system or those designed to be temporary file repositories. The setting is normally reserved for directories used by the system and by users for temporary file storage, (e.g., /tmp), and for directories requiring global read/write access.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify all SUSE operating system world-writable directories are group-owned by root, sys, bin, or an application group.\n\nCheck the system for world-writable directories with the following command:\n\n> sudo find / -perm -002 -type d -exec ls -lLd {} \\;\ndrwxrwxrwt. 2 root root 40 Aug 26 13:07 /dev/mqueue\ndrwxrwxrwt. 2 root root 220 Aug 26 13:23 /dev/shm\ndrwxrwxrwt. 14 root root 4096 Aug 26 13:29 /tmp\n\nIf any world-writable directories are not owned by root, sys, bin, or an application group associated with the directory, this is a finding.",
+  "fix": "Change the group of the SUSE operating system world-writable directories to root with the following command:\n\n> sudo chgrp root <directory>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If a world-writable directory has the sticky bit set and is not group-owned by a privileged Group Identifier (GID), unauthorized users may be able to modify files created by others.\n\nThe only authorized public directories are those temporary directories supplied with the system or those designed to be temporary file repositories. The setting is normally reserved for directories used by the system and by users for temporary file storage, (e.g., /tmp), and for directories requiring global read/write access.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-040180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

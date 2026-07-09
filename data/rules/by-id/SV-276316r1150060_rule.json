@@ -1,0 +1,53 @@
+{
+  "id": "SV-276316r1150060_rule",
+  "full_rule_id": "SV-276316r1150060_rule",
+  "rule_id": "SV-276316",
+  "rule_revision": "1150060",
+  "group_id": "V-276316",
+  "group_title": "SRG-APP-000499-DB-000330",
+  "title": "Azure SQL Managed Instance must generate audit records when attempts to delete privileges/permissions occur.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Changes in the permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized elevation or restriction of privileges could go undetected. Elevated privileges give users access to information and functionality that they should not have; restricted privileges wrongly deny access to authorized users. \n \nIn an Azure SQL Managed Instance environment, deleting permissions is typically done via the REVOKE or DENY command.  \n \nTo aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.\n\nSatisfies: SRG-APP-000499-DB-000330, SRG-APP-000499-DB-000331</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check that Azure SQL Managed Instance Audit is being used for the STIG compliant audit. \n \nDetermine if an audit is configured and started by executing the following query.\n\nIf no records are returned, this is a finding.  \n\nSELECT name AS 'Audit Name', \nstatus_desc AS 'Audit Status', \naudit_file_path AS 'Current Audit File' \nFROM sys.dm_server_audit_status\nWHERE name NOT IN ('admin_audit','SqlDbThreatDetection_ServerAudit')\n \nExecute the following query to verify the required audit actions are included in the server audit specification: \n \nSELECT a.name AS 'AuditName', \ns.name AS 'SpecName', \nd.audit_action_name AS 'ActionName', \nd.audited_result AS 'Result' \nFROM sys.server_audit_specifications s \nJOIN sys.server_audits a ON s.audit_guid = a.audit_guid \nJOIN sys.server_audit_specification_details d ON s.server_specification_id = d.server_specification_id \nWHERE a.is_state_enabled = 1\nAND d.audit_action_name IN ('DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP'\n,'DATABASE_OBJECT_PERMISSION_CHANGE_GROUP'\n,'DATABASE_OWNERSHIP_CHANGE_GROUP'\n,'DATABASE_PERMISSION_CHANGE_GROUP'\n,'DATABASE_ROLE_MEMBER_CHANGE_GROUP'\n,'SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP'\n,'SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP'\n,'SERVER_OBJECT_OWNERSHIP_CHANGE_GROUP'\n,'SERVER_OBJECT_PERMISSION_CHANGE_GROUP'\n,'SERVER_PERMISSION_CHANGE_GROUP'\n,'SERVER_ROLE_MEMBER_CHANGE_GROUP')\n \nIf any of the following audit actions are not returned in an active audit, this is a finding.\n \nDATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP \nDATABASE_OBJECT_PERMISSION_CHANGE_GROUP \nDATABASE_OWNERSHIP_CHANGE_GROUP \nDATABASE_PERMISSION_CHANGE_GROUP \nDATABASE_ROLE_MEMBER_CHANGE_GROUP \nSCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP \nSCHEMA_OBJECT_PERMISSION_CHANGE_GROUP \nSERVER_OBJECT_OWNERSHIP_CHANGE_GROUP \nSERVER_OBJECT_PERMISSION_CHANGE_GROUP \nSERVER_PERMISSION_CHANGE_GROUP \nSERVER_ROLE_MEMBER_CHANGE_GROUP",
+  "fix": "Add the following events to the Azure SQL Managed Instance Audit being used for the STIG compliant audit:\n\nDATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP \nDATABASE_OBJECT_PERMISSION_CHANGE_GROUP \nDATABASE_OWNERSHIP_CHANGE_GROUP \nDATABASE_PERMISSION_CHANGE_GROUP  \nDATABASE_ROLE_MEMBER_CHANGE_GROUP \nSCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP \nSCHEMA_OBJECT_PERMISSION_CHANGE_GROUP \nSERVER_OBJECT_OWNERSHIP_CHANGE_GROUP \nSERVER_OBJECT_PERMISSION_CHANGE_GROUP  \nSERVER_PERMISSION_CHANGE_GROUP  \nSERVER_ROLE_MEMBER_CHANGE_GROUP  \n\nRefer to the supplemental file \"AzureSQLMIAudit.sql\".  \n\nReference: https://learn.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-database-engine?view=sql-server-ver16",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Changes in the permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized elevation or restriction of privileges could go undetected. Elevated privileges give users access to information and functionality that they should not have; restricted privileges wrongly deny access to authorized users. \n \nIn an Azure SQL Managed Instance environment, deleting permissions is typically done via the REVOKE or DENY command.  \n \nTo aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.\n\nSatisfies: SRG-APP-000499-DB-000330, SRG-APP-000499-DB-000331",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MSQL-D0-014200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb",
+      "name": "Microsoft Azure SQL Managed Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb"
+  ]
+}

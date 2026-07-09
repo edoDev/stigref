@@ -1,0 +1,53 @@
+{
+  "id": "SV-234156r611468_rule",
+  "full_rule_id": "SV-234156r611468_rule",
+  "rule_id": "SV-234156",
+  "rule_revision": "611468",
+  "group_id": "V-234156",
+  "group_title": "SRG-NET-000364-FW-000040",
+  "title": "The FortiGate firewall must be configured to inspect all inbound and outbound traffic at the application layer.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Application inspection enables the firewall to control traffic based on different parameters that exist within the packets such as enforcing application-specific message and field length. Inspection provides improved protection against application-based attacks by restricting the types of commands allowed for the applications. Application inspection enforces conformance against published RFCs.\n\nSome applications embed an IP address in the packet that needs to match the source address that is normally translated when it goes through the firewall. Enabling application inspection for a service that embeds IP addresses, the firewall translates embedded addresses and updates any checksum or other fields that are affected by the translation. Enabling application inspection for a service that uses dynamically assigned ports, the firewall monitors sessions to identify the dynamic port assignments, and permits data exchange on these ports for the duration of the specific session.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log in to the FortiGate CLI with Super-Admin privilege, and then run the command:\n# show system session-helper.\n\nReview the output and ensure it matches the following:\nconfig system session-helper\n    edit 1\n        set name pptp\n        set protocol 6\n        set port 1723\n    next\n    edit 2\n        set name h323\n        set protocol 6\n        set port 1720\n    next\n    edit 3\n        set name ras\n        set protocol 17\n        set port 1719\n    next\n    edit 4\n        set name tns\n        set protocol 6\n        set port 1521\n    next\n    edit 5\n        set name tftp\n        set protocol 17\n        set port 69\n    next\n    edit 6\n        set name rtsp\n        set protocol 6\n        set port 554\n    next\n    edit 7\n        set name rtsp\n        set protocol 6\n        set port 7070\n    next\n    edit 8\n        set name rtsp\n        set protocol 6\n        set port 8554\n    next\n    edit 9\n        set name ftp\n        set protocol 6\n        set port 21\n    next\n    edit 10\n        set name mms\n        set protocol 6\n        set port 1863\n    next\n    edit 11\n        set name pmap\n        set protocol 6\n        set port 111\n    next\n    edit 12\n        set name pmap\n        set protocol 17\n        set port 111\n    next\n    edit 13\n        set name sip\n        set protocol 17\n        set port 5060\n    next\n    edit 14\n        set name dns-udp\n        set protocol 17\n        set port 53\n    next\n    edit 15\n        set name rsh\n        set protocol 6\n        set port 514\n    next\n    edit 16\n        set name rsh\n        set protocol 6\n        set port 512\n    next\n    edit 17\n        set name dcerpc\n        set protocol 6\n        set port 135\n    next\n    edit 18\n        set name dcerpc\n        set protocol 17\n        set port 135\n    next\n    edit 19\n        set name mgcp\n        set protocol 17\n        set port 2427\n    next\n    edit 20\n        set name mgcp\n        set protocol 17\n        set port 2727\n    next\nend\n\nIf the output does not match, this is a finding.",
+  "fix": "Fix can be performed on FortiGate CLI. For any modified or missing session-helpers, log in to the FortiGate console via SSH or console access and run the following commands:\n\n   # config system session-helper\n   #    edit {integer}\n   #    set name {name of protocol}\n   #    set protocol {protocol number}\n   #    set port {port number}\n   # next\n   # end",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Application inspection enables the firewall to control traffic based on different parameters that exist within the packets such as enforcing application-specific message and field length. Inspection provides improved protection against application-based attacks by restricting the types of commands allowed for the applications. Application inspection enforces conformance against published RFCs.\n\nSome applications embed an IP address in the packet that needs to match the source address that is normally translated when it goes through the firewall. Enabling application inspection for a service that embeds IP addresses, the firewall translates embedded addresses and updates any checksum or other fields that are affected by the translation. Enabling application inspection for a service that uses dynamically assigned ports, the firewall monitors sessions to identify the dynamic port assignments, and permits data exchange on these ports for the duration of the specific session.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "FNFG-FW-000135",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "fortinet-fortigate-firewall-security-technical-implementation-guide-v1r4-4c8634a1",
+      "name": "Fortinet FortiGate Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "fortinet-fortigate-firewall-security-technical-implementation-guide-v1r4-4c8634a1"
+  ]
+}

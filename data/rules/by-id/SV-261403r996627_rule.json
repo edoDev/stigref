@@ -1,0 +1,53 @@
+{
+  "id": "SV-261403r996627_rule",
+  "full_rule_id": "SV-261403r996627_rule",
+  "rule_id": "SV-261403",
+  "rule_revision": "996627",
+  "group_id": "V-261403",
+  "group_title": "SRG-OS-000363-GPOS-00150",
+  "title": "SLEM 5 must use a file integrity tool to verify correct operation of all security functions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without verification of the security functions, security functions may not operate correctly, and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.\n\nThis requirement applies to SLEM 5 performing security function verification/testing and/or systems and environments that require this functionality.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that Advanced Intrusion Detection Environment (AIDE) is installed and verifies the correct operation of all security functions with the following command:\n\n     > sudo zypper if aide | grep -i installed\n     Installed: Yes\n\nIf AIDE is not installed, ask the system administrator how file integrity checks are performed on the system.\n\nIf there is no application installed to perform integrity checks, this is a finding.\n\nIf AIDE is installed, check if it has been initialized with the following command:\n \n     > sudo aide --check\n\nIf the output is \"Couldn't open file /var/lib/aide/aide.db for reading\", this is a finding.",
+  "fix": "Install AIDE, initialize it, and perform a manual check by using the following commands:\n\nInstall AIDE:\n     > sudo transactional-update pkg install aide\n     > sudo reboot\n\nInitialize AIDE (this may take a few minutes):\n     > sudo aide -i\n\nThe new database will need to be renamed to be read by AIDE:\n     > sudo mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db\n\nPerform a manual check:\n     > sudo aide --check\n\nExample output:\n     Summary:\n       Total number of files:        140621\n       Added files:                         1\n       Removed files:                    1\n       Changed files:                     0",
+  "ccis": [
+    "CCI-001744"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without verification of the security functions, security functions may not operate correctly, and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.\n\nThis requirement applies to SLEM 5 performing security function verification/testing and/or systems and environments that require this functionality.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-651010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

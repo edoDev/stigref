@@ -1,0 +1,53 @@
+{
+  "id": "SV-256708r888715_rule",
+  "full_rule_id": "SV-256708r888715_rule",
+  "rule_id": "SV-256708",
+  "rule_revision": "888715",
+  "group_id": "V-256708",
+  "group_title": "SRG-APP-000001-WSR-000001",
+  "title": "Lookup Service must limit the maximum size of a POST request.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The \"maxPostSize\" value is the maximum size in bytes of the POST that will be handled by the container FORM URL parameter parsing. Limit its size to reduce exposure to a denial-of-service attack.\n\nIf \"maxPostSize\" is not set, the default value of 2097152 (2MB) is used. Lookup Service is configured in its shipping state to not set a value for \"maxPostSize\".</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --xpath '/Server/Service/Connector[@port=\"${bio-custom.http.port}\"]/@maxPostSize' /usr/lib/vmware-lookupsvc/conf/server.xml\n\nExpected result:\n\nXPath set is empty\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-lookupsvc/conf/server.xml\n\nIn the <Connector> node, remove the \"maxPostSize\" key/value pair.\n\nRestart the service with the following command:\n\n# vmon-cli --restart lookupsvc",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The \"maxPostSize\" value is the maximum size in bytes of the POST that will be handled by the container FORM URL parameter parsing. Limit its size to reduce exposure to a denial-of-service attack.\n\nIf \"maxPostSize\" is not set, the default value of 2097152 (2MB) is used. Lookup Service is configured in its shipping state to not set a value for \"maxPostSize\".",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCLU-70-000003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2",
+      "name": "VMware vSphere 7.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-lookup-service-security-technical-implement-v1r2-ae3982a2"
+  ]
+}

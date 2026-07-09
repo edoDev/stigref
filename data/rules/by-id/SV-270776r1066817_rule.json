@@ -1,0 +1,53 @@
+{
+  "id": "SV-270776r1066817_rule",
+  "full_rule_id": "SV-270776r1066817_rule",
+  "rule_id": "SV-270776",
+  "rule_revision": "1066817",
+  "group_id": "V-270776",
+  "group_title": "SRG-OS-000063-GPOS-00032",
+  "title": "Ubuntu 24.04 LTS must permit only authorized accounts to own the audit configuration files.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events.  \n \nMisconfigured audits may degrade the system's performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify /etc/audit/audit.rules, /etc/audit/rules.d/*, and /etc/audit/auditd.conf files are owned by \"root\" account with the following command: \n \n$ sudo ls -al /etc/audit/ /etc/audit/rules.d/ \n/etc/audit/: \n \n-rw-r-----   1 root root   804 Nov 25 11:01 auditd.conf \n -rw-r-----   1 root root  9128 Dec 27 09:56 audit.rules \n-rw-r-----   1 root root   127 Feb  7  2018 audit-stop.rules \n \ndrwxr-x---   2 root root  4096 Dec 27 09:56 rules.d \n \n/etc/audit/rules.d/: \n\n -rw-r----- 1 root root 244 Dec 27 09:56 audit.rules \n-rw-r----- 1 root root 10357 Dec 27 09:56 stig.rules \n \nIf the /etc/audit/audit.rules, /etc/audit/rules.d/*, or /etc/audit/auditd.conf file is owned by a user other than \"root\", this is a finding.",
+  "fix": "Configure /etc/audit/audit.rules, /etc/audit/rules.d/*, and /etc/audit/auditd.conf files to be owned by \"root\" user by using the following command: \n \n$ sudo chown root /etc/audit/audit*.{rules,conf} /etc/audit/rules.d/*",
+  "ccis": [
+    "CCI-000171"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events.  \n \nMisconfigured audits may degrade the system's performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-900050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

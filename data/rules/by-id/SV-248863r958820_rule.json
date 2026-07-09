@@ -1,0 +1,53 @@
+{
+  "id": "SV-248863r958820_rule",
+  "full_rule_id": "SV-248863r958820_rule",
+  "rule_id": "SV-248863",
+  "rule_revision": "958820",
+  "group_id": "V-248863",
+  "group_title": "SRG-OS-000378-GPOS-00163",
+  "title": "OL 8 must block unauthorized peripherals before establishing a connection.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without authenticating devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity. \n \nPeripherals include but are not limited to such devices as flash drives, external storage, and printers. \n \nA new feature that OL 8 provides is the USBGuard software framework. The USBguard-daemon is the main component of the USBGuard software framework. It runs as a service in the background and enforces the USB device authorization policy for all USB devices. The policy is defined by a set of rules using a rule language described in the \"usbguard-rules.conf\" file. The policy and the authorization state of USB devices can be modified during runtime using the \"usbguard\" tool. \n \nThe System Administrator (SA) must work with the site Information System Security Officer (ISSO) to determine a list of authorized peripherals and establish rules within the USBGuard software framework to allow only authorized devices.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the USBGuard has a policy configured with the following command:\n\n$ sudo usbguard list-rules\n\nIf the command does not return results or an error is returned, ask the SA to indicate how unauthorized peripherals are being blocked.\n\nIf there is no evidence that unauthorized peripherals are being blocked before establishing a connection, this is a finding.",
+  "fix": "Configure the operating system to enable the blocking of unauthorized peripherals with the following command:\nThis command must be run from a root shell and will create an allow list for any usb devices currently connect to the system.\n\n# usbguard generate-policy > /etc/usbguard/rules.conf\n\nNote: Enabling and starting usbguard without properly configuring it for an individual system will immediately prevent any access over a usb device such as a keyboard or mouse.",
+  "ccis": [
+    "CCI-001958"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without authenticating devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity. \n \nPeripherals include but are not limited to such devices as flash drives, external storage, and printers. \n \nA new feature that OL 8 provides is the USBGuard software framework. The USBguard-daemon is the main component of the USBGuard software framework. It runs as a service in the background and enforces the USB device authorization policy for all USB devices. The policy is defined by a set of rules using a rule language described in the \"usbguard-rules.conf\" file. The policy and the authorization state of USB devices can be modified during runtime using the \"usbguard\" tool. \n \nThe System Administrator (SA) must work with the site Information System Security Officer (ISSO) to determine a list of authorized peripherals and establish rules within the USBGuard software framework to allow only authorized devices.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL08-00-040140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96",
+      "name": "Oracle Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96"
+  ]
+}

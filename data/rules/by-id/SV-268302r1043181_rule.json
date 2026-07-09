@@ -1,0 +1,53 @@
+{
+  "id": "SV-268302r1043181_rule",
+  "full_rule_id": "SV-268302r1043181_rule",
+  "rule_id": "SV-268302",
+  "rule_revision": "1043181",
+  "group_id": "V-268302",
+  "group_title": "SRG-APP-000224-NDM-000270",
+  "title": "The HYCU virtual appliance must generate unique session identifiers using a FIPS 140-2 approved random number generator.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Sequentially generated session IDs can be easily guessed by an attacker. Employing the concept of randomness in the generation of unique session identifiers helps to protect against brute-force attacks to determine future session identifiers.\n\nUnique session IDs address man-in-the-middle attacks, including session hijacking or insertion of false information into a session. If the attacker is unable to identify or guess the session information related to pending application traffic, they will have more difficulty in hijacking the session or otherwise manipulating valid sessions.\n\nThis requirement is applicable to devices that use a web interface for device management.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "When FIPS mode is enabled, HYCU will use FIPS-compliant behavior. Validation of FIPS status can be done using the following command:\n'cat /proc/sys/crypto/fips_enabled' \n\nIf command output does not show \"1\", this is a finding.\n\n'fips-mode-setup --check'\n\nIf command output does not show \"FIPS mode is enabled\", this is a finding.\n\n'update-crypto-policies --show'\n\nIf command output does not show \"FIPS\", this is a finding.",
+  "fix": "Stop the HYCU web server using the following command: \nsudo systemctl stop grizzly.service\n\nEnable FIPS-compliant mode using the following command: \nsudo /opt/grizzly/bin/enable_fips.sh\n\nReboot the HYCU virtual machines using the following command:\nshutdown -r now",
+  "ccis": [
+    "CCI-001188"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Sequentially generated session IDs can be easily guessed by an attacker. Employing the concept of randomness in the generation of unique session identifiers helps to protect against brute-force attacks to determine future session identifiers.\n\nUnique session IDs address man-in-the-middle attacks, including session hijacking or insertion of false information into a session. If the attacker is unable to identify or guess the session information related to pending application traffic, they will have more difficulty in hijacking the session or otherwise manipulating valid sessions.\n\nThis requirement is applicable to devices that use a web interface for device management.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HYCU-ND-000960",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hycu-protege-security-technical-implementation-guide-v1r2-57a24ef6",
+      "name": "HYCU Protege Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hycu-protege-security-technical-implementation-guide-v1r2-57a24ef6"
+  ]
+}

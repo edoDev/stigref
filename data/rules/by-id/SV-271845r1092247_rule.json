@@ -1,0 +1,53 @@
+{
+  "id": "SV-271845r1092247_rule",
+  "full_rule_id": "SV-271845r1092247_rule",
+  "rule_id": "SV-271845",
+  "rule_revision": "1092247",
+  "group_id": "V-271845",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 system accounts must not have an interactive login shell.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Ensuring shells are not given to system accounts upon login makes it more difficult for attackers to make use of system accounts.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 configures system accounts to not have an interactive login shell with the following command:\n\n$ awk -F: '($3<1000){print $1 \":\" $3 \":\" $7}' /etc/passwd\nroot:0:/bin/bash\nbin:1:/sbin/nologin\ndaemon:2:/sbin/nologin\nadm:3:/sbin/nologin\nlp:4:/sbin/nologin\n\nIdentify the system accounts from this listing that do not have a nologin shell.\n\nIf any system account (other than the root account) has a login shell and it is not documented with the information system security officer (ISSO), this is a finding.",
+  "fix": "Configure OL 9 so that all noninteractive accounts on the system do not have an interactive shell assigned to them.\n\nIf the system account needs a shell assigned for mission operations, document the need with the ISSO.\n\nRun the following command to disable the interactive shell for a specific noninteractive user account:\n\nReplace <user> with the user that has a login shell.\n\n$ sudo usermod --shell /sbin/nologin <user>\n\nDo not perform the steps in this section on the root account. Doing so will cause the system to become inaccessible.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Ensuring shells are not given to system accounts upon login makes it more difficult for attackers to make use of system accounts.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-003051",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-268313r1040899_rule",
+  "full_rule_id": "SV-268313r1040899_rule",
+  "rule_id": "SV-268313",
+  "rule_revision": "1040899",
+  "group_id": "V-268313",
+  "group_title": "SRG-NET-000345-VPN-002430",
+  "title": "AOS, when used as a VPN Gateway, must not accept certificates that have been revoked when using PKI for authentication.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Situations may arise in which the certificate issued by a certificate authority (CA) may need to be revoked before the lifetime of the certificate expires (for example, when the certificate is known to have been compromised).\n\nWhen an incoming Internet Key Exchange (IKE) session is initiated for a remote client or peer whose certificate is revoked, the revocation list configured for use by the VPN server is checked to determine if the certificate is valid. If the certificate is revoked, IKE will fail, and an IPsec security association will not be established for the remote endpoint.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration with the following command:\nshow crypto-local pki rcp\n\nIf any configured trusted root certificate authorities are not configured to use OCSP, this is a finding.",
+  "fix": "Configure AOS using the web interface: \n\n1. Navigate to Configuration >> System >> Certificates tab. Under \"Import Certificates\", upload the trust root CA. \n2. Choose the TrustCA Certificate type. Click \"Submit\". \n3. Upload the same certificate and select the OCSPResponderCert Certificate type (provide a different friendly name). Click \"Submit\". \n4. Click Pending Changes >> Deploy Changes.\n5. Expand \"Revocation Checkpoint\". Select the configured trusted root CA. \n6. Select \"ocsp\" for Revocation method 1. Enter the OCSP server URL in the OCSP URL field (remove \"http://\"). \n7. Choose the configured certificate under OCSP responder cert. Click \"Submit\". \n8. Click Pending Changes >> Deploy Changes.",
+  "ccis": [
+    "CCI-004068"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Situations may arise in which the certificate issued by a certificate authority (CA) may need to be revoked before the lifetime of the certificate expires (for example, when the certificate is known to have been compromised).\n\nWhen an incoming Internet Key Exchange (IKE) session is initiated for a remote client or peer whose certificate is revoked, the revocation list configured for use by the VPN server is checked to determine if the certificate is valid. If the certificate is revoked, IKE will fail, and an IPsec security association will not be established for the remote endpoint.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-VN-002430",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a",
+      "name": "HPE Aruba Networking AOS VPN Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a"
+  ]
+}

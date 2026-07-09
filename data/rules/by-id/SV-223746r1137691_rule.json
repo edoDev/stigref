@@ -1,0 +1,53 @@
+{
+  "id": "SV-223746r1137691_rule",
+  "full_rule_id": "SV-223746r1137691_rule",
+  "rule_id": "SV-223746",
+  "rule_revision": "1137691",
+  "group_id": "V-223746",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS JES2 input sources must be controlled in accordance with the proper security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer the JES2PARM member of SYS1.PARMLIB.\n\nReview the following resources in the RACF JESINPUT resource class:\n\nINTRDR (internal reader for batch jobs)\nnodename (NJE node)\nOFFn.* (spool offload receiver)\nRnnnn (RJE workstation)\nRDRnn (local card reader)\nSTCINRDR (internal reader for started tasks)\nTSUINRDR (internal reader for TSO logons)\n\nNote: If any of the following are not defined within the JES2 parameters, the resource in the JESINPUT resource class does not have to be defined.\n\n-Nodename is the NAME parameter in the NODE statement. Review the NJE node definitions by searching for NODE( in the report.\n-OFFn, where n is the number of the offload receiver. Review the spool offload receiver definitions by searching for OFF( in the report.\n-Rnnnn, where nnnn is the number of the remote workstation. Review the RJE node definitions by searching for RMT( in the report.\n-RDRnn, where nn is the number of the reader. Review the reader definitions by searching for RDR( in the report.\n\nIf the JESINPUT resource class is active, this is not a finding.\n\nIf the resources detailed above are protected by generic and/or fully qualified profiles defined to the JESINPUT resource class, this is not a finding.",
+  "fix": "Review the following resources in the JESINPUT resource class:\n\nINTRDR (internal reader for batch jobs)\nnodename (NJE node)\nOFFn.* (spool offload receiver)\nRnnnn (RJE workstation)\nRDRnn (local card reader)\nSTCINRDR (internal reader for started tasks)\nTSUINRDR (internal reader for TSO logons)\n\nNote: If any of the following are not defined within the JES2 parameters, the resource in the JESINPUT resource class does not have to be defined.\n\n-Nodename is the NAME parameter in the NODE statement. Review the JES2 parameters for NJE node definitions by searching for NODE( in the report.\n-OFFn, where n is the number of the offload receiver. Review the JES2 parameters for spool offload receiver definitions by searching for OFF( in the report.\n-Rnnnn, where nnnn is the number of the remote workstation. Review the JES2 parameters for RJE node definitions by searching for RMT( in the report.\n-RDRnn, where nn is the number of the reader. Review the JES2 parameters for reader definitions by searching for RDR( in the report.\n\nDefine the JESINPUT resource class to the ACTIVE CLASSES in RACF SETROPTS.\n\nConfigure the resources detailed above to be protected by generic and/or fully qualified profiles defined to the JESINPUT resource class.\n\nExamples:\nsetr classact(jesinput) \nsetr generic(jesinput) \nrdef jesinput intrdr UACC(none) owner(admin) audit(failures(read) success(update)) data('Per SRR PDI ZJES0021') \npe intrdr cl(jesinput) id(<syspsmpl>)\npe intrdr cl(jesinput) id(*) /* all users */",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-JS-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

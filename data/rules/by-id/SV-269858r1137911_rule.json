@@ -1,0 +1,53 @@
+{
+  "id": "SV-269858r1137911_rule",
+  "full_rule_id": "SV-269858r1137911_rule",
+  "rule_id": "SV-269858",
+  "rule_revision": "1137911",
+  "group_id": "V-269858",
+  "group_title": "SRG-NET-000019-RTR-000004",
+  "title": "The Dell OS10 multicast router must be configured to bind a Protocol Independent Multicast (PIM) neighbor filter to interfaces that have PIM enabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>PIM is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. PIM traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, unauthorized routers can join the PIM domain, discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the multicast topology diagram and determine if router interfaces are enabled for IPv4 or IPv6 multicast routing.\n\nIf the router is enabled for multicast routing, verify all interfaces enabled for PIM have a neighbor filter bound to the interface. The neighbor filter must only accept PIM control plane traffic from the documented PIM neighbors.\n\nStep 1: Verify that a PIM neighbor filter has been configured.\n\n!\nip access-list PIM_NBR_FILTER\n seq 10 permit ip 10.10.10.2/32 any\n \nStep 2: Verify all interfaces enabled for PIM have the neighbor filter bound to the interface.\n\n!\ninterface vlan100\n no shutdown\n ip pim sparse-mode\n ip pim neighbor-filter PIM_NBR_FILTER\n\nIf PIM neighbor filters are not bound to all interfaces that have PIM enabled, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure neighbor filters to only accept PIM control plane traffic from documented PIM neighbors. Bind neighbor filters to all PIM enabled interfaces.\n\nStep 1: Configure an ACL that only permits documented neighbors.\n\nOS10(config)# ip access-list PIM_NBR_FILTER\nOS10(config-ipv4-acl)# permit ip 10.10.10.2/32 any\n\nStep 2: Apply the ACL to the PIM interfaces.\n\nOS10(config)# interface vlan 100\nOS10(conf-if-vl-100)# ip pim neighbor-filter PIM_NBR_FILTER",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "PIM is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. PIM traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, unauthorized routers can join the PIM domain, discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

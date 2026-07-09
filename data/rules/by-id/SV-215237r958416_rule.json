@@ -1,0 +1,53 @@
+{
+  "id": "SV-215237r958416_rule",
+  "full_rule_id": "SV-215237r958416_rule",
+  "rule_id": "SV-215237",
+  "rule_revision": "958416",
+  "group_id": "V-215237",
+  "group_title": "SRG-OS-000039-GPOS-00017",
+  "title": "AIX must produce audit records containing information to establish where the events occurred.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without establishing where events occurred, it is impossible to establish, correlate, and investigate the events leading up to an outage or attack.\n\nIn order to compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know where events occurred, such as operating system components, modules, device identifiers, node names, file names, and functionality.\n\nAssociating information about where the event occurred within AIX provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured operating system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify audit event detailed information is displayed:\n\nThe log file can be set by the \"trail\" variable in /etc/security/audit/config.\n\n# grep trail /etc/security/audit/config\n        trail = /audit/trail\n\nNote: The default log file is /audit/trail.\n\nUse the following command to display the audit events:\n\n# /usr/sbin/auditpr -i <audit log file> -v\n\nevent           login    status      time                     command           \n              wpar name                 \n--------------- -------- ----------- ------------------------ ------------------\n------------- ------------------------- \nFS_Chdir        root     OK          Sat Aug 26 19:31:37 2017 ps                \n              Global                    \n        change current directory to: /dev\nFS_Chdir        root     OK          Sat Aug 26 19:31:47 2017 ps                \n              Global                    \n        change current directory to: /dev\nFS_Chdir        root     OK          Sat Aug 26 19:31:57 2017 ps                \n              Global                    \n        change current directory to: /dev\nFS_Chdir        root     OK          Sat Aug 26 19:32:07 2017 ps                \n              Global                    \n        change current directory to: /dev\nFS_Chdir        root     OK          Sat Aug 26 19:32:17 2017 ps                \n              Global                    \n        change current directory to: /dev\n\nIf event detailed information is not displayed, this is a finding. \nMore information on the command options used above:\n           - v detailed information for the event",
+  "fix": "Reset the audit system with the following command:\n# /usr/sbin/audit shutdown\n\nStart the audit system with the following command:\n# /usr/sbin/audit start",
+  "ccis": [
+    "CCI-000132"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without establishing where events occurred, it is impossible to establish, correlate, and investigate the events leading up to an outage or attack.\n\nIn order to compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know where events occurred, such as operating system components, modules, device identifiers, node names, file names, and functionality.\n\nAssociating information about where the event occurred within AIX provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured operating system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-216590r1117237_rule",
+  "full_rule_id": "SV-216590r1117237_rule",
+  "rule_id": "SV-216590",
+  "rule_revision": "1117237",
+  "group_id": "V-216590",
+  "group_title": "SRG-NET-000019-RTR-000011",
+  "title": "The Cisco out-of-band management (OOBM) gateway router must be configured to have separate IGP instances for the managed network and management network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate Interior Gateway Protocol routing instances is critical on the router to segregate traffic from each network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nVerify that the OOBM interface is an adjacency in the IGP domain for the management network via separate VRF as shown in the example below.\n\nrouter ospf 1 vrf MGMT\n log-adjacency-changes\n network 0.0.0.0 255.255.255.255 area 0\n!\nrouter ospf 2 vrf PROD\n log-adjacency-changes\n network 0.0.0.0 255.255.255.255 area 0\n\nIf the router is not configured to have separate IGP instances for the managed network and management network, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the router to have a separate IGP instance for the management network as shown in the example below.\n\nR3(config)#router ospf 1 vrf MGMT\nR3(config-router)#network 0.0.0.0 0.0.0.0 area 0\nR3(config-router)#exit\nR3(config)#router ospf 2 vrf PROD\nR3(config-router)#network 0.0.0.0 0.0.0.0 area 0\nR3(config-router)#end",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate Interior Gateway Protocol routing instances is critical on the router to segregate traffic from each network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000420",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-router-rtr-security-technical-implementation-guide-v3r4-e4098b9a",
+      "name": "Cisco IOS Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-router-rtr-security-technical-implementation-guide-v3r4-e4098b9a"
+  ]
+}

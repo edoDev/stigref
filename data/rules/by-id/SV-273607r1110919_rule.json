@@ -1,0 +1,53 @@
+{
+  "id": "SV-273607r1110919_rule",
+  "full_rule_id": "SV-273607r1110919_rule",
+  "rule_id": "SV-273607",
+  "rule_revision": "1110919",
+  "group_id": "V-273607",
+  "group_title": "SRG-NET-000205-RTR-000003",
+  "title": "The RUCKUS ICX perimeter router must be configured to filter traffic destined to the enclave in accordance with the guidelines contained in DOD Instruction 8551.1.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Vulnerability assessments must be reviewed by the system administrator, and protocols must be approved by the information assurance (IA) staff before entering the enclave.\n\nAccess control lists (ACLs) are the first line of defense in a layered security approach. They permit authorized packets and deny unauthorized packets based on port or service type. They enhance the posture of the network by not allowing packets to reach a potential target within the security domain. The lists provided are highly susceptible ports and services that should be blocked or limited as much as possible without adversely affecting customer requirements. Auditing packets attempting to penetrate the network but that are stopped by an ACL will allow network administrators to broaden their protective ring and more tightly define the scope of operation.\n\nIf the perimeter is in a Deny-by-Default posture and what is allowed through the filter is in accordance with DOD Instruction 8551.1, and if the permit rule is explicitly defined with explicit ports and protocols allowed, then all requirements related to PPS being blocked would be satisfied.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the external and internal Access Control Lists (ACLs) to verify the router is configured to filter traffic destined to the enclave in accordance with the guidelines contained in DOD Instruction 8551.1.\n\nIf the router does not filter traffic in accordance with the guidelines contained in DOD 8551, this is a finding.",
+  "fix": "Configure the router to use ingress ACLs to restrict traffic in accordance with the guidelines contained in DOD Instruction 8551.1 for all services and protocols required for operational commitments.\n\n1. Create ACLs for external and internal interfaces in accordance with site security policy (addresses and protocols may vary).\nICX(config)#ip access-list ext EXT-ACL\nICX(config-ext-ipacl-EXT-ACL)#permit tcp host x.11.1.1 eq bgp host x.11.1.2\nICX(config-ext-ipacl-EXT-ACL)#permit tcp host x.11.1.1 host x.11.1.2 eq bgp\nICX(config-ext-ipacl-EXT-ACL)#permit icmp host x.11.1.1 host x.11.1.2 echo\nICX(config-ext-ipacl-EXT-ACL)#permit icmp host x.11.1.1 host x.11.1.2 echo-reply\n...\n(IAW DOD INST 8551.1)\n...\nICX(config-ext-ipacl-EXT-ACL)#deny ip host x.11.1.1 host x.11.1.2 log\nICX(config-ext-ipacl-EXT-ACL)#exit\n\nICX(config)#ip access-list ext INT-ACL\nICX(config-ext-ipacl-INT-ACL)#permit icmp any any\nICX(config-ext-ipacl-INT-ACL)#permit ospf host 10.1.12.1 host 10.1.12.2\nICX(config-ext-ipacl-INT-ACL)#permit tcp 10.2.1.0/24 host 10.1.12.2 eq 22\nICX(config-ext-ipacl-INT-ACL)#permit tcp 10.2.1.0/24 host 10.1.12.2 eq radius\nICX(config-ext-ipacl-INT-ACL)#permit udp 10.2.1.0/24 host 10.1.12.2 eq snmp\nICX(config-ext-ipacl-INT-ACL)#permit udp 10.2.1.0/24 host 10.1.12.2 eq ntp\nICX(config-ext-ipacl-INT-ACL)#deny ip any host 10.1.12.2 log\n\n2. Apply ACLs to appropriate interfaces.\nICX(config)# interface ethernet x/x/x\nICX(config-if-e1000-x/x/x)#ip access-group EXT-ACL in logging enable\nICX(config-if-e1000-x/x/x)# interface ethernet y/y/y\nICX(config-if-e1000-y/y/y)#ip access-group INT-ACL in logging enable",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Vulnerability assessments must be reviewed by the system administrator, and protocols must be approved by the information assurance (IA) staff before entering the enclave.\n\nAccess control lists (ACLs) are the first line of defense in a layered security approach. They permit authorized packets and deny unauthorized packets based on port or service type. They enhance the posture of the network by not allowing packets to reach a potential target within the security domain. The lists provided are highly susceptible ports and services that should be blocked or limited as much as possible without adversely affecting customer requirements. Auditing packets attempting to penetrate the network but that are stopped by an ACL will allow network administrators to broaden their protective ring and more tightly define the scope of operation.\n\nIf the perimeter is in a Deny-by-Default posture and what is allowed through the filter is in accordance with DOD Instruction 8551.1, and if the permit rule is explicitly defined with explicit ports and protocols allowed, then all requirements related to PPS being blocked would be satisfied.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

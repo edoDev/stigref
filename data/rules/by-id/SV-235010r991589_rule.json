@@ -1,0 +1,53 @@
+{
+  "id": "SV-235010r991589_rule",
+  "full_rule_id": "SV-235010r991589_rule",
+  "rule_id": "SV-235010",
+  "rule_revision": "991589",
+  "group_id": "V-235010",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The SUSE operating system SSH daemon must perform strict mode checking of home directory configuration files.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If other users have access to modify user-specific SSH configuration files, they may be able to log on to the system as another user.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SUSE operating system SSH daemon performs strict mode checking of home directory configuration files.\n\nCheck that the SSH daemon performs strict mode checking of home directory configuration files with the following command:\n\n> sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*strictmodes'\n\nStrictModes yes\n\nIf \"StrictModes\" is set to \"no\", is missing, or the returned line is commented out, this is a finding.",
+  "fix": "Configure the SUSE operating system SSH daemon performs strict mode checking of home directory configuration files.\n\nUncomment the \"StrictModes\" keyword in \"/etc/ssh/sshd_config\" and set the value to \"yes\":\n\nStrictModes yes",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If other users have access to modify user-specific SSH configuration files, they may be able to log on to the system as another user.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-040260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

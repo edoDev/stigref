@@ -1,0 +1,53 @@
+{
+  "id": "SV-256351r885664_rule",
+  "full_rule_id": "SV-256351r885664_rule",
+  "rule_id": "SV-256351",
+  "rule_revision": "885664",
+  "group_id": "V-256351",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must only send NetFlow traffic to authorized collectors.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The distributed virtual switch can export NetFlow information about traffic crossing the switch. NetFlow exports are not encrypted and can contain information about the virtual network, making it easier for a man-in-the-middle attack to be executed successfully. If NetFlow export is required, verify that all NetFlow target Internet Protocols (IPs) are correct.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If distributed switches are not used, this is not applicable.\n\nTo view NetFlow Collector IPs configured on distributed switches:\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Configure >> Settings >> NetFlow.\n\nView the NetFlow pane and verify any collector IP addresses are valid and in use for troubleshooting.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-VDSwitch | select Name,@{N=\"NetFlowCollectorIPs\";E={$_.ExtensionData.config.IpfixConfig.CollectorIpAddress}}\n\nTo view if NetFlow is enabled on any distributed port groups:\n\nFrom the vSphere Client, go to Networking.\n\nSelect a distributed port group >> Manage >> Settings >> Policies.\n\nGo to \"Monitoring\" and view the NetFlow status.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-VDPortgroup | Select Name,VirtualSwitch,@{N=\"NetFlowEnabled\";E={$_.Extensiondata.Config.defaultPortConfig.ipfixEnabled.Value}}\n\nIf NetFlow is configured and the collector IP is not known and documented, this is a finding.",
+  "fix": "To remove collector IPs, do the following:\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Configure >> Settings >> NetFlow.\n\nClick \"Edit\".\n\nRemove any unknown collector IPs.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\n$dvs = Get-VDSwitch dvswitch | Get-View\nForEach($vs in $dvs){\n$spec = New-Object VMware.Vim.VMwareDVSConfigSpec\n$spec.configversion = $vs.Config.ConfigVersion\n$spec.IpfixConfig = New-Object VMware.Vim.VMwareIpfixConfig\n$spec.IpfixConfig.CollectorIpAddress = \"\"\n$spec.IpfixConfig.CollectorPort = \"0\"\n$spec.IpfixConfig.ActiveFlowTimeout = \"60\"\n$spec.IpfixConfig.IdleFlowTimeout = \"15\"\n$spec.IpfixConfig.SamplingRate = \"0\"\n$spec.IpfixConfig.InternalFlowsOnly = $False\n$vs.ReconfigureDvs_Task($spec)\n}\n\nNote: This will reset the NetFlow collector configuration back to the defaults.\n\nTo disable NetFlow on a distributed port group, do the following:\n\nFrom the vSphere Client, go to Networking.\n\nSelect a distributed port group >> Configure >> Settings >> Policies.\n\nClick \"Edit\".\n\nClick the \"Monitoring\" tab.\n\nChange \"NetFlow\" to \"Disabled\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\n$pgs = Get-VDPortgroup | Get-View\nForEach($pg in $pgs){\n$spec = New-Object VMware.Vim.DVPortgroupConfigSpec\n$spec.configversion = $pg.Config.ConfigVersion\n$spec.defaultPortConfig = New-Object VMware.Vim.VMwareDVSPortSetting\n$spec.defaultPortConfig.ipfixEnabled = New-Object VMware.Vim.BoolPolicy\n$spec.defaultPortConfig.ipfixEnabled.inherited = $false\n$spec.defaultPortConfig.ipfixEnabled.value = $false\n$pg.ReconfigureDVPortgroup_Task($spec)\n}",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The distributed virtual switch can export NetFlow information about traffic crossing the switch. NetFlow exports are not encrypted and can contain information about the virtual network, making it easier for a man-in-the-middle attack to be executed successfully. If NetFlow export is required, verify that all NetFlow target Internet Protocols (IPs) are correct.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-70-000271",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8",
+      "name": "VMware vSphere 7.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8"
+  ]
+}

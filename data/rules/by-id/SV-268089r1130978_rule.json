@@ -1,0 +1,55 @@
+{
+  "id": "SV-268089r1130978_rule",
+  "full_rule_id": "SV-268089r1130978_rule",
+  "rule_id": "SV-268089",
+  "rule_revision": "1130978",
+  "group_id": "V-268089",
+  "group_title": "SRG-OS-000033-GPOS-00014",
+  "title": "NixOS must implement DOD-approved encryption to protect the confidentiality of remote access sessions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session. \n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nEncryption provides a means to secure the remote connection to prevent unauthorized access to the data traversing the remote access connection (e.g., RDP), thereby providing a degree of confidentiality. The encryption strength of a mechanism is selected based on the security categorization of the information.\n\nSatisfies: SRG-OS-000033-GPOS-00014, SRG-OS-000250-GPOS-00093, SRG-OS-000394-GPOS-00174</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS is configured to only use ciphers employing FIPS 140-3 approved algorithms with the following command:\n\n$ grep Ciphers /etc/ssh/sshd_config\nCiphers aes256-ctr,aes192-ctr,aes128-ctr\n   \nIf the cipher entries in the \"sshd_config\" file have any ciphers other than \"aes256-ctr,aes192-ctr,aes128-ctr\", the order differs from the example above, or they are missing or commented out, this is a finding.",
+  "fix": "Configure NixOS to use only ciphers employing FIPS 140-3 approved algorithms.\n\nTo configure OpenSSH, add the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\n services.openssh.setting.Ciphers = [\n  \"aes256-ctr\"\n  \"aes192-ctr\"\n  \"aes128-ctr\"   \n ];\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-000068",
+    "CCI-001453",
+    "CCI-003123"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session. \n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nEncryption provides a means to secure the remote connection to prevent unauthorized access to the data traversing the remote access connection (e.g., RDP), thereby providing a degree of confidentiality. The encryption strength of a mechanism is selected based on the security categorization of the information.\n\nSatisfies: SRG-OS-000033-GPOS-00014, SRG-OS-000250-GPOS-00093, SRG-OS-000394-GPOS-00174",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-279579r1192445_rule",
+  "full_rule_id": "SV-279579r1192445_rule",
+  "rule_id": "SV-279579",
+  "rule_revision": "1192445",
+  "group_id": "V-279579",
+  "group_title": "SRG-OS-000364-GPOS-00151",
+  "title": "Nutanix AHV must not be configured to allow Kerberos authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failure to provide logical access restrictions associated with changes to system configuration may have significant effects on the overall security of the system.\n\nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the operating system can have significant effects on the overall security of the system.\n\nAccordingly, only qualified and authorized individuals should be allowed to obtain access to operating system components for the purposes of initiating changes, including upgrades and modifications.\n\nLogical access restrictions include, for example, controls that restrict access to workflow automation, media libraries, abstract layers (e.g., changes implemented into third-party interfaces rather than directly into information systems), and change windows (e.g., changes occur only during specified times, making unauthorized changes easy to discover).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If this is not AHV OS, this requirement is Not Applicable.\n\nVerify Nutanix AHV enforces access restrictions. Check that the SSH daemon does not permit Kerberos to authenticate passwords using the following command.\n\n$ sudo grep -i kerberosauth /etc/ssh/sshd_config\nKerberosAuthentication no\n\nIf the \"KerberosAuthentication\" keyword is missing or is set to \"yes\" and is not documented with the information system security officer (ISSO), or the returned line is commented out, this is a finding.",
+  "fix": "Configure SSH.\n\n1. For AOS, configure SSH, then restart the SSH for the changes to take effect using the following commands.\n\n$ sudo salt-call state.sls security/CVM/sshdCVM\n$ sudo systemctl restart sshd\n\n2. For Prism Central, configure SSH, then restart the SSH for the changes to take effect using the following commands.\n\n$ sudo salt-call state.sls security/PCVM/sshdPCVM\n$ sudo systemctl restart sshd\n\n3. For Files, configure SSH, then restart the SSH for the changes to take effect using the following commands.\n\n$ sudo salt-call state.sls security/AFS/sshdAFS\n$ sudo systemctl restart sshd\n\n4. For AHV configure SSH, then restart the SSH for the changes to take effect using the following commands.\n\n$ sudo salt-call state.sls security/KVM/sshdKVM\n$ sudo systemctl restart sshd",
+  "ccis": [
+    "CCI-001813"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to provide logical access restrictions associated with changes to system configuration may have significant effects on the overall security of the system.\n\nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the operating system can have significant effects on the overall security of the system.\n\nAccordingly, only qualified and authorized individuals should be allowed to obtain access to operating system components for the purposes of initiating changes, including upgrades and modifications.\n\nLogical access restrictions include, for example, controls that restrict access to workflow automation, media libraries, abstract layers (e.g., changes implemented into third-party interfaces rather than directly into information systems), and change windows (e.g., changes occur only during specified times, making unauthorized changes easy to discover).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000125",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

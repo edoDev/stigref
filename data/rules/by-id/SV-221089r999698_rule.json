@@ -1,0 +1,53 @@
+{
+  "id": "SV-221089r999698_rule",
+  "full_rule_id": "SV-221089r999698_rule",
+  "rule_id": "SV-221089",
+  "rule_revision": "999698",
+  "group_id": "V-221089",
+  "group_title": "SRG-NET-000364-RTR-000109",
+  "title": "The Cisco perimeter switch must be configured to only allow incoming communications from authorized sources to be routed to authorized destinations.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unrestricted traffic may contain malicious traffic that poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nTraffic can be restricted directly by an access control list (ACL), which is a firewall function, or by Policy Routing. Policy Routing is a technique used to make routing decisions based on a number of different criteria other than just the destination network, including source or destination network, source or destination address, source or destination port, protocol, packet size, and packet classification. This overrides the switch's normal routing procedures used to control the specific paths of network traffic. It is normally used for traffic engineering but can also be used to meet security requirements; for example, traffic that is not allowed can be routed to the Null0 or discard interface. Policy Routing can also be used to control which prefixes appear in the routing table.\n\nThis requirement is intended to allow network administrators the flexibility to use whatever technique is most effective.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to determine if the switch allows only incoming communications from authorized sources to be routed to authorized destinations. The hypothetical example below allows inbound NTP from server x.1.12.9 only to host x.12.1.21.\n\nip access-list EXTERNAL_ACL\n 10 permit tcp any any established \n 20 permit tcp x.11.1.1/32 eq bgp x.11.1.2/32 \n 30 permit tcp x.11.1.1/32 x.11.1.2/32 eq bgp \n 40 permit icmp x.11.1.1/32 x.11.1.2/32 echo \n 50 permit icmp x.11.1.1/32 x.11.1.2/32 echo-reply \n 60 permit tcp any x.11.2.3/32 eq www \n 70 permit udp x.12.1.9/32 x.12.1.21/32 eq ntp \n…\n …\n …\n90 deny ip any any log\n\nIf the switch does not restrict incoming communications to allow only authorized sources and destinations, this is a finding.",
+  "fix": "Configure the switch to allow only incoming communications from authorized sources to be routed to authorized destinations. \n\nSW2(config)# ip access-list EXTERNAL_ACL\nSW2(config-acl)# permit tcp any any established\n…\n…\n…\nSW2(config-acl)# permit udp host x.12.1.9 host x.12.1.21 eq ntp\nSW2(config-acl)# deny ip any any log\nSW2(config-acl)# end",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unrestricted traffic may contain malicious traffic that poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nTraffic can be restricted directly by an access control list (ACL), which is a firewall function, or by Policy Routing. Policy Routing is a technique used to make routing decisions based on a number of different criteria other than just the destination network, including source or destination network, source or destination address, source or destination port, protocol, packet size, and packet classification. This overrides the switch's normal routing procedures used to control the specific paths of network traffic. It is normally used for traffic engineering but can also be used to meet security requirements; for example, traffic that is not allowed can be routed to the Null0 or discard interface. Policy Routing can also be used to control which prefixes appear in the routing table.\n\nThis requirement is intended to allow network administrators the flexibility to use whatever technique is most effective.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651",
+      "name": "Cisco NX OS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651"
+  ]
+}

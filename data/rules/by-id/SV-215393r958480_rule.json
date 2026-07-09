@@ -1,0 +1,53 @@
+{
+  "id": "SV-215393r958480_rule",
+  "full_rule_id": "SV-215393r958480_rule",
+  "rule_id": "SV-215393",
+  "rule_revision": "958480",
+  "group_id": "V-215393",
+  "group_title": "SRG-OS-000096-GPOS-00050",
+  "title": "If Stream Control Transmission Protocol (SCTP) must be disabled on AIX.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Stream Control Transmission Protocol (SCTP) is an IETF-standardized transport layer protocol. This protocol is not yet widely used. Binding this protocol to the network stack increases the attack surface of the host. Unprivileged local processes may be able to cause the system to dynamically load a protocol handler by opening a socket using the protocol.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the system to determine if SCTP is installed: \n\n# lslpp -L bos.net.sctp\nFileset                      Level  State  Type  Description (Uninstaller)\n  ----------------------------------------------------------------------------\nlslpp: 0504-132  Fileset bos.net.sctp not installed.\n\nIf the \"bos.net.sctp\" fileset is not listed, SCTP is not installed, this is not a finding. \n\nIf the \"bos.net.sctp\" fileset is listed then SCTP is installed, this is a finding.",
+  "fix": "If SCTP is installed, unload it from the kernel and uninstall it from the system using the following commands: \n# sctpctrl unload\n# installp -ug bos.net.sctp",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Stream Control Transmission Protocol (SCTP) is an IETF-standardized transport layer protocol. This protocol is not yet widely used. Binding this protocol to the network stack increases the attack surface of the host. Unprivileged local processes may be able to cause the system to dynamically load a protocol handler by opening a socket using the protocol.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003088",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

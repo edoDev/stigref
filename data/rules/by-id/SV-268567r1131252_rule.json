@@ -1,0 +1,54 @@
+{
+  "id": "SV-268567r1131252_rule",
+  "full_rule_id": "SV-268567r1131252_rule",
+  "rule_id": "SV-268567",
+  "rule_revision": "1131252",
+  "group_id": "V-268567",
+  "group_title": "SRG-OS-000378-GPOS-00163",
+  "title": "The macOS system must authorize USB devices before allowing connection.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>USB devices connected to a Mac must be authorized.\n\n[IMPORTANT]\n====\nThis feature is removed if a smart card is paired or smart card attribute mapping is configured.\n====\n\nWithout authenticating devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.\n\nSatisfies: SRG-OS-000378-GPOS-00163, SRG-OS-000690-GPOS-00140</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to authorize USB devices before allowing connection with the following command:\n\n/usr/bin/osascript -l JavaScript << EOS\nfunction run() {\nlet pref1 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\\\n.objectForKey('allowUSBRestrictedMode'))\nif ( pref1 == false ) {\nreturn(\"false\")\n} else {\nreturn(\"true\")\n}\n}\nEOS\n\nIf the result is not \"true\", this is a finding.",
+  "fix": "Configure the macOS system to authorize USB devices before allowing connection by installing the \"com.apple.applicationaccess\" configuration profile.",
+  "ccis": [
+    "CCI-001958",
+    "CCI-003959"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "USB devices connected to a Mac must be authorized.\n\n[IMPORTANT]\n====\nThis feature is removed if a smart card is paired or smart card attribute mapping is configured.\n====\n\nWithout authenticating devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.\n\nSatisfies: SRG-OS-000378-GPOS-00163, SRG-OS-000690-GPOS-00140",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-15-005090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66",
+      "name": "Apple macOS 15 (Sequoia) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66"
+  ]
+}

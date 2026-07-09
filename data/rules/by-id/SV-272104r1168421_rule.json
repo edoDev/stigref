@@ -1,0 +1,53 @@
+{
+  "id": "SV-272104r1168421_rule",
+  "full_rule_id": "SV-272104r1168421_rule",
+  "rule_id": "SV-272104",
+  "rule_revision": "1168421",
+  "group_id": "V-272104",
+  "group_title": "SRG-NET-000362-RTR-000110",
+  "title": "The Cisco ACI must be configured to protect against or limit the effects of denial-of-service (DoS) attacks by employing control plane protection.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The route processor (RP) is critical to all network operations because it is the component used to build all forwarding paths for the data plane via control plane processes. It is also instrumental in ongoing network management functions that keep the routers and links available for providing network services. Any disruption to the RP or the control and management planes can result in mission-critical network outages.\n\nA DoS attack targeting the RP can result in excessive CPU and memory utilization. To maintain network stability and RP security, the router must be able to handle specific control plane and management plane traffic destined to the RP. In the past, one method of filtering was to use ingress filters on forwarding interfaces to filter both forwarding path and receiving path traffic. However, this method does not scale well as the number of interfaces grows and the size of the ingress filters grows. Control plane policing increases the security of routers and multilayer switches by protecting the RP from unnecessary or malicious traffic. Filtering and rate limiting the traffic flow of control plane packets can be implemented to protect routers against reconnaissance and DoS attacks, allowing the control plane to maintain packet forwarding and protocol states despite an attack or heavy load on the router or multilayer switch.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify a Control Plane Policing (CoPP) policy is applied to the Leaf and or interface policies accordingly:\n\nFabric >> Access Policies >> Policies >> Switch >> CoPP Pre-Filter for Leaf / CoPP Leaf \n\nFabric >> Access Policies >> Policies >> Interface >> CoPP Interface\n\nVerify L3Out contracts include the CoPP policy. Inspect the policy at the following location:\n\nTenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_l3out}} >> External EPGs >> {{your_External_EPG}} >> Policy >> Contract\n\nIf the CoPP policy is not configured on all Leaf and/or interfaces, this is a finding.",
+  "fix": "Protect against known types of DoS attacks on the route processor by implementing a CoPP policy. To meet this requirement, configure the COPP policy on each device, QOS to ensure the correct traffic is being dropped, and verify all l3 outs have the correct contracts applied to them. \n\nThese policies must be applied to the Leaf and or interface policies accordingly.\n\nCoPP Policy: \nFabric >> Access Policies >> Policies >> Switch >> CoPP Pre-Filter for Leaf / CoPP Leaf \n\nFabric >> Access Policies >> Policies >> Interface >> CoPP Interface\n\nQOS: Since there are so many locations and settings required for this aspect, reference the QOS documentation to access these settings: https://www.cisco.com/c/en/us/td/docs/switches/datacenter/aci/apic/sw/kb/Cisco-APIC-and-QoS.html\n\nConfigure L3Out contracts include the CoPP policy. Inspect the policy at the following location:\n\nTenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_l3out}} >> External EPGs >> {{your_External_EPG}} >> Policy >> Contract",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The route processor (RP) is critical to all network operations because it is the component used to build all forwarding paths for the data plane via control plane processes. It is also instrumental in ongoing network management functions that keep the routers and links available for providing network services. Any disruption to the RP or the control and management planes can result in mission-critical network outages.\n\nA DoS attack targeting the RP can result in excessive CPU and memory utilization. To maintain network stability and RP security, the router must be able to handle specific control plane and management plane traffic destined to the RP. In the past, one method of filtering was to use ingress filters on forwarding interfaces to filter both forwarding path and receiving path traffic. However, this method does not scale well as the number of interfaces grows and the size of the ingress filters grows. Control plane policing increases the security of routers and multilayer switches by protecting the RP from unnecessary or malicious traffic. Filtering and rate limiting the traffic flow of control plane packets can be implemented to protect routers against reconnaissance and DoS attacks, allowing the control plane to maintain packet forwarding and protocol states despite an attack or heavy load on the router or multilayer switch.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CACI-RT-000044",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251",
+      "name": "Cisco ACI Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251"
+  ]
+}

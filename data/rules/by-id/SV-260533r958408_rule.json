@@ -1,0 +1,53 @@
+{
+  "id": "SV-260533r958408_rule",
+  "full_rule_id": "SV-260533r958408_rule",
+  "rule_id": "SV-260533",
+  "rule_revision": "958408",
+  "group_id": "V-260533",
+  "group_title": "SRG-OS-000033-GPOS-00014",
+  "title": "Ubuntu 22.04 LTS SSH server must be configured to use only FIPS-validated key exchange algorithms.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without cryptographic integrity protections provided by FIPS-validated cryptographic algorithms, information can be viewed and altered by unauthorized users without detection. \n \nThe system will attempt to use the first algorithm presented by the client that matches the server list. Listing the values \"strongest to weakest\" is a method to ensure the use of the strongest algorithm available to secure the SSH connection.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the SSH server is configured to use only FIPS-validated key exchange algorithms by using the following command: \n \n     $ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH 'kexalgorithms' \n     /etc/ssh/sshd_config:KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256 \n  \nIf \"KexAlgorithms\" does not contain only the algorithms \"ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256\" in exact order, is commented out, is missing, or conflicting results are returned, this is a finding.",
+  "fix": "Configure the SSH server to use only FIPS-validated key exchange algorithms. \n \nAdd or modify the following line in the \"/etc/ssh/sshd_config\" file: \n \nKexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256 \n \nRestart the SSH server for changes to take effect: \n \n     $ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000068"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without cryptographic integrity protections provided by FIPS-validated cryptographic algorithms, information can be viewed and altered by unauthorized users without detection. \n \nThe system will attempt to use the first algorithm presented by the client that matches the server list. Listing the values \"strongest to weakest\" is a method to ensure the use of the strongest algorithm available to secure the SSH connection.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-22-255060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553",
+      "name": "Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553"
+  ]
+}

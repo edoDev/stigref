@@ -1,0 +1,53 @@
+{
+  "id": "SV-217059r945855_rule",
+  "full_rule_id": "SV-217059r945855_rule",
+  "rule_id": "SV-217059",
+  "rule_revision": "945855",
+  "group_id": "V-217059",
+  "group_title": "SRG-NET-000018-RTR-000010",
+  "title": "The Juniper BGP router must be configured to reject route advertisements from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Verifying the path a route has traversed will ensure that the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.” \n\nReview the router configuration to verify the router is configured to deny updates received from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.\n\nStep 1: Verify a policy has been configured to filter AS_PATH attribute for received BGP advertisements as shown in the example below:\n\npolicy-options {\n    …\n    …\n    …\n    policy-statement FILTER_ASx {\n        term ALLOW_ASx {\n            from as-path PEER_ASx;\n            then accept;\n        }\n        term ELSE_REJECT {\n            then reject;\n        }\n    }\n    …\n    …\n    …\n    as-path PEER_ASx \"^x$\";\n}\n\nNote: the characters “^” and “$” representing the beginning and the end of the expression respectively are optional and are implicitly defined if omitted.\nStep 2: Verify that the import policy has been applied to all external BGP peers as shown in the example below:\n\nprotocols {\n    bgp {\n        group GROUP_ASx {\n            type external;\n            import [ FILTER_ASx FILTER_ROUTES ];\n            peer-as x;\n            neighbor x.x.x.x;\n        }\n \nIf the router is not configured to reject updates from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer, this is a finding.",
+  "fix": "Step 1: Configure a policy to filter the AS_PATH as shown in the example below: \n\n[edit policy-options] \nset as-path PEER_ASx \"^x$\" \nset policy-statement FILTER_ASx term ALLOW_ASx from as-path PEER_ASx \nset policy-statement FILTER_ASx term ALLOW_ASx then accept \nset policy-statement FILTER_ASx term ELSE_REJECT then reject \n\nStep 2: Apply the import policy as shown in the example below: \n\n[edit protocols bgp group GROUP_ASx] \nset import [FILTER_AS4 FILTER_ROUTES]",
+  "ccis": [
+    "CCI-000032"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Verifying the path a route has traversed will ensure that the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000535",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

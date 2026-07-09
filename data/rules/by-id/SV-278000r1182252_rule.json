@@ -1,0 +1,53 @@
+{
+  "id": "SV-278000r1182252_rule",
+  "full_rule_id": "SV-278000r1182252_rule",
+  "rule_id": "SV-278000",
+  "rule_revision": "1182252",
+  "group_id": "V-278000",
+  "group_title": "SRG-OS-000312-GPOS-00122",
+  "title": "Windows Server 2025 permissions for the Windows installation directory must conform to minimum requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Changing the system's file and directory permissions allows the possibility of unauthorized and anonymous modification to the operating system and installed applications.\n\nThe default permissions are adequate when the Security Option \"Network access: Let Everyone permissions apply to anonymous users\" is set to \"Disabled\" (WN25-SO-000240).\n\nSatisfies: SRG-OS-000312-GPOS-00122, SRG-OS-000312-GPOS-00123, SRG-OS-000312-GPOS-00124</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The default permissions are adequate when the Security Option \"Network access: Let Everyone permissions apply to anonymous users\" is set to \"Disabled\" (WN25-SO-000240).\n\nReview the permissions for the Windows installation directory (usually C:\\Windows). Nonprivileged groups such as Users or Authenticated Users must not have greater than \"Read & execute\" permissions. Individual accounts must not be used to assign permissions.\n\nIf permissions are not as restrictive as the default permissions listed below, this is a finding:\n\nViewing in File Explorer:\n\nFor each folder, view the Properties.\n\nSelect the \"Security\" tab, and then click \"Advanced\".\n\nDefault permissions:\n\\Windows\nType - \"Allow\" for all\nInherited from - \"None\" for all\n\nPrincipal - Access - Applies to\n\nTrustedInstaller - Full control - This folder and subfolders\nSYSTEM - Modify - This folder only\nSYSTEM - Full control - Subfolders and files only\nAdministrators - Modify - This folder only\nAdministrators - Full control - Subfolders and files only\nUsers - Read & execute - This folder, subfolders, and files\nCREATOR OWNER - Full control - Subfolders and files only\nALL APPLICATION PACKAGES - Read & execute - This folder, subfolders, and files\nALL RESTRICTED APPLICATION PACKAGES - Read & execute - This folder, subfolders, and files\n\nAlternately, use icacls:\n\nOpen a Command prompt (admin).\n\nEnter \"icacls\" followed by the directory:\n\n\"icacls c:\\windows\"\n\nThe following results must be displayed for each when entered:\n\nc:\\windows\nNT SERVICE\\TrustedInstaller:(F)\nNT SERVICE\\TrustedInstaller:(CI)(IO)(F)\nNT AUTHORITY\\SYSTEM:(M)\nNT AUTHORITY\\SYSTEM:(OI)(CI)(IO)(F)\nBUILTIN\\Administrators:(M)\nBUILTIN\\Administrators:(OI)(CI)(IO)(F)\nBUILTIN\\Users:(RX)\nBUILTIN\\Users:(OI)(CI)(IO)(GR,GE)\nCREATOR OWNER:(OI)(CI)(IO)(F)\nAPPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES:(RX)\nAPPLICATION PACKAGE AUTHORITY\\ALL APPLICATION PACKAGES:(OI)(CI)(IO)(GR,GE)\nAPPLICATION PACKAGE AUTHORITY\\ALL RESTRICTED APPLICATION PACKAGES:(RX)\nAPPLICATION PACKAGE AUTHORITY\\ALL RESTRICTED APPLICATION PACKAGES:(OI)(CI)(IO)(GR,GE)\nSuccessfully processed 1 files; Failed processing 0 files",
+  "fix": "Maintain the default file ACLs and configure the Security Option \"Network access: Let Everyone permissions apply to anonymous users\" to \"Disabled\" (WN25-SO-000240).\n\nDefault permissions:\nType - \"Allow\" for all\nInherited from - \"None\" for all\n\nPrincipal - Access - Applies to\n\nTrustedInstaller - Full control - This folder and subfolders\nSYSTEM - Modify - This folder only\nSYSTEM - Full control - Subfolders and files only\nAdministrators - Modify - This folder only\nAdministrators - Full control - Subfolders and files only\nUsers - Read & execute - This folder, subfolders, and files\nCREATOR OWNER - Full control - Subfolders and files only\nALL APPLICATION PACKAGES - Read & execute - This folder, subfolders, and files\nALL RESTRICTED APPLICATION PACKAGES - Read & execute - This folder, subfolders, and files",
+  "ccis": [
+    "CCI-002165"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Changing the system's file and directory permissions allows the possibility of unauthorized and anonymous modification to the operating system and installed applications.\n\nThe default permissions are adequate when the Security Option \"Network access: Let Everyone permissions apply to anonymous users\" is set to \"Disabled\" (WN25-SO-000240).\n\nSatisfies: SRG-OS-000312-GPOS-00122, SRG-OS-000312-GPOS-00123, SRG-OS-000312-GPOS-00124",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN25-00-000160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2025-security-technical-implementation-guide-v1r1-e1e76802",
+      "name": "Microsoft Windows Server 2025 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2025-security-technical-implementation-guide-v1r1-e1e76802"
+  ]
+}

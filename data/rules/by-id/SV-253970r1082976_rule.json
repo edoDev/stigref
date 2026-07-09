@@ -1,0 +1,53 @@
+{
+  "id": "SV-253970r1082976_rule",
+  "full_rule_id": "SV-253970r1082976_rule",
+  "rule_id": "SV-253970",
+  "rule_revision": "1082976",
+  "group_id": "V-253970",
+  "group_title": "SRG-NET-000512-L2S-000011",
+  "title": "The Juniper EX switch must be configured to set all enabled user-facing or untrusted ports as access interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By default, unconfigured (or expressly disabled) Junos interfaces are unusable. Any enabled interface configured with the family ethernet-switching uses interface-mode access by default, which meets this requirement. Trunked interfaces must be explicitly configured for operational requirements (e.g., interswitch links), which makes them trusted and not user-facing.\n\nConfiguring enabled user-facing or untrusted interfaces as trunked may expose network traffic to an unauthorized, or unintended, connected endpoint. Access interfaces can belong to a single VLAN rather than the multiple VLANs supported by trunks, which limits potential exposure to a smaller subset of the total network traffic.\n\nAccess interfaces also behave differently than trunked interfaces, especially with respect to control plane traffic. For example, access interfaces can be marked as \"edge\" for protocols like Rapid Spanning Tree (RSTP) or Multiple Spanning Tree (MSTP) where specific protections can be applied to prevent the switch from accepting Bridge Protocol Data Units (BPDU) from unauthorized sources and causing a network topology change or disruption. Additionally, network level protection mechanisms, like 802.1x or sticky-mac, are applied to access interfaces and these protection mechanisms help prevent unauthorized network access.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration and examine all enabled user-facing or untrusted interfaces configured with family ethernet-switching. \n\n1. Interfaces implicitly configured with \"interface-mode\" access and family ethernet-switching. Note: The default interface-mode is \"access\".\nuser@host> show configuration interfaces\n<interface name> {\n    unit 0 {\n        family ethernet-switching {\n        }\n    }\n}\n\n\n2. Interfaces explicitly configured with \"interface-mode\" access and family ethernet-switching.\nuser@host> show configuration interfaces\n<interface name> {\n    unit 0 {\n        family ethernet-switching {\n            interface-mode access;\n        }\n    }\n}\n\nIf any of the enabled user-facing access interfaces are configured as a trunk, this is a finding.",
+  "fix": "Disable trunking on all enabled user-facing or untrusted access interfaces.\n\nDelete \"interface-mode\" from an enabled user-facing or untrusted interface to inherit the default access mode.\nuser@host> configure\nuser@host# delete interfaces <interface name> unit 0 family ethernet-switching interface-mode\n\nAlternatively, explicitly set the enabled user-facing or untrusted interface mode to access.\nuser@host> configure\nuser@host# set interfaces <interface name> unit 0 family ethernet-switching interface-mode access",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By default, unconfigured (or expressly disabled) Junos interfaces are unusable. Any enabled interface configured with the family ethernet-switching uses interface-mode access by default, which meets this requirement. Trunked interfaces must be explicitly configured for operational requirements (e.g., interswitch links), which makes them trusted and not user-facing.\n\nConfiguring enabled user-facing or untrusted interfaces as trunked may expose network traffic to an unauthorized, or unintended, connected endpoint. Access interfaces can belong to a single VLAN rather than the multiple VLANs supported by trunks, which limits potential exposure to a smaller subset of the total network traffic.\n\nAccess interfaces also behave differently than trunked interfaces, especially with respect to control plane traffic. For example, access interfaces can be marked as \"edge\" for protocols like Rapid Spanning Tree (RSTP) or Multiple Spanning Tree (MSTP) where specific protections can be applied to prevent the switch from accepting Bridge Protocol Data Units (BPDU) from unauthorized sources and causing a network topology change or disruption. Additionally, network level protection mechanisms, like 802.1x or sticky-mac, are applied to access interfaces and these protection mechanisms help prevent unauthorized network access.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-L2-000230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf",
+      "name": "Juniper EX Series Switches Layer 2 Switch Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf"
+  ]
+}

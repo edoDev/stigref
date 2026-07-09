@@ -1,0 +1,53 @@
+{
+  "id": "SV-80627r1_rule",
+  "full_rule_id": "SV-80627r1_rule",
+  "rule_id": "SV-80627",
+  "rule_revision": "1",
+  "group_id": "V-66137",
+  "group_title": "SRG-NET-000019-RTR-000004",
+  "title": "The HP FlexFabric Switch must bind a Protocol Independent Multicast (PIM) neighbor filter to interfaces that have PIM enabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protocol Independent Multicast (PIM) is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. Protocol Independent Multicast traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, an unauthorized routers can join the PIM domain and discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the multicast topology diagram and determine if the HP FlexFabric Switch interfaces are enabled for IPv4 or IPv6 multicast routing. \n\nIf the HP FlexFabric Switch is enabled for multicast routing, verify all interfaces enabled for PIM have a neighbor filter bound to the interface. The neighbor filter must only accept PIM control plane traffic from the documented PIM neighbors. \n\nIf a PIM neighbor filter is not configured on all multicast-enabled interfaces, this is a finding.\n\ndisplay interface GigabitEthernet 0/1\n\ninterface GigabitEthernet0/1\n port link-mode route\n description IUT 4GE-HMIM\n ip address 15.252.78.69 255.255.255.0\n pim sm\n pim neighbor-policy 2000\n ipv6 pim sm\nipv6 pim neighbor-policy 2000\n\n[HP]display acl 2000\nBasic ACL  2000, named -none-, 3 rules,\nACL's step is 5\n rule 0 permit source 224.200.100.10 0\n rule 5 permit source 224.200.101.11 0\n rule 10 deny",
+  "fix": "Configure neighbor filters to only accept PIM control plane traffic from documented PIM neighbors. Bind neighbor filters to all PIM enabled interfaces using the example bellow.\n\nacl basic 2000\n rule 0 permit source 224.200.100.10 0\n rule 5 permit source 224.200.101.11 0 \n rule 10 deny source any\n\ninterface GigabitEthernet0/1\n pim neighbor-policy 2000",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protocol Independent Multicast (PIM) is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. Protocol Independent Multicast traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, an unauthorized routers can join the PIM domain and discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-RT-000025",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225",
+      "name": "HP FlexFabric Switch RTR Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225"
+  ]
+}

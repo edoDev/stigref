@@ -1,0 +1,53 @@
+{
+  "id": "SV-258779r933398_rule",
+  "full_rule_id": "SV-258779r933398_rule",
+  "rule_id": "SV-258779",
+  "rule_revision": "933398",
+  "group_id": "V-258779",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host must verify certificates for SSL syslog endpoints.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When sending syslog data to a remote host, ESXi can be configured to use any combination of TCP, UDP, and SSL transports. When using SSL, the server certificate must be validated to ensure that the host is connecting to a valid syslog server.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If SSL is not used for a syslog target, this is not applicable.\n\nFrom the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nSelect the \"Syslog.global.logCheckSSLCerts\" value and verify it is set to \"true\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-AdvancedSetting -Name Syslog.global.logCheckSSLCerts\n\nIf the \"Syslog.global.logCheckSSLCerts\" setting is not set to \"true\", this is a finding.",
+  "fix": "To configure SSL syslog endpoint certificate checking, it must be turned on and the trusted certificate chain must be added to ESXi's trusted store.\n\nFrom the vSphere Client go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nClick \"Edit\". Select the \"Syslog.global.logCheckSSLCerts\" value and configure it to \"true\".\n\nCopy the PEM formatted trusted CA certificate so that is accessible to the host and append the contents to /etc/vmware/ssl/castore.pem by running the following command:\n\n# <path/to/cacert> >> /etc/vmware/ssl/castore.pem\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\nGet-VMHost | Get-AdvancedSetting -Name Syslog.global.logCheckSSLCerts | Set-AdvancedSetting -Value \"true\"\n\nCopy the PEM formatted trusted CA certificate so that is accessible to the host.\n\n$esxcli = Get-EsxCli -v2\n$arguments = $esxcli.system.security.certificatestore.add.CreateArgs()\n$arguments.filename = <path/to/cacert>\n$esxcli.system.security.certificatestore.add.Invoke($arguments)",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When sending syslog data to a remote host, ESXi can be configured to use any combination of TCP, UDP, and SSL transports. When using SSL, the server certificate must be validated to ensure that the host is connecting to a valid syslog server.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000224",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99"
+  ]
+}

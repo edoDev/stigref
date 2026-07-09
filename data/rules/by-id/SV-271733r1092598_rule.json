@@ -1,0 +1,53 @@
+{
+  "id": "SV-271733r1092598_rule",
+  "full_rule_id": "SV-271733r1092598_rule",
+  "rule_id": "SV-271733",
+  "rule_revision": "1092598",
+  "group_id": "V-271733",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 must be configured so that the kdump service is disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Kernel core dumps may contain the full contents of system memory at the time of the crash. Kernel core dumps consume a considerable amount of disk space and may result in denial of service by exhausting the available space on the target file system partition. Unless the system is used for kernel development or testing, there is little need to run the kdump service.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 kdump service is disabled or masked in system boot configuration with the following command:\n\n$ systemctl is-enabled  kdump  \ndisabled (or masked)\n\nVerify that the kdump service is not active (i.e., not running) through current runtime configuration with the following command:\n\n$ systemctl is-active kdump \ninactive \n\nVerify that the kdump service is masked with the following command:\n\n$ systemctl show  kdump  | grep \"LoadState\\|UnitFileState\" \nLoadState=masked \nUnitFileState=masked \n\nIf the \"kdump\" service is loaded or active, and is not masked, this is a finding.",
+  "fix": "Configure OL 9 to disable and mask the kdump service.\n\nTo disable the kdump service, run the following command:\n\n$ sudo systemctl disable --now kdump\n\nTo mask the kdump service, run the following command:\n\n$ sudo systemctl mask --now kdump",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Kernel core dumps may contain the full contents of system memory at the time of the crash. Kernel core dumps consume a considerable amount of disk space and may result in denial of service by exhausting the available space on the target file system partition. Unless the system is used for kernel development or testing, there is little need to run the kdump service.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002385",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

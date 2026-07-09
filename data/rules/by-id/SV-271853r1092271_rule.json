@@ -1,0 +1,53 @@
+{
+  "id": "SV-271853r1092271_rule",
+  "full_rule_id": "SV-271853r1092271_rule",
+  "rule_id": "SV-271853",
+  "rule_revision": "1092271",
+  "group_id": "V-271853",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 must use cron logging.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Cron logging can be used to trace the successful or unsuccessful execution of cron jobs. It can also be used to spot intrusions into the use of the cron facility by unauthorized and malicious users.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 rsyslog is configured to log cron events with the following command:\n\nNote: If another logging package is used, substitute the utility configuration file for \"/etc/rsyslog.conf\" or \"/etc/rsyslog.d/*.conf\" files.\n\n$ grep -s cron /etc/rsyslog.conf /etc/rsyslog.d/*.conf\n/etc/rsyslog.conf:*.info;mail.none;authpriv.none;cron.none                          /var/log/messages\n/etc/rsyslog.conf:cron.*                                                           /var/log/cron             \n\nIf the command does not return a response, check for cron logging all facilities with the following command:\n\n$ grep -s /var/log/messages /etc/rsyslog.conf /etc/rsyslog.d/*.conf\n/etc/rsyslog.conf:*.info;mail.none;authpriv.none;cron.none                          /var/log/messages\n\nIf \"rsyslog\" is not logging messages for the cron facility or all facilities, this is a finding.",
+  "fix": "Configure \"rsyslog\" to log all cron messages by adding or updating the following line to \"/etc/rsyslog.conf\" or a configuration file in the /etc/rsyslog.d/ directory:\n\ncron.* /var/log/cron\n\nThe rsyslog daemon must be restarted for the changes to take effect:\n\n$ sudo systemctl restart rsyslog.service",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Cron logging can be used to trace the successful or unsuccessful execution of cron jobs. It can also be used to spot intrusions into the use of the cron facility by unauthorized and malicious users.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-005010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

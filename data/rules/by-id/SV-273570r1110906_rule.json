@@ -1,0 +1,53 @@
+{
+  "id": "SV-273570r1110906_rule",
+  "full_rule_id": "SV-273570r1110906_rule",
+  "rule_id": "SV-273570",
+  "rule_revision": "1110906",
+  "group_id": "V-273570",
+  "group_title": "SRG-NET-000018-RTR-000002",
+  "title": "The RUCKUS ICX BGP router must be configured to reject inbound route advertisements for any Bogon prefixes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Accepting route advertisements for Bogon prefixes can result in the local autonomous system (AS) becoming a transit for malicious traffic as it will in turn advertise these prefixes to neighbor autonomous systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify a prefix list exists in the config:\nSSH@ICX(config)# show ip prefix-lists\nip prefix-list PREFIX-FLTR: 1 entries\n     seq 5 deny 0.0.0.0/8 le 32\n     seq 10 deny 10.0.0.0/8 le 32\n...\n     seq 999 permit 0.0.0.0/0 le 8\n\nConfirm that prefix list is applied to BGP:\nrouter bgp\n  neighbor x.x.x.x prefix-list PREFIX-FLTR in\n\nIf the router is not configured to reject inbound route advertisements for any Bogon prefixes, this is a finding.",
+  "fix": "Configure eBGP routers to reject inbound route advertisements for any Bogon prefixes.\n\n1. Create the desired prefix list.\nSSH@ICX(config)# ip prefix PREFIX-FLTR seq 5 deny 0.0.0.0/8 le 32\nSSH@BowieLab(config)# ip prefix PREFIX-FLTR seq 10 deny 10.0.0.0/8 le 32\n...\nSSH@BowieLab(config)# ip prefix PREFIX-FLTR seq 999 permit 0.0.0.0/0 le 8\n\n2. Apply to applicable BGP neighbors.\nrouter bgp\n  neighbor x.x.x.x prefix-list PREFIX-FLTR in",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Accepting route advertisements for Bogon prefixes can result in the local autonomous system (AS) becoming a transit for malicious traffic as it will in turn advertise these prefixes to neighbor autonomous systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-266987r1040727_rule",
+  "full_rule_id": "SV-266987r1040727_rule",
+  "rule_id": "SV-266987",
+  "rule_revision": "1040727",
+  "group_id": "V-266987",
+  "group_title": "SRG-NET-000148-VPN-000540",
+  "title": "AOS, when used as a VPN Gateway, must uniquely identify all network-connected endpoint devices before establishing a connection.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.\n\nFor distributed architectures (e.g., service-oriented architectures), the decisions regarding the validation of identification claims may be made by services separate from the services acting on those decisions. In such situations, it is necessary to provide the identification decisions (as opposed to the actual identifiers) to the services that need to act on those decisions.\n\nThis requirement applies to applications that connect locally, remotely, or through a network to an endpoint device (including, but not limited to, workstations, printers, servers outside a datacenter, Voice Over Internet Protocol [VoIP] phones, and video teleconference codecs). Gateways and service-oriented architecture (SOA) applications are examples of where this requirement would apply.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration with the following command:\n\n1. Site-to-site VPN:\nUsing the CLI:\nshow crypto isakmp sa\n\nIf the IPsec security association is not operating with certificates (\"-c\"), this is a finding.\n\n2. Hardware client VPN:\nUsing the web GUI, navigate to Configuration >> Access Points >> Remote APs. Review each provisioned Remote Access Point (RAP) and verify that each AP has \"c\" in the FLAGS column. \n\nIf certificate authentication is not configured for each RAP, this is a finding.",
+  "fix": "Configure AOS using the web interface:\n\n1. Navigate to Configuration >> Services >> VPN and expand \"Site-to-Site\". \n2. Select the configured site-to-site VPN IPsec maps. Select the applicable Server certificate. Select the applicable trusted DOD root CA under \"CA certificate:\". \n3. Click Submit >> Pending Changes >> Deploy Changes. \n4. Navigate to Configuration >> Access Points >> Remote APs tab.\n5. Select the check box next to the AP Name in the Remote AP table and click \"Provision\".\n6. In the \"General\" tab, select \"Certificate\" from the \"Authentication method:\" drop-down list.\n7. Click \"Submit\" to apply the configuration and reboot the AP as a certificate Remote AP.\n8. Click Pending Changes >> Deploy Changes.",
+  "ccis": [
+    "CCI-000778"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without identifying devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity.\n\nFor distributed architectures (e.g., service-oriented architectures), the decisions regarding the validation of identification claims may be made by services separate from the services acting on those decisions. In such situations, it is necessary to provide the identification decisions (as opposed to the actual identifiers) to the services that need to act on those decisions.\n\nThis requirement applies to applications that connect locally, remotely, or through a network to an endpoint device (including, but not limited to, workstations, printers, servers outside a datacenter, Voice Over Internet Protocol [VoIP] phones, and video teleconference codecs). Gateways and service-oriented architecture (SOA) applications are examples of where this requirement would apply.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-VN-000540",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a",
+      "name": "HPE Aruba Networking AOS VPN Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a"
+  ]
+}

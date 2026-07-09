@@ -1,0 +1,53 @@
+{
+  "id": "SV-239951r666259_rule",
+  "full_rule_id": "SV-239951r666259_rule",
+  "rule_id": "SV-239951",
+  "rule_revision": "666259",
+  "group_id": "V-239951",
+  "group_title": "SRG-NET-000512-VPN-002220",
+  "title": "The Cisco ASA must be configured to use Internet Key Exchange (IKE) for all IPsec security associations.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without IKE, the Security Parameter Index (SPI) is manually specified for each security association. IKE peers will negotiate the encryption algorithm and authentication or hashing methods as well as generate the encryption keys.\n\nAn IPsec SA is established using either IKE or manual configuration. When using IKE, the security associations are established when needed and expire after a period of time or volume of traffic threshold. If manually configured, they are established as soon as the configuration is complete at both endpoints and they do not expire. When using IKE, the SPI for each security association is a pseudo-randomly derived number.\n\nWith manual configuration of the IPsec security association, both the cipher key and authentication key are static. Hence, if the keys are compromised, the traffic being protected by the current IPsec tunnel can be decrypted as well as traffic in any future tunnels established by this SA. Furthermore, the peers are not authenticated prior to establishing the SA, which could result in a rogue device establishing an IPsec SA with either of the VPN endpoints.\n\nIKE provides primary authentication to verify the identity of the remote system before negotiation begins. This feature is lost when the IPsec security associations are manually configured, which results in a non-terminating session using static pre-shared keys.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Step 1: Verify that IKE is configured for the IPsec Phase 1 policy and enabled on applicable interfaces.\n\ncrypto ikev2 policy 1\n encryption …\n\ncrypto ikev2 enable OUTSIDE\n\nStep 2: Verify that IKE is configured for the IPsec Phase 2.\n\ncrypto ipsec ikev2 ipsec-proposal IPSEC_TRANS\n protocol esp encryption …\n\nNote: Although IKEv2 is preferred, IKEv1 will meet the intent of this requirement.\n\nIf the IKE is not configured for all IPsec security associations, this is a finding.",
+  "fix": "Configure the ASA to use IKE for all IPsec VPN SAs.\n\nStep 1: Configure IKE for the IPsec Phase 1 policy and enable it on applicable interfaces.\n\nASA1(config)# crypto ikev2 policy 1\nASA1(config-ikev2-policy)# encryption …\n\nASA1(config)# crypto ikev2 enable OUTSIDE\n\nStep 2: Configure IKE for the IPsec Phase 2.\n \nASA1(config)# crypto ipsec ikev2 ipsec-proposal IPSEC_TRANS",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without IKE, the Security Parameter Index (SPI) is manually specified for each security association. IKE peers will negotiate the encryption algorithm and authentication or hashing methods as well as generate the encryption keys.\n\nAn IPsec SA is established using either IKE or manual configuration. When using IKE, the security associations are established when needed and expire after a period of time or volume of traffic threshold. If manually configured, they are established as soon as the configuration is complete at both endpoints and they do not expire. When using IKE, the SPI for each security association is a pseudo-randomly derived number.\n\nWith manual configuration of the IPsec security association, both the cipher key and authentication key are static. Hence, if the keys are compromised, the traffic being protected by the current IPsec tunnel can be decrypted as well as traffic in any future tunnels established by this SA. Furthermore, the peers are not authenticated prior to establishing the SA, which could result in a rogue device establishing an IPsec SA with either of the VPN endpoints.\n\nIKE provides primary authentication to verify the identity of the remote system before negotiation begins. This feature is lost when the IPsec security associations are manually configured, which results in a non-terminating session using static pre-shared keys.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

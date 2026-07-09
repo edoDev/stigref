@@ -1,0 +1,53 @@
+{
+  "id": "SV-256435r959010_rule",
+  "full_rule_id": "SV-256435r959010_rule",
+  "rule_id": "SV-256435",
+  "rule_revision": "959010",
+  "group_id": "V-256435",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host OpenSLP service must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>OpenSLP implements the Service Location Protocol to help CIM clients discover CIM servers over TCP 427. This service is not widely needed and has had vulnerabilities exposed in the past. To reduce attack surface area and following the minimum functionality principal, the OpenSLP service must be disabled unless explicitly needed and approved. \n\nNote: Disabling the OpenSLP service may affect monitoring and third-party systems that use the WBEM DTMF protocols.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Services.\n\nLocate the \"slpd\" service and verify that the \"Daemon\" is \"Stopped\" and the \"Startup Policy\" is set to \"Start and stop manually\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-VMHostService | Where {$_.Label -eq \"slpd\"}\n\nIf the slpd service does not have a \"Policy\" of \"off\" or is running, this is a finding.",
+  "fix": "From the vSphere Client go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Services.\n\nSelect the \"slpd\" service. If the service is started, click \"Stop\". \n\nClick \"Edit Startup Policy...\". Select \"Start and stop manually\". Click \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-VMHostService | Where {$_.Label -eq \"slpd\"} | Set-VMHostService -Policy Off\nGet-VMHost | Get-VMHostService | Where {$_.Label -eq \"slpd\"} | Stop-VMHostService",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "OpenSLP implements the Service Location Protocol to help CIM clients discover CIM servers over TCP 427. This service is not widely needed and has had vulnerabilities exposed in the past. To reduce attack surface area and following the minimum functionality principal, the OpenSLP service must be disabled unless explicitly needed and approved. \n\nNote: Disabling the OpenSLP service may affect monitoring and third-party systems that use the WBEM DTMF protocols.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-70-000083",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2",
+      "name": "VMware vSphere 7.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-215301r991589_rule",
+  "full_rule_id": "SV-215301r991589_rule",
+  "rule_id": "SV-215301",
+  "rule_revision": "991589",
+  "group_id": "V-215301",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "AIX must turn off TCP forwarding for the SSH daemon.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>SSH TCP connection forwarding provides a mechanism to establish TCP connections proxied by the SSH server. This function can provide similar convenience to a Virtual Private Network (VPN) with the similar risk of providing a path to circumvent firewalls and network ACLs.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If TCP forwarding is approved for use by the ISSO, this is not applicable.\n\nCheck the SSH daemon configuration for the \"AllowTcpForwarding\" directive using command: \n\n# grep -i AllowTcpForwarding /etc/ssh/sshd_config | grep -v '^#' \nAllowTcpForwarding no\n\nIf the setting is not present or the setting is \"yes\", this is a finding.",
+  "fix": "Edit the \"/etc/sshd/sshd_config\" file to add the following line and save the change:\nAllowTcpForwarding no\n\nRestart the SSH daemon:\n# stopsrc -s sshd\n# startsrc -s sshd",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "SSH TCP connection forwarding provides a mechanism to establish TCP connections proxied by the SSH server. This function can provide similar convenience to a Virtual Private Network (VPN) with the similar risk of providing a path to circumvent firewalls and network ACLs.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002118",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

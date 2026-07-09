@@ -1,0 +1,53 @@
+{
+  "id": "SV-258858r933635_rule",
+  "full_rule_id": "SV-258858r933635_rule",
+  "rule_id": "SV-258858",
+  "rule_revision": "933635",
+  "group_id": "V-258858",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "The Photon operating system must be configured to use the pam_faillock.so module.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.\n\nThis module maintains a list of failed authentication attempts per user during a specified interval and locks the account in case there were more than deny consecutive failed authentications.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following commands to verify the pam_faillock.so module is used:\n\n# grep '^auth' /etc/pam.d/system-auth\n\nExample result:\n\nauth required pam_faillock.so preauth\nauth required pam_unix.so\nauth required pam_faillock.so authfail\n\nIf the pam_faillock.so module is not present with the \"preauth\" line listed before pam_unix.so, this is a finding.\nIf the pam_faillock.so module is not present with the \"authfail\" line listed after pam_unix.so, this is a finding.\n\n# grep '^account' /etc/pam.d/system-account\n\nExample result:\n\naccount required pam_faillock.so\naccount required pam_unix.so\n\nIf the pam_faillock.so module is not present and listed before pam_unix.so, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/pam.d/system-auth\n\nAdd or update the following lines making sure to place the preauth line before the pam_unix.so module:\n\nauth required pam_faillock.so preauth\nauth required pam_faillock.so authfail\n\nNavigate to and open:\n\n/etc/pam.d/system-account\n\nAdd or update the following lines making sure to place the line before the pam_unix.so module:\n\naccount required pam_faillock.so\n\nNote: The lines shown assume the /etc/security/faillock.conf file is used to configure pam_faillock.\n\nNote: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.",
+  "ccis": [
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.\n\nThis module maintains a list of failed authentication attempts per user during a specified interval and locks the account in case there were more than deny consecutive failed authentications.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000192",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

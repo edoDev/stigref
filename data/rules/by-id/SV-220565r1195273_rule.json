@@ -1,0 +1,53 @@
+{
+  "id": "SV-220565r1195273_rule",
+  "full_rule_id": "SV-220565r1195273_rule",
+  "rule_id": "SV-220565",
+  "rule_revision": "1195273",
+  "group_id": "V-220565",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "The Cisco switch must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of user accounts and authentication increases the administrative access to the switch. This control is a particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Cisco switch configuration to verify the device is configured to use at least two authentication servers as the primary source for authentication as shown in the following example:\n\naaa new-model\n!\naaa group server radius RADIUS_GROUP\n server name RADIUS1\n server name RADIUS2\n!\naaa authentication login CONSOLE group RADIUS_GROUP local\naaa authentication login LOGIN_AUTHENTICATION group RADIUS_GROUP local\n…\n…\n…\nip http authentication aaa login-authentication LOGIN_AUTHENTICATION\nip http secure-server\n…\n…\n…\nradius server RADIUS1\n address ipv4 x.x.x.x  auth-port 1812 acct-port 1813\n key xxxxxxx\n!\nradius server RADIUS2\n address ipv4 x.x.x.x  auth-port 1812 acct-port 1813\n key xxxxxxx\n…\n…\n…\nline con 0\n exec-timeout 5 0\n login authentication CONSOLE\nline vty 0 1\n exec-timeout 5 0\n login authentication LOGIN_AUTHENTICATION\n\nIf the Cisco switch is not configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access, this is a finding.",
+  "fix": "Step 1: Configure the Cisco switch to use at least two authentication servers as shown in the following example:\n\nR4(config)#radius server RADIUS1\nR4(config-radius-server)#address ipv4 x.x.x.x auth-port 1812 acct-port 1813\nR4(config-radius-server)#key xxxxxxx\nR4(config-radius-server)#radius server RADIUS2\nR4(config-radius-server)#address ipv4 x.x.x.x auth-port 1812 acct-port 1813\nR4(config-radius-server)#key xxxxxxx\n\nStep 2: Configure the authentication order to use the authentication servers as the primary source for authentication as shown in the following example:\n\nR4(config)#aaa group server radius RADIUS_GROUP\nR4(config)#server name RADIUS1\nR4(config)#server name RADIUS2\n\nR4(config)#aaa authentication login CONSOLE group RADIUS_GROUP local\n\nR4(config)#aaa authentication login LOGIN_AUTHENTICATION group RADIUS_GROUP local\n\nStep 3: Configure all network connections associated with a device management to use the authentication servers for the purpose of login authentication.\n\nR4(config)#line vty 0 1\nR4(config-line)#login authentication LOGIN_AUTHENTICATION\nR4(config-line)#exit\nR4(config)#line con 0\nR4(config-line)#login authentication CONSOLE\nR4(config-line)#exit \nR4(config)#ip http authentication aaa login-authentication LOGIN_AUTHENTICATION",
+  "ccis": [
+    "CCI-000370"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of user accounts and authentication increases the administrative access to the switch. This control is a particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-ND-001370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-switch-ndm-security-technical-implementation-guide-v3r6-e5fc9760",
+      "name": "Cisco IOS XE Switch NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-switch-ndm-security-technical-implementation-guide-v3r6-e5fc9760"
+  ]
+}

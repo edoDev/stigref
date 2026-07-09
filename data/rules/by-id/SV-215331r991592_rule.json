@@ -1,0 +1,53 @@
+{
+  "id": "SV-215331r991592_rule",
+  "full_rule_id": "SV-215331r991592_rule",
+  "rule_id": "SV-215331",
+  "rule_revision": "991592",
+  "group_id": "V-215331",
+  "group_title": "SRG-OS-000480-GPOS-00230",
+  "title": "All AIX users home directories must have mode 0750 or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Excessive permissions on home directories allow unauthorized access to user files.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the home directory mode of each interactive user in \"/etc/passwd\":\n\n#cut -d : -f 6 /etc/passwd | xargs -n1 ls -ld | more \ndrwxr-xr-x   20 root     system         4096 Jan 28 13:46 /\ndrwxr-xr-x   33 root     system         8192 Jan 28 13:51 /etc\nlrwxrwxrwx    1 bin      bin               8 Jan 24 07:23 /bin -> /usr/bin\ndrwxrwxr-x    4 bin      bin             256 Mar 23 2017  /usr/sys\ndrwxrwxr-x   15 root     adm            4096 Jan 24 12:26 /var/adm\ndrwxr-xr-x    2 root     sys            4096 Jan 24 08:43 /usr/lib/uucp\ndrwxr-xr-x    6 root     system         4096 Jan 24 07:34 /var/adm/invscout\ndrwxr-xr-x    3 ipsec    ipsec           256 Jan 24 08:43 /etc/ipsec\ndrwxr-xr-x    2 sshd     system          256 Aug 11 2017  /home/srvproxy\ndrwxr-xr-x    8 esaadmin system          256 Jan 24 09:02 /var/esa\ndrwxr-x---    2 doejohn  staff           256 Jan 25 13:18 /home/doejohn\n\nIf an interactive user's home directory's mode is more permissive than \"0750\", this is a finding. \n\nNOTE: Application directories are allowed and may need \"0755\" permissions (or greater) for correct operation.",
+  "fix": "Change the mode of interactive users' home directories to \"0750\" or less permissive using the following command:\n# chmod 0750 <home directory>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Excessive permissions on home directories allow unauthorized access to user files.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003018",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-272411r1156962_rule",
+  "full_rule_id": "SV-272411r1156962_rule",
+  "rule_id": "SV-272411",
+  "rule_revision": "1156962",
+  "group_id": "V-272411",
+  "group_title": "SRG-APP-000516-DNS-000114",
+  "title": "On the BIND 9.x server, CNAME records must not point to a zone with lesser security for more than six months.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The use of CNAME records for exercises, tests, or zone-spanning aliases should be temporary (e.g., to facilitate a migration). When a host name is an alias for a record in another zone, an adversary has two points of attack: the zone in which the alias is defined and the zone authoritative for the alias's canonical name. This configuration also reduces the speed of client resolution because it requires a second lookup after obtaining the canonical name. Furthermore, in the case of an authoritative name server, this information is promulgated throughout the enterprise to caching servers and thus compounds the vulnerability.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the zone files used by the BIND 9.x server do not contain resource records for a domain in which the server is not authoritative.\n\nInspect the \"named.conf\" file for the following:\n\nzone example.com {\nfile \"db.example.com.signed\";\n};\n\nInspect each zone file for \"CNAME\" records and verify with the DNS administrator that these records are less than six months old.\n\nThe exceptions are glue records supporting zone delegations, CNAME records supporting a system migration, or CNAME records that point to third-party Content Delivery Networks (CDN) or cloud computing platforms. In the case of third-party CDNs or cloud offerings, an approved mission need must be demonstrated.\n\nIf there are CNAME records that point to third-party Content Delivery Networks (CDNs) or cloud computing platforms without an authorizing official (AO)-approved and documented mission need, this is a finding.\n\nIf a CNAME record is more than six months old, excluding the above, this is a finding.",
+  "fix": "In the case of third-party CDNs or cloud offerings, document the mission need with the AO.\n\nEdit the zone file.\n\nRemove CNAME records that are older than six months that do not meet the CDN or cloud offering criteria.\n\nRestart the BIND 9.x process.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The use of CNAME records for exercises, tests, or zone-spanning aliases should be temporary (e.g., to facilitate a migration). When a host name is an alias for a record in another zone, an adversary has two points of attack: the zone in which the alias is defined and the zone authoritative for the alias's canonical name. This configuration also reduces the speed of client resolution because it requires a second lookup after obtaining the canonical name. Furthermore, in the case of an authoritative name server, this information is promulgated throughout the enterprise to caching servers and thus compounds the vulnerability.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BIND-9X-001580",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460",
+      "name": "BIND 9.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460"
+  ]
+}

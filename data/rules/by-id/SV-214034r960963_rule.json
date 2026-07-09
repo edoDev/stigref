@@ -1,0 +1,53 @@
+{
+  "id": "SV-214034r960963_rule",
+  "full_rule_id": "SV-214034r960963_rule",
+  "rule_id": "SV-214034",
+  "rule_revision": "960963",
+  "group_id": "V-214034",
+  "group_title": "SRG-APP-000141-DB-000093",
+  "title": "Filestream must be disabled, unless specifically required and approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions). \n\nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives. \n\nApplications must adhere to the principles of least functionality by providing only essential capabilities.\n\nThe most significant potential for attacking an instance is through the use of features that expose an external interface or ad hoc execution capability. FILESTREAM integrates the SQL Server Database Engine with an NTFS file system by storing varbinary(max) binary large object (BLOB) data as files on the file system. Transact-SQL statements can insert, update, query, search, and back up FILESTREAM data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the system documentation to see if FileStream is in use.  If in use authorized, this is not a finding.   \n\nIf FileStream is not documented as being authorized, execute the following query.\nEXEC sp_configure 'filestream access level'\n\nIf \"run_value\" is greater than \"0\", this is a finding.\n\n\n\nThis rule checks that Filestream SQL specific option is disabled.\n\nSELECT CASE \n        WHEN EXISTS (SELECT * \n                     FROM sys.configurations \n                     WHERE Name = 'filestream access level' \n                            AND Cast(value AS INT) = 0) THEN 'No' \n        ELSE 'Yes'\n      END AS TSQLFileStreamAccess;\n\nIf the above query returns \"Yes\" in the \"FileStreamEnabled\" field, this is a finding.",
+  "fix": "Disable the use of Filestream.\n\n1. Delete all FILESTREAM columns from all tables. ALTER TABLE <name> DROP COLUMN <column name>\n2. Disassociate tables from the FILESTREAM filegroups. ALTER TABLE <name> SET (FILESTREAM_ON = 'NULL'\n3. Remove all FILESTREAM data containers. ALTER DATABASE <name> REMOVE FILE <file name>\n4. Remove all FILESTREAM filegroups. ALTER DATABASE <name> REMOVE FILEGROUP <file name>.\n5. Disable FILESTREAM.\nEXEC sp_configure filestream_access_level, 0 \n    RECONFIGURE \n6. Restart the SQL Service",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions). \n\nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives. \n\nApplications must adhere to the principles of least functionality by providing only essential capabilities.\n\nThe most significant potential for attacking an instance is through the use of features that expose an external interface or ad hoc execution capability. FILESTREAM integrates the SQL Server Database Engine with an NTFS file system by storing varbinary(max) binary large object (BLOB) data as files on the file system. Transact-SQL statements can insert, update, query, search, and back up FILESTREAM data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQL6-D0-016800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a",
+      "name": "MS SQL Server 2016 Instance Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a"
+  ]
+}

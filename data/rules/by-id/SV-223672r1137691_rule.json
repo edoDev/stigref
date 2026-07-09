@@ -1,0 +1,54 @@
+{
+  "id": "SV-223672r1137691_rule",
+  "full_rule_id": "SV-223672r1137691_rule",
+  "rule_id": "SV-223672",
+  "rule_revision": "1137691",
+  "group_id": "V-223672",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM RACF batch jobs must be properly secured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Batch jobs that are submitted to the operating system should inherit the USERID of the submitter. This will identify the batch job with a userid for the purpose of accessing resources. BATCHALLRACF ensures that a valid USERID is associated with batch jobs. Jobs that are submitted to the operating system via a scheduling facility must also be identified to the system. Without a batch job having an associated USERID, access to system resources will be limited.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000326-GPOS-00126</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to the documentation of the processes used for submission of batch jobs via an automated process (i.e., scheduler or other sources) and each of the associated userids. Determine any other scheduled batch jobs on the system.\n\nFrom an ISPF Command Shell enter:\nRLIST SURROGAT *\n\nIf each batch job userid used for batch submission by a Job Scheduler (e.g., CONTROL-M, CA-7, CA-Scheduler, etc.) is defined as an execution-userid in a SURROGAT resource class profile, this is not a finding.\n\nFrom an ISPF Command Shell enter:\nRLIST SURROGAT <surrogat-userid> ALL\n\nIf the Job Scheduler userids (i.e., surrogate-userid) are permitted surrogate authority to the appropriate SURROGAT profiles, this is not a finding.",
+  "fix": "Configure each batch job userid used for batch submission by a Job Scheduler (e.g., CONTROL-M, CA-7, CA-Scheduler, etc.) is defined as an execution-userid in a SURROGAT resource class profile. For example:\n\nRDEFINE SURROGAT execution-userid.SUBMIT UACC(NONE)\nOWNER(execution-userid)\n\nConfigure Job Scheduler userids (i.e., surrogate-userid) are permitted surrogate authority to the appropriate SURROGAT profiles. For example:\n\nPERMIT execution-userid.SUBMIT CLASS(SURROGAT)\nID(surrogate-userid) ACCESS(READ)",
+  "ccis": [
+    "CCI-000213",
+    "CCI-002233"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Batch jobs that are submitted to the operating system should inherit the USERID of the submitter. This will identify the batch job with a userid for the purpose of accessing resources. BATCHALLRACF ensures that a valid USERID is associated with batch jobs. Jobs that are submitted to the operating system via a scheduling facility must also be identified to the system. Without a batch job having an associated USERID, access to system resources will be limited.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000326-GPOS-00126",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000240",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-253993r844012_rule",
+  "full_rule_id": "SV-253993r844012_rule",
+  "rule_id": "SV-253993",
+  "rule_revision": "844012",
+  "group_id": "V-253993",
+  "group_title": "SRG-NET-000019-RTR-000012",
+  "title": "The Juniper out-of-band management (OOBM) gateway router must not be configured to redistribute routes between the management network routing domain and the managed network routing domain.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the gateway router is not a dedicated device for the OOBM network, several safeguards must be implemented for containment of management and production traffic boundaries; otherwise, it is possible that management traffic will not be separated from production traffic.\n\nSince the managed network and the management network are separate routing domains, separate Interior Gateway Protocol routing instances must be configured on the router, one for the managed network and one for the OOBM network. In addition, the routes from the two domains must not be redistributed to each other.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nVerify the Interior Gateway Protocol instance used for the managed network does not redistribute routes into the Interior Gateway Protocol instance used for the management network, and vice versa.\n\nJuniper routers use export policies to limit redistribution of routes. Verify a policy exists to filter route redistribution. Juniper policy-statements support terms, which provides greater granularity within a single policy. \n\n[edit policy-options]\npolicy-statement deny-mgt-redist {\n    term 1 {\n        from protocol static;\n        then reject;\n    }\n    term 2 { \n        from {\n            protocol ospf;\n            route-filter <IPv4 subnet>/<mask> orlonger;\n            route-filter <IPv6 subnet>/<prefix> orlonger;\n        }\n        then reject;\n    }\n    <additional terms permitting authorized routes for redistribution>\n}\npolicy-statement deny-managed-routes {\n    term 1 {\n        from {\n            route-filter <IPv4 subnet>/<mask> orlonger;\n            route-filter <IPv6 subnet>/<prefix> orlonger;\n        }\n        then accept;\n    }\n    term 2 {\n        then reject;\n    }\n}\n\nVerify an export policy is applied to the IGP protocol for each routing instance (default and OOBM).\n[edit protocols]\n    ospf {\n        area <area number> {\n            interface <NOT OOBM interface>.<logical unit>;\n        }\n        export deny-mgt-redist;\n    }\n    ospf3 {\n        area <area number> {\n            interface <NOT OOBM interface>.<logical unit>;\n        }\n        export deny-mgt-redist;\n    }\n}\n[edit routing-instances]\nOOBM {\n    instance-type virtual-router;\n    protocols {\n        ospf {\n            area <area number> {\n                interface <OOBM interface>.<logical unit>;\n            }\n            export deny-managed-routes;\n        }\n        ospf3 {\n            area <area number> {\n                interface <OOBM interface>.<logical unit>;\n            }\n            export deny-managed-routes;\n        }\n    }\n}\n\nIf the Interior Gateway Protocol instance used for the managed network redistributes routes into the Interior Gateway Protocol instance used for the management network, or vice versa, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the Interior Gateway Protocol instance used for the managed network to prohibit redistribution of routes into the Interior Gateway Protocol instance used for the management network, and vice versa.\n\nset policy-options policy-statement deny-managed-routes term 1 from route-filter <IPv4 subnet>/<mask> orlonger\nset policy-options policy-statement deny-managed-routes term 1 from route-filter <IPv6 subnet>/<prefix> orlonger\nset policy-options policy-statement deny-managed-routes term 1 then accept\nset policy-options policy-statement deny-managed-routes term 2 then reject\nset policy-options policy-statement deny-mgt-redist term 1 from protocol static\nset policy-options policy-statement deny-mgt-redist term 1 then reject\nset policy-options policy-statement deny-mgt-redist term 2 from protocol ospf\nset policy-options policy-statement deny-mgt-redist term 2 from route-filter <IPv4 subnet>/<mask> orlonger\nset policy-options policy-statement deny-mgt-redist term 2 from route-filter <IPv6 subnet>/<prefix> orlonger\nset policy-options policy-statement deny-mgt-redist term 2 then reject\n<additional terms for permitted redistributable routes>\n\nset routing-instances OOBM instance-type virtual-router\nset routing-instances OOBM protocols ospf area <area number> interface <OOBM interface>.<logical unit>\nset routing-instances OOBM protocols ospf export test\nset routing-instances OOBM protocols ospf3 area <area number> interface <OOBM interface>.<logical unit>\nset routing-instances OOBM protocols ospf3 export test",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the gateway router is not a dedicated device for the OOBM network, several safeguards must be implemented for containment of management and production traffic boundaries; otherwise, it is possible that management traffic will not be separated from production traffic.\n\nSince the managed network and the management network are separate routing domains, separate Interior Gateway Protocol routing instances must be configured on the router, one for the managed network and one for the OOBM network. In addition, the routes from the two domains must not be redistributed to each other.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000210",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

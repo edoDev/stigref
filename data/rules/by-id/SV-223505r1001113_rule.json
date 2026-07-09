@@ -1,0 +1,54 @@
+{
+  "id": "SV-223505r1001113_rule",
+  "full_rule_id": "SV-223505r1001113_rule",
+  "rule_id": "SV-223505",
+  "rule_revision": "1001113",
+  "group_id": "V-223505",
+  "group_title": "SRG-OS-000073-GPOS-00041",
+  "title": "ACF2 must use NIST FIPS-validated cryptography to protect passwords in the security database.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.\n\nSatisfies: SRG-OS-000073-GPOS-00041, SRG-OS-000074-GPOS-00042</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an ACF command screen enter:\nSET CONTROL(GSO)\nLIST PSWD\n\nIf the \"GSO PSWD\" record option \"PSWDENCT\" is set to \"XDES\" or null, this is a finding.\n\nSET MSYSID(-)\n\nLIST PSWD\n\nFor CA-ACF2 R16 and above:\n\nIf option \"NOONEPWALG\" is specified, and there is no transition plan with a definite completion date filed with the information system security manager (ISSM), this is a finding.",
+  "fix": "Evaluate the impact associated with implementation of the control option.\n\nDevelop a plan of action to implement the control option as specified below:\n\nConfigure the \"GSO PSWD\" record option \"PSWDENCT\" to \"AES1\".\n\nFor CA-ACF2 Release16 and above:\n\nConfigure \"GSO PSWD\" record option \"PSWDENCT\" to \"AES1\" or \"AES2\".\n\nConfigure the \"GSO PSWD\" to \"ONEPWALG\".\n\nNote: If you are using VM Database Synchronization you cannot use \"ONEPWALG\". VM does not support the AES algorithms.\n\nDevelop a transition plan with a definite completion date for z/VM; file with the ISSM.\n\nIf all systems that are sharing the logonid or infostorage databases are not running with the same \"PSWDENCT\" value you cannot use \"ONEPWALG\".\n\nDevelop a transition plan that contains a definite completion date to migrate all logonid and infostorage databases to one \"PSWDENCT\" value; file with the ISSM.\n\nConsult the CA-ACF2 administration guide for converting to \"AES1\" or \"AES2\" and using \"ONEPWALG\".",
+  "ccis": [
+    "CCI-004062",
+    "CCI-000197"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.\n\nSatisfies: SRG-OS-000073-GPOS-00041, SRG-OS-000074-GPOS-00042",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ACF2-ES-000880",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad",
+      "name": "IBM z/OS ACF2 Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-217350r961863_rule",
+  "full_rule_id": "SV-217350r961863_rule",
+  "rule_id": "SV-217350",
+  "rule_revision": "961863",
+  "group_id": "V-217350",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "The Juniper router must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of user accounts and authentication increases the administrative access to the router. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that the device is configured to use at least two authentication servers as primary source for authentication as shown in the following example:\n\nsystem {\n    authentication-order radius;\n    }\n    radius-server {\n        x.x.x.x secret \"$8$xYW-dsq.5zF/wYnC\"; ## SECRET-DATA\n    }\n    radius-server {\n        x.x.x.x secret \"$8$xYW-dsq.5zF/wYnC\"; ## SECRET-DATA\n    }\n\nIf the router is not configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access, this is a finding.",
+  "fix": "Step 1: Configure the authentication servers as shown in the following example:\n\n[edit system]\nset radius-server x.x.x.x secret xxxxxxxxx\nset radius-server x.x.x.x secret xxxxxxxxx\n\nStep 2: Configure the authentication order to use the authentication servers as primary source for authentication as shown in the following example:\n\nset authentication-order radius\n\nNote: If there is no response from the authentication server, JUNOS will authenticate using a local account as last resort. It is recommended to not configure the password at the end of the authentication order, as JUNOS will attempt to authenticate using a local account upon a rejection from the authentication server.",
+  "ccis": [
+    "CCI-000370"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of user accounts and authentication increases the administrative access to the router. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-ND-001360",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-ndm-security-technical-implementation-guide-v3r2-b0e284b4",
+      "name": "Juniper Router NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-ndm-security-technical-implementation-guide-v3r2-b0e284b4"
+  ]
+}

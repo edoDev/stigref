@@ -1,0 +1,53 @@
+{
+  "id": "SV-228387r879651_rule",
+  "full_rule_id": "SV-228387r879651_rule",
+  "rule_id": "SV-228387",
+  "rule_revision": "879651",
+  "group_id": "V-228387",
+  "group_title": "SRG-APP-000247",
+  "title": "The Exchange global inbound message size must be controlled.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Email system availability depends in part on best practice strategies for setting tuning configurations. Message size limits should be set to 10 megabytes (MB) at most but often are smaller, depending on the organization. The key point in message size is that it should be set globally and should not be set to \"unlimited\". Selecting \"unlimited\" on \"MaxReceiveSize\" is likely to result in abuse and can contribute to excessive server disk space consumption. \n\nMessage size limits may also be applied on SMTP connectors, Public Folders, and on the user account under Active Directory (AD). Changes at these lower levels are discouraged, as the single global setting is usually sufficient. This practice prevents conflicts that could impact availability and simplifies server administration.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Email Domain Security Plan (EDSP) or document that contains this information. \n\nDetermine the global maximum message receive size. \n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-TransportConfig | Select Name, Identity, MaxReceiveSize\n\nIf the value of \"MaxReceiveSize\" is not set to \"10MB\", this is a finding.\n\nor\n\nIf \"MaxReceiveSize\" is set to an alternate value and has signoff and risk acceptance in the EDSP, this is not a finding.",
+  "fix": "Update the EDSP to specify the \"MaxReceiveSize\" value or verify that this information is documented by the organization.\n\nOpen the Exchange Management Shell and enter the following command:\n\nSet-TransportConfig -MaxReceiveSize 10MB\n\nor\n\nEnter the value as identified by the EDSP that has obtained a signoff with risk acceptance.",
+  "ccis": [
+    "CCI-001095"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Email system availability depends in part on best practice strategies for setting tuning configurations. Message size limits should be set to 10 megabytes (MB) at most but often are smaller, depending on the organization. The key point in message size is that it should be set globally and should not be set to \"unlimited\". Selecting \"unlimited\" on \"MaxReceiveSize\" is likely to result in abuse and can contribute to excessive server disk space consumption. \n\nMessage size limits may also be applied on SMTP connectors, Public Folders, and on the user account under Active Directory (AD). Changes at these lower levels are discouraged, as the single global setting is usually sufficient. This practice prevents conflicts that could impact availability and simplifies server administration.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX16-MB-000430",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5",
+      "name": "Microsoft Exchange 2016 Mailbox Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5"
+  ]
+}

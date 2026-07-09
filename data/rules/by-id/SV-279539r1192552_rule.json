@@ -1,0 +1,53 @@
+{
+  "id": "SV-279539r1192552_rule",
+  "full_rule_id": "SV-279539r1192552_rule",
+  "rule_id": "SV-279539",
+  "rule_revision": "1192552",
+  "group_id": "V-279539",
+  "group_title": "SRG-OS-000002-GPOS-00002",
+  "title": "Nutanix OS must automatically remove or disable temporary user accounts after 72 hours.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If temporary user accounts remain active when no longer needed or for an excessive period, these accounts may be used to gain unauthorized access. To mitigate this risk, automated termination of all temporary accounts must be set upon account creation.\n\nTemporary accounts are established as part of normal account activation procedures when there is a need for short-term accounts without the demand for immediacy in account activation.\n\nIf temporary accounts are used, the operating system must be configured to automatically terminate these types of accounts after a DOD-defined time period of 72 hours.\n\nTo address access requirements, many operating systems may be integrated with enterprise-level authentication/access mechanisms that meet or exceed access control policy requirements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify temporary accounts have been provisioned with an expiration date of 72 hours.\n\n1. For every existing temporary account, run the following command to obtain its account expiration information:\n\n$ sudo chage -l system_account_name\n\n2. Verify each account has an expiration date set within 72 hours.\n\nIf any temporary accounts have no expiration date set or do not expire within 72 hours, this is a finding.",
+  "fix": "If a temporary account must be created, configure the system to terminate the account after a 72-hour time period using the following command.\n\nsudo chage -E `date -d \"+3 days\" +%Y-%m-%d` system_account_name",
+  "ccis": [
+    "CCI-000016"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If temporary user accounts remain active when no longer needed or for an excessive period, these accounts may be used to gain unauthorized access. To mitigate this risk, automated termination of all temporary accounts must be set upon account creation.\n\nTemporary accounts are established as part of normal account activation procedures when there is a need for short-term accounts without the demand for immediacy in account activation.\n\nIf temporary accounts are used, the operating system must be configured to automatically terminate these types of accounts after a DOD-defined time period of 72 hours.\n\nTo address access requirements, many operating systems may be integrated with enterprise-level authentication/access mechanisms that meet or exceed access control policy requirements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000016",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

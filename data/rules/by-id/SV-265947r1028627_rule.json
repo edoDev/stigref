@@ -1,0 +1,54 @@
+{
+  "id": "SV-265947r1028627_rule",
+  "full_rule_id": "SV-265947r1028627_rule",
+  "rule_id": "SV-265947",
+  "rule_revision": "1028627",
+  "group_id": "V-265947",
+  "group_title": "SRG-APP-000428-DB-000386",
+  "title": "MongoDB must implement cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest (to include, at a minimum, PII and classified information) on organization-defined information system components.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DBMSs handling data requiring \"data at rest\" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest. These cryptographic mechanisms may be native to MongoDB or implemented via additional software or operating system/file system settings, as appropriate to the situation.\n\nSelection of a cryptographic mechanism is based on the need to protect the integrity of organizational information. The strength of the mechanism is commensurate with the security category and/or classification of the information. Organizations have the flexibility to either encrypt all information on storage devices (i.e., full disk encryption) or encrypt specific data structures (e.g., files, records, or fields).\n\nThe decision whether and what to encrypt rests with the data owner and is also influenced by the physical measures taken to secure the equipment and media on which the information resides.\n\nSatisfies: SRG-APP-000428-DB-000386, SRG-APP-000429-DB-000387</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the documentation or specification for the organization-defined information. \n\nIf any data is PII, classified, or is deemed by the organization the need to be encrypted at rest, verify the method of encryption is documented.\n\nIf no documented mechanism is being used encrypt data at rest such as hardware encryption, volume encryption, filesystem encryption or the use of third-party products to enable encryption at rest, this is a finding.\n\nIf the documented method to encrypt MongoDB data at rest is the native MongoDB encryption at rest, verify the MongoDB configuration file (default location: /etc/mongod.conf) contains the following options:\n\nsecurity:\n    kmip:\n      keyIdentifier: <string>\n      rotateMasterKey: <boolean>\n      serverName: <string>\n      port: <string>\n      clientCertificateFile: <string>\n      clientCertificatePassword: <string>\n      clientCertificateSelector: <string>\n      serverCAFile: <string>\n      connectRetries: <int>\n      connectTimeoutMS: <int>\n      activateKeys: <boolean>\n      keyStatePollingSeconds: <int>\n\nIf these above options are not configured in the MongoDB security.kmip section in the MongoDB configuration file, this is a finding.",
+  "fix": "Configure encryption at rest through hardware encryption, volume encryption, filesystem encryption, or third-party products if not using MongoDBs native encryption at rest.\n\nWhen using MongoDBs native encryption at rest, configure MongoDB to use the Encrypted Storage Engine and a KMIP appliance as documented here:\n\nhttps://www.mongodb.com/docs/v7.0/core/security-encryption-at-rest/\n\nhttps://www.mongodb.com/docs/v7.0/tutorial/configure-encryption/",
+  "ccis": [
+    "CCI-002475",
+    "CCI-002476"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DBMSs handling data requiring \"data at rest\" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest. These cryptographic mechanisms may be native to MongoDB or implemented via additional software or operating system/file system settings, as appropriate to the situation.\n\nSelection of a cryptographic mechanism is based on the need to protect the integrity of organizational information. The strength of the mechanism is commensurate with the security category and/or classification of the information. Organizations have the flexibility to either encrypt all information on storage devices (i.e., full disk encryption) or encrypt specific data structures (e.g., files, records, or fields).\n\nThe decision whether and what to encrypt rests with the data owner and is also influenced by the physical measures taken to secure the equipment and media on which the information resides.\n\nSatisfies: SRG-APP-000428-DB-000386, SRG-APP-000429-DB-000387",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MD7X-00-008500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mongodb-enterprise-advanced-7-x-security-technical-implementation-guide-v1r1-f117b5bb",
+      "name": "MongoDB Enterprise Advanced 7.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mongodb-enterprise-advanced-7-x-security-technical-implementation-guide-v1r1-f117b5bb"
+  ]
+}

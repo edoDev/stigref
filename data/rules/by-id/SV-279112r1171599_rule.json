@@ -1,0 +1,53 @@
+{
+  "id": "SV-279112r1171599_rule",
+  "full_rule_id": "SV-279112r1171599_rule",
+  "rule_id": "SV-279112",
+  "rule_revision": "1171599",
+  "group_id": "V-279112",
+  "group_title": "SRG-APP-000910-AS-000300",
+  "title": "ColdFusion must include only approved trust anchors in trust stores or certificate stores managed by the organization.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Trust stores and certificate stores in ColdFusion are used to validate the authenticity of digital certificates during secure communications. If these stores include unapproved or rogue trust anchors they introduce the risk of trusting malicious or compromised certificates. This can lead to man-in-the-middle (MitM) attacks, spoofing of trusted services, or unauthorized data decryption.\n\nOnly including approved trust anchors ensures that ColdFusion trusts only vetted entities for secure communications. This protects against the installation of unauthorized certificates that could be used to intercept or manipulate encrypted traffic.\n\nMaintaining strict control over which trust anchors are included in ColdFusion's trust and certificate stores is essential to upholding the integrity and confidentiality of system communications. It also ensures alignment with enterprise Public Key Infrastructure (PKI) policies and reduces the risk of inadvertently trusting a compromised or untrusted source.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Validate Connection.\n\n1. Open cacert by executing the following command:\nC:\\ColdFusion2023\\jre\\bin\\keytool -list -keystore C:\\ColdFusion2023\\jre\\lib\\security\\cacerts\n\nIf any outbound certificates listed are not approved, this is a finding.\n\n2. In each ColdFusion instance, open the server.xml file:\n<ColdFusion_Installation_Directory>\\cfusion\\runtime\\conf\\server.xml \n\n3. Verify all uncommented connector tags for the word \"keystorefile\":\n\na. Make note of any keystore path and filename.\n\nb. For each file found with the connector tag \"keystorefile\", execute the following command:\nC:\\ColdFusion2023\\jre\\bin\\keytool -list -keystore <keystorefile>\n\nIf any inbound certificates listed are not approved, this is a finding.",
+  "fix": "Configure connection.\n\nFor all untrusted certificates identified execute the following command:\nC:\\ColdFusion2023\\jre\\bin\\keytool -delete -alias \"<certificate alias>\" -keystore <keystorefile>",
+  "ccis": [
+    "CCI-004909"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Trust stores and certificate stores in ColdFusion are used to validate the authenticity of digital certificates during secure communications. If these stores include unapproved or rogue trust anchors they introduce the risk of trusting malicious or compromised certificates. This can lead to man-in-the-middle (MitM) attacks, spoofing of trusted services, or unauthorized data decryption.\n\nOnly including approved trust anchors ensures that ColdFusion trusts only vetted entities for secure communications. This protects against the installation of unauthorized certificates that could be used to intercept or manipulate encrypted traffic.\n\nMaintaining strict control over which trust anchors are included in ColdFusion's trust and certificate stores is essential to upholding the integrity and confidentiality of system communications. It also ensures alignment with enterprise Public Key Infrastructure (PKI) policies and reduces the risk of inadvertently trusting a compromised or untrusted source.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APAS-CF-001135",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878",
+      "name": "Adobe ColdFusion Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878"
+  ]
+}

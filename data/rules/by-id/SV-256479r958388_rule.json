@@ -1,0 +1,54 @@
+{
+  "id": "SV-256479r958388_rule",
+  "full_rule_id": "SV-256479r958388_rule",
+  "rule_id": "SV-256479",
+  "rule_revision": "958388",
+  "group_id": "V-256479",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "The Photon operating system must automatically lock an account when three unsuccessful logon attempts occur.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following commands:\n\n# grep pam_tally2 /etc/pam.d/system-auth\n\nExpected result:\n\nauth       required pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300\n\n# grep pam_tally2 /etc/pam.d/system-account\n\nExpected result:\n\naccount    required pam_tally2.so onerr=fail audit\n\nIf the output does not list the \"pam_tally2\" options as configured in the expected results, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/pam.d/system-auth\n\nRemove any existing \"pam_tally2.so\" line and add the following line after the \"pam_unix.so\" statement:\n\nauth       required pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300\n\nNavigate to and open:\n\n/etc/pam.d/system-account\n\nRemove any existing \"pam_tally2.so\" line and add the following line after the \"pam_unix.so\" statement:\n\naccount    required pam_tally2.so onerr=fail audit\n\nNote: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.",
+  "ccis": [
+    "CCI-000044",
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-30-000002",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28",
+      "name": "VMware vSphere 7.0 vCenter Appliance Photon OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-274882r1137640_rule",
+  "full_rule_id": "SV-274882r1137640_rule",
+  "rule_id": "SV-274882",
+  "rule_revision": "1137640",
+  "group_id": "V-274882",
+  "group_title": "SRG-APP-000033-CTR-000100",
+  "title": "Kubernetes Secrets must be encrypted at rest.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Kubernetes Secrets may store sensitive information such as passwords, tokens, and keys. These values are stored in the etcd database used by Kubernetes unencrypted. To protect these Secrets at rest, these values must be encrypted.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Change to the /etc/kubernetes/manifests directory on the Kubernetes Master Node. Run the command:\ngrep -i encryption-provider-config *\n\nIf the setting \"encryption-provider-config\" is not configured, this is a finding.\n\nIf the setting is configured, check the contents of the file specified by its argument. \n\nIf the file does not specify the Secret's resource, this is a finding. \n\nIf the identity provider is specified as the first provider for the resource, this is also a finding.",
+  "fix": "Edit the Kubernetes API Server manifest file in the /etc/kubernetes/manifests directory on the Kubernetes Master Node. \n\nSet the value of \"--encryption-provider-config\" to the path to the encryption config. \n\nThe encryption config must specify the Secret's resource and provider. Below is an example:\n{\n  \"kind\": \"EncryptionConfiguration\",\n  \"apiVersion\": \"apiserver.config.k8s.io/v1\",\n  \"resources\": [\n    {\n      \"resources\": [\n        \"secrets\"\n      ],\n      \"providers\": [\n        {\n          \"aescbc\": {\n            \"keys\": [\n              {\n                \"name\": \"aescbckey\",\n                \"secret\": \"xxxxxxxxxxxxxxxxxxx\"\n              }\n            ]\n          }\n        },\n        {\n          \"identity\": {}\n        }\n      ]\n    }\n  ]\n}",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Kubernetes Secrets may store sensitive information such as passwords, tokens, and keys. These values are stored in the etcd database used by Kubernetes unencrypted. To protect these Secrets at rest, these values must be encrypted.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-001162",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

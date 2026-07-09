@@ -1,0 +1,53 @@
+{
+  "id": "SV-228385r879651_rule",
+  "full_rule_id": "SV-228385r879651_rule",
+  "rule_id": "SV-228385",
+  "rule_revision": "879651",
+  "group_id": "V-228385",
+  "group_title": "SRG-APP-000247",
+  "title": "Exchange Message size restrictions must be controlled on Send connectors.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Email system availability depends in part on best practice strategies for setting tuning configurations. For message size restrictions, multiple places exist to set or override inbound or outbound message size. Failure to control the configuration strategy can result in loss of data or system availability. \n\nThis setting enables the administrator to control the maximum message size on a Send connector. Using connectors to control size limits may necessitate applying message size limitations in multiple places, with the potential of introducing conflicts and impediments in the mail flow. Changing this setting at the connector overrides the global one. Therefore, if operational needs require it, the connector value may be set lower than the global value with the rationale documented in the Email Domain Security Plan (EDSP).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Email Domain Security Plan (EDSP) or document that contains this information. \n\nDetermine the maximum message send size.\n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-SendConnector | Select Name, Identity, MaxMessageSize\n\nFor each Send connector, if the value of \"MaxMessageSize\" is not the same as the global value, this is a finding.\n\nor\n\nIf \"MaxMessageSize\" is set to a numeric value different from the maximum message send size value documented in the EDSP, this is a finding.",
+  "fix": "Update the EDSP to specify the \"MaxMessageSize\" value or verify that this information is documented by the organization.\n\nOpen the Exchange Management Shell and enter the following command:\n\nSet-SendConnector -Identity <'IdentityName'> -MaxMessageSize <MaxSendSize>\n\nNote: The <IdentityName> value must be in single quotes.\n\nor\n\nEnter the value as identified by the EDSP that has obtained a signoff with risk acceptance.\n\nRepeat the procedures for each Send connector.",
+  "ccis": [
+    "CCI-001095"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Email system availability depends in part on best practice strategies for setting tuning configurations. For message size restrictions, multiple places exist to set or override inbound or outbound message size. Failure to control the configuration strategy can result in loss of data or system availability. \n\nThis setting enables the administrator to control the maximum message size on a Send connector. Using connectors to control size limits may necessitate applying message size limitations in multiple places, with the potential of introducing conflicts and impediments in the mail flow. Changing this setting at the connector overrides the global one. Therefore, if operational needs require it, the connector value may be set lower than the global value with the rationale documented in the Email Domain Security Plan (EDSP).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX16-MB-000410",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5",
+      "name": "Microsoft Exchange 2016 Mailbox Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5"
+  ]
+}

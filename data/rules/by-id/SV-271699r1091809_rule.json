@@ -1,0 +1,55 @@
+{
+  "id": "SV-271699r1091809_rule",
+  "full_rule_id": "SV-271699r1091809_rule",
+  "rule_id": "SV-271699",
+  "rule_revision": "1091809",
+  "group_id": "V-271699",
+  "group_title": "SRG-OS-000355-GPOS-00143",
+  "title": "OL 9 must securely compare internal information system clocks at least every 24 hours.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.\n\nSynchronizing internal information system clocks provides uniformity of time stamps for information systems with multiple system clocks and systems connected over a network.\n\nDepending on the infrastructure being used the \"pool\" directive may not be supported.\n\nAuthoritative time sources include the United States Naval Observatory (USNO) time servers, a time server designated for the appropriate DOD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).\n\nSatisfies: SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144, SRG-OS-000359-GPOS-00146</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 securely compares internal information system clocks at least every 24 hours with an NTP server with the following command:\n\n$ grep maxpoll /etc/chrony.conf\nserver 0.us.pool.ntp.mil iburst maxpoll 16\n\nIf the \"maxpoll\" option is set to a number greater than 16 or the line is commented out, this is a finding.\n\nVerify the \"chrony.conf\" file is configured to an authoritative DOD time source by running the following command:\n\n$ grep -i server /etc/chrony.conf\nserver 0.us.pool.ntp.mil \n\nIf the parameter \"server\" is not set or is not set to an authoritative DOD time source, this is a finding.",
+  "fix": "Configure OL 9 to securely compare internal information system clocks at least every 24 hours with an NTP server by adding/modifying the following line in the /etc/chrony.conf file.\n\nserver [ntp.server.name] iburst maxpoll 16",
+  "ccis": [
+    "CCI-004923",
+    "CCI-004926",
+    "CCI-001890"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.\n\nSynchronizing internal information system clocks provides uniformity of time stamps for information systems with multiple system clocks and systems connected over a network.\n\nDepending on the infrastructure being used the \"pool\" directive may not be supported.\n\nAuthoritative time sources include the United States Naval Observatory (USNO) time servers, a time server designated for the appropriate DOD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).\n\nSatisfies: SRG-OS-000355-GPOS-00143, SRG-OS-000356-GPOS-00144, SRG-OS-000359-GPOS-00146",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002323",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

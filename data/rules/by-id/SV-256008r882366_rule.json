@@ -1,0 +1,55 @@
+{
+  "id": "SV-256008r882366_rule",
+  "full_rule_id": "SV-256008r882366_rule",
+  "rule_id": "SV-256008",
+  "rule_revision": "882366",
+  "group_id": "V-256008",
+  "group_title": "SRG-NET-000076-RTR-000001",
+  "title": "The Arista router must be configured to produce audit records containing information to establish where the events occurred.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without establishing where events occurred, it is impossible to establish, correlate, and investigate the events leading up to an outage or attack.\n\nIn order to compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know where events occurred, such as router components, modules, device identifiers, node names, and functionality.\n\nAssociating information about where the event occurred within the network provides a means of investigating an attack, recognizing resource utilization or capacity thresholds, or identifying an improperly configured router.\n\nSatisfies: SRG-NET-000076-RTR-000001, SRG-NET-000077-RTR-000001, SRG-NET-000078-RTR-000001</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The Arista router must log all packets that have been dropped via the access control list (ACL).\n\nLog output must contain an interface name as to where the packet was filtered.\n\nStep 1: To verify the deny ACL is created with the log statement for dropped packets, execute the command \"show ip access-list\".\n\nip access-list test1\n permit ip 10.30.30.0/24 host 10.20.10.1\n deny ip 10.30.10.0/24 host 10.20.10.1 log\n\nStep 2: To verify the ACL ingress is applied on the appropriate interface, execute the command \"show run interface YY\".\n\ninterface ethernet 3\n ip access-group test1 in\n\n######\n\nVariables in the syslog messages display the following values:\n---------------------------------------------------------------\nacl Name of ACL.\nintf Name of interface that received the packet.\nfilter Action triggered by ACL (denied or permitted).\nprotocol IP protocol specified by packet.\nvlan Number of VLAN receiving packet.\nether EtherType protocol specified by packet.\nsrc-ip and dst-ip source and destination IP addresses.\nsrc-prt and dst-prt source and destination ports.\nsrc-mac and dst-mac source and destination MAC addresses.\n\nIf the logged output does not contain an interface name as to where the packet was filtered, this is a finding.\n\nIf the Arista router fails to log all packets that have been dropped via the ACL, this is a finding.",
+  "fix": "Configure the router to record the interface in the log record for packets being dropped.\n\nStep 1: Configure the ACL.\n\nrouter(config)#ip access-list test1\nrouter(config-acl-test1)#15 permit ip 10.30.30.0/24 host 10.20.10.1\nrouter(config-acl-test1)#15 deny ip 10.30.10.0/24 host 10.20.10.1 log\n\nStep 2: Apply the ACL ingress on the appropriate interface.\n\nrouter(config)#interface ethernet 3\nrouter(config-if-Et3)#ip access-group test1 in",
+  "ccis": [
+    "CCI-000132",
+    "CCI-000133",
+    "CCI-000134"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without establishing where events occurred, it is impossible to establish, correlate, and investigate the events leading up to an outage or attack.\n\nIn order to compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know where events occurred, such as router components, modules, device identifiers, node names, and functionality.\n\nAssociating information about where the event occurred within the network provides a means of investigating an attack, recognizing resource utilization or capacity thresholds, or identifying an improperly configured router.\n\nSatisfies: SRG-NET-000076-RTR-000001, SRG-NET-000077-RTR-000001, SRG-NET-000078-RTR-000001",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

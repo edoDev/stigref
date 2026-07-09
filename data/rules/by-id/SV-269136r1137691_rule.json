@@ -1,0 +1,53 @@
+{
+  "id": "SV-269136r1137691_rule",
+  "full_rule_id": "SV-269136r1137691_rule",
+  "rule_id": "SV-269136",
+  "rule_revision": "1137691",
+  "group_id": "V-269136",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "AlmaLinux OS 9 must require authentication to access emergency mode.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>This requirement prevents attackers with physical access from easily bypassing security on the machine and gaining root access.\n\nSuch accesses are further prevented by configuring the bootloader password.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that AlmaLinux OS 9 requires authentication for emergency mode with the following command:\n\n$ grep -E 'ExecStart.*sulogin' /usr/lib/systemd/system/emergency.service \n\nExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency\n\nIf this line is not returned, or is commented out, this is a finding.\nIf the output is different, this is a finding.",
+  "fix": "Configure AlmaLinux OS 9 to require authentication for emergency mode.\n\nAdd or modify the following line in the \"/usr/lib/systemd/system/emergency.service\" file:\n\nExecStart=-/usr/lib/systemd/systemd-sulogin-shell emergency\n\n\"sudo systemctl edit emergency.service\" can also be used to create a \"/etc/systemd/system/emergency.service.d/override.conf\" file.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This requirement prevents attackers with physical access from easily bypassing security on the machine and gaining root access.\n\nSuch accesses are further prevented by configuring the bootloader password.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-006180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-218821r1067596_rule",
+  "full_rule_id": "SV-218821r1067596_rule",
+  "rule_id": "SV-218821",
+  "rule_revision": "1067596",
+  "group_id": "V-218821",
+  "group_title": "SRG-APP-000439-WSR-000156",
+  "title": "An IIS 10.0 web server must maintain the confidentiality of controlled information during transmission through the use of an approved Transport Layer Security (TLS) version.",
+  "severity": "high",
+  "description": "<VulnDiscussion>TLS encryption is a required security setting for a private web server. Encryption of private information is essential to ensuring data confidentiality. If private information is not encrypted, it can be intercepted and easily read by an unauthorized party. A private web server must use a FIPS 140-2-approved TLS version, and all non-FIPS-approved SSL versions must be disabled.\n\nNIST SP 800-52 specifies the preferred configurations for government systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Access the IIS 10.0 Web Server.\n\nNavigate to:\nHKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\TLS 1.2\\Server\n\nVerify a REG_DWORD value of \"0\" for \"DisabledByDefault\".\nVerify a REG_DWORD value of \"1\" for \"Enabled\".\n\nNavigate to:\nHKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\TLS 1.0\\Server\nHKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\TLS 1.1\\Server\nHKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\SSL 3.0\\Server\n\nVerify a REG_DWORD value of \"1\" for \"DisabledByDefault\".\nVerify a REG_DWORD value of \"0\" for \"Enabled\".\n\nIf any of the respective registry paths do not exist or are configured with the wrong value, this is a finding.\n\nSSL 3.0 is disabled by default in newer Operating Systems. If SSL 3.0 has a registry DWORD enabled with a value of 1, this is a finding. If this key is not present, this is not a finding.",
+  "fix": "Access the IIS 10.0 Web Server.\n\nNavigate to:\nHKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\TLS 1.2\\Server \n\nCreate a REG_DWORD named \"DisabledByDefault\" with a value of \"0\".\nCreate a REG_DWORD named \"Enabled\" with a  value of \"1\".\n\nNavigate to:\nHKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\TLS 1.0\\Server\nHKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\TLS 1.1\\Server\nHKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\SSL 3.0\\Server\n\nFor each protocol:\nCreate a REG_DWORD named \"DisabledByDefault\" with a value of \"1\".\nCreate a REG_DWORD named \"Enabled\" with a  value of \"0\".",
+  "ccis": [
+    "CCI-002418"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "TLS encryption is a required security setting for a private web server. Encryption of private information is essential to ensuring data confidentiality. If private information is not encrypted, it can be intercepted and easily read by an unauthorized party. A private web server must use a FIPS 140-2-approved TLS version, and all non-FIPS-approved SSL versions must be disabled.\n\nNIST SP 800-52 specifies the preferred configurations for government systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IIST-SV-000153",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-iis-10-0-server-security-technical-implementation-guide-v3r7-4a8aa715",
+      "name": "Microsoft IIS 10.0 Server Security Technical Implementation Guide",
+      "version": "3",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-iis-10-0-server-security-technical-implementation-guide-v3r7-4a8aa715"
+  ]
+}

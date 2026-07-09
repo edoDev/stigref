@@ -1,0 +1,53 @@
+{
+  "id": "SV-273578r1110887_rule",
+  "full_rule_id": "SV-273578r1110887_rule",
+  "rule_id": "SV-273578",
+  "rule_revision": "1110887",
+  "group_id": "V-273578",
+  "group_title": "SRG-NET-000018-RTR-000010",
+  "title": "The RUCKUS ICX BGP router must be configured to reject route advertisements from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Verifying the path a route has traversed will ensure the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview ICX router configuration for AS_PATH filter statements for BGP:\nip as-path access-list BGP_filter seq 5 permit ^yy$\nip as-path access-list BGP_filter seq 10 deny .*\n!\nrouter bgp\n local-as xx\n neighbor x.4.4.4 remote-as yy\n neighbor x.4.4.4 filter-list BGP_filter in\n!\n\nIf the ICX router is not configured to reject updates from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer, this is a finding.",
+  "fix": "Configure the router to reject updates from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.\n\n1. Configure the AS_PATH filter list.\nICX(config)#  ip as-path access-list BGP_filter seq 5 permit ^yy$\nICX(config)#  ip as-path access-list BGP_filter seq 10 deny .*\n\n2. Apply to BGP neighbor.\nICX(config)#  router bgp\nICX(config-bgp-router)#  neighbor x.x.x.x filter-list BGP_filter in",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Verifying the path a route has traversed will ensure the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

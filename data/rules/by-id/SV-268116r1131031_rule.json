@@ -1,0 +1,54 @@
+{
+  "id": "SV-268116r1131031_rule",
+  "full_rule_id": "SV-268116r1131031_rule",
+  "rule_id": "SV-268116",
+  "rule_revision": "1131031",
+  "group_id": "V-268116",
+  "group_title": "SRG-OS-000057-GPOS-00027",
+  "title": "NixOS journald directory and logs must be group-owned by systemd-journald to prevent unauthorized read access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the NixOS system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nThe structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000206-GPOS-00084</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the journald directories and logs are group-owned by \"systemd-journald\" by executing the following command:\n\n$ sudo find /var/log/journal -not -group systemd-journal\n\nIf any directories or files are returned, this is a finding.",
+  "fix": "The systemd-journald logs are by design stored with root:systemd-journald owner and group respectively.\n\nIf any files are found with different ownership, run the following command to correct them:\n\n$ sudo chown -R root:systemd-journald /var/log/journald",
+  "ccis": [
+    "CCI-000162",
+    "CCI-001314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the NixOS system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nThe structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000206-GPOS-00084",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000580",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

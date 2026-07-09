@@ -1,0 +1,53 @@
+{
+  "id": "SV-273615r1111064_rule",
+  "full_rule_id": "SV-273615r1111064_rule",
+  "rule_id": "SV-273615",
+  "rule_revision": "1111064",
+  "group_id": "V-273615",
+  "group_title": "SRG-NET-000205-RTR-000011",
+  "title": "The RUCKUS ICX out-of-band management (OOBM) gateway router must be configured to block any traffic destined to itself that is not sourced from the OOBM network or the Network Operations Center (NOC).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the gateway router is not a dedicated device for the OOBM network, several safeguards must be implemented for containment of management and production traffic boundaries. It is imperative that hosts from the managed network are not able to access the OOBM gateway router.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nVerify traffic destined to itself is only sourced by the OOBM or the NOC. In the example below, the OOBM backbone network is 10.11.1.0/24, the NOC address spaces is 10.12.1.0/24, and the OOBM LAN address space at remote site connecting to the managed network is 10.13.1.0/24.\n\n1. Note the inbound ACL applied to the OOBM interfaces.\ninterface ethernet 1/2/1\n port-name OOBM-to-NOC\n ip address 10.11.1.8 255.255.255.0\n ip access-group TRAFFIC_FROM_NOC in logging enable\n!\ninterface ethernet 1/2/2\n port-name OOBM_LAN_ACCESS_SWITCH\n ip address 10.13.1.1 255.255.255.0\n ip access-group TRAFFIC_TO_NOC in logging enable\n\n2. Review the inbound ACL bound to any OOB interface connecting to the OOBM backbone and verify traffic destined to itself is only from the OOBM or NOC address space.\nip access-list extended TRAFFIC_FROM_NOC\n sequence 10 permit ip 10.11.1.0 0.0.0.255 host 10.11.1.8\n sequence 20 permit ip 10.12.1.0 0.0.0.255 host 10.11.1.8\n sequence 30 permit ip 10.11.1.0 0.0.0.255 host 10.13.1.1\n sequence 40 permit ip 10.12.1.0 0.0.0.255 host 10.13.1.1\n sequence 50 deny ip any host 10.11.1.8 log\n sequence 60 deny ip any host 10.13.1.1 log\n sequence 70 permit ip 10.11.1.0 0.0.0.255 10.13.1.0 0.0.0.255\n sequence 80 permit ip 10.12.1.0 0.0.0.255 10.13.1.0 0.0.0.255\n sequence 90 deny ip any any log\n!\n\n3. Review the inbound ACL bound to any OOBM LAN interfaces and verify traffic destined to itself is from the OOBM LAN address space.\nip access-list extended TRAFFIC_TO_NOC\n sequence 10 permit ip 10.13.1.0 0.0.0.255 host 10.13.1.1\n sequence 20 permit ip 10.13.1.0 0.0.0.255 host 10.11.1.8\n sequence 30 deny ip any host 10.13.1.1 log\n sequence 40 deny ip any host 10.11.1.8 log\n sequence 50 permit ip 10.13.1.0 0.0.0.255 10.11.1.0 0.0.0.255\n sequence 60 permit ip 10.13.1.0 0.0.0.255 10.12.1.0 0.0.0.255\n sequence 70 deny ip any any log\n!\n\nIf the router does not block any traffic destined to itself that is not sourced from the OOBM network or the NOC, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure traffic from the managed network to not be able to access the OOBM gateway router using either receive path or interface ingress ACLs.\n\n1. Configure the ACL to only allow traffic to the route processor from the OOBM backbone and the NOC.\nICX(config)#ip access ext TRAFFIC_FROM_NOC\nICX(config-ext-ipacl-TRAFFIC_FROM_NOC)#permit ip 10.11.1.0/24 host 10.11.1.8\nICX(config-ext-ipacl-TRAFFIC_FROM_NOC)#permit ip 10.12.1.0/24 host 10.11.1.8\nICX(config-ext-ipacl-TRAFFIC_FROM_NOC)#permit ip 10.11.1.0/24 host 10.13.1.1\nICX(config-ext-ipacl-TRAFFIC_FROM_NOC)#permit ip 10.12.1.0/24 host 10.13.1.1\nICX(config-ext-ipacl-TRAFFIC_FROM_NOC)#deny ip any host 10.11.1.8 log\nICX(config-ext-ipacl-TRAFFIC_FROM_NOC)#deny ip any host 10.13.1.1 log\nICX(config-ext-ipacl-TRAFFIC_FROM_NOC)#permit ip 10.11.1.0/24 10.13.1.0/24\nICX(config-ext-ipacl-TRAFFIC_FROM_NOC)#permit ip 10.12.1.0/24 10.13.1.0/24\nICX(config-ext-ipacl-TRAFFIC_FROM_NOC)#deny ip any any log\n\n2. Configure the ACL to only allow traffic to the route processor from the OOBM LAN.\nICX(config)#ip access ext TRAFFIC_TO_NOC\nICX(config-ext-ipacl-TRAFFIC_TO_NOC)#permit ip 10.13.1.0/24 host 10.13.1.1\nICX(config-ext-ipacl-TRAFFIC_TO_NOC)#permit ip 10.13.1.0/24 host 10.11.1.8\nICX(config-ext-ipacl-TRAFFIC_TO_NOC)#deny ip any host 10.13.1.1 log\nICX(config-ext-ipacl-TRAFFIC_TO_NOC)#deny ip any host 10.11.1.8 log\nICX(config-ext-ipacl-TRAFFIC_TO_NOC)#permit ip 10.13.1.0/24 10.11.1.0/24\nICX(config-ext-ipacl-TRAFFIC_TO_NOC)#permit ip 10.13.1.0/24 10.12.1.0/24\nICX(config-ext-ipacl-TRAFFIC_TO_NOC)#deny ip any any log\n\n3. Apply the ACLs configured above to the appropriate OOBM interfaces as shown in the example below:\nICX(config)#interface ethernet 1/2/1\nICX(config-if-e10000-1/2/1)#port-name OOBM-to-NOC\nICX(config-if-e10000-1/2/1)#ip access-group TRAFFIC_FROM_NOC in logging enable\nICX(config-if-e10000-1/2/1)#interface ethernet 1/2/2\nICX(config-if-e10000-1/2/2)#port-name OOBM_LAN_ACCESS_SWITCH\nICX(config-if-e10000-1/2/2)#ip access-group TRAFFIC_TO_NOC in logging enable",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the gateway router is not a dedicated device for the OOBM network, several safeguards must be implemented for containment of management and production traffic boundaries. It is imperative that hosts from the managed network are not able to access the OOBM gateway router.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

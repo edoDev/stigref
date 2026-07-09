@@ -1,0 +1,53 @@
+{
+  "id": "SV-269882r1052031_rule",
+  "full_rule_id": "SV-269882r1052031_rule",
+  "rule_id": "SV-269882",
+  "rule_revision": "1052031",
+  "group_id": "V-269882",
+  "group_title": "SRG-NET-000230-RTR-000001",
+  "title": "The Dell OS10 Router must be configured to implement message authentication for all control plane protocols.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates.\n\nThis requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information. This includes BGP, RIP, OSPF, EIGRP, IS-IS, and LDP.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration.\n\nFor every protocol that affects the routing or forwarding tables (where information is exchanged between neighbors), verify that neighbor router authentication is enabled.\n\nVerify the routing protocols are configured to authenticate neighbors. \n\n!\ninterface vlan400\n ipv6 ospf 10 area 0.0.0.1\n ipv6 ospf authentication ipsec spi 4017 sha1 1234567890123456789012345678901234567890\n ...\n ip ospf 1 area 0.0.0.1\n ip ospf message-digest-key 1 md5 $$c95abfd48ae6bcffc281603e960d49860dab21b300c5ea1febf7b674320be879\n \nIf authentication is not enabled, this is a finding.",
+  "fix": "Configure authentication to be enabled for every protocol that affects the routing or forwarding tables.\n\nOS10(config)# interface vlan 400\nOS10(conf-if-vl-400)# ipv6 ospf 10 area 0.0.0.1\nOS10(conf-if-vl-400)# ipv6 ospf authentication ipsec spi 4018 sha1 1234567890123456789012345678901234567890\nOS10(conf-if-vl-400)# ip ospf 1 area 0.0.0.1\nOS10(conf-if-vl-400)# ip ospf message-digest-key 1 md5 $$9d5679ab0b6ff43439c05e8059fefcccf05a20062d9679720bdecd630843c545\nOS10(conf-if-vl-400)# exit",
+  "ccis": [
+    "CCI-001184"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates.\n\nThis requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information. This includes BGP, RIP, OSPF, EIGRP, IS-IS, and LDP.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000540",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

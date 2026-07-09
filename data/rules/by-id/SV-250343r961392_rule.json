@@ -1,0 +1,53 @@
+{
+  "id": "SV-250343r961392_rule",
+  "full_rule_id": "SV-250343r961392_rule",
+  "rule_id": "SV-250343",
+  "rule_revision": "961392",
+  "group_id": "V-250343",
+  "group_title": "SRG-APP-000357-AS-000038",
+  "title": "The WebSphere Liberty Server must allocate JVM log record storage capacity in accordance with organization-defined log record storage requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>JVM logs are logs used to store application and runtime related events, rather than audit related events. They are mainly used to diagnose application or runtime bugs. However, they are useful for providing more context when correlated with audit related events. \n\nBy default, Liberty automatically logs the console.log, messages.log, and trace.log but these default settings must be validated.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the ${server.config.dir}/bootstrap.properties file, verify console logging is not turned off. If the property com.ibm.ws.logging.console.log.level=OFF, this is a finding. \n\nReview the ${server.config.dir}/server.xml file and verify the logging traceSpecification setting is configured according to system capacity requirements. If the logging traceSpecification settings are not configured, this is a finding.\n\nEXAMPLE:\n<logging traceSpecification=\"*=info=enabled:my.package.*=all\" maxFileSize=\"40\" maxFiles=\"20\"/>",
+  "fix": "Edit the bootstrap.properties file and configure the  com.ibm.ws.logging.console.log.level=ON. \n\nEdit the ${server.config.dir}/server.xml file. Configure <logging traceSpecification> in accordance with local policy and system storage limits.\n\nEXAMPLE:\n<logging traceSpecification=\"*=info=enabled:my.package.*=all\" maxFileSize=\"40\" maxFiles=\"20\"/>, \n\nwhere maxFileSize is set to the maximum file size defined in local policy and maxFiles is set to the maximum number of historical files defined in local policy and in accordance with system storage limits.",
+  "ccis": [
+    "CCI-001849"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "JVM logs are logs used to store application and runtime related events, rather than audit related events. They are mainly used to diagnose application or runtime bugs. However, they are useful for providing more context when correlated with audit related events. \n\nBy default, Liberty automatically logs the console.log, messages.log, and trace.log but these default settings must be validated.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IBMW-LS-000830",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6",
+      "name": "IBM WebSphere Liberty Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6"
+  ]
+}

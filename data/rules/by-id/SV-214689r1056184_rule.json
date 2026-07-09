@@ -1,0 +1,53 @@
+{
+  "id": "SV-214689r1056184_rule",
+  "full_rule_id": "SV-214689r1056184_rule",
+  "rule_id": "SV-214689",
+  "rule_revision": "1056184",
+  "group_id": "V-214689",
+  "group_title": "SRG-NET-000213",
+  "title": "The Juniper SRX Services Gateway VPN must terminate all network connections associated with a communications session at the end of the session.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Idle TCP sessions can be susceptible to unauthorized access and hijacking attacks. IKE Dead Peer Detection (DPD) is a protocol that verifies the availability of IPsec peer devices by sending encrypted IKE Phase 1 notification payloads to peers.\n\nNote: For dynamic (remote access) VPN, the TCP keep-alive for remote access is implemented in the Juniper SRX Firewall STIG.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Navigate to the IKE configuration.\n\n[edit]\nshow security ike gateway <ike-peer-name>\n\nIf the DPD options are not configured, this is a finding.",
+  "fix": "For site-to-site VPN, configure an Internet Key Exchange (IKE) gateway that includes DPD parameters such as in the following example.\n\nset security ike gateway IKE-PEER ike-policy IKE-POLICY\nset security ike gateway IKE-PEER address <Peer IP Address>\nset security ike gateway IKE-PEER dead-peer-detection always-send\nset security ike gateway IKE-PEER dead-peer-detection interval 10\nset security ike gateway IKE-PEER dead-peer-detection threshold 2\nset security ike gateway IKE-PEER local-identity inet <IPv4 Address in Certificate>\nset security ike gateway IKE-PEER remote-identity inet <IPv4 Address in Remote\nCertificate>\nset security ike gateway IKE-PEER external-interface <interface name>\nset security ike gateway IKE-PEER version v2-only",
+  "ccis": [
+    "CCI-001133"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Idle TCP sessions can be susceptible to unauthorized access and hijacking attacks. IKE Dead Peer Detection (DPD) is a protocol that verifies the availability of IPsec peer devices by sending encrypted IKE Phase 1 notification payloads to peers.\n\nNote: For dynamic (remote access) VPN, the TCP keep-alive for remote access is implemented in the Juniper SRX Firewall STIG.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-VN-000022",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0",
+      "name": "Juniper SRX Services Gateway VPN Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0"
+  ]
+}

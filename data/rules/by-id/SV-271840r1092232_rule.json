@@ -1,0 +1,54 @@
+{
+  "id": "SV-271840r1092232_rule",
+  "full_rule_id": "SV-271840r1092232_rule",
+  "rule_id": "SV-271840",
+  "rule_revision": "1092232",
+  "group_id": "V-271840",
+  "group_title": "SRG-OS-000329-GPOS-00128",
+  "title": "OL 9 must automatically lock the root account until the root account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, also known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000329-GPOS-00128, SRG-OS-000021-GPOS-00005</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 is configured to lock the root account after three unsuccessful logon attempts with the command:\n\n$ grep even_deny_root /etc/security/faillock.conf\neven_deny_root\n\nIf the \"even_deny_root\" option is not set, is missing or commented out, this is a finding.",
+  "fix": "Configure OL 9 to lock out the \"root\" account after a number of incorrect login attempts using \"pam_faillock.so\", first enable the feature using the following command:\n \n$ sudo authselect enable-feature with-faillock  \n\nThen edit the \"/etc/security/faillock.conf\" file as follows:\n \n  add or uncomment the following line:\n even_deny_root",
+  "ccis": [
+    "CCI-002238",
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, also known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000329-GPOS-00128, SRG-OS-000021-GPOS-00005",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-003021",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-214271r961863_rule",
+  "full_rule_id": "SV-214271r961863_rule",
+  "rule_id": "SV-214271",
+  "rule_revision": "961863",
+  "group_id": "V-214271",
+  "group_title": "SRG-APP-000516-WSR-000079",
+  "title": "The account used to run the Apache web server must not have a valid login shell and password defined.",
+  "severity": "high",
+  "description": "<VulnDiscussion>During installation of the Apache web server software, accounts are created for the Apache web server to operate properly. The accounts installed can have either no password installed or a default password, which will be known and documented by the vendor and the user community.\n\nThe first things an attacker will try when presented with a logon screen are the default user identifiers with default passwords. Installed applications may also install accounts with no password, making the logon even easier. Once the Apache web server is installed, the passwords for any created accounts should be changed and documented. The new passwords must meet the requirements for all passwords, i.e., uppercase/lowercase characters, numbers, special characters, time until change, reuse policy, etc. \n\nService accounts or system accounts that have no logon capability do not need to have passwords set or changed.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Identify the account that is running the \"httpd\" process:\n# ps -ef | grep -i httpd | grep -v grep\n\napache   29613   996  0 Feb17 ?        00:00:00 /usr/sbin/httpd\napache   29614   996  0 Feb17 ?        00:00:00 /usr/sbin/httpd\n\nCheck to see if the account has a valid login shell:\n\n# cut -d: -f1,7 /etc/passwd | grep -i <service_account>\napache:/sbin/nologin\n\nIf the service account has a valid login shell, verify that no password is configured for the account:\n\n# cut -d: -f1,2 /etc/shadow | grep -i <service_account>\napache:!!\n\nIf the account has a valid login shell and a password defined, this is a finding.",
+  "fix": "Update the /etc/passwd file to assign the account used to run the \"httpd\" process an invalid login shell such as \"/sbin/nologin\".\n\nLock the account used to run the \"httpd\" process:\n\n# passwd -l <account>\nLocking password for user <account>\npasswd: Success",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "During installation of the Apache web server software, accounts are created for the Apache web server to operate properly. The accounts installed can have either no password installed or a default password, which will be known and documented by the vendor and the user community.\n\nThe first things an attacker will try when presented with a logon screen are the default user identifiers with default passwords. Installed applications may also install accounts with no password, making the logon even easier. Once the Apache web server is installed, the passwords for any created accounts should be changed and documented. The new passwords must meet the requirements for all passwords, i.e., uppercase/lowercase characters, numbers, special characters, time until change, reuse policy, etc. \n\nService accounts or system accounts that have no logon capability do not need to have passwords set or changed.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U1-000940",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738",
+      "name": "Apache Server 2.4 UNIX Server Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738"
+  ]
+}

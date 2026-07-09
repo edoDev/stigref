@@ -1,0 +1,53 @@
+{
+  "id": "SV-254243r991589_rule",
+  "full_rule_id": "SV-254243r991589_rule",
+  "rule_id": "SV-254243",
+  "rule_revision": "991589",
+  "group_id": "V-254243",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "Windows Server 2022 manually managed application account passwords must be changed at least annually or when a system administrator with knowledge of the password leaves the organization.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Setting application account passwords to expire may cause applications to stop functioning. However, not changing them on a regular basis exposes them to attack. If managed service accounts are used, this alleviates the need to manually change application account passwords.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if manually managed application/service accounts exist. If none exist, this is NA.\n\nIf passwords for manually managed application/service accounts are not changed at least annually or when an administrator with knowledge of the password leaves the organization, this is a finding.\n\nIdentify manually managed application/service accounts.\n\nTo determine the date a password was last changed:\n\nDomain controllers:\n\nOpen \"PowerShell\".\n\nEnter \"Get-AdUser -Identity [application account name] -Properties PasswordLastSet | FT Name, PasswordLastSet\", where [application account name] is the name of the manually managed application/service account.\n\nIf the \"PasswordLastSet\" date is more than one year old, this is a finding.\n\nMember servers and standalone or nondomain-joined systems:\n\nOpen \"Command Prompt\".\n\nEnter 'Net User [application account name] | Find /i \"Password Last Set\"', where [application account name] is the name of the manually managed application/service account.\n\nIf the \"Password Last Set\" date is more than one year old, this is a finding.",
+  "fix": "Change passwords for manually managed application/service accounts at least annually or when an administrator with knowledge of the password leaves the organization.\n\nIt is recommended that system-managed service accounts be used whenever possible.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Setting application account passwords to expire may cause applications to stop functioning. However, not changing them on a regular basis exposes them to attack. If managed service accounts are used, this alleviates the need to manually change application account passwords.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN22-00-000060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2022-security-technical-implementation-guide-v2r8-8691a8f2",
+      "name": "Microsoft Windows Server 2022 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2022-security-technical-implementation-guide-v2r8-8691a8f2"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-223668r1137691_rule",
+  "full_rule_id": "SV-223668r1137691_rule",
+  "rule_id": "SV-223668",
+  "rule_revision": "1137691",
+  "group_id": "V-223668",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS must protect dynamic lists in accordance with proper security requirements.",
+  "severity": "high",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000324-GPOS-00125</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Execute RACF command:\nRLIST FACILITY *\n\nIf the RACF resources and/or generic equivalent identified below are defined with AUDIT(ALL(READ)) and WRITE or greater access restricted to system programming personnel, this is not a finding.\n\nCSVAPF.\nCSVAPF.MVS.SETPROG.FORMAT.DYNAMIC\nCSVAPF.MVS.SETPROG.FORMAT.STATIC\nCSVDYLPA.\nCSVDYNEX.\nCSVDYNEX.LIST\nCSVDYNL.\nCSVDYNL.UPDATE.LNKLST\nCSVLLA.\n\nIf the RACF CSVDYNEX.LIST resource and/or generic equivalent is defined with AUDIT(FAILURE(READ)SUCCESS(UPDATE)) and WRITE or greater access restricted to system programming personnel, this is not a finding.\n\nIf the RACF CSVDYNEX.LIST resource and/or generic equivalent is defined with READ access restricted to auditors, this is not a finding.\n\nIf the products CICS and/or CONTROL-O are on the system, the RACF access to the CSVLLA resource and/or generic equivalent will be defined with AUDIT(ALL) and UPDATE access restricted to the CICS and CONTROL-O STC userids.\n\nIf any software product requires access to dynamic LPA updates on the system, the RACF access to the CSVDYLPA resource and/or generic equivalent will be defined with LOG and SERVICE(UPDATE) only after the product has been validated with the appropriate STIG or SRG for compliance AND receives documented and filed authorization that details the need and any accepted risks from the site ISSM or equivalent security authority.\n\nNote: In the above, UPDATE access can be substituted with ALTER or CONTROL. Review the permissions in the IBM documentation when specifying UPDATE.",
+  "fix": "Configure the Dynamic List resources to be defined to the RACF FACILITY resource class and protected. Only system programmers and a limited number of authorized users and approved authorized Started Tasks are able to issue these commands. All access is logged.\n\nThe required CSV-prefixed Facility Class resources are listed below. These resources or generic equivalents should be defined and permitted as required with only z/OS systems programmers and logging enabled. Minimum required list of CSV-prefixed resources:\n\nCSVAPF.**\nCSVAPF.MVS.SETPROG.FORMAT.DYNAMIC\nCSVAPF.MVS.SETPROG.FORMAT.STATIC\nCSVDYLPA.**\nCSVDYLPA.ADD.**\nCSVDYLPA.DELETE.**\nCSVDYNEX.**\nCSVDYNEX.LIST\nCSVDYNL.**\nCSVDYNL.UPDATE.LNKLST\nCSVLLA.**\n\nLimit authority to those resources to z/OS systems programmers. Restrict to the absolute minimum number of personnel with AUDIT(ALL(READ)) and UPDATE access.\n\nSample commands are shown here to accomplish this:\n\nRDEF FACILITY CSVAPF.** UACC(NONE) OWNER(syspsmpl) AUDIT(ALL(READ))\nRDEF FACILITY CSVAPF.MVS.SETPROG.FORMAT.DYNAMIC.** UACC(NONE) OWNER(syspsmpl) AUDIT(ALL(READ))\nRDEF FACILITY CSVAPF.MVS.SETPROG.FORMAT.STATIC.** UACC(NONE) OWNER(syspsmpl) AUDIT(ALL(READ))\n\nPERMIT CSVAPF.** CLASS(FACILITY) ID(syspsmpl) ACCESS(UPDATE)\nPERMIT CSVAPF.MVS.SETPROG.SETPROG.FORMAT.DYNAMIC.** CLASS(FACILITY) ID(syspsmpl) ACCESS(UPDATE)\nPERMIT CSVAPF.MVS.SETPROG.SETPROG.FORMAT.STATIC.** CLASS(FACILITY) ID(syspsmpl) ACCESS(UPDATE)\n\nThe CSVDYLPA.ADD resource will be permitted to products BMC Mainview, CA 1, and CA Common Services STC userids with AUDIT(ALL(READ)) and UPDATE access.\n\nThe CSVDYLPA.DELETE resource will be permitted to products CA 1 and CA Common Services STC userids with AUDIT(ALL(READ)) and UPDATE access.\n\nSample commands are shown here to accomplish one set of resources:\n\nRDEF FACILITY CSVDYLPA.** UACC(NONE) OWNER(syspsmpl) AUDIT(ALL(READ))\nRDEF FACILITY CSVDYLPA.ADD.** UACC(NONE) OWNER(syspsmpl) AUDIT(ALL(READ))\nRDEF FACILITY CSVDYLPA.DELETE.** UACC(NONE) OWNER(syspsmpl) AUDIT(ALL(READ))\n\nPERMIT CSVDYLPA.** CLASS(FACILITY) ID(syspsmpl) ACCESS(UPDATE)\nPERMIT CSVDYLPA.** CLASS(FACILITY) ID(BMC Mainview STC userid) ACCESS(UPDATE)\nPERMIT CSVDYLPA.** CLASS(FACILITY) ID(CA 1 STC userid) ACCESS(UPDATE)\nPERMIT CSVDYLPA.** CLASS(FACILITY) ID(CCS STC userid) ACCESS(UPDATE)\nPERMIT CSVDYLPA.ADD.** CLASS(FACILITY) ID(syspsmpl) ACCESS(UPDATE)\nPERMIT CSVDYLPA.ADD.** CLASS(FACILITY) ID(BMC Mainview STC userid) ACCESS(UPDATE)\nPERMIT CSVDYLPA.ADD.** CLASS(FACILITY) ID(CA 1 STC userid) ACCESS(UPDATE)\nPERMIT CSVDYLPA.ADD.** CLASS(FACILITY) ID(CCS STC userid) ACCESS(UPDATE)\nPERMIT CSVDYLPA.DELETE.** CLASS(FACILITY) ID(syspsmpl) ACCESS(UPDATE)\nPERMIT CSVDYLPA.DELETE.** CLASS(FACILITY) ID(CA 1 STC userid) ACCESS(UPDATE)\nPERMIT CSVDYLPA.DELETE.** CLASS(FACILITY) ID(CCS STC userid) ACCESS(UPDATE)\n\nThe CSVDYNEX.LIST resource and/or generic equivalent will be defined with AUDIT(FAILURE(READ)SUCCESS(UPDATE)) and UPDATE access restricted to system programming personnel.\n\nThe CSVDYNEX.LIST resource and/or generic equivalent will be defined with READ access restricted to auditors.\n\nSample commands are shown here to accomplish this:\n\nRDEF FACILITY CSVDYNEX.** UACC(NONE) OWNER(syspsmpl) -\nAUDIT(ALL(READ))\nRDEF FACILITY CSVDYNEX.LIST.** UACC(NONE) OWNER(syspsmpl) -\nAUDIT(FAILURE(READ)SUCCESS(UPDATE))\n\nPERMIT CSVDYNEX.** CLASS(FACILITY) ID(syspsmpl) ACCESS(UPDATE)\nPERMIT CSVDYNEX.LIST.** CLASS(FACILITY) ID(syspsmpl) ACCESS(UPDATE)\nPERMIT CSVDYNEX.LIST.** CLASS(FACILITY) ID(smplsmpl) ACCESS(READ)\n\nThe CSVLLA resource will be permitted to CICS and CONTROL-O STC userids with AUDIT(ALL(READ)) and UPDATE access.\n\nSample commands are shown here to accomplish one set of resources:\n\nRDEF FACILITY CSVLLA.** UACC(NONE) OWNER(syspsmpl) AUDIT(ALL(READ))\n\nPERMIT CSVLLA.** CLASS(FACILITY) ID(syspsmpl) ACCESS(UPDATE)\nPERMIT CSVLLA.** CLASS(FACILITY) ID(CICS STC userids) ACCESS(UPDATE)\nPERMIT CSVLLA.** CLASS(FACILITY) ID(CONTROL-O STC userid) ACCESS(UPDATE)",
+  "ccis": [
+    "CCI-000213",
+    "CCI-002235"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000324-GPOS-00125",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

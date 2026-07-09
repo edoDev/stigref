@@ -1,0 +1,53 @@
+{
+  "id": "SV-254009r844060_rule",
+  "full_rule_id": "SV-254009r844060_rule",
+  "rule_id": "SV-254009",
+  "rule_revision": "844060",
+  "group_id": "V-254009",
+  "group_title": "SRG-NET-000202-RTR-000001",
+  "title": "The Juniper perimeter router must be configured to deny network traffic by default and allow network traffic by exception.",
+  "severity": "high",
+  "description": "<VulnDiscussion>A deny-all, permit-by-exception network communications traffic policy ensures that only connections that are essential and approved are allowed.\n\nThis requirement applies to both inbound and outbound network communications traffic. All inbound and outbound traffic must be denied by default. Firewalls and perimeter routers should only allow traffic through that is explicitly permitted. The initial defense for the internal network is to block any traffic at the perimeter that is attempting to make a connection to a host residing on the internal network. In addition, allowing unknown or undesirable outbound traffic by the firewall or router will establish a state that will permit the return of this undesirable traffic inbound.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to verify that the firewall filter is configured to allow specific ports and protocols and deny all other traffic. Associating any firewall filter to an interface will create a deny-all, permit-by-exception posture because each filter includes an implicit \"deny all\" final term. Verify firewall filters applied inbound on external interfaces are configured with terms permitting specific traffic.\n\nFor example:\n[edit firewall]\nfamily inet {\n    filter permitted_inbound_traffic_ipv4 {\n        term 1 {\n            from {\n                destination-prefix-list {\n                    INSIDE_ADDRESSES_IPv4;\n                }\n                protocol tcp;\n                destination-port [ http https ];\n            }\n            then accept;\n        }\n        term 2 {\n            from {\n                destination-prefix-list {\n                    INSIDE_ADDRESSES_IPv4;\n                }\n                protocol udp;\n                destination-port [ domain radius ];\n            }\n            then accept;\n        }\n    }\n}\nfamily inet6 {\n    filter permitted_inbound_traffic_ipv6 {\n        term 1 {\n            from {\n                destination-prefix-list {\n                    INSIDE_ADDRESSES_IPv6;\n                }\n                next-header tcp;\n                destination-port [ http https ];\n            }\n            then accept;\n        }\n        term 2 {\n            from {\n                destination-prefix-list {\n                    INSIDE_ADDRESSES_IPv6;\n                }\n                next-header udp;\n                destination-port [ domain radius ];\n            }\n            then accept;\n        }\n    }\n}\n\nNote: Although the example filter is sufficient to meet this requirement, an explicit \"deny-all\" term is required for logging. For example, add the following final term to both filters (IPv4 and IPv6) to enable logging of discarded packets:\n[edit firewall family (inet|inet6) filter <name>]\nterm default {\n    then {\n        log;\n        syslog;\n        discard;\n    }\n}\n\nThe filter must be configured inbound on all external interfaces.\n[edit interfaces]\n<external interface> {\n    unit <number> {\n        family inet {\n            filter input permitted_inbound_traffic_ipv4;\n            address <IPv4 address/mask>;\n        }\n        family inet6 {\n            filter input permitted_inbound_traffic_ipv6;\n            address <IPv6 address/prefix>;\n        }\n}\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf the filter is not configured to allow specific ports and protocols and deny all other traffic, this is a finding.\n\nIf the filter is not configured inbound on all external interfaces, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the perimeter router to deny network traffic by default and allow network traffic by exception. For example:\n\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 1 from destination-prefix-list INSIDE_ADDRESSES\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 1 from protocol tcp\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 1 from destination-port http\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 1 from destination-port https\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 1 then accept\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 2 from destination-prefix-list INSIDE_ADDRESSES\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 2 from protocol udp\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 2 from destination-port domain\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 2 from destination-port radius\nset firewall family inet filter permitted_inbound_traffic_ipv4 term 2 then accept\n\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 1 from destination-prefix-list INSIDE_ADDRESSES\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 1 from next-header tcp\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 1 from destination-port http\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 1 from destination-port https\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 1 then accept\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 2 from destination-prefix-list INSIDE_ADDRESSES\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 2 from next-header udp\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 2 from destination-port domain\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 2 from destination-port radius\nset firewall family inet6 filter permitted_inbound_traffic_ipv6 term 2 then accept\n\nNote: To enable logging, add the following as the final term to each filter:\nset firewall family [inet|inet6] filter <name> term default then log\nset firewall family [inet|inet6] filter <name> term default then syslog\nset firewall family [inet|inet6] filter <name> term default then discard\n\nset interfaces <external interface> unit 0 family inet filter input permitted_inbound_traffic_ipv4\nset interfaces <external interface> unit 0 family inet address <IPv4 address / mask>\nset interfaces <external interface> unit 0 family inet6 filter input permitted_inbound_traffic_ipv6\nset interfaces <external interface> unit 0 family inet6 address <IPv6 address / prefix>",
+  "ccis": [
+    "CCI-001109"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A deny-all, permit-by-exception network communications traffic policy ensures that only connections that are essential and approved are allowed.\n\nThis requirement applies to both inbound and outbound network communications traffic. All inbound and outbound traffic must be denied by default. Firewalls and perimeter routers should only allow traffic through that is explicitly permitted. The initial defense for the internal network is to block any traffic at the perimeter that is attempting to make a connection to a host residing on the internal network. In addition, allowing unknown or undesirable outbound traffic by the firewall or router will establish a state that will permit the return of this undesirable traffic inbound.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

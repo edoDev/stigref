@@ -1,0 +1,53 @@
+{
+  "id": "SV-256908r961206_rule",
+  "full_rule_id": "SV-256908r961206_rule",
+  "rule_id": "SV-256908",
+  "rule_revision": "961206",
+  "group_id": "V-256908",
+  "group_title": "SRG-APP-000290-AS-000174",
+  "title": "Automation Controller must use cryptographic mechanisms to protect the integrity of log tools.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting the integrity of the tools used for logging purposes is a critical step in ensuring the integrity of log data. Log data includes all information (e.g., log records, log settings, and log reports) needed to successfully log information system activity.\n\nIt is not uncommon for attackers to replace the log tools or inject code into the existing tools for the purpose of providing the capability to hide or erase system activity from the logs.\n\nTo address this risk, log tools must be cryptographically signed in order to provide the capability to identify when the log tools have been modified, manipulated, or replaced. An example is a checksum hash of the file or files.\n\nAutomation Controller server log tools must use cryptographic mechanisms to protect the integrity of the tools or allow cryptographic protection mechanisms to be applied to their tools.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As an administrator, log in to each Automation Controller host.\n\nVerify the correct Red Hat RPM signing key is available on each host by listing the keys using the following command:\n\nrpm -qa gpg-pubkey*\n\nManually inspect against publicly listed keys on https://www.redhat.com. If the keys do not match, this is a finding.\n\nImport the key using the following command:\n\nrpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release\n\nVerify the signatures of installed RPMs necessary for Automation Controller:\n\nFor RPM in $(rpm -qa); do rpm -K --nosignature ${RPM} | grep \"NOT OK\" && return 1; done ; echo \"FAILED\"\n\nIf this outputs \"FAILED\", this is a finding.",
+  "fix": "The administrator must reinstall all Automation Controller hosts and Automation Controller.",
+  "ccis": [
+    "CCI-001496"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting the integrity of the tools used for logging purposes is a critical step in ensuring the integrity of log data. Log data includes all information (e.g., log records, log settings, and log reports) needed to successfully log information system activity.\n\nIt is not uncommon for attackers to replace the log tools or inject code into the existing tools for the purpose of providing the capability to hide or erase system activity from the logs.\n\nTo address this risk, log tools must be cryptographically signed in order to provide the capability to identify when the log tools have been modified, manipulated, or replaced. An example is a checksum hash of the file or files.\n\nAutomation Controller server log tools must use cryptographic mechanisms to protect the integrity of the tools or allow cryptographic protection mechanisms to be applied to their tools.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APAS-AT-000078",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-application-server-security-technical-impl-v2r4-90bc750f",
+      "name": "Red Hat Ansible Automation Controller Application Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-application-server-security-technical-impl-v2r4-90bc750f"
+  ]
+}

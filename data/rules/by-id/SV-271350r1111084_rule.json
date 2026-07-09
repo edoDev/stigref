@@ -1,0 +1,53 @@
+{
+  "id": "SV-271350r1111084_rule",
+  "full_rule_id": "SV-271350r1111084_rule",
+  "rule_id": "SV-271350",
+  "rule_revision": "1111084",
+  "group_id": "V-271350",
+  "group_title": "SRG-APP-000380-DB-000360",
+  "title": "SQL Server must enforce access restrictions associated with changes to the configuration of the instance.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failure to provide logical access restrictions associated with changes to configuration may have significant effects on the overall security of the system. \n \nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system can potentially have significant effects on the overall security of the system. \n \nAccordingly, only qualified and authorized individuals should be allowed to obtain access to system components for the purposes of initiating changes, including upgrades and modifications.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Obtain a list of logins who have privileged permissions and role memberships in SQL. \n \nExecute the following to obtain a list of logins and roles and their respective permissions assignment: \nSELECT p.name AS Principal, \np.type_desc AS Type, \nsp.permission_name AS Permission,  \nsp.state_desc AS State \nFROM sys.server_principals p \nINNER JOIN sys.server_permissions sp ON p.principal_id = sp.grantee_principal_id \nWHERE sp.permission_name = 'CONTROL SERVER' \nOR sp.state = 'W' \n \nExecute the following to obtain a list of logins and their role memberships: \nSELECT m.name AS Member, \nm.type_desc AS Type, \nr.name AS Role \nFROM sys.server_principals m \nINNER JOIN sys.server_role_members rm ON m.principal_id = rm.member_principal_id \nINNER JOIN sys.server_principals r ON rm.role_principal_id = r.principal_id \nWHERE r.name IN ('sysadmin','securityadmin','serveradmin') \n \nCheck the server documentation to verify the logins and roles returned are authorized. If the logins and/or roles are not documented and authorized, this is a finding.",
+  "fix": "Revoke unauthorized permissions from principals. \n \nhttps://learn.microsoft.com/en-us/sql/t-sql/statements/revoke-server-permissions-transact-sql?\n \nRemove unauthorized logins from roles. \n \nALTER SERVER ROLE DROP MEMBER login; \n \nhttps://learn.microsoft.com/en-us/sql/t-sql/statements/alter-server-role-transact-sql?",
+  "ccis": [
+    "CCI-001813"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to provide logical access restrictions associated with changes to configuration may have significant effects on the overall security of the system. \n \nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system can potentially have significant effects on the overall security of the system. \n \nAccordingly, only qualified and authorized individuals should be allowed to obtain access to system components for the purposes of initiating changes, including upgrades and modifications.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLI-22-011400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b",
+      "name": "Microsoft SQL Server 2022 Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b"
+  ]
+}

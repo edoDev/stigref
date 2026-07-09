@@ -1,0 +1,53 @@
+{
+  "id": "SV-283440r1192648_rule",
+  "full_rule_id": "SV-283440r1192648_rule",
+  "rule_id": "SV-283440",
+  "rule_revision": "1192648",
+  "group_id": "V-283440",
+  "group_title": "SRG-OS-000423-GPOS-00187",
+  "title": "Amazon Linux 2023 must implement DOD-approved encryption in the bind package.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.\n\nAmazon Linux 2023 incorporates system-wide crypto policies by default. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/ directory.\n\nSatisfies: SRG-OS-000423-GPOS-00187, SRG-OS-000426-GPOS-00190</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that Amazon Linux 2023 configures BIND to use the system crypto policy with the following command:\n\nNote: If the \"bind\" package is not installed, this requirement is Not Applicable.\n\n$ sudo grep include /etc/named.conf \n\ninclude \"/etc/crypto-policies/back-ends/bind.config\";' \n\nIf BIND is installed and the BIND config file doesn't contain the  include \"/etc/crypto-policies/back-ends/bind.config\" directive, or the line is commented out, this is a finding.",
+  "fix": "Configure Amazon Linux 2023 so that BIND uses the system crypto policy.\n\nAdd the following line to the \"options\" section in \"/etc/named.conf\":\n\ninclude \"/etc/crypto-policies/back-ends/bind.config\";",
+  "ccis": [
+    "CCI-002418"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.\n\nAmazon Linux 2023 incorporates system-wide crypto policies by default. The employed algorithms can be viewed in the /etc/crypto-policies/back-ends/ directory.\n\nSatisfies: SRG-OS-000423-GPOS-00187, SRG-OS-000426-GPOS-00190",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-001286",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

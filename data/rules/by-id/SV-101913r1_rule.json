@@ -1,0 +1,53 @@
+{
+  "id": "SV-101913r1_rule",
+  "full_rule_id": "SV-101913r1_rule",
+  "rule_id": "SV-101913",
+  "rule_revision": "1",
+  "group_id": "V-91811",
+  "group_title": "PP-MDM-311054",
+  "title": "The MobileIron Core v10 server must be configured to transfer MobileIron Core v10 server logs to another server for storage, analysis, and reporting. Note: MobileIron Core v10 server logs include logs of MDM events and logs transferred to the MobileIron Core v10 server by MDM agents of managed devices.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Audit logs enable monitoring of security-relevant events and subsequent forensics when breaches occur. Since the MobileIron Core v10 server has limited capability to store mobile device log files and perform analysis and reporting of mobile device log files, the MobileIron Core v10 server must have the capability to transfer log files to an audit log management server.\n\nSFR ID: FMT_SMF.1.1(2) h, FAU_STG_EXT.1.1(1)</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that Splunk is configured for automated log export.\n\nStep 1: Verify that the \"Splunk Forwarder\" is \"Enabled\".\n1. Log onto System Manager.\n2. Go to Settings >> Services.\n3. Verify that the \"Enable\" toggle is \"ON\" and \"Running\" is displayed.\n\nIf \"Enable\" toggle is not \"ON\" or \"Running\" is not displayed, this is a finding.\n\nStep 2: Verify that \"Splunk Indexer\" is configured.\n1. Log onto System Manager.\n2. Go to Settings >> Data Export >> Splunk Indexer.\n3. Verify that there is an entry and the Status is \"Connected\".\n\nIf there is no entry for \"Splunk Indexer\" or the Status is \"Not Connected\", this is a finding.\n\nStep 3: Verify \"Audit Log\" is enabled in the Splunk \"Data to Index\".\n1. Log onto System Manager.\n2. Go to Settings >> Data Export >> Splunk Data to open the \"Data to Index\" window.\n3. Verify \"Audit Log\" is included in the \"Data to Index\".\n\nIf \"Audit Log\" is not included in the \"Data to Index\", this is a finding.",
+  "fix": "Complete the following activities to configure the transfer of MobileIron Core v10 server logs.\n\nConfigure Splunk for automated log export.\n\nStep 1: Enable Core to turn on the \"Splunk Forwarder\" so it can push data to the \"Splunk Indexer\".\nTo enable the \"Splunk Forwarder\":\n1. Log onto System Manager.\n2. Go to Settings >> Services.\n3. Select \"Enable\" next to \"Splunk Forwarder\".\n4. Click \"Apply\".\n5. Click \"OK\" to save the changes.\n\nStep 2: Adding a \"Splunk Indexer\" to configure which external \"Splunk Indexer\" will receive and manipulate the data from the \"Splunk Forwarder\".\nTo add a \"Splunk Indexer\":\n1. Log onto System Manager.\n2. Go to Settings >> Data Export >> Splunk Indexer.\n3. Click \"Add\" to open the \"Add Splunk Indexer\" window.\n4. Modify the fields, as necessary, in the \"Add Splunk Indexer\" window.\nThe following table summarizes fields and descriptions in the Add Splunk Indexer window:\nFields, Description, Splunk Indexer, add the IP address of your Splunk Enterprise Server, Port, add port of your Splunk Enterprise Server, and enable \"SSL\"; click this checkbox to enable \"SSL\".\n5. Click \"Apply\".\n6. Click \"OK\" to save the changes.\n\nStep 3: Configuring Splunk Data to configure which data \"Splunk Forwarder\" sends to the \"Splunk Indexer\".\nTo configure Splunk Data:\n1. Log onto System Manager.\n2. Go to Settings >> Data Export >> Splunk Data to open the \"Data to Index\" window.\n3. Modify the fields, as necessary.\nClick \"Show/Hide\" Advanced Options to further customize which data to send to Splunk; check \"Audit Log\" at a minimum.\n4. Click Apply.\n5. Click \"OK\".\n6. Restart the \"Splunk Forwarder\" by disabling it, then enabling it again.\na. Go to Settings >> Services.\nb. Select \"Disable\" next to \"Splunk Forwarder\".\nc. Click \"Apply\".\nd. Click \"OK\".\ne. Select \"Enable\" next to \"Splunk Forwarder\".\n7. Click \"Apply\".\n8. Click \"OK\" to save the changes.",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Audit logs enable monitoring of security-relevant events and subsequent forensics when breaches occur. Since the MobileIron Core v10 server has limited capability to store mobile device log files and perform analysis and reporting of mobile device log files, the MobileIron Core v10 server must have the capability to transfer log files to an audit log management server.\n\nSFR ID: FMT_SMF.1.1(2) h, FAU_STG_EXT.1.1(1)",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MICR-10-000510",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mobileiron-core-v10-x-mdm-security-technical-implementation-guide-v1r1-7ccbaaa6",
+      "name": "MobileIron Core v10.x MDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mobileiron-core-v10-x-mdm-security-technical-implementation-guide-v1r1-7ccbaaa6"
+  ]
+}

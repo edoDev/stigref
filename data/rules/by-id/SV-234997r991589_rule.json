@@ -1,0 +1,53 @@
+{
+  "id": "SV-234997r991589_rule",
+  "full_rule_id": "SV-234997r991589_rule",
+  "rule_id": "SV-234997",
+  "rule_revision": "991589",
+  "group_id": "V-234997",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "All SUSE operating system local initialization files must not execute world-writable programs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If user start-up files execute world-writable programs, especially in unprotected directories, they could be maliciously modified to destroy user files or otherwise compromise the system at the user level. If the system is compromised at the user level, it is easier to elevate privileges to eventually compromise the system at the root and network level.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SUSE operating system local initialization files do not execute world-writable programs.\n\nVerify that SUSE operating system local initialization files do not\nexecute world-writable programs.\n\nCheck the system for world-writable files with the following command:\n\n> sudo find / -xdev -perm -002 -type f -exec ls -ld {} \\;\n\nFor all files listed, check for their presence in the local\ninitialization files with the following command:\n\nNote: The example will be for a system that is configured to create\nusers' home directories in the \"/home\" directory.\n\n> sudo find /home/* -maxdepth 1 -type f -name \\.\\* -exec grep -H <file> {} \\;\n\nIf any local initialization files are found to reference world-writable\nfiles, this is a finding.",
+  "fix": "Remove the references to these files in the local initialization scripts or remove the world-writable permission of files referenced by SUSE operating system local initialization scripts with the following command:\n\n> sudo chmod 0755 <file>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If user start-up files execute world-writable programs, especially in unprotected directories, they could be maliciously modified to destroy user files or otherwise compromise the system at the user level. If the system is compromised at the user level, it is easier to elevate privileges to eventually compromise the system at the root and network level.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-040130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-235168r1018614_rule",
+  "full_rule_id": "SV-235168r1018614_rule",
+  "rule_id": "SV-235168",
+  "rule_revision": "1018614",
+  "group_id": "V-235168",
+  "group_title": "SRG-APP-000378-DB-000365",
+  "title": "The MySQL Database Server 8.0 must prohibit user installation of logic modules (stored procedures, functions, triggers, views, etc.) without explicit privileged status.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Allowing regular users to install software, without explicit privileges, creates the risk that untested or potentially malicious software will be installed on the system. Explicit privileges (escalated or administrative privileges) provide the regular user with explicit capabilities and control that exceed the rights of a regular user.\n\nDatabase Management System (DBMS) functionality and the nature and requirements of databases will vary; so while users are not permitted to install unapproved software, there may be instances where the organization allows the user to install approved software packages such as from an approved software repository. The requirements for production servers will be more restrictive than those used for development and research.\n\nThe DBMS must enforce software installation by users based upon what types of software installations are permitted (e.g., updates and security patches to existing software) and what types of installations are prohibited (e.g., software whose pedigree with regard to being potentially malicious is unknown or suspect) by the organization. \n\nIn the case of a DBMS, this requirement covers stored procedures, functions, triggers, views, etc.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "MySQL requires users (other than root) to be explicitly granted the CREATE ROUTINE privilege in order to install logical modules.\n\nTo obtain a listing of users and roles who are authorized to create, alter, or replace stored procedures and functions from the server documentation.\n\nExecute the following query for server level permissions:\n\nSELECT `user`.`Host`,\n    `user`.`User`\nFROM `mysql`.`user`\n where     `Create_routine_priv`='Y' OR\n    `Alter_routine_priv` = 'Y';\n\nIf any users or role permissions returned are not authorized to modify the specified object or type, this is a finding. \n\nIf any user or role membership is not authorized, this is a finding.\n\nExecute the following query for database schema level permission (db is the schema name):\nSELECT `db`.`Host`,\n    `db`.`User`,\n    `db`.`Db`\nFROM `mysql`.`db` where     `db`.`Create_routine_priv`='Y' OR\n    `db`.`Alter_routine_priv` = 'Y';\n\nIf any users or role permissions returned are not authorized to modify the specified object or type, this is a finding. \n\nIf any user or role membership is not authorized, this is a finding.",
+  "fix": "MySQL requires users (other than root) to be explicitly granted the CREATE ROUTINE privilege in order to install logical modules. \n\nCheck user grants using the SHOW GRANTS and look for appropriate assignment of CREATE ROUTINE. \n\nFor example - REVOKE CREATE ROUTINE ON mydb.* TO 'someuser'@'somehost';",
+  "ccis": [
+    "CCI-003980",
+    "CCI-001812"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Allowing regular users to install software, without explicit privileges, creates the risk that untested or potentially malicious software will be installed on the system. Explicit privileges (escalated or administrative privileges) provide the regular user with explicit capabilities and control that exceed the rights of a regular user.\n\nDatabase Management System (DBMS) functionality and the nature and requirements of databases will vary; so while users are not permitted to install unapproved software, there may be instances where the organization allows the user to install approved software packages such as from an approved software repository. The requirements for production servers will be more restrictive than those used for development and research.\n\nThe DBMS must enforce software installation by users based upon what types of software installations are permitted (e.g., updates and security patches to existing software) and what types of installations are prohibited (e.g., software whose pedigree with regard to being potentially malicious is unknown or suspect) by the organization. \n\nIn the case of a DBMS, this requirement covers stored procedures, functions, triggers, views, etc.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MYS8-00-009100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-mysql-8-0-security-technical-implementation-guide-v2r2-2e81afb5",
+      "name": "Oracle MySQL 8.0 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "oracle-mysql-8-0-security-technical-implementation-guide-v2r2-2e81afb5"
+  ]
+}

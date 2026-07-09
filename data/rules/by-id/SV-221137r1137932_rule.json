@@ -1,0 +1,53 @@
+{
+  "id": "SV-221137r1137932_rule",
+  "full_rule_id": "SV-221137r1137932_rule",
+  "rule_id": "SV-221137",
+  "rule_revision": "1137932",
+  "group_id": "V-221137",
+  "group_title": "SRG-NET-000019-RTR-000014",
+  "title": "The Cisco multicast Rendezvous Point (RP) switch must be configured to filter Protocol Independent Multicast (PIM) Join messages received from the Designated Cisco switch (DR) for any undesirable multicast groups.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the RP switch is configured to filter PIM join messages for any undesirable multicast groups. In the example below, groups from 239.8.0.0/16 are not allowed.\n\nroute-map PIM_JOIN_FILTER deny 10\n match ip multicast group 239.0.0.0/8 \nroute-map PIM_JOIN_FILTER permit 20\n match ip multicast group 224.0.0.0/4 \n…\n…\n…\ninterface Ethernet2/1\n no switchport\n ip address 10.1.12.1/24\n ip pim sparse-mode\n ip pim jp-policy PIM_JOIN_FILTER in\n\nIf the RP is not configured to filter join messages received from the DR for any undesirable multicast groups, this is a finding.",
+  "fix": "Configure the RP to filter PIM join messages for any undesirable multicast groups as shown in the example below:\n\nStep 1: Configure a PIM Join filter as shown in the example below:\n\nSW1(config)# route-map PIM_JOIN_FILTER deny \nSW1(config-route-map)# match ip multicast group 239.8.0.0/8\nSW1(config-route-map)# route-map PIM_JOIN_FILTER permit 20\nSW1(config-route-map)# match ip multicast group 224.0.0.0/4\nSW1(config-route-map)# exit\n\nStep 2: Apply the PIM Join filter to the appropriate interfaces.\n\nSW1(config)# int e2/1\nSW1(config-if)# ip pim jp-policy PIM_JOIN_FILTER in\nSW1(config-if)# end",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000840",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651",
+      "name": "Cisco NX OS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651"
+  ]
+}

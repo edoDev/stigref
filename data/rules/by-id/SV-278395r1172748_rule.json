@@ -1,0 +1,53 @@
+{
+  "id": "SV-278395r1172748_rule",
+  "full_rule_id": "SV-278395r1172748_rule",
+  "rule_id": "SV-278395",
+  "rule_revision": "1172748",
+  "group_id": "V-278395",
+  "group_title": "SRG-APP-000266",
+  "title": "NGINX must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any application providing too much information in error messages risks compromising the data and security of the application and system. The structure and content of error messages must be carefully considered by the organization and development team. \n\nOrganizations carefully consider the structure/content of error messages. The extent to which information systems are able to identify and handle error conditions is guided by organizational policy and operational requirements. Information that could be exploited by adversaries includes, for example, erroneous logon attempts with passwords entered by mistake such as the username, mission/business information that can be derived from (if not stated explicitly by) information recorded, and personal information, such as account numbers, social security numbers, and credit card numbers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine the path to NGINX config file(s):\n\n# nginx -qT | grep \"# configuration\"\n# configuration file /etc/nginx/nginx.conf:\n\nNote: The default NGINX configuration is \"/etc/nginx/nginx.conf\", though various files may also be included.\n\nVerify that the \"server_tokens\" directive is present, is not set to \"on\", and is not set to a custom string that identifies version information.\n\nnginx -c <path to nginx config> -qT | grep server_tokens\n    server_tokens off;\n\nIf the \"server_tokens\" directive is missing, this is a finding.\n\nIf the \"server_tokens\" directive is set to \"on\", this is a finding.\n\nIf the \"server_tokens\" directive includes the version number, this is a finding.",
+  "fix": "Determine the path to NGINX config file(s):\n\n# nginx -qT | grep \"# configuration\"\n# configuration file /etc/nginx/nginx.conf:\n\nNote: The default NGINX configuration is \"/etc/nginx/nginx.conf\", though various files may also be included.\n\nAdd or modify the \"server_tokens\" directive to set to \"off\" or set to a custom string without the version information.\n\nhttp {\nserver_tokens off;\n...\n}\n\nRestart nginx after modifying the configuration:\n\n# nginx -s reload",
+  "ccis": [
+    "CCI-001312"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any application providing too much information in error messages risks compromising the data and security of the application and system. The structure and content of error messages must be carefully considered by the organization and development team. \n\nOrganizations carefully consider the structure/content of error messages. The extent to which information systems are able to identify and handle error conditions is guided by organizational policy and operational requirements. Information that could be exploited by adversaries includes, for example, erroneous logon attempts with passwords entered by mistake such as the username, mission/business information that can be derived from (if not stated explicitly by) information recorded, and personal information, such as account numbers, social security numbers, and credit card numbers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NGNX-APP-001070",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55",
+      "name": "F5 NGINX Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55"
+  ]
+}

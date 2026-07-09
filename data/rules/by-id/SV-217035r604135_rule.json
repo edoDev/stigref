@@ -1,0 +1,53 @@
+{
+  "id": "SV-217035r604135_rule",
+  "full_rule_id": "SV-217035r604135_rule",
+  "rule_id": "SV-217035",
+  "rule_revision": "604135",
+  "group_id": "V-217035",
+  "group_title": "SRG-NET-000019-RTR-000010",
+  "title": "The Juniper perimeter router must be configured to not redistribute static routes to an alternate gateway service provider into BGP or an IGP peering with the NIPRNet or to other autonomous systems.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If the static routes to the alternate gateway are being redistributed into an Exterior Gateway Protocol or Interior Gateway Protocol to a NIPRNet gateway, this could make traffic on NIPRNet flow to that particular router and not to the Internet Access Point routers. This could not only wreak havoc with traffic flows on NIPRNet, but it could overwhelm the connection from the router to the NIPRNet gateway(s) and also cause traffic destined for outside of NIPRNet to bypass the defenses of the Internet Access Points.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DoDIN Backbone.\n\nReview the configurations under the protocols hierarchy. If the export statement is configured as shown in the example below proceed to step 2.\n\n}\nprotocols {\n    bgp {\n        group AS_5 {\n            type external;\n            export REDISTRIBUTE;\n            peer-as 5;\n        …\n        …\n        …\n            }\n        }\n    }\n    ospf {\n        export REDISTRIBUTE;\n        area 0.0.0.0 {\n            interface ge-0/0/0 {\n            …\n            …\n            …\n            }\n        }\n    }\n}\n\nReview the export policy referenced above to determine if static routes are being exported as shown in the example below.\n\npolicy-options {\n    …\n    …\n    …\n    }\n    policy-statement REDISTRIBUTE {\n        term EXPORT_STATIC {\n            from protocol static;\n            then accept;\n        }\n    }\n}\n\nReview the static routes that have been configured to determine if there routes with the next hop address that of the alternate gateway.\n\nrouting-options {\n    static {\n        route 10.1.16.0/24 next-hop 10.1.12.1;\n        route 0.0.0.0/0 next-hop 144.22.1.3;\n    }\n\nIf the static routes to the alternate gateway are being redistributed into BGP or any IGP peering to a NIPRNet gateway or any other autonomous system, this is a finding.",
+  "fix": "This requirement is not applicable for the DoDIN Backbone.\n\nConfigure the router so that static routes are not redistributed to an alternate gateway into either a BGP or any IGP peering with the NIPRNet or to any other autonomous systems. This can be done by excluding that route in the export policy as shown in the example below.\n\n[edit policy-options policy-statement REDISTRIBUTE]\nset term NOT_ISP_DEFAULT from protocol static route-filter 0.0.0.0/0 exact\nset term NOT_ISP_DEFAULT then reject\ninsert term set term NOT_ISP_DEFAULT before term EXPORT_STATIC",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the static routes to the alternate gateway are being redistributed into an Exterior Gateway Protocol or Interior Gateway Protocol to a NIPRNet gateway, this could make traffic on NIPRNet flow to that particular router and not to the Internet Access Point routers. This could not only wreak havoc with traffic flows on NIPRNet, but it could overwhelm the connection from the router to the NIPRNet gateway(s) and also cause traffic destined for outside of NIPRNet to bypass the defenses of the Internet Access Points.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

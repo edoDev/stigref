@@ -1,0 +1,53 @@
+{
+  "id": "SV-233578r960897_rule",
+  "full_rule_id": "SV-233578r960897_rule",
+  "rule_id": "SV-233578",
+  "rule_revision": "960897",
+  "group_id": "V-233578",
+  "group_title": "SRG-APP-000097-DB-000041",
+  "title": "PostgreSQL must produce audit records containing sufficient information to establish where the events occurred.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information system auditing capability is critical for accurate forensic analysis. Without establishing where events occurred, it is impossible to establish, correlate, and investigate the events relating to an incident.\n\nTo compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know where events occurred, such as application components, modules, session identifiers, filenames, host names, and functionality. \n\nAssociating information about where the event occurred within the application provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured application.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "First, as the database administrator (shown here as \"postgres\"), check the current log_line_prefix setting by running the following SQL:\n\n$ sudo su - postgres\n$ psql -c \"SHOW log_line_prefix\"\n\nIf log_line_prefix does not contain \"%m %u %d %s\", this is a finding.",
+  "fix": "Note: The following instructions use the PGDATA and PGVER environment variables. See supplementary content APPENDIX-F for instructions on configuring PGDATA and APPENDIX-H for PGVER.\n\nTo check that logging is enabled, review supplementary content APPENDIX-C for instructions on enabling logging.\n\nFirst edit the postgresql.conf file as the database administrator (shown here as \"postgres\"):\n\n$ sudo su - postgres\n$ vi ${PGDATA?}/postgresql.conf\n\nExtra parameters can be added to the setting log_line_prefix to log application related information:\n\n# %a = application name\n# %u = user name\n# %d = database name\n# %r = remote host and port\n# %p = process ID\n# %m = timestamp with milliseconds\n# %i = command tag\n# %s = session startup\n# %e = SQL state\n\nFor example:\n\nlog_line_prefix = '< %m %a %u %d %r %p %i %e %s>'\n\nNow, as the system administrator, reload the server with the new configuration:\n\n$ sudo systemctl reload postgresql-${PGVER?}",
+  "ccis": [
+    "CCI-000132"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information system auditing capability is critical for accurate forensic analysis. Without establishing where events occurred, it is impossible to establish, correlate, and investigate the events relating to an incident.\n\nTo compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know where events occurred, such as application components, modules, session identifiers, filenames, host names, and functionality. \n\nAssociating information about where the event occurred within the application provides a means of investigating an attack; recognizing resource utilization or capacity thresholds; or identifying an improperly configured application.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CD12-00-007100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c",
+      "name": "Crunchy Data PostgreSQL Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c"
+  ]
+}

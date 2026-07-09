@@ -1,0 +1,53 @@
+{
+  "id": "SV-258767r959010_rule",
+  "full_rule_id": "SV-258767r959010_rule",
+  "rule_id": "SV-258767",
+  "rule_revision": "959010",
+  "group_id": "V-258767",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host must disable Simple Network Management Protocol (SNMP) v1 and v2c.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If SNMP is not being used, it must remain disabled. If it is being used, the proper trap destination must be configured. If SNMP is not properly configured, monitoring information can be sent to a malicious host that can use this information to plan an attack.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an ESXi shell, run the following command:\n\n# esxcli system snmp get\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHostSnmp | Select *\n\nIf SNMP is not in use and is enabled, this is a finding.\n\nIf SNMP is enabled and is not using v3 targets with authentication, this is a finding.\n\nNote: SNMP v3 targets can only be viewed and configured via the \"esxcli\" command.",
+  "fix": "To disable SNMP from an ESXi shell, run the following command:\n\n# esxcli system snmp set -e no\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi Host:\n\nGet-VMHostSnmp | Set-VMHostSnmp -Enabled $false",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If SNMP is not being used, it must remain disabled. If it is being used, the proper trap destination must be configured. If SNMP is not properly configured, monitoring information can be sent to a malicious host that can use this information to plan an attack.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000212",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v2r3-8fcaad5d",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v2r3-8fcaad5d"
+  ]
+}

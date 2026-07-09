@@ -1,0 +1,53 @@
+{
+  "id": "SV-217056r604135_rule",
+  "full_rule_id": "SV-217056r604135_rule",
+  "rule_id": "SV-217056",
+  "rule_revision": "604135",
+  "group_id": "V-217056",
+  "group_title": "SRG-NET-000018-RTR-000005",
+  "title": "The Juniper BGP router must be configured to reject outbound route advertisements for any prefixes that do not belong to any customers or the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.” \n\nReview the router configuration to verify that there is a filter defined to only advertise routes for prefixes that belong to any customers or the local AS. \n\nVerify that a policy has been configured to filter prefixes for BGP advertisement as shown in the example below.\n\n}\npolicy-options {\n    …\n    …\n    …\n    policy-statement BGP_ADVERTISE_POLICY {\n        term INCLUDE_LOCAL {\n            from {\n                prefix-list OUR_PREFIXES;\n            }\n            then accept;\n        }\n        term INCLUDE_CUST1 {\n            from {\n                prefix-list CUST1_PREFIXES;\n            }\n            then accept;\n        }\n        term INCLUDE_CUST2 {\n            from {\n                prefix-list CUST2_PREFIXES;\n            }\n            then accept;\n        }\n        term REJECT_OTHER {\n            then reject;\n        }\n    }\n\nVerify that the export statement as shown below references the advertise policy. \n\nprotocols {\n    bgp {\n        group AS4 {\n            type external;\n            import FILTER_ROUTES;\n            export BGP_ADVERTISE_POLICY;\n            peer-as 4;\n            neighbor x.x.x.x;\n        }\n        group CUST1 {\n            type external;\n            import FILTER_CUST1_ROUTES;\n            export BGP_ADVERTISE_POLICY;\n            peer-as 55;\n            neighbor x.x.x.x;\n            neighbor x.x.x.x;\n        }\n        group CUST2 {\n            type external;\n            import FILTER_CUST2_ROUTES;\n            export BGP_ADVERTISE_POLICY;\n            peer-as 44;\n            neighbor x.x.x.x;\n            neighbor x.x.x.x;\n        }\n    }\n    …\n    …\n    …\n}\n\nNote: The prefix lists should have already been configured per the previous requirements.\n\nIf the router is not configured to reject outbound route advertisements that do not belong to any customers or the local AS, this is a finding.",
+  "fix": "Configure the router to filter outbound route advertisements for prefixes that are not allocated to or belong to any customer or the local autonomous system.\n\nConfigure a policy-statement to filter BGP route advertisements that will only include the local and customer prefixes.\n\n[edit policy-options]\nset policy-statement BGP_ADVERTISE_POLICY term INCLUDE_LOCAL from prefix-list OUR_PREFIXES\nset policy-statement BGP_ADVERTISE_POLICY term INCLUDE_LOCAL then accept\nset policy-statement BGP_ADVERTISE_POLICY term INCLUDE_CUST1 from prefix-list CUST1_PREFIXES\nset policy-statement BGP_ADVERTISE_POLICY term INCLUDE_CUST1 then accept \nset policy-statement BGP_ADVERTISE_POLICY term INCLUDE_CUST2 from prefix-list CUST2_PREFIXES\nset policy-statement BGP_ADVERTISE_POLICY term INCLUDE_CUST2 then accept \nset policy-statement BGP_ADVERTISE_POLICY term REJECT_OTHER then reject\n\nNote: The prefix lists should have already been configured per the previous requirements.\n\nConfigure an export statement referencing the advertise policy on all external BGP peer groups as shown in the example below.\n\n[edit protocols bgp group GROUP_AS4]\nset export BGP_ADVERTISE_POLICY \n[edit protocols bgp group CUST1]\nset export BGP_ADVERTISE_POLICY \n[edit protocols bgp group CUST2]\nset export BGP_ADVERTISE_POLICY",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000510",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

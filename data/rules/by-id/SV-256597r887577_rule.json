@@ -1,0 +1,53 @@
+{
+  "id": "SV-256597r887577_rule",
+  "full_rule_id": "SV-256597r887577_rule",
+  "rule_id": "SV-256597",
+  "rule_revision": "887577",
+  "group_id": "V-256597",
+  "group_title": "SRG-APP-000133-DB-000362",
+  "title": "VMware Postgres must limit modify privileges to authorized accounts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If VMware Postgres were to allow any user to make changes to database structure or logic, those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.\n\nOnly qualified and authorized individuals must be allowed to obtain access to information system components to initiate changes, including upgrades and modifications.\n\nUnmanaged changes that occur to the database software libraries or configuration can lead to unauthorized or compromised installations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"\\du;\"|grep \"Create\"\n\nExpected result:\n\n postgres   | Superuser, Create role, Create DB, Replication, Bypass RLS | {}\n vc         | Create DB                                                  | {}\n vlcmuser   | Create DB                                                  | {}\n\nIf accounts other than \"postgres\",\"vc\", and \"vlcmuser\" have any \"Create\" privileges, this is a finding.",
+  "fix": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"REVOKE ALL PRIVILEGES FROM <user>;\"\n\nReplace <user> with the account discovered during the check.",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If VMware Postgres were to allow any user to make changes to database structure or logic, those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.\n\nOnly qualified and authorized individuals must be allowed to obtain access to information system components to initiate changes, including upgrades and modifications.\n\nUnmanaged changes that occur to the database software libraries or configuration can lead to unauthorized or compromised installations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-70-000007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497",
+      "name": "VMware vSphere 7.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497"
+  ]
+}

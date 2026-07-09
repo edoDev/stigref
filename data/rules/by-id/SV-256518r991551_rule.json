@@ -1,0 +1,54 @@
+{
+  "id": "SV-256518r991551_rule",
+  "full_rule_id": "SV-256518r991551_rule",
+  "rule_id": "SV-256518",
+  "rule_revision": "991551",
+  "group_id": "V-256518",
+  "group_title": "SRG-OS-000239-GPOS-00089",
+  "title": "The Photon operating system must audit all account modifications.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to modify an existing account. Auditing account modification actions provides logging that can be used for forensic purposes.\n\nSatisfies: SRG-OS-000239-GPOS-00089, SRG-OS-000303-GPOS-00120</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command:\n\n# auditctl -l | grep -E \"(/etc/passwd|/etc/shadow|/etc/group|/etc/gshadow)\"\n\nExpected result:\n\n-w /etc/passwd -p wa -k passwd\n-w /etc/shadow -p wa -k shadow\n-w /etc/group -p wa -k group\n-w /etc/gshadow -p wa -k gshadow\n\nIf the output does not match the expected result, this is a finding.\n\nNote: This check depends on the auditd service to be in a running state for accurate results. The auditd service is enabled in control PHTN-30-000013.",
+  "fix": "Navigate to and open:\n\n/etc/audit/rules.d/audit.STIG.rules\n\nAdd the following lines:\n\n-w /etc/passwd -p wa -k passwd\n-w /etc/shadow -p wa -k shadow\n-w /etc/group -p wa -k group\n-w /etc/gshadow -p wa -k gshadow\n\nAt the command line, run the following command to load the new audit rules:\n\n# /sbin/augenrules --load\n\nNote: A new \"audit.STIG.rules\" file is provided for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.\n\nNote: An older \"audit.STIG.rules\" may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.",
+  "ccis": [
+    "CCI-001403",
+    "CCI-002130"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to modify an existing account. Auditing account modification actions provides logging that can be used for forensic purposes.\n\nSatisfies: SRG-OS-000239-GPOS-00089, SRG-OS-000303-GPOS-00120",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-30-000043",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28",
+      "name": "VMware vSphere 7.0 vCenter Appliance Photon OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28"
+  ]
+}

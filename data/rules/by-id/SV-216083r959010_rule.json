@@ -1,0 +1,53 @@
+{
+  "id": "SV-216083r959010_rule",
+  "full_rule_id": "SV-216083r959010_rule",
+  "rule_id": "SV-216083",
+  "rule_revision": "959010",
+  "group_id": "V-216083",
+  "group_title": "SRG-OS-000480",
+  "title": "TCP Wrappers must be enabled and configured per site policy to only allow access by approved hosts and services.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>TCP Wrappers are a host-based access control system that allows administrators to control who has access to various network services based on the IP address of the remote end of the connection. TCP Wrappers also provide logging information via syslog about both successful and unsuccessful connections.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check that TCP Wrappers are enabled and the host.deny and host.allow files exist.\n\n# inetadm -p | grep tcp_wrappers\n\nIf the output of this command is \"tcp_wrappers=FALSE\", this is a finding.\n\n# ls /etc/hosts.deny\n/etc/hosts.deny\n# ls /etc/hosts.allow\n/etc/hosts.allow\n\nIf these files do not exist or do not contain the names of allowed or denied hosts, this is a finding.",
+  "fix": "The root role is required.\n\nTo enable TCP Wrappers, run the following commands:\n\n1. Create and customize your policy in /etc/hosts.allow:\n# echo \"ALL: [net]/[mask], [net]/[mask], ...\" > /etc/hosts.allow \n\nwhere each [net>/[mask> combination (for example, the Class C address block \"192.168.1.0/255.255.255.0\") can represent one network block in use by your organization that requires access to this system.\n\n2. Create a default deny policy in /etc/hosts.deny: \n\n# echo \"ALL: ALL\" >/etc/hosts.deny\n\n3. Enable TCP Wrappers for all services started by inetd:\n\n# inetadm -M tcp_wrappers=TRUE\n\nThe versions of SunSSH (0.5.11) and sendmail that ship with Solaris 11 will automatically use TCP Wrappers to filter access if a hosts.allow or hosts.deny file exists.\n\nThe use of OpenSSH access is controlled by the sshd_config file starting with Solaris 11.3. \n\nSunSSH is removed starting with Solaris 11.4.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "TCP Wrappers are a host-based access control system that allows administrators to control who has access to various network services based on the IP address of the remote end of the connection. TCP Wrappers also provide logging information via syslog about both successful and unsuccessful connections.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-030050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

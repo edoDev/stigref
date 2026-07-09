@@ -1,0 +1,53 @@
+{
+  "id": "SV-254028r844260_rule",
+  "full_rule_id": "SV-254028r844260_rule",
+  "rule_id": "SV-254028",
+  "rule_revision": "844260",
+  "group_id": "V-254028",
+  "group_title": "SRG-NET-000343-RTR-000001",
+  "title": "The router providing MPLS L2VPN services must be configured to authenticate targeted LDP sessions used to exchange VC information using a FIPS-approved message authentication code algorithm.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Label Distribution Protocol (LDP) provides the signaling required for setting up and tearing down pseudowires (virtual circuits used to transport layer 2 frames) across an MPLS IP core network. Using a targeted LDP session, each PE router advertises a virtual circuit label mapping that is used as part of the label stack imposed on the frames by the ingress PE router during packet forwarding. Authentication provides protection against spoofed TCP segments that can be introduced into the LDP sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if LDP messages are being authenticated for the targeted LDP sessions.\n\n[edit protocols]\nldp {\n    interface <interface 1 name>.<logical unit>;\n    interface <interface 2 name>.<logical unit>;\n    session <Session destination address> {\n        authentication-algorithm <aes-128-cmac-96|hmac-sha-1-96>;\n        authentication-key-chain <name>;\n    }\n}\n\nIf authentication is not being used for the LDP sessions using a FIPS-approved message authentication code algorithm, this is a finding.",
+  "fix": "Implement authentication for all targeted LDP sessions using a FIPS-approved message authentication code algorithm.\n\nset protocols ldp interface <interface 1 name>.<logical unit>\nset protocols ldp interface <interface 2 name>.<logical unit>\nset protocols ldp session <Session destination address> authentication-algorithm <aes-128-cmac-96|hmac-sha-1-96>\nset protocols ldp session <Session destination address> authentication-key-chain <name>",
+  "ccis": [
+    "CCI-001958"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Label Distribution Protocol (LDP) provides the signaling required for setting up and tearing down pseudowires (virtual circuits used to transport layer 2 frames) across an MPLS IP core network. Using a targeted LDP session, each PE router advertises a virtual circuit label mapping that is used as part of the label stack imposed on the frames by the ingress PE router during packet forwarding. Authentication provides protection against spoofed TCP segments that can be introduced into the LDP sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000560",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-217087r604135_rule",
+  "full_rule_id": "SV-217087r604135_rule",
+  "rule_id": "SV-217087",
+  "rule_revision": "604135",
+  "group_id": "V-217087",
+  "group_title": "SRG-NET-000019-RTR-000014",
+  "title": "The Juniper multicast Rendezvous Point (RP) router must be configured to filter Protocol Independent Multicast (PIM) Join messages received from the Designated Juniper router (DR) for any undesirable multicast groups.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups and sources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the RP router configuration to determine if it filters PIM join messages for any reserved multicast groups.\n\nStep 1: Verify that a PIM import statement has been configured as shown in the example below:\n\nprotocols {\n    …\n    …\n    …\n    }\n    pim {\n           import MULTICAST_JOIN_POLICY;\n\nStep 2: Verify that the join policy has defined both bad multicast groups and sources as shown in the example below:\n\npolicy-options {\n    …\n    …\n    …\n    }\n    policy-statement MULTICAST_JOIN_POLICY {\n        term BAD_GROUPS {\n            from {\n                route-filter 224.1.1.0/24 orlonger;\n                route-filter 225.1.2.3/32 exact;\n                …\n                …\n                …\n                route-filter 232.0.0.0/8 orlonger;\n            }\n            then reject;\n        }\n        term ALLOW_OTHER {\n            then accept;\n        }\n    }\nIf the RP router peering with PIM-SM routers is not configured with a PIM import policy to block join messages for any undesirable multicast groups, this is a finding.",
+  "fix": "RP routers that are peering with customer PIM-SM routers must implement a PIM import policy to block join messages for any undesirable multicast groups.\n\nStep 1: Configure a multicast join policy to filter bad groups and sources as shown in the example below:\n\n[edit policy-options policy-statement MULTICAST_JOIN_POLICY]\nset term BAD_GROUPS from route-filter 224.1.1.0/24 orlonger\nset term BAD_GROUPS from route-filter 225.1.2.3/32 exact\n…\n…\n…\nset term BAD_GROUPS then reject\nset term ALLOW_OTHER then accept\n\nStep 2: Configure PIM to enable the join policy as shown in the example below:\n\n[edit protocols pim]\nset import MULTICAST_JOIN_POLICY",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups and sources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000830",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

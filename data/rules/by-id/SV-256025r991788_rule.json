@@ -1,0 +1,54 @@
+{
+  "id": "SV-256025r991788_rule",
+  "full_rule_id": "SV-256025r991788_rule",
+  "rule_id": "SV-256025",
+  "rule_revision": "991788",
+  "group_id": "V-256025",
+  "group_title": "SRG-NET-000205-RTR-000012",
+  "title": "The Arista router must be configured to only permit management traffic that ingresses and egresses the out-of-band management (OOBM) interface.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The OOBM access router will connect to the management interface of the managed network elements. The management interface can be a true OOBM interface or a standard interface functioning as the management interface. In either case, the management interface of the managed network element will be directly connected to the OOBM network.\n\nAn OOBM interface does not forward transit traffic, thereby providing complete separation of production and management traffic. Since all management traffic is immediately forwarded into the management network, it is not exposed to possible tampering. The separation also ensures that congestion or failures in the managed network do not affect the management of the device. If the device does not have an OOBM port, the interface functioning as the management interface must be configured so that management traffic does not leak into the managed network and that production traffic does not leak into the management network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Step 1: To verify the Arista router managed interface has an inbound and outbound ACL configured, execute \"show run int Eth YY\".\n\nrouter#show interface Ethernet 3\ninterface ethernet 3\n ip access-group FILTER_INBOUND in\n ip access-group FILTER_OUTBOUND out\n\nStep 2: To verify the ingress filter only allows management, IGP, and ICMP traffic, execute \"show ip access-list\".\n\nrouter#show ip access-list\nip access-list FILTER_INBOUND\n   10 permit ospf any any\n   20 permit icmp any any echo\n   30 permit icmp any any echo-reply\n   40 permit ip 10.10.10.0/24 any\n   50 deny ip any any log\n!\nip access-list FILTER_OUTBOUND\n   10 permit ospf any any\n   20 permit icmp any any echo\n   30 permit icmp any any echo-reply\n   40 permit ip any 10.10.10.0/24\n   50 deny ip any any log\n!\n\nNote: If the management interface is a true OOBM interface, this requirement is not applicable.\n\nIf the Arista router does not restrict traffic that ingresses and egresses the management interface, this is a finding.",
+  "fix": "If the Arista management interface is a routed interface, it must be configured with both an ingress and egress ACL.\n\nStep 1: Configure the ingress filter to only allow management, IGP, and ICMP traffic.\n\nLEAF-1A(config)#ip access-list FILTER_INBOUND\nLEAF-1A(config-acl-FILTER_INBOUND)#permit ospf any any \nLEAF-1A(config-acl-FILTER_INBOUND)#permit icmp any any echo\nLEAF-1A(config-acl-FILTER_INBOUND)#permit icmp any any echo-reply \nLEAF-1A(config-acl-FILTER_INBOUND)#permit ip 10.10.10.0/24 any\nLEAF-1A(config-acl-FILTER_INBOUND)#deny ip any any log\n\nStep 2: Configure the outbound filter to only allow management, IGP, and ICMP traffic.\n\nLEAF-1A(config)#ip access-list FILTER_OUTBOUND\nLEAF-1A(config-acl-FILTER_OUTBOUND)#permit ospf any any \nLEAF-1A(config-acl-FILTER_OUTBOUND)#permit icmp any any echo\nLEAF-1A(config-acl-FILTER_OUTBOUND)#permit icmp any any echo-reply \nLEAF-1A(config-acl-FILTER_OUTBOUND)#permit ip any 10.10.10.0/24\nLEAF-1A(config-acl-FILTER_OUTBOUND)#deny ip any any log\n\nStep 3: Set the managed interface to have an inbound and outbound ACL configured.\n\nLEAF-1A(config)#interface ethernet 3\nLEAF-1A(config-if-Et3)# ip access-group FILTER_INBOUND in\nLEAF-1A(config-if-Et3)# ip access-group FILTER_OUTBOUND out",
+  "ccis": [
+    "CCI-001097",
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The OOBM access router will connect to the management interface of the managed network elements. The management interface can be a true OOBM interface or a standard interface functioning as the management interface. In either case, the management interface of the managed network element will be directly connected to the OOBM network.\n\nAn OOBM interface does not forward transit traffic, thereby providing complete separation of production and management traffic. Since all management traffic is immediately forwarded into the management network, it is not exposed to possible tampering. The separation also ensures that congestion or failures in the managed network do not affect the management of the device. If the device does not have an OOBM port, the interface functioning as the management interface must be configured so that management traffic does not leak into the managed network and that production traffic does not leak into the management network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000440",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

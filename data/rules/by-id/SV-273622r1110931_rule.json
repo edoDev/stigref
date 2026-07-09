@@ -1,0 +1,53 @@
+{
+  "id": "SV-273622r1110931_rule",
+  "full_rule_id": "SV-273622r1110931_rule",
+  "rule_id": "SV-273622",
+  "rule_revision": "1110931",
+  "group_id": "V-273622",
+  "group_title": "SRG-NET-000230-RTR-000002",
+  "title": "The RUCKUS ICX BGP router must be configured to use a unique key for each autonomous system (AS) that it peers with.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the same keys are used between eBGP neighbors, the chance of a hacker compromising any of the BGP sessions increases. It is possible that a malicious user exists in one autonomous system who would know the key used for the eBGP session. This user would then be able to hijack BGP sessions with other trusted neighbors.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the BGP configuration to determine if it is peering with multiple autonomous systems. Interview the information security systems manager (ISSM) and router administrator to determine if unique keys are being used. \n\nkeychain AS-xxxx tcp\n key-id 1\n  password 2 $Uyt9R3NVfURuXH1a\n  authentication-algorithm aes-128-cmac\n  send-lifetime start 03-05-2024 00:00:00 end 09-01-2024 00:00:00\n  no accept-ao-mismatch\n  send-id 1\n  recv-id 1\n\nkeychain AS-yyyy tcp\n key-id 1\n  password 2 $Uyt9R3123URuXH1a\n  authentication-algorithm aes-128-cmac\n  send-lifetime start 03-05-2024 00:00:00 end 09-01-2024 00:00:00\n  no accept-ao-mismatch\n  send-id 2\n  recv-id 2\n\nrouter bgp\n local-as xxxx\n neighbor x.0.0.1 remote-as 10\n neighbor x.0.0.1 ao AS-xxxx\n neighbor y.0.0.1 remote-as 11\n neighbor y.0.0.1 as AS-yyyy\n\nIf unique keys are not being used, this is a finding.",
+  "fix": "Configure the router to use unique keys for each AS it peers with as shown in the example below:\n\nICX(config)# keychain AS-xxxx\nICX(config-keychain-tcp-AS-xxxx)# key 1\nICX(config-keychain-tcp-AS-xxxx-key-1)# authentication-algorithm aes-128-cmac\nICX(config-keychain-tcp-AS-xxxx-key-1)# password pw_for_AS-xxxx\nICX(config-keychain-tcp-AS-xxxx-key-1)# no accept-ao-mismatch\nICX(config-keychain-tcp-AS-xxxx-key-1)# include-tcp-options\nICX(config-keychain-tcp-AS-xxxx-key-1)# send-id 1\nICX(config-keychain-tcp-AS-xxxx-key-1)# recv-id 1\nICX(config-keychain-tcp-AS-xxxx-key-1)# accept-lifetime start 03-05-24 10:10:10 end 15552000\nICX(config-keychain-tcp-AS-xxxx-key-1)# send-lifetime start 03-05-24 10:10:10 end 09-01-24 10:10:10\nICX(config)# keychain AS-yyyy\nICX(config-keychain-tcp-AS-yyyy)# key 1\nICX(config-keychain-tcp-AS-yyyy-key-1)# authentication-algorithm aes-128-cmac\nICX(config-keychain-tcp-AS-yyyy-key-1)# password pw_for_AS-yyyy\nICX(config-keychain-tcp-AS-yyyy-key-1)# no accept-ao-mismatch\nICX(config-keychain-tcp-AS-yyyy-key-1)# include-tcp-options\nICX(config-keychain-tcp-AS-yyyy-key-1)# send-id 2\nICX(config-keychain-tcp-AS-yyyy-key-1)# recv-id 2\nICX(config-keychain-tcp-AS-yyyy-key-1)# accept-lifetime start 03-05-24 10:10:10 end 15552000\nICX(config-keychain-tcp-AS-yyyy-key-1)# send-lifetime start 03-05-24 10:10:10 end 09-01-24 10:10:10\n\nICX(config)# router bgp\nICX(config-bgp-router)# local-as 1001\nICX(config-bgp-router)# neighbor x.0.0.1 remote-as 10\nICX(config-bgp-router)#neighbor x.0.0.1 ao AS-xxxx\nICX(config-bgp-router)# neighbor y.0.0.1 remote-as 10\nICX(config-bgp-router)#neighbor y.0.0.1 ao AS-yyyy",
+  "ccis": [
+    "CCI-001184"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the same keys are used between eBGP neighbors, the chance of a hacker compromising any of the BGP sessions increases. It is possible that a malicious user exists in one autonomous system who would know the key used for the eBGP session. This user would then be able to hijack BGP sessions with other trusted neighbors.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000550",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

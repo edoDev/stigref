@@ -1,0 +1,53 @@
+{
+  "id": "SV-272038r1168256_rule",
+  "full_rule_id": "SV-272038r1168256_rule",
+  "rule_id": "SV-272038",
+  "rule_revision": "1168256",
+  "group_id": "V-272038",
+  "group_title": "SRG-NET-000512-L2S-000001",
+  "title": "The Cisco ACI layer 2 switch must have Storm Control configured on all host-facing switch ports.",
+  "severity": "low",
+  "description": "<VulnDiscussion>A traffic storm occurs when packets flood a LAN, creating excessive traffic and degrading network performance. Traffic storm control prevents network disruption by suppressing ingress traffic when the number of packets reaches configured threshold levels. Traffic storm control monitors ingress traffic levels on a port and drops traffic when the number of packets reaches the configured threshold level during any one-second interval.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify storm control is enabled on all host-facing interfaces as shown in the example below:\n\n1. To verify Storm Control settings, navigate to Fabric >> Access Policies >> Interfaces >> Leaf Interfaces >>Policy Groups >> (Leaf Access port, PC interface or VPC interface) >> {{your_policy_name}} >> Advance Policies.\n2. Review each Storm Control policy.\n3. Navigate to the Application Profile containing the EPGs to be protected.\n4. Select each EPG, then go to the Policies tab to verify that a storm control policy configured to protect broadcast, at a minimum, has been applied.\n\nIf storm control is not enabled for host-facing interfaces for broadcast traffic at a minimum, this is a finding.",
+  "fix": "Configure one or more storm control policies for all host-facing interfaces and external interfaces and apply the policy to an ESG. Enable monitoring to track storm control events.\n\nPath to use storm control setting: Fabric >> Access Policies >> Interfaces >> Leaf Interfaces >> Policy Groups >> (Leaf Access port, PC interface or VPC interface) >> {{your_policy_name}} >> Advance Policies.\n\nIf the storm control is not on the appropriate interface, add it by navigating to Fabric >> Access Policies >> Interfaces >> Leaf Interfaces >> Profiles >> {{your_profile}}.\n\nNote: The acceptable range is 10000000-1000000000 for a gigabit Ethernet interface, and 100000000-10000000000 for a ten gigabit interface. Storm control is not supported on most FastEthernet interfaces.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A traffic storm occurs when packets flood a LAN, creating excessive traffic and degrading network performance. Traffic storm control prevents network disruption by suppressing ingress traffic when the number of packets reaches configured threshold levels. Traffic storm control monitors ingress traffic levels on a port and drops traffic when the number of packets reaches the configured threshold level during any one-second interval.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CACI-L2-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-aci-layer-2-switch-security-technical-implementation-guide-v1r2-322769a7",
+      "name": "Cisco ACI Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-aci-layer-2-switch-security-technical-implementation-guide-v1r2-322769a7"
+  ]
+}

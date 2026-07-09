@@ -1,0 +1,53 @@
+{
+  "id": "SV-256508r958472_rule",
+  "full_rule_id": "SV-256508r958472_rule",
+  "rule_id": "SV-256508",
+  "rule_revision": "958472",
+  "group_id": "V-256508",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "The Photon operating system must require authentication upon booting into single-user and maintenance modes.",
+  "severity": "high",
+  "description": "<VulnDiscussion>If the system does not require authentication before it boots into single-user mode, anyone with console access to the system can trivially access all files on the system. GRUB2 is the boot loader for Photon OS and can be configured to require a password to boot into single-user mode or make modifications to the boot menu.\n\nNote: Photon does not support building grub changes via grub2-mkconfig.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command:\n\n# grep -i ^password_pbkdf2 /boot/grub2/grub.cfg\n\nIf there is not output, this is a finding.\n\nIf the output does not begin with \"password_pbkdf2 root\", this is a finding.",
+  "fix": "At the command line, run the following command:\n\n# grub2-mkpasswd-pbkdf2\n\nEnter a secure password and ensure this password is stored for break-glass situations. The vCenter root account cannot be recovered without knowing this separate password. Copy the resulting encrypted string.\n\nAn example string is below:\n\ngrub.pbkdf2.sha512.10000.983A13DF3C51BB2B5130F0B86DDBF0DEA1AAF766BD1F16B7840F79CE3E35494C4B99F505C99C150071E563DF1D7FE1F45456D5960C4C79DAB6C49298B02A5558.5B2C49E12D43CC5A876F6738462DE4EFC24939D4BE486CDB72CFBCD87FDE93FBAFCB817E01B90F23E53C2502C3230502BC3113BE4F80B0AFC0EE956E735F7F86\n\nNavigate to and open:\n\n/boot/grub2/grub.cfg\n\nFind the line that begins with \"set rootpartition\". Below this line, paste the following on its own line:\n\nset superusers=\"root\"\n\nBelow this, paste the following, substituting the encrypted string from the steps above:\n\npassword_pbkdf2 root <YOUR-LONG-STRING-FROM-ABOVE>\n\nPhoton ships with one menuentry block by default. Copy that entire block and paste it right below itself. \n\nExample: \nmenuentry \"Photon\" {\n    linux \"/\"$photon_linux root=$rootpartition net.ifnames=0 $photon_cmdline coredump_filter=0x37 consoleblank=0\n    if [ \"$photon_initrd\" ]; then\n        initrd \"/\"$photon_initrd\n    fi\n}\nmenuentry \"Photon\" {\n    linux \"/\"$photon_linux root=$rootpartition net.ifnames=0 $photon_cmdline coredump_filter=0x37 consoleblank=0\n    if [ \"$photon_initrd\" ]; then\n        initrd \"/\"$photon_initrd\n    fi\n}\n\nModify the first menuentry block to add the \"--unrestricted\" option as follows:\n\nmenuentry \"Photon\" --unrestricted {\n\nModify the second menuentry block to add the allowed user as follows:\n\nmenuentry \"Recover Photon\" --users root {\n\nThis concludes the fix. To verify, here is an example grub.cfg snippet:\n\n...\nset rootpartition=PARTUUID=326e5b0f-42fb-471a-8209-18964c4a2ed3\nset superusers=\"root\"\npassword_pbkdf2 root grub.pbkdf2.sha512.10000.983A13DF3C51BB2B5130F0B86DDBF0DEA1AAF766BD1F16B7840F79CE3E35494C4B99F505C99C150071E563DF1D7FE1F45456D5960C4C79DAB6C49298B02A5558.5B2C49E12D43CC5A876F6738462DE4EFC24939D4BE486CDB72CFBCD87FDE93FBAFCB817E01B90F23E53C2502C3230502BC3113BE4F80B0AFC0EE956E735F7F86\n\nmenuentry \"Photon\" --unrestricted {\n    linux \"/\"$photon_linux root=$rootpartition net.ifnames=0 $photon_cmdline coredump_filter=0x37 consoleblank=0\n    if [ \"$photon_initrd\" ]; then\n        initrd \"/\"$photon_initrd\n    fi\n}\n\nmenuentry \"Recover Photon\" --users root {\n    linux \"/\"$photon_linux root=$rootpartition net.ifnames=0 $photon_cmdline coredump_filter=0x37 consoleblank=0\n    if [ \"$photon_initrd\" ]; then\n        initrd \"/\"$photon_initrd\n    fi\n}",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the system does not require authentication before it boots into single-user mode, anyone with console access to the system can trivially access all files on the system. GRUB2 is the boot loader for Photon OS and can be configured to require a password to boot into single-user mode or make modifications to the boot menu.\n\nNote: Photon does not support building grub changes via grub2-mkconfig.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-30-000031",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28",
+      "name": "VMware vSphere 7.0 vCenter Appliance Photon OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-220432r856234_rule",
+  "full_rule_id": "SV-220432r856234_rule",
+  "rule_id": "SV-220432",
+  "rule_revision": "856234",
+  "group_id": "V-220432",
+  "group_title": "SRG-NET-000362-RTR-000112",
+  "title": "The Cisco switch must be configured to have IP directed broadcast disabled on all interfaces.",
+  "severity": "low",
+  "description": "<VulnDiscussion>An IP directed broadcast is a datagram sent to the broadcast address of a subnet that is not directly attached to the sending machine. The directed broadcast is routed through the network as a unicast packet until it arrives at the target subnet, where it is converted into a link-layer broadcast. Because of the nature of the IP addressing architecture, only the last switch in the chain, which is connected directly to the target subnet, can conclusively identify a directed broadcast. \n\nIP directed broadcasts are used in the extremely common and popular smurf, or denial-of-service (DoS), attacks. In a smurf attack, the attacker sends Internet Control Message Protocol (ICMP) echo requests from a falsified source address to a directed broadcast address, causing all the hosts on the target subnet to send replies to the falsified source. By sending a continuous stream of such requests, the attacker can create a much larger stream of replies, which can completely inundate the host whose address is being falsified. This service should be disabled on all interfaces when not needed to prevent smurf and DoS attacks. \n\nDirected broadcast can be enabled on internal-facing interfaces to support services such as Wake-On-LAN. Case scenario may also include support for legacy applications where the content server and the clients do not support multicast. The content servers send streaming data using UDP broadcast. Used in conjunction with the IP multicast helper-map feature, broadcast data can be sent across a multicast topology. The broadcast streams are converted to multicast and vice versa at the first-hop switches and last-hop switches before entering and leaving the multicast transit area respectively. The last-hop switch must convert the multicast to broadcast. Hence, this interface must be configured to forward a broadcast packet (i.e., a directed broadcast address is converted to the all nodes broadcast address).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to determine if IP directed broadcast is disabled. The IP directed broadcast command must not be found on any interface as shown in the example below: \n\ninterface GigabitEthernet0/1 \n no switchport \n ip address x.x.x.x 255.255.255.0 \n ip directed-broadcast \n… \n… \n… \nInterface Vlan11 \nno switchport \n ip address x.x.x.x 255.255.255.0 \n ip directed-broadcast \n\nIf IP directed broadcast is not disabled on all interfaces, this is a finding.",
+  "fix": "Disable IP directed broadcast on all interfaces as shown in the example below: \n\nSW1(config)#int g0/1 \nSW1(config-if)#no ip directed-broadcast \nSW1(config)#int vlan11 \nSW1(config-if)#no ip directed-broadcast",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "An IP directed broadcast is a datagram sent to the broadcast address of a subnet that is not directly attached to the sending machine. The directed broadcast is routed through the network as a unicast packet until it arrives at the target subnet, where it is converted into a link-layer broadcast. Because of the nature of the IP addressing architecture, only the last switch in the chain, which is connected directly to the target subnet, can conclusively identify a directed broadcast. \n\nIP directed broadcasts are used in the extremely common and popular smurf, or denial-of-service (DoS), attacks. In a smurf attack, the attacker sends Internet Control Message Protocol (ICMP) echo requests from a falsified source address to a directed broadcast address, causing all the hosts on the target subnet to send replies to the falsified source. By sending a continuous stream of such requests, the attacker can create a much larger stream of replies, which can completely inundate the host whose address is being falsified. This service should be disabled on all interfaces when not needed to prevent smurf and DoS attacks. \n\nDirected broadcast can be enabled on internal-facing interfaces to support services such as Wake-On-LAN. Case scenario may also include support for legacy applications where the content server and the clients do not support multicast. The content servers send streaming data using UDP broadcast. Used in conjunction with the IP multicast helper-map feature, broadcast data can be sent across a multicast topology. The broadcast streams are converted to multicast and vice versa at the first-hop switches and last-hop switches before entering and leaving the multicast transit area respectively. The last-hop switch must convert the multicast to broadcast. Hence, this interface must be configured to forward a broadcast packet (i.e., a directed broadcast address is converted to the all nodes broadcast address).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-switch-rtr-security-technical-implementation-guide-v3r3-92115109",
+      "name": "Cisco IOS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-switch-rtr-security-technical-implementation-guide-v3r3-92115109"
+  ]
+}

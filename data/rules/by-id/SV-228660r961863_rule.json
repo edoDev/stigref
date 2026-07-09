@@ -1,0 +1,54 @@
+{
+  "id": "SV-228660r961863_rule",
+  "full_rule_id": "SV-228660r961863_rule",
+  "rule_id": "SV-228660",
+  "rule_revision": "961863",
+  "group_id": "V-228660",
+  "group_title": "SRG-APP-000516-NDM-000317",
+  "title": "The Palo Alto Networks security platform must automatically lock the account until the locked account is released by an administrator when three unsuccessful logon attempts in 15 minutes are exceeded.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nThis should not be configured in Device >> Setup >> Management >> Authentication Settings; instead, an authentication profile should be configured with lockout settings of three failed attempts and a lockout time of zero minutes.  The Lockout Time is the number of minutes that a user is locked out if the number of failed attempts is reached (0-60 minutes, default 0). 0 means that the lockout is in effect until it is manually unlocked.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Go to Device >> Administrators.\nIf there is no authentication profile configured for each account (aside from the emergency administration account), this is a finding.\n\nNote which authentication profile is used for each account.\nGo to Device >> Authentication Profile.\nCheck the authentication profile used for each account (noted in the previous step). \nIf the Lockout Time is not set to \"0\" (zero), this is a finding.",
+  "fix": "This should not be configured in Device >> Setup >> Management >> Authentication Settings; instead, an authentication profile should be configured with lockout settings of three failed attempts and a lockout time of zero minutes.\nGo to Device >> Authentication Profile\nSelect the configured authentication profile, or select \"Add\" (in the bottom-left corner of the pane) to create a new one.\nIn the \"Authentication Profile\" field, enter the name of the authentication profile that will be used to control each person's authentication process.\nThe \"Lockout Time (min)\" field is the lockout duration; this must be set to \"0\".  This will keep the lockout in effect until it is manually unlocked.\nIn the \"Failed Attempts\" field, enter \"3\".\nSelect \"OK\".\n\nApply the authentication profile to the Administrator accounts.\nGo to Device >> Administrators\nSelect each configured account, or select \"Add\" (in the bottom-left corner of the pane) to create a new one.\nIn the \"Authentication Profile\" field, enter the configured authentication profile.\nSelect \"OK\".\n\nThis authentication profile should not be applied to the emergency administration account since it has special requirements.\nCommit changes by selecting \"Commit\" in the upper-right corner of the screen.\nSelect \"OK\" when the confirmation dialog appears.",
+  "ccis": [
+    "CCI-000366",
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.\n\nThis should not be configured in Device >> Setup >> Management >> Authentication Settings; instead, an authentication profile should be configured with lockout settings of three failed attempts and a lockout time of zero minutes.  The Lockout Time is the number of minutes that a user is locked out if the number of failed attempts is reached (0-60 minutes, default 0). 0 means that the lockout is in effect until it is manually unlocked.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PANW-NM-000092",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "palo-alto-networks-ndm-security-technical-implementation-guide-v3r3-90db7705",
+      "name": "Palo Alto Networks NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "palo-alto-networks-ndm-security-technical-implementation-guide-v3r3-90db7705"
+  ]
+}

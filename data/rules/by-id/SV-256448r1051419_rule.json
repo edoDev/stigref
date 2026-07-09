@@ -1,0 +1,53 @@
+{
+  "id": "SV-256448r1051419_rule",
+  "full_rule_id": "SV-256448r1051419_rule",
+  "rule_id": "SV-256448",
+  "rule_revision": "1051419",
+  "group_id": "V-256448",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi Common Information Model (CIM) service must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The CIM system provides an interface that enables hardware-level management from remote applications via a set of standard application programming interfaces (APIs). These APIs are consumed by external applications such as HP SIM or Dell OpenManage for agentless, remote hardware monitoring of the ESXi host.\n\nTo reduce attack surface area and following the minimum functionality principal, the CIM service must be disabled unless explicitly needed and approved.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Services.\n\nLocate the \"CIM Server\" service and verify the \"Daemon\" is \"Stopped\" and the \"Startup Policy\" is set to \"Start and stop manually\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-VMHostService | Where {$_.Label -eq \"CIM Server\"}\n\nIf the \"CIM Server\" service does not have a \"Policy\" of \"off\" or is running, this is a finding.",
+  "fix": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Services.\n\nSelect the \"CIM Server\" service. If the service is started, click \"Stop\". \n\nClick \"Edit Startup Policy...\". Select \"Start and stop manually\". Click \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\nGet-VMHost | Get-VMHostService | Where {$_.Label -eq \"CIM Server\"} | Set-VMHostService -Policy Off\nGet-VMHost | Get-VMHostService | Where {$_.Label -eq \"CIM Server\"} | Stop-VMHostService",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The CIM system provides an interface that enables hardware-level management from remote applications via a set of standard application programming interfaces (APIs). These APIs are consumed by external applications such as HP SIM or Dell OpenManage for agentless, remote hardware monitoring of the ESXi host.\n\nTo reduce attack surface area and following the minimum functionality principal, the CIM service must be disabled unless explicitly needed and approved.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-70-000097",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2",
+      "name": "VMware vSphere 7.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-esxi-security-technical-implementation-guide-v1r4-93108be2"
+  ]
+}

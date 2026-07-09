@@ -1,0 +1,53 @@
+{
+  "id": "SV-259595r1043178_rule",
+  "full_rule_id": "SV-259595r1043178_rule",
+  "rule_id": "SV-259595",
+  "rule_revision": "1043178",
+  "group_id": "V-259595",
+  "group_title": "SRG-APP-000219",
+  "title": "Exchange internet-facing receive connectors must offer Transport Layer Security (TLS) before using basic authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Sending unencrypted email over the internet increases the risk that messages can be intercepted or altered. TLS is designed to protect confidentiality and data integrity by encrypting email messages between servers and thereby reducing the risk of eavesdropping, interception, and alteration. This setting forces Exchange to offer TLS before using basic authentication.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This is not applicable for SIPR enclaves.\n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-ReceiveConnector | Select-Object -Property Name, Identity, AuthMechanism\n\nFor each receive connector, if the value of \"AuthMechanism\" is not set to \"Tls, BasicAuth, BasicAuthRequireTLS\", this is a finding.",
+  "fix": "Open the Exchange Management Shell and enter the following command:\n\nSet-ReceiveConnector -Identity <'IdentityName'> -AuthMechanism 'Tls, BasicAuth, BasicAuthRequireTLS'\n\nNote: The <IdentityName> value must be in quotes.\n\nExample only for the Identity: <ServerName>\\Frontend <ServerName>\n\nRepeat the procedure for each receive connector.",
+  "ccis": [
+    "CCI-001184"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Sending unencrypted email over the internet increases the risk that messages can be intercepted or altered. TLS is designed to protect confidentiality and data integrity by encrypting email messages between servers and thereby reducing the risk of eavesdropping, interception, and alteration. This setting forces Exchange to offer TLS before using basic authentication.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-ED-000099",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac",
+      "name": "Microsoft Exchange 2019 Edge Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac"
+  ]
+}

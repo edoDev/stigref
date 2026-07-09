@@ -1,0 +1,53 @@
+{
+  "id": "SV-233912r1083002_rule",
+  "full_rule_id": "SV-233912r1083002_rule",
+  "rule_id": "SV-233912",
+  "rule_revision": "1083002",
+  "group_id": "V-233912",
+  "group_title": "SRG-APP-000215-DNS-000026",
+  "title": "The Infoblox DNS service member must enable verification of a chain of trust among parent and child domains (if the child supports secure resolution services).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If name server replies are invalid or cannot be validated, many networking functions and communication would be adversely affected. With DNS, the presence of Delegation Signer (DS) records associated with child zones informs clients of the security status of child zones. These records are crucial to the DNSSEC chain of trust model. Each parent domain's DS record is used to verify the DNSKEY record in its subdomain, from the top of the DNS hierarchy down.\n\nA DNS server is an example of an information system providing name/address resolution service. Digital signatures and cryptographic keys are examples of additional artifacts. DNS resource records are examples of authoritative data. Applications other than the DNS to map between host/service names and network addresses must provide other means to ensure the authenticity and integrity of response data.\n\nDNSSEC provides the means to verify integrity assurances for the host/service name to network address resolution information obtained through the service. By using the DS resource records in the DNS, the security status of a child domain can be validated. The DS resource record is used to identify the DNSSEC signing key of a delegated zone.\n\nThe chain of trust is established starting with a trusted name server (such as the root name server) and moving down to the current source of response through successive verifications of signature of the public key of a child by its parent. The public key of the trusted name servers is called the trust anchor. After authenticating the source, the next process DNSSEC calls for is to authenticate the response. This requires that responses consist of not only the requested resource records (RRs) but also an authenticator associated with them. In DNSSEC, this authenticator is the digital signature of an RRSet. The digital signature of an RRSet is encapsulated through a special RRType called RRSIG. The DNS client using the trusted public key of the source (whose trust has just been established) then verifies the digital signature to detect if the response is valid or bogus.\n\nThis control enables the DNS to obtain origin authentication and integrity verification assurances for the host/service name to network address resolution information obtained through the service. Without indication of the security status of a child domain and enabling verification of a chain of trust, integrity and availability of the DNS infrastructure cannot be assured.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: For Infoblox DNS systems on a classified network, this requirement is Not Applicable.\n\nThe Authoritative Check applies to external-facing authoritative zones:\n\n1. Navigate to Data Management >> DNS >> Zones.\nNote: To add \"Signed\" column, select an existing column >> down arrow >> Columns >> Edit Columns. Set the \"Signed\" check box to \"Visible\" and select \"Apply\". DNSSEC signing status will be displayed in the \"Zones\" tab.\n2. Verify that external authoritative zones are DNSSEC signed.\n\nRecursive Check: \n1. Navigate to Data Management >> DNS. \n2. Edit \"Grid DNS Properties\", toggle Advanced Mode, and select the DNSSEC tab.\n3. Validate that both \"Enable DNSSEC\" and \"Enable DNSSEC Validation\" options are enabled.\n4. When complete, click \"Cancel\" to exit the \"Properties\" screen.\n\nIf DNSSEC is not used for authoritative DNS and enabled for recursive clients, this is a finding.",
+  "fix": "Note: Ensure DNSSEC is configured to meet all other STIG requirements prior to signing a zone to avoid signing with an unapproved configuration.  \n\nThe Authoritative Fix applies to external-facing authoritative zones:\n\nAuthoritative Fix: \n1. Navigate to Data Management >> DNS >> Zones.  \n2. Select the appropriate zone using the check box. From the \"DNSSEC\" drop-down menu, select \"Sign Zones\". \n3. Follow prompts to acknowledge zone signing.   \n4. Perform a service restart if necessary.\n\nRecursive Fix:  \n1. Navigate to Data Management >> DNS >> Zones.   \n2. Edit \"Grid DNS Properties\", toggle Advanced Mode, and select the \"DNSSEC\" tab. \n3. Enable both \"Enable DNSSEC\" and \"Enable DNSSEC Validation\" options.  \n4. When complete, click \"Save & Close\" to save the changes and exit the \"Properties\" screen.  \n5. Perform a service restart if necessary.",
+  "ccis": [
+    "CCI-001663"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If name server replies are invalid or cannot be validated, many networking functions and communication would be adversely affected. With DNS, the presence of Delegation Signer (DS) records associated with child zones informs clients of the security status of child zones. These records are crucial to the DNSSEC chain of trust model. Each parent domain's DS record is used to verify the DNSKEY record in its subdomain, from the top of the DNS hierarchy down.\n\nA DNS server is an example of an information system providing name/address resolution service. Digital signatures and cryptographic keys are examples of additional artifacts. DNS resource records are examples of authoritative data. Applications other than the DNS to map between host/service names and network addresses must provide other means to ensure the authenticity and integrity of response data.\n\nDNSSEC provides the means to verify integrity assurances for the host/service name to network address resolution information obtained through the service. By using the DS resource records in the DNS, the security status of a child domain can be validated. The DS resource record is used to identify the DNSSEC signing key of a delegated zone.\n\nThe chain of trust is established starting with a trusted name server (such as the root name server) and moving down to the current source of response through successive verifications of signature of the public key of a child by its parent. The public key of the trusted name servers is called the trust anchor. After authenticating the source, the next process DNSSEC calls for is to authenticate the response. This requires that responses consist of not only the requested resource records (RRs) but also an authenticator associated with them. In DNSSEC, this authenticator is the digital signature of an RRSet. The digital signature of an RRSet is encapsulated through a special RRType called RRSIG. The DNS client using the trusted public key of the source (whose trust has just been established) then verifies the digital signature to detect if the response is valid or bogus.\n\nThis control enables the DNS to obtain origin authentication and integrity verification assurances for the host/service name to network address resolution information obtained through the service. Without indication of the security status of a child domain and enabling verification of a chain of trust, integrity and availability of the DNS infrastructure cannot be assured.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDNS-8X-700007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46",
+      "name": "Infoblox 8.x DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-251399r806152_rule",
+  "full_rule_id": "SV-251399r806152_rule",
+  "rule_id": "SV-251399",
+  "rule_revision": "806152",
+  "group_id": "V-251399",
+  "group_title": "NET2017",
+  "title": "First-hop redundancy services must be configured to delay any preempt to provide enough time for the Internet Gateway Protocol (IGP) to stabilize.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The Layer 2 connection between the nodes providing first-hop redundancy comes up quickly. If the preemption takes effect prior to the routing protocol converging, traffic is black holed. Traffic will go to the active router that does not have full routing information. It may take several seconds for the IGP to exchange all the routes, longer than the Hot Standby Router Protocol (HSRP), Virtual Router Redundancy Protocol (VRRP), or Gateway Load Balancing Protocol (GLPB) transition. The recommended practice is to delay the preemption action until after the IGP has a chance to stabilize.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "All routers or multilayer switches providing first-hop redundancy services must be configured to delay preemption to provide enough time for the IGP to stabilize. Review the router or multilayer switch providing first-hop redundancy services and verify that the preemption delay is configured.\n\nIf preemption delay is not configured, this is a finding.\n\nFollowing is an HSRP configuration example that delays the preemption by 30 seconds.\n\ninterface GigabitEthernet 0/0/0\nip address 10.11.0.2 255.255.255.0\nstandby 1 priority 110\nstandby 1 ip 10.21.0.1\nstandby 1 preempt\nstandby 1 preempt delay minimum 30\n\nFollowing is a VRRP configuration example that delays the preemption by 30 seconds.\n\ninterface GigabitEthernet 0/0/0\nip address 10.11.0.2 255.255.255.0\nvrrp 1 priority 110\nvrrp 1 ip 10.21.0.1\nvrrp 1 preempt delay minimum 30\n\nFor VRRP implementations, a preemptive scheme is enabled by default. If preemption is disabled using the no vrrp preempt command, the virtual router backup that is elected to become virtual router master remains the master until the original virtual router master recovers and becomes master again.",
+  "fix": "Configure each router and multilayer switch providing first-hop redundancy services to be configured to delay the preempt to provide enough time for the IGP to stabilize.\n\nNote: The amount of delay will be based on the number of IGP routes.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Layer 2 connection between the nodes providing first-hop redundancy comes up quickly. If the preemption takes effect prior to the routing protocol converging, traffic is black holed. Traffic will go to the active router that does not have full routing information. It may take several seconds for the IGP to exchange all the routes, longer than the Hot Standby Router Protocol (HSRP), Virtual Router Redundancy Protocol (VRRP), or Gateway Load Balancing Protocol (GLPB) transition. The recommended practice is to delay the preemption action until after the IGP has a chance to stabilize.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NET2017",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "network-infrastructure-policy-security-technical-implementation-guide-v10r7-c8dc0fed",
+      "name": "Network Infrastructure Policy Security Technical Implementation Guide",
+      "version": "10",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "network-infrastructure-policy-security-technical-implementation-guide-v10r7-c8dc0fed"
+  ]
+}

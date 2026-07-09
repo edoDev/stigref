@@ -1,0 +1,53 @@
+{
+  "id": "SV-269850r1137894_rule",
+  "full_rule_id": "SV-269850r1137894_rule",
+  "rule_id": "SV-269850",
+  "rule_revision": "1137894",
+  "group_id": "V-269850",
+  "group_title": "SRG-NET-000018-RTR-000002",
+  "title": "The Dell OS10 BGP router must be configured to reject inbound route advertisements for any Bogon prefixes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Accepting route advertisements for Bogon prefixes can result in the local autonomous system (AS) becoming a transit for malicious traffic as it will in turn advertise these prefixes to neighbor autonomous systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify it will reject routes of any Bogon prefixes.\n\nThe prefix filter must be referenced inbound on the appropriate BGP neighbor statements.\n\nStep 1: Verify a prefix list has been configured containing the current Bogon prefixes as shown in the example below.\n\nip prefix-list BOGON_PREFIX_FILTER seq 5 deny 0.0.0.0/8 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 10 deny 10.0.0.0/8 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 15 deny 100.64.0.0/10 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 20 deny 127.0.0.0/8 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 25 deny 169.254.0.0/16 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 30 deny 172.16.0.0/12 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 35 deny 192.0.2.0/24 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 40 deny 192.88.99.0/24 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 45 deny 192.168.0.0/16 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 50 deny 198.18.0.0/15 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 55 deny 198.51.100.0/24 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 60 deny 203.0.113.0/24 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 65 deny 224.0.0.0/4 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 70 deny 240.0.0.0/4 le 32\nip prefix-list BOGON_PREFIX_FILTER seq 75 permit 0.0.0.0/0 ge 8\n\nStep 2: Verify the route map applied to the external neighbors references the configured Bogon prefix list shown above.\n\n!\nroute-map PREFIX_FILTER_MAP permit 10\n match ip address prefix-list BOGON_PREFIX_FILTER\n \n!\nrouter bgp 10\n !\n template ebgp\n  !\n  address-family ipv4 unicast\n   route-map PREFIX_FILTER_MAP in\n !\n neighbor 123.1.1.10\n  !\n  address-family ipv4 unicast\n   route-map PREFIX_FILTER_MAP in\n\nIf the router is not configured to reject inbound route advertisements for any Bogon prefixes, this is a finding.",
+  "fix": "Ensure all eBGP routers are configured to reject inbound route advertisements for any Bogon prefixes.\n\nStep 1: Configure a prefix list containing the current Bogon prefixes.\n\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 5 deny 0.0.0.0/8 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 10 deny 10.0.0.0/8 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 15 deny 100.64.0.0/10 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 20 deny 127.0.0.0/8 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 25 deny 169.254.0.0/16 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 30 deny 172.16.0.0/12 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 35 deny 192.0.2.0/24 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 40 deny 192.88.99.0/24 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 45 deny 192.168.0.0/16 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 50 deny 198.18.0.0/15 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 55 deny 198.51.100.0/24 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 60 deny 203.0.113.0/24 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 65 deny 224.0.0.0/4 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 70 deny 240.0.0.0/4 le 32\nOS10(config)# ip prefix-list BOGON_PREFIX_FILTER seq 75 permit 0.0.0.0/0 ge 8\n\nStep 2: Configure the route map referencing the configured Bogon prefix list.\n\nOS10(config)# route-map PREFIX_FILTER_MAP 10\nOS10(config-route-map)# match ip address prefix-list BOGON_PREFIX_FILTER\nOS10(config-route-map)# exit\n\nStep 3: Apply the route-map inbound to each external BGP neighbor.\n\nOS10(config)# router bgp 10\nOS10(config-router-bgp-10)# neighbor 123.1.1.10\nOS10(config-router-neighbor)# address-family ipv4 unicast\nOS10(config-router-bgp-neighbor-af)# route-map PREFIX_FILTER_MAP in\nOS10(config-router-bgp-neighbor-af)# exit\nOS10(config-router-neighbor)# exit\nOS10(config-router-bgp-10)# template ebgp\nOS10(config-router-template)# address-family ipv4 unicast\nOS10(config-router-bgp-template-af)# route-map PREFIX_FILTER_MAP in\nOS10(config-router-bgp-template-af)# exit\nOS10(config-router-template)# exit\nOS10(config-router-bgp-10)# exit",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Accepting route advertisements for Bogon prefixes can result in the local autonomous system (AS) becoming a transit for malicious traffic as it will in turn advertise these prefixes to neighbor autonomous systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

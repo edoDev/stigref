@@ -1,0 +1,53 @@
+{
+  "id": "SV-255260r962268_rule",
+  "full_rule_id": "SV-255260r962268_rule",
+  "rule_id": "SV-255260",
+  "rule_revision": "962268",
+  "group_id": "V-255260",
+  "group_title": "SRG-APP-000295-WSR-000012",
+  "title": "SSMC web server must set an absolute timeout for sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Leaving sessions open indefinitely is a major security risk. An attacker can easily use an already authenticated session to access the hosted application as the previously authenticated user. By closing sessions after an absolute period of time, the user is forced to re-authenticate guaranteeing the session is still in use. Enabling an absolute timeout for sessions closes sessions that are still active. Examples would be a runaway process accessing the web server or an attacker using a hijacked session to slowly probe the web server.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SSMC is configured to close web sessions after an absolute period of time by doing the following:\n\n1. Log on to SSMC appliance as ssmcadmin. Press \"X\" to escape to general bash shell.\n\n2. Execute the following command: \n\n$ grep ^server.absolute.session.timeout /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties\n\nserver.absolute.session.timeout=60\n\nIf the command output does not read \"server.absolute.session.timeout=60\", this is a finding.",
+  "fix": "Configure SSMC to close web sessions after an absolute period of time by doing the following:\n\n1. Log on to SSMC appliance as ssmcadmin. Press \"X\" to escape to general bash shell.\n\n2. Use vi editor to locate and set the value of property \"server.absolute.session.timeout\" to 60 in /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties. Uncomment it if required. Save and exit.\n\n3. Type \"config_appliance\" to return to TUI. Restart (stop and start) SSMC services using TUI menu option 2.",
+  "ccis": [
+    "CCI-002361"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Leaving sessions open indefinitely is a major security risk. An attacker can easily use an already authenticated session to access the hosted application as the previously authenticated user. By closing sessions after an absolute period of time, the user is forced to re-authenticate guaranteeing the session is still in use. Enabling an absolute timeout for sessions closes sessions that are still active. Examples would be a runaway process accessing the web server or an attacker using a hijacked session to slowly probe the web server.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SSMC-WS-010150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0",
+      "name": "HPE 3PAR SSMC Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0"
+  ]
+}

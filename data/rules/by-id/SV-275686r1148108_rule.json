@@ -1,0 +1,53 @@
+{
+  "id": "SV-275686r1148108_rule",
+  "full_rule_id": "SV-275686r1148108_rule",
+  "rule_id": "SV-275686",
+  "rule_revision": "1148108",
+  "group_id": "V-275686",
+  "group_title": "SRG-OS-000059-GPOS-00029",
+  "title": "Ubuntu OS must be configured so that the audit log directory is not write-accessible by unauthorized users.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If audit information were to become compromised, then forensic analysis and discovery of the true source of potentially malicious system activity is impossible to achieve.  \n  \nTo ensure the veracity of audit information, the operating system must protect audit information from unauthorized deletion. This requirement can be achieved through multiple methods, which will depend upon system architecture and design.  \n  \nAudit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit information system activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the audit log directory has a mode of \"750\" or less permissive.  \n  \nDetermine where the audit logs are stored by using the following command:  \n \n     $ sudo grep -iw log_file /etc/audit/auditd.conf \n     log_file = /var/log/audit/audit.log \n  \nUsing the path of the directory containing the audit logs, determine if the directory has a mode of \"750\" or less by using the following command:  \n  \n     $ sudo stat -c \"%n %a\" /var/log/audit \n     /var/log/audit 750 \n  \nIf the audit log directory has a mode more permissive than \"750\", this is a finding.",
+  "fix": "Configure the audit log directory to have a mode of \"750\" or less permissive.  \n  \nUsing the path of the directory containing the audit logs, configure the audit log directory to have a mode of \"750\" or less permissive by using the following command:  \n  \n     $ sudo chmod -R  g-w,o-rwx /var/log/audit",
+  "ccis": [
+    "CCI-000164"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If audit information were to become compromised, then forensic analysis and discovery of the true source of potentially malicious system activity is impossible to achieve.  \n  \nTo ensure the veracity of audit information, the operating system must protect audit information from unauthorized deletion. This requirement can be achieved through multiple methods, which will depend upon system architecture and design.  \n  \nAudit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit information system activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RIIM-OS-653060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd",
+      "name": "Riverbed NetIM OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd"
+  ]
+}

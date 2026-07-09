@@ -1,0 +1,53 @@
+{
+  "id": "SV-230551r1017313_rule",
+  "full_rule_id": "SV-230551r1017313_rule",
+  "rule_id": "SV-230551",
+  "rule_revision": "1017313",
+  "group_id": "V-230551",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The RHEL 8 file integrity tool must be configured to verify extended attributes.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Extended attributes in file systems are used to contain arbitrary data and file metadata with security implications.\n\nRHEL 8 installation media come with a file integrity tool, Advanced Intrusion Detection Environment (AIDE).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the file integrity tool is configured to verify extended attributes.\n\nIf AIDE is not installed, ask the System Administrator how file integrity checks are performed on the system.\n\nNote: AIDE is highly configurable at install time. This requirement assumes the \"aide.conf\" file is under the \"/etc\" directory.\n\nUse the following command to determine if the file is in another location:\n\n$ sudo find / -name aide.conf\n\nCheck the \"aide.conf\" file to determine if the \"xattrs\" rule has been added to the rule list being applied to the files and directories selection lists.\n\nAn example rule that includes the \"xattrs\" rule follows:\n\nAll= p+i+n+u+g+s+m+S+sha512+acl+xattrs+selinux\n/bin All # apply the custom rule to the files in bin \n/sbin All # apply the same custom rule to the files in sbin \n\nIf the \"xattrs\" rule is not being used on all uncommented selection lines in the \"/etc/aide.conf\" file, or extended attributes are not being checked by another file integrity tool, this is a finding.",
+  "fix": "Configure the file integrity tool to check file and directory extended attributes. \n\nIf AIDE is installed, ensure the \"xattrs\" rule is present on all uncommented file and directory selection lists.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Extended attributes in file systems are used to contain arbitrary data and file metadata with security implications.\n\nRHEL 8 installation media come with a file integrity tool, Advanced Intrusion Detection Environment (AIDE).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-040300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

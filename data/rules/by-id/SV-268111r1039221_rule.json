@@ -1,0 +1,54 @@
+{
+  "id": "SV-268111r1039221_rule",
+  "full_rule_id": "SV-268111r1039221_rule",
+  "rule_id": "SV-268111",
+  "rule_revision": "1039221",
+  "group_id": "V-268111",
+  "group_title": "SRG-OS-000057-GPOS-00027",
+  "title": "NixOS audit directory and logs must be owned by root to prevent unauthorized read access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the NixOS system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nThe structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000206-GPOS-00084</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the audit directory and logs are owned by \"root\". First, determine where the audit logs are stored with the following command:\n\n$ sudo grep log_file /etc/audit/auditd.conf\n\nlog_file = /var/log/audit/audit.log\n\nUsing the location of the audit log file (if not specified, the default location is \"/var/log/audit/audit.log\"), determine if the audit log is owned by \"root\" using the following command:\n\n$ sudo find /var/log/audit -exec stat -c \"%U %n\" {} \\;\n\nroot /var/log/audit\nroot /var/log/audit/audit.log\n\nIf the audit directory and logs are not owned by \"root\", this is a finding.",
+  "fix": "Configure the audit directory and logs to be protected from unauthorized read access, by setting the correct owner as \"root\".\n\nUsing the path of the directory containing the audit logs (if not specified, the default location is \"/var/log/audit/audit.log\"), configure the audit directory and log files to be owned by \"root\" by using the following command:\n\n$ sudo chown -R root /var/log/audit",
+  "ccis": [
+    "CCI-000162",
+    "CCI-001314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the NixOS system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nThe structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000206-GPOS-00084",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000530",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

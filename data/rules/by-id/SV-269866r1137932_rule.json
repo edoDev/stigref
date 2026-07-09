@@ -1,0 +1,53 @@
+{
+  "id": "SV-269866r1137932_rule",
+  "full_rule_id": "SV-269866r1137932_rule",
+  "rule_id": "SV-269866",
+  "rule_revision": "1137932",
+  "group_id": "V-269866",
+  "group_title": "SRG-NET-000019-RTR-000014",
+  "title": "The Dell OS10 multicast Rendezvous Point (RP) router must be configured to filter Protocol Independent Multicast (PIM) Join messages received from the Designated Router (DR) for any undesirable multicast groups.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the RP router is configured to filter PIM join messages for any undesirable multicast groups. \n\n!\ninterface vlan100\n no shutdown\n ip pim sparse-mode\n ip pim join-filter PIM_JOINFILTER\n\n!\nip access-list PIM_JOINFILTER\n seq 10 permit ip 10.10.10.0/24 226.1.1.0/24\n seq 20 permit ip any 225.1.1.0/24\n\nIf the RP is not configured to filter join messages received from the DR for any undesirable multicast groups, this is a finding.",
+  "fix": "Configure the RP to filter PIM join messages for any undesirable multicast groups.\n\nStep 1: Configure an ACL that identifies which groups are allowed to join.\n\nOS10(config)# ip access-list PIM_JOINFILTER\nOS10(config-ipv4-acl)# permit ip 10.10.10.0/24 226.1.1.0/24\nOS10(config-ipv4-acl)# permit ip any 225.1.1.0/24\n\nStep 2: Configure a PIM join filter on the PIM interfaces. \n\nOS10(config)# interface ethernet 1/1/1\nOS10(conf-if-eth1/1/1)# ip pim join-filter PIM_JOINFILTER\n\nNOTES:\n\n* Dell Technologies recommends not using the IP PIM join-filter command on an interface between a source and the RP router. Using this command in this scenario could cause problems with the PIM-SM source registration process resulting in excessive traffic being sent to the CPU of both the RP and PIM DR of the source. Excessive traffic generates when the join process from the RP back to the source is blocked due to a new source group being permitted in the join-filter. This results in the new source becoming stuck in registering on the DR and the continuous generation of UDP-encapsulated registration messages between the DR and RP routers which are sent to the CPU.\n\n* Do not to configure a PIM join-filter on a source connected interface (IIF) on first hop router (FHR) node. Applying PIM join-filter with the rule, deny ip any any might block creation of the S,G entries.\n\n* When configuring a join filter, it applies for both incoming and outgoing joins. There is no option to specify in or out parameters while configuring a join filter.",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

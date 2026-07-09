@@ -1,0 +1,53 @@
+{
+  "id": "SV-251744r810116_rule",
+  "full_rule_id": "SV-251744r810116_rule",
+  "rule_id": "SV-251744",
+  "rule_revision": "810116",
+  "group_id": "V-251744",
+  "group_title": "SRG-NET-000018-RTR-000003",
+  "title": "The NSX-T Tier-0 Gateway must be configured to reject inbound route advertisements for any prefixes belonging to the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Accepting route advertisements belonging to the local AS can result in traffic looping or being black holed, or at a minimum using a non-optimized path.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the Tier-0 Gateway is not using eBGP, this is Not Applicable.\n\nFrom the NSX-T Manager web interface, go to Networking >> Tier-0 Gateways.\n\nFor every Tier-0 Gateway, expand Tier-0 Gateway >>BGP. Near to BGP Neighbors, click on the number present to open the dialog.\n\nFor each neighbor examine any router filters to determine if any inbound route filters are applied.\n\nIf the In Filter is not configured with a prefix list that rejects prefixes belonging to the local AS, this is a finding.",
+  "fix": "To configure a route filter do the following:\n\nFrom the NSX-T Manager web interface, go to Networking >> Tier-0 Gateways >> edit the target Tier-0 gateway.\n\nExpand Routing and open the IP Prefix List dialog. Edit an existing, or add a new prefix list that contains the prefixes belonging to the local AS to deny them. Click \"Save\".\n\nTo apply a route filter to a BGP neighbor do the following:\n\nFrom the NSX-T Manager web interface, go to Networking >> Tier-0 Gateways and edit the target Tier-0 gateway.\n\nExpand BGP, and next to BGP Neighbors, click on the number present to open the dialog. Select \"Edit\" on the target BGP Neighbor.\n\nOpen the router filter dialog and add or edit an existing router filter. Configure the In Filter with the filter previously created and click \"Save\", \"Add\", \"Apply\", and \"Save\".",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Accepting route advertisements belonging to the local AS can result in traffic looping or being black holed, or at a minimum using a non-optimized path.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "T0RT-3X-000003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-t-tier-0-gateway-rtr-security-technical-implementation-guide-v1r2-c90e0466",
+      "name": "VMware NSX-T Tier-0 Gateway RTR Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-t-tier-0-gateway-rtr-security-technical-implementation-guide-v1r2-c90e0466"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-273572r1110908_rule",
+  "full_rule_id": "SV-273572r1110908_rule",
+  "rule_id": "SV-273572",
+  "rule_revision": "1110908",
+  "group_id": "V-273572",
+  "group_title": "SRG-NET-000018-RTR-000004",
+  "title": "The RUCKUS ICX BGP router must be configured to reject inbound route advertisements from a customer edge (CE) router for prefixes that are not allocated to that customer.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>As a best practice, a service provider should only accept customer prefixes that have been assigned to that customer and any peering autonomous systems. A multi-homed customer with BGP speaking routers connected to the internet or other external networks could be breached and used to launch a prefix de-aggregation attack. Without ingress route filtering of customers, the effectiveness of such an attack could impact the entire IP core and its customers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify there are filters defined to only accept routes for prefixes that belong to specific customers.\n\n1. Verify a prefix-list exists for the customer (\"show running-config | include prefix\") similar to the following:\nip prefix-list customer1 seq 5 permit x.x.1.0/24 le 32\nip prefix-list customer1 seq 10 deny 0.0.0.0/0 ge 8\n\n2. Confirm the prefix list has been applied to eBGP neighbor similar to the following:\nroute-map bgp_cust1 permit 10\n match ip address prefix-list customer1\n\nrouter bgp\n local-as 1001\n neighbor x.x.x.x remote-as 500\n neighbor x.x.x.x route-map in bgp_cust1\n\nIf the RUCKUS ICX router is not configured to reject prefixes not allocated to the customer, this is a finding.",
+  "fix": "Configure a prefix list and apply to the eBGP neighbor configuration:\n\nip prefix-list customer1 seq 5 permit x.x.1.0/24 le 32\nip prefix-list customer1 seq 10 deny 0.0.0.0/0 ge 8\n\nroute-map bgp_cust1 permit 10\n match ip address prefix-list customer1\n\nrouter bgp\n local-as 1001\n neighbor x.x.x.x remote-as 500\n neighbor x.x.x.x route-map in bgp_cust1",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "As a best practice, a service provider should only accept customer prefixes that have been assigned to that customer and any peering autonomous systems. A multi-homed customer with BGP speaking routers connected to the internet or other external networks could be breached and used to launch a prefix de-aggregation attack. Without ingress route filtering of customers, the effectiveness of such an attack could impact the entire IP core and its customers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

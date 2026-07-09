@@ -1,0 +1,53 @@
+{
+  "id": "SV-269883r1052034_rule",
+  "full_rule_id": "SV-269883r1052034_rule",
+  "rule_id": "SV-269883",
+  "rule_revision": "1052034",
+  "group_id": "V-269883",
+  "group_title": "SRG-NET-000230-RTR-000002",
+  "title": "The Dell OS10 BGP router must be configured to use a unique key for each autonomous system (AS) that it peers with.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the same keys are used between eBGP neighbors, the chance of a hacker compromising any of the BGP sessions increases. It is possible that a malicious user exists in one autonomous system who would know the key used for the eBGP session. This user would then be able to hijack BGP sessions with other trusted neighbors.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration.\n\nVerify that unique keys are used for each AS that it peers with.\n\n!\ninterface vlan400\n ipv6 ospf 10 area 0.0.0.1\n ipv6 ospf authentication ipsec spi 4017 sha1 1234567890123456789012345678901234567890\n ...\n ip ospf 1 area 0.0.0.1\n ip ospf message-digest-key 1 md5 $$c95abfd48ae6bcffc281603e960d49860dab21b300c5ea1febf7b674320be879\n \nIf any keys are found not to be unique for each autonomous system, this is a finding.",
+  "fix": "Configure unique keys for each AS that the router peers with.\n\nOS10(config)# interface vlan 400\nOS10(conf-if-vl-400)# ipv6 ospf 10 area 0.0.0.1\nOS10(conf-if-vl-400)# ipv6 ospf authentication ipsec spi 4018 sha1 1234567890123456789012345678901234567890\nOS10(conf-if-vl-400)# ip ospf 1 area 0.0.0.1\nOS10(conf-if-vl-400)# ip ospf message-digest-key 1 md5 $$9d5679ab0b6ff43439c05e8059fefcccf05a20062d9679720bdecd630843c545\nOS10(conf-if-vl-400)# exit",
+  "ccis": [
+    "CCI-001184"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the same keys are used between eBGP neighbors, the chance of a hacker compromising any of the BGP sessions increases. It is possible that a malicious user exists in one autonomous system who would know the key used for the eBGP session. This user would then be able to hijack BGP sessions with other trusted neighbors.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000550",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-239955r916125_rule",
+  "full_rule_id": "SV-239955r916125_rule",
+  "rule_id": "SV-239955",
+  "rule_revision": "916125",
+  "group_id": "V-239955",
+  "group_title": "SRG-NET-000510-VPN-002160",
+  "title": "The Cisco ASA must be configured to use a FIPS-validated cryptographic module to generate cryptographic hashes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>FIPS 140-2/140-3 precludes the use of invalidated cryptography for the cryptographic protection of sensitive or valuable data within federal systems. Unvalidated cryptography is viewed by NIST as providing no protection to the information or data. In effect, the data would be considered unprotected plain text. If the agency specifies that the information or data be cryptographically protected, then FIPS 140-2/140-3 is applicable. In essence, if cryptography is required, it must be validated. Cryptographic modules that have been approved for classified use may be used in lieu of modules that have been validated against the FIPS 140-2/140-3 standard.\n\nThe cryptographic module used must have at least one validated hash algorithm. This validated hash algorithm must be used to generate cryptographic hashes for all cryptographic security function within the product being evaluated.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the ASA is configured to use a FIPS-validated cryptographic module to generate cryptographic hashes.\n\nStep 1: Verify that a FIPS-validated hash is used for IKE Phase 1 as shown in the example below.\n \ncrypto ikev2 policy 1\n…\n…\n…\n integrity sha384\n\nStep 2: Verify that a FIPS-validated hash is used for the IPsec SA.\n\ncrypto ipsec ikev2 ipsec-proposal IPSEC_TRANS\n protocol esp integrity sha-384\n\nIf the ASA is not configured to use a FIPS-validated cryptographic module to generate cryptographic hashes, this is a finding.",
+  "fix": "Configure the ASA to use a FIPS-validated cryptographic module to generate cryptographic hashes as shown in the examples below.\n\nASA1(config)# crypto ikev2 policy 1\nASA1(config-ikev2-policy)# integrity sha384\nASA1(config-ikev2-policy)# exit\n\nASA1(config)# crypto ipsec ikev2 ipsec-proposal IPSEC_TRANS\nASA1(config-ipsec-proposal)# protocol esp integrity sha-384\nASA1(config-ipsec-proposal)# end",
+  "ccis": [
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "FIPS 140-2/140-3 precludes the use of invalidated cryptography for the cryptographic protection of sensitive or valuable data within federal systems. Unvalidated cryptography is viewed by NIST as providing no protection to the information or data. In effect, the data would be considered unprotected plain text. If the agency specifies that the information or data be cryptographically protected, then FIPS 140-2/140-3 is applicable. In essence, if cryptography is required, it must be validated. Cryptographic modules that have been approved for classified use may be used in lieu of modules that have been validated against the FIPS 140-2/140-3 standard.\n\nThe cryptographic module used must have at least one validated hash algorithm. This validated hash algorithm must be used to generate cryptographic hashes for all cryptographic security function within the product being evaluated.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000190",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

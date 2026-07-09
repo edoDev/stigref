@@ -1,0 +1,53 @@
+{
+  "id": "SV-266970r1039931_rule",
+  "full_rule_id": "SV-266970r1039931_rule",
+  "rule_id": "SV-266970",
+  "rule_revision": "1039931",
+  "group_id": "V-266970",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "AOS must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat.  \n \nWith robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration using the web interface: \n  \n1. Navigate to Configuration >> System >> Admin and expand \"Admin Authentication Options\".  \n2. Verify what \"Server group\" is handling admin authentication.  \n3. Expand \"Admin Authentication Servers\".  \n4. Select the Server Group identified from the \"Options\" section.  \n5. Verify that at least two authentication servers are configured in the Server Group.  \n \nIf the admin authentication server group does not have at least two configured authentication servers, this is a finding.",
+  "fix": "Configure AOS using the web interface:  \n \n1. Navigate to Configuration >> System >> Admin and expand \"Admin Authentication Servers\".  \n2. Click on the plus sign (+) under \"All Servers\" and configure the type of authentication server. Provide the Name, Type, and IP address. Click \"Submit\".  \n3. Select the created authentication server and configure the required attributes for LDAP: \n \nAdmin-dn <username> \nAdmin-passwd <password> \nRe-type admin-passwd <password> \nAuth port: 636 \nBase-dn: cn/ou=<container>,dc=<level>,dc=<mil> \nKey-attribute: userPrincipalName \n \n4. Click \"Submit\".  \n5. Repeat this process and configure a second authentication server.  \n6. Click Pending Changes >> Deploy Changes.  \n7. Click on the plus sign (+) under \"Server Groups\" and add a server group. Click \"Submit\".  \n8. Select the created server group and click the plus sign (+) in the Server Group <server group name> box.  \n9. Add the first configured authentication server.  \n10. Reselect the created server group and click the plus sign (+) in the Server Group <server group name> box. Click \"Submit\".  \n11. Expand \"Admin Authentication Options\" and select the created server group under \"Server group:\".  \n12. Click Submit >> Pending Changes >> Deploy Changes.",
+  "ccis": [
+    "CCI-000370"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat.  \n \nWith robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-ND-000336",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-ndm-security-technical-implementation-guide-v1r1-a5ea6322",
+      "name": "HPE Aruba Networking AOS NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-ndm-security-technical-implementation-guide-v1r1-a5ea6322"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "SV-258811r933494_rule",
+  "full_rule_id": "SV-258811r933494_rule",
+  "rule_id": "SV-258811",
+  "rule_revision": "933494",
+  "group_id": "V-258811",
+  "group_title": "SRG-OS-000057-GPOS-00027",
+  "title": "The Photon operating system must protect audit logs from unauthorized access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.\n\nAudit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000058-GPOS-00028, SRG-OS-000059-GPOS-00029</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command to find the current auditd log location:\n\n# grep -iw log_file /etc/audit/auditd.conf\n\nExample result:\n\nlog_file = /var/log/audit/audit.log\n\nAt the command line, run the following command using the file found in the previous step to verify auditd logs are protected from authorized access:\n\n# stat -c \"%n %U:%G %a\" /var/log/audit/audit.log\n\nExample result:\n\n/var/log/audit/audit.log root:root 600\n\nIf the audit log file does not have permissions set to \"0600\", this is a finding.\nIf the audit log file is not owned by root, this is a finding.\nIf the audit log file is not group owned by root, this is a finding.",
+  "fix": "At the command line, run the following commands:\n\n#  chmod 0600 <audit log file>\n#  chown root:root <audit log file>\n\nReplace <audit log file> with the target log file.\n\nNote: If \"log_group\" is configured in the auditd.conf file and set to something other than \"root\", the permissions changes will not be persistent.",
+  "ccis": [
+    "CCI-000162",
+    "CCI-000163",
+    "CCI-000164"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.\n\nAudit information includes all information (e.g., audit records, audit settings, audit reports) needed to successfully audit operating system activity.\n\nSatisfies: SRG-OS-000057-GPOS-00027, SRG-OS-000058-GPOS-00028, SRG-OS-000059-GPOS-00029",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000026",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

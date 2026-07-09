@@ -1,0 +1,53 @@
+{
+  "id": "SV-270545r1064913_rule",
+  "full_rule_id": "SV-270545r1064913_rule",
+  "rule_id": "SV-270545",
+  "rule_revision": "1064913",
+  "group_id": "V-270545",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "Oracle Database default accounts must be assigned custom passwords.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Password maximum lifetime is the maximum period of time, (typically in days) a user's password may be in effect before the user is forced to change it.\n\nPasswords need to be changed at specific policy-based intervals as per policy. Any password, no matter how complex, can eventually be cracked.\n\nOne method of minimizing this risk is to use complex passwords and periodically change them. If the application does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the system and/or application passwords could be compromised.\n\nDatabase management system (DBMS) default passwords provide a commonly known and exploited means for unauthorized access to database installations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Use this query to identify the Oracle-supplied accounts that still have their default passwords:\n\nSELECT * FROM SYS.DBA_USERS_WITH_DEFPWD;\n\nIf any accounts other than XS$NULL are listed, this is a finding.\n\nXS$NULL is an internal account that represents the absence of a user in a session. Because XS$NULL is not a user, this account can only be accessed by the Oracle Database instance. XS$NULL has no privileges and no one can authenticate as XS$NULL, nor can authentication credentials ever be assigned to XS$NULL.",
+  "fix": "Change passwords for database management system (DBMS) accounts to nondefault values. Where necessary, unlock or enable accounts to change the password, and then return the account to disabled or locked status.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Password maximum lifetime is the maximum period of time, (typically in days) a user's password may be in effect before the user is forced to change it.\n\nPasswords need to be changed at specific policy-based intervals as per policy. Any password, no matter how complex, can eventually be cracked.\n\nOne method of minimizing this risk is to use complex passwords and periodically change them. If the application does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the system and/or application passwords could be compromised.\n\nDatabase management system (DBMS) default passwords provide a commonly known and exploited means for unauthorized access to database installations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-011900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

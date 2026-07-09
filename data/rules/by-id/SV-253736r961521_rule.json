@@ -1,0 +1,53 @@
+{
+  "id": "SV-253736r961521_rule",
+  "full_rule_id": "SV-253736r961521_rule",
+  "rule_id": "SV-253736",
+  "rule_revision": "961521",
+  "group_id": "V-253736",
+  "group_title": "SRG-APP-000400-DB-000367",
+  "title": "MariaDB must prohibit the use of cached authenticators after an organization-defined time period.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If cached authentication information is out-of-date, the validity of the authentication information may be questionable.\n\nEach connection to the MariaDB database requires the authentication of the user. The authentication remains in place for the connection until the connection is closed or the connection times out due to inactivity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The system parameter idle_transaction_timeout specifies in seconds when a connection will be terminated due to inactivity. After a connection is terminated, a new request to the database must be preceded by an authentication, which is not cached within the database.\n\nRun the following SQL:\nMariaDB> SHOW GLOBAL VARIABLES LIKE 'idle_transaction_timeout';\n\nIf the value is 0, this is a finding.",
+  "fix": "Verify that the idle_transaction_wait is set to a value greater than 0 or is set to the value needed by the administrator. The value of idle_transaction_wait can be validated by issuing SHOW VARIABLES. Example:\n\nLocate the MariaDB Enterprise Server configuration files in /etc/my.cnf.d/. Add the following: \n\nUnder the [mariadb] section: \n\nidle_transaction_timeout = 60\n\nAfter making changes to the .cnf file, stop and restart the database service.",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If cached authentication information is out-of-date, the validity of the authentication information may be questionable.\n\nEach connection to the MariaDB database requires the authentication of the user. The authentication remains in place for the connection until the connection is closed or the connection times out due to inactivity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-008300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

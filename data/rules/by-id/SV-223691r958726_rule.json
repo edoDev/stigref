@@ -1,0 +1,53 @@
+{
+  "id": "SV-223691r958726_rule",
+  "full_rule_id": "SV-223691r958726_rule",
+  "rule_id": "SV-223691",
+  "rule_revision": "958726",
+  "group_id": "V-223691",
+  "group_title": "SRG-OS-000324-GPOS-00125",
+  "title": "The IBM z/OS IEASYMUP resource must be protected in accordance with proper security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Preventing non-privileged users from executing privileged functions mitigates the risk that unauthorized individuals or processes may gain unnecessary access to information or privileges.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter: \nSearch all Class(Facility) MASK(ieasymup)\n\nFor each entity found enter: \nRL facility <entity>\n\nIf RACF resources are defined with a default access of NONE, this is not a finding.\n\nIf RACF resource access authorizations restrict UPDATE and/or greater access to appropriate personnel (i.e., DASD administrators, Tape Library personnel, and system programming personnel), this is not a finding.\n\nIf RACF resource logging requirements are specified for UPDATE and/or greater access, this is not a finding.",
+  "fix": "Ensure that the System level symbolic resources are defined to the FACILITY resource class and protected. UPDATE access to the System level symbolic resources are limited to System Programmers, DASD Administrators, and/or Tape Library personnel. All access is logged. Ensure the guidelines for the resources and/or generic equivalent are followed.\n\nLimit access to the IEASYMUP resources to above personnel with UPDATE and/or greater access.\n\nThe following commands are provided as a sample for implementing resource controls:\n\nrdef facility ieasymup.* uacc(none) owner(admin) -\naudit(all(read)) -\ndata('protected per acp00350')\nrdef facility ieasymup.symbolname uacc(none) owner(admin) -\naudit(all(read)) -\ndata('protected per acp00350')\n\npe ieasymup.symbolname cl(facility) id(<dasdsmpl) acc(u)\npe ieasymup.symbolname cl(facility) id(<syspsmpl) acc(u)\npe ieasymup.symbolname cl(facility) id(<tapesmpl) acc(u)",
+  "ccis": [
+    "CCI-002235"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Preventing non-privileged users from executing privileged functions mitigates the risk that unauthorized individuals or processes may gain unnecessary access to information or privileges.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000430",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-269955r1052251_rule",
+  "full_rule_id": "SV-269955r1052251_rule",
+  "rule_id": "SV-269955",
+  "rule_revision": "1052251",
+  "group_id": "V-269955",
+  "group_title": "SRG-NET-000362-L2S-000021",
+  "title": "The Dell OS10 Switch must have Root Guard enabled on all switch ports connecting to access layer switches and hosts.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Spanning Tree Protocol (STP) does not provide any means for the network administrator to securely enforce the topology of the switched network. Any switch can be the root bridge in a network. However, a more optimal forwarding topology places the root bridge at a specific predetermined location. With the standard STP, any bridge in the network with a lower bridge ID takes the role of the root bridge. The administrator cannot enforce the position of the root bridge but can set the root bridge priority to zero to secure the root bridge position.\n\nThe root guard feature provides a way to enforce the root bridge placement in the network. If the bridge receives superior STP Bridge Protocol Data Units (BPDUs) on a root guard-enabled port, root guard moves this port to a root-inconsistent STP state, and no traffic can be forwarded across this port while it is in this state. To enforce the position of the root bridge it is imperative that root guard is enabled on all ports where the root bridge should never appear.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Dell OS10 Switch topology as well as the switch configuration to verify that Root Guard is enabled on all switch ports connecting to access layer switches and hosts.\n\nFor each switch port connecting to access layer switches and hosts, execute the following:\n\n    OS10# show running-configuration interface ethernet <interface number>\n    Verify Root Guard is enabled: spanning-tree guard root \n\nIf the switch has not enabled Root Guard on all switch ports connecting to access layer switches and hosts, this is a finding.",
+  "fix": "Configure the Dell OS10 Switch to enable Root Guard on all switch ports connecting to access layer switches and hosts as shown in the example below:\n\nOS10(config)# interface ethernet 1/1/1\nOS10(conf-if-eth1/1/1)# spanning-tree guard root",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Spanning Tree Protocol (STP) does not provide any means for the network administrator to securely enforce the topology of the switched network. Any switch can be the root bridge in a network. However, a more optimal forwarding topology places the root bridge at a specific predetermined location. With the standard STP, any bridge in the network with a lower bridge ID takes the role of the root bridge. The administrator cannot enforce the position of the root bridge but can set the root bridge priority to zero to secure the root bridge position.\n\nThe root guard feature provides a way to enforce the root bridge placement in the network. If the bridge receives superior STP Bridge Protocol Data Units (BPDUs) on a root guard-enabled port, root guard moves this port to a root-inconsistent STP state, and no traffic can be forwarded across this port while it is in this state. To enforce the position of the root bridge it is imperative that root guard is enabled on all ports where the root bridge should never appear.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-L2S-000090",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff",
+      "name": "Dell OS10 Switch Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff"
+  ]
+}

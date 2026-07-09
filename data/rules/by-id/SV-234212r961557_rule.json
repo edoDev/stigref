@@ -1,0 +1,53 @@
+{
+  "id": "SV-234212r961557_rule",
+  "full_rule_id": "SV-234212r961557_rule",
+  "rule_id": "SV-234212",
+  "rule_revision": "961557",
+  "group_id": "V-234212",
+  "group_title": "SRG-APP-000412-NDM-000331",
+  "title": "The FortiGate device must implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data (including administrator passwords) at risk of compromise and potentially allowing hijacking of maintenance sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log in to the FortiGate GUI with Super-Admin privilege.\n\n1. Click Network, Interfaces.\n2. Click the interface designated for device management traffic.\n3. On Administrative Access, verify HTTPS and SSH are selected.\n\nIf HTTPS and SSH are not selected for administrative access, this is a finding.\n\nor \n\n1. Open a CLI console, via SSH or available from the GUI.\n2. Run the following command for all low privileged admin user:\n     # show full-configuration system interface port{Management Port Integer #} | grep -i allowaccess\n\nThe output should include: \n          set allowaccess ping https ssh\n\nIf https and ssh are not returned, this is a finding. If http is returned, this is a finding.",
+  "fix": "Log in to the FortiGate GUI with Super-Admin privilege.\n\n1. Click Network, Interfaces.\n2. Click the interface designated for device management traffic and pick Edit.\n3. On Administrative Access, select HTTPS and SSH. Deselect HTTP.\n4. Click OK.\n\nor \n\n1. Open a CLI console, via SSH or available from the GUI.\n2. Run the following command for all low privileged admin users:\n     # config system interface \n     #    edit port{Management Port Integer #}\n     #    set allowaccess ping https ssh\n     # end\n\nNote: When a protocol is added or removed, the entire list of protocols must be typed in again. For example, to add PING to an access list of HTTPS and SSH, use the following CLI command: \n     #   set allowaccess https ssh ping",
+  "ccis": [
+    "CCI-003123"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data (including administrator passwords) at risk of compromise and potentially allowing hijacking of maintenance sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "FGFW-ND-000265",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "fortinet-fortigate-firewall-ndm-security-technical-implementation-guide-v1r5-bef88ab8",
+      "name": "Fortinet FortiGate Firewall NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "fortinet-fortigate-firewall-ndm-security-technical-implementation-guide-v1r5-bef88ab8"
+  ]
+}

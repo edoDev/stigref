@@ -1,0 +1,53 @@
+{
+  "id": "SV-270524r1112471_rule",
+  "full_rule_id": "SV-270524r1112471_rule",
+  "rule_id": "SV-270524",
+  "rule_revision": "1112471",
+  "group_id": "V-270524",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "The Oracle REMOTE_OS_ROLES parameter must be set to FALSE.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Setting REMOTE_OS_ROLES to TRUE allows operating system groups to control Oracle roles. The default value of FALSE causes roles to be identified and managed by the database. If REMOTE_OS_ROLES is set to TRUE, a remote user could impersonate another operating system user over a network connection. \n \nDOD requires the REMOTE_OS_ROLES to be set to FALSE.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To verify the current status of the remote_os_roles parameter use the SQL statement: \n\nIf using a non-CDB database:\n\nFrom SQL*Plus:\n \nCOLUMN name format a20 \nCOLUMN parameter_value format a20 \n\nSELECT name, con_id, value AS PARAMETER_VALUE \nFROM sys.v_$parameter \nWHERE vp.name = 'remote_os_roles' \nORDER BY 1; \n\nIf the PARAMETER_VALUE is not FALSE, that is a finding.\n\nIf using a CDB database:\n\nFrom SQL*Plus (in the CDB database):\n \nCOLUMN name format a20 \nCOLUMN parameter_value format a20 \n\nSELECT name, inst_id, con_id, value AS PARAMETER_VALUE \nFROM sys.gv_$parameter \t\nWHERE vp.name = 'remote_os_roles' \nORDER BY 1; \n\nIn the CDB database, if the PARAMETER_VALUE is not FALSE, that is a finding.",
+  "fix": "Set the parameter to FALSE for all instances. If using Oracle Multitenant, set the value to FALSE for the container database and all pluggable databases will be set to FALSE as well. \n\nALTER SYSTEM SET remote_os_roles = FALSE scope=spfile; \n\nsid='container_name' is optional \n\nRestart the database for the change to take effect.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Setting REMOTE_OS_ROLES to TRUE allows operating system groups to control Oracle roles. The default value of FALSE causes roles to be identified and managed by the database. If REMOTE_OS_ROLES is set to TRUE, a remote user could impersonate another operating system user over a network connection. \n \nDOD requires the REMOTE_OS_ROLES to be set to FALSE.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-009200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

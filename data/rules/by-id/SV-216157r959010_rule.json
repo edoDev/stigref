@@ -1,0 +1,53 @@
+{
+  "id": "SV-216157r959010_rule",
+  "full_rule_id": "SV-216157r959010_rule",
+  "rule_id": "SV-216157",
+  "rule_revision": "959010",
+  "group_id": "V-216157",
+  "group_title": "SRG-OS-000480",
+  "title": "The system must prevent local applications from generating source-routed packets.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Source-routed packets allow the source of the packet to suggest that routers forward the packet along a different path than configured on the router, which can be used to bypass network security measures.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine the OS version you are currently securing.\n# uname –v\n\nSolaris 11, 11.1, 11.2, and 11.3 use IP Filter.  To continue checking IP Filter, the IP Filter Management profile is required.\n\nCheck the system for an IPF rule blocking outgoing source-routed packets.\n\n# ipfstat -o\n\nExamine the list for rules such as: \nblock out log quick from any to any with opt lsrr\nblock out log quick from any to any with opt ssrr\n\nIf the listed rules do not block both lsrr and ssrr options, this is a finding.\n\nFor Solaris 11.3 or newer that use Packet Filter, the Network Firewall Management rights profile is required.\n\nEnsure that IP Options are not in use:\n# pfctl -s rules | grep allow-opts\n\nIf any output is returned, this is a finding.",
+  "fix": "The root role is required.\n\n# pfedit /etc/ipf/ipf.conf \n\nFor Solaris 11, 11.1, 11.2, and 11.3 that use IP Filter dd rules to block outgoing source-routed packets, such as:\n\nblock out log quick all with opt lsrr \nblock out log quick all with opt ssrr\n\nReload the IPF rules.\n\n# ipf -Fa -A -f /etc/ipf/ipf.conf   \n\nFor Solaris 11.3 or newer that use Packet Filter remove or modify any rules that include \"allow-opts\".\n\nReload the Packet Filter rules:\n# svcadm refresh firewall:default",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Source-routed packets allow the source of the packet to suggest that routers forward the packet along a different path than configured on the router, which can be used to bypass network security measures.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-050370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

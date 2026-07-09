@@ -1,0 +1,54 @@
+{
+  "id": "SV-259104r935216_rule",
+  "full_rule_id": "SV-259104r935216_rule",
+  "rule_id": "SV-259104",
+  "rule_revision": "935216",
+  "group_id": "V-259104",
+  "group_title": "SRG-APP-000001-AS-000001",
+  "title": "The vCenter UI service must limit the number of maximum concurrent connections permitted.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Resource exhaustion can occur when an unlimited number of concurrent requests are allowed on a website, facilitating a denial-of-service attack. Unless the number of requests is controlled, the web server can consume enough system resources to cause a system crash.\n\nMitigating this kind of attack will include limiting the number of concurrent HTTP/HTTPS requests. In Tomcat, each incoming request requires a thread for the duration of that request. If more simultaneous requests are received than can be handled by the currently available request processing threads, additional threads will be created up to the value of the maxThreads attribute.\n\nSatisfies: SRG-APP-000001-AS-000001, SRG-APP-000435-AS-000163</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --xpath '/Server/Service/Connector[@port=\"${http.port}\"]/@maxThreads' /usr/lib/vmware-vsphere-ui/server/conf/server.xml\n\nExpected result:\n\nmaxThreads=\"800\"\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-vsphere-ui/server/conf/server.xml\n\nNavigate to the <Connector> node and configure with the value \"maxThreads=\"800\"\".\n\nRestart the service with the following command:\n\n# vmon-cli --restart vsphere-ui",
+  "ccis": [
+    "CCI-000054",
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Resource exhaustion can occur when an unlimited number of concurrent requests are allowed on a website, facilitating a denial-of-service attack. Unless the number of requests is controlled, the web server can consume enough system resources to cause a system crash.\n\nMitigating this kind of attack will include limiting the number of concurrent HTTP/HTTPS requests. In Tomcat, each incoming request requires a thread for the duration of that request. If more simultaneous requests are received than can be handled by the currently available request processing threads, additional threads will be created up to the value of the maxThreads attribute.\n\nSatisfies: SRG-APP-000001-AS-000001, SRG-APP-000435-AS-000163",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCUI-80-000001",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-user-interface-ui-security-technical-implem-v1r1-33754d0b",
+      "name": "VMware vSphere 8.0 vCenter Appliance User Interface (UI) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-user-interface-ui-security-technical-implem-v1r1-33754d0b"
+  ]
+}

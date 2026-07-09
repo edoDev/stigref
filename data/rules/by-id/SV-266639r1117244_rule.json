@@ -1,0 +1,53 @@
+{
+  "id": "SV-266639r1117244_rule",
+  "full_rule_id": "SV-266639r1117244_rule",
+  "rule_id": "SV-266639",
+  "rule_revision": "1117244",
+  "group_id": "V-266639",
+  "group_title": "SRG-NET-000352",
+  "title": "AOS must use cryptographic algorithms approved by the National Security Agency (NSA) to protect national security systems (NSS) when transporting classified traffic across an unclassified network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of weak or untested encryption algorithms undermines the purposes of using encryption to protect data.\n\nNational Institute of Standards and Technology (NIST) cryptographic algorithms are approved by NSA to protect NSS. Based on an analysis of the impact of quantum computing, cryptographic algorithms specified by CNSSP-15 and approved for use in products in the Commercial Solutions for Classified (CSfC) program have been changed to more stringent protocols and configured with increased bit sizes and other secure characteristics to protect against quantum computing threats. The Commercial National Security Algorithm (CNSA) Suite replaces Suite B.\n\nSatisfies: SRG-NET-000352, SRG-NET-000565</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If AOS is not being used for CSFC, this requirement is not applicable.\n\n1. Verify the AOS configuration with the following command:\nshow crypto-local ipsec-map\n\nNote the IKEv2 Policy number for each configured map.\n\n2. For each configured policy number, run the following command:\nshow crypto isakmp policy <IKEv2 Policy #>\n\n3. Verify each configured transform-set with the following command:\nshow crypto ipsec transform-set\n\nIf the configured IPsec map, ISAKMP policy, and transform-set do not contain the following, this is a finding:\n\nECDCA 384 certificate\nIKEv2 policy with AES256, SHA-384, ECDSA-384, Group 20\nTransform set with AES-256-GCM",
+  "fix": "Configure AOS with the following commands:\ncrypto pki csr ec curve_name secp384r1 common_name <common_name> country <US> state_or_province <state> city <city> organization <org> unit <unit> email <email>\nshow crypto pki csr\n\n1. Use DOD PKI to generate a public certificate based on the CSR.\n2. Using the web GUI, navigate to Configuration >> System >> Certificates >> Import Certificates. \n3. Click the plus sign (+) and enter \"Certificate name:\", browse to the public certificate file, choose the appropriate format, \"ServerCert\" type, and click \"Submit\". \n4. Navigate to Configuration >> System >> Admin, choose the imported certificate under \"Server Certificate\", and click \"Submit\". \n5. Click Pending Changes >> Deploy Changes. \n\nconfigure terminal\ncrypto ipsec transform-set <name> esp-aes256-gcm\ncrypto isakmp policy <#>\nauthentication ecdsa-384\nencryption aes256\ngroup 20\nhash sha2-384-192\nprf prf-hmac-sha384\nversion v2\nexit\ncrypto-local ipsec-map <name> <priority>\nset transform-set <set created earlier name>\n<configure VPN settings as needed>\nexit\nwrite memory",
+  "ccis": [
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of weak or untested encryption algorithms undermines the purposes of using encryption to protect data.\n\nNational Institute of Standards and Technology (NIST) cryptographic algorithms are approved by NSA to protect NSS. Based on an analysis of the impact of quantum computing, cryptographic algorithms specified by CNSSP-15 and approved for use in products in the Commercial Solutions for Classified (CSfC) program have been changed to more stringent protocols and configured with increased bit sizes and other secure characteristics to protect against quantum computing threats. The Commercial National Security Algorithm (CNSA) Suite replaces Suite B.\n\nSatisfies: SRG-NET-000352, SRG-NET-000565",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-NT-000920",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-wireless-security-technical-implementation-guide-v1r2-fabfc0cf",
+      "name": "HPE Aruba Networking AOS Wireless Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-wireless-security-technical-implementation-guide-v1r2-fabfc0cf"
+  ]
+}

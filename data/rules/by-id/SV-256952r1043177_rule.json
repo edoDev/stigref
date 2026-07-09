@@ -1,0 +1,53 @@
+{
+  "id": "SV-256952r1043177_rule",
+  "full_rule_id": "SV-256952r1043177_rule",
+  "rule_id": "SV-256952",
+  "rule_revision": "1043177",
+  "group_id": "V-256952",
+  "group_title": "SRG-APP-000142-WSR-000089",
+  "title": "All Automation Controller NGINX web servers must be configured to use a specified IP address and port.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>From a security perspective, it is important that all Automation Controller NGINX web servers are configured to use a specified IP address and port because “listening” on all IP addresses poses a vulnerability to the web server.\n\nNot confining the web server to a specified IP address and port puts all web server content at risk of access by bad actors wanting to take advantage of those resources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As a System Administrator for each Automation Controller NGINX web server host, verify the web server is configured to use a static IP address and port.\n\nNGINXCONF=`nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}' ` ; grep '^\\s*listen\\s*\\*\\|\\s*listen\\s*\\[.*\\]\\|\\s*listen\\s*0\\.0\\.0\\.0\\|\\s*listen\\s*\\[.*\\]|^\\s*listen\\s\\+.*:[^[:digit:]\\s]\\+.*' $NGINXCONF && echo FAILED\n\nIf \"FAILED\" is displayed, this is a finding.",
+  "fix": "As a System Administrator for each Automation Controller NGINX web server host, identify the allowed and/or designated IP address(es) for the Automation Controller system.\n\nReplace any wildcard or ranged IP address references in the NGINX configuration with IP addresses from the pool of allowed and/or designated address.\n\nReload the NGINX server configurations for all NGINX processes:\n\n$ pkill -HUP nginx",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "From a security perspective, it is important that all Automation Controller NGINX web servers are configured to use a specified IP address and port because “listening” on all IP addresses poses a vulnerability to the web server.\n\nNot confining the web server to a specified IP address and port puts all web server content at risk of access by bad actors wanting to take advantage of those resources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APWS-AT-000370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65",
+      "name": "Red Hat Ansible Automation Controller Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65"
+  ]
+}

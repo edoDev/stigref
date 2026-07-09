@@ -1,0 +1,53 @@
+{
+  "id": "SV-255997r882333_rule",
+  "full_rule_id": "SV-255997r882333_rule",
+  "rule_id": "SV-255997",
+  "rule_revision": "882333",
+  "group_id": "V-255997",
+  "group_title": "SRG-NET-000019-RTR-000002",
+  "title": "The Arista perimeter router must be configured to enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information flow control regulates authorized information to travel within a network and between interconnected networks. Controlling the flow of network traffic is critical so it does not introduce any unacceptable risk to the network infrastructure or data. An example of a flow control restriction is blocking outside traffic claiming to be from within the organization. For most routers, internal information flow control is a product of system design.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify each Arista router enforces approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.\n\nThis requirement may be met through the use of IP access control lists. \n\nStep 1: To verify on the Arista router that IP access lists are configured, execute the \"show ip access-lists summary\" command and check that the list is configured and is active on applicable interfaces.\n\nrouter:#show ip access-lists summary\nIPV4 ACL $$bgp-ttlSec-ip-vrf-default$$ [dynamic]\n        Total rules configured: 1\n        Configured on Ingress: bgp(default VRF)\n        Active on     Ingress: bgp(default VRF)\n\nIPV4 ACL ACL\n        Total rules configured: 1\n\nStandard IPV4 ACL ALLOWED_SOURCES\n        Total rules configured: 2\n\nIPV4 ACL AUTHORIZED_SOURCES\n        Total rules configured: 3\n\nStep 2: To verify the Arista router lists that control the flow of information in accordance with organizational policy, enter the \"show ip access-list [name]\" command and review the associated permit and deny statements.\n\nIP Access List ACL.\nrouter#show ip access-list AUTHORIZED_SOURCES\n  IP Access List AUTHORIZED_SOURCES\n        10 permit ip 10.1.12.0/24 any\n        20 deny ip 1.2.3.0/24 any log\n        30 deny ip host 10.11.12.2 any log\n\nIf the Arista router does not enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy, this is a finding.",
+  "fix": "Configure the router to enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.\n\nTo use an IP access list to fulfill this function, enter the following commands, substituting organizational values for the bracketed variables.\n\nip access-list [name]\n[permit/deny] [protocol] [source address] [source port] [destination address] [destination port]\nexit\n\ninterface [type] [number]\nip access-group [name] [direction]",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information flow control regulates authorized information to travel within a network and between interconnected networks. Controlling the flow of network traffic is critical so it does not introduce any unacceptable risk to the network infrastructure or data. An example of a flow control restriction is blocking outside traffic claiming to be from within the organization. For most routers, internal information flow control is a product of system design.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-221034r622190_rule",
+  "full_rule_id": "SV-221034r622190_rule",
+  "rule_id": "SV-221034",
+  "rule_revision": "622190",
+  "group_id": "V-221034",
+  "group_title": "SRG-NET-000512-RTR-000003",
+  "title": "The Cisco MPLS switch must be configured to synchronize Interior Gateway Protocol (IGP) and LDP to minimize packet loss when an IGP adjacency is established prior to LDP peers completing label exchange.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Packet loss can occur when an IGP adjacency is established and the switch begins forwarding packets using the new adjacency before the LDP label exchange completes between the peers on that link. Packet loss can also occur if an LDP session closes and the switch continues to forward traffic using the link associated with the LDP peer rather than an alternate pathway with a fully synchronized LDP session. The MPLS LDP-IGP Synchronization feature provides a means to synchronize LDP with OSPF or IS-IS to minimize MPLS packet loss. When an IGP adjacency is established on a link but LDP-IGP synchronization is not yet achieved or is lost, the IGP will advertise the max-metric on that link.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch OSPF or IS-IS configuration and verify that LDP will synchronize with the link-state routing protocol as shown in the example below:\n\nOSPF Example:\n\nrouter ospf 1\n mpls ldp sync\n\nIS-IS Example:\n\nrouter isis\n mpls ldp sync\n net 49.0001.1234.1600.5531.00\n\nIf the switch is not configured to synchronize IGP and LDP, this is a finding.",
+  "fix": "Configure the MPLS switch to synchronize IGP and LDP, minimizing packet loss when an IGP adjacency is established prior to LDP peers completing label exchange.\n\nOSPF Example:\n\nSW2(config)#router ospf 1\nSW2(config-switch)#mpls ldp sync\n\nIS-IS Example:\n\nSW1(config)#router isis\nSW1(config-switch)#mpls ldp sync",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Packet loss can occur when an IGP adjacency is established and the switch begins forwarding packets using the new adjacency before the LDP label exchange completes between the peers on that link. Packet loss can also occur if an LDP session closes and the switch continues to forward traffic using the link associated with the LDP peer rather than an alternate pathway with a fully synchronized LDP session. The MPLS LDP-IGP Synchronization feature provides a means to synchronize LDP with OSPF or IS-IS to minimize MPLS packet loss. When an IGP adjacency is established on a link but LDP-IGP synchronization is not yet achieved or is lost, the IGP will advertise the max-metric on that link.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000600",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887",
+      "name": "Cisco IOS XE Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887"
+  ]
+}

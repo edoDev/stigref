@@ -1,0 +1,53 @@
+{
+  "id": "SV-215209r991589_rule",
+  "full_rule_id": "SV-215209r991589_rule",
+  "rule_id": "SV-215209",
+  "rule_revision": "991589",
+  "group_id": "V-215209",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "All AIX NFS anonymous UIDs and GIDs must be configured to values without permissions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When an NFS server is configured to deny remote root access, a selected UID and GID are used to handle requests from the remote root user. The UID and GID should be chosen from the system to provide the appropriate level of non-privileged access.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check if the \"anon\" option is set correctly for exported file systems. \n\nList exported file systems using command: \n\n# exportfs -v \n/home/doej     rw,anon=-1,access=doej\n\nNote: Each of the exported file systems should include an entry for the \"anon=\" option set to \"-1\" or an equivalent (60001, 60002, 65534, or 65535). \n\nIf an appropriate \"anon=\" setting is not present for an exported file system, this is a finding.",
+  "fix": "Edit \"/etc/exports\" and set the \"anon=-1\" option for all exported file systems without it. \n\nRe-export the file systems using command: \n# exportfs -a",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When an NFS server is configured to deny remote root access, a selected UID and GID are used to handle requests from the remote root user. The UID and GID should be chosen from the system to provide the appropriate level of non-privileged access.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001055",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

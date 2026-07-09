@@ -1,0 +1,53 @@
+{
+  "id": "SV-271609r1091539_rule",
+  "full_rule_id": "SV-271609r1091539_rule",
+  "rule_id": "SV-271609",
+  "rule_revision": "1091539",
+  "group_id": "V-271609",
+  "group_title": "SRG-OS-000383-GPOS-00166",
+  "title": "OL 9 must prohibit the use of cached authenticators after one day.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If cached authentication information is out-of-date, the validity of the authentication information may be questionable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If smart card authentication is not being used on the system, this requirement is Not Applicable.\n\nVerify that OL 9's System Security Services Daemon (SSSD) prohibits the use of cached authentications after one day.\n\nCheck that SSSD allows cached authentications with the following command:\n\n$ sudo grep cache_credentials /etc/sssd/sssd.conf\ncache_credentials = true\n\nIf \"cache_credentials\" is set to \"false\" or missing from the configuration file, this is not a finding and no further checks are required.\n\nIf \"cache_credentials\" is set to \"true\", check that SSSD prohibits the use of cached authentications after one day with the following command:\n\n$ sudo grep offline_credentials_expiration  /etc/sssd/sssd.conf\noffline_credentials_expiration = 1\n\nIf \"offline_credentials_expiration\" is not set to a value of \"1\", this is a finding.",
+  "fix": "Configure the SSSD to prohibit the use of cached authentications after one day.\n\nAdd or change the following line in \"/etc/sssd/sssd.conf\" just below the line [pam]:\n\noffline_credentials_expiration = 1",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If cached authentication information is out-of-date, the validity of the authentication information may be questionable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-000935",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

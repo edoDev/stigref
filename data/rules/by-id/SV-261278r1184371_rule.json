@@ -1,0 +1,53 @@
+{
+  "id": "SV-261278r1184371_rule",
+  "full_rule_id": "SV-261278r1184371_rule",
+  "rule_id": "SV-261278",
+  "rule_revision": "1184371",
+  "group_id": "V-261278",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "A separate file system must be used for SLEM 5 user home directories (such as /home or an equivalent).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The use of separate file systems for different paths can protect the system from failures resulting from a file system becoming full or failing.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that a separate file system/partition has been created for SLEM 5 nonprivileged local interactive users (those with a UID greater than 1000) home directories with the following command:\n\n     > awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1, $3, $6, $7}' /etc/passwd\n     disauser 1002 /home/disauser /bin/bash\n     dosuser 1003 /home/dosuser /bin/bash\n     dosuser 1001 /home/dosuser /bin/bash\n\nThe output of the command will give the directory/partition that contains the home directories for the nonprivileged users on the system (in this example, /home) and user's shell. All accounts with a valid shell (such as /bin/bash) are considered interactive users.\n\nCheck that a file system/partition has been created for the nonprivileged interactive users with the following command:\n\nNote: The partition of /home is used in the example.\n\n     > grep /home /etc/fstab\n     UUID=c4e898dd-6cd9-4091-a733-9435e505957a /home btrfs defaults,subvol=@/home 0 0\n\nIf a separate entry for the file system/partition that contains the nonprivileged interactive users' home directories does not exist, this is a finding.",
+  "fix": "Create a separate file system/partition for SLEM 5 nonprivileged local interactive user home directories.\n\nMigrate the nonprivileged local interactive user home directories onto the separate file system/partition.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The use of separate file systems for different paths can protect the system from failures resulting from a file system becoming full or failing.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-231010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

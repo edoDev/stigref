@@ -1,0 +1,53 @@
+{
+  "id": "SV-258757r1003570_rule",
+  "full_rule_id": "SV-258757r1003570_rule",
+  "rule_id": "SV-258757",
+  "rule_revision": "1003570",
+  "group_id": "V-258757",
+  "group_title": "SRG-OS-000163-VMM-000700",
+  "title": "The ESXi host must set a timeout to automatically end idle DCUI sessions after 10 minutes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When the Direct Console User Interface (DCUI) is enabled and logged in, it should be automatically logged out if left logged on to avoid access by unauthorized persons. The \"DcuiTimeOut\" setting defines a window of time after which the DCUI will be logged out.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nSelect the \"UserVars.DcuiTimeOut\" value and verify it is set to \"600\" or less and not \"0\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-AdvancedSetting -Name UserVars.DcuiTimeOut\n\nIf the \"UserVars.DcuiTimeOut\" setting is set to a value greater than \"600\" or \"0\", this is a finding.",
+  "fix": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nClick \"Edit\". Select the \"UserVars.DcuiTimeOut\" value and configure it to \"600\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-AdvancedSetting -Name UserVars.DcuiTimeOut | Set-AdvancedSetting -Value 600",
+  "ccis": [
+    "CCI-001133"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When the Direct Console User Interface (DCUI) is enabled and logged in, it should be automatically logged out if left logged on to avoid access by unauthorized persons. The \"DcuiTimeOut\" setting defines a window of time after which the DCUI will be logged out.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000196",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v2r3-8fcaad5d",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v2r3-8fcaad5d"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-215426r991589_rule",
+  "full_rule_id": "SV-215426r991589_rule",
+  "rule_id": "SV-215426",
+  "rule_revision": "991589",
+  "group_id": "V-215426",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "AIX package management tool must be used daily to verify system software.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Verification using the system package management tool can be used to determine that system software has not been tampered with. This requirement is not applicable to systems not using package management tools.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the root crontab for a daily job invoking the system package management tool to verify the integrity of installed packages.\n\nFrom the command prompt, run the following command: \n\n# crontab -l | grep lppchk \n55 22 * * * /lppchk.sh # Daily LPP check script\n\nIf no such job exists, this is a finding.",
+  "fix": "Add a job to the root crontab invoking the following system package management tool to verify the integrity of installed packages and email the result to root user.\n\nRun the following command to add the cron job: \n# crontab -e\n\nWithin crontab command, add the following daily job to the cron table, then save the change:\n0 23 * * * /usr/bin/lppchk -c > /tmp/111 2>&1; sendmail root < /tmp/111",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Verification using the system package management tool can be used to determine that system software has not been tampered with. This requirement is not applicable to systems not using package management tools.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003131",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

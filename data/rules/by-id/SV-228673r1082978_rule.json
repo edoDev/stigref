@@ -1,0 +1,54 @@
+{
+  "id": "SV-228673r1082978_rule",
+  "full_rule_id": "SV-228673r1082978_rule",
+  "rule_id": "SV-228673",
+  "rule_revision": "1082978",
+  "group_id": "V-228673",
+  "group_title": "SRG-APP-000516-NDM-000317",
+  "title": "The Palo Alto Networks security platform must employ centrally managed authentication server(s).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The use of authentication servers or other centralized management servers for providing centralized authentication services is required for network device management. Maintaining local administrator accounts for daily usage on each network device without centralized management is not scalable or feasible. Without centralized management, it is likely that credentials for some network devices will be forgotten, leading to delays in administration, which itself leads to delays in remediating production problems and in addressing compromises in a timely fashion.\n\nOnly the emergency administration account, also known as the account of last resort, can be locally configured on the device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Ask the administrator which form of centralized authentication server is being used. This requirement is not applicable to the local account of last resort.\n\nNavigate to the appropriate window to view the configured server(s). \nFor RADIUS, go to Device >> Server Profiles >> RADIUS.\nFor LDAP, go to Device >> Server Profiles >> LDAP.\nFor Kerberos, go to Device >> Server Profiles >> Kerberos.\n\nIf there are no servers configured in the window that match the specified form of centralized authentication, this is a finding.",
+  "fix": "The device allows three different authentication protocols: RADIUS, LDAP, and Kerberos. In this explanation, LDAP is used. \n\nTo configure the Palo Alto Networks security platform to use an LDAP server, follow these steps:\n1. Go to Device >> Server-Profiles >> LDAP.\n2. Select \"Add\" (lower left of window).\n3. Populate the required fields.\na. Enter the name of the profile in the \"Name\" field.\nb. In the server box enter the name of the server in the \"Name\" field.\nc. Enter the IP Address of the server. \nd. Enter the Port number the firewall should use to connect to the LDAP server (default=389 for LDAP; 636 for LDAP over SSL). \ne. Enter the LDAP Domain name to prepend to all objects learned from the server. The value entered here depends on the specific deployment. If using Active Directory, enter the NetBIOS domain name; not an FQDN (for example, enter acme, not acme.com). Note that if collecting data from multiple domains, it is necessary to create separate server profiles. If using a global catalog server, leave this field blank.\n4. Select the Type of LDAP server that will be connected. The correct LDAP attributes in the group mapping settings will automatically be populated based on the selection.\n5. In the Base field, select the DN that corresponds to the point in the LDAP tree where the firewall is to begin its search for user and group information.\n6. Select the SSL checkbox.\n7. Select \"OK\".\n\nTo create an Authentication Profile using the newly created LDAP server, follow these steps:\n1. Go to Device >> Authentication Profile.\n2. Select \"Add\" (lower left of window).\n3. Populate the required fields as needed.\na. In the Authentication field, select \"LDAP\".\nb. In the Server Profile field, select the configured LDAP server profile.\nc. In the Login Attribute field, enter “sAMAccountName”. \n4. Select \"OK\".\n\nApply the authentication profile to the Administrator accounts.\n1. Go to Device >> Administrators.\n2. Select each configured account or select \"Add\" (in the bottom-left corner of the pane) to create a new one.\n3. In the \"Authentication Profile\" field, enter the configured LDAP authentication profile.\n4. Select \"OK\".\n\nNote: The name of the administrator must match the name of the user in the LDAP server.\nNote: The authentication profile must not be applied to the emergency administration account since it has special requirements.\nCommit changes by selecting \"Commit\" in the upper-right corner of the screen.\nSelect \"OK\" when the confirmation dialog appears.\n\nNote that the emergency administration account is the only account that is configured locally on the device itself.",
+  "ccis": [
+    "CCI-000366",
+    "CCI-000372"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The use of authentication servers or other centralized management servers for providing centralized authentication services is required for network device management. Maintaining local administrator accounts for daily usage on each network device without centralized management is not scalable or feasible. Without centralized management, it is likely that credentials for some network devices will be forgotten, leading to delays in administration, which itself leads to delays in remediating production problems and in addressing compromises in a timely fashion.\n\nOnly the emergency administration account, also known as the account of last resort, can be locally configured on the device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PANW-NM-000136",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "palo-alto-networks-ndm-security-technical-implementation-guide-v3r3-90db7705",
+      "name": "Palo Alto Networks NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "palo-alto-networks-ndm-security-technical-implementation-guide-v3r3-90db7705"
+  ]
+}

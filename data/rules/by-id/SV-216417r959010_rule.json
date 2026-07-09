@@ -1,0 +1,53 @@
+{
+  "id": "SV-216417r959010_rule",
+  "full_rule_id": "SV-216417r959010_rule",
+  "rule_id": "SV-216417",
+  "rule_revision": "959010",
+  "group_id": "V-216417",
+  "group_title": "SRG-OS-000480",
+  "title": "The sticky bit must be set on all world writable directories.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Files in directories that have had the \"sticky bit\" enabled can only be deleted by users that have both write permissions for the directory in which the file resides, as well as ownership of the file or directory, or have sufficient privileges. As this prevents users from overwriting each others' files, whether it be accidental or malicious, it is generally appropriate for most world-writable directories (e.g., /tmp).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The root role is required.\n\nIdentify all world-writable directories without the \"sticky bit\" set.\n\n# find / \\( -fstype nfs -o -fstype cachefs -o -fstype autofs \\\n   -o -fstype ctfs -o -fstype mntfs -o -fstype objfs \\\n   -o -fstype proc \\) -prune -o -type d \\( -perm -0002 \\\n   -a ! -perm -1000 \\) -ls\n\nOutput of this command identifies world-writable directories without the \"sticky bit\" set.  If output is created, this is a finding.",
+  "fix": "The root role is required.\n\nEnsure that the \"sticky bit\" is set on any directories identified during the check steps.\n\n# chmod +t [directory name]",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Files in directories that have had the \"sticky bit\" enabled can only be deleted by users that have both write permissions for the directory in which the file resides, as well as ownership of the file or directory, or have sufficient privileges. As this prevents users from overwriting each others' files, whether it be accidental or malicious, it is generally appropriate for most world-writable directories (e.g., /tmp).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-070010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

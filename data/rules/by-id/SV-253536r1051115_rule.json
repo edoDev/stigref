@@ -1,0 +1,53 @@
+{
+  "id": "SV-253536r1051115_rule",
+  "full_rule_id": "SV-253536r1051115_rule",
+  "rule_id": "SV-253536",
+  "rule_revision": "1051115",
+  "group_id": "V-253536",
+  "group_title": "SRG-APP-000148-CTR-000345",
+  "title": "Prisma Cloud Compute Console must run as nonroot user (uid 2674).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Containers not requiring root-level permissions must run as a unique user account. To ensure accountability and prevent unauthenticated access to containers, the user the container is using to execute must be uniquely identified and authenticated to prevent potential misuse and compromise of the system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Locate the node in which the Prisma Cloud Compute Console container is running. \n\nDetermine the process owner for \"app/server\".\n\nExecute: \"ps -aux | grep \"/app/server\"\n\nIf the process is owned by root, this is a finding.",
+  "fix": "In the root directory of the extracted release tar file, modify the twistlock.cfg file's line:\nRUN_CONSOLE_AS_ROOT=false\n\nFor Kubernetes deployment, perform these additional steps:\n\nWhen generating the twistlock_console.yaml deployment file, supply the --run-as-user flag.\n\nLinux/twistcli console export kubernetes --service-type ClusterIP --run-as-user 2674\n\nModify the resulting twistlock_console.yaml file to include fsGroup: 2674 within the Deployment pod specification's securityContext:\nsecurityContext: fsGroup: 2674\n\nAdd runAsGroup: 2674 to the container specification's securityContext:\nsecurityContext: runAsUser: 2674\nrunAsGroup: 2674",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Containers not requiring root-level permissions must run as a unique user account. To ensure accountability and prevent unauthenticated access to containers, the user the container is using to execute must be uniquely identified and authenticated to prevent potential misuse and compromise of the system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-PC-000530",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "palo-alto-networks-prisma-cloud-compute-security-technical-implementation-guide-v2r3-04e223d6",
+      "name": "Palo Alto Networks Prisma Cloud Compute Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "palo-alto-networks-prisma-cloud-compute-security-technical-implementation-guide-v2r3-04e223d6"
+  ]
+}

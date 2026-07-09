@@ -1,0 +1,56 @@
+{
+  "id": "SV-261310r996401_rule",
+  "full_rule_id": "SV-261310r996401_rule",
+  "rule_id": "SV-261310",
+  "rule_revision": "996401",
+  "group_id": "V-261310",
+  "group_title": "SRG-OS-000096-GPOS-00050",
+  "title": "SLEM 5 must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services as defined in the Ports, Protocols, and Services Management (PPSM) Category Assignments List (CAL) and vulnerability assessments.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports/protocols on information systems.\n\nAdditionally, operating system remote access functionality must have the capability to immediately disconnect current users remotely accessing the information system and/or disable further remote access. The speed of disconnect or disablement varies based on the criticality of mission functions and the need to eliminate immediate or future remote access to organizational information systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 \"firewalld.service\" is enabled and running with the following command:\n\n     > systemctl status firewalld.service\n          firewalld.service - firewalld - dynamic firewall daemon\n               Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: disabled)\n               Active: active (running) since Wed 2023-11-29 08:12:35 MST\n\nIf the service is not enabled and active, this is a finding.\n\nCheck the firewall configuration for any unnecessary or prohibited functions, ports, protocols, and/or services by running the following command:\n\n     > sudo firewall-cmd --list-all\n\nAsk the system administrator for the site or program PPSM Component Local Services Assessment (Component Local Services Assessment (CLSA). Verify the services allowed by the firewall match the PPSM CLSA. \n\nIf there are any additional ports, protocols, or services that are not included in the PPSM CLSA, this is a finding.\n\nIf there are any ports, protocols, or services that are prohibited by the PPSM CAL, this is a finding.",
+  "fix": "Configure SLEM 5 is configured to prohibit or restrict the use of functions, ports, protocols, and/or services as defined in the PPSM CAL and vulnerability assessments.\n\nAdd/modify /etc/firewalld configuration files to comply with the PPSM CAL.\n\nEnable and start the \"firewalld.service\" by running the following command:\n\n     > sudo systemctl enable firewalld.service --now\n\nTo immediately disable remote access and disconnect all current remote connections, the firewall needs to be set into panic mode.\n\n> sudo firewall-cmd --panic-on\n\nTo allow remote access, panic mode needs to be disabled.\n\n> sudo firewall-cmd --panic-off",
+  "ccis": [
+    "CCI-000382",
+    "CCI-002314",
+    "CCI-000366",
+    "CCI-002322"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports/protocols on information systems.\n\nAdditionally, operating system remote access functionality must have the capability to immediately disconnect current users remotely accessing the information system and/or disable further remote access. The speed of disconnect or disablement varies based on the criticality of mission functions and the need to eliminate immediate or future remote access to organizational information systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-251010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

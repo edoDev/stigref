@@ -1,0 +1,53 @@
+{
+  "id": "SV-259934r948780_rule",
+  "full_rule_id": "SV-259934r948780_rule",
+  "rule_id": "SV-259934",
+  "rule_revision": "948780",
+  "group_id": "V-259934",
+  "group_title": "SRG-VOIP-000540",
+  "title": "The Session Border Controller (SBC) (or similar firewall type device) must perform stateful inspection and packet authentication for all VVoIP traffic (inbound and outbound) and deny all other packets.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Once a pinhole is opened in the enclave boundary for a known session, the packets that are permitted to pass must be managed. If they are not properly managed, packets that are not part of a known session could traverse the pinhole, thereby giving unauthorized access to the enclave's LAN or connected hosts.\n\nOne method for managing these packets is stateful packet inspection. This inspection minimally validates that the permitted packets are part of a known session. This is a relatively weak but somewhat effective firewall function. A better method is to authenticate the source of the packet as coming from a known and authorized source.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the DISN NIPRNet boundary SBC is configured to deny all packets attempting to traverse the enclave boundary (inbound or outbound) through the IP port pinholes opened for VVoIP sessions that are not validated as being part of an established session. This requires a stateful inspection of the packets passed through the IP port pinholes or the authentication of the source of those packets.\n\nIf packets that are not part of an established session can pass through the SBC, this is a finding. \n\nIf stateful packet inspection or SRTP/SRTCP packet authentication is not configured, this is a finding. \n\nIf stateful packet inspection is not configured but the source of the SRTP/SRTCP packets is authenticated from an authorized source, such as an internal endpoint or a remote DISN SBC, this is not a finding.\n\nNOTE: The VVoIP system may allow SIP and SRTP traffic encrypted and encapsulated on port 443 from cloud service providers.",
+  "fix": "Configure the DISN NIPRNet SBC to deny all packets attempting to traverse the enclave boundary (inbound or outbound) through the IP port pinholes opened for known sessions, except those validated as being part of an established session. This requires a stateful inspection of the packets passed through the IP port pinholes or the authentication of the source of those packets.\n\nNOTE: The VVoIP system may allow SIP and SRTP traffic encrypted and encapsulated on port 443 from cloud service providers.",
+  "ccis": [
+    "CCI-001548"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Once a pinhole is opened in the enclave boundary for a known session, the packets that are permitted to pass must be managed. If they are not properly managed, packets that are not part of a known session could traverse the pinhole, thereby giving unauthorized access to the enclave's LAN or connected hosts.\n\nOne method for managing these packets is stateful packet inspection. This inspection minimally validates that the permitted packets are part of a known session. This is a relatively weak but somewhat effective firewall function. A better method is to authenticate the source of the packet as coming from a known and authorized source.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SRG-VOIP-000540",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "enterprise-voice-video-and-messaging-policy-security-requirements-guide-v1r4-256f8b99",
+      "name": "Enterprise Voice, Video, and Messaging Policy Security Requirements Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "enterprise-voice-video-and-messaging-policy-security-requirements-guide-v1r4-256f8b99"
+  ]
+}

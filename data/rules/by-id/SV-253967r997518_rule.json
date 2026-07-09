@@ -1,0 +1,53 @@
+{
+  "id": "SV-253967r997518_rule",
+  "full_rule_id": "SV-253967r997518_rule",
+  "rule_id": "SV-253967",
+  "rule_revision": "997518",
+  "group_id": "V-253967",
+  "group_title": "SRG-NET-000512-L2S-000008",
+  "title": "The Juniper EX switch must not be configured with VLANs used for L2 control traffic assigned to any host-facing access interface.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In a switched Ethernet network, some protocols use L2 Protocol Data Units (PDU) to communicate in-band management or other control information. This control traffic is inappropriate for host-facing access interfaces because those devices are not part of the switching infrastructure. Juniper switches do not automatically carry this L2 control traffic in the default VLAN or automatically assign the default VLAN to all trunks, reducing the scope of potential misuse. Preventing host-facing access interfaces from participating in the L2 control traffic communications further reduces the risk of inadvertent (or malicious) interference.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configurations and verify all access interfaces are assigned to a configured VLAN not used for L2 control traffic.\n\nIf assigning via interface-range, the configuration will be similar to the example.\n[edit interfaces]\ninterface-range <name> {\n    member <interface name>;\n    member-range <starting interface name> to <ending interface name>; <<< Member ranges are contiguous from <start interface> to <end interface> inclusive\n    unit 0 {\n        family ethernet-switching {\n            vlan {\n                members <vlan name>;\n            }\n        }\n    }\n}\n\nIf assigning individually, the configuration will be similar to the example.\n[edit interfaces]\n<interface name> {\n    unit 0 {\n        family ethernet-switching {\n            vlan {\n                members <vlan name>;\n            }\n        }\n    }\n}\n\nVerify the assigned VLANs are configured. \n[edit vlans]\n<vlan name> {\n    vlan-id <VLAN ID>;\n}\nNote: Assigning interfaces to a VLAN automatically removes them from the default VLAN.\n\nIf there are access interfaces assigned to the VLANs used for L2 control traffic, this is a finding.",
+  "fix": "Assign all access interfaces to a VLAN not used for L2 control traffic.\n\nInterface range configuration:\nset interfaces interface-range name member <interface name>\nset interfaces interface-range name member-range <starting interface name> to <ending interface name>\nset interfaces interface-range name unit 0 family ethernet-switching vlan members <vlan name>\n\nIndividual interface configuration:\nset interfaces <interface name> unit 0 family ethernet-switching vlan members <vlan name>\n\nConfigure the VLAN:\nset vlans <vlan name> vlan-id <VLAN ID>",
+  "ccis": [
+    "CCI-004891"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In a switched Ethernet network, some protocols use L2 Protocol Data Units (PDU) to communicate in-band management or other control information. This control traffic is inappropriate for host-facing access interfaces because those devices are not part of the switching infrastructure. Juniper switches do not automatically carry this L2 control traffic in the default VLAN or automatically assign the default VLAN to all trunks, reducing the scope of potential misuse. Preventing host-facing access interfaces from participating in the L2 control traffic communications further reduces the risk of inadvertent (or malicious) interference.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-L2-000200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf",
+      "name": "Juniper EX Series Switches Layer 2 Switch Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf"
+  ]
+}

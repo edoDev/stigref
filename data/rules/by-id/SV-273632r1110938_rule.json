@@ -1,0 +1,53 @@
+{
+  "id": "SV-273632r1110938_rule",
+  "full_rule_id": "SV-273632r1110938_rule",
+  "rule_id": "SV-273632",
+  "rule_revision": "1110938",
+  "group_id": "V-273632",
+  "group_title": "SRG-NET-000362-RTR-000114",
+  "title": "The RUCKUS ICX router must be configured to have Internet Control Message Protocol (ICMP) mask replies disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Mask Reply ICMP messages are commonly used by attackers for network mapping and diagnosis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review configuration to determine whether outgoing ICMP mask replies are blocked on external interfaces.\n\nenable egress-acl-on-cpu-traffic\n\nip access-list extended BLOCK_ICMP_OUT\n sequence 10 deny icmp any any unreachable\n sequence 20 deny icmp any any mask-reply\n sequence 30 permit ip any any\n\ninterface ethernet 1/1/1\n ip address x.0.1.2 255.255.255.252\n ip access-group BLOCK_ICMP_OUT out\n!\n\nIf outgoing ICMP mask replies are not blocked on external interfaces, this is a finding.",
+  "fix": "Configure ACL to block ICMP mask replies.\n\nICX(config)#enable egress-acl-on-cpu-traffic\nICX(config)#ip access ext BLOCK_ICMP_OUT\nICX(config-ext-ipacl-BLOCK_ICMP_OUT)#deny icmp any any unreachable\nICX(config-ext-ipacl-BLOCK_ICMP_OUT)#deny icmp any any mask-reply\nICX(config-ext-ipacl-BLOCK_ICMP_OUT)#permit ip any any\n\nApply ACL to external interface.\n\nICX(config)#interface ethernet 1/1/1\nICX(config-if-e1000-1/1/1)#ip access-group BLOCK_ICMP_OUT out",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Mask Reply ICMP messages are commonly used by attackers for network mapping and diagnosis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000650",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

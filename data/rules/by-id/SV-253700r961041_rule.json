@@ -1,0 +1,53 @@
+{
+  "id": "SV-253700r961041_rule",
+  "full_rule_id": "SV-253700r961041_rule",
+  "rule_id": "SV-253700",
+  "rule_revision": "961041",
+  "group_id": "V-253700",
+  "group_title": "SRG-APP-000176-DB-000068",
+  "title": "MariaDB must enforce authorized access to all PKI private keys stored/used by the DBMS.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The DoD standard for authentication is DoD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.\n\nIf the private key is stolen, an attacker can use the private key(s) to impersonate the certificate holder. In cases where the MariaDB-stored private keys are used to authenticate MariaDB to the system's clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man in the middle attacks against the MariaDB system and its clients.\n\nBoth the holder of a digital certificate and the issuing authority must take careful measures to protect the corresponding private key. Private keys should always be generated and protected in FIPS 140-2 validated cryptographic modules.\n\nAll access to the private key(s) of MariaDB must be restricted to authorized and authenticated users. If unauthorized users have access to one or more of the MariaDB s private keys, an attacker could gain access to the key(s) and use them to impersonate the database on the network or otherwise perform unauthorized actions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "First, as the database administrator, verify the following settings: Note: If no specific directory given before the filename, the files are stored in DATADIR.\n \nMariaDB> SHOW GLOBAL VARIABLES LIKE 'ssl_ca';\nMariaDB> SHOW GLOBAL VARIABLES LIKE 'ssl_cert';\nMariaDB> SHOW GLOBAL VARIABLES LIKE 'ssl_key';\nMariaDB> SHOW GLOBAL VARIABLES LIKE 'ssl_crlpath';\nMariaDB> SHOW GLOBAL VARIABLES LIKE 'datadir';\n\nVerify the permissions of the above files. \n\nExample:\n\nls -al /path/to/ssl_cert \n\nMariaDB Enterprise Server runs as the mysql operating system user, thus should be owned by user mysql and group mysql with user read and group read file level permissions. \n\nExample: \n\n-r-------.  1 mysql\n \nIf the files and directories are not properly secured, this is a finding.",
+  "fix": "If the SSL files are not secured properly in the file system, change the ownership and permissions with operating system operations. \n\nExample: \n\nchown mysql:mysql /path/to/file\nchmod 440 /path/to/file",
+  "ccis": [
+    "CCI-000186"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DoD standard for authentication is DoD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.\n\nIf the private key is stolen, an attacker can use the private key(s) to impersonate the certificate holder. In cases where the MariaDB-stored private keys are used to authenticate MariaDB to the system's clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man in the middle attacks against the MariaDB system and its clients.\n\nBoth the holder of a digital certificate and the issuing authority must take careful measures to protect the corresponding private key. Private keys should always be generated and protected in FIPS 140-2 validated cryptographic modules.\n\nAll access to the private key(s) of MariaDB must be restricted to authorized and authenticated users. If unauthorized users have access to one or more of the MariaDB s private keys, an attacker could gain access to the key(s) and use them to impersonate the database on the network or otherwise perform unauthorized actions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-004100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

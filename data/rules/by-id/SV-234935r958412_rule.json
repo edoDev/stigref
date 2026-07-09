@@ -1,0 +1,56 @@
+{
+  "id": "SV-234935r958412_rule",
+  "full_rule_id": "SV-234935r958412_rule",
+  "rule_id": "SV-234935",
+  "rule_revision": "958412",
+  "group_id": "V-234935",
+  "group_title": "SRG-OS-000037-GPOS-00015",
+  "title": "The SUSE operating system must generate audit records for all uses of the umount system call.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Reconstruction of harmful events or forensic analysis is not possible if audit records do not contain enough information.\n\nAt a minimum, the organization must audit the full-text recording of privileged commands. The organization must maintain audit trails in sufficient detail to reconstruct events to determine the cause and impact of compromise.\n\nSatisfies: SRG-OS-000037-GPOS-00015, SRG-OS-000062-GPOS-00031, SRG-OS-000392-GPOS-00172, SRG-OS-000462-GPOS-00206, SRG-OS-000471-GPOS-00215</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SUSE operating system generates an audit record for all uses of the \"umount\" and \"umount2\" system calls.\n\nCheck that the system calls are being audited by performing the following command:\n\n> sudo auditctl -l | grep 'umount'\n\n-a always,exit -F arch=b32 -S umount -F auid>=1000 -F auid!=-1 -k privileged-umount\n-a always,exit -F arch=b32 -S umount2 -F auid>=1000 -F auid!=-1 -k privileged-umount\n-a always,exit -F arch=b64 -S umount2 -F auid>=1000 -F auid!=-1 -k privileged-umount\n\nIf both the \"b32\" and \"b64\" audit rules are not defined for the \"umount\" syscall, this is a finding.\n\nNote:\nThe \"-k\" allows for specifying an arbitrary identifier. The string following \"-k\" does not need to match the example output above.",
+  "fix": "Configure the SUSE operating system to generate an audit record for all uses of the \"umount\" and \"umount2\" system calls.\n\nAdd or update the following rules to \"/etc/audit/rules.d/audit.rules\":\n\n-a always,exit -F arch=b32 -S umount -F auid>=1000 -F auid!=4294967295 -k privileged-umount\n-a always,exit -F arch=b32 -S umount2 -F auid>=1000 -F auid!=4294967295 -k privileged-umount\n-a always,exit -F arch=b64 -S umount2 -F auid>=1000 -F auid!=4294967295 -k privileged-umount\n\nTo reload the rules file, restart the audit daemon\n\n> sudo systemctl restart auditd.service\n\nor issue the following command:\n\n> sudo augenrules --load",
+  "ccis": [
+    "CCI-000130",
+    "CCI-000169",
+    "CCI-000172",
+    "CCI-002884"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Reconstruction of harmful events or forensic analysis is not possible if audit records do not contain enough information.\n\nAt a minimum, the organization must audit the full-text recording of privileged commands. The organization must maintain audit trails in sufficient detail to reconstruct events to determine the cause and impact of compromise.\n\nSatisfies: SRG-OS-000037-GPOS-00015, SRG-OS-000062-GPOS-00031, SRG-OS-000392-GPOS-00172, SRG-OS-000462-GPOS-00206, SRG-OS-000471-GPOS-00215",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-030360",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

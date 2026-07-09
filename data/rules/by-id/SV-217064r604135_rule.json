@@ -1,0 +1,53 @@
+{
+  "id": "SV-217064r604135_rule",
+  "full_rule_id": "SV-217064r604135_rule",
+  "rule_id": "SV-217064",
+  "rule_revision": "604135",
+  "group_id": "V-217064",
+  "group_title": "SRG-NET-000512-RTR-000003",
+  "title": "The Juniper MPLS router must be configured to synchronize IGP and LDP to minimize packet loss when an IGP adjacency is established prior to LDP peers completing label exchange.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Packet loss can occur when an IGP adjacency is established and the router begins forwarding packets using the new adjacency before the LDP label exchange completes between the peers on that link. Packet loss can also occur if an LDP session closes and the router continues to forward traffic using the link associated with the LDP peer rather than an alternate pathway with a fully synchronized LDP session. The MPLS LDP-IGP Synchronization feature provides a means to synchronize LDP with OSPF or IS-IS to minimize MPLS packet loss. When an IGP adjacency is established on a link but LDP-IGP synchronization is not yet achieved or is lost, the IGP will advertise the max-metric on that link.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router OSPF or IS-IS configuration and verify that LDP will synchronize with the link-state routing protocol as shown in the example below.\n\nOSPF Example:\n\nprotocols {\n    mpls {\n        interface ge-0/0/0.0;\n    }\n    …\n    …\n    …\n    ospf {\n        export REDISTRIBUTE;\n        area 0.0.0.0 {\n            interface ge-0/0/0.0 {\n                ldp-synchronization {\n                    hold-time 10;\n                }\n        …\n        …\n        …\n        }\n    }\n    ldp {\n        interface ge-0/0/0.0;\n    }\n}\n\nIS-IS Example:\n\nprotocols {\n    mpls {\n        interface ge-0/0/0.0;\n    }\n    …\n    …\n    …\n    isis {\n        level 1 authentication-key-chain ISIS_KEY;\n        level 2 authentication-key-chain ISIS_KEY;\n        interface ge-0/0/0.0 {\n            ldp-synchronization {\n                hold-time 10;\n            }\n        …\n        …\n        …\n        }\n    }\n    ldp {\n        interface ge-0/0/0.0;\n    }\n}\n\nIf the router is not configured to synchronize IGP and LDP, this is a finding.",
+  "fix": "Configure the MPLS router to synchronize IGP and LDP, minimizing packet loss when an IGP adjacency is established prior to LDP peers completing label exchange.\n\n[edit protocols ospf area 0.0.0.0]\nset interface ge-0/0/0.0 ldp-synchronization hold-time 10\n\n[edit protocols isis]\nset interface ge-0/0/0.0 ldp-synchronization hold-time 10\n\nNote: The hold-time is the amount of time (in seconds) the routing device advertises the maximum cost metric for a link that is not fully operational. Default is infinity.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Packet loss can occur when an IGP adjacency is established and the router begins forwarding packets using the new adjacency before the LDP label exchange completes between the peers on that link. Packet loss can also occur if an LDP session closes and the router continues to forward traffic using the link associated with the LDP peer rather than an alternate pathway with a fully synchronized LDP session. The MPLS LDP-IGP Synchronization feature provides a means to synchronize LDP with OSPF or IS-IS to minimize MPLS packet loss. When an IGP adjacency is established on a link but LDP-IGP synchronization is not yet achieved or is lost, the IGP will advertise the max-metric on that link.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000580",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

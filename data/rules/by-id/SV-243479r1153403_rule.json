@@ -1,0 +1,53 @@
+{
+  "id": "SV-243479r1153403_rule",
+  "full_rule_id": "SV-243479r1153403_rule",
+  "rule_id": "SV-243479",
+  "rule_revision": "1153403",
+  "group_id": "V-243479",
+  "group_title": "SRG-OS-000480",
+  "title": "The Directory Service Restore Mode (DSRM) passwords must be changed on each Domain Controller (DC) at least annually.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The DSRM password, used to log on to a domain controller (DC) when rebooting into the server recovery mode, is very powerful. With a weak or known password, someone with local access to the DC can reboot the server and copy or modify the Active Directory database without leaving any trace of the activity.\n\nFailure to change the DSRM password periodically could allow compromise of the Active Directory. It could also allow an unknown (lost) password to go undetected. If not corrected during a periodic review, the problem might surface during an actual recovery operation and delay or prevent the recovery.\n\nWindows Local Administrator Password Solution (Windows LAPS) is a Windows feature that automatically manages and backs up the password of a local administrator account on a Microsoft Entra-joined or Windows Server Active Directory-joined devices. Windows LAPS can also be used to automatically manage and back up the DSRM account password on a Windows Server Active Directory DC. An authorized administrator can retrieve the DSRM password and use it.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the DSRM password for each DC is changed at least annually.\n\nIf logs are retained locally for a sufficient amount of time to capture the log event, the following command will indicate the password reset:\nPS C:\\> Get-WinEvent -FilterHashtable @{Logname='Security'; ID=4794} | Format-Table -Property TimeCreated, Message\n\nTimeCreated                             Message\n-----------                                      -------\n10/29/2025 4:47:12 PM    An attempt was made to set the Directory Services Restore Mode...\n\nIf logs are not available, review the site processes around DSRM password reset to determine compliance.\n\nIf DSRM passwords are not changed for each DC in the domain at least annually, this is a finding.",
+  "fix": "Change the DSRM passwords on each DC at least annually with the following commands:\n\nC:\\> ntdsutil\nC:\\Windows\\system32\\ntdsutil.exe: Set DSRM Password\nReset DSRM Administrator Password: Reset Password on server <servername>\nFollow prompts to reset the password.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DSRM password, used to log on to a domain controller (DC) when rebooting into the server recovery mode, is very powerful. With a weak or known password, someone with local access to the DC can reboot the server and copy or modify the Active Directory database without leaving any trace of the activity.\n\nFailure to change the DSRM password periodically could allow compromise of the Active Directory. It could also allow an unknown (lost) password to go undetected. If not corrected during a periodic review, the problem might surface during an actual recovery operation and delay or prevent the recovery.\n\nWindows Local Administrator Password Solution (Windows LAPS) is a Windows feature that automatically manages and backs up the password of a local administrator account on a Microsoft Entra-joined or Windows Server Active Directory-joined devices. Windows LAPS can also be used to automatically manage and back up the DSRM account password on a Windows Server Active Directory DC. An authorized administrator can retrieve the DSRM password and use it.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AD.0151",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "active-directory-domain-security-technical-implementation-guide-v3r7-bf0c1d17",
+      "name": "Active Directory Domain Security Technical Implementation Guide",
+      "version": "3",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "active-directory-domain-security-technical-implementation-guide-v3r7-bf0c1d17"
+  ]
+}

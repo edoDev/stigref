@@ -1,0 +1,53 @@
+{
+  "id": "SV-270771r1066802_rule",
+  "full_rule_id": "SV-270771r1066802_rule",
+  "rule_id": "SV-270771",
+  "rule_revision": "1066802",
+  "group_id": "V-270771",
+  "group_title": "SRG-OS-000433-GPOS-00192",
+  "title": "Ubuntu 24.04 LTS must implement nonexecutable data to protect its memory from unauthorized code execution.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in memory locations that are prohibited. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism. \n \nExamples of attacks are buffer overflow attacks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the NX (no-execution) bit flag is set on the system with the following command: \n \n$ sudo dmesg | grep -i \"execute disable\" \n[    0.000000] NX (Execute Disable) protection: active \n \nIf \"dmesg\" does not show \"NX (Execute Disable) protection: active\", check the cpuinfo settings with the following command:  \n \n$ grep flags /proc/cpuinfo | grep -w nx | sort -u \nflags       : fpu vme de pse tsc ms nx rdtscp lm constant_tsc \n \nIf \"flags\" does not contain the \"nx\" flag, this is a finding.",
+  "fix": "Configure Ubuntu 24.04 LTS to enable NX. \n \nIf \"nx\" is not showing up in \"/proc/cpuinfo\", and the system's BIOS setup configuration permits toggling the No Execution bit, set it to \"enable\".",
+  "ccis": [
+    "CCI-002824"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in memory locations that are prohibited. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism. \n \nExamples of attacks are buffer overflow attacks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-700300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-253974r843955_rule",
+  "full_rule_id": "SV-253974r843955_rule",
+  "rule_id": "SV-253974",
+  "rule_revision": "843955",
+  "group_id": "V-253974",
+  "group_title": "SRG-NET-000018-RTR-000002",
+  "title": "The Juniper BGP router must be configured to reject inbound route advertisements for any Bogon prefixes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Accepting route advertisements for Bogon prefixes can result in the local autonomous system (AS) becoming a transit for malicious traffic as it will in turn advertise these prefixes to neighbor autonomous systems.\n\nThe list of Bogon addresses can change, based upon new address range assignments, and must be reviewed to ensure filters remain current.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the BGP router configuration to verify that it will reject routes of any currently defined Bogon prefixes.\n\nExample route-filter-list of Bogon addresses with corresponding policy-statement referencing the list:\n[edit policy-options]\nroute-filter-list bogon {\n    /* This host on this network */\n    0.0.0.0/8 orlonger;\n    /* CGN Addresses */\n    100.64.0.0/10 orlonger;\n    /* Loopback */\n    127.0.0.0/8 orlonger;\n    /* IPv4 link-local or APIPA */\n    169.254.0.0/16 orlonger;\n    /* IETF Protocol Assignments (/24) and DS-Lite (/29) */\n    192.0.0.0/24 orlonger;\n    /* IPv4 documentation addresses: TEST-NET-1 */\n    192.0.2.0/24 orlonger;\n    /* 6to4 Relay Anycast descr in RFC3068 */\n    192.88.99.0/24 orlonger;\n    /* Benchmark testing descr in RFC2544 */\n    198.18.0.0/15 orlonger;\n    /* IPv4 documentation addresses: TEST-NET-2 */\n    198.51.100.0/24 orlonger;\n    /* IPv4 documentation addresses: TEST-NET-3 */\n    203.0.113.0/24 orlonger;\n    /* Multicast */\n    224.0.0.0/24 orlonger;\n    /* Reserved */\n    240.0.0.0/4 orlonger;\n    /* RFC1918 Addresses */\n    10.0.0.0/8 orlonger;\n    172.16.0.0/12 orlonger;\n    192.168.0.0/16 orlonger;\n    <add additional routes as needed>\n}\nroute-filter-list bogon-ipv6 {\n    /* Includes unspecified (::/128) and loopback (::1/128) */\n    ::/8 orlonger;\n    /* IPv4-mapped */\n    ::ffff:0:0/96 orlonger;\n    /* IPv4 Compatible */\n    ::/96 orlonger;\n    /* 6Bone */\n    3ffe::/16 orlonger;\n    /* IPv4-IPv6 Translate */\n    64:ff9b::/96 orlonger;\n    /* Reserved - 100::/8 includes Discard-Only (100::/64) */\n    100::/8 orlonger;\n    200::/7 orlonger;\n    400::/6 orlonger;\n    800::/5 orlonger;\n    1000::/4 orlonger;\n    4000::/3 orlonger;\n    6000::/3 orlonger;\n    8000::/3 orlonger;\n    a000::/3 orlonger;\n    c000::/3 orlonger;\n    e000::/4 orlonger;\n    f000::/5 orlonger;\n    f800::/6 orlonger;\n    fe00::/9 orlonger;\n    /* IETF Protocol Assignments */\n    2001::/23 orlonger;\n    /* TEREDO */\n    2001::/32 orlonger;\n    /* Benchmarking */\n    2001:2::/48 orlonger;\n    /* Documentation */\n    2001:db8::/32 orlonger;\n    /* ORCHID */\n    2001:10::/28 orlonger;\n    /* 6to4 */\n    2002::/16 orlonger;\n    /* Unique-Local */\n    fc00::/7 orlonger;\n    /* Linked-Scoped Unicast */\n    fe80::/10 orlonger;\n    /* Site local (deprecated) - now reserved */\n    fec0::/10 orlonger;\n    /* Multicast */\n    ff00::/8 orlonger;\n    <add additional routes as needed>\n}\nNote: The comments (/* comment */) are annotations used to easily identify each list item. Annotations are not required. To add annotations, navigate to the appropriate hierarchy level (\"edit policy-options route-filter-list <list name>\" in this example) and use the \"annotate\" command (annotate <list item> \"desired comment\").\n\npolicy-statement bgp-discard {\n    term 1 {\n        from {\n            route-filter-list bogon;\n            route-filter-list bogon-ipv6;\n        }\n        then reject;\n    }\n    <add additional terms as needed>\n}\nNote: Using a route-filter-list permits list reuse as well as easing management because the policy-statement only need reference the list once. Other terms within the same policy-statement can be added without affecting the Bogon list.\n\nThe prefix filter must be referenced inbound on the appropriate BGP neighbor statements.\n\nVerify the eBGP import statement prevents Junos from importing routes into the route table. Junos accepts import statements at three hierarchy levels: Global protocol, group, and neighbor (peer). Global is the most general, followed by group, and neighbor is the most restrictive. Junos applies only the most restrictive policy so if a policy is configured at the protocol, group, and neighbor level, only the neighbor policy is applied.\n[edit protocols bgp]\ngroup eBGP {\n    <other group configuration>\n    import bgp-discard;\n    neighbor 192.0.2.2 {\n        <other neighbor configuration>\n        import bgp-discard;\n    }\n}\nimport bgp-discard;\n<other BGP configuration>\n\nIf the router is not configured to reject inbound route advertisements for any Bogon prefixes, this is a finding.",
+  "fix": "Ensure all eBGP routers are configured to reject inbound route advertisements for any currently defined Bogon prefixes.\n\nset policy-options route-filter-list bogon 0.0.0.0/8 orlonger\nset policy-options route-filter-list bogon 10.0.0.0/8 orlonger\nset policy-options route-filter-list bogon 100.64.0.0/10 orlonger\nset policy-options route-filter-list bogon 127.0.0.0/8 orlonger\nset policy-options route-filter-list bogon 169.254.0.0/16 orlonger\nset policy-options route-filter-list bogon 172.16.0.0/12 orlonger\nset policy-options route-filter-list bogon 192.0.0.0/24 orlonger\nset policy-options route-filter-list bogon 192.0.2.0/24 orlonger\nset policy-options route-filter-list bogon 192.168.0.0/16 orlonger\nset policy-options route-filter-list bogon 198.18.0.0/15 orlonger\nset policy-options route-filter-list bogon 198.51.100.0/24 orlonger\nset policy-options route-filter-list bogon 203.0.113.0/24 orlonger\nset policy-options route-filter-list bogon 224.0.0.0/4 orlonger\nset policy-options route-filter-list bogon 240.0.0.0/4 orlonger\n\nset policy-options route-filter-list bogon-ipv6 ::/128 exact\nset policy-options route-filter-list bogon-ipv6 ::1/128 exact\nset policy-options route-filter-list bogon-ipv6 ::ffff:0:0/96 orlonger\nset policy-options route-filter-list bogon-ipv6 ::/96 orlonger\nset policy-options route-filter-list bogon-ipv6 100::/64 orlonger\nset policy-options route-filter-list bogon-ipv6 2001:10::/28 orlonger\nset policy-options route-filter-list bogon-ipv6 2001:db8::/32 orlonger\nset policy-options route-filter-list bogon-ipv6 fc00::/7 orlonger\nset policy-options route-filter-list bogon-ipv6 fe80::/10 orlonger\nset policy-options route-filter-list bogon-ipv6 fec0::/10 orlonger\nset policy-options route-filter-list bogon-ipv6 ff00::/8 orlonger\n\nset policy-options policy-statement bgp-discard term 1 from route-filter-list bogon\nset policy-options policy-statement bgp-discard term 1 from route-filter-list bogon-ipv6\nset policy-options policy-statement bgp-discard term 1 then reject\n\nset protocols bgp group eBGP import bgp-discard\nset protocols bgp group eBGP neighbor 192.0.2.2 import bgp-discard\nset protocols bgp import bgp-discard",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Accepting route advertisements for Bogon prefixes can result in the local autonomous system (AS) becoming a transit for malicious traffic as it will in turn advertise these prefixes to neighbor autonomous systems.\n\nThe list of Bogon addresses can change, based upon new address range assignments, and must be reviewed to ensure filters remain current.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

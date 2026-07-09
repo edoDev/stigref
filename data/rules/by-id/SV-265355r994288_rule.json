@@ -1,0 +1,53 @@
+{
+  "id": "SV-265355r994288_rule",
+  "full_rule_id": "SV-265355r994288_rule",
+  "rule_id": "SV-265355",
+  "rule_revision": "994288",
+  "group_id": "V-265355",
+  "group_title": "SRG-APP-000516-NDM-000317",
+  "title": "The NSX Manager must enable the global FIPS compliance mode for load balancers.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If unsecured protocols (lacking cryptographic mechanisms) are used for load balancing, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data at risk of compromise.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the NSX Manager web interface, go to the Home >> Monitoring Dashboards >> Compliance Report.\n\nReview the compliance report for code 72024 with description load balancer FIPS global setting disabled.\n\nNote: This may also be checked via the API call GET https://<nsx-mgr>/policy/api/v1/infra/global-config\n\nIf the global FIPS setting is disabled for load balancers, this is a finding.",
+  "fix": "Execute the following API call using curl or another REST API client:\n\nPUT https://<nsx-mgr>/policy/api/v1/infra/global-config\n\nExample request body:\n\n{\n\"fips\": {\n\"lb_fips_enabled\": true\n},\n\"resource_type\": \"GlobalConfig\",\n\"_revision\": 2\n}\n\nThe global setting is used when the new load balancer instances are created. Changing the setting does not affect existing load balancer instances.\n\nTo update existing load balancers to use this setting, do the following:\n\nFrom the NSX Manager web interface, go to the Networking >> Load Balancing and then click \"Edit\" on the target load balancer.\n\nIn the attachment field, click the \"X\" to detach the load balancer from its current Gateway and click \"Save\".\n\nEdit the target load balancer again, reattach it to its Gateway, and then click \"Save\".\n\nCaution: Detaching a load balancer from the Tier-1 gateway results in a traffic interruption for the load balancer instance.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If unsecured protocols (lacking cryptographic mechanisms) are used for load balancing, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data at risk of compromise.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NMGR-4X-000099",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-4-x-manager-ndm-security-technical-implementation-guide-v1r2-ead63637",
+      "name": "VMware NSX 4.x Manager NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-4-x-manager-ndm-security-technical-implementation-guide-v1r2-ead63637"
+  ]
+}

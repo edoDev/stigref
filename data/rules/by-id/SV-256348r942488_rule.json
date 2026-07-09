@@ -1,0 +1,53 @@
+{
+  "id": "SV-256348r942488_rule",
+  "full_rule_id": "SV-256348r942488_rule",
+  "rule_id": "SV-256348",
+  "rule_revision": "942488",
+  "group_id": "V-256348",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must set the distributed port group Forged Transmits policy to \"Reject\".",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the virtual machine operating system changes the Media Access Control (MAC) address, the operating system can send frames with an impersonated source MAC address at any time. This allows an operating system to stage malicious attacks on the devices in a network by impersonating a network adaptor authorized by the receiving network.\n\nWhen the \"Forged Transmits\" option is set to \"Accept\", ESXi does not compare source and effective MAC addresses.\n\nTo protect against MAC impersonation, set the \"Forged Transmits\" option to \"Reject\". The host compares the source MAC address being transmitted by the guest operating system with the effective MAC address for its virtual machine adapter to determine if they match. If the addresses do not match, the ESXi host drops the packet.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If distributed switches are not used, this is not applicable.\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch and then select a port group.\n\nSelect Configure >> Settings >> Policies.\n\nVerify \"Forged Transmits\" is set to \"Reject\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\nGet-VDSwitch | Get-VDSecurityPolicy\nGet-VDPortgroup | ?{$_.IsUplink -eq $false} | Get-VDSecurityPolicy\n\nIf the \"Forged Transmits\" policy is set to accept for a nonuplink port, and is not documented as an exception, this is a finding.",
+  "fix": "From the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch and then select a port group.\n\nSelect Configure >> Settings >> Policies.\n\nClick \"Edit\".\n\nClick the \"Security\" tab.\n\nSet \"Forged Transmits\" to \"Reject\".\n\nClick \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\nGet-VDSwitch | Get-VDSecurityPolicy | Set-VDSecurityPolicy -ForgedTransmits $false\nGet-VDPortgroup | ?{$_.IsUplink -eq $false} | Get-VDSecurityPolicy | Set-VDSecurityPolicy -ForgedTransmits $false",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the virtual machine operating system changes the Media Access Control (MAC) address, the operating system can send frames with an impersonated source MAC address at any time. This allows an operating system to stage malicious attacks on the devices in a network by impersonating a network adaptor authorized by the receiving network.\n\nWhen the \"Forged Transmits\" option is set to \"Accept\", ESXi does not compare source and effective MAC addresses.\n\nTo protect against MAC impersonation, set the \"Forged Transmits\" option to \"Reject\". The host compares the source MAC address being transmitted by the guest operating system with the effective MAC address for its virtual machine adapter to determine if they match. If the addresses do not match, the ESXi host drops the packet.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-70-000268",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8",
+      "name": "VMware vSphere 7.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8"
+  ]
+}

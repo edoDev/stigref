@@ -1,0 +1,53 @@
+{
+  "id": "SV-213957r960963_rule",
+  "full_rule_id": "SV-213957r960963_rule",
+  "rule_id": "SV-213957",
+  "rule_revision": "960963",
+  "group_id": "V-213957",
+  "group_title": "SRG-APP-000141-DB-000093",
+  "title": "Access to xp_cmdshell must be disabled, unless specifically required and approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).  \n \nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives.  \n \nApplications must adhere to the principles of least functionality by providing only essential capabilities. \n \nSQL Server may spawn additional external processes to execute procedures that are defined in the SQL Server but stored in external host files (external procedures). The spawned process used to execute the external procedure may operate within a different OS security context than SQL Server and provide unauthorized access to the host system. \n \nThe xp_cmdshell extended stored procedure allows execution of host executables outside the controls of database access permissions. This access may be exploited by malicious users who have compromised the integrity of the SQL Server database process to control the host operating system to perpetrate additional malicious activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The xp_cmdshell extended stored procedure allows execution of host executables outside the controls of database access permissions. This access may be exploited by malicious users who have compromised the integrity of the SQL Server database process to control the host operating system to perpetrate additional malicious activity. \n \nTo determine if xp_cmdshell is enabled, execute the following commands:  \n \nEXEC SP_CONFIGURE 'show advanced options', '1';  \nRECONFIGURE WITH OVERRIDE;  \nEXEC SP_CONFIGURE 'xp_cmdshell';  \n \nIf the value of \"config_value\" is \"0\", this is not a finding.  \n \nReview the system documentation to determine whether the use of \"xp_cmdshell\" is required and approved. If it is not approved, this is a finding.",
+  "fix": "Disable use of or remove any external application executable object definitions that are not authorized.\n\nTo disable the use of xp_cmdshell, from the query prompt: \n\nEXEC sp_configure 'show advanced options', 1; \nGO \nRECONFIGURE; \nGO \nEXEC sp_configure 'xp_cmdshell', 0; \nGO \nRECONFIGURE; \nGO??",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).  \n \nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives.  \n \nApplications must adhere to the principles of least functionality by providing only essential capabilities. \n \nSQL Server may spawn additional external processes to execute procedures that are defined in the SQL Server but stored in external host files (external procedures). The spawned process used to execute the external procedure may operate within a different OS security context than SQL Server and provide unauthorized access to the host system. \n \nThe xp_cmdshell extended stored procedure allows execution of host executables outside the controls of database access permissions. This access may be exploited by malicious users who have compromised the integrity of the SQL Server database process to control the host operating system to perpetrate additional malicious activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQL6-D0-007200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a",
+      "name": "MS SQL Server 2016 Instance Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a"
+  ]
+}

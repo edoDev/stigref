@@ -1,0 +1,53 @@
+{
+  "id": "SV-283027r1193771_rule",
+  "full_rule_id": "SV-283027r1193771_rule",
+  "rule_id": "SV-283027",
+  "rule_revision": "1193771",
+  "group_id": "V-283027",
+  "group_title": "SRG-APP-000231-WSR-000144",
+  "title": "The HPE Alletra Storage ArcusOS device must implement cryptographic mechanisms to prevent unauthorized disclosure and modification of all information at rest on all system components.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Data at rest is inactive data which is stored physically in any digital form (e.g., databases, data warehouses, spreadsheets, archives, tapes, off-site backups, mobile devices, etc.). Data at rest includes, but is not limited to, archived data, data that is not accessed or changed frequently, files stored on hard drives, USB thumb drives, files stored on backup tape and disks, and files stored off-site or on a storage area network.\n\nWhile data at rest can reside in many places, data at rest for a web server is data on the hosting system storage devices. Data stored as a backup on tape or stored off-site is no longer under the protection measures covered by the web server.\n\nThere are several pieces of data that the web server uses during operation. The web server must use an accepted encryption method, such as SHA1, to protect the confidentiality and integrity of the information.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify HPE Alletra Storage MP is configured to provide backend drive encryption with the following command:\n\nCli%controlencryption status -d\nLicensed Enabled BackupSaved State  SeqNum Keystore FIPS non-SEDs FailedDisks nodeNonSED\nyes      yes      yes          normal      0 ---      yes        12           0          0\n\nIf the output does not show licensed, enabled, BackupSaved, and FIPS as \"yes\" this is a finding.\n\nIf the state is not \"normal\", this is a finding.\n\nIf Keystore is not \"EKM\", this is a finding.",
+  "fix": "Enable data at rest encryption.\n\nIf \"cli% showlicense\" does not show \"SED Encryption\" under \"License features currently enabled:\", then import a SED Encryption license with the \"cli% setlicense\" command.\n\nCreate a CSR for the EKM:\ncli% createcert ekm-client -f -csr -CN ekm_username\n\nSign the CSR with a CA and import the entire certificate chain with:\nCli% importcert ekm-client -f stdin\nPaste the ekm-client certificate chain.\n\nImport the EKM Server Certificates:\nCli% createcert ekm-server -f stdin\nPaste the ekm-server certificate chain.\n\nSet the connection to the EKM with the following command:\ncli% controlencryption setekm -setserver <EKM_IP> -port 5696 -ekmuser ekm_username -kmipprotocols (supported protocols by the ekm) -passwordnoprompt <ekm_user_password>\n\nEnable encryption with the following command:\ncli% controlencryption enable -ekm /common/encryptionBackup\n\nEnter passwords and save the encryption backup file off of the array for disaster recovery.",
+  "ccis": [
+    "CCI-001199"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Data at rest is inactive data which is stored physically in any digital form (e.g., databases, data warehouses, spreadsheets, archives, tapes, off-site backups, mobile devices, etc.). Data at rest includes, but is not limited to, archived data, data that is not accessed or changed frequently, files stored on hard drives, USB thumb drives, files stored on backup tape and disks, and files stored off-site or on a storage area network.\n\nWhile data at rest can reside in many places, data at rest for a web server is data on the hosting system storage devices. Data stored as a backup on tape or stored off-site is no longer under the protection measures covered by the web server.\n\nThere are several pieces of data that the web server uses during operation. The web server must use an accepted encryption method, such as SHA1, to protect the confidentiality and integrity of the information.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ASMP-WS-000630",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-alletra-storage-arcusos-web-server-security-technical-implementation-guide-v1r1-db6ff69d",
+      "name": "HPE Alletra Storage ArcusOS Web Server Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-alletra-storage-arcusos-web-server-security-technical-implementation-guide-v1r1-db6ff69d"
+  ]
+}

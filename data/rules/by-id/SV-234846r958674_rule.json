@@ -1,0 +1,53 @@
+{
+  "id": "SV-234846r958674_rule",
+  "full_rule_id": "SV-234846r958674_rule",
+  "rule_id": "SV-234846",
+  "rule_revision": "958674",
+  "group_id": "V-234846",
+  "group_title": "SRG-OS-000298-GPOS-00116",
+  "title": "The SUSE operating system must have a firewall system installed to immediately disconnect or disable remote access to the whole operating system.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Operating system remote access functionality must have the capability to immediately disconnect current users remotely accessing the information system and/or disable further remote access. The speed of disconnect or disablement varies based on the criticality of mission functions and the need to eliminate immediate or future remote access to organizational information systems.\n\nSUSE operating systems are capable to immediately stop remote connections and services by a local system administrator.\n\nTo immediately disconnect or disable remote access, the firewall needs to be set into panic mode.\n\n> sudo firewall-cmd --panic-on\n\nTo enable remote connection again, panic mode needs to be disabled.\n\n> sudo firewall-cmd --panic-off</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify \"firewalld\" is configured to protect the SUSE operating system. \n\nRun the following command:\n\n> systemctl status firewalld.service\n firewalld.service - firewalld - dynamic firewall daemon\n   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: disabled)\n   Active: active (running) since Wed 2019-11-06 10:58:11 CET; 24h ago\n     Docs: man:firewalld(1)\n Main PID: 1105 (firewalld)\n    Tasks: 2 (limit: 4915)\n   CGroup: /system.slice/firewalld.service\n           ??1105 /usr/bin/python3 -Es /usr/sbin/firewalld --nofork --nopid\n\nIf the service is not enabled, this is a finding.\n\nIf the service is not active, this is a finding.",
+  "fix": "Configure the SUSE operating system to enable the firewall service. This is needed to be able to immediately disconnect or disable remote access to the whole system.\n\nEnable the \"firewalld.service\" by running the following command:\n\n> sudo systemctl enable firewalld.service\n\nStart the \"firewalld.service\" by running the following command:\n\n> sudo systemctl start firewalld.service\n\nTo immediately disconnect or disable remote access the firewall needs to be set into panic mode.\n\n> sudo firewall-cmd --panic-on\n\nTo enable remote connection again, panic mode needs to be disabled.\n\n> sudo firewall-cmd --panic-off",
+  "ccis": [
+    "CCI-002322"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Operating system remote access functionality must have the capability to immediately disconnect current users remotely accessing the information system and/or disable further remote access. The speed of disconnect or disablement varies based on the criticality of mission functions and the need to eliminate immediate or future remote access to organizational information systems.\n\nSUSE operating systems are capable to immediately stop remote connections and services by a local system administrator.\n\nTo immediately disconnect or disable remote access, the firewall needs to be set into panic mode.\n\n> sudo firewall-cmd --panic-on\n\nTo enable remote connection again, panic mode needs to be disabled.\n\n> sudo firewall-cmd --panic-off",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-010370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

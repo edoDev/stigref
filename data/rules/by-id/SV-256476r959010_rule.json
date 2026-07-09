@@ -1,0 +1,53 @@
+{
+  "id": "SV-256476r959010_rule",
+  "full_rule_id": "SV-256476r959010_rule",
+  "rule_id": "SV-256476",
+  "rule_revision": "959010",
+  "group_id": "V-256476",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "DirectPath I/O must be disabled on the virtual machine (VM) when not required.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>VMDirectPath I/O (PCI passthrough) enables direct assignment of hardware PCI functions to VMs. This gives the VM access to the PCI functions with minimal intervention from the ESXi host. This is a powerful feature for legitimate applications such as virtualized storage appliances, backup appliances, dedicated graphics, etc., but it also allows a potential attacker highly privileged access to underlying hardware and the PCI bus.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, select the Virtual Machine, right-click, and go to Edit Settings >> VM Options tab >> Advanced >> Configuration Parameters >> Edit Configuration.\n\nFind any \"pciPassthruX.present\" value (where \"X\" is a count starting at 0) and verify it is set to \"FALSE\" or \"\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:\n\nGet-VM \"VM Name\" | Get-AdvancedSetting -Name \"pciPassthru*.present\" | Select Entity, Name, Value\n\nIf the virtual machine advanced setting \"pciPassthruX.present\" is present, and the specific device returned is not approved, this is a finding.\n\nIf the virtual machine advanced setting \"pciPassthruX.present\" is not present, this is not a finding.",
+  "fix": "From the vSphere Client, select the Virtual Machine, right-click, and go to Edit Settings >> Virtual Hardware tab.\n\nFind the unexpected PCI device returned from the check.\n\nHover the mouse over the device and click the circled \"X\" to remove the device. Click \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:\n\nGet-VM \"VM Name\" | Get-AdvancedSetting -Name pciPassthruX.present | Remove-AdvancedSetting\n\nNote: Change the \"X\"  value to match the specific setting in the organization's environment.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "VMDirectPath I/O (PCI passthrough) enables direct assignment of hardware PCI functions to VMs. This gives the VM access to the PCI functions with minimal intervention from the ESXi host. This is a powerful feature for legitimate applications such as virtualized storage appliances, backup appliances, dedicated graphics, etc., but it also allows a potential attacker highly privileged access to underlying hardware and the PCI bus.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VMCH-70-000028",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-virtual-machine-security-technical-implementation-guide-v1r4-b00f70ea",
+      "name": "VMware vSphere 7.0 Virtual Machine Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-virtual-machine-security-technical-implementation-guide-v1r4-b00f70ea"
+  ]
+}

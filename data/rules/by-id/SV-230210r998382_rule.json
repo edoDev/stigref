@@ -1,0 +1,53 @@
+{
+  "id": "SV-230210r998382_rule",
+  "full_rule_id": "SV-230210r998382_rule",
+  "rule_id": "SV-230210",
+  "rule_revision": "998382",
+  "group_id": "V-230210",
+  "group_title": "SRG-OS-000070-GPOS-00038",
+  "title": "IBM RACF exit ICHPWX11 for password phrases must be installed and properly configured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of a complex password phrase helps to increase the time and resources required to compromise the password. Password phrase complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.\n\nPassword phrase complexity is one factor of several that determines how long it takes to crack a password. The more complex the password phrase, the greater the number of possible combinations that need to be tested before the password is compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From a system console screen issue the following modify command:\nF AXR,IRRPHREX LIST\n\nReview the results of the modify command. \n\nIf all of the following options are listed, this is not a finding.\n\n-The number of required character types is four.\n(ensures that at least one uppercase, one lowercase, one number, and one special character is used in password phrase)\n\n-The user's name is not contained in the password phrase.\n(Only three consecutive characters of the user's name are allowed)\n\n-The minimum password phrase length checked is 15.\n\n-The user ID is not contained in the password phrase.\n(Only three consecutive characters of the user ID are allowed)\n\n-The new password phrase is at least 50 percent changed positions of the old password phrase.\n(These positions need to be consecutive to cause a failure and this check is not case sensitive)\n\n-A minimum list of eight restricted words are being checked:\n'IBM' , 'RACF', 'PASSWORD', 'PHRASE', 'PASSPHRASE', 'SECRET', 'IBMUSER', 'SYS1'\n\nIf the modify command fails or returns the following message in the system log, this is a finding.\n\nIRX0406E REXX exec load file REXXLIB does not contain exec member IRRPHREX.",
+  "fix": "Evaluate the impact associated with implementation of the control option. Develop a plan of action to implement the control option as specified in the example below:\n\nFor z/OS release 1.12 through z/OS release 2.1, APARs OA43998 and OA43999 must be applied.\n\nInstall exit IRRPHREX according to the following guidelines:\nREXX Parameter Setting\n\nPhr_minlen = 15 /* Minimum length */\nPhr_maxlen = 100 /* Maximum passphrase length */\nnumbers = '0123456789' \nletters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' \nspecial = '&*@ :=!-%.#?|-' \" \nPhr_allowed_chars = numbers||letters||special \nPhr_leading_blanks = 'no' \nPhr_trailing_blanks = 'no' \nPhr_name_allowed = 'no' \nPhr_name_minlen = 3 \nPhr_repeat_chars_chk = 'yes' \nPhr_userid_allowed = 'no' \nPhr_req_types = 4 \nPhr_min_unique = Phr_minlen % 2 /* 'Half' of chars must be unique  */  \nPhr_min_unique_norm = 'yes' \nPhr_word_unique = 0 \nPhr_word_unique_upper = 'yes' \nPhr_word_minlen = 4 \nPhr_dict.1 = 'IBM' \nPhr_dict.2 = 'RACF' \nPhr_dict.3 = 'PASSWORD'\nPhr_dict.4 = 'PHRASE' \nPhr_dict.5 = 'PASSPHRAS\nPhr_dict.6 = 'SECRET' \nPhr_dict.7 = 'IBMUSER' \nPhr_dict.8 = 'SYS1'\n\nNote: RACF exit ICHPHX11 is coded to call a System REXX named IRRPHREX, so the name cannot be changed without a corresponding change to ICHPWX11.\n\nSystem REXX requires that this exec (IRRPHREX) reside in the REXXLIB concatenation.\n\nUpdate parameters in IRRPHREX according to table Parameters for RACF IRRPWREX as listed above.",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of a complex password phrase helps to increase the time and resources required to compromise the password. Password phrase complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.\n\nPassword phrase complexity is one factor of several that determines how long it takes to crack a password. The more complex the password phrase, the greater the number of possible combinations that need to be tested before the password is compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000785",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

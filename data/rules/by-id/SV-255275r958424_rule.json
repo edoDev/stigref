@@ -1,0 +1,53 @@
+{
+  "id": "SV-255275r958424_rule",
+  "full_rule_id": "SV-255275r958424_rule",
+  "rule_id": "SV-255275",
+  "rule_revision": "958424",
+  "group_id": "V-255275",
+  "group_title": "SRG-OS-000046-GPOS-00022",
+  "title": "The HPE 3PAR OS must be configured to send SNMP alerts to alert in the event of an audit processing failure.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without this notification, the security personnel may be unaware of an impending failure of the audit capability, and system operation may be adversely affected.\n\nThe HPE 3PAR OS will send an SNMP trap event on any failure of audit components (failure to write a record, failure to send to remote syslog server, etc.). All of these conditions are automatically recovered Q20 in the short term. Configuration of the SNMP consumer is required to facilitate collection of these events.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify an SNMPv3 user account is configured:\ncli%  showsnmpuser\n\nUsername                        | AuthProtocol    | PrivProtocol\n3parsnmpuser                | HMAC SHA 96   |   CFB128 AES 128\n\nIf the output is not displayed in the above format, this is a finding.\n\nIdentify the SNMP trap recipient and report SNMP configuration:\n\ncli%  showsnmpmgr\n\n  HostIP                                            | Port  | SNMPVersion  | User\n <snmp trap recipient IP>        | 162    | 3                            | 3parsnmpuser\n\nIf the SNMP trap recipient IP address is incorrect, this is a finding.\n\nIf the SNMP port is not \"162\", this is a finding.\n\nIf the SNMP version is not \"3\", this is a finding.\n\nIf the SNMP user ID is incorrect, this is a finding.\n\nGenerate a test trap:\ncli%  checksnmp\n\nTrap sent to the following managers:\n< IP address of trap recipient>\n\nIf the response does not indicate a trap was successfully sent, this is a finding.",
+  "fix": "To configure SNMPv3 alert notifications, use this sequence of operations.\n\nCreate and enable an SNMPv3 user, and create associated keys for authentication and privacy:\ncli% createuser 3parsnmpuser all browse\nEnter the password and confirm\n\ncli%  createsnmpuser 3parsnmpuser\nat the prompt, enter the password\nat the next prompt, re-enter the password.\n\nAdd the IP address of the SNMPv3 trap recipient, where permissions of the account are used:\ncli%  addsnmpmgr -version 3 -snmpuser 3parsnmpuser  <ip address>",
+  "ccis": [
+    "CCI-000139"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without this notification, the security personnel may be unaware of an impending failure of the audit capability, and system operation may be adversely affected.\n\nThe HPE 3PAR OS will send an SNMP trap event on any failure of audit components (failure to write a record, failure to send to remote syslog server, etc.). All of these conditions are automatically recovered Q20 in the short term. Configuration of the SNMP consumer is required to facilitate collection of these events.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HP3P-33-001300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-storeserv-3-3-x-security-technical-implementation-guide-v2r1-7f70e64e",
+      "name": "HPE 3PAR StoreServ 3.3.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-storeserv-3-3-x-security-technical-implementation-guide-v2r1-7f70e64e"
+  ]
+}

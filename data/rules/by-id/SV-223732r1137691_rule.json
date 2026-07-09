@@ -1,0 +1,53 @@
+{
+  "id": "SV-223732r1137691_rule",
+  "full_rule_id": "SV-223732r1137691_rule",
+  "rule_id": "SV-223732",
+  "rule_revision": "1137691",
+  "group_id": "V-223732",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM RACF DASD Management USERIDs must be properly controlled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This applies to non-SMS volumes. For SMS-Managed volumes this is Not Applicable.\n\nAsk the system administrator for all documents and procedures that apply to Storage Management, including identification of the DASD backup data sets and associated storage management userids.\n\nFrom the ISPF Command enter:\nRL User for each identified Userid.\n\nReview storage management userids, if the following guidance is true, this is not a finding.\n\nStorage management userids will not be given the \"OPERATIONS\" attribute.\n\nStorage management userids will be defined with the \"PROTECTED\" attribute.\n\nStorage management userids are permitted to the appropriate \"STGADMIN\" profiles in the \"FACILITY\" class for SMS-managed volumes.\n\nStorage management userids assigned to storage management tasks (e.g., volume backup, data set archive and restore, etc.) are given access to data sets using \"DASDVOL\" and/or \"GDASDVOL\" profiles for non-SMS-managed volumes.\n\nNOTE: \"DASDVOL\" profiles will not work with SMS-managed volume. \"FACILITY\" class profiles must be used instead. If \"DFSMS/MVS\" is used to perform DASD management operations, \"FACILITY\" class profiles may also be used to authorize storage management operations to non-SMS-managed volumes in lieu of using \"DASDVOL\" profiles. Therefore, not all volumes may be defined to the \"DASDVOL/GDASDVOL\" resource classes, and not all storage management userids may be represented in the profile access lists.",
+  "fix": "Note: This applies to non-SMS volumes. Refer to the System Managed Storage group (i.e., ZSMSnnnn) for requirements for System managed Storage.\nEvaluate the impact of accomplishing the change. Develop a plan of action and implement the change as required.\n\nEnsure that storage management userids do not possess the \"OPERATIONS\" attribute. A sample command to accomplish this is shown here: \n\nALU <userid> NOOPERATIONS\n\nEnsure that storage management userids possess the \"PROTECTED\" attribute. A sample command to accomplish this is shown here: \n\nALU <userid> NOPASS NOOIDCARD\n\nEnsure that storage management userids are permitted to the appropriate \"STGADMIN\" profiles in the \"FACILITY\" class for SMS-managed volumes.\n\nEnsure that storage management userids are permitted to appropriate \"DASDVOL\" profiles for non-SMS-managed volumes.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000850",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

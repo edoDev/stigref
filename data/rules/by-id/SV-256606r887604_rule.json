@@ -1,0 +1,54 @@
+{
+  "id": "SV-256606r887604_rule",
+  "full_rule_id": "SV-256606r887604_rule",
+  "rule_id": "SV-256606",
+  "rule_revision": "887604",
+  "group_id": "V-256606",
+  "group_title": "SRG-APP-000266-DB-000162",
+  "title": "VMware Postgres must provide nonprivileged users with minimal error information.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any database management system (DBMS) or associated application providing too much information in error messages on the screen or printout risks compromising the data and security of the system. The structure and content of error messages must contain the minimal amount of information.\n\nDatabases can inadvertently provide a wealth of information to an attacker through improperly handled error messages. In addition to sensitive business or personal information, database errors can provide host names, IP addresses, user names, and other system information not required for troubleshooting but very useful to someone targeting the system.\n\nSatisfies: SRG-APP-000266-DB-000162, SRG-APP-000267-DB-000163</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW client_min_messages;\"\n\nExpected result:\n\nnotice\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "At the command prompt, run the following commands:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET client_min_messages TO 'notice';\"\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT pg_reload_conf();\"",
+  "ccis": [
+    "CCI-001312",
+    "CCI-001314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any database management system (DBMS) or associated application providing too much information in error messages on the screen or printout risks compromising the data and security of the system. The structure and content of error messages must contain the minimal amount of information.\n\nDatabases can inadvertently provide a wealth of information to an attacker through improperly handled error messages. In addition to sensitive business or personal information, database errors can provide host names, IP addresses, user names, and other system information not required for troubleshooting but very useful to someone targeting the system.\n\nSatisfies: SRG-APP-000266-DB-000162, SRG-APP-000267-DB-000163",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-70-000016",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497",
+      "name": "VMware vSphere 7.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497"
+  ]
+}

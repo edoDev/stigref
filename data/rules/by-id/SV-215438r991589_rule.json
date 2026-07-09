@@ -1,0 +1,53 @@
+{
+  "id": "SV-215438r991589_rule",
+  "full_rule_id": "SV-215438r991589_rule",
+  "rule_id": "SV-215438",
+  "rule_revision": "991589",
+  "group_id": "V-215438",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The AIX operating system must be configured to use Multi Factor Authentication for remote connections.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To assure accountability and prevent unauthenticated access, privileged and non-privileged users must utilize multifactor authentication to prevent potential misuse and compromise of the system. \nMultifactor authentication uses two or more factors to achieve authentication.\n\nFactors include: \n1. Something you know (e.g., password/PIN);\n2. Something you have (e.g., cryptographic identification device, token); and\n3. Something you are (e.g., biometric).\n\nThe DoD CAC with DoD-approved PKI is an example of multifactor authentication.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SSH is configured to use multi factor authentication:\n\n# grep ^sshd /etc/pam.conf | head -3\n\nsshd auth required   pam_ckfile\nsshd auth required   pam_permission file=/etc/security/access.conf found=allow\nsshd auth required   pam_pmfa /etc/security/pmfa/pam_pmfa.conf\n\nIf the output does not match the above lines, any lines are missing, or commented out, this is a finding.",
+  "fix": "Add or update the following lines in the /etc/pam.conf file:\n\nsshd auth required   pam_ckfile\nsshd auth required   pam_permission file=/etc/security/access.conffound=allow\nsshd auth required   pam_pmfa /etc/security/pmfa/pam_pmfa.conf",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To assure accountability and prevent unauthenticated access, privileged and non-privileged users must utilize multifactor authentication to prevent potential misuse and compromise of the system. \nMultifactor authentication uses two or more factors to achieve authentication.\n\nFactors include: \n1. Something you know (e.g., password/PIN);\n2. Something you have (e.g., cryptographic identification device, token); and\n3. Something you are (e.g., biometric).\n\nThe DoD CAC with DoD-approved PKI is an example of multifactor authentication.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003202",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

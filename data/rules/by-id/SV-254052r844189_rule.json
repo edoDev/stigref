@@ -1,0 +1,53 @@
+{
+  "id": "SV-254052r844189_rule",
+  "full_rule_id": "SV-254052r844189_rule",
+  "rule_id": "SV-254052",
+  "rule_revision": "844189",
+  "group_id": "V-254052",
+  "group_title": "SRG-NET-000364-RTR-000116",
+  "title": "The Juniper Multicast Source Discovery Protocol (MSDP) router must be configured to only accept MSDP packets from known MSDP peers.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>MSDP peering with customer network routers presents additional risks to the DISN Core, whether from a rogue or misconfigured MSDP-enabled router. To guard against an attack from malicious MSDP traffic, the receive path or interface filter for all MSDP-enabled RP routers must be configured to only accept MSDP packets from known MSDP peers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if there is a receive path or interface filter to only accept MSDP packets from known MSDP peers.\n\n[edit firewall]\nfamily inet {\n    filter <name> {\n        term 1 {\n            from {\n                source-prefix-list {\n                    msdp-peers; \n                }\n                protocol tcp;\n                destination-port msdp;\n            }\n            then accept;\n        }\n        term 2 {\n            from {\n                source-prefix-list {\n                    msdp-peers;\n                }\n                protocol tcp;\n                source-port msdp;\n            }\n            then accept;\n        }\n        <additional terms>\n        term default {\n            then {\n                syslog;\n                discard;\n            }\n        }\n    }\n}\nfamily inet6 {\n    filter <name> {\n        term 1 {\n            from {\n                source-prefix-list {\n                    msdp-peers-ipv6;\n                }\n                next-header tcp;\n                destination-port msdp;\n            }\n            then accept;\n        }\n        term 2 {\n            from {\n                source-prefix-list {\n                    msdp-peers-ipv6;\n                }\n                next-header tcp;\n                source-port msdp;\n            }\n            then accept;\n        }\n        <additional terms>\n        term default {\n            then {\n                syslog;\n                discard;\n            }\n        }\n    }\n}\n\nNote: Some platforms support the \"port\" keyword that filters on both source- and destination-port, which eliminates the need for separate terms. For instance:\nfilter <name> {\n    term 1 {\n        from {\n            source-prefix-list {\n                <prefix list name>;\n            }\n            [protocol|next-header] tcp;\n            port msdp;\n        }\n        then accept;\n    }\n    <additional terms>\n    term default {\n        then {\n            syslog;\n            discard;\n        }\n    }\n}\n\nVerify the filter is applied to external interfaces or loopback.\n[edit interfaces]\n<external interface> {\n    unit <number> {\n        family inet {\n            filter {\n                input <IPv4 filter name>;\n            }\n            address <IPv4 address>/<mask>;\n        }\n        family inet6 {\n            filter {\n                input <IPv6 filter name>;\n            }\n            address <IPv6 address>/<prefix>;\n        }\n    }\n}\nlo0 {\n    unit <number> {\n        family inet {\n            filter {\n                input <IPv4 filter name>;\n            }\n            address <IPv4 address>/32;\n        }\n        family inet6 {\n            filter {\n                input <IPv6 filter name>;\n            }\n            address <IPv6 address>/128;\n        }\n    }\n}\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf the router is not configured to only accept MSDP packets from known MSDP peers, this is a finding.",
+  "fix": "Ensure the receive path or interface filter for all MSDP routers only accepts MSDP packets from known MSDP peers.\n\nset firewall family inet filter <name> term 1 from source-prefix-list msdp-peers\nset firewall family inet filter <name> term 1 from protocol tcp\nset firewall family inet filter <name> term 1 from destination-port msdp\nset firewall family inet filter <name> term 1 then accept\nset firewall family inet filter <name> term 2 from source-prefix-list msdp-peers\nset firewall family inet filter <name> term 2 from protocol tcp\nset firewall family inet filter <name> term 2 from source-port msdp\nset firewall family inet filter <name> term 2 then accept\n<additional terms>\nset firewall family inet filter <name> term default then syslog\nset firewall family inet filter <name> term default then discard\n\nset firewall family inet6 filter <name> term 1 from source-prefix-list msdp-peers-ipv6\nset firewall family inet6 filter <name> term 1 from next-header tcp\nset firewall family inet6 filter <name> term 1 from destination-port msdp\nset firewall family inet6 filter <name> term 1 then accept\nset firewall family inet6 filter <name> term 2 from source-prefix-list msdp-peers-ipv6\nset firewall family inet6 filter <name> term 2 from next-header tcp\nset firewall family inet6 filter <name> term 2 from source-port msdp\nset firewall family inet6 filter <name> term 2 then accept\n<additional terms>\nset firewall family inet6 filter <name> term default then syslog\nset firewall family inet6 filter <name> term default then discard\n\nset interfaces <external interface> unit <number> family inet filter input <IPv4 filter name>\nset interfaces <external interface> unit <number> family inet address <IPv4 address>/<mask>\nset interfaces <external interface> unit <number> family inet6 filter input <IPv6 filter name>\nset interfaces <external interface> unit <number> family inet6 address <IPv6 address>/<prefix>\n\nset interfaces lo0 unit <number> family inet filter input <IPv4 filter name>\nset interfaces lo0 unit <number> family inet address <IPv4 address>/32\nset interfaces lo0 unit <number> family inet6 filter input <IPv6 filter name>\nset interfaces lo0 unit <number> family inet6 address <IPv6 address>/128",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "MSDP peering with customer network routers presents additional risks to the DISN Core, whether from a rogue or misconfigured MSDP-enabled router. To guard against an attack from malicious MSDP traffic, the receive path or interface filter for all MSDP-enabled RP routers must be configured to only accept MSDP packets from known MSDP peers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

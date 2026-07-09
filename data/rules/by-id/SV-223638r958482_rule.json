@@ -1,0 +1,53 @@
+{
+  "id": "SV-223638r958482_rule",
+  "full_rule_id": "SV-223638r958482_rule",
+  "rule_id": "SV-223638",
+  "rule_revision": "958482",
+  "group_id": "V-223638",
+  "group_title": "SRG-OS-000104-GPOS-00051",
+  "title": "IBM z/OS Attributes of UNIX user accounts used for account modeling must be defined in accordance with security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following: \n\n1) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n2) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If this is a Classified system, this is Not Applicable.\n\nFrom an ACF2 command line enter:\nSET CONTROL(GSO)\nSHOW UNIXOPTS\n\nAlternately:\nRefer to the following report produced by the ACF2 Data Collection:\n- ACF2CMDS.RPT(ACFGSO)\n- ACF2CMDS.RPT(OMVSUSER)\n\nNote: This check applies to any user identifier (LOGONID) used to model OMVS access on the mainframe. This includes any DFTUSER; MODLUSER and BPX.UNIQUE.USER. If MODLUSER is specified then UNIQUSER must be specified.\n\nIf DFTUSER or MODLUSER is not defined in the UNIXOPTS record, this is not a finding.\n\nIf ALL user identifiers (LOGONID) defined to DFTUSER or MODLUSER. or BPX.UNIQUE.USER user account is defined as follows, this is not a finding:\n\nA non-writable HOME directory:\nShell program specified as \"/bin/echo\" or \"/bin/false\"\n\nNote: The shell program must have one of the specified values. The HOME directory must have a value (i.e., not be allowed to default).",
+  "fix": "Define DFTUSER or MODLUSER or BPX.UNIQUE.USER user account to be defined as follows:\n\nA non-writable HOME directory:\nShell program specified as \"/bin/echo\" or \"/bin/false\"\n\nNote: The shell program must have one of the specified values. The HOME directory must have a value (i.e., not be allowed to default).\n\nExample:\nSET PROFILE(USER) DIV(OMVS)\nLIST OMVS\n\nINSERT OMVS HOME(/) OMVSPGM(/bin/false) UID(0)",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following: \n\n1) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n2) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ACF2-US-000230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad",
+      "name": "IBM z/OS ACF2 Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad"
+  ]
+}

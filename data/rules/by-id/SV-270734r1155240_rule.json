@@ -1,0 +1,53 @@
+{
+  "id": "SV-270734r1155240_rule",
+  "full_rule_id": "SV-270734r1155240_rule",
+  "rule_id": "SV-270734",
+  "rule_revision": "1155240",
+  "group_id": "V-270734",
+  "group_title": "SRG-OS-000383-GPOS-00166",
+  "title": "Ubuntu 24.04 LTS must be configured such that Pluggable Authentication Module (PAM) prohibits the use of cached authentications after one day.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If cached authentication information is out-of-date, the validity of the authentication information may be questionable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If smart card authentication is not being used on the system, this requirement is not applicable. \n\nVerify PAM prohibits the use of cached authentications after one day with the following command:\n \n$ sudo grep offline_credentials_expiration /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf \noffline_credentials_expiration = 1 \n \nIf \"offline_credentials_expiration\" in \"/etc/sssd/sssd.conf\" or in a file with a name ending in .conf in the \"/etc/sssd/conf.d/\" directory, is not set to \"1\", is commented out, is missing, or conflicting results are returned, this is a finding.",
+  "fix": "Configure PAM to prohibit the use of cached authentications after one day. Add or change the following line in \"/etc/sssd/sssd.conf\" just below the line \"[pam]\": \n \noffline_credentials_expiration = 1 \n \nNote: It is valid for this configuration to be in a file with a name that ends with \".conf\" and does not begin with a \".\" in the \"/etc/sssd/conf.d/\" directory instead of the \"/etc/sssd/sssd.conf\" file.",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If cached authentication information is out-of-date, the validity of the authentication information may be questionable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-400340",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

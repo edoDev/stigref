@@ -1,0 +1,53 @@
+{
+  "id": "SV-258794r933443_rule",
+  "full_rule_id": "SV-258794r933443_rule",
+  "rule_id": "SV-258794",
+  "rule_revision": "933443",
+  "group_id": "V-258794",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host must configure the firewall to restrict access to services running on the host.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unrestricted access to services running on an ESXi host can expose a host to outside attacks and unauthorized access. Reduce the risk by configuring the ESXi firewall to only allow access from authorized networks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Firewall.\n\nUnder the \"Allowed IP addresses\" column, review the allowed IPs for each service.\n\nCheck this for \"Incoming\" and \"Outgoing\" sections.\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-VMHostFirewallException | Where {$_.Enabled -eq $true} | Select Name,Enabled,@{N=\"AllIPEnabled\";E={$_.ExtensionData.AllowedHosts.AllIP}}\n\nIf for an enabled service \"Allow connections from any IP address\" is selected, this is a finding.",
+  "fix": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Firewall.\n\nClick \"Edit...\". For each enabled service, uncheck the check box to \"Allow connections from any IP address\" and input the site-specific network(s) required.\n\nThe following example formats are acceptable:\n\n192.168.0.0/24\n192.168.1.2, 2001::1/64\nfd3e:29a6:0a81:e478::/64\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\n$esxcli = Get-EsxCli -v2\n#This disables the allow all rule for the target service. The sshServer service is the target in this example.\n$arguments = $esxcli.network.firewall.ruleset.set.CreateArgs()\n$arguments.rulesetid = \"sshServer\"\n$arguments.allowedall = $false\n$esxcli.network.firewall.ruleset.set.Invoke($arguments)\n\n#Next add the allowed IPs for the service. Note that executing the \"vSphere Web Client\" service this way may disable access but may be done through vCenter or through the console.\n$arguments = $esxcli.network.firewall.ruleset.allowedip.add.CreateArgs()\n$arguments.rulesetid = \"sshServer\"\n$arguments.ipaddress = \"10.0.0.0/8\"\n$esxcli.network.firewall.ruleset.allowedip.add.Invoke($arguments)\n\nThis must be done for each enabled service.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unrestricted access to services running on an ESXi host can expose a host to outside attacks and unauthorized access. Reduce the risk by configuring the ESXi firewall to only allow access from authorized networks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000239",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-266153r1024380_rule",
+  "full_rule_id": "SV-266153r1024380_rule",
+  "rule_id": "SV-266153",
+  "rule_revision": "1024380",
+  "group_id": "V-266153",
+  "group_title": "SRG-NET-000164-ALG-000100",
+  "title": "The F5 BIG-IP appliance must configure certification path validation to ensure revoked machine credentials are prohibited from establishing an allowed session.",
+  "severity": "high",
+  "description": "<VulnDiscussion>A certificate's certification path is the path from the end entity certificate to a trusted root certification authority (CA). Certification path validation is necessary for a relying party to make an informed decision regarding acceptance of an end entity certificate. \n\nCertification path validation includes checks such as certificate issuer trust, time validity and revocation status for each certificate in the certification path. Revocation status information for CA and subject certificates in a certification path is commonly provided via certificate revocation lists (CRLs) or online certificate status protocol (OCSP) responses.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the BIG-IP appliance does not provide intermediary services for TLS, or application protocols that use TLS (e.g., DNSSEC or HTTPS), this is not applicable.\n\nFrom the BIG-IP GUI:\n1. Access.\n2. Profiles/Policies.\n3. Access Profiles.\n4. Click \"Edit\" under \"Per-Session Policy\" for the Access Profile.\n5. Verify an \"OCSP Auth\" object is configured in the Access Profile for \"Machine\" type or a CRLDP object is configured.\n\nIf the BIG-IP appliance is not configured to use OCSP or CRLDP to ensure revoked machine credentials are prohibited from establishing an allowed session, this is a finding.",
+  "fix": "If the Access Profile is configured to pull a machine cert using the \"Machine Cert Auth\" object in the policy, then perform the following actions. Note that pulling a Machine Cert requires the use of the APM Edge Client installed on the client.\n\nTo add OCSP machine certificate verification to an access policy:\n\nFrom the BIG-IP GUI:\n1. Access.\n2. Profiles/Policies.\n3. Access Profiles.\n4. Click \"Edit\" under \"Per-Session Policy\" for the Access Profile.\n5. Click the \"+\" icon on the Successful branch of the Machine Cert Auth object.\n6. Authentication tab.\n7. Select \"OCSP Auth\".\n8. Click \"Add Item\".\n9. From the OCSP Responder list, select an OCSP responder.\nNote: To create an OCSP Responder, go to Access >> Authentication >> OCSP Responder.\n10. From the Certificate Type list, select \"Machine\".\n11. Click \"Save\".\n12. Click \"Apply Access Policy\".\n\nTo add CRLDP certificate verification to an access policy:\n\nFrom the BIG-IP GUI:\n1. Access.\n2. Profiles/Policies.\n3. Access Profiles.\n4. Click \"Edit\" under \"Per-Session Policy\" for the Access Profile.\n5. Click the \"+\" icon on the Successful branch of the Machine Cert Auth object.\n6. Authentication tab.\n7. Select \"CRLDP Auth\".\n8. Click \"Add Item\".\n9. Select an item from the CRLDP Server list.\nNote: To create a CRLDP Server, go to Access >> Authentication >> CRLDP.\n10. Click \"Save\".\n11. Click \"Apply Access Policy\".",
+  "ccis": [
+    "CCI-000185"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A certificate's certification path is the path from the end entity certificate to a trusted root certification authority (CA). Certification path validation is necessary for a relying party to make an informed decision regarding acceptance of an end entity certificate. \n\nCertification path validation includes checks such as certificate issuer trust, time validity and revocation status for each certificate in the certification path. Revocation status information for CA and subject certificates in a certification path is commonly provided via certificate revocation lists (CRLs) or online certificate status protocol (OCSP) responses.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-AP-300052",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-alg-security-technical-implementation-guide-v1r2-c4266797",
+      "name": "F5 BIG-IP TMOS ALG Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-alg-security-technical-implementation-guide-v1r2-c4266797"
+  ]
+}

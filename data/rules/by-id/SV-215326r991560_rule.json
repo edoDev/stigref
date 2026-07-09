@@ -1,0 +1,53 @@
+{
+  "id": "SV-215326r991560_rule",
+  "full_rule_id": "SV-215326r991560_rule",
+  "rule_id": "SV-215326",
+  "rule_revision": "991560",
+  "group_id": "V-215326",
+  "group_title": "SRG-OS-000259-GPOS-00100",
+  "title": "All library files must not have extended ACLs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unauthorized access could destroy the integrity of the library files.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The following system library directories need to be checked:\n/usr/lib/security/\n/usr/lib/methods/\n\nDetermine if any system library file has an extended ACL by running the follow script:\n\nfind /usr/lib/security /usr/lib/methods/ -type f | while read file\ndo\naclget -o /tmp/111.acl $file > /dev/null 2>&1\nif [ $? -eq 0 ]; then\ngrep -e \"[[:space:]]enabled$\" /tmp/111.acl > /dev/null 2>&1\nif [ $? -eq 0 ]; then\necho \"$file has ACL\"\nfi\nfi\ndone\n\nIf the above script yield any output, this is a finding.",
+  "fix": "Remove the extended ACL(s) from the system library file(s) and disable extended permissions using the follow script:\n\nfind /usr/lib/security /usr/lib/methods/ -type f | while read file\ndo\naclget -o /tmp/111.acl $file > /dev/null 2>&1\nif [ $? -eq 0 ]; then\ngrep -e \"[[:space:]]enabled$\" /tmp/111.acl > /dev/null 2>&1\nif [ $? -eq 0 ]; then\necho \"Removing ACL from \"$file\ncat /tmp/111.acl | head -n9 > /tmp/222.acl\necho \"    disabled\" >> /tmp/222.acl\naclput -i /tmp/222.acl $file\nfi\nfi\ndone",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unauthorized access could destroy the integrity of the library files.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

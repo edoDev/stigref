@@ -1,0 +1,53 @@
+{
+  "id": "SV-216719r1117237_rule",
+  "full_rule_id": "SV-216719r1117237_rule",
+  "rule_id": "SV-216719",
+  "rule_revision": "1117237",
+  "group_id": "V-216719",
+  "group_title": "SRG-NET-000019-RTR-000005",
+  "title": "The Cisco multicast edge router must be configured to establish boundaries for administratively scoped multicast traffic.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration and verify that admin-scope multicast traffic is blocked at the external edge as shown in the example below:\n\ninterface GigabitEthernet1/2\n ip address x.1.12.2 255.255.255.252\n ip pim sparse-mode\n ip multicast boundary MULTICAST_SCOPE\n…\n…\n…\nip access-list standard MULTICAST_SCOPE\n deny   239.0.0.0 0.255.255.255\n permit any\n\nIf the router is not configured to establish boundaries for administratively scoped multicast traffic, this is a finding.",
+  "fix": "Step 1: Configure the ACL to deny packets with multicast administratively scoped destination addresses as shown in the example below:\n\nR2(config)#ip access-list standard MULTICAST_SCOPE\nR2(config-std-nacl)#deny 239.0.0.0 0.255.255.255\nR2(config-std-nacl)#permit any\nR2(config-std-nacl)#exit \n\nStep 2: Apply the multicast boundary at the appropriate interfaces as shown in the example below:\n\nR2(config)#int g1/2\nR2(config-if)#ip multicast boundary MULTICAST_SCOPE\nR2(config-if)#end",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000810",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b",
+      "name": "Cisco IOS XE Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b"
+  ]
+}

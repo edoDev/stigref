@@ -1,0 +1,53 @@
+{
+  "id": "SV-251192r961839_rule",
+  "full_rule_id": "SV-251192r961839_rule",
+  "rule_id": "SV-251192",
+  "rule_revision": "961839",
+  "group_id": "V-251192",
+  "group_title": "SRG-APP-000508-DB-000358",
+  "title": "Redis Enterprise DBMS must generate audit records for all direct access to the database(s).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In this context, direct access is any query, command, or call to the DBMS that comes from any source other than the application(s) that it supports. Examples would be the command line or a database management utility program. The intent is to capture all activity from administrative and non-standard sources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "All local access to the server is handled by the underlying RHEL OS server that hosts the Redis Enterprise DBMS and is viewable in syslog. Additionally, RHEL can be configured to audit direct access to Redis Enterprise by modifying the rule set in /etc/audit/audit.rules to include the redis-cli and rladmin command found in /opt/redislabs/bin. \n\nTo determine if the OS is auditing direct and privileged access/execution of the database and database configuration options on the server:\ncat to /etc/audit/audit.rules \n\nExamine the audit rules defined for rules that specify that command calls for /opt/redislabs/bin/redis-cli and /opt/redislabs/bin/rladmin are audited, if not present, this is a finding.",
+  "fix": "Configure the host RHEL OS to generate audit records whenever a user calls the redis-cli command. This can be done by adding a rule to the /etc/audit/audit.rules to generate records when /opt/redislabs/bin/redis-cli and /opt/redislabs/bin/rladmin is called.\n\nExample Linux commands:\n-a always,exit -F path=/opt/redislabs/bin/redis-cli -F perm=x -F auid>=1000 -F auid!=unset -k privileged-priv_change\n-a always,exit -F path=/opt/redislabs/bin/rladmin -F perm=x -F auid>=1000 -F auid!=unset -k privileged-priv_change\n\nThe audit daemon must be restarted for the changes to take effect.",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In this context, direct access is any query, command, or call to the DBMS that comes from any source other than the application(s) that it supports. Examples would be the command line or a database management utility program. The intent is to capture all activity from administrative and non-standard sources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RD6X-00-004400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "redis-enterprise-6-x-security-technical-implementation-guide-v2r2-66f66c5a",
+      "name": "Redis Enterprise 6.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "redis-enterprise-6-x-security-technical-implementation-guide-v2r2-66f66c5a"
+  ]
+}

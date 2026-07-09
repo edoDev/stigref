@@ -1,0 +1,53 @@
+{
+  "id": "SV-217083r604135_rule",
+  "full_rule_id": "SV-217083r604135_rule",
+  "rule_id": "SV-217083",
+  "rule_revision": "604135",
+  "group_id": "V-217083",
+  "group_title": "SRG-NET-000019-RTR-000004",
+  "title": "The Juniper multicast router must be configured to bind a Protocol Independent Multicast (PIM) neighbor filter to interfaces that have PIM enabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>PIM is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. PIM traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, unauthorized routers can join the PIM domain, discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DoDIN Backbone.\n\nVerify all interfaces enabled for PIM have a neighbor filter bound to the interface as shown in the example below.\n\nprotocols {\n    …\n    …\n    …\n    pim {\n        interface ge-1/0/1.0 {\n            mode sparse;\n            neighbor-policy PIM_NBR1_POLICY;\n        }\n        interface ge-1/1/1.0 {\n            mode sparse;\n            neighbor-policy PIM_NBR2_POLICY;\n        }\n        interface ge-2/1/0.0 {\n            mode sparse;\n            neighbor-policy PIM_NBR3_POLICY;\n        }\n    }\n\nReview the prefix list and policy statements configured for filtering PIM neighbors as shown in the example below.\n\npolicy-options {\n    prefix-list PIM_NBR1 {\n        x.x.x.x/32;\n    }\n    prefix-list PIM_NBR2 {\n        x.x.x.x/32;\n    }\n    prefix-list PIM_NBR3 {\n        x.x.x.x/32;\n    }\n\n    policy-statement PIM_NBR1_POLICY {\n        from {\n            prefix-list PIM_NBR1;\n        }\n        then accept;\n    }\n    policy-statement PIM_NBR2_POLICY {\n        from {\n            prefix-list PIM_NBR2;\n        }\n        then accept;\n    }\n    policy-statement PIM_NBR3_POLICY {\n        from {\n            prefix-list PIM_NBR3;\n        }\n        then accept;\n    }\n\nIf PIM neighbor filters are not bound to all interfaces that have PIM enabled, this is a finding.",
+  "fix": "This requirement is not applicable for the DoDIN Backbone.\n\nConfigure neighbor filters to only accept PIM control plane traffic from documented PIM neighbors. Bind neighbor filters to all PIM enabled interfaces.\n\nConfigure prefix list for each neighbor.\n\n[edit policy-options]\nset prefix-list PIM_NBR1 x.x.x.x/32\nset prefix-list PIM_NBR2 x.x.x.x/32\nset prefix-list PIM_NBR3 x.x.x.x/32\n\nConfigure policy statements for each PIM neighbor.\n\n[edit policy-options]\nset policy-statement PIM_NBR1_POLICY from prefix-list PIM_NBR1\nset policy-statement PIM_NBR1_POLICY then accept\nset policy-statement PIM_NBR2_POLICY from prefix-list PIM_NBR1\nset policy-statement PIM_NBR2_POLICY then accept\nset policy-statement PIM_NBR3_POLICY from prefix-list PIM_NBR1\nset policy-statement PIM_NBR3_POLICY then accept\n\nApply the neighbor policy to all interfaces enabled for PIM.\n\n[edit protocols pim]\nset interface ge-1/0/1.0 neighbor-policy PIM_NBR1_POLICY \nset interface ge-1/1/1.0 neighbor-policy PIM_NBR1_POLICY \nset interface ge-2/1/0.0 neighbor-policy PIM_NBR1_POLICY",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "PIM is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. PIM traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, unauthorized routers can join the PIM domain, discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000790",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-269424r1117266_rule",
+  "full_rule_id": "SV-269424r1117266_rule",
+  "rule_id": "SV-269424",
+  "rule_revision": "1117266",
+  "group_id": "V-269424",
+  "group_title": "SRG-OS-000132-GPOS-00067",
+  "title": "AlmaLinux OS 9 must restrict usage of ptrace to descendant processes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unrestricted usage of ptrace allows compromised binaries to run ptrace on other processes of the user. Like this, the attacker can steal sensitive information from the target processes (e.g. SSH sessions, web browser etc.) without any additional assistance from the user (i.e. without resorting to phishing).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify AlmaLinux OS 9 restricts usage of ptrace to descendant processes (1), admins only (2), or disables ptrace entirely (3) with the following command:\n\n$ sysctl kernel.yama.ptrace_scope\n\nkernel.yama.ptrace_scope = 1\n\nIf the returned line has a value of \"0\" or a line is not returned, this is a finding.\n\nCheck that the configuration files are present to enable this kernel parameter.\n\n$ /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.yama.ptrace_scope | tail -1\n\nkernel.yama.ptrace_scope = 1\n\nIf \"kernel.yama.ptrace_scope\" is equal to \"0\" or nothing is returned, this is a finding.",
+  "fix": "Configure AlmaLinux OS 9 to restrict usage of ptrace to with the following command:\n\n$ echo \"kernel.yama.ptrace_scope = 1\" > /etc/sysctl.d/60-ptrace.conf\n\nLoad settings from all system configuration files with the following command:\n\n$ sysctl --system",
+  "ccis": [
+    "CCI-001082"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unrestricted usage of ptrace allows compromised binaries to run ptrace on other processes of the user. Like this, the attacker can steal sensitive information from the target processes (e.g. SSH sessions, web browser etc.) without any additional assistance from the user (i.e. without resorting to phishing).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-040940",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

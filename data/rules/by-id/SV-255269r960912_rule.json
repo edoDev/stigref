@@ -1,0 +1,53 @@
+{
+  "id": "SV-255269r960912_rule",
+  "full_rule_id": "SV-255269r960912_rule",
+  "rule_id": "SV-255269",
+  "rule_revision": "960912",
+  "group_id": "V-255269",
+  "group_title": "SRG-APP-000108-WSR-000166",
+  "title": "SSMC web server must use a logging mechanism that is configured to alert the ISSO and SA in the event of a processing failure.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Reviewing log data allows an investigator to recreate the path of an attacker and to capture forensic data for later use. Log data is also essential to system administrators in their daily administrative duties on the hosted system or within the hosted applications. \n\nIf the logging system begins to fail, events will not be recorded. Organizations must define logging failure events, at which time the application or the logging mechanism the application utilizes will provide a warning to the ISSO and SA at a minimum.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SSMC is configured to provide an alert to the ISSO and SA when log processing failures occur by doing the following:\n\nExecute status check on remote_syslog_appliance security control:\n$ sudo /ssmc/bin/config_security.sh -o remote_syslog_appliance -a status | grep smtp\n\nssmc.rsyslog.smtp.alert=true\nssmc.rsyslog.smtp.mailFrom=id@domain\nssmc.rsyslog.smtp.recipient=[\"id1@domain\",\"id2@domain\"]\nssmc.rsyslog.smtp.notify-interval=<failure_notify_interval>\nssmc.rsyslog.smtp.server=<smtp_server_ip>\nssmc.rsyslog.smtp.port=<smtp_port>\n\nIf the \"smtp.alert\" is not equal to \"true\" and the remaining smtp configuration is not established per the site requirements, this is a finding.",
+  "fix": "Configure SSMC  to provide an alert to the ISSO and SA when log processing failures occur by doing the following:\n\n1. Configure rsyslog parameters in /ssmc/conf/security_config.properties like below (use vi editor) -\nssmc.rsyslog.smtp.alert=true\nssmc.rsyslog.smtp.server=<smtp_server_ip>\nssmc.rsyslog.smtp.port=<smtp_port>\nssmc.rsyslog.smtp.recipient=[\"id1@domain\",\"id2@domain\"]\nssmc.rsyslog.smtp.notify-interval=300\nssmc.rsyslog.smtp.mailFrom=id@domain\n\n2. Execute \"sudo /ssmc/bin/config_security.sh -o remote_syslog_appliance -a set -f\" to commit the configuration and enable the service.",
+  "ccis": [
+    "CCI-000139"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Reviewing log data allows an investigator to recreate the path of an attacker and to capture forensic data for later use. Log data is also essential to system administrators in their daily administrative duties on the hosted system or within the hosted applications. \n\nIf the logging system begins to fail, events will not be recorded. Organizations must define logging failure events, at which time the application or the logging mechanism the application utilizes will provide a warning to the ISSO and SA at a minimum.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SSMC-WS-030050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0",
+      "name": "HPE 3PAR SSMC Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "SV-234961r991557_rule",
+  "full_rule_id": "SV-234961r991557_rule",
+  "rule_id": "SV-234961",
+  "rule_revision": "991557",
+  "group_id": "V-234961",
+  "group_title": "SRG-OS-000256-GPOS-00097",
+  "title": "The SUSE operating system audit tools must have the proper permissions configured to protect against unauthorized access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information.\n\nSUSE operating systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys to make access decisions regarding the access to audit tools.\n\nAudit tools include but are not limited to vendor-provided and open-source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000256-GPOS-00097, SRG-OS-000257-GPOS-00098, SRG-OS-000258-GPOS-00099</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the SUSE operating system audit tools have the proper permissions configured in the permissions profile to protect from unauthorized access.\n\nCheck that \"permissions.local\" file contains the correct permissions rules with the following command:\n\n> grep \"^/usr/sbin/au\" /etc/permissions.local\n\n/usr/sbin/audispd root:root 0750\n/usr/sbin/auditctl root:root 0750\n/usr/sbin/auditd root:root 0750\n/usr/sbin/ausearch root:root 0755\n/usr/sbin/aureport root:root 0755\n/usr/sbin/autrace root:root 0750\n/usr/sbin/augenrules root:root 0750\n\nIf the command does not return any output, this is a finding.\n\nCheck that all of the audit information files and folders have the correct permissions with the following command:\n\n> sudo chkstat /etc/permissions.local\n\nIf the command returns any output, this is a finding.",
+  "fix": "Configure the SUSE operating system audit tools to have proper permissions set in the permissions profile to protect from unauthorized access.\n\nEdit the file \"/etc/permissions.local\" and insert the following text:\n\n/usr/sbin/audispd root:root 0750\n/usr/sbin/auditctl root:root 0750\n/usr/sbin/auditd root:root 0750\n/usr/sbin/ausearch root:root 0755\n/usr/sbin/aureport root:root 0755\n/usr/sbin/autrace root:root 0750\n/usr/sbin/augenrules root:root 0750\n\nSet the correct permissions with the following command:\n\n> sudo chkstat --set /etc/permissions.local",
+  "ccis": [
+    "CCI-001493",
+    "CCI-001494",
+    "CCI-001495"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information.\n\nSUSE operating systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys to make access decisions regarding the access to audit tools.\n\nAudit tools include but are not limited to vendor-provided and open-source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000256-GPOS-00097, SRG-OS-000257-GPOS-00098, SRG-OS-000258-GPOS-00099",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-030620",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

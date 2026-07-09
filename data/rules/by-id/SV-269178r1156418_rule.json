@@ -1,0 +1,53 @@
+{
+  "id": "SV-269178r1156418_rule",
+  "full_rule_id": "SV-269178r1156418_rule",
+  "rule_id": "SV-269178",
+  "rule_revision": "1156418",
+  "group_id": "V-269178",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "AlmaLinux OS 9 must disable core dumps for all users.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers or system operators trying to debug problems.\n\nEnabling core dumps on production systems is not recommended; however, there may be overriding operational requirements to enable advanced debugging. Permitting temporary enablement of core dumps during such situations must be reviewed through local needs and policy.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify AlmaLinux OS 9 disables core dumps for all users by issuing the following command:\n\nNote: If kernel dumps are disabled in accordance with ALMA-09-011680, this requirement is not applicable.\n\n$ grep -r -s core /etc/security/limits.conf /etc/security/limits.d/*.conf\n\n/etc/security/limits.conf:* hard core 0\n\nThis can be set as a global domain (with the * wildcard) but may be set differently for multiple domains.\n\nIf the \"core\" item is missing or commented out, or the value is anything other than \"0\", and the need for core dumps is not documented with the information system security officer (ISSO) as an operational requirement for all domains that have the \"core\" item assigned, this is a finding.\n\nIf entries exist for users or groups with a value set to anything other than \"0\", this is a finding.",
+  "fix": "Configure the operating system to disable core dumps for all users.\n\nAdd the following line to the top of the /etc/security/limits.conf or in a single \".conf\" file defined in /etc/security/limits.d/:\n\n* hard core 0\n\nRemove or comment out any entries for users or groups with a value set to anything other than \"0\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers or system operators trying to debug problems.\n\nEnabling core dumps on production systems is not recommended; however, there may be overriding operational requirements to enable advanced debugging. Permitting temporary enablement of core dumps during such situations must be reviewed through local needs and policy.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-011240",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

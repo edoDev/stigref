@@ -1,0 +1,53 @@
+{
+  "id": "SV-256802r889405_rule",
+  "full_rule_id": "SV-256802r889405_rule",
+  "rule_id": "SV-256802",
+  "rule_revision": "889405",
+  "group_id": "V-256802",
+  "group_title": "SRG-APP-000266-WSR-000159",
+  "title": "vSphere UI must be configured to show error pages with minimal information.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Web servers will often display error messages to client users with enough information to aid in the debugging of the error. The information given back in error messages may display the web server type, version, patches installed, plug-ins and modules installed, type of code being used by the hosted application, and any backends being used for data storage. \n \nThis information could be used by an attacker to blueprint what type of attacks might be successful. Therefore, vSphere UI must be configured to not show server version information in error pages.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | xmllint --xpath '/Server/Service/Engine/Host/Valve[@className=\"org.apache.catalina.valves.ErrorReportValve\"]' - \n \nExpected result: \n \n<Valve className=\"org.apache.catalina.valves.ErrorReportValve\" showServerInfo=\"false\" showReport=\"false\"/> \n \nIf the output of the command does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open: \n \n /usr/lib/vmware-vsphere-ui/server/conf/server.xml \n \nLocate the following Host block: \n \n<Host ...> \n... \n</Host> \n \nInside this block, remove any existing Valve with className=\"org.apache.catalina.valves.ErrorReportValve\" and add the following: \n \n<Valve className=\"org.apache.catalina.valves.ErrorReportValve\" showServerInfo=\"false\" showReport=\"false\"/> \n \nRestart the service with the following command: \n \n# vmon-cli --restart vsphere-ui",
+  "ccis": [
+    "CCI-001312"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Web servers will often display error messages to client users with enough information to aid in the debugging of the error. The information given back in error messages may display the web server type, version, patches installed, plug-ins and modules installed, type of code being used by the hosted application, and any backends being used for data storage. \n \nThis information could be used by an attacker to blueprint what type of attacks might be successful. Therefore, vSphere UI must be configured to not show server version information in error pages.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCUI-70-000025",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c",
+      "name": "VMware vSphere 7.0 vCenter Appliance UI Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-234870r1009618_rule",
+  "full_rule_id": "SV-234870r1009618_rule",
+  "rule_id": "SV-234870",
+  "rule_revision": "1009618",
+  "group_id": "V-234870",
+  "group_title": "SRG-OS-000109-GPOS-00056",
+  "title": "The SUSE operating system must deny direct logons to the root account using remote access via SSH.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To ensure individual accountability and prevent unauthorized access, organizational users must be individually identified and authenticated.\n\nA group authenticator is a generic account used by multiple individuals. Use of a group authenticator alone does not uniquely identify individual users. Examples of the group authenticator is the UNIX OS \"root\" user account, the Windows \"Administrator\" account, the \"sa\" account, or a \"helpdesk\" account.\n\nFor example, the UNIX and Windows SUSE operating systems offer a \"switch user\" capability, allowing users to authenticate with their individual credentials and, when needed, \"switch\" to the administrator role. This method provides for unique individual authentication prior to using a group authenticator.\n\nUsers (and any processes acting on behalf of users) need to be uniquely identified and authenticated for all accesses other than those accesses explicitly identified and documented by the organization, which outlines specific user actions that can be performed on the SUSE operating system without identification or authentication.\n\nRequiring individuals to be authenticated with an individual authenticator prior to using a group authenticator allows for traceability of actions, as well as adding an additional level of protection of the actions that can be taken with group account knowledge.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SUSE operating system denies direct logons to the root account using remote access via SSH.\n\nCheck that SSH denies any user trying to log on directly as root with the following command:\n\n> sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*permitrootlogin'\n\nPermitRootLogin no\n\nIf the \"PermitRootLogin\" keyword is set to \"yes\", is missing, or is commented out, this is a finding.",
+  "fix": "Configure the SUSE operating system to deny direct logons to the root account using remote access via SSH.\n\nEdit the appropriate \"/etc/ssh/sshd_config\" file, add or uncomment the line for \"PermitRootLogin\" and set its value to \"no\" (this file may be named differently or be in a different location):\n\nPermitRootLogin no",
+  "ccis": [
+    "CCI-004045",
+    "CCI-000770"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To ensure individual accountability and prevent unauthorized access, organizational users must be individually identified and authenticated.\n\nA group authenticator is a generic account used by multiple individuals. Use of a group authenticator alone does not uniquely identify individual users. Examples of the group authenticator is the UNIX OS \"root\" user account, the Windows \"Administrator\" account, the \"sa\" account, or a \"helpdesk\" account.\n\nFor example, the UNIX and Windows SUSE operating systems offer a \"switch user\" capability, allowing users to authenticate with their individual credentials and, when needed, \"switch\" to the administrator role. This method provides for unique individual authentication prior to using a group authenticator.\n\nUsers (and any processes acting on behalf of users) need to be uniquely identified and authenticated for all accesses other than those accesses explicitly identified and documented by the organization, which outlines specific user actions that can be performed on the SUSE operating system without identification or authentication.\n\nRequiring individuals to be authenticated with an individual authenticator prior to using a group authenticator allows for traceability of actions, as well as adding an additional level of protection of the actions that can be taken with group account knowledge.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-020040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

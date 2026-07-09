@@ -1,0 +1,53 @@
+{
+  "id": "SV-273580r1110910_rule",
+  "full_rule_id": "SV-273580r1110910_rule",
+  "rule_id": "SV-273580",
+  "rule_revision": "1110910",
+  "group_id": "V-273580",
+  "group_title": "SRG-NET-000019-RTR-000002",
+  "title": "The RUCKUS ICX perimeter router must be configured to enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information flow control regulates authorized information to travel within a network and between interconnected networks. Controlling the flow of network traffic is critical so it does not introduce any unacceptable risk to the network infrastructure or data. An example of a flow control restriction is blocking outside traffic claiming to be from within the organization. For most routers, internal information flow control is a product of system design.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check perimeter router configuration for port connected to DISN for access-list filter to control flow of information between interconnected networks in accordance with applicable policy.  \n\nIn this example, SSL traffic is permitted to a specific internal host:  \ninterface ethernet 1/1/10\n port-name Link_to_DISN\n ip address x.12.1.10 255.255.255.0\n ip access-group Filter_Perimeter in\n!\nip access-list extended Filter_Perimeter\n sequence 10 permit tcp any any established\n sequence 20 permit tcp host x.12.1.9 host x.12.1.10 eq bgp\n sequence 30 permit tcp host x.12.1.9 eq bgp host x.12.1.10\n sequence 40 permit icmp host x.12.1.9 host x.12.1.10 echo\n sequence 50 permit icmp host x.12.1.9 host x.12.1.10 echo-reply\n sequence 60 permit tcp any host x.12.1.22 eq ssl\n sequence 70 deny ip any any log\n\nIf the router does not enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy, this is a finding.",
+  "fix": "Configure the router to enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.\n\n1. Configure the access-list. In this example, SSL traffic is permitted to a specific internal host.\nip access-list extended Filter_Perimeter\n sequence 10 permit tcp any any established\n sequence 20 permit tcp host x.12.1.9 host x.12.1.10 eq bgp\n sequence 30 permit tcp host x.12.1.9 eq bgp host x.12.1.10\n sequence 40 permit icmp host x.12.1.9 host x.12.1.10 echo\n sequence 50 permit icmp host x.12.1.9 host x.12.1.10 echo-reply\n sequence 60 permit tcp any host x.12.1.22 eq ssl\n sequence 70 deny ip any any log\n\n2. Apply access list to external interface.\ninterface ethernet 1/1/10\n port-name Link_to_DISN\n ip address x.12.1.10 255.255.255.0\n ip access-group Filter_Perimeter in\n!",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information flow control regulates authorized information to travel within a network and between interconnected networks. Controlling the flow of network traffic is critical so it does not introduce any unacceptable risk to the network infrastructure or data. An example of a flow control restriction is blocking outside traffic claiming to be from within the organization. For most routers, internal information flow control is a product of system design.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000120",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

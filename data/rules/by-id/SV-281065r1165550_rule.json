@@ -1,0 +1,53 @@
+{
+  "id": "SV-281065r1165550_rule",
+  "full_rule_id": "SV-281065r1165550_rule",
+  "rule_id": "SV-281065",
+  "rule_revision": "1165550",
+  "group_id": "V-281065",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "RHEL 10 must enforce mode \"0750\" or less permissive for local interactive user home directories.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Excessive permissions on local interactive user home directories may allow unauthorized access to user files by other users.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 is configured so that the assigned home directory of all local interactive users has a mode of \"0750\" or less permissive with the following command:\n\nNote: This may miss interactive users that have been assigned a privileged user identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system login information.\n\n$ stat -L -c '%a %n' $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd) 2>/dev/null\n700 /home/disauser\n\nIf home directories referenced in \"/etc/passwd\" do not have a mode of \"0750\" or less permissive, this is a finding.",
+  "fix": "Configure RHEL 10 so that the mode of interactive user's home directories is set to \"0750\". \n\nTo change the mode of a local interactive user's home directory, use the following command:\n\nNote: The example will be for the user \"disauser\".\n\n$ sudo chmod 0750 /home/disauser",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Excessive permissions on local interactive user home directories may allow unauthorized access to user files by other users.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-400240",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

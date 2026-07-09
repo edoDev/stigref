@@ -1,0 +1,54 @@
+{
+  "id": "SV-230274r1017089_rule",
+  "full_rule_id": "SV-230274r1017089_rule",
+  "rule_id": "SV-230274",
+  "rule_revision": "1017089",
+  "group_id": "V-230274",
+  "group_title": "SRG-OS-000375-GPOS-00160",
+  "title": "RHEL 8 must implement certificate status checking for multifactor authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Using an authentication device, such as a DoD Common Access Card (CAC) or token that is separate from the information system, ensures that even if the information system is compromised, credentials stored on the authentication device will not be affected.\n\nMultifactor solutions that require devices separate from information systems gaining access include, for example, hardware tokens providing time-based or challenge-response authenticators and smart cards such as the U.S. Government Personal Identity Verification (PIV) card and the DoD CAC.\n\nRHEL 8 includes multiple options for configuring certificate status checking, but for this requirement focuses on the System Security Services Daemon (SSSD). By default, sssd performs Online Certificate Status Protocol (OCSP) checking and certificate verification using a sha256 digest function.\n\nSatisfies: SRG-OS-000375-GPOS-00160, SRG-OS-000377-GPOS-00162</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the operating system implements certificate status checking for multifactor authentication.\n\nNote: If the System Administrator demonstrates the use of an approved alternate multifactor authentication method, this requirement is not applicable.\n\nCheck to see if Online Certificate Status Protocol (OCSP) is enabled and using the proper digest value on the system with the following command:\n\n$ sudo grep certificate_verification /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf | grep -v \"^#\"\n\ncertificate_verification = ocsp_dgst=sha1\n\nIf the certificate_verification line is missing from the [sssd] section, or is missing \"ocsp_dgst=sha1\", ask the administrator to indicate what type of multifactor authentication is being utilized and how the system implements certificate status checking.  If there is no evidence of certificate status checking being used, this is a finding.",
+  "fix": "Configure the operating system to implement certificate status checking for multifactor authentication.\n\nReview the \"/etc/sssd/sssd.conf\" file to determine if the system is configured to prevent OCSP or certificate verification.\n\nAdd the following line to the [sssd] section of the \"/etc/sssd/sssd.conf\" file:\n\ncertificate_verification = ocsp_dgst=sha1\n\nThe \"sssd\" service must be restarted for the changes to take effect. To restart the \"sssd\" service, run the following command:\n\n$ sudo systemctl restart sssd.service",
+  "ccis": [
+    "CCI-001948",
+    "CCI-004046"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using an authentication device, such as a DoD Common Access Card (CAC) or token that is separate from the information system, ensures that even if the information system is compromised, credentials stored on the authentication device will not be affected.\n\nMultifactor solutions that require devices separate from information systems gaining access include, for example, hardware tokens providing time-based or challenge-response authenticators and smart cards such as the U.S. Government Personal Identity Verification (PIV) card and the DoD CAC.\n\nRHEL 8 includes multiple options for configuring certificate status checking, but for this requirement focuses on the System Security Services Daemon (SSSD). By default, sssd performs Online Certificate Status Protocol (OCSP) checking and certificate verification using a sha256 digest function.\n\nSatisfies: SRG-OS-000375-GPOS-00160, SRG-OS-000377-GPOS-00162",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-010400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

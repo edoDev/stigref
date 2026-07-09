@@ -1,0 +1,53 @@
+{
+  "id": "SV-281107r1166273_rule",
+  "full_rule_id": "SV-281107r1166273_rule",
+  "rule_id": "SV-281107",
+  "rule_revision": "1166273",
+  "group_id": "V-281107",
+  "group_title": "SRG-OS-000343-GPOS-00134",
+  "title": "RHEL 10 must take action when allocated audit record storage volume reaches 95 percent of the audit record storage capacity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If action is not taken when storage volume reaches 95 percent utilization, the auditing system may fail when the storage volume reaches capacity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 takes action when allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity with the following command:\n\n$ sudo grep -w admin_space_left /etc/audit/auditd.conf\nadmin_space_left = 5%\n\nIf the value of the \"admin_space_left\" keyword is not set to 5 percent of the storage volume allocated to audit logs, or if the line is commented out, ask the system administrator to indicate how the system is taking action if the allocated storage is about to reach capacity. \n\nIf the \"space_left\" value is not configured to the correct value, this is a finding.",
+  "fix": "Configure RHEL 10 to initiate an action when allocated audit record storage volume reaches 95 percent of the repository maximum audit record storage capacity by adding/modifying the following line in the /etc/audit/auditd.conf file:\n\nadmin_space_left = 5%\n\nRestart the audit daemon with the following command for the changes to take effect:\n\n$ sudo service auditd restart",
+  "ccis": [
+    "CCI-001855"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If action is not taken when storage volume reaches 95 percent utilization, the auditing system may fail when the storage volume reaches capacity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-500105",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

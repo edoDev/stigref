@@ -1,0 +1,53 @@
+{
+  "id": "SV-254800r961359_rule",
+  "full_rule_id": "SV-254800r961359_rule",
+  "rule_id": "SV-254800",
+  "rule_revision": "961359",
+  "group_id": "V-254800",
+  "group_title": "SRG-APP-000342-CTR-000775",
+  "title": "Kubernetes must have a Pod Security Admission control file configured.",
+  "severity": "high",
+  "description": "<VulnDiscussion>An admission controller intercepts and processes requests to the Kubernetes API prior to persistence of the object, but after the request is authenticated and authorized.\n\nKubernetes (> v1.23)offers a built-in Pod Security admission controller to enforce the Pod Security Standards. Pod security restrictions are applied at the namespace level when pods are created. \n\nThe Kubernetes Pod Security Standards define different isolation levels for Pods. These standards define how to restrict the behavior of pods in a clear, consistent fashion.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Change to the /etc/kubernetes/manifests directory on the Kubernetes Control Plane. Run the command:\n\n\"grep -i admission-control-config-file *\"\n\nIf the setting \"--admission-control-config-file\" is not configured in the Kubernetes API Server manifest file, this is a finding.\n\nInspect the .yaml file defined by the --admission-control-config-file. Verify PodSecurity is properly configured. \nIf least privilege is not represented, this is a finding.",
+  "fix": "Edit the Kubernetes API Server manifest file in the /etc/kubernetes/manifests directory on the Kubernetes Control Plane. \n\nSet the value of \"--admission-control-config-file\" to a valid path for the file.\n\nCreate an admission controller config file:\nExample File:\n```yaml\napiVersion: apiserver.config.k8s.io/v1\nkind: AdmissionConfiguration\nplugins:\n- name: PodSecurity\n  configuration:\n    apiVersion: pod-security.admission.config.k8s.io/v1beta1\n    kind: PodSecurityConfiguration\n    # Defaults applied when a mode label is not set.\n    defaults:\n      enforce: \"privileged\"\n      enforce-version: \"latest\"\n    exemptions:\n      # Don't forget to exempt namespaces or users that are responsible for deploying\n      # cluster components, because they need to run privileged containers\n      usernames: [\"admin\"] \n      namespaces: [\"kube-system\"]\n\nSee for more details:\nMigrate from PSP to PSA:\nhttps://kubernetes.io/docs/tasks/configure-pod-container/migrate-from-psp/\n\nBest Practice: https://kubernetes.io/docs/concepts/security/pod-security-policy/#recommended-practice.",
+  "ccis": [
+    "CCI-002263"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "An admission controller intercepts and processes requests to the Kubernetes API prior to persistence of the object, but after the request is authenticated and authorized.\n\nKubernetes (> v1.23)offers a built-in Pod Security admission controller to enforce the Pod Security Standards. Pod security restrictions are applied at the namespace level when pods are created. \n\nThe Kubernetes Pod Security Standards define different isolation levels for Pods. These standards define how to restrict the behavior of pods in a clear, consistent fashion.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-002011",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

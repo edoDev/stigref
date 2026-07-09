@@ -1,0 +1,53 @@
+{
+  "id": "SV-223925r1137691_rule",
+  "full_rule_id": "SV-223925r1137691_rule",
+  "rule_id": "SV-223925",
+  "rule_revision": "1137691",
+  "group_id": "V-223925",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "CA-TSS Emergency ACIDs must be properly limited and must audit all resource access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to the SYS1.UADS.\n\nAsk the System Administrator for list of all emergency ACIDs available to the site along with the associated function of each.\n\nIf there are no emergency ACIDs defined ask the system administrator for an alternate documented procedure to handle emergencies. \n\nIf there are no emergency ACIDs and no documented emergency procedure, this is a finding.\n\nIf at a minimum, an emergency ACID exists with the security administration attributes specified in accordance with the following requirements, this is not a finding.\n\nFor emergency IDs with security administration privileges, but which cannot access and update system data sets:\n\nADMIN Authority: \nACID(ALL)\nDATA(ALL) \nOTRAN(ALL)\nMISC1(INSTDATA,SUSPEND,TSSSIM,NOATS) \nMISC2(TSO,TARGET) \nMISC8(PWMAINT,REMASUSP) \nMISC9(GENERIC) FACILITY(BATCH, TSO, ROSCOE, CICS, xxxx) \nWhere 'xxxx' is a facility the application security team grants access into for their application users. \n\nAn additional class of userids can exist to perform all operating system functions except ESM administration.\n\nThese emergency ACID(s) will have ability to access and update all system data sets but will not have security administration privileges. See the following requirements:\n\nData set permissions for the emergency ACIDs will be permitted as follows:\n\nTSS PER(acid) DSN(*****) ACCESS(ALL) ACTION(AUDIT)\n\nSecurity Bypass Attributes NODSNCHK, NOVOLCHK, and NORESCHK will not be given to the Emergency ACIDs.\n\nAll emergency ACID(s) are to be implemented with logging to provide an audit trail of their activities.\n\nAll emergency ACID(s) are to be maintained in both the ESM and SYS1.UADS to ensure they are available in the event that the ESM is not functional.\n\nAll emergency ACID(s) will have distinct, different passwords in SYS1.UADS and in the ACP, and the site is to establish procedures to ensure that the passwords differ. The password for any ID in SYS1.UADS is never to match the password for the same ID in the ACP.\n\nAll emergency ACID(s) will have documented procedures to provide a mechanism for the use of the IDs. Their release for use is to be logged, and the log is to be maintained by the ISSO. When an emergency ACID is released for use, its password is to be reset by the ISSO within 12 hours.\n\n1) Review the access authorizations for all emergency ACIDs to ensure that all access permitted to these ACIDs is reviewed and approved by the ISSO.\n2) If emergency ACIDs are utilized, ensure they are restricted to performing only the operating system recovery functions or the ESM administration functions.\n\nIf these emergency ACID(s) have ability to ACCESS and UPDATE all system data sets, but do not have security administration privileges, this is not a finding.\n\nNote: If running Quest NC-Pass, validate that the Emergency ACIDS are identified to have the FACILITY of NCPASS and SECURID resource in the ABSTRACT resource class.",
+  "fix": "Configure any emergency ACID to have only access to resources required to support the specific functions of the owning department and that access to these resources is audited. Evaluate the impact of correcting the deficiency. Develop a plan of action and implement the changes.\n\nTSS PER(acid) DSN(*****) ACCESS(ALL) ACTION(AUDIT)\n\nSecurity Bypass Attributes NODSNCHK, NOVOLCHK, and NORESCHK will not be given to the Emergency ACIDs.\n\nAll emergency ACID(s) are to be implemented with logging to provide an audit trail of their activities.\n\nAll emergency ACID(s) are to be maintained in both the ACP and SYS1.UADS to ensure they are available in the event that the ACP is not functional.\n\nAll emergency ACID(s) will have distinct, different passwords in SYS1.UADS and in the ACP, and the site is to establish procedures to ensure that the passwords differ. The password for any ID in SYS1.UADS is never to match the password for the same ID in the ACP.\n\nAll emergency ACID(s) will have documented procedures to provide a mechanism for the use of the IDs. Their release for use is to be logged, and the log is to be maintained by the ISSO. When an emergency ACID is released for use, its password is to be reset by the ISSO within 12 hours.   \n\nIf no emergency userids are in use on the system, develop and document a procedure to manage emergency access to the system.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-ES-000510",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-254054r844195_rule",
+  "full_rule_id": "SV-254054r844195_rule",
+  "rule_id": "SV-254054",
+  "rule_revision": "844195",
+  "group_id": "V-254054",
+  "group_title": "SRG-NET-000364-RTR-000201",
+  "title": "The Juniper perimeter router must be configured drop IPv6 packets with a Routing Header type 0, 1, or 3255.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The routing header can be used maliciously to send a packet through a path where less robust security is in place, rather than through the presumably preferred path of routing protocols. Use of the routing extension header has few legitimate uses other than as implemented by Mobile IPv6. \n\nThe Type 0 Routing Header (RFC 5095) is dangerous because it allows attackers to spoof source addresses and obtain traffic in response, rather than the real owner of the address. Secondly, a packet with an allowed destination address could be sent through a Firewall using the Routing Header functionality, only to bounce to a different node once inside. The Type 1 Routing Header is defined by a specification called \"Nimrod Routing\", a discontinued project funded by DARPA. Assuming that most implementations will not recognize the Type 1 Routing Header, it must be dropped. The Type 3–255 Routing Header values in the routing type field are currently undefined and should be dropped inbound and outbound.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration to determine if it is configured to drop IPv6 packets containing a Routing Header of type 0, 1, or 3–255.\n\n[edit firewall family inet6]\nfilter <name> {\n    term 1 {\n        from {\n            next-header routing;\n        }\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n    <additional terms>\n    term default {\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n}\n\nNote: Juniper routers do not support configuring option types for Routing extension headers. Therefore, all packets with the Routing extension header are dropped.\n\nVerify the filter is applied to applicable interfaces.\n[edit interfaces]\n<interface name> {\n    unit <number> {\n        family inet6 {\n            filter {\n                input <filter name>;\n            }\n            address <IPv6 address>.<prefix>;\n        }\n    }\n}\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf the router is not configured to drop IPv6 packets containing a Routing Header of type 0, 1, or 3–255, this is a finding.",
+  "fix": "Configure the router to drop IPv6 packets with Routing Header of type 0, 1, or 3–255.\n\nset firewall family inet6 filter <name> term 1 from next-header routing\nset firewall family inet6 filter <name> term 1 then log\nset firewall family inet6 filter <name> term 1 then syslog\nset firewall family inet6 filter <name> term 1 then discard\n<additional terms>\nset firewall family inet6 filter <name> term default then log\nset firewall family inet6 filter <name> term default then syslog\nset firewall family inet6 filter <name> term default then discard\n\nset interfaces <interface name> unit <number> family inet6 filter input <filter name>\nset interfaces <interface name> unit <number> family inet6 address <IPv6 address>.<prefix>",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The routing header can be used maliciously to send a packet through a path where less robust security is in place, rather than through the presumably preferred path of routing protocols. Use of the routing extension header has few legitimate uses other than as implemented by Mobile IPv6. \n\nThe Type 0 Routing Header (RFC 5095) is dangerous because it allows attackers to spoof source addresses and obtain traffic in response, rather than the real owner of the address. Secondly, a packet with an allowed destination address could be sent through a Firewall using the Routing Header functionality, only to bounce to a different node once inside. The Type 1 Routing Header is defined by a specification called \"Nimrod Routing\", a discontinued project funded by DARPA. Assuming that most implementations will not recognize the Type 1 Routing Header, it must be dropped. The Type 3–255 Routing Header values in the routing type field are currently undefined and should be dropped inbound and outbound.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000820",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

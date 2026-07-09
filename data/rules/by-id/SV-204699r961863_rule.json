@@ -1,0 +1,53 @@
+{
+  "id": "SV-204699r961863_rule",
+  "full_rule_id": "SV-204699r961863_rule",
+  "rule_id": "SV-204699",
+  "rule_revision": "961863",
+  "group_id": "V-204699",
+  "group_title": "SRG-APP-000516",
+  "title": "AAA Services must not be configured with shared accounts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Shared accounts configured for use on a network device do not allow for accountability or repudiation of individuals using them. If shared accounts are not changed when someone leaves the group, that person could possibly gain control of the network device. Having shared accounts does not allow for proper auditing of who is accessing or changing the network. For this reason, shared accounts are not permitted.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If AAA Services rely on directory services for user account management, this is not applicable and the connected directory services must perform this function.\n\nVerify AAA Services are not configured with shared accounts. Identify group profile definitions that do not meet the accounts user-id naming convention. \n\nBelow is a super-user example of how an SA profile may be associated.\n\nGroup Profile Information\ngroup = super-user{\nprofile_id = 40\nprofile_cycle = 1\nservice=shell {\ndefault cmd=permit\ncmd=debug {\ndeny all\npermit .*\n}\n}\n}\n\nBelow is an example of the user definition that should be assigned with a valid ID (not rtr-geek). Look for group accounts here:\n\nuser = rtr-geek{\nprofile_id = 45\nprofile_cycle = 1\nmember = rtr_super\npassword = des \"********\"\n}\n\nIf AAA Services are configured with shared accounts (group profiles), this is a finding.",
+  "fix": "Configure AAA Services with no shared accounts. Remove all group profiles.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Shared accounts configured for use on a network device do not allow for accountability or repudiation of individuals using them. If shared accounts are not changed when someone leaves the group, that person could possibly gain control of the network device. Having shared accounts does not allow for proper auditing of who is accessing or changing the network. For this reason, shared accounts are not permitted.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SRG-APP-000516-AAA-000620",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "aaa-services-security-requirements-guide-v2r2-94075993",
+      "name": "AAA Services Security Requirements Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "aaa-services-security-requirements-guide-v2r2-94075993"
+  ]
+}

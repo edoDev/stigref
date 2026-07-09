@@ -1,0 +1,53 @@
+{
+  "id": "SV-255326r960885_rule",
+  "full_rule_id": "SV-255326r960885_rule",
+  "rule_id": "SV-255326",
+  "rule_revision": "960885",
+  "group_id": "V-255326",
+  "group_title": "SRG-APP-000091-DB-000066",
+  "title": "The Azure SQL Database must be able to generate audit records when privileges/permissions are retrieved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. DBMSs typically make such information available through views or functions. \n\nThis requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of privileges/permissions/role memberships that SQL Server continually performs to determine if any and every action on the database is permitted.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review Azure SQL Database configuration to verify that audit records are produced when privileges/permissions/role memberships are retrieved. \n\nTo determine if an audit is configured, follow the instructions below: \nRun this TSQL command to determine if SQL Auditing AuditActionGroups are configured:\n  SELECT DISTINCT sd.audit_action_name \n  FROM sys.database_audit_specification_details sd\n  JOIN sys.database_audit_specifications s \n  ON s.database_specification_id = sd.database_specification_id\n  WHERE (name = 'SqlDbAuditing_ServerAuditSpec' /*Server Audit*/\n      OR name = 'SqlDbAuditing_AuditSpec') /*Database Audit*/\n  AND s.is_state_enabled = 1\n  ORDER BY sd.audit_action_name\n\nIf no values exist for AuditActionGroup, this is a finding. \n\nVerify the following AuditActionGroup(s) are configured:\nSCHEMA_OBJECT_ACCESS_GROUP \n\nIf any listed AuditActionGroups do not exist in the configuration, this is a finding.",
+  "fix": "Deploy an audit to review the retrieval of privilege/permission/role membership information. \n\nRefer to the supplemental file \"AzureSQLDatabaseAudit.txt\" PowerShell script.",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. DBMSs typically make such information available through views or functions. \n\nThis requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of privileges/permissions/role memberships that SQL Server continually performs to determine if any and every action on the database is permitted.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ASQL-00-004500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-database-security-technical-implementation-guide-v2r3-dea2fe81",
+      "name": "Microsoft Azure SQL Database Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-database-security-technical-implementation-guide-v2r3-dea2fe81"
+  ]
+}

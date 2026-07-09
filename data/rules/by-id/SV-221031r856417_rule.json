@@ -1,0 +1,53 @@
+{
+  "id": "SV-221031r856417_rule",
+  "full_rule_id": "SV-221031r856417_rule",
+  "rule_id": "SV-221031",
+  "rule_revision": "856417",
+  "group_id": "V-221031",
+  "group_title": "SRG-NET-000362-RTR-000118",
+  "title": "The Cisco BGP switch must be configured to limit the prefix size on any inbound route advertisement to /24, or the least significant prefixes issued to the customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The effects of prefix de-aggregation can degrade switch performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured switch, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to determine if it is compliant with this requirement.\n\nStep 1: Verify that a route filter has been configured to reject prefixes longer than /24, or the least significant prefixes issued to the customers as shown in the example below:\n\nip prefix-list FILTER_PREFIX_LENGTH seq 5 permit 0.0.0.0/0 ge 8 le 24\nip prefix-list FILTER_PREFIX_LENGTH seq 10 deny 0.0.0.0/0 le 32\n\nStep 2: Verify that prefix filtering has been applied to each eBGP peer as shown in the example:\n\nrouter bgp xx\n neighbor x.1.1.9 remote-as yy\n neighbor x.1.1.9 prefix-list FILTER_PREFIX_LENGTH in\n neighbor x.2.1.7 remote-as zz\n neighbor x.2.1.7 prefix-list FILTER_PREFIX_LENGTH in\n\nIf the switch is not configured to limit the prefix size on any inbound route advertisement to /24, or the least significant prefixes issued to the customer, this is a finding.",
+  "fix": "Configure the switch to limit the prefix size on any route advertisement to /24, or the least significant prefixes issued to the customer.\n\nStep 1: Configure a prefix list to reject any prefix that is longer than /24.\n\nSW1(config)#ip prefix-list FILTER_PREFIX_LENGTH permit 0.0.0.0/0 ge 8 le 24\nSW1(config)#ip prefix-list FILTER_PREFIX_LENGTH deny 0.0.0.0/0 le 32\n\nStep 2: Apply the prefix list to all eBGP peers as shown in the example below:\n\nSW1(config)#router bgp xx\nSW1(config-switch)#neighbor x.1.1.9 prefix-list FILTER_PREFIX_LENGTH in\nSW1(config-switch)#neighbor x.2.1.7 prefix-list FILTER_PREFIX_LENGTH in",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix de-aggregation can degrade switch performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured switch, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000570",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887",
+      "name": "Cisco IOS XE Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-switch-rtr-security-technical-implementation-guide-v3r4-1bfa6887"
+  ]
+}

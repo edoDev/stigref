@@ -1,0 +1,53 @@
+{
+  "id": "SV-256520r991553_rule",
+  "full_rule_id": "SV-256520r991553_rule",
+  "rule_id": "SV-256520",
+  "rule_revision": "991553",
+  "group_id": "V-256520",
+  "group_title": "SRG-OS-000241-GPOS-00091",
+  "title": "The Photon operating system must audit all account removal actions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When operating system accounts are removed, user accessibility is affected. Accounts are used for identifying individual users or operating system processes. To detect and respond to events affecting user accessibility and system processing, operating systems must audit account removal actions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command:\n\n# auditctl -l | grep -E \"(userdel|groupdel)\"\n\nExpected result:\n\n-w /usr/sbin/userdel -p x -k userdel\n-w /usr/sbin/groupdel -p x -k groupdel\n\nIf the output does not match the expected result, this is a finding.\n\nNote: This check depends on the auditd service to be in a running state for accurate results. Enabling the auditd service is done in control PHTN-30-000013.",
+  "fix": "Navigate to and open:\n\n/etc/audit/rules.d/audit.STIG.rules\n\nAdd the following lines:\n\n-w /usr/sbin/userdel -p x -k userdel\n-w /usr/sbin/groupdel -p x -k groupdel\n\nAt the command line, run the following command to load the new audit rules:\n\n# /sbin/augenrules --load\n\nNote: A new \"audit.STIG.rules\" file is provided for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.\n\nNote: An older \"audit.STIG.rules\" may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.",
+  "ccis": [
+    "CCI-001405"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When operating system accounts are removed, user accessibility is affected. Accounts are used for identifying individual users or operating system processes. To detect and respond to events affecting user accessibility and system processing, operating systems must audit account removal actions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-30-000045",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28",
+      "name": "VMware vSphere 7.0 vCenter Appliance Photon OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28"
+  ]
+}

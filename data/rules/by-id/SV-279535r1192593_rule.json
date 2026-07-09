@@ -1,0 +1,58 @@
+{
+  "id": "SV-279535r1192593_rule",
+  "full_rule_id": "SV-279535r1192593_rule",
+  "rule_id": "SV-279535",
+  "rule_revision": "1192593",
+  "group_id": "V-279535",
+  "group_title": "SRG-OS-000250-GPOS-00093",
+  "title": "Nutanix OS must implement cryptography to protect the integrity of remote access session by setting the systemwide policy to use FIPS mode.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nRemote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.\n\nSatisfies: SRG-OS-000250-GPOS-00093, SRG-OS-000393-GPOS-00173, SRG-OS-000394-GPOS-00174, SRG-OS-000396-GPOS-00176, SRG-OS-000478-GPOS-00223, SRG-OS-000423-GPOS-00187, SRG-OS-000424-GPOS-00188</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: For AHV, this requirement is Not Applicable. \n\nVerify AOS, Prism Central, and Files OS VMs are configured to only use ciphers employing FIPS 140-3-approved algorithms.\n\n1. Verify the \"opensslcnf.config\" is defined in the \"/etc/pki/tls/openssl.cnf\" file.\n\nsudo grep -i opensslcnf.config /etc/pki/tls/openssl.cnf\n.include /etc/crypto-policies/back-ends/opensslcnf.config\n\n2. Verify the systemwide crypto policy is set to \"FIPS\".\n\n$ sudo update-crypto-policies --show\nFIPS\n\nIf the systemwide crypto policy is not set to \"FIPS\" or the \"opensslcnf.config\" is not defined in the \"/etc/pki/tls/openssl.cnf\", this is a finding.",
+  "fix": "Configure SSH.\n\n1. For AOS, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/CVM/sshdCVM\n$ sudo systemctl restart sshd\n\n2. For Prism Central, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/PCVM/sshdPCVM\n$ sudo systemctl restart sshd\n\n3. For Files, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/AFS/sshdAFS\n$ sudo systemctl restart sshd\n\n4. For AHV, configure SSH, then restart the SSH for the changes to take effect.\n\n$ sudo salt-call state.sls security/KVM/sshdKVM\n$ sudo systemctl restart sshd",
+  "ccis": [
+    "CCI-001453",
+    "CCI-002890",
+    "CCI-003123",
+    "CCI-002450",
+    "CCI-002418",
+    "CCI-002421"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nRemote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.\n\nSatisfies: SRG-OS-000250-GPOS-00093, SRG-OS-000393-GPOS-00173, SRG-OS-000394-GPOS-00174, SRG-OS-000396-GPOS-00176, SRG-OS-000478-GPOS-00223, SRG-OS-000423-GPOS-00187, SRG-OS-000424-GPOS-00188",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000012",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

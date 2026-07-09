@@ -1,0 +1,53 @@
+{
+  "id": "SV-261354r996514_rule",
+  "full_rule_id": "SV-261354r996514_rule",
+  "rule_id": "SV-261354",
+  "rule_revision": "996514",
+  "group_id": "V-261354",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "All SLEM 5 local initialization files must not execute world-writable programs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If user start-up files execute world-writable programs, especially in unprotected directories, they could be maliciously modified to destroy user files or otherwise compromise the system at the user level. If the system is compromised at the user level, it is easier to elevate privileges to eventually compromise the system at the root and network level.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SLEM 5 local initialization files do not execute world-writable programs with the following command:\n\n     > sudo find / -xdev -perm -002 -type f -exec ls -ld {} \\;\n\nFor all files listed, check for their presence in the local initialization files with the following command:\n\nNote: The example will be for a system that is configured to create users' home directories in the \"/home\" directory.\n\n     > sudo find /home/* -maxdepth 1 -type f -name \\.\\* -exec grep -H <file     > {} \\;\n\nIf any local initialization files are found to reference world-writable files, this is a finding.",
+  "fix": "Remove the references to these files in the local initialization scripts or remove the world-writable permission of files referenced by SLEM 5 local initialization scripts with the following command:\n\n     > sudo chmod 755 <file>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If user start-up files execute world-writable programs, especially in unprotected directories, they could be maliciously modified to destroy user files or otherwise compromise the system at the user level. If the system is compromised at the user level, it is easier to elevate privileges to eventually compromise the system at the root and network level.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-411040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

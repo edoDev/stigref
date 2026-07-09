@@ -1,0 +1,58 @@
+{
+  "id": "SV-273808r1111022_rule",
+  "full_rule_id": "SV-273808r1111022_rule",
+  "rule_id": "SV-273808",
+  "rule_revision": "1111022",
+  "group_id": "V-273808",
+  "group_title": "SRG-APP-000179-NDM-000265",
+  "title": "The RUCKUS ICX device must use FIPS 140-2/140-3 approved algorithms for authentication to a cryptographic module.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Unapproved mechanisms used for authentication to the cryptographic module are not validated and therefore cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.\n\nNetwork devices utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.\n\nFIPS 140-2/140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DOD requirements. However, authentication algorithms must configure security processes to use only FIPS-approved and NIST-recommended authentication algorithms.\n\nSatisfies: SRG-APP-000179-NDM-000265, SRG-APP-000156-NDM-000250, SRG-APP-000172-NDM-000259, SRG-APP-000411-NDM-000330, SRG-APP-000412-NDM-000331, SRG-APP-000880-NDM-000290</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the FIPS module has been enabled.\n\nRouter#fips show\nCryptographic Module Version: FI-IP-CRYPTO\nFIPS mode: Administrative status ON: Operational status ON\nCommon-Criteria: Administrative status ON: Operational status ON\n\nSystem Specific:\nOS monitor access status is: Disabled\n\nManagement Protocol Specific:\nTelnet server: Disabled\nTelnet client: Disabled\nTFTP client: Disabled\nSNMP Access to security objects: Disabled\n\nCritical security Parameter updates across FIPS boundary:\nProtocol Shared secret and host passwords: Clear\nPassword Display: Disabled\n\nCertificate Specific:\nHTTPS RSA Host Keys and Signature: Clear\nSSH DSA Host keys: Clear\nSSH RSA Host keys: Clear\nCC Enable AAA Server Any: Retain\n\nIf the fips show command does not output \"FIPS mode: Administrative status ON: Operational status ON\", this is a finding.",
+  "fix": "Configure the network device to use FIPS 140-2/140-3 approved algorithms for authentication to a cryptographic module.\n\nUse a console session directly attached to the ICX switch to log in:\n\ndevice(config)#configuration terminal\ndevice(config)# fips enable common-criteria\ndevice# fips zeroize all\ndevice# write memory\ndevice# reload",
+  "ccis": [
+    "CCI-000803",
+    "CCI-001941",
+    "CCI-000197",
+    "CCI-002890",
+    "CCI-003123",
+    "CCI-004192"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unapproved mechanisms used for authentication to the cryptographic module are not validated and therefore cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.\n\nNetwork devices utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.\n\nFIPS 140-2/140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DOD requirements. However, authentication algorithms must configure security processes to use only FIPS-approved and NIST-recommended authentication algorithms.\n\nSatisfies: SRG-APP-000179-NDM-000265, SRG-APP-000156-NDM-000250, SRG-APP-000172-NDM-000259, SRG-APP-000411-NDM-000330, SRG-APP-000412-NDM-000331, SRG-APP-000880-NDM-000290",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-NDM-000500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1",
+      "name": "RUCKUS ICX NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1"
+  ]
+}

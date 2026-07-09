@@ -1,0 +1,53 @@
+{
+  "id": "SV-279614r1192501_rule",
+  "full_rule_id": "SV-279614r1192501_rule",
+  "rule_id": "SV-279614",
+  "rule_revision": "1192501",
+  "group_id": "V-279614",
+  "group_title": "SRG-OS-000392-GPOS-00172",
+  "title": "Nutanix OS must audit all activities performed during nonlocal maintenance and diagnostic sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If events associated with nonlocal administrative access or diagnostic sessions are not logged, a major tool for assessing and investigating attacks would not be available.\n\nThis requirement addresses auditing-related issues associated with maintenance tools used specifically for diagnostic and repair actions on organizational information systems.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.\n\nThis requirement applies to hardware/software diagnostic test equipment or tools. This requirement does not cover hardware/software components that may support information system maintenance, yet are a part of the system, for example, the software implementing \"ping,\" \"ls,\" \"ipconfig,\" or the hardware and software implementing the monitoring port of an Ethernet switch.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS audits all required activities performed during nonlocal maintenance and diagnostic sessions using the following commands.\n\n$ sudo grep -i /usr/sbin/semanage /etc/audit/audit.rules\n-a always,exit -F path=/usr/sbin/semanage -F perm=x -F auid>=1000 -F auid!=4294967295 -k secobjects\n\n$ sudo grep -i /usr/sbin/setsebool /etc/audit/audit.rules\n-a always,exit -F path=/usr/sbin/setsebool -F perm=x -F auid>=1000 -F auid!=4294967295 -k secobjects\n\n$ sudo grep -i /usr/bin/chcon /etc/audit/audit.rules\n-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=4294967295 -k secobjects\n\n$ sudo grep -iw /usr/sbin/setfiles /etc/audit/audit.rules\n-a always,exit -F path=/usr/sbin/setfiles -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-priv_change\n\n$ sudo grep -i /var/run/faillock /etc/audit/audit.rules\n-w /var/run/faillock/ -p wa -k logins\n\n$ sudo grep -i /var/log/lastlog /etc/audit/audit.rules\n-w /var/log/lastlog -p wa -k logins\n\nIf any of the commands listed do not return any output, this is a finding.",
+  "fix": "1. For AOS, configure the audit rules using the following command.\n\n$ sudo salt-call state.sls security/CVM/auditCVM\n\n2. For Prism Central, configure the audit rules using the following command.\n\n$ sudo salt-call state.sls security/PCVM/auditPCVM\n\n3. For Files, configure the audit rules using the following command.\n\n$ sudo salt-call state.sls security/AFS/auditAFS\n\n4. For AHV, configure the audit rules using the following command.\n\n$ sudo salt-call state.sls security/KVM/auditKVM",
+  "ccis": [
+    "CCI-002884"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If events associated with nonlocal administrative access or diagnostic sessions are not logged, a major tool for assessing and investigating attacks would not be available.\n\nThis requirement addresses auditing-related issues associated with maintenance tools used specifically for diagnostic and repair actions on organizational information systems.\n\nNonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.\n\nThis requirement applies to hardware/software diagnostic test equipment or tools. This requirement does not cover hardware/software components that may support information system maintenance, yet are a part of the system, for example, the software implementing \"ping,\" \"ls,\" \"ipconfig,\" or the hardware and software implementing the monitoring port of an Ethernet switch.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000172",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

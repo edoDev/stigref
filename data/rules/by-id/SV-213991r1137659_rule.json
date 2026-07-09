@@ -1,0 +1,53 @@
+{
+  "id": "SV-213991r1137659_rule",
+  "full_rule_id": "SV-213991r1137659_rule",
+  "rule_id": "SV-213991",
+  "rule_revision": "1137659",
+  "group_id": "V-213991",
+  "group_title": "SRG-APP-000431-DB-000388",
+  "title": "SQL Server must maintain a separate execution domain for each executing process.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Database management systems can maintain separate execution domains for each executing process by assigning each process a separate address space.  \n \nEach process has a distinct address space so that communication between processes is controlled through the security functions, and one process cannot modify the executing code of another process.  \n \nMaintaining separate execution domains for executing processes can be achieved, for example, by implementing separate address spaces.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the server documentation to determine whether use of CLR assemblies is required. Run the following query to determine whether CLR is enabled for the instance: \n \nSELECT name, value, value_in_use \nFROM sys.configurations \nWHERE name = 'clr enabled' \n \nIf \"value_in_use\" is a \"1\" and CLR is not required, this is a finding.",
+  "fix": "Disable CLR support in SQL Server by executing the following query: \n \nEXEC sp_configure 'clr enabled', 0 \nGO \n \nRECONFIGURE \nGO",
+  "ccis": [
+    "CCI-002530"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Database management systems can maintain separate execution domains for each executing process by assigning each process a separate address space.  \n \nEach process has a distinct address space so that communication between processes is controlled through the security functions, and one process cannot modify the executing code of another process.  \n \nMaintaining separate execution domains for executing processes can be achieved, for example, by implementing separate address spaces.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQL6-D0-012300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a",
+      "name": "MS SQL Server 2016 Instance Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a"
+  ]
+}

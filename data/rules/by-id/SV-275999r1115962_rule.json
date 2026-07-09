@@ -1,0 +1,53 @@
+{
+  "id": "SV-275999r1115962_rule",
+  "full_rule_id": "SV-275999r1115962_rule",
+  "rule_id": "SV-275999",
+  "rule_revision": "1115962",
+  "group_id": "V-275999",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "A minimum of three Oracle Control Files must be created and each stored on a separate physical and logical device.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Oracle control files store information critical to Oracle database integrity. Oracle uses these files to maintain time synchronization of database files and verify the validity of system data and log files at system startup. Loss of access to the control files can affect database availability, integrity, and recovery.\n\nOracle Pluggable Databases (PDBs) do not contain their own control files; instead, all PDBs within a Container Database (CDB) share control files managed by the CDB.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Use the SQL statement below to obtain information on each currently existing Control File:\n\nSELECT name\nFROM sys.v$controlfile\nORDER BY 1;\n\nOracle Best Practice:\nOracle recommends a minimum of three Oracle Control Files and each stored on a separate physical and logical device (RAID 1 + 0).  \n\nDOD guidance recommends:\nEach control file must be located on a separate physical and logical (virtual) storage device.\n\nConsult with the storage administrator, system administrator, or database administrator to determine whether the mount points or partitions referenced in the file paths indicate separate physical disks or directories on RAID devices.\n\nNote: Distinct does not equal dedicated. May share directory space with other Oracle database instances if present.\n\nIf the minimum of three control files is not met, this is a finding.",
+  "fix": "To prevent loss of service during disk failure, multiple copies of Oracle control files must be maintained on separate disks in archived directories or on separate, archived directories within one or more RAID devices.\n\nAdding or moving a control file requires careful planning and execution.\n\nConsult and follow the instructions for creating control files in the Oracle Database Administrator's Guide, under Steps for Creating New Control Files.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Oracle control files store information critical to Oracle database integrity. Oracle uses these files to maintain time synchronization of database files and verify the validity of system data and log files at system startup. Loss of access to the control files can affect database availability, integrity, and recovery.\n\nOracle Pluggable Databases (PDBs) do not contain their own control files; instead, all PDBs within a Container Database (CDB) share control files managed by the CDB.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-020500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

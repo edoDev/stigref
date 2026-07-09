@@ -1,0 +1,53 @@
+{
+  "id": "SV-261924r1000777_rule",
+  "full_rule_id": "SV-261924r1000777_rule",
+  "rule_id": "SV-261924",
+  "rule_revision": "1000777",
+  "group_id": "V-261924",
+  "group_title": "SRG-APP-000380-DB-000360",
+  "title": "PostgreSQL must enforce access restrictions associated with changes to the configuration of the DBMS or database(s).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failure to provide logical access restrictions associated with changes to configuration may have significant effects on the overall security of the system.\n\nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system can potentially have significant effects on the overall security of the system.\n\nAccordingly, only qualified and authorized individuals should be allowed to obtain access to system components for the purposes of initiating changes, including upgrades and modifications.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To list all the permissions of individual roles, as the database administrator (shown here as \"postgres\"), run the following SQL:\n\n$ sudo su - postgres\n$ psql -c \"\\du\"\n\nIf any role has SUPERUSER that should not, this is a finding.\n\nList all the permissions of databases and schemas by running the following SQL:\n\n$ sudo su - postgres\n$ psql -c \"\\l\"\n$ psql -c \"\\dn+\"\n\nIf any database or schema has update (\"W\") or create (\"C\") privileges and should not, this is a finding.",
+  "fix": "Configure PostgreSQL to enforce access restrictions associated with changes to the configuration of PostgreSQL or database(s).\n\nUse ALTER ROLE to remove accesses from roles:\n\n$ psql -c \"ALTER ROLE <role_name> NOSUPERUSER\"\n\nUse REVOKE to remove privileges from databases and schemas:\n\n$ psql -c \"REVOKE ALL PRIVILEGES ON <table> FROM <role_name>\"",
+  "ccis": [
+    "CCI-001813"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to provide logical access restrictions associated with changes to configuration may have significant effects on the overall security of the system.\n\nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system can potentially have significant effects on the overall security of the system.\n\nAccordingly, only qualified and authorized individuals should be allowed to obtain access to system components for the purposes of initiating changes, including upgrades and modifications.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CD16-00-007800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "crunchy-data-postgres-16-security-technical-implementation-guide-v1r2-b53c97e5",
+      "name": "Crunchy Data Postgres 16 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "crunchy-data-postgres-16-security-technical-implementation-guide-v1r2-b53c97e5"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-255991r882315_rule",
+  "full_rule_id": "SV-255991r882315_rule",
+  "rule_id": "SV-255991",
+  "rule_revision": "882315",
+  "group_id": "V-255991",
+  "group_title": "SRG-NET-000018-RTR-000005",
+  "title": "The Arista BGP router must be configured to reject outbound route advertisements for any prefixes that do not belong to any customers or the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone. \n\nReview the Arista router configuration to verify a filter is defined to only advertise routes for prefixes that belong to any customers or the local AS.\n\nThe prefix filter must be referenced outbound on the appropriate BGP neighbor statements.\n\nStep 1: Verify the prefix list is configured on the router and is accepting only prefixes belonging to customers or the local AS prefix (10.12.0.0/16). To verify IP prefix lists are configured, execute the command \"show ip prefix-list\".\n\nip prefix-list ADVERTISE_ROUTES\n   seq 10 permit 10.12.0.0/16\n   seq 20 deny 10.17.0.0/16\n   seq 30 deny 10.23.0.0/16\n   seq 40 deny 10.47.0.0/16\n   seq 50 deny 10.59.0.0/16\n   seq 100 deny 0.0.0.0/0 le 32\n\nStep 2: Verify in the BGP configuration that the filter is applied outbound for each customer to the appropriate BGP neighbor. To verify the BGP config and verify the prefix is applied, execute the command \"show run | section router bgp\".\n\nrouter bgp 65001     \n neighbor 100.2.1.1 prefix-list ADVERTISE_ROUTES out\n\nIf the Arista router is not configured to reject outbound route advertisements that do not belong to any customers or the local AS, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone. \n\nConfigure all Arista eBGP routers to filter outbound route advertisements for prefixes that are not allocated to or belong to any customer or the local AS.\n\nConfigure the Arista router to deny outbound route advertisements for any prefix belonging to the local AS Boundary.\n\nStep 1: Configure the prefix lists.\n\nLEAF-1A(config)#ip prefix-list ADVERTISE_ROUTES\nLEAF-1A(config-ip-pfx)#seq 10 permit 10.12.0.0/16\nLEAF-1A(config-ip-pfx)#seq 20 deny 10.17.0.0/16\nLEAF-1A(config-ip-pfx)#seq 30 deny 10.23.0.0/16\nLEAF-1A(config-ip-pfx)#seq 40 deny 10.47.0.0/16\nLEAF-1A(config-ip-pfx)#seq 50 deny 10.59.0.0/16\nLEAF-1A(config-ip-pfx)#seq 100 deny 0.0.0.0/0 le 32\n\nStep 2: Configure the prefix lists outbound to the appropriate BGP neighbor.\n\nLEAF-1A(config)#router bgp 65001     \nLEAF-1A(config-router-bgp)#neighbor 100.2.1.1 prefix-list ADVERTISE_ROUTES out",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

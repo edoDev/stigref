@@ -1,0 +1,53 @@
+{
+  "id": "SV-269964r1052278_rule",
+  "full_rule_id": "SV-269964r1052278_rule",
+  "rule_id": "SV-269964",
+  "rule_revision": "1052278",
+  "group_id": "V-269964",
+  "group_title": "SRG-NET-000512-L2S-000003",
+  "title": "The Dell OS10 Switch must implement Rapid Spanning Tree Protocol (STP) where VLANs span multiple switches with redundant links.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>STP is implemented on bridges and switches to prevent Layer 2 loops when a broadcast domain spans multiple bridges and switches and when redundant links are provisioned to provide high availability in case of link failures. Convergence time can be significantly reduced using Rapid STP (802.1w) instead of STP (802.1d), resulting in improved availability. Rapid STP should be deployed by implementing either Rapid Per-VLAN-Spanning-Tree (Rapid-PVST) or Multiple Spanning-Tree Protocol (MSTP); the latter scales much better when there are many VLANs.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In cases where VLANs do not span multiple switches, it is a best practice to not implement STP. Avoiding the use of STP will provide the most deterministic and highly available network topology. If STP is required, then review the switch configuration to verify that Rapid STP has been implemented. \n\nOS10# show running-configuration\n...\n...\nspanning-tree mode rstp\n\nNote: MSTP can be configured as an alternate mode. MSTP uses RSTP for rapid convergence and enables multiple VLANs to be grouped into and mapped to the same spanning-tree instance, thereby reducing the number of spanning-tree instances needed to support many VLANs.\n\nOS10# show running-configuration\n...\n...\nspanning-tree mode mst\n\nIf Rapid STP or MSTP have not been implemented where STP is required, this is a finding.",
+  "fix": "Configure Rapid STP or MSTP to be implemented at the access and distribution layers where VLANs span multiple switches as shown in the examples below:\n\nOS10(config)# spanning-tree mode rstp\n\nor\n\nOS10(config)# spanning-tree mode mst",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "STP is implemented on bridges and switches to prevent Layer 2 loops when a broadcast domain spans multiple bridges and switches and when redundant links are provisioned to provide high availability in case of link failures. Convergence time can be significantly reduced using Rapid STP (802.1w) instead of STP (802.1d), resulting in improved availability. Rapid STP should be deployed by implementing either Rapid Per-VLAN-Spanning-Tree (Rapid-PVST) or Multiple Spanning-Tree Protocol (MSTP); the latter scales much better when there are many VLANs.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-L2S-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff",
+      "name": "Dell OS10 Switch Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff"
+  ]
+}

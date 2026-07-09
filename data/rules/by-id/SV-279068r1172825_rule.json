@@ -1,0 +1,53 @@
+{
+  "id": "SV-279068r1172825_rule",
+  "full_rule_id": "SV-279068r1172825_rule",
+  "rule_id": "SV-279068",
+  "rule_revision": "1172825",
+  "group_id": "V-279068",
+  "group_title": "SRG-APP-000224-AS-000152",
+  "title": "ColdFusion must generate a unique session identifier using a FIPS 140-2/140-3 or higher approved random number generator.",
+  "severity": "high",
+  "description": "<VulnDiscussion>ColdFusion uses session IDs to communicate between modules or applications within ColdFusion and between ColdFusion and users. The session ID allows the application to track the communications along with credentials that may have been used to authenticate users or modules.\n\nUnique session IDs are the opposite of sequentially generated session IDs which can be easily guessed by an attacker. Unique session identifiers help to reduce predictability of said identifiers.\n\nUnique session IDs address man-in-the-middle attacks, including session hijacking or insertion of false information into a session. If the attacker is unable to identify or guess the session information related to pending application traffic, they will have more difficulty in hijacking the session or otherwise manipulating valid sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the random number generator for generating session identifiers.\n\n1. Locate the java.security file for the Java Runtime Environment (JRE) used by ColdFusion located at:\n <ColdFusion_Installation_Directory>\\jre\\conf\\security\\java.security\n\n2. Open the java.security file in a text editor.\n\n3. Locate the following setting:\nsecurerandom.strongAlgorithms\n\n4. Verify that the value includes a FIPS 140-2/140-3 or higher approved random number generator. For example:\nsecurerandom.strongAlgorithms=DRBG:SUN\n\nIf the securerandom.strongAlgorithms setting does not exist or does not specify a FIPS 140-2/140-3 or higher approved algorithm, this is a finding.",
+  "fix": "Configure the random number generator for generating session identifiers.\n\n1. Open the java.security file located at: <ColdFusion_Installation_Directory>\\jre\\conf\\security\\java.security\n\n2. Locate or add the securerandom.strongAlgorithms property and configure it to use a FIPS-approved RNG. For example:\nsecurerandom.strongAlgorithms=DRBG:SUN\n\n3. Save the file and restart ColdFusion to apply changes.",
+  "ccis": [
+    "CCI-001188"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ColdFusion uses session IDs to communicate between modules or applications within ColdFusion and between ColdFusion and users. The session ID allows the application to track the communications along with credentials that may have been used to authenticate users or modules.\n\nUnique session IDs are the opposite of sequentially generated session IDs which can be easily guessed by an attacker. Unique session identifiers help to reduce predictability of said identifiers.\n\nUnique session IDs address man-in-the-middle attacks, including session hijacking or insertion of false information into a session. If the attacker is unable to identify or guess the session information related to pending application traffic, they will have more difficulty in hijacking the session or otherwise manipulating valid sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APAS-CF-000465",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878",
+      "name": "Adobe ColdFusion Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878"
+  ]
+}

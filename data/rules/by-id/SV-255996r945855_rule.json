@@ -1,0 +1,53 @@
+{
+  "id": "SV-255996r945855_rule",
+  "full_rule_id": "SV-255996r945855_rule",
+  "rule_id": "SV-255996",
+  "rule_revision": "945855",
+  "group_id": "V-255996",
+  "group_title": "SRG-NET-000018-RTR-000010",
+  "title": "The Arista BGP router must be configured to reject route advertisements from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Verifying the path a route has traversed will ensure that the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone. \n\nReview the Arista router configuration to verify the router is configured to deny updates received from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.\n\nStep 1: Review the router configuration and verify an as-path access-list statement is defined to only accept routes from a CE router whose AS did not originate the route. \n\nshow ip as-path access-list\n\nip as-path regex-mode asn\n  ip as-path access-list NEIGHBOR_PATH permit ^35121$ any\n  ip as-path access-list NEIGHBOR_PATH deny .* any\n\nStep 2: Verify the as-path access list is referenced by the filter-list inbound for the appropriate BGP neighbors.\n\nThe filter-list CLI is not supported in Arista MLS. The workaround with route-map follows:\n\nroute-map TrafficOtherAS_Path permit 10\n match as-path NEIGHBOR_PATH\n \nStep 3: To verify the BGP config and verifying the route map is applied inbound execute the command \"show run | sec router bgp\".\n\nrouter bgp 65000\n   neighbor 10.1.12.2 route-map TrafficOtherAS_Path in\n\nIf the Arista router is not configured to reject updates from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer, this is a finding.",
+  "fix": "Configure the Arista router to reject updates from CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.\n\nStep 1: Configure the as-path access-list to filter the updates from the CE routers with an originating AS in the AS_PATH attribute that does not belong to that customer.\n\nrouter (config) # ip as-path regex-mode asn\nrouter (config) # ip as-path access-list NEIGHBOR_PATH permit ^35121$ any\nrouter (config) # ip as-path access-list NEIGHBOR_PATH deny .* any\n\nStep 2: Configure the route-map and match the as-path access-list.\n\nroute-map TrafficOtherAS_Path permit 10\n match as-path NEIGHBOR_PATH\n\nStep 3: Apply the route-map to the appropriate neighbor.\n\nrouter (config) # router bgp 65000\nrouter (config-router-bgp) #neighbor 10.1.12.2 route-map TrafficOtherAS_Path in",
+  "ccis": [
+    "CCI-000032"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Verifying the path a route has traversed will ensure that the local AS is not used as a transit network for unauthorized traffic. To ensure that the local AS does not carry any prefixes that do not belong to any customers, all PE routers must be configured to reject routes with an originating AS other than that belonging to the customer.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

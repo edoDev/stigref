@@ -1,0 +1,54 @@
+{
+  "id": "SV-274162r1120474_rule",
+  "full_rule_id": "SV-274162r1120474_rule",
+  "rule_id": "SV-274162",
+  "rule_revision": "1120474",
+  "group_id": "V-274162",
+  "group_title": "SRG-OS-000073-GPOS-00041",
+  "title": "Amazon Linux 2023 password-auth must be configured to use a sufficient number of hashing rounds.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unapproved mechanisms, used for authentication to the cryptographic module are not verified and therefore, cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.\n\nOperating systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules. \n\nFIPS 140-2/140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DOD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general purpose computing system.\n\nSatisfies: SRG-OS-000073-GPOS-00041, SRG-OS-000120-GPOS-00061</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 has the required number of rounds for the password hashing algorithm is configured in password-auth with the following command:\n\n$ sudo grep rounds /etc/pam.d/password-auth\npassword sufficient pam_unix.so sha512 rounds=100000\n\nIf a matching line is not returned or \"rounds\" is less than \"100000\", this a finding.",
+  "fix": "Configure Amazon Linux 2023 to use 100000 hashing rounds for hashing passwords.\n\nAdd or modify the following line in \"/etc/pam.d/password-auth\" and set \"rounds\" to \"100000\".\n\npassword sufficient pam_unix.so sha512 rounds=100000",
+  "ccis": [
+    "CCI-004062",
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unapproved mechanisms, used for authentication to the cryptographic module are not verified and therefore, cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.\n\nOperating systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules. \n\nFIPS 140-2/140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DOD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general purpose computing system.\n\nSatisfies: SRG-OS-000073-GPOS-00041, SRG-OS-000120-GPOS-00061",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-002490",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

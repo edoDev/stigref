@@ -1,0 +1,53 @@
+{
+  "id": "SV-258080r1045162_rule",
+  "full_rule_id": "SV-258080r1045162_rule",
+  "rule_id": "SV-258080",
+  "rule_revision": "1045162",
+  "group_id": "V-258080",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "RHEL 9 must configure SELinux context type to allow the use of a nondefault faillock tally directory.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Not having the correct SELinux context on the faillock directory may lead to unauthorized access to the directory.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the location of the nondefault tally directory for the pam_faillock module with the following command:\n\nNote: If the system does not have SELinux enabled and enforcing a targeted policy, or if the pam_faillock module is not configured for use, this requirement is Not Applicable.\n\n$ sudo grep -w dir /etc/security/faillock.conf\n\ndir = /var/log/faillock\n\nCheck the security context type of the nondefault tally directory with the following command:\n\n$ ls -Zd /var/log/faillock\n\nunconfined_u:object_r:faillog_t:s0 /var/log/faillock\n\nIf the security context type of the nondefault tally directory is not \"faillog_t\", this is a finding.",
+  "fix": "Configure RHEL 9 to allow the use of a nondefault faillock tally directory while SELinux enforces a targeted policy. \n\nFirst enable the feature using the following command:\n \n$ sudo authselect enable-feature with-faillock \n \nCreate a nondefault faillock tally directory (if it does not already exist) with the following example:\n\n$ sudo mkdir /var/log/faillock\n\nThen add/modify the \"/etc/security/faillock.conf\" file to match the following line:\n \ndir = /var/log/faillock\n\nUpdate the /etc/selinux/targeted/contexts/files/file_contexts.local with \"faillog_t\" context type for the nondefault faillock tally directory with the following command:\n\n$ sudo semanage fcontext -a -t faillog_t \"/var/log/faillock(/.*)?\"\n\nNext, update the context type of the nondefault faillock directory/subdirectories and files with the following command:\n\n$ sudo restorecon -R -v /var/log/faillock",
+  "ccis": [
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Not having the correct SELinux context on the faillock directory may lead to unauthorized access to the directory.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-431020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

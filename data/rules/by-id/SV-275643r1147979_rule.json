@@ -1,0 +1,53 @@
+{
+  "id": "SV-275643r1147979_rule",
+  "full_rule_id": "SV-275643r1147979_rule",
+  "rule_id": "SV-275643",
+  "rule_revision": "1147979",
+  "group_id": "V-275643",
+  "group_title": "SRG-OS-000279-GPOS-00109",
+  "title": "Ubuntu OS must automatically exit interactive command shell user sessions after five minutes of inactivity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Terminating an idle interactive command shell user session within a short time period reduces the window of opportunity for unauthorized personnel to take control of it when left unattended in a virtual terminal or physical console.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu OS is configured to automatically exit interactive command shell user sessions after five minutes of inactivity or less by using the following command: \n  \n     $ sudo grep -E \"\\bTMOUT=[0-9]+\" /etc/bash.bashrc /etc/profile.d/* \n     /etc/profile.d/99-terminal_tmout.sh:TMOUT=300 \n  \nIf \"TMOUT\" is not set to \"300\" or less, is set to \"0\", is commented out, or missing, this is a finding.",
+  "fix": "Configure Ubuntu OS to exit interactive command shell user sessions after five minutes of inactivity. \n \nCreate and/or append a custom file under \"/etc/profile.d/\" by using the following command: \n \n     $ sudo su -c \"echo TMOUT=300 >> /etc/profile.d/99-terminal_tmout.sh\" \n  \nThis will set a timeout value of five minutes for all future sessions.  \n  \nTo set the timeout for the current sessions, execute the following command over the terminal session:  \n  \n     $ export TMOUT=300",
+  "ccis": [
+    "CCI-002361"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an idle interactive command shell user session within a short time period reduces the window of opportunity for unauthorized personnel to take control of it when left unattended in a virtual terminal or physical console.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RIIM-OS-412030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd",
+      "name": "Riverbed NetIM OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-222986r961461_rule",
+  "full_rule_id": "SV-222986r961461_rule",
+  "rule_id": "SV-222986",
+  "rule_revision": "961461",
+  "group_id": "V-222986",
+  "group_title": "SRG-APP-000380-AS-000088",
+  "title": "$CATALINA_HOME folder must be owned by the root user, group tomcat.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Tomcat file permissions must be restricted. The standard configuration is to have the folder where Tomcat is installed owned by the root user with the group set to tomcat. The $CATALINA_HOME environment variable should be set to the location of the root directory of the \"binary\" distribution of Tomcat.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Access the Tomcat server from the command line and execute the following OS command:\n\nsudo find $CATALINA_HOME -follow -maxdepth 0 \\(  ! -user root -o ! -group tomcat \\) -ls\n\nIf no folders are displayed, this is not a finding.\n\nIf results indicate the $CATALINA_HOME folder ownership and group membership is not set to root:tomcat, this is a finding.",
+  "fix": "Run the following commands on the Tomcat server:\n\nsudo find $CATALINA_HOME -maxdepth 0 \\( ! -user root \\) | sudo xargs chown root\n\nsudo find $CATALINA_HOME -maxdepth 0 \\( ! -group tomcat \\) | sudo xargs chgrp tomcat",
+  "ccis": [
+    "CCI-001813"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Tomcat file permissions must be restricted. The standard configuration is to have the folder where Tomcat is installed owned by the root user with the group set to tomcat. The $CATALINA_HOME environment variable should be set to the location of the root directory of the \"binary\" distribution of Tomcat.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-001200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-223665r1195461_rule",
+  "full_rule_id": "SV-223665r1195461_rule",
+  "rule_id": "SV-223665",
+  "rule_revision": "1195461",
+  "group_id": "V-223665",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM RACF Global Access Checking must be restricted to appropriate classes and resources.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From a command input screen, enter:\n\nRL Global *\n\nIf Global * is specified in SETROPTS, this is a finding.\n\nThe following entries may be allowed with the approval of the information system security manager (ISSM):\n\nDataset Class - ALTER access level to &RACUID.** (Allows users all access to their own datasets)\nOPERCMDS Class - READ access to MVS.MCSOPER.&RACUID (Allows users access to console for their jobs) \nJESJOBS Class - ALTER access to CANCEL.*.*.&RACUID (Allows users to cancel their own jobs)\nJESJOBS Class - ALTER access to SUBMIT.*.*.&RACUID (Allows users to submit their own jobs)\n\nThe ISSM may allow other classes to be included after evaluation with the system programmer.\n\nNote: Be careful when adding any resource requiring auditing to Global Access Checking. RACF performs no logging other than that requested by the SETROPTS LOGOPTIONS command. There are other special consideration for global access checking found in the z/OS Security Server RACF Security Administrator's Guide.\n\nIf any other members are included for Global Access Checking, this is a finding.\n\nIf written approval by the ISSM is not provided, this is a finding.",
+  "fix": "Configure Global Access Checking to be appropriately administered.\n\nNote: Special consideration should be followed as indicated in z/OS Security Server RACF Security Administrator's Guide.\n\nEvaluate the impact associated with implementation of the control option. Develop approval documentation and a plan of action to implement the control option as specified in the example below: \n\nRALT GLOBAL class-name\nADDMEM (resourcename)/accesslevel)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

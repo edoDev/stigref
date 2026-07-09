@@ -1,0 +1,53 @@
+{
+  "id": "SV-281293r1166831_rule",
+  "full_rule_id": "SV-281293r1166831_rule",
+  "rule_id": "SV-281293",
+  "rule_revision": "1166831",
+  "group_id": "V-281293",
+  "group_title": "SRG-OS-000433-GPOS-00192",
+  "title": "RHEL 10 must implement nonexecutable data to protect its memory from unauthorized code execution.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>ExecShield uses the segmentation feature on all x86 systems to prevent execution in memory higher than a certain address. It writes an address as a limit in the code segment descriptor, to control where code can be executed, on a per-process basis. When the kernel places a process's memory regions such as the stack and heap higher than this address, the hardware prevents execution in that address range. This is enabled by default on the latest Red Hat and Fedora systems if supported by the hardware.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 implements nonexecutable data to protect its memory from unauthorized code execution.\n\nRun the following command:\n\n$ sudo grep ^flags /proc/cpuinfo | grep -Ev '([^[:alnum:]])(nx)([^[:alnum:]]|$)'\n\nIf any output is returned, this is a finding.\n\nRun the following command:\n\n$ sudo grubby --info=ALL | grep args | grep -E '([^[:alnum:]])(noexec)([^[:alnum:]])'\n\nIf any output is returned, this is a finding.",
+  "fix": "Configure RHEL 10 to implement nonexecutable data to protect its memory from unauthorized code execution.\n\nUpdate the GRUB 2 bootloader configuration.\n\nRun the following command:\n\n$ sudo grubby --update-kernel=ALL --remove-args=noexec",
+  "ccis": [
+    "CCI-002824"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ExecShield uses the segmentation feature on all x86 systems to prevent execution in memory higher than a certain address. It writes an address as a limit in the code segment descriptor, to control where code can be executed, on a per-process basis. When the kernel places a process's memory regions such as the stack and heap higher than this address, the hardware prevents execution in that address range. This is enabled by default on the latest Red Hat and Fedora systems if supported by the hardware.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-700900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

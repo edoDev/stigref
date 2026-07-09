@@ -1,0 +1,55 @@
+{
+  "id": "SV-261346r1184409_rule",
+  "full_rule_id": "SV-261346r1184409_rule",
+  "rule_id": "SV-261346",
+  "rule_revision": "1184409",
+  "group_id": "V-261346",
+  "group_title": "SRG-OS-000299-GPOS-00117",
+  "title": "SLEM 5 wireless network adapters must be disabled unless approved and documented.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without protection of communications with wireless peripherals, confidentiality and integrity may be compromised because unprotected communications can be intercepted and either read, altered, or used to compromise SLEM 5.\n\nThis requirement applies to wireless peripheral technologies (e.g., wireless mice, keyboards, displays, etc.) used with a SLEM 5. Wireless peripherals (e.g., Wi-Fi/Bluetooth/IR keyboards, mice, pointing devices, and Near Field Communications [NFC]) present a unique challenge by creating an open, unsecured port on a computer. Wireless peripherals must meet DOD requirements for wireless data transmission and be approved for use by the AO. Even though some wireless peripherals, such as mice and pointing devices, do not ordinarily carry information that need to be protected, modification of communications with these wireless peripherals may be used to compromise SLEM 5. Communication paths outside the physical protection of a controlled boundary are exposed to the possibility of interception and modification.\n\nProtecting the confidentiality and integrity of communications with wireless peripherals can be accomplished by physical means (e.g., employing physical barriers to wireless radio frequencies) or by logical means (e.g., employing cryptographic techniques). If physical means of protection are employed, then logical means (cryptography) do not have to be employed, and vice versa. If the wireless peripheral is only passing telemetry data, encryption of the data may not be required.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 has no wireless network adapters enabled.\n\nCheck the status of all network devices with this command:\n    > nmcli device status\n    DEVICE  TYPE      STATE      CONNECTION\n    eth0    ethernet  connected  Wired connection 1\n    lo      loopback  unmanaged  --\n\nIf there is a device listed with a type of \"wifi\", and it is not documented and approved as an operational requirement with the authorizing official (AO), this is a finding.\n\nCheck the status of the software switches with the following command:\n    > nmcli radio\n    WIFI-HW  WIFI      WWAN-HW  WWAN\n    missing  disabled  missing  disabled\n\nIf any wireless devices are \"enabled\" that are not documented and approved as an operational requirement with the AO, this is a finding.",
+  "fix": "Configure SLEM 5 to disable all wireless network interfaces.\n\nRun \"nmcli device status\" and note the device name from the DEVICE column for any wireless devices (e.g., wlan0).\n\nSet the device to unmanaged using the device name:\n    > sudo nmcli device set wlan0 managed no\n\nSet the software switches to \"off\" with the following commands:\n    > sudo nmcli radio wwan off\n    > sudo nmcli radio wifi off",
+  "ccis": [
+    "CCI-001444",
+    "CCI-001443",
+    "CCI-002418"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without protection of communications with wireless peripherals, confidentiality and integrity may be compromised because unprotected communications can be intercepted and either read, altered, or used to compromise SLEM 5.\n\nThis requirement applies to wireless peripheral technologies (e.g., wireless mice, keyboards, displays, etc.) used with a SLEM 5. Wireless peripherals (e.g., Wi-Fi/Bluetooth/IR keyboards, mice, pointing devices, and Near Field Communications [NFC]) present a unique challenge by creating an open, unsecured port on a computer. Wireless peripherals must meet DOD requirements for wireless data transmission and be approved for use by the AO. Even though some wireless peripherals, such as mice and pointing devices, do not ordinarily carry information that need to be protected, modification of communications with these wireless peripherals may be used to compromise SLEM 5. Communication paths outside the physical protection of a controlled boundary are exposed to the possibility of interception and modification.\n\nProtecting the confidentiality and integrity of communications with wireless peripherals can be accomplished by physical means (e.g., employing physical barriers to wireless radio frequencies) or by logical means (e.g., employing cryptographic techniques). If physical means of protection are employed, then logical means (cryptography) do not have to be employed, and vice versa. If the wireless peripheral is only passing telemetry data, encryption of the data may not be required.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-291010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

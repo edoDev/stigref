@@ -1,0 +1,53 @@
+{
+  "id": "SV-217090r878059_rule",
+  "full_rule_id": "SV-217090r878059_rule",
+  "rule_id": "SV-217090",
+  "rule_revision": "878059",
+  "group_id": "V-217090",
+  "group_title": "SRG-NET-000364-RTR-000115",
+  "title": "The Juniper multicast Designated Router (DR) must be configured to filter the Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Report messages to allow hosts to join a multicast group only from sources that have been approved by the organization.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of the DR to verify that it is filtering IGMP or MLD report messages, allowing hosts to only join multicast groups from sources that have been approved.\n\nVerify that a group policy has been configured to filter IGMP join requests as shown in the example below.\n\nprotocols {\n    igmp {\n        interface ge-1/0/1.0 {\n            group-policy MULTICAST_JOIN_POLICY;\n        }\n    }\n\nVerify that the policy only allows join requests for those sources that have been approved.\n\npolicy-options {\n    …\n    …\n    …\n    }\n    policy-statement MULTICAST_JOIN_POLICY {\n        term BAD_SOURCES {\n            from {\n                source-address-filter x.x.x.x/32 exact;\n                source-address-filter x.x.x.x/24 orlonger;\n            }\n            then reject;\n        }\n        …\n        …\n        …\n        }\n        term ALLOW_APPROVED {\n            then accept;\n        }\n    }\n\nNote: This requirement is only applicable to Source Specific Multicast (SSM) implementation.\n\nIf the DR is not filtering IGMP or MLD report messages to only allow joins for approved sources, this is a finding.",
+  "fix": "Configure the DR to filter the IGMP and MLD report messages to allow hosts to join only those multicast groups from sources that have been approved.\n\nConfigure a multicast join policy to filter unauthorized multicast sources.\n\n[edit policy-options policy-statement MULTICAST_JOIN_POLICY]\nset term BAD_SOURCES from source-address-filter x.x.x.x/32 exact\nset term BAD_SOURCES from source-address-filter x.x.x.x/24 orlonger\nset term BAD_SOURCES then reject\nset term ALLOW_APPROVED then accept\n\n Apply the policy to all interfaces enabled for IGMP.\n\n[edit protocols igmp]\nset interface ge-1/0/1.0 group-policy MULTICAST_JOIN_POLICY",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000860",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

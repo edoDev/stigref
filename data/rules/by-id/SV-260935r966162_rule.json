@@ -1,0 +1,54 @@
+{
+  "id": "SV-260935r966162_rule",
+  "full_rule_id": "SV-260935r966162_rule",
+  "rule_id": "SV-260935",
+  "rule_revision": "966162",
+  "group_id": "V-260935",
+  "group_title": "SRG-APP-000243-CTR-000600",
+  "title": "Host IPC namespace must not be shared.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>IPC (POSIX/SysV IPC) namespace provides separation of named shared memory segments, semaphores, and message queues. IPC namespace on the host must not be shared with the containers and remain isolated unless required.\n\nIf the host's IPC namespace is shared with the container, it would allow processes within the container to view all of the IPC on the host system. This breaks the benefit of IPC level isolation between the host and the containers. Having access to the container can eventually manipulate the host IPC. Do not share the host's IPC namespace with the containers. Only containers with the proper label will share IPC namespace and this access must be documented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check if the \"IpcMode\" is set to \"host\" for a running or stopped container.\n\nLog in to the MKE WebUI and Navigate to admin >> Admin Settings >> Privileges.\n\nIf hostIPC is checked for User account privileges or Service account privileges, consult the System Security Plan (SSP).\n\nIf hostIPC is not allowed per the SSP, this is a finding.",
+  "fix": "Modify IpcMode for a container by logging in to the MKE WebUI and navigating to admin >> Admin Settings >> Privileges.\n- Uncheck hostIPC.\n- Click \"Save\".",
+  "ccis": [
+    "CCI-001090",
+    "CCI-002530"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "IPC (POSIX/SysV IPC) namespace provides separation of named shared memory segments, semaphores, and message queues. IPC namespace on the host must not be shared with the containers and remain isolated unless required.\n\nIf the host's IPC namespace is shared with the container, it would allow processes within the container to view all of the IPC on the host system. This breaks the benefit of IPC level isolation between the host and the containers. Having access to the container can eventually manipulate the host IPC. Do not share the host's IPC namespace with the containers. Only containers with the proper label will share IPC namespace and this access must be documented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-001020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

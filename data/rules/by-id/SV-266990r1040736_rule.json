@@ -1,0 +1,53 @@
+{
+  "id": "SV-266990r1040736_rule",
+  "full_rule_id": "SV-266990r1040736_rule",
+  "rule_id": "SV-266990",
+  "rule_revision": "1040736",
+  "group_id": "V-266990",
+  "group_title": "SRG-NET-000213-VPN-000720",
+  "title": "AOS, when used as a VPN Gateway, must terminate all network connections associated with a communications session at the end of the session.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Idle Transmission Control Protocol (TCP) sessions can be susceptible to unauthorized access and hijacking attacks. By default, routers do not continually test whether a previously connected TCP endpoint is still reachable. If one end of a TCP connection idles out or terminates abnormally, the opposite end of the connection may still believe the session is available. These \"orphaned\" sessions use up valuable router resources and can be hijacked by an attacker. \n\nTo mitigate this risk, routers must be configured to send periodic keep-alive messages to check that the remote end of a session is still connected. If the remote device fails to respond to the TCP keep-alive message, the sending router will clear the connection and free resources allocated to the session.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration with the following command:\nshow configuration effective | include dpd\n\nIf DPD is not configured, this is a finding.",
+  "fix": "Configure AOS with the following commands:\nconfigure terminal\ncrypto-local isakmp dpd idle-timeout <idle_sec> retry-timeout <retry_sec> retry-attempts <retry_number>\nwrite memory",
+  "ccis": [
+    "CCI-001133"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Idle Transmission Control Protocol (TCP) sessions can be susceptible to unauthorized access and hijacking attacks. By default, routers do not continually test whether a previously connected TCP endpoint is still reachable. If one end of a TCP connection idles out or terminates abnormally, the opposite end of the connection may still believe the session is available. These \"orphaned\" sessions use up valuable router resources and can be hijacked by an attacker. \n\nTo mitigate this risk, routers must be configured to send periodic keep-alive messages to check that the remote end of a session is still connected. If the remote device fails to respond to the TCP keep-alive message, the sending router will clear the connection and free resources allocated to the session.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-VN-000720",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a",
+      "name": "HPE Aruba Networking AOS VPN Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a"
+  ]
+}

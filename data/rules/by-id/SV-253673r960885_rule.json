@@ -1,0 +1,53 @@
+{
+  "id": "SV-253673r960885_rule",
+  "full_rule_id": "SV-253673r960885_rule",
+  "rule_id": "SV-253673",
+  "rule_revision": "960885",
+  "group_id": "V-253673",
+  "group_title": "SRG-APP-000091-DB-000325",
+  "title": "MariaDB must be able to generate audit records when unsuccessful attempts to retrieve privileges/permissions occur.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. MariaDB makes such information available through an audit log file.\n\nThis requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of privileges/permissions/role memberships that MariaDB continually performs to determine if any and every action on the database is permitted.\n\nTo aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As the database administrator, create a user by running the following SQL:\n\nMariaDB> CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'test_user_password';\n\nIn one terminal, tail the audit log file:\n\ntail -F /var/lib/mysql/server_audit.log (default location)\n\nIn another terminal attempt to retrieve information from the MariaDB table, mysql.roles_mapping, by logging in as the test_user and running a query which it does not have privileges to do, for example: \n\n$ mariadb -u test_user -p\n\nMariaDB> SELECT * FROM mysql.roles_mapping;\n  \nThe audit log will show:\n20190321 21:39:20,5a7e16cc51f7, test_user ,localhost,127,394,QUERY,, select * from mysql.roles_mapping ,1142\n  \nTo find failed queries, look for two elements: The notation indicating that it is a QUERY entry, and the last value for the entry. If the query is unsuccessful, the value will be NOT EQUAL TO 0.\n  \nIf the above steps cannot verify that audit records are produced when MariaDB denies retrieval of privileges/permissions/role memberships, this is a finding. \n\nIf an audit record is not produced in the first terminal, this is a finding.",
+  "fix": "Verify the MariaDB Enterprise Audit plugin is loaded and actively logging:\n\nMariaDB> SHOW GLOBAL STATUS LIKE 'Server_audit_active';\n\nCheck what filters are in place by running the following as an administrative user: \n\nMariaDB> SELECT * FROM mysql.server_audit_filters;\n\nUpdate the filters as necessary.",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Under some circumstances, it may be useful to monitor who/what is reading privilege/permission/role information. Therefore, it must be possible to configure auditing to do this. MariaDB makes such information available through an audit log file.\n\nThis requirement addresses explicit requests for privilege/permission/role membership information. It does not refer to the implicit retrieval of privileges/permissions/role memberships that MariaDB continually performs to determine if any and every action on the database is permitted.\n\nTo aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-000800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

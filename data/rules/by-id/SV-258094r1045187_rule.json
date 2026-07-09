@@ -1,0 +1,53 @@
+{
+  "id": "SV-258094r1045187_rule",
+  "full_rule_id": "SV-258094r1045187_rule",
+  "rule_id": "SV-258094",
+  "rule_revision": "1045187",
+  "group_id": "V-258094",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "RHEL 9 must not allow blank or null passwords.",
+  "severity": "high",
+  "description": "<VulnDiscussion>If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that null passwords cannot be used with the following command:\n\n$ sudo grep -i nullok /etc/pam.d/system-auth /etc/pam.d/password-auth\n\nIf output is produced, this is a finding.\n\nIf the system administrator (SA) can demonstrate that the required configuration is contained in a PAM configuration file included or substacked from the system-auth file, this is not a finding.",
+  "fix": "If PAM is managed with authselect, use the following command to remove instances of \"nullok\":\n \n$ sudo authselect enable-feature without-nullok\n\nOtherwise, remove any instances of the \"nullok\" option in the \"/etc/pam.d/password-auth\" and \"/etc/pam.d/system-auth\" files to prevent logons with empty passwords.\n\nNote: Manual changes to the listed file may be overwritten by the \"authselect\" program.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If an account has an empty password, anyone could log in and run commands with the privileges of that account. Accounts with empty passwords should never be used in operational environments.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-611025",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

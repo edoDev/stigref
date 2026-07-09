@@ -1,0 +1,53 @@
+{
+  "id": "SV-269891r1052058_rule",
+  "full_rule_id": "SV-269891r1052058_rule",
+  "rule_id": "SV-269891",
+  "rule_revision": "1052058",
+  "group_id": "V-269891",
+  "group_title": "SRG-NET-000362-RTR-000118",
+  "title": "The Dell OS10 BGP router must be configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The effects of prefix deaggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix deaggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration to verify that there is a filter to reject inbound route advertisements that are greater than /24 or the least significant prefixes issued to the customer, whichever is larger.\n\nThe prefix filter must be referenced outbound on the appropriate BGP neighbor statements.\n\nStep 1: Verify prefix lists have been configured for each customer containing prefixes that belong to that customer.\n\nOS10# show running-configuration prefix-list\n!\nip prefix-list LONG_PREFIX_FILTER permit 0.0.0.0/0 ge 8 le 24\nip prefix-list LONG_PREFIX_FILTER deny 0.0.0.0/0\n\nStep 2: Verify the route map applied to the external neighbors references the configured prefix list shown above.\n\nOS10# show running-configuration route-map\n!\nroute-map LONG_PREFIX_FILTER_MAP permit 50\n match ip address prefix-list LONG_PREFIX_FILTER\n\nStep 3: Verify the route map applied to the external neighbors references the appropriate route maps shown above.\n \n!\nrouter bgp 10\n !\n neighbor 50.1.1.1\n  !\n  address-family ipv4 unicast\n   route-map LONG_PREFIX_FILTER_MAP in\n\nIf the router is not configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer, this is a finding.",
+  "fix": "Ensure all eBGP routers are configured to limit the prefix size on any route advertisement to /24 or the least significant prefixes issued to the customer.\n\nStep 1: Configure a prefix list for each customer containing prefixes belonging to each.\n\nOS10(config)# ip prefix-list LONG_PREFIX_FILTER permit 0.0.0.0/0 ge 8 le 24\nOS10(config)# ip prefix-list LONG_PREFIX_FILTER deny 0.0.0.0/0\n\nStep 2: Configure the route map referencing the configured prefix list.\n\nOS10(config)# route-map LONG_PREFIX_FILTER_MAP 50\nOS10(config-route-map)# match ip address prefix-list LONG_PREFIX_FILTER\nOS10(config-route-map)# exit\n\nStep 3: Apply the route-map outbound to each external BGP neighbor.\n\nOS10(config)# router bgp 10\nOS10(config-router-bgp-10)# neighbor 50.1.1.1\nOS10(config-router-neighbor)# address-family ipv4 unicast\nOS10(config-router-bgp-neighbor-af)# route-map LONG_PREFIX_FILTER_MAP in\nOS10(config-router-bgp-neighbor-af)# exit\nOS10(config-router-neighbor)# exit\nOS10(config-router-bgp-10)# exit",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix deaggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix deaggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000680",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

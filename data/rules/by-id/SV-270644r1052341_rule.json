@@ -1,0 +1,54 @@
+{
+  "id": "SV-270644r1052341_rule",
+  "full_rule_id": "SV-270644r1052341_rule",
+  "rule_id": "SV-270644",
+  "rule_revision": "1052341",
+  "group_id": "V-270644",
+  "group_title": "SRG-APP-000920-NDM-000320",
+  "title": "The Dell OS10 Switch must be configured to synchronize internal information system clocks using redundant authoritative time sources.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The loss of connectivity to a particular authoritative time source will result in the loss of time synchronization (free-run mode) and increasingly inaccurate time stamps on audit events and other functions. \n\nMultiple time sources provide redundancy by including a secondary source. Time synchronization is usually a hierarchy; clients synchronize time to a local source while that source synchronizes its time to a more accurate source. The network device must use an authoritative time server and/or be configured to use redundant authoritative time sources. This requirement is related to the comparison done in CCI-001891.\n\nDOD-approved solutions consist of a combination of a primary and secondary time source using a combination or multiple instances of the following: a time server designated for the appropriate DOD network (NIPRNet/SIPRNet); United States Naval Observatory (USNO) time servers; and/or the Global Positioning System (GPS). The secondary time source must be in a different geographic region than the primary time source.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the OS10 Switch is configured to synchronize internal information system clocks with the primary and secondary time sources.\n\nReview the configuration to verify that the primary and secondary time sources are configured as NTP servers with the following commands:\n\nOS10# show running-configuration ntp\n!\nntp authenticate\nntp authentication-key 345 sha2-256 9 ****\nntp server 192.0.2.1 key 345 prefer\nntp server 192.0.2.5 key 345\nntp trusted-key 345\n\nIf the OS10 Switch is not configured to synchronize internal information system clocks with the primary and secondary time sources, this is a finding.",
+  "fix": "Configure the OS10 Switch to synchronize internal information system clocks with the primary and secondary time sources:\n\nOS10(config)# ntp authenticate\nOS10(config)# ntp trusted-key 345\nOS10(config)# ntp authentication-key 345 sha2-256 0 <key>\nOS10(config)# ntp server 192.0.2.1 key 345 prefer\nOS10(config)# ntp server 192.0.2.5 key 345",
+  "ccis": [
+    "CCI-004922",
+    "CCI-004923"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The loss of connectivity to a particular authoritative time source will result in the loss of time synchronization (free-run mode) and increasingly inaccurate time stamps on audit events and other functions. \n\nMultiple time sources provide redundancy by including a secondary source. Time synchronization is usually a hierarchy; clients synchronize time to a local source while that source synchronizes its time to a more accurate source. The network device must use an authoritative time server and/or be configured to use redundant authoritative time sources. This requirement is related to the comparison done in CCI-001891.\n\nDOD-approved solutions consist of a combination of a primary and secondary time source using a combination or multiple instances of the following: a time server designated for the appropriate DOD network (NIPRNet/SIPRNet); United States Naval Observatory (USNO) time servers; and/or the Global Positioning System (GPS). The secondary time source must be in a different geographic region than the primary time source.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000680",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

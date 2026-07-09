@@ -1,0 +1,53 @@
+{
+  "id": "SV-93721r3_rule",
+  "full_rule_id": "SV-93721r3_rule",
+  "rule_id": "SV-93721",
+  "rule_revision": "3",
+  "group_id": "V-79015",
+  "group_title": "SRG-APP-000439-AS-000155",
+  "title": "The BlackBerry Enterprise Mobility Server (BEMS) must protect the confidentiality and integrity of transmitted information through the use of an approved TLS version.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Preventing the disclosure of transmitted information requires that the application server take measures to employ some form of cryptographic mechanism in order to protect the information during transmission. This is usually achieved through the use of Transport Layer Security (TLS).\n\nTransmission of data can take place between the application server and a large number of devices/applications external to the application server. Examples are a web client used by a user, a backend database, a log server, or other application servers in an application server cluster.\n\nIf data is transmitted unencrypted, the data then becomes vulnerable to disclosure. The disclosure may reveal user identifier/password combinations, website code revealing business logic, or other user personal information.\n\nFIPS 140-2 approved TLS versions include TLS V1.0 or greater.\n\nTLS must be enabled and non-FIPS-approved SSL versions must be disabled. NIST SP 800-52 specifies the preferred configurations for government systems.  Note, all versions of SSL are not authorized for use per SP 800-52.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify BEMS has been configured to use only approved versions of TLS as follows:\n\n1. Find the xml file \"jetty.xml\" located in the BEMS install directory on the BEMS host Windows server. \n2. Find the \"ExcludeProtocols\" field.\n3. Verify if unauthorized versions of SSL and TLS are listed in the \"jetty.xml\" file.\n\nIf BEMS has not been configured to use only approved versions of TLS, this is a finding.",
+  "fix": "Configure BEMS to use approved versions of TLS.\n\n1. Find the xml file \"jetty.xml\" located in the BEMS install directory on the BEMS host Windows server. \n2. Find the \"ExcludeProtocols\" field and add all unauthorized versions or SSL and TLS.\n    <Set name=\"ExcludeProtocols\">\n    <Array type=\"java.lang.String\">\n    <Item>TLSv1</Item>\n    <Item>TLSv1.1</Item>\n    <Item>SSL</Item>\n    <Item>SSLv2</Item>\n    <Item>SSLv2Hello</Item>\n    <Item>SSLv3</Item>\n3. Save the file.\n4. Restart the BEMS server.",
+  "ccis": [
+    "CCI-002418"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Preventing the disclosure of transmitted information requires that the application server take measures to employ some form of cryptographic mechanism in order to protect the information during transmission. This is usually achieved through the use of Transport Layer Security (TLS).\n\nTransmission of data can take place between the application server and a large number of devices/applications external to the application server. Examples are a web client used by a user, a backend database, a log server, or other application servers in an application server cluster.\n\nIf data is transmitted unencrypted, the data then becomes vulnerable to disclosure. The disclosure may reveal user identifier/password combinations, website code revealing business logic, or other user personal information.\n\nFIPS 140-2 approved TLS versions include TLS V1.0 or greater.\n\nTLS must be enabled and non-FIPS-approved SSL versions must be disabled. NIST SP 800-52 specifies the preferred configurations for government systems.  Note, all versions of SSL are not authorized for use per SP 800-52.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BEMS-00-011400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "blackberry-enterprise-mobility-server-2-x-security-technical-implementation-guid-v1r3-f630a434",
+      "name": "BlackBerry Enterprise Mobility Server 2.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "blackberry-enterprise-mobility-server-2-x-security-technical-implementation-guid-v1r3-f630a434"
+  ]
+}

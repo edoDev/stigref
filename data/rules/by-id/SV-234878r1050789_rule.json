@@ -1,0 +1,54 @@
+{
+  "id": "SV-234878r1050789_rule",
+  "full_rule_id": "SV-234878r1050789_rule",
+  "rule_id": "SV-234878",
+  "rule_revision": "1050789",
+  "group_id": "V-234878",
+  "group_title": "SRG-OS-000373-GPOS-00156",
+  "title": "The SUSE operating system must require reauthentication when using the \"sudo\" command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the organization requires the user to re-authenticate when using the \"sudo\" command.\n\nIf the value is set to an integer less than 0, the user's time stamp will not expire and the user will not have to reauthenticate for privileged actions until the user's session is terminated.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the operating system requires re-authentication when using the \"sudo\" command to elevate privileges.\n\n> sudo grep -ir 'timestamp_timeout' /etc/sudoers /etc/sudoers.d\n/etc/sudoers:Defaults timestamp_timeout=0\n\nIf conflicting results are returned, this is a finding.\n\nIf \"timestamp_timeout\" is set to a negative number, is commented out, or no results are returned, this is a finding.",
+  "fix": "Configure the \"sudo\" command to require reauthentication.\nEdit the /etc/sudoers file:\n\n> sudo visudo\n\nAdd or modify the following line:\n\nDefaults timestamp_timeout=[value]\n\nNote: The \"[value]\" must be a number that is greater than or equal to \"0\".",
+  "ccis": [
+    "CCI-004895",
+    "CCI-002038"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical the organization requires the user to re-authenticate when using the \"sudo\" command.\n\nIf the value is set to an integer less than 0, the user's time stamp will not expire and the user will not have to reauthenticate for privileged actions until the user's session is terminated.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-020102",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

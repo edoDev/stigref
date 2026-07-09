@@ -1,0 +1,53 @@
+{
+  "id": "SV-270518r1064832_rule",
+  "full_rule_id": "SV-270518r1064832_rule",
+  "rule_id": "SV-270518",
+  "rule_revision": "1064832",
+  "group_id": "V-270518",
+  "group_title": "SRG-APP-000133-DB-000200",
+  "title": "Database objects must be owned by accounts authorized for ownership.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Within the database, object ownership implies full privileges to the owned object including the privilege to assign access to the owned objects to other subjects. Unmanaged or uncontrolled ownership of objects can lead to unauthorized object grants and alterations, and unauthorized modifications to data. \n\nIf critical tables or other objects rely on unauthorized owner accounts, these objects can be lost when an account is removed.\n\nIt may be the case that there are accounts that are authorized to own synonyms, but no other objects. If this is so, it should be documented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review system documentation to identify accounts authorized to own database objects. Review accounts in the database management systems (DBMSs) that own objects.\n\nIf any database objects are found to be owned by users not authorized to own database objects, this is a finding.\n\n- - - - -\nQuery the object DBA_OBJECTS to show the users who own objects in the database. The query below will return all of the users who own objects.\n\nsqlplus connect as sysdba\n\nSQL>select owner, object_type, count(*) from dba_objects\ngroup by owner, object_type\norder by owner, object_type;\n\nIf these owners are not authorized owners, select all of the objects these owners have generated and decide who they should belong to. To make a list of all of the objects, the unauthorized owner has to perform the following query.\n\nSQL>select * from dba_objects where owner =&unauthorized_owner;",
+  "fix": "Update system documentation to include list of accounts authorized for object ownership.\n\nReassign ownership of authorized objects to authorized object owner accounts.",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Within the database, object ownership implies full privileges to the owned object including the privilege to assign access to the owned objects to other subjects. Unmanaged or uncontrolled ownership of objects can lead to unauthorized object grants and alterations, and unauthorized modifications to data. \n\nIf critical tables or other objects rely on unauthorized owner accounts, these objects can be lost when an account is removed.\n\nIt may be the case that there are accounts that are authorized to own synonyms, but no other objects. If this is so, it should be documented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-008200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

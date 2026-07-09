@@ -1,0 +1,53 @@
+{
+  "id": "SV-259166r960735_rule",
+  "full_rule_id": "SV-259166r960735_rule",
+  "rule_id": "SV-259166",
+  "rule_revision": "960735",
+  "group_id": "V-259166",
+  "group_title": "SRG-APP-000001-DB-000031",
+  "title": "The vCenter PostgreSQL service must limit the number of concurrent sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Database management includes the ability to control the number of users and user sessions utilizing a database management system (DBMS). Unlimited concurrent connections to the DBMS could allow a successful denial-of-service (DoS) attack by exhausting connection resources, and a system can also fail or be degraded by an overload of legitimate users. Limiting the number of concurrent sessions per user is helpful in reducing these risks.\n\nVMware Postgres as deployed on the vCenter Service Appliance (VCSA) comes preconfigured with a \"max_connections\" limit that is appropriate for all tested, supported scenarios. The out-of-the-box configuration is dynamic, based on a lower limit plus allowances for the resources assigned to VCSA and the deployment size. However, this number will always be between 100 and 1000 (inclusive).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW max_connections;\"\n\nIf the returned number is not greater than or equal to 100 and less than or equal to 1000, this is a finding.",
+  "fix": "At the command prompt, run the following command:\n\n# vmon-cli --restart vmware-vpostgres\n\nNote: Restarting the service runs the \"pg_tuning\" script that will configure \"max_connections\" to the appropriate value based on the allocated memory for vCenter.",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Database management includes the ability to control the number of users and user sessions utilizing a database management system (DBMS). Unlimited concurrent connections to the DBMS could allow a successful denial-of-service (DoS) attack by exhausting connection resources, and a system can also fail or be degraded by an overload of legitimate users. Limiting the number of concurrent sessions per user is helpful in reducing these risks.\n\nVMware Postgres as deployed on the vCenter Service Appliance (VCSA) comes preconfigured with a \"max_connections\" limit that is appropriate for all tested, supported scenarios. The out-of-the-box configuration is dynamic, based on a lower limit plus allowances for the resources assigned to VCSA and the deployment size. However, this number will always be between 100 and 1000 (inclusive).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-80-000001",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v2r2-08a78339",
+      "name": "VMware vSphere 8.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v2r2-08a78339"
+  ]
+}

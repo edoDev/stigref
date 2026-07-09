@@ -1,0 +1,54 @@
+{
+  "id": "SV-215222r1009539_rule",
+  "full_rule_id": "SV-215222r1009539_rule",
+  "rule_id": "SV-215222",
+  "rule_revision": "1009539",
+  "group_id": "V-215222",
+  "group_title": "SRG-OS-000075-GPOS-00043",
+  "title": "AIX Operating systems must enforce 24 hours/1 day as the minimum password lifetime.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Enforcing a minimum password lifetime helps to prevent repeated password changes to defeat the password reuse or history enforcement requirement. If users are allowed to immediately and continually change their password, then the password could be repeatedly changed in a short period of time to defeat the organization's policy regarding password reuse.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the command prompt, run the following command to check the system default \"minage\" attribute value:\n# lssec -f /etc/security/user -s default -a minage\ndefault minage=1\n\nIf the default \"minage\" value is not set, or its value is less than \"1\", this is a finding.\n\nFrom the command prompt, run the following command to check \"minage\" attribute value for all accounts:\n# lsuser -a minage ALL\nroot  minage=1\nuser1 minage=1\nuser2 minage=2\n\nIf any user's \"minage\" value is less than \"1\", this is a finding.",
+  "fix": "From the command prompt, run the following command to set \"minage=1\" for the default stanza in \"/etc/security/user\":\n# chsec -f /etc/security/user -s default -a minage=1\n\nFor each user who has \"minage=0\" set its \"minage\" to \"1\" by running the following command from command prompt:\n# chsec -f /etc/security/user -s [user_name] -a minage=1",
+  "ccis": [
+    "CCI-004066",
+    "CCI-000198"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enforcing a minimum password lifetime helps to prevent repeated password changes to defeat the password reuse or history enforcement requirement. If users are allowed to immediately and continually change their password, then the password could be repeatedly changed in a short period of time to defeat the organization's policy regarding password reuse.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001125",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

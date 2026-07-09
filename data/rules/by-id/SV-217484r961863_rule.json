@@ -1,0 +1,53 @@
+{
+  "id": "SV-217484r961863_rule",
+  "full_rule_id": "SV-217484r961863_rule",
+  "rule_id": "SV-217484",
+  "rule_revision": "961863",
+  "group_id": "V-217484",
+  "group_title": "SRG-APP-000516-NDM-000341",
+  "title": "The HP FlexFabric switch must be configured to utilize an authentication server for the purpose of authenticating privilege users, managing accounts, and to centrally verify authentication settings and Personal Identity Verification (PIV) credentials.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To assure accountability and prevent unauthenticated access, organizational administrators must be uniquely identified and authenticated for all network management accesses to prevent potential misuse and compromise of the system. Protecting access authorization information ensures that authorization information cannot be altered, spoofed, or otherwise compromised during transmission.\n\nThe use of authentication servers or other centralized management servers for providing centralized authentication services is required for network device management. Maintaining local administrator accounts for daily usage on each network device without centralized management is not scalable or feasible. Without centralized management, it is likely that credentials for some network devices will be forgotten, leading to delays in administration, which itself leads to delays in remediating production problems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the HP FlexFabric Switch configuration to determine if it is authenticating user logon via an authentication server. Local authentication must only be used as a last resort. Example configuration would look similar to the following:\n\nauthentication login hwtacacs-scheme <name of scheme> local\nor \n authentication login radius-scheme <name of scheme> local\n\nIf the HP FlexFabric Switch does not have an authentication server configured as the primary authentication method, this is a finding.",
+  "fix": "Configure the HP FlexFabric Switch to use an authentication server:\n\n[HP] radius scheme <name of scheme>\n[HP-radius-jitc] primary authentication x.x.x.x key simple xxxxxx\n[HP-radius-jitc] user-name-format without-domain\n\n[HP] domain <domain name>\n[HP-isp-jitc] authentication login radius-scheme <name of scheme> local\n[HP-isp-jitc] authorization login radius-scheme <name of scheme> local\n[HP-isp-jitc] accounting login radius-scheme <name of scheme>c local\n[HP] domain default enable <domain name>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To assure accountability and prevent unauthenticated access, organizational administrators must be uniquely identified and authenticated for all network management accesses to prevent potential misuse and compromise of the system. Protecting access authorization information ensures that authorization information cannot be altered, spoofed, or otherwise compromised during transmission.\n\nThe use of authentication servers or other centralized management servers for providing centralized authentication services is required for network device management. Maintaining local administrator accounts for daily usage on each network device without centralized management is not scalable or feasible. Without centralized management, it is likely that credentials for some network devices will be forgotten, leading to delays in administration, which itself leads to delays in remediating production problems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-ND-000141",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881",
+      "name": "HP FlexFabric Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-268508r1131219_rule",
+  "full_rule_id": "SV-268508r1131219_rule",
+  "rule_id": "SV-268508",
+  "rule_revision": "1131219",
+  "group_id": "V-268508",
+  "group_title": "SRG-OS-000366-GPOS-00153",
+  "title": "The macOS system must apply gatekeeper settings to block applications from unidentified developers.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The information system implements cryptographic mechanisms to authenticate software prior to installation.\n\nGatekeeper settings must be configured correctly to allow the system to run only applications downloaded from the Mac App Store or applications signed with a valid Apple Developer ID code. Administrator users will still have the option to override these settings on a per-app basis. Gatekeeper is a security feature that ensures that applications must be digitally signed by an Apple-issued certificate to run. Digital signatures allow the macOS to verify that the application has not been modified by a malicious third party.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to apply gatekeeper settings to block applications from unidentified developers with the following commands:\n\n/usr/bin/osascript -l JavaScript << EOS\nfunction run() {\nlet pref1 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.systempolicy.control')\\\n.objectForKey('AllowIdentifiedDevelopers'))\nlet pref2 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.systempolicy.control')\\\n.objectForKey('EnableAssessment'))\nif ( pref1 == true && pref2 == true ) {\nreturn(\"true\")\n} else {\nreturn(\"false\")\n}\n}\nEOS\n\nIf the result is not \"true\", this is a finding.",
+  "fix": "Configure the macOS system to apply gatekeeper settings to block applications from unidentified developers by installing the \"com.apple.systempolicy.control\" configuration profile.",
+  "ccis": [
+    "CCI-003992"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The information system implements cryptographic mechanisms to authenticate software prior to installation.\n\nGatekeeper settings must be configured correctly to allow the system to run only applications downloaded from the Mac App Store or applications signed with a valid Apple Developer ID code. Administrator users will still have the option to override these settings on a per-app basis. Gatekeeper is a security feature that ensures that applications must be digitally signed by an Apple-issued certificate to run. Digital signatures allow the macOS to verify that the application has not been modified by a malicious third party.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-15-002060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66",
+      "name": "Apple macOS 15 (Sequoia) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-217034r1050849_rule",
+  "full_rule_id": "SV-217034r1050849_rule",
+  "rule_id": "SV-217034",
+  "rule_revision": "1050849",
+  "group_id": "V-217034",
+  "group_title": "SRG-NET-000019-RTR-000009",
+  "title": "The Juniper perimeter router must be configured to not be a Border Gateway Protocol (BGP) peer to an approved gateway service provider.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Internet service providers (ISPs) use BGP to share route information with other autonomous systems (i.e., other ISPs and corporate networks). If the perimeter router was configured to BGP peer with an ISP, NIPRNet routes could be advertised to the ISP, thereby creating a backdoor connection from the internet to the NIPRNet.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nReview the protocols hierarchy in the router configuration (see example below) and verify no BGP neighbors are configured to a peer AS that belongs to the approved gateway service provider.\n\nprotocols {\n    bgp {\n        group AS_2 {\n            type external;\n            peer-as 2;\n            neighbor x.x.x.x {\n                authentication-algorithm hmac-sha-1-96;\n                authentication-key-chain BGP_KEY;\n            }\n            neighbor x.x.x.x {\n                authentication-algorithm hmac-sha-1-96;\n                authentication-key-chain BGP_KEY;\n            }\n        }\n    }\n\nIf BGP neighbors are connecting to a peer AS of the approved gateway service provider, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure a static route on the perimeter router to reach the AS of a router connecting to an approved gateway as shown in the example below.\n\n[edit routing-options]\nset static route 0.0.0.0/0 next-hop x.x.x.x",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Internet service providers (ISPs) use BGP to share route information with other autonomous systems (i.e., other ISPs and corporate networks). If the perimeter router was configured to BGP peer with an ISP, NIPRNet routes could be advertised to the ISP, thereby creating a backdoor connection from the internet to the NIPRNet.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000290",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

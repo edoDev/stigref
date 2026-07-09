@@ -1,0 +1,53 @@
+{
+  "id": "SV-254568r1188305_rule",
+  "full_rule_id": "SV-254568r1188305_rule",
+  "rule_id": "SV-254568",
+  "rule_revision": "1188305",
+  "group_id": "V-254568",
+  "group_title": "SRG-APP-000190-CTR-000500",
+  "title": "Rancher RKE2 must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after five minutes of inactivity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at the operating system level, or de-allocating networking assignments at the application level if multiple application sessions are using a single, operating-system-level network connection. This does not mean that the application terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Ensure streaming-connection-idle-timeout argument is set correctly.\n\nRun this command on each node:\n/bin/ps -ef | grep kubelet | grep -v grep\n\nIf --streaming-connection-idle-timeout is set to < \"5m\", missing or the parameter is not configured, this is a finding.",
+  "fix": "Edit the RKE2 configuration file on all RKE2 hosts, located at /etc/rancher/rke2/config.yaml, to contain the following:\n\nkubelet-arg: --streaming-connection-idle-timeout=5m\n\nIf configuration files are updated on a host, restart the RKE2 service using the command \"systemctl restart rke2-server\" for server hosts and \"systemctl restart rke2-agent\" for agent hosts.",
+  "ccis": [
+    "CCI-001133"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at the operating system level, or de-allocating networking assignments at the application level if multiple application sessions are using a single, operating-system-level network connection. This does not mean that the application terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-R2-000890",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268",
+      "name": "Rancher Government Solutions RKE2 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268"
+  ]
+}

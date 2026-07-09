@@ -1,0 +1,53 @@
+{
+  "id": "SV-256005r882357_rule",
+  "full_rule_id": "SV-256005r882357_rule",
+  "rule_id": "SV-256005",
+  "rule_revision": "882357",
+  "group_id": "V-256005",
+  "group_title": "SRG-NET-000019-RTR-000011",
+  "title": "The out-of-band management (OOBM) Arista gateway router must be configured to have separate IGP instances for the managed network and management network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate Interior Gateway Protocol routing instances is critical on the router to segregate traffic from each network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nVerify the OOBM interface is an adjacency in the Interior Gateway Protocol routing domain for the management network.\n\nVerify interface configuration that the OOBM management network subnet is configured.\n\nStep 1: To verify ospf process 100 interface is configured, execute the command \"show run int YY\". To verify vrf instance, execute \"show vrf\". Verify the OOBM vrf instance is configured.\n\nvrf instance OOBM\nip routing vrf OOBM \ninterface Vlan 2\n   description Connection to OOBM-LAN-Ethernet4\n   vrf OOBM\n   mtu 9214\n   no routerport\n   ip address 10.1.12.7/31\n\nStep 2: To verify OSPF process is configured as OOBM management network, execute the command \"show run section router ospf 100\".\n\nrouter ospf 100 vrf OOBM\n network 10.1.12.0/24 area 0.0.0.0\n\nStep 3: To verify OSPF process 200 is enabled on a private network without any connectivity with the OSPF process in management network, execute the command \"show run int YY\". Verify the LAN vrf instance is configured.\n\nvrf instance LAN\nip routing vrf LAN\n\ninterface Ethernet8\n   vrf LAN\n   description Connection to Private-LAN-Ethernet4\n   mtu 9214\n   no routerport\n   ip address 172.16.35.135/31\n\nStep 4: To verify OSPF process 200 is configured as Private-LAN network, execute the command \"show run section router ospf 200\".\n\nrouter ospf 200 vrf LAN\n network 172.16.35.0/24 area 0.0.0.0\n\nIf the router does not enforce that Interior Gateway Protocol instances configured on the OOBM gateway router peer only with their own routing domain, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure the Arista router to enforce that Interior Gateway Protocol instances configured on the OOBM gateway router peer only with their own routing domain.\n\nConfiguring OSPF:\n\nStep 1: Configure the interface and OOBM vrf instance.\n\nvrf instance OOBM\nip routing vrf OOBM \n\nLEAF-1A(config)#interface Vlan 2\nLEAF-1A(config-if-Vl2)#description Connection to OOBM-LAN-Ethernet4\nLEAF-1A(config-if-Vl2)#vrf OOBM\nLEAF-1A(config-if-Vl2)#mtu 9214\nLEAF-1A(config-if-Vl2)#no routerport\nLEAF-1A(config-if-Vl2)#ip address 10.1.12.7/31\n\nStep 2: Advertise the subnet in OSPF process 100.\n\nLEAF-1A(config-router-rip)#router ospf 100 vrf OOBM\nLEAF-1A(config-router-ospf)#network 10.1.12.0/24 area 0.0.0.0\n\nStep 3: Configure the interface and LAN vrf instance.\n\nvrf instance LAN\nip routing vrf LAN \n\nLEAF-1A(config)#interface Ethernet8\nLEAF-1A(config-if-Et8)#description Connection to Private-LAN-Ethernet4\nLEAF-1A(config-if-Et8)#vrf LAN\nLEAF-1A(config-if-Et8)#mtu 9214\nLEAF-1A(config-if-Et8)#no routerport\nLEAF-1A(config-if-Et8)#ip address 172.16.35.135/31\n\nStep 4: Advertise the subnet in OSPF process 200.\n\nLEAF-1A(config-router-ospf)#router ospf 200 vrf LAN\nLEAF-1A(config-router-rip)#network 172.16.35.0/24 area 0.0.0.0",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate Interior Gateway Protocol routing instances is critical on the router to segregate traffic from each network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000190",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

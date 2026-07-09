@@ -1,0 +1,54 @@
+{
+  "id": "SV-220566r1186357_rule",
+  "full_rule_id": "SV-220566r1186357_rule",
+  "rule_id": "SV-220566",
+  "rule_revision": "1186357",
+  "group_id": "V-220566",
+  "group_title": "SRG-APP-000516-NDM-000340",
+  "title": "The Cisco switch must be configured to support organizational requirements to conduct backups of the configuration when changes occur.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>System-level information includes default and customized settings and security attributes, including ACLs that relate to the network device configuration, as well as software required for the execution and operation of the device. Information system backup is a critical step in ensuring system integrity and availability. If the system fails and there is no backup of the system-level information, a denial of service condition is possible for all who utilize this critical network component.\n\nThis control requires the network device to support the organizational central backup process for system-level information associated with the network device. This function may be provided by the network device itself; however, the preferred best practice is a centralized backup rather than each network device performing discrete backups.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Cisco switch configuration to verify that it is configured to automatically back up its running configuration to a remote server when a change is made. The example configuration below will send the configuration to a SCP server when a configuration change occurs.\n\nVerify that an Embedded Event Manager (EEM) applet is configured to trigger on the syslog message \"%SYS-5-CONFIG_I\".\n\nVerify the EEM applet contains an action to copy the running configuration to a secure server (e.g., SCP).\n\nVerify the command authorization bypass is present within the applet to ensure it executes correctly under AAA.\n\nVerify the global command file prompt quiet is configured to prevent the applet from timing out.\n\nVerify the authentication method used for the file transfer:\n\nThe command \"copy running-config scp://<username>@<x.x.x.x>/<path_on_server>/$_info_routername-running-config\".\n\nNote: The absence of a password indicates the use of secure public/private key authentication.\n\nIf the Cisco switch is not configured to conduct automated backups of the configuration when changes occur, or if it does so using an insecure method like a cleartext password, this is a finding.",
+  "fix": "Configure the Cisco switch to send the configuration to an SCP server when a configuration change occurs. The recommended and most secure method is to use public/private key authentication.\n\nSW4(config)# ip scp server enable\nSW4(config)# file prompt quiet\nSW4(config)# event manager applet BACKUP_CONFIG\nSW4(config-applet)# event syslog pattern \"%SYS-5-CONFIG_I\"\nSW4(config-applet)# action 1 cli command \"enable\"\nSW4(config-applet)# action 2 info type routername\nSW4(config-applet)# action 3 cli command \"copy running-config scp://<username>@<x.x.x.x>/<path_on_server>/$_info_routername-running-config\"\nSW4(config-applet)# action 4 syslog priority informational msg \"Configuration backup executed for $_info_routername\"\nSW4(config-applet)# authorization bypass\nSW4(config-applet)# end",
+  "ccis": [
+    "CCI-000366",
+    "CCI-000537"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "System-level information includes default and customized settings and security attributes, including ACLs that relate to the network device configuration, as well as software required for the execution and operation of the device. Information system backup is a critical step in ensuring system integrity and availability. If the system fails and there is no backup of the system-level information, a denial of service condition is possible for all who utilize this critical network component.\n\nThis control requires the network device to support the organizational central backup process for system-level information associated with the network device. This function may be provided by the network device itself; however, the preferred best practice is a centralized backup rather than each network device performing discrete backups.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-ND-001410",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-switch-ndm-security-technical-implementation-guide-v3r6-e5fc9760",
+      "name": "Cisco IOS XE Switch NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-switch-ndm-security-technical-implementation-guide-v3r6-e5fc9760"
+  ]
+}

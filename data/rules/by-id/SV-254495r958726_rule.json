@@ -1,0 +1,53 @@
+{
+  "id": "SV-254495r958726_rule",
+  "full_rule_id": "SV-254495r958726_rule",
+  "rule_id": "SV-254495",
+  "rule_revision": "958726",
+  "group_id": "V-254495",
+  "group_title": "SRG-OS-000324-GPOS-00125",
+  "title": "Windows Server 2022 create a pagefile user right must only be assigned to the Administrators group.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Inappropriate granting of user rights can provide system, administrative, and other high-level capabilities.\n\nAccounts with the \"Create a pagefile\" user right can change the size of a pagefile, which could affect system performance.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the effective setting in Local Group Policy Editor.\n\nRun \"gpedit.msc\".\n\nNavigate to Local Computer Policy >> Computer Configuration >> Windows Settings >> Security Settings >> Local Policies >> User Rights Assignment.\n\nIf any accounts or groups other than the following are granted the \"Create a pagefile\" user right, this is a finding:\n\n- Administrators\n\nFor server core installations, run the following command:\n\nSecedit /Export /Areas User_Rights /cfg c:\\path\\filename.txt\n\nReview the text file.\n\nIf any SIDs other than the following are granted the \"SeCreatePagefilePrivilege\" user right, this is a finding:\n\nS-1-5-32-544 (Administrators)",
+  "fix": "Configure the policy value for Computer Configuration >> Windows Settings >> Security Settings >> Local Policies >> User Rights Assignment >> Create a pagefile to include only the following accounts or groups:\n\n- Administrators",
+  "ccis": [
+    "CCI-002235"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Inappropriate granting of user rights can provide system, administrative, and other high-level capabilities.\n\nAccounts with the \"Create a pagefile\" user right can change the size of a pagefile, which could affect system performance.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN22-UR-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2022-security-technical-implementation-guide-v2r8-8691a8f2",
+      "name": "Microsoft Windows Server 2022 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2022-security-technical-implementation-guide-v2r8-8691a8f2"
+  ]
+}

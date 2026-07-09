@@ -1,0 +1,53 @@
+{
+  "id": "SV-259577r960759_rule",
+  "full_rule_id": "SV-259577r960759_rule",
+  "rule_id": "SV-259577",
+  "rule_revision": "960759",
+  "group_id": "V-259577",
+  "group_title": "SRG-APP-000014",
+  "title": "SchUseStrongCrypto must be enabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Exchange Server 2019 is configured by default with TLS 1.2. However, SchUseStrongCrypto is not set by default and must be configured to meet the TLS requirement. The strong cryptography (configured by the SchUseStrongCrypto registry value) uses more secure network protocols (TLS 1.2, TLS 1.1, and TLS 1.0) and blocks protocols that are not secure. SchUseStrongCrypto affects only client (outgoing) connections in the application.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In a PowerShell window, run the following commands:\n\nGet-ItemProperty HKLM:\\SOFTWARE\\Microsoft\\.NetFramework\\v4.0.30319\n\nIf the value \"SchUseStrongCrypto\" is not present and set to 1, this is a finding.",
+  "fix": "In a PowerShell window with elevated privileges, run the following commands:\n\nreg add HKLM\\SOFTWARE\\Microsoft\\.NetFramework\\v4.0.30319 /v \"SchUseStrongCrypto\" /t REG_DWORD /d 1\n\nreg add HKLM\\SOFTWARE\\WoW6432Node\\Microsoft\\.NetFramework\\v4.0.30319 /v \"SchUseStrongCrypto\" /t REG_DWORD /d 1\n\nThis will create the value within the necessary key and set the data to 1.",
+  "ccis": [
+    "CCI-000068"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Exchange Server 2019 is configured by default with TLS 1.2. However, SchUseStrongCrypto is not set by default and must be configured to meet the TLS requirement. The strong cryptography (configured by the SchUseStrongCrypto registry value) uses more secure network protocols (TLS 1.2, TLS 1.1, and TLS 1.0) and blocks protocols that are not secure. SchUseStrongCrypto affects only client (outgoing) connections in the application.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-ED-000006",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac",
+      "name": "Microsoft Exchange 2019 Edge Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac"
+  ]
+}

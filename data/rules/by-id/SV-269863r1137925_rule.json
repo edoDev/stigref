@@ -1,0 +1,53 @@
+{
+  "id": "SV-269863r1137925_rule",
+  "full_rule_id": "SV-269863r1137925_rule",
+  "rule_id": "SV-269863",
+  "rule_revision": "1137925",
+  "group_id": "V-269863",
+  "group_title": "SRG-NET-000019-RTR-000011",
+  "title": "The Dell OS10 out-of-band management (OOBM) gateway router must be configured to have separate Interior Gateway Protocol (IGP) instances for the managed network and management network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate IGP routing instances is critical on the router to segregate traffic from each network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nVerify the OOBM interface is an adjacency in the IGP routing domain for the management network. \n\nVerify the IGP instance used for the management network is configured in a separate VRF from that used for the managed networks.\n\n!\nrouter ospf 1 vrf OOBM\n router-id 77.0.0.10\n ...\n! \nrouter ospf 2 vrf PROD\n router-id 88.0.0.88\n ...\n! \n\nIf the router does not enforce that IGP instances configured on the OOBM gateway router peer only with their own routing domain, this is a finding.",
+  "fix": "Configure the router to enforce that IGP instances configured on the OOBM gateway router peer only with their own routing domain.\n\nOS10(config)# ip vrf OOBM\nOS10(conf-vrf)# exit\n\nOS10(config)# ip vrf PROD\nOS10(conf-vrf)# exit\n\nOS10(config)# router ospf 1 vrf OOBM\nOS10(config-router-ospf-1)# router-id 77.0.0.10\nOS10(config-router-ospf-1)# exit\n\nOS10(config)# router ospf 2 vrf PROD\nOS10(config-router-ospf-2)# router-id 88.0.0.88\nOS10(config-router-ospf-2)# exit",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the gateway router is not a dedicated device for the OOBM network, implementation of several safeguards for containment of management and production traffic boundaries must occur. Since the managed and management network are separate routing domains, configuration of separate IGP routing instances is critical on the router to segregate traffic from each network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

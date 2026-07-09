@@ -1,0 +1,57 @@
+{
+  "id": "SV-256897r960759_rule",
+  "full_rule_id": "SV-256897r960759_rule",
+  "rule_id": "SV-256897",
+  "rule_revision": "960759",
+  "group_id": "V-256897",
+  "group_title": "SRG-APP-000014-AS-000009",
+  "title": "Automation Controller must use encryption strength in accordance with the categorization of the management data during remote access management sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote management access is accomplished by leveraging common communication protocols and establishing a remote connection to the application server via a network for the purposes of managing Automation Controller. If cryptography is not used, then the session data traversing the remote connection could be intercepted and compromised.\n\nAutomation Controller is accessed via standard HTTP (redirect)/HTTPS on standard ports, provided by NGINX. A self-signed certificate/key is installed by default; however, a user can provide a locally appropriate certificate and key per their organizational policy. SSL/TLS algorithm support is configured in the /etc./nginx/nginx.conf configuration file.\n\nSatisfies: SRG-APP-000014-AS-000009, SRG-APP-000142-AS-000014, SRG-APP-000172-AS-000120, SRG-APP-000441-AS-000258, SRG-APP-000442-AS-000259</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As an unauthenticated user, open a new web browser and go to http://<Automation Controller HOST>\n\nIf not redirected to https://<Automation Controller HOST>, this is a finding.",
+  "fix": "Enable HTTPS by running the following command:\n\n./setup.sh -e nginx_disable_https=false\n\nThe \"nginx_disable_https\" variable disables HTTPS traffic through NGINX, this is useful if offloading HTTPS to a load balancer.\n\nBy default, this variable is set to false in the installers \"roles/nginx/defaults/main.yml\" file. If a load balancer is not needed, ensure this value has not been set to true.",
+  "ccis": [
+    "CCI-000068",
+    "CCI-000197",
+    "CCI-000382",
+    "CCI-002420",
+    "CCI-002422"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote management access is accomplished by leveraging common communication protocols and establishing a remote connection to the application server via a network for the purposes of managing Automation Controller. If cryptography is not used, then the session data traversing the remote connection could be intercepted and compromised.\n\nAutomation Controller is accessed via standard HTTP (redirect)/HTTPS on standard ports, provided by NGINX. A self-signed certificate/key is installed by default; however, a user can provide a locally appropriate certificate and key per their organizational policy. SSL/TLS algorithm support is configured in the /etc./nginx/nginx.conf configuration file.\n\nSatisfies: SRG-APP-000014-AS-000009, SRG-APP-000142-AS-000014, SRG-APP-000172-AS-000120, SRG-APP-000441-AS-000258, SRG-APP-000442-AS-000259",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APAS-AT-000011",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-application-server-security-technical-impl-v2r4-90bc750f",
+      "name": "Red Hat Ansible Automation Controller Application Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-application-server-security-technical-impl-v2r4-90bc750f"
+  ]
+}

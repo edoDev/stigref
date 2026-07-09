@@ -1,0 +1,53 @@
+{
+  "id": "SV-254012r844069_rule",
+  "full_rule_id": "SV-254012r844069_rule",
+  "rule_id": "SV-254012",
+  "rule_revision": "844069",
+  "group_id": "V-254012",
+  "group_title": "SRG-NET-000205-RTR-000003",
+  "title": "The Juniper perimeter router must be configured to filter traffic destined to the enclave in accordance with the guidelines contained in DoD Instruction 8551.1.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Vulnerability assessments must be reviewed by the System Administrator, and protocols must be approved by the Information Assurance (IA) staff before entering the enclave.\n\nStateless firewall filters are the first line of defense in a layered security approach. They permit authorized packets and deny unauthorized packets based on port or service type. They enhance the posture of the network by not allowing packets to reach a potential target within the security domain. The lists provided are highly susceptible ports and services that should be blocked or limited as much as possible without adversely affecting customer requirements. Auditing packets attempting to penetrate the network but that are stopped by a firewall filter will allow network administrators to broaden their protective ring and more tightly define the scope of operation.\n\nIf the perimeter is in a Deny-by-Default posture and what is allowed through the filter is in accordance with DoD Instruction 8551.1, and if the permit rule is explicitly defined with explicit ports and protocols allowed, then all requirements related to PPS being blocked would be satisfied.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration to verify that the ingress filter is in accordance with DoD 8551. For example, assuming TCP 80 and 443 are permitted inbound:\n[edit policy-options]\nprefix-list inside-addresses-ipv4 {\n    <interior IPv4 subnet / mask>;\n}\nprefix-list inside-addresses-ipv4 {\n    <interior IPv6 subnet / prefix>;\n}\n[edit firewall]\nfamily inet {\n    filter inbound-ipv4 {\n        term 1 {\n            from {\n                destination-prefix-list inside-addresses-ipv4;\n                protocol tcp;\n                destination-port [ 80 443 ];\n            }\n            then accept;\n        }\n        <other terms as required>\n        term default-deny {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\nfamily inet6 {\n    filter inbound-ipv6 {\n        term 1 {\n            from {\n                destination-prefix-list inside-addresses-ipv6;\n                next-header tcp;\n                destination-port [ 80 443 ];\n            }\n            then accept;\n        }\n        <other terms as required>\n        term default-deny {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\n\nIf the router does not filter traffic in accordance with the guidelines contained in DoD 8551, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the router to use ingress firewall filters to restrict traffic in accordance with the guidelines contained in DOD Instruction 8551.1 for all services and protocols required for operational commitments.\n\nset policy-options prefix-list inside-addresses-ipv4 <IPv4 subnet>/<mask>\n<additional subnets as required>\nset policy-options prefix-list inside-addresses-ipv6 <IPv6 subnet>/<prefix>\n<additional subnets as required>\n\nset firewall family inet filter inbound-ipv4 term 1 from destination-prefix-list inside-addresses-ipv4\nset firewall family inet filter inbound-ipv4 term 1 from protocol tcp\nset firewall family inet filter inbound-ipv4 term 1 from destination-port 80\nset firewall family inet filter inbound-ipv4 term 1 from destination-port 443\nset firewall family inet filter inbound-ipv4 term 1 then accept\n<additional terms as required>\nset firewall family inet filter inbound-ipv4 term default-deny then log\nset firewall family inet filter inbound-ipv4 term default-deny then syslog\nset firewall family inet filter inbound-ipv4 term default-deny then discard\n\nset firewall family inet6 filter inbound-ipv6 term 1 from destination-prefix-list inside-addresses-ipv6\nset firewall family inet6 filter inbound-ipv6 term 1 from next-header tcp\nset firewall family inet6 filter inbound-ipv6 term 1 from destination-port 80\nset firewall family inet6 filter inbound-ipv6 term 1 from destination-port 443\nset firewall family inet6 filter inbound-ipv6 term 1 then accept\nset firewall family inet6 filter inbound-ipv6 term default-deny then log\nset firewall family inet6 filter inbound-ipv6 term default-deny then syslog\nset firewall family inet6 filter inbound-ipv6 term default-deny then discard",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Vulnerability assessments must be reviewed by the System Administrator, and protocols must be approved by the Information Assurance (IA) staff before entering the enclave.\n\nStateless firewall filters are the first line of defense in a layered security approach. They permit authorized packets and deny unauthorized packets based on port or service type. They enhance the posture of the network by not allowing packets to reach a potential target within the security domain. The lists provided are highly susceptible ports and services that should be blocked or limited as much as possible without adversely affecting customer requirements. Auditing packets attempting to penetrate the network but that are stopped by a firewall filter will allow network administrators to broaden their protective ring and more tightly define the scope of operation.\n\nIf the perimeter is in a Deny-by-Default posture and what is allowed through the filter is in accordance with DoD Instruction 8551.1, and if the permit rule is explicitly defined with explicit ports and protocols allowed, then all requirements related to PPS being blocked would be satisfied.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

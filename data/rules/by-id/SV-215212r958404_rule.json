@@ -1,0 +1,53 @@
+{
+  "id": "SV-215212r958404_rule",
+  "full_rule_id": "SV-215212r958404_rule",
+  "rule_id": "SV-215212",
+  "rule_revision": "958404",
+  "group_id": "V-215212",
+  "group_title": "SRG-OS-000031-GPOS-00012",
+  "title": "AIX CDE must conceal, via the session lock, information previously visible on the display with a publicly viewable image.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence.\n\nThe session lock is implemented at the point where session activity can be determined. The operating system session lock event must include an obfuscation of the display screen so as to prevent other users from reading what was previously displayed.\n\nPublicly viewable images can include static or dynamic images, for example, patterns used with screen savers, photographic images, solid colors, a clock, a battery life indicator, or a blank screen, with the additional caveat that none of the images convey sensitive information.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If CDE (X11) is not used on AIX, this is Not Applicable.\n\nEnsure that the screen saver and session timeout are not disabled.\n\nFrom the command prompt, run the following script:\n\n# AIX7-00-001101_Check.sh\n\nNote: This script is included in the STIG package.\n\nThe above script should yield the following output:\n\nChecking config file /etc/dt/config/C/sys.resources...\nMissing config file /etc/dt/config/C/sys.resources\n\nChecking config file /etc/dt/config/POSIX/sys.resources...\ndtsession*saverTimeout: 15\ndtsession*lockTimeout: 30\n\nChecking config file /etc/dt/config/en_US/sys.resources...\ndtsession*saverTimeout: 15\ndtsession*lockTimeout: 25\n\nIf the result of the script shows any config file missing, or any of the \"dtsession*saverTimeout\" or \"dtsession*lockTimeout\" values is greater than \"15\", this is a finding.",
+  "fix": "From the command prompt, run the following script to set the default timeout parameters \"dtsession*saverTimeout:\" and \"dtsession*lockTimeout:\" as \"15\" minutes: \n\n# AIX7-00-001101_Fix.sh\n\nNote: This script is included in the STIG package.",
+  "ccis": [
+    "CCI-000060"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence.\n\nThe session lock is implemented at the point where session activity can be determined. The operating system session lock event must include an obfuscation of the display screen so as to prevent other users from reading what was previously displayed.\n\nPublicly viewable images can include static or dynamic images, for example, patterns used with screen savers, photographic images, solid colors, a clock, a battery life indicator, or a blank screen, with the additional caveat that none of the images convey sensitive information.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001101",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

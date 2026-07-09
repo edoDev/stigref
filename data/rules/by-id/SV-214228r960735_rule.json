@@ -1,0 +1,53 @@
+{
+  "id": "SV-214228r960735_rule",
+  "full_rule_id": "SV-214228r960735_rule",
+  "rule_id": "SV-214228",
+  "rule_revision": "960735",
+  "group_id": "V-214228",
+  "group_title": "SRG-APP-000001-WSR-000001",
+  "title": "The Apache web server must limit the number of allowed simultaneous session requests.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Apache web server management includes the ability to control the number of users and user sessions that utilize an Apache web server. Limiting the number of allowed users and sessions per user is helpful in limiting risks related to several types of denial-of-service (DOS) attacks.\n\nAlthough there is some latitude concerning the settings, they should follow DoD-recommended values and be configurable to allow for future DoD direction. While the DoD will specify recommended values, the values can be adjusted to accommodate the operational requirements of a given system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file:\n\n# apachectl -V | egrep -i 'httpd_root|server_config_file'\n-D HTTPD_ROOT=\"/etc/httpd\"\n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\"\n\nNote: The apachectl front end is the preferred method for locating the Apache httpd file. For some Linux distributions, \"apache2ctl -V\" or  \"httpd -V\" can also be used.\n\nSearch for the directives \"KeepAlive\" and \"MaxKeepAliveRequests\" in the \"httpd.conf\" file:\n\n# cat /<path_to_file>/httpd.conf | grep -i \"keepalive\"\n\nKeepAlive On\nMaxKeepAliveRequests 100\n\nIf the value of \"KeepAlive\" is set to \"off\" or does not exist, this is a finding.\n\nIf the value of \"MaxKeepAliveRequests\" is set to a value less than \"100\" or does not exist, this is a finding.",
+  "fix": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file:\n\n# apachectl -V | egrep -i 'httpd_root|server_config_file'\n-D HTTPD_ROOT=\"/etc/httpd\"\n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\"\n\nNote: The apachectl front end is the preferred method for locating the Apache httpd file. For some Linux distributions, \"apache2ctl -V\" or  \"httpd -V\" can also be used.  \n\nSet the \"KeepAlive\" directive to a value of \"on\"; add the directive if it does not exist.\n\nSet the \"MaxKeepAliveRequests\" directive to a value of \"100\" or greater; add the directive if it does not exist.\n\nRestart Apache: apachectl restart",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Apache web server management includes the ability to control the number of users and user sessions that utilize an Apache web server. Limiting the number of allowed users and sessions per user is helpful in limiting risks related to several types of denial-of-service (DOS) attacks.\n\nAlthough there is some latitude concerning the settings, they should follow DoD-recommended values and be configurable to allow for future DoD direction. While the DoD will specify recommended values, the values can be adjusted to accommodate the operational requirements of a given system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U1-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738",
+      "name": "Apache Server 2.4 UNIX Server Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738"
+  ]
+}

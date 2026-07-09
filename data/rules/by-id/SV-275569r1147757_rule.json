@@ -1,0 +1,53 @@
+{
+  "id": "SV-275569r1147757_rule",
+  "full_rule_id": "SV-275569r1147757_rule",
+  "rule_id": "SV-275569",
+  "rule_revision": "1147757",
+  "group_id": "V-275569",
+  "group_title": "SRG-OS-000433-GPOS-00193",
+  "title": "Ubuntu OS must implement address space layout randomization to protect its memory from unauthorized code execution.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in prohibited memory locations. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism.  \n  \nExamples of attacks are buffer overflow attacks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu OS implements address space layout randomization (ASLR) by using the following command:  \n  \n     $ sysctl kernel.randomize_va_space \n     kernel.randomize_va_space = 2 \n  \nIf no output is returned, verify the kernel parameter \"randomize_va_space\" is set to \"2\" by using the following command:  \n  \n     $ cat /proc/sys/kernel/randomize_va_space \n     2 \n  \nIf \"kernel.randomize_va_space\" is not set to \"2\", this is a finding.  \n  \nVerify that a saved value of the \"kernel.randomize_va_space\" variable is not defined.  \n  \n     $ sudo grep -ER \"^kernel.randomize_va_space=[^2]\" /etc/sysctl.conf /etc/sysctl.d \n  \nIf this returns a result, this is a finding.",
+  "fix": "Remove the \"kernel.randomize_va_space\" entry found in the \"/etc/sysctl.conf\" file or any file located in the \"/etc/sysctl.d/\" directory.  \n \nReload the system configuration files for the changes to take effect by using the following command: \n \n     $ sudo sysctl --system",
+  "ccis": [
+    "CCI-002824"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in prohibited memory locations. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism.  \n  \nExamples of attacks are buffer overflow attacks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RIIM-OS-213020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd",
+      "name": "Riverbed NetIM OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd"
+  ]
+}

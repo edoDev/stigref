@@ -1,0 +1,53 @@
+{
+  "id": "SV-253983r843982_rule",
+  "full_rule_id": "SV-253983r843982_rule",
+  "rule_id": "SV-253983",
+  "rule_revision": "843982",
+  "group_id": "V-253983",
+  "group_title": "SRG-NET-000019-RTR-000001",
+  "title": "The Juniper router must be configured to disable the auxiliary port unless it is connected to a secured modem providing encryption and authentication.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The use of POTS lines to modems connecting to network devices provides clear text of authentication traffic over commercial circuits that could be captured and used to compromise the network. Additional war dial attacks on the device could degrade the device and the production network.\n\nSecured modem devices must be able to authenticate users and must negotiate a key exchange before full encryption takes place. The modem will provide full encryption capability (Triple DES) or stronger. The technician who manages these devices will be authenticated using an authorized MFA token and granted access to the appropriate maintenance port; thus, the technician will gain access to the managed device (router, switch, etc.). The token provides a method of strong (two-factor) user authentication. The token works in conjunction with a server to generate one-time user passwords. The user must know a personal identification number (PIN) and possess the token to be allowed access to the device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration and verify that the auxiliary port is disabled unless a secured modem providing encryption and authentication is connected to it.\n\nThe Junos auxiliary port is disabled by default. Verify the auxiliary port is not configured (there will be no [edit system ports auxiliary] stanza) or that the auxiliary port is explicitly disabled.\n\n[edit system ports]\nauxiliary {\n    disable;\n}\n\nIf the auxiliary port is not disabled or is not connected to a secured modem when it is enabled, this is a finding.",
+  "fix": "Disable the auxiliary port.\n\nset system ports auxiliary disable\n-or-\ndelete system ports auxiliary\n\nIf used for out-of-band administrative access, the port must be connected to a secured modem providing encryption and authentication.",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The use of POTS lines to modems connecting to network devices provides clear text of authentication traffic over commercial circuits that could be captured and used to compromise the network. Additional war dial attacks on the device could degrade the device and the production network.\n\nSecured modem devices must be able to authenticate users and must negotiate a key exchange before full encryption takes place. The modem will provide full encryption capability (Triple DES) or stronger. The technician who manages these devices will be authenticated using an authorized MFA token and granted access to the appropriate maintenance port; thus, the technician will gain access to the managed device (router, switch, etc.). The token provides a method of strong (two-factor) user authentication. The token works in conjunction with a server to generate one-time user passwords. The user must know a personal identification number (PIN) and possess the token to be allowed access to the device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

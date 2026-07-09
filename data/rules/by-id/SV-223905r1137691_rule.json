@@ -1,0 +1,53 @@
+{
+  "id": "SV-223905r1137691_rule",
+  "full_rule_id": "SV-223905r1137691_rule",
+  "rule_id": "SV-223905",
+  "rule_revision": "1137691",
+  "group_id": "V-223905",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "CA-TSS allocate access to system user catalogs must be limited to system programmers only.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000324-GPOS-00125</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nLISTCat USERCATALOG ALL NOPREFIX\n\nReview the ESM data set rules for each usercatalog defined.\n\nIf the data set rules for User Catalogs do not restrict ALTER access to only z/OS systems programming personnel, this is a finding.\n\nIf products or procedures requiring system programmer access for system-level maintenance meet the following specific case, this is not a finding:\n- The batch job or procedure must be documented in the SITE Security Plan. \n- Reside in a data set that is restricted to systems programmers' access only.\n\nIf the data set rules for User Catalogs do not specify that all (i.e., failures and successes) ALTER access will be logged, this a finding.\n\nNote: If the USER CATALOGS contain SMS managed data sets, READ access is sufficient to allow user operations. If the USER CATALOGS do not contain SMS managed data sets, UPDATE access is required for user operation.",
+  "fix": "Review access authorization to critical system files. Evaluate the impact of correcting the deficiency. Develop a plan of action and implement the changes as required to protect USER CATALOGS.\n\nConfigure ESM rules for allocate access to USER CATALOGS, limited to system programmers only, and all allocate access is logged.\n\nConfigure ESM rules for the USER CATALOGS to allow any products or procedures system programmer access for system-level maintenance that meet the following specific case:\n- The batch job or procedure must be documented in the SITE Security Plan. \n- Reside in a data set that is restricted to systems programmers' access only.\n\nNote: If the USER CATALOGS contain SMS managed data sets, READ access is sufficient to allow user operations. If the USER CATALOGS do not contain SMS managed data sets, UPDATE access is required for user operation.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000324-GPOS-00125",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-ES-000320",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

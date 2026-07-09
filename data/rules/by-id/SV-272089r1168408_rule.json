@@ -1,0 +1,53 @@
+{
+  "id": "SV-272089r1168408_rule",
+  "full_rule_id": "SV-272089r1168408_rule",
+  "rule_id": "SV-272089",
+  "rule_revision": "1168408",
+  "group_id": "V-272089",
+  "group_title": "SRG-NET-000362-RTR-000118",
+  "title": "The BGP Cisco ACI must be configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of the RP to verify it is rate limiting the number of PIM register messages.\n\nVerify the L3Out option for Route Control Enforcement Import is checked. Navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Out >> {{your_l3out}} >> Policy >> Main >> Route Control Enforcement.\n\nIf the router is not configured to limit the prefix size on any inbound route advertisement to /24, or the least significant prefixes issued to the customer, this is a finding.",
+  "fix": "Configure the router to limit the prefix size on any route advertisement to /24 or the least significant prefixes issued to the customer.\n\nCreate a \"match rule\" within a \"route profile\" by specifying a prefix list, to be applied to the desired L3Out (external routed network) to filter BGP routes based on the prefixes defined in the list. The route profile is applied to a specific L3Out (external routed network) to control which prefixes are advertised or accepted from external networks. Refer to the L3 out documentation on setting up route maps or using the import controls on the external EPG subnets on this connection. Ensure on the L3Out the option for Route Control Enforcement Import is checked.\n\nTenants >> {{your_Tenant}} >> Networking >> L3Out >> {{your_l3out}} >> Policy >> Main >> Route Control Enforcement",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CACI-RT-000029",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251",
+      "name": "Cisco ACI Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251"
+  ]
+}

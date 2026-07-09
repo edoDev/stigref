@@ -1,0 +1,53 @@
+{
+  "id": "SV-217023r855891_rule",
+  "full_rule_id": "SV-217023r855891_rule",
+  "rule_id": "SV-217023",
+  "rule_revision": "855891",
+  "group_id": "V-217023",
+  "group_title": "SRG-NET-000362-RTR-000114",
+  "title": "The Juniper router must be configured to have Internet Control Message Protocol (ICMP) mask reply messages disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Mask Reply ICMP messages are commonly used by attackers for network mapping and diagnosis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "JUNOS has no interface command to not reply to an ICMP Mask Request message destined to the router. Consequently, to ensure that the router does not send any ICMP Mask Reply message in response to an ICMP Mask Request, include a term statement in the routing engine filter to silently drop any ICMP Masks Requests sent to it as shown in the example below.\n\nfirewall {\n    family inet {\n       …\n       …\n       …\n        }\n        filter DESTINED_TO_RE {\n            term ALLOW_XYZ {\n                from {\n                    protocol xyz;\n                }\n                then accept;\n            }\n            …\n            …\n            …\n            }\n            term DENY_MASK_REQUEST {\n                from {\n                    protocol icmp;\n                    icmp-type mask-request;\n                }\n                then {\n                    discard;\n                }\n            }\n            term ICMP_ANY {\n                from {\n                    protocol icmp;\n                }\n                then accept;\n            }\n            term DENY_BY_DEFAULT {\n                then {\n                    log;\n                    discard;\n                }\n            }\n        }\n    }\n\nIf the router is not configured to silently drop all  ICMP Mask Reply messages destined to the router, this is a finding.",
+  "fix": "Configure the filter protecting the routing engine to silently drop all ICMP Mask Request messages destined to the router.\n\n[edit firewall family inet filter DESTINED_TO_RP]\nset term DENY_MASK_REQUEST from protocol icmp icmp-type mask-request\ninsert term DENY_MASK_REQUEST before term ALLOW_ICMP",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Mask Reply ICMP messages are commonly used by attackers for network mapping and diagnosis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

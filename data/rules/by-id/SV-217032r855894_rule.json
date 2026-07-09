@@ -1,0 +1,53 @@
+{
+  "id": "SV-217032r855894_rule",
+  "full_rule_id": "SV-217032r855894_rule",
+  "rule_id": "SV-217032",
+  "rule_revision": "855894",
+  "group_id": "V-217032",
+  "group_title": "SRG-NET-000364-RTR-000110",
+  "title": "The Juniper perimeter router must be configured to block inbound packets with source Bogon IP address prefixes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Packets with Bogon IP source addresses should never be allowed to traverse the IP core. Bogon IP networks are RFC1918 addresses or address blocks that have never been assigned by the IANA or have been reserved.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DoDIN Backbone.\n\nReview the router configuration to verify that an ingress filter applied to all external interfaces is blocking packets with Bogon source addresses.\n\nVerify a prefix list has been configured containing the current Bogon prefixes as shown in the example below.\n\npolicy-options {\n    prefix-list BOGON_PREFIXES {\n        0.0.0.0/8;\n        10.0.0.0/8;\n        100.64.0.0/10;\n        127.0.0.0/8;\n        169.254.0.0/16;\n        172.16.0.0/12;\n        192.0.0.0/24;\n        192.0.2.0/24;\n        192.168.0.0/16;\n        198.18.0.0/15;\n        198.51.100.0/24;\n        203.0.113.0/24;\n        224.0.0.0/4;\n        240.0.0.0/4;\n    }\n}\n\nVerify that the inbound filter applied to all external interfaces will block all traffic from Bogon source addresses.\n\ninterfaces {\n    ge-0/0/0 {\n        unit 0 {\n            family inet {\n                filter {\n                    input INBOUND_FILTER;\n                }\n                address 11.1.12.2/24;\n            }\n        }\n    }\n…\n…\n…\nfirewall {\n    family inet {\n        filter INBOUND_FILTER {\n            term BLOCK_BOGONS {\n                from {\n                    source-prefix-list {\n                        BOGON_PREFIXES;\n                    }\n                }\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n            term ALLOW_BGP {\n                from {\n                    protocol tcp;\n                    destination-port bgp;\n                }\n                then accept;\n            }\n            term ALLOW_XYZ {\n                from {\n                    protocol xyz;\n                }\n                then accept;\n            }\n            term DENY_ALL_OTHER {\n                then {\n                    syslog;\n                    reject;\n                }\n            }\n        }\n}\n\nExternal Interfaces connected to the NIPRNet or SIPRNet\n\nReview the inbound ACLs on external facing interfaces attached to the NIPRnet or SIPRnet to validate access control lists are configured to block inbound packets with IP sources addresses as documented in RFC5735 and RFC6598. \n\n\nExternal Interfaces connected to a commercial ISP or other non-DoD network\nReview the inbound ACLs on external facing interfaces validate access control lists are configured to block inbound packets with IP sources addresses as documented in RFC5735 and RFC6598, as well as address space that has been allocated to the RIRs but not assigned by the RIR to an ISP or other enterprise network. The full list of bogons can be found at the following link: https://www.team-cymru.org/Services/Bogons/fullbogons-ipv4.txt\n\nIf the router is not configured to block inbound packets with source Bogon IP address prefixes, this is a finding.",
+  "fix": "This requirement is not applicable for the DoDIN Backbone.\n\nConfigure the perimeter to block inbound packets with Bogon source addresses.\n\nConfigure a prefix list containing the current Bogon prefixes as shown below.\n\n[edit policy-options]\nset prefix-list BOGON_PREFIXES 0.0.0.0/8\nset prefix-list BOGON_PREFIXES 10.0.0.0/8\nset prefix-list BOGON_PREFIXES 100.64.0.0/10\nset prefix-list BOGON_PREFIXES 127.0.0.0/8\nset prefix-list BOGON_PREFIXES 169.254.0.0/16\nset prefix-list BOGON_PREFIXES 172.16.0.0/12\nset prefix-list BOGON_PREFIXES 192.0.0.0/24\nset prefix-list BOGON_PREFIXES 192.0.2.0/24\nset prefix-list BOGON_PREFIXES 192.168.0.0/16\nset prefix-list BOGON_PREFIXES 198.18.0.0/15\nset prefix-list BOGON_PREFIXES 198.51.100.0/24\nset prefix-list BOGON_PREFIXES 203.0.113.0/24\nset prefix-list BOGON_PREFIXES 224.0.0.0/4\nset prefix-list BOGON_PREFIXES 240.0.0.0/4\n\nAdd a term to the inbound filter to block the Bogon prefixes.\n\n[edit firewall family inet filter INBOUND_FILTER]\nset term BLOCK_BOGONS from source-prefix-list BOGON_PREFIXES\nset term BLOCK_BOGONS then syslog discard\ninsert term BLOCK_BOGONS before term ALLOW_BGP",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Packets with Bogon IP source addresses should never be allowed to traverse the IP core. Bogon IP networks are RFC1918 addresses or address blocks that have never been assigned by the IANA or have been reserved.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000270",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

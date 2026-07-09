@@ -1,0 +1,59 @@
+{
+  "id": "SV-222930r960765_rule",
+  "full_rule_id": "SV-222930r960765_rule",
+  "rule_id": "SV-222930",
+  "rule_revision": "960765",
+  "group_id": "V-222930",
+  "group_title": "SRG-APP-000016-AS-000013",
+  "title": "AccessLogValve must be configured for each application context.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Tomcat has the ability to host multiple contexts (applications) on one physical server by using the <Host><Context> attribute. This allows the admin to specify audit log settings on a per application basis.\n\nSatisfies: SRG-APP-000016-AS-000013, SRG-APP-000080-AS-000045, SRG-APP-000089-AS-000050, SRG-APP-000091-AS-000052, SRG-APP-000095-AS-000056, SRG-APP-000098-AS-000061, SRG-APP-000099-AS-000062</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As an elevated user on the Tomcat server:\n\nEdit the $CATALINA_BASE/conf/server.xml file.\n\nReview for all <Context> elements.\n\nIf a <Valve className=\"org.apache.catalina.valves.AccessLogValve\" .../> element is not defined within each <Context> element, this is a finding.\n\nEXAMPLE:\n\n<Context\n...\n<Valve className=\"org.apache.catalina.valves.AccessLogValve\" directory=\"logs\"\n               prefix=\"application_name_log\" suffix=\".txt\"\n               pattern=\"\"%h %l %t %u &quot;%r&quot; %s %b\" />\n  ...\n/>",
+  "fix": "As a privileged user on the Tomcat server:\n\nEdit the $CATALINA_BASE/conf/server.xml file.\n\nCreate a <Valve> element that is nested within the <Context> element containing an AccessLogValve.\n\nEXAMPLE:\n\n<Context \n...\n<Valve className=\"org.apache.catalina.valves.AccessLogValve\" directory=\"logs\"\n               prefix=\"application_name_log\" suffix=\".txt\"\n               pattern=\"%h %l %t %u &quot;%r&quot; %s %b\" />\n  ...\n/>\n\nRestart the Tomcat server:\nsudo systemctl restart tomcat\nsudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-000067",
+    "CCI-000130",
+    "CCI-000133",
+    "CCI-000134",
+    "CCI-000166",
+    "CCI-000169",
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Tomcat has the ability to host multiple contexts (applications) on one physical server by using the <Host><Context> attribute. This allows the admin to specify audit log settings on a per application basis.\n\nSatisfies: SRG-APP-000016-AS-000013, SRG-APP-000080-AS-000045, SRG-APP-000089-AS-000050, SRG-APP-000091-AS-000052, SRG-APP-000095-AS-000056, SRG-APP-000098-AS-000061, SRG-APP-000099-AS-000062",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

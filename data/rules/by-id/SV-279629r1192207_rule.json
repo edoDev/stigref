@@ -1,0 +1,53 @@
+{
+  "id": "SV-279629r1192207_rule",
+  "full_rule_id": "SV-279629r1192207_rule",
+  "rule_id": "SV-279629",
+  "rule_revision": "1192207",
+  "group_id": "V-279629",
+  "group_title": "SRG-OS-000206-GPOS-00084",
+  "title": "Nutanix OS must restrict the message log access permissions to reveal error messages only to authorized users.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the operating system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nThe structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. For AOS, Prism Central, and Files, verify the file permissions of /home/log/messages is greater than \"600\" and the ownership is \"root\" using the following command.\n\n$ sudo stat -c \"%a %n\" /home/log/messages \n600 /home/log/messages\n\n$ sudo stat -c \"%U\" /home/log/messages \nroot\n\n$ sudo stat -c \"%G\" /home/log/messages \nroot\n\n2. For AHV, remove accounts that do not support approved system activities. List all interactive user accounts using the following command.\n\n$ sudo awk -F: '$3 >= 1000 {print $1 \" \" $5}' /etc/passwd\n\nIf accounts exist on the system that are unauthorized or if the message log is not restricted as required, this is a finding.",
+  "fix": "1. AOS, Prism Central, and Files OS VMs are configured by default to have ownership and permission levels set correctly to meet this requirement. If these are found to be out of compliance, some corruption has taken place and the OS must be rebuilt.\n\n2. For AHV, remove accounts that do not support approved system activities.",
+  "ccis": [
+    "CCI-001314"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the operating system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nThe structure and content of error messages must be carefully considered by the organization and development team. The extent to which the information system is able to identify and handle error conditions is guided by organizational policy and operational requirements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000207",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

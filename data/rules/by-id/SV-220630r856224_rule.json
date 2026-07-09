@@ -1,0 +1,53 @@
+{
+  "id": "SV-220630r856224_rule",
+  "full_rule_id": "SV-220630r856224_rule",
+  "rule_id": "SV-220630",
+  "rule_revision": "856224",
+  "group_id": "V-220630",
+  "group_title": "SRG-NET-000362-L2S-000022",
+  "title": "The Cisco switch must have Bridge Protocol Data Unit (BPDU) Guard enabled on all user-facing or untrusted access switch ports.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If a rogue switch is introduced into the topology and transmits a BPDU with a lower bridge priority than the existing root bridge, it will become the new root bridge and cause a topology change, rendering the network in a suboptimal state.\n\nThe STP PortFast BPDU Guard enhancement allows network designers to enforce the STP domain borders and keep the active topology predictable. The devices behind the ports that have STP PortFast enabled are not able to influence the STP topology. At the reception of BPDUs, the BPDU Guard operation disables the port that has PortFast configured. The BPDU Guard transitions the port into \"errdisable\" state and sends a log message.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify that BPDU Guard is enabled on all user-facing or untrusted access switch ports as shown in the configuration example below:\n\ninterface GigabitEthernet0/0\n spanning-tree bpduguard enable\n!\ninterface GigabitEthernet0/1\n spanning-tree bpduguard enable\n…\n…\n…\ninterface GigabitEthernet0/9 \n spanning-tree bpduguard enable\n\nIf the switch has not enabled BPDU Guard, this is a finding.",
+  "fix": "Enable BPDU Guard on all user-facing or untrusted access switch ports as shown in the configuration example below:\n\nSW1(config)#int range g0/0 - 9\nSW1(config-if-range)#spanning-tree bpduguard enable\n\nNote: BPDU Guard can also be enabled globally on all Port Fast-enabled ports by using the spanning-tree portfast bpduguard default command.",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If a rogue switch is introduced into the topology and transmits a BPDU with a lower bridge priority than the existing root bridge, it will become the new root bridge and cause a topology change, rendering the network in a suboptimal state.\n\nThe STP PortFast BPDU Guard enhancement allows network designers to enforce the STP domain borders and keep the active topology predictable. The devices behind the ports that have STP PortFast enabled are not able to influence the STP topology. At the reception of BPDUs, the BPDU Guard operation disables the port that has PortFast configured. The BPDU Guard transitions the port into \"errdisable\" state and sends a log message.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-L2-000100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-switch-l2s-security-technical-implementation-guide-v3r1-94337307",
+      "name": "Cisco IOS Switch L2S Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-switch-l2s-security-technical-implementation-guide-v3r1-94337307"
+  ]
+}

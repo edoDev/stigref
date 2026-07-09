@@ -1,0 +1,53 @@
+{
+  "id": "SV-233544r961656_rule",
+  "full_rule_id": "SV-233544r961656_rule",
+  "rule_id": "SV-233544",
+  "rule_revision": "961656",
+  "group_id": "V-233544",
+  "group_title": "SRG-APP-000447-DB-000393",
+  "title": "When invalid inputs are received, PostgreSQL must behave in a predictable and documented manner that reflects organizational and system objectives.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A common vulnerability is unplanned behavior when invalid inputs are received. This requirement guards against adverse or unintended system behavior caused by invalid inputs, where information system responses to the invalid input may be disruptive or cause the system to fail into an unsafe state.\n\nThe behavior will be derived from the organizational and system requirements and includes, but is not limited to, notification of the appropriate personnel, creating an audit record, and rejecting invalid input.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review system documentation to determine how input errors from application to PostgreSQL are to be handled in general and if any special handling is defined for specific circumstances.\n\nIf it does not implement the documented behavior, this is a finding.\n\nAs the database administrator (shown here as \"postgres\"), make a small SQL syntax error in psql by running the following:\n\n$ sudo su - postgres\n$ psql -c \"CREAT TABLEincorrect_syntax(id INT)\"\nERROR: syntax error at or near \"CREAT\"\n\nNote: The following instructions use the PGVER and PGLOG environment variables. See supplementary content APPENDIX-H for instructions on configuring PGVER and APPENDIX-I for PGLOG.\n\nAs the database administrator (shown here as \"postgres\"), verify the syntax error was logged (change the log file name and part to suit the circumstances):\n\n$ sudo su - postgres\n$ cat ~/${PGVER?}/data/${PGLOG?}/<latest log>\n2016-03-30 16:18:10.772 EDT postgres postgres 5706bb87.90dERROR: syntax error at or near \"CREAT\" at character 1\n2016-03-30 16:18:10.772 EDT postgres postgres 5706bb87.90dSTATEMENT: CREAT TABLE incorrect_syntax(id INT);\n\nIf no matching log entry containing the 'ERROR: syntax error' is present, this is a finding.",
+  "fix": "Enable logging.\n\nTo ensure that logging is enabled, review supplementary content APPENDIX-C for instructions on enabling logging.\n\nAll errors and denials are logged if logging is enabled.",
+  "ccis": [
+    "CCI-002754"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A common vulnerability is unplanned behavior when invalid inputs are received. This requirement guards against adverse or unintended system behavior caused by invalid inputs, where information system responses to the invalid input may be disruptive or cause the system to fail into an unsafe state.\n\nThe behavior will be derived from the organizational and system requirements and includes, but is not limited to, notification of the appropriate personnel, creating an audit record, and rejecting invalid input.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CD12-00-003700",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c",
+      "name": "Crunchy Data PostgreSQL Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c"
+  ]
+}

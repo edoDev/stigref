@@ -1,0 +1,53 @@
+{
+  "id": "SV-220513r961863_rule",
+  "full_rule_id": "SV-220513r961863_rule",
+  "rule_id": "SV-220513",
+  "rule_revision": "961863",
+  "group_id": "V-220513",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "The Cisco switch must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of user accounts and authentication increases the administrative access to the switch. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Cisco switch configuration to verify that the device is configured to use at least two authentication servers as primary source for authentication.\n\nStep 1: Verify that an AAA server group is configured for login authentication for both in-band and console access methods.\n\naaa authentication login default group RADIUS_SERVERS \naaa authentication login console group RADIUS_SERVERS\n\nStep 2: Verify that at least two AAA servers have been defined for the server group as shown in the example below:\n\nradius-server host 10.1.48.10 key 7 \"xxxxxx\" \nradius-server host 10.1.48.11 key 7 \"xxxxxx\" \nauthentication accounting \naaa group server radius RADIUS_SERVERS \n server 10.1.48.10\n server 10.1.48.11\n\nIf the Cisco switch is not configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access, this is a finding.",
+  "fix": "Configure the Cisco switch to use at least two authentication servers as shown in the following example:\n\nStep 1: Define the authentication servers. \n\nSW1(config)# radius-server host 10.1.48.10 key xxxxxx\nSW1(config)# radius-server host 10.1.48.11 key xxxxxx\n\nStep 2: Configure the AAA group.\n\nSW1(config)# aaa group server radius RADIUS_SERVERS\nSW1(config-radius)# server 10.1.48.10\nSW1(config-radius)# server 10.1.48.11\n\nStep 3: Use the AAA servers for login authentication for both in-band and console access methods.\n\nSW1(config)# aaa authentication login default group RADIUS_SERVERS \nSW1(config)# aaa authentication login console group RADIUS_SERVERS",
+  "ccis": [
+    "CCI-000370"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of user accounts and authentication increases the administrative access to the switch. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-ND-001370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-ndm-security-technical-implementation-guide-v3r2-19692e2b",
+      "name": "Cisco NX OS Switch NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-ndm-security-technical-implementation-guide-v3r2-19692e2b"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-258942r934484_rule",
+  "full_rule_id": "SV-258942r934484_rule",
+  "rule_id": "SV-258942",
+  "rule_revision": "934484",
+  "group_id": "V-258942",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must configure the \"vpxuser\" auto-password to be changed every 30 days.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By default, vCenter will change the \"vpxuser\" password automatically every 30 days. Ensure this setting meets site policies. If it does not, configure it to meet password aging policies.\n\nNote: It is very important the password aging policy is not shorter than the default interval that is set to automatically change the \"vpxuser\" password to preclude the possibility that vCenter might be locked out of an ESXi host.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Host and Clusters.\n\nSelect a vCenter Server >> Configure >> Settings >> Advanced Settings.\n\nVerify that \"VirtualCenter.VimPasswordExpirationInDays\" is set to \"30\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-AdvancedSetting -Entity <vcenter server name> -Name VirtualCenter.VimPasswordExpirationInDays\n\nIf the \"VirtualCenter.VimPasswordExpirationInDays\" is set to a value other than \"30\" or does not exist, this is a finding.",
+  "fix": "From the vSphere Client, go to Host and Clusters.\n\nSelect a vCenter Server >> Configure >> Settings >> Advanced Settings.\n\nClick \"Edit Settings\" and configure the \"VirtualCenter.VimPasswordExpirationInDays\" value to \"30\" or if the value does not exist create it by entering the values in the \"Key\" and \"Value\" fields and clicking \"Add\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nIf the setting already exists:\n\nGet-AdvancedSetting -Entity <vcenter server name> -Name VirtualCenter.VimPasswordExpirationInDays | Set-AdvancedSetting -Value 30\n\nIf the setting does not exist:\n\nNew-AdvancedSetting -Entity <vcenter server name> -Name VirtualCenter.VimPasswordExpirationInDays -Value 30",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By default, vCenter will change the \"vpxuser\" password automatically every 30 days. Ensure this setting meets site policies. If it does not, configure it to meet password aging policies.\n\nNote: It is very important the password aging policy is not shorter than the default interval that is set to automatically change the \"vpxuser\" password to preclude the possibility that vCenter might be locked out of an ESXi host.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000275",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

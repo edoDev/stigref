@@ -1,0 +1,53 @@
+{
+  "id": "SV-259668r960963_rule",
+  "full_rule_id": "SV-259668r960963_rule",
+  "rule_id": "SV-259668",
+  "rule_revision": "960963",
+  "group_id": "V-259668",
+  "group_title": "SRG-APP-000141",
+  "title": "The Exchange Post Office Protocol 3 (POP3) service must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>POP3 is not approved for use within the DOD. It uses a clear-text-based user name and password and does not support the DOD standard for PKI for email access. User name and password could easily be captured from the network, allowing a malicious user to access other system features. Uninstalling or disabling the service will prevent the use of POP3.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Get-Service -Name MSExchangePop3,MSExchangePOP3BE |Select-Object -Property Name,StartType\n\nIf any of the POP3 services StartType is NOT set to \"Disabled\", this is a finding.",
+  "fix": "Open the Windows PowerShell in an Elevated Prompt and enter the following commands:\n\nGet-Service -Name MSExchangePop3,MSExchangePOP3BE |ForEach-Object {Set-Service -Name $_.Name -StartupType Disabled}",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "POP3 is not approved for use within the DOD. It uses a clear-text-based user name and password and does not support the DOD standard for PKI for email access. User name and password could easily be captured from the network, allowing a malicious user to access other system features. Uninstalling or disabling the service will prevent the use of POP3.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-MB-000066",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-mailbox-server-security-technical-implementation-guide-v2r3-ea0ba475",
+      "name": "Microsoft Exchange 2019 Mailbox Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-mailbox-server-security-technical-implementation-guide-v2r3-ea0ba475"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-215214r991554_rule",
+  "full_rule_id": "SV-215214r991554_rule",
+  "rule_id": "SV-215214",
+  "rule_revision": "991554",
+  "group_id": "V-215214",
+  "group_title": "SRG-OS-000250-GPOS-00093",
+  "title": "If LDAP authentication is required on AIX, SSL must be used between LDAP clients and the LDAP servers to protect the integrity of remote access sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If LDAP authentication is used, SSL must be used between LDAP clients and the LDAP servers to protect the integrity of remote access sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Run the following command to check if ldap_auth is used:\n\n# grep -iE \"^authtype:[[:blank:]]*ldap_auth\" /etc/security/ldap/ldap.cfg\n\nIf the command has no output, this is Not Applicable.\n\nRun the following command to check if SSL is used:\n\n# grep -iE \"^useSSL:[[:blank:]]*yes\" /etc/security/ldap/ldap.cfg\nuseSSL:yes\n\nIf the command has no output, this is a finding.",
+  "fix": "Configure the LDAP client on AIX to use the SSL.\n\nEdit /etc/security/ldap/ldap.cfg to have the following line:\nuseSSL:yes\n\nRestart the client daemon:\n# secldapclntd.",
+  "ccis": [
+    "CCI-001453"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If LDAP authentication is used, SSL must be used between LDAP clients and the LDAP servers to protect the integrity of remote access sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001104",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

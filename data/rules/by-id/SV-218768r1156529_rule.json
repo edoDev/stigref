@@ -1,0 +1,53 @@
+{
+  "id": "SV-218768r1156529_rule",
+  "full_rule_id": "SV-218768r1156529_rule",
+  "rule_id": "SV-218768",
+  "rule_revision": "1156529",
+  "group_id": "V-218768",
+  "group_title": "SRG-APP-000429-WSR-000113",
+  "title": "The IIS 10.0 private website must employ cryptographic mechanisms (TLS) and require client certificates.",
+  "severity": "high",
+  "description": "<VulnDiscussion>TLS encryption is a required security setting for a private web server. Encryption of private information is essential to ensuring data confidentiality. If private information is not encrypted, it can be intercepted and easily read by an unauthorized party. A private web server must use a FIPS 140-2/140-3 approved TLS version, and all non-FIPS-approved SSL versions must be disabled.\n\nNIST SP 800-52 specifies the preferred configurations for government systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Notes: \n- If SSL is installed on load balancer/proxy server through which traffic is routed to the IIS 10.0 server, and the IIS 10.0 server receives traffic from the load balancer/proxy server, the SSL requirement must be met on the load balancer/proxy server. In this case, this requirement is not applicable.\n- If this is a public-facing web server, this requirement is not applicable.\n- If this server is hosting WSUS, this requirement is not applicable.\n- If the server being reviewed is hosting SharePoint, this is not applicable.\n- If the server being reviewed is hosting Simple Certificate Enrollment Services (SCEP), this is not applicable.\n- If the server being reviewed is hosting Network Device Enrollment Services (NDES), this is not applicable.\n- If the server is providing OCSP, and not otherwise hosting any content, this requirement is not applicable.\n- If the server is providing CRL, and not otherwise hosting any content, this requirement is not applicable.\n\nFollow the procedures below for each site hosted on the IIS 10.0 web server:\n\nOpen the IIS 10.0 Manager.\n\nDouble-click the \"SSL Settings\" icon under the \"IIS\" section.\n\nVerify \"Require SSL\" is checked.\n\nVerify \"Client Certificates Required\" is selected.\n\nClick the site under review.\n\nSelect \"Configuration Editor\" under the \"Management\" section.\n\nFrom the \"Section:\" drop-down list at the top of the configuration editor, locate \"system.webServer/security/access\".\n\nThe value for \"sslFlags\" set must include \"ssl128\".\n\nIf the \"Require SSL\" is not selected, this is a finding.\n\nIf the \"Client Certificates Required\" is not selected, this is a finding. Note: \"Client Certificates Required\" can be considered Not Applicable in a Single Sign On (SSO) scenario where client certificates are no longer processed locally.\n\nIf the \"sslFlags\" is not set to \"ssl128\", this is a finding.",
+  "fix": "Follow the procedures below for each site hosted on the IIS 10.0 web server:\n\nOpen the IIS 10.0 Manager.\n\nDouble-click the \"SSL Settings\" icon under the \"IIS\" section.\n\nSelect the \"Require SSL\" setting.\n\nSelect the \"Client Certificates Required\" setting.\n\nClick \"Apply\" in the \"Actions\" pane.\n\nClick the site under review.\n\nSelect \"Configuration Editor\" under the \"Management\" section.\n\nFrom the \"Section:\" drop-down list at the top of the configuration editor, locate \"system.webServer/security/access\".\n\nClick on the drop-down list for \"sslFlags\".\n\nSelect the \"Ssl128\" check box.\n\nClick \"Apply\" in the \"Actions\" pane.",
+  "ccis": [
+    "CCI-002476"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "TLS encryption is a required security setting for a private web server. Encryption of private information is essential to ensuring data confidentiality. If private information is not encrypted, it can be intercepted and easily read by an unauthorized party. A private web server must use a FIPS 140-2/140-3 approved TLS version, and all non-FIPS-approved SSL versions must be disabled.\n\nNIST SP 800-52 specifies the preferred configurations for government systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IIST-SI-000242",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-iis-10-0-site-security-technical-implementation-guide-v2r15-f7e4aa41",
+      "name": "Microsoft IIS 10.0 Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "15"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-iis-10-0-site-security-technical-implementation-guide-v2r15-f7e4aa41"
+  ]
+}

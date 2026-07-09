@@ -1,0 +1,53 @@
+{
+  "id": "SV-280988r1195374_rule",
+  "full_rule_id": "SV-280988r1195374_rule",
+  "rule_id": "SV-280988",
+  "rule_revision": "1195374",
+  "group_id": "V-280988",
+  "group_title": "SRG-OS-000342-GPOS-00133",
+  "title": "RHEL 10 must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited via rsyslog.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOff-loading is a common process in information systems with limited audit storage capacity.\n\nRHEL 10 installation media provides \"rsyslogd\", a system utility providing support for message logging. Support for both internet and Unix domain sockets enables this utility to support both local and remote logging. Coupling this utility with \"gnutls\" (a secure communications library implementing the Secure Sockets Layer [SSL], Transport Layer Security [TLS], and Datagram TLS [DTLS] protocols) creates a method to securely encrypt and off-load auditing. When this utility is coupled with the omfwd module, it can use the ossl network stream driver, which leverages the OpenSSL library for Transport Layer Security (TLS) to securely encrypt and off-load auditing.\n\n\"Rsyslog\" supported authentication modes include:\n- anon - Anonymous authentication.\n- x509/fingerprint - Certificate fingerprint authentication.\n- x509/certvalid - Certificate validation only.\n- x509/name - Certificate validation and subject name authentication.\n\nSatisfies: SRG-OS-000342-GPOS-00133, SRG-OS-000479-GPOS-00224</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 encrypts audit records offloaded onto a different system via rsyslog using the modern \"omfwd\" action.\n\nSearch for active TLS-enabling configurations within \"omfwd\" action blocks with the following command:\n\n$ sudo grep -rE 'tls=\"on\"|StreamDriver.Mode\\s*=\\s*\"1\"' /etc/rsyslog.conf /etc/rsyslog.d/\n\nIf an active TCP-based \"omfwd\" forwarding rule exists on the system but the command above returns no active configuration lines, or if all results are commented out, this is a finding.",
+  "fix": "Configure RHEL 10 to encrypt off-loaded audit records via rsyslog by enabling TLS within the \"omfwd\" action rule.\n\nEdit the configuration file containing the \"omfwd\" rule (e.g., /etc/rsyslog.d/99-forwarding.conf) and add the tls=\"on\" parameter.\n\nExample:\naction(\n  type=\"omfwd\"\n  target=\"logserver.example.com\"\n  protocol=\"tcp\"\n  port=\"6514\"\n  tls=\"on\"\n)\n\nAfter applying the configuration, restart the rsyslog service:\n$ sudo systemctl restart rsyslog",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOff-loading is a common process in information systems with limited audit storage capacity.\n\nRHEL 10 installation media provides \"rsyslogd\", a system utility providing support for message logging. Support for both internet and Unix domain sockets enables this utility to support both local and remote logging. Coupling this utility with \"gnutls\" (a secure communications library implementing the Secure Sockets Layer [SSL], Transport Layer Security [TLS], and Datagram TLS [DTLS] protocols) creates a method to securely encrypt and off-load auditing. When this utility is coupled with the omfwd module, it can use the ossl network stream driver, which leverages the OpenSSL library for Transport Layer Security (TLS) to securely encrypt and off-load auditing.\n\n\"Rsyslog\" supported authentication modes include:\n- anon - Anonymous authentication.\n- x509/fingerprint - Certificate fingerprint authentication.\n- x509/certvalid - Certificate validation only.\n- x509/name - Certificate validation and subject name authentication.\n\nSatisfies: SRG-OS-000342-GPOS-00133, SRG-OS-000479-GPOS-00224",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-200645",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

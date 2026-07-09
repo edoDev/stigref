@@ -1,0 +1,53 @@
+{
+  "id": "SV-258836r933569_rule",
+  "full_rule_id": "SV-258836r933569_rule",
+  "rule_id": "SV-258836",
+  "rule_revision": "933569",
+  "group_id": "V-258836",
+  "group_title": "SRG-OS-000254-GPOS-00095",
+  "title": "The Photon operating system must initiate session audits at system startup.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If auditing is enabled late in the startup process, the actions of some startup processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command to verify auditing is enabled at startup:\n\n# grep 'audit' /proc/cmdline\n\nExample result:\n\nBOOT_IMAGE=/boot/vmlinuz-5.10.109-2.ph4-esx root=PARTUUID=6e6293c6-9ab6-49e9-aa97-9b212f2e037a init=/lib/systemd/systemd rcupdate.rcu_expedited=1 rw systemd.show_status=1 quiet noreplace-smp cpu_init_udelay=0 plymouth.enable=0 systemd.legacy_systemd_cgroup_controller=yes audit=1\n\nIf the \"audit\" parameter is not present with a value of \"1\", this is a finding.",
+  "fix": "Navigate to and open:\n\n/boot/grub2/grub.cfg\n\nLocate the boot command line arguments. An example follows:\n\nlinux /boot/$photon_linux root=$rootpartition $photon_cmdline $systemd_cmdline\n\nAdd \"audit=1\" to the end of the line so it reads as follows:\n\nlinux /boot/$photon_linux root=$rootpartition $photon_cmdline $systemd_cmdline audit=1\n\nNote: Do not copy/paste in this example argument line. This may change in future releases. Find the similar line and append \"audit=1\" to it.\n\nReboot the system for the change to take effect.",
+  "ccis": [
+    "CCI-001464"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If auditing is enabled late in the startup process, the actions of some startup processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

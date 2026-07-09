@@ -1,0 +1,53 @@
+{
+  "id": "SV-256050r882492_rule",
+  "full_rule_id": "SV-256050r882492_rule",
+  "rule_id": "SV-256050",
+  "rule_revision": "882492",
+  "group_id": "V-256050",
+  "group_title": "SRG-NET-000512-RTR-000003",
+  "title": "The MPLS router must be configured to synchronize IGP and LDP to minimize packet loss when an IGP adjacency is established prior to LDP peers completing label exchange.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Packet loss can occur when an IGP adjacency is established and the router begins forwarding packets using the new adjacency before the LDP label exchange completes between the peers on that link. Packet loss can also occur if an LDP session closes and the router continues to forward traffic using the link associated with the LDP peer rather than an alternate pathway with a fully synchronized LDP session. The MPLS LDP-IGP Synchronization feature provides a means to synchronize LDP with OSPF or IS-IS to minimize MPLS packet loss. When an IGP adjacency is established on a link but LDP-IGP synchronization is not yet achieved or is lost, the IGP will advertise the max-metric on that link.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router OSPF or IS-IS configuration.\n\nISIS configuration example:\n\nrouter isis 1\n   mpls ldp sync default\n  \nOSPF configuration example:\n\nrouter ospf 1\n   mpls ldp sync default\n\nVerify LDP will synchronize with the link-state routing protocol.\n\ninterface Loopback1\n   description MPLS-LDP-Router-ID\n   ip address 10.1.129.94/32\n   mpls ldp igp sync\n   ip ospf area 0.0.0.5\n\nIf the Arista router is not configured to synchronize IGP and LDP, this is a finding.",
+  "fix": "Configure the Arista MPLS router to synchronize IGP and LDP, minimizing packet loss when an IGP adjacency is established prior to LDP peers completing label exchange.\n\nISIS configuration example:\n\nP-Router-EOS(config)#router isis 1\nP-Router-EOS(config-router-isis)#mpls ldp sync default\n\nOSPF configuration example:\n\nLEAF-1A(config-mpls-ldp)#router ospf 1\nLEAF-1A(config-router-ospf)#mpls ldp sync default\n\nConfigure LDP to synchronize with the link-state routing protocol.\n\nLEAF-1A(config)#interface Loopback1\nLEAF-1A(config-if-Lo0)#erface Loopback1\nLEAF-1A(config-if-Lo0)#description MPLS-LDP-Router-ID\nLEAF-1A(config-if-Lo0)#ip address 10.1.129.94/32\nLEAF-1A(config-if-Lo0)#mpls ldp igp sync\nLEAF-1A(config-if-Lo0)#ip ospf area 0.0.0.5",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Packet loss can occur when an IGP adjacency is established and the router begins forwarding packets using the new adjacency before the LDP label exchange completes between the peers on that link. Packet loss can also occur if an LDP session closes and the router continues to forward traffic using the link associated with the LDP peer rather than an alternate pathway with a fully synchronized LDP session. The MPLS LDP-IGP Synchronization feature provides a means to synchronize LDP with OSPF or IS-IS to minimize MPLS packet loss. When an IGP adjacency is established on a link but LDP-IGP synchronization is not yet achieved or is lost, the IGP will advertise the max-metric on that link.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000710",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

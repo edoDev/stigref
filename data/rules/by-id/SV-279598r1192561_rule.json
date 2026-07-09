@@ -1,0 +1,53 @@
+{
+  "id": "SV-279598r1192561_rule",
+  "full_rule_id": "SV-279598r1192561_rule",
+  "rule_id": "SV-279598",
+  "rule_revision": "1192561",
+  "group_id": "V-279598",
+  "group_title": "SRG-OS-000373-GPOS-00156",
+  "title": "Nutanix OS must require users to reauthenticate for privilege escalation.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical that the user reauthenticate.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For AHV, this requirement is Not Applicable.\n\nConfirm Nutanix OS is configured as shown for reauthentication in the sudoers file:\n\n$ grep -i nopasswd /etc/sudoers /etc/sudoers.d/*\n\nIf any occurrences of \"NOPASSWD\" are returned from the command and have not been documented with the information system security officer (ISSO) as an organizationally defined administrative group using multifactor authentication (MFA), this is a finding.",
+  "fix": "Remove occurrences of \"NOPASSWD\". \n\n1. For AOS, use the following command.\n\nsalt-call state.sls security/CVM/manualCVM\n\n2. For Prism Central, use the following command.\n\nsalt-call state.sls security/PCVM/manualPCVM\n\n3. For Files, use the following command.\n\nsalt-call state.sls security/AFS/manualAFS\n\n4. The AHV hypervisor does not support local interactive user accounts. AHV has been designed and configured to run essentially headless. The only accounts allowed on AHV are the preconfigured system accounts.",
+  "ccis": [
+    "CCI-002038"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without reauthentication, users may access resources or perform tasks for which they do not have authorization. \n\nWhen operating systems provide the capability to escalate a functional capability, it is critical that the user reauthenticate.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000152",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

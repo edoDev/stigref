@@ -1,0 +1,53 @@
+{
+  "id": "SV-281284r1197247_rule",
+  "full_rule_id": "SV-281284r1197247_rule",
+  "rule_id": "SV-281284",
+  "rule_revision": "1197247",
+  "group_id": "V-281284",
+  "group_title": "SRG-OS-000445-GPOS-00199",
+  "title": "RHEL 10 must prevent a user from overriding the disable-restart-buttons setting for the graphical user interface.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons are pressed at the login screen, this can create the risk of short-term loss of availability of systems due to reboot.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This requirement assumes the use of the RHEL 10 default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is not applicable.\n\nVerify RHEL 10 prevents a user from overriding the disable-restart-buttons setting for graphical user interfaces:\n\n$ gsettings writable org.gnome.login-screen disable-restart-buttons\nfalse\n\nIf \"disable-restart-buttons\" is writable, and the result is \"true\", this is a finding.",
+  "fix": "Configure RHEL 10 to prevent a user from overriding the disable-restart-buttons setting for graphical user interfaces.\n\nNote: The example below is using the database \"local\" for the system. If the system is using another database in \"/etc/dconf/profile/user\", the file should be created under the appropriate subdirectory.\n\nUpdate the \"/etc/dconf/db/local.d/locks/session\" file to prevent nonprivileged users from modifying the disable-restart-buttons setting:\n\n$ sudo vi /etc/dconf/db/local.d/locks/session\n\n/org/gnome/login-screen/disable-restart-buttons\n\nRun the following command to update the database:\n\n$ sudo dconf update",
+  "ccis": [
+    "CCI-002696"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons are pressed at the login screen, this can create the risk of short-term loss of availability of systems due to reboot.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-700810",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-80565r1_rule",
+  "full_rule_id": "SV-80565r1_rule",
+  "rule_id": "SV-80565",
+  "rule_revision": "1",
+  "group_id": "V-66075",
+  "group_title": "SRG-NET-000362-L2S-000027",
+  "title": "The HP FlexFabric Switch must have Dynamic ARP Inspection (DAI) enabled on all user VLANs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DAI intercepts Address Resolution Protocol (ARP) requests and verifies that each of these packets has a valid IP-to-MAC address binding before updating the local ARP cache and before forwarding the packet to the appropriate destination. Invalid ARP packets are dropped and logged. DAI determines the validity of an ARP packet based on valid IP-to-MAC address bindings stored in the DHCP snooping binding database. If the ARP packet is received on a trusted interface, the switch forwards the packet without any checks. On untrusted interfaces, the switch forwards the packet only if it is valid.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the HP FlexFabric Switch configuration to verify that Dynamic ARP Inspection (DAI) feature is enabled on all user VLANs.\n\nIf DAI is not enabled on all user VLANs, this is a finding.\n\n[HP]display arp detection\n ARP detection is enabled in the following VLANs:\n 2\n\n[HP]display arp detection statistics interface Ten-GigabitEthernet 1/0/11\nState: U-Untrusted  T-Trusted\nARP packets dropped by ARP inspect checking:\nInterface(State)            IP        Src-MAC   Dst-MAC   Inspect\nXGE1/0/11(T)                0         0         0         0\n[HP]",
+  "fix": "Configure the HP FlexFabric Switch to have Dynamic ARP Inspection (DAI) enabled on all user VLANs.\n\n[HP-vlan2]arp detection enable\n\n[HP-Ten-GigabitEthernet1/0/11]arp detection trust",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DAI intercepts Address Resolution Protocol (ARP) requests and verifies that each of these packets has a valid IP-to-MAC address binding before updating the local ARP cache and before forwarding the packet to the appropriate destination. Invalid ARP packets are dropped and logged. DAI determines the validity of an ARP packet based on valid IP-to-MAC address bindings stored in the DHCP snooping binding database. If the ARP packet is received on a trusted interface, the switch forwards the packet without any checks. On untrusted interfaces, the switch forwards the packet only if it is valid.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-L2-000016",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-l2s-security-technical-implementation-guide-v1r3-0b7a302d",
+      "name": "HP FlexFabric Switch L2S Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-l2s-security-technical-implementation-guide-v1r3-0b7a302d"
+  ]
+}

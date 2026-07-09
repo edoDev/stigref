@@ -1,0 +1,53 @@
+{
+  "id": "SV-265633r993996_rule",
+  "full_rule_id": "SV-265633r993996_rule",
+  "rule_id": "SV-265633",
+  "rule_revision": "993996",
+  "group_id": "V-265633",
+  "group_title": "SRG-NET-000364-FW-000042",
+  "title": "The NSX Distributed Firewall must configure an IP Discovery profile to disable trust on every use method.",
+  "severity": "high",
+  "description": "<VulnDiscussion>A compromised host in an enclave can be used by a malicious platform to launch cyberattacks on third parties. This is a common practice in \"botnets\", which are a collection of compromised computers using malware to attack other computers or networks. Distributed denial-of-service (DDoS) attacks frequently leverage IP source address spoofing to send packets to multiple hosts that in turn will then send return traffic to the hosts with the IP addresses that were forged. This can generate significant amounts of traffic. Therefore, protection measures to counteract IP source address spoofing must be taken.\n\nIP Discovery in NSX uses DHCP and DHCPv6 snooping, Address Resolution Protocol (ARP) snooping, Neighbor Discovery (ND) snooping, and VM Tools to learn MAC and IP addresses.\n\nThe discovered MAC and IP addresses are used to achieve ARP/ND suppression, which minimizes traffic between VMs connected to the same logical switch. The addresses are also used by the SpoofGuard and distributed firewall (DFW) components. DFW uses the address bindings to determine the IP address of objects in firewall rules.\n\nBy default, the discovery methods ARP snooping and ND snooping operate in a mode called trust on first use (TOFU). In TOFU mode, when an address is discovered and added to the realized bindings list, that binding remains in the realized list forever. TOFU applies to the first \"n\" unique <IP, MAC, VLAN> bindings discovered using ARP/ND snooping, where \"n\" is the configurable binding limit. Users can disable TOFU for ARP/ND snooping. The methods will then operate in trust on every use (TOEU) mode. In TOEU mode, when an address is discovered, it is added to the realized bindings list and when it is deleted or expired, it is removed from the realized bindings list. DHCP snooping and VM Tools always operate in TOEU mode.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Identify IP Discovery profiles in use by doing the following:\n\nFrom the NSX Manager web interface, navigate to Networking >> Connectivity >> Segments >> NSX.\n\nFor each segment, expand view Segment Profiles >> IP Discovery to note the profiles in use.\n\nReview IP Discovery profile configuration by doing the following:\n\nFrom the NSX Manager web interface, navigate to Networking >> Connectivity >> Segments >> Profiles >> Segment Profiles.\n\nReview the IP Discovery profiles previously identified as assigned to segments to ensure the following configuration:\n\nDuplicate IP Detection: Enabled\nARP Snooping: Enabled\nARP Binding Limit: 1\nDHCP Snooping: Disabled\nDHCP Snooping - IPv6: Disabled\nVMware Tools: Disabled\nVMware Tools - IPv6: Disabled\nTrust on First Use: Enabled\n\nIf a segment is not configured with an IP Discovery profile that is configured with the settings above, this is a finding.",
+  "fix": "To create a segment profile for IP Discovery, do the following:\n\nFrom the NSX Manager web interface, navigate to Networking >> Connectivity >> Segments >> NSX >> Profiles >> Segment Profiles >> Add Segment Profile >> IP Discovery.\n\nEnter a profile name then configure the below settings:\n\nDuplicate IP Detection: Enabled\nARP Snooping: Enabled\nARP Binding Limit: 1\nDHCP Snooping: Disabled\nDHCP Snooping - IPv6: Disabled\nVMware Tools: Disabled\nVMware Tools - IPv6: Disabled\nTrust on First Use: Enabled\n\nClick \"Save\".\n\nNote: ND Snooping may be enabled if IPv6 is in use.\n\nTo update a segments IP Discovery profile, do the following:\n\nFrom the NSX Manager web interface, navigate to the Networking >> Connectivity >> Segments >> NSX, and click \"Edit\" from the drop-down menu next to the target segment.\n\nExpand \"Segment Profiles\" then choose the new IP Discovery profile from the drop-down list, and then click \"Save\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A compromised host in an enclave can be used by a malicious platform to launch cyberattacks on third parties. This is a common practice in \"botnets\", which are a collection of compromised computers using malware to attack other computers or networks. Distributed denial-of-service (DDoS) attacks frequently leverage IP source address spoofing to send packets to multiple hosts that in turn will then send return traffic to the hosts with the IP addresses that were forged. This can generate significant amounts of traffic. Therefore, protection measures to counteract IP source address spoofing must be taken.\n\nIP Discovery in NSX uses DHCP and DHCPv6 snooping, Address Resolution Protocol (ARP) snooping, Neighbor Discovery (ND) snooping, and VM Tools to learn MAC and IP addresses.\n\nThe discovered MAC and IP addresses are used to achieve ARP/ND suppression, which minimizes traffic between VMs connected to the same logical switch. The addresses are also used by the SpoofGuard and distributed firewall (DFW) components. DFW uses the address bindings to determine the IP address of objects in firewall rules.\n\nBy default, the discovery methods ARP snooping and ND snooping operate in a mode called trust on first use (TOFU). In TOFU mode, when an address is discovered and added to the realized bindings list, that binding remains in the realized list forever. TOFU applies to the first \"n\" unique <IP, MAC, VLAN> bindings discovered using ARP/ND snooping, where \"n\" is the configurable binding limit. Users can disable TOFU for ARP/ND snooping. The methods will then operate in trust on every use (TOEU) mode. In TOEU mode, when an address is discovered, it is added to the realized bindings list and when it is deleted or expired, it is removed from the realized bindings list. DHCP snooping and VM Tools always operate in TOEU mode.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NDFW-4X-000034",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-4-x-distributed-firewall-security-technical-implementation-guide-v1r2-fa02233d",
+      "name": "VMware NSX 4.x Distributed Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-4-x-distributed-firewall-security-technical-implementation-guide-v1r2-fa02233d"
+  ]
+}

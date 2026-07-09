@@ -1,0 +1,53 @@
+{
+  "id": "SV-277086r1148710_rule",
+  "full_rule_id": "SV-277086r1148710_rule",
+  "rule_id": "SV-277086",
+  "rule_revision": "1148710",
+  "group_id": "V-277086",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "The macOS system must disable Network File System (NFS) service.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Support for NFS services is nonessential and, therefore, must be disabled. Enabling any service increases the attack surface for an intruder. By disabling unnecessary services, the attack surface is minimized.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to disable NFS service with the following commands:\n\nisDisabled=$(/sbin/nfsd status | /usr/bin/awk '/nfsd service/ {print $NF}')    \n  if [[ \"$isDisabled\" == \"disabled\" ]] && [[ -z $(/usr/bin/pgrep nfsd) ]]; then\n    echo \"pass\"\n  else\n    echo \"fail\"\n  fi\n\nIf the result is not \"pass\", this is a finding.",
+  "fix": "Configure the macOS system to disable NFS service with the following commands:\n\n/bin/launchctl disable system/com.apple.nfsd\n/bin/rm -rf /etc/exports\n\nThe system may need a restart for the update to take effect.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Support for NFS services is nonessential and, therefore, must be disabled. Enabling any service increases the attack surface for an intruder. By disabling unnecessary services, the attack surface is minimized.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-26-002003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2",
+      "name": "Apple macOS 26 (Tahoe) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2"
+  ]
+}

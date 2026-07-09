@@ -1,0 +1,53 @@
+{
+  "id": "SV-256458r959010_rule",
+  "full_rule_id": "SV-256458r959010_rule",
+  "rule_id": "SV-256458",
+  "rule_revision": "959010",
+  "group_id": "V-256458",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "Unauthorized CD/DVD devices must be disconnected on the virtual machine (VM).",
+  "severity": "low",
+  "description": "<VulnDiscussion>Ensure no device is connected to a virtual machine if it is not required. For example, floppy, serial, and parallel ports are rarely used for virtual machines in a data center environment, and CD/DVD drives are usually connected only temporarily during software installation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, right-click the Virtual Machine and go to \"Edit Settings\".\n\nReview the VM's hardware and verify no CD/DVD drives are connected.\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:\n\nGet-VM | Get-CDDrive | Where {$_.extensiondata.connectable.connected -eq $true} | Select Parent,Name\n\nIf a virtual machine has a CD/DVD drive connected other than temporarily, this is a finding.",
+  "fix": "From the vSphere Client, right-click the Virtual Machine and go to \"Edit Settings\".\n\nSelect the CD/DVD drive and uncheck \"Connected\" and \"Connect at power on\" and remove any attached ISOs.\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:\n\nGet-VM \"VM Name\" | Get-CDDrive | Set-CDDrive -NoMedia",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Ensure no device is connected to a virtual machine if it is not required. For example, floppy, serial, and parallel ports are rarely used for virtual machines in a data center environment, and CD/DVD drives are usually connected only temporarily during software installation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VMCH-70-000009",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-virtual-machine-security-technical-implementation-guide-v1r4-b00f70ea",
+      "name": "VMware vSphere 7.0 Virtual Machine Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-virtual-machine-security-technical-implementation-guide-v1r4-b00f70ea"
+  ]
+}

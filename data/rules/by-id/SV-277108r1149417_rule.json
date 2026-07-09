@@ -1,0 +1,54 @@
+{
+  "id": "SV-277108r1149417_rule",
+  "full_rule_id": "SV-277108r1149417_rule",
+  "rule_id": "SV-277108",
+  "rule_revision": "1149417",
+  "group_id": "V-277108",
+  "group_title": "SRG-OS-000074-GPOS-00042",
+  "title": "The macOS system must disable Trivial File Transfer Protocol (TFTP) service.",
+  "severity": "high",
+  "description": "<VulnDiscussion>If the system does not require TFTP support, it is nonessential and must be disabled.\n\nThe information system must be configured to provide only essential capabilities. Disabling TFTP helps prevent the unauthorized connection of devices and unauthorized transfer of information.\n\nNote: TFTP service is disabled at startup by default.\n\nSatisfies: SRG-OS-000074-GPOS-00042, SRG-OS-000080-GPOS-00048</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to disable TFTP service with the following command:\n\nresult=\"FAIL\"\n  enabled=$(/bin/launchctl print-disabled system | /usr/bin/grep '\"com.apple.tftpd\" => enabled')\n  running=$(/bin/launchctl print system/com.apple.tftpd 2>/dev/null)\n  \n  if [[ -z \"$running\" ]] && [[ -z \"$enabled\" ]]; then\n    result=\"PASS\"\n  elif [[ -n \"$running\" ]]; then\n    result=result+\" RUNNING\"\n  elif [[ -n \"$enabled\" ]]; then\n    result=result+\" ENABLED\"\n  fi\n  echo $result\n\nIf the result is not \"PASS\", this is a finding.",
+  "fix": "Configure the macOS system to disable TFTP service with the following commands:\n\n/bin/launchctl bootout system/com.apple.tftpd \n/bin/launchctl disable system/com.apple.tftpd\n\nThe system may need a restart for the update to take effect.",
+  "ccis": [
+    "CCI-000197",
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the system does not require TFTP support, it is nonessential and must be disabled.\n\nThe information system must be configured to provide only essential capabilities. Disabling TFTP helps prevent the unauthorized connection of devices and unauthorized transfer of information.\n\nNote: TFTP service is disabled at startup by default.\n\nSatisfies: SRG-OS-000074-GPOS-00042, SRG-OS-000080-GPOS-00048",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-26-002038",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2",
+      "name": "Apple macOS 26 (Tahoe) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2"
+  ]
+}

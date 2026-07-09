@@ -1,0 +1,54 @@
+{
+  "id": "SV-281349r1167197_rule",
+  "full_rule_id": "SV-281349r1167197_rule",
+  "rule_id": "SV-281349",
+  "rule_revision": "1167197",
+  "group_id": "V-281349",
+  "group_title": "SRG-OS-000420-GPOS-00186",
+  "title": "RHEL 10 must not respond to Internet Control Message Protocol (ICMP) echoes sent to a broadcast address.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Responding to broadcast (ICMP) echoes facilitates network mapping and provides a vector for amplification attacks.\n\nIgnoring ICMP echo requests (pings) sent to broadcast or multicast addresses makes the system slightly more difficult to enumerate on the network.\n\nSatisfies: SRG-OS-000420-GPOS-00186, SRG-OS-000142-GPOS-00080</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 ignores ICMP echoes sent to a broadcast address.\n\nCheck the value of the \"net.ipv4.icmp_echo_ignore_broadcasts\" variable with the following command:\n\n$ sudo sysctl net.ipv4.icmp_echo_ignore_broadcasts\nnet.ipv4.icmp_echo_ignore_broadcasts = 1\n\nIf \"net.ipv4.icmp_echo_ignore_broadcasts\" is not set to \"1\" or is missing, this is a finding.",
+  "fix": "Configure RHEL 10 to ignore Internet Protocol version 4 (IPv4) ICMP echoes sent to a broadcast address.\n\nCreate a configuration file if it does not already exist:\n\n$ sudo vi /etc/sysctl.d/ipv4_icmp_echo_ignore_broadcasts.conf\n\nAdd the following line to the file:\n\nnet.ipv4.icmp_echo_ignore_broadcasts = 1\n\nReload settings from all system configuration files with the following command:\n\n$ sudo sysctl --system",
+  "ccis": [
+    "CCI-002385",
+    "CCI-001104"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Responding to broadcast (ICMP) echoes facilitates network mapping and provides a vector for amplification attacks.\n\nIgnoring ICMP echo requests (pings) sent to broadcast or multicast addresses makes the system slightly more difficult to enumerate on the network.\n\nSatisfies: SRG-OS-000420-GPOS-00186, SRG-OS-000142-GPOS-00080",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-800170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

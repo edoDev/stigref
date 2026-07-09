@@ -1,0 +1,54 @@
+{
+  "id": "SV-254044r997536_rule",
+  "full_rule_id": "SV-254044r997536_rule",
+  "rule_id": "SV-254044",
+  "rule_revision": "997536",
+  "group_id": "V-254044",
+  "group_title": "SRG-NET-000362-RTR-000124",
+  "title": "The Juniper BGP router must be configured to enable the Generalized TTL Security Mechanism (GTSM).",
+  "severity": "low",
+  "description": "<VulnDiscussion>GTSM is designed to protect a router's IP-based control plane from DoS attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all Exterior Border Gateway Protocol speaking routers. \n\nGTSM is based on the fact that the vast majority of control plane peering is established between adjacent routers; that is, the Exterior Border Gateway Protocol peers are either between connecting interfaces or between loopback interfaces. Since TTL spoofing is considered nearly impossible, a mechanism based on an expected TTL value provides a simple and reasonably robust defense from infrastructure attacks based on forged control plane traffic.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration. Verify a firewall filter term discards BGP packets with a TTL less than 255.\n[edit firewall family inet]\nfilter gtsm {\n    term 1 {\n        from {\n            protocol tcp;\n            ttl 255;\n            destination-port bgp;\n        }\n        then accept;\n    }\n    term 2 {\n        from {\n            protocol tcp;\n            destination-port bgp;\n        }\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n    <additional accept terms>\n    term default {\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n}\n\nSome routers support the \"ttl-except\" directive that can replace the two term filter shown above. For example:\n[edit firewall family inet]\nfilter gtsm {\n    term 1 {\n        from {\n            protocol tcp;\n            ttl-except 255;\n            destination-port bgp;\n        }\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n    <additional accept terms>\n    term default {\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n}\n\nVerify the filter is applied to BGP neighbor interfaces.\n[edit interfaces]\n<bgp interface> {\n    unit <number> {\n        family inet {\n            filter input gtsm;\n        }\n        address <IPv4 address>.<mask>;\n    }\n}\n\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf the router is not configured to use GTSM for all Exterior Border Gateway Protocol peering sessions, this is a finding.",
+  "fix": "Configure all Exterior Border Gateway Protocol peering sessions to use GTSM.\n\nset firewall family inet filter gtsm term 1 from protocol tcp\nset firewall family inet filter gtsm term 1 from ttl 255\nset firewall family inet filter gtsm term 1 from destination-port bgp\nset firewall family inet filter gtsm term 1 then accept\nset firewall family inet filter gtsm term 2 from protocol tcp\nset firewall family inet filter gtsm term 2 from destination-port bgp\nset firewall family inet filter gtsm term 2 then log\nset firewall family inet filter gtsm term 2 then syslog\nset firewall family inet filter gtsm term 2 then discard\n<additional accept terms>\nset firewall family inet filter gtsm term default then log\nset firewall family inet filter gtsm term default then syslog\nset firewall family inet filter gtsm term default then discard\n\nFor those platforms that support 'ttl-except':\nset firewall family inet filter gtsm term 1 from protocol tcp\nset firewall family inet filter gtsm term 1 from ttl-except 255\nset firewall family inet filter gtsm term 1 from destination-port bgp\nset firewall family inet filter gtsm term 1 then log\nset firewall family inet filter gtsm term 1 then syslog\nset firewall family inet filter gtsm term 1 then discard\n<additional accept terms>\nset firewall family inet filter gtsm term default then log\nset firewall family inet filter gtsm term default then syslog\nset firewall family inet filter gtsm term default then discard\n\nset interfaces <BGP interface> unit <number> family inet filter input gtsm\nset interfaces <BGP interface> unit <number> family inet address <IPv4 address>.<mask>",
+  "ccis": [
+    "CCI-002385",
+    "CCI-004866"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "GTSM is designed to protect a router's IP-based control plane from DoS attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all Exterior Border Gateway Protocol speaking routers. \n\nGTSM is based on the fact that the vast majority of control plane peering is established between adjacent routers; that is, the Exterior Border Gateway Protocol peers are either between connecting interfaces or between loopback interfaces. Since TTL spoofing is considered nearly impossible, a mechanism based on an expected TTL value provides a simple and reasonably robust defense from infrastructure attacks based on forged control plane traffic.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000720",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-234806r958390_rule",
+  "full_rule_id": "SV-234806r958390_rule",
+  "rule_id": "SV-234806",
+  "rule_revision": "958390",
+  "group_id": "V-234806",
+  "group_title": "SRG-OS-000023-GPOS-00006",
+  "title": "The SUSE operating system must display the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on for further access to the local graphical user interface (GUI).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The SUSE operating system must display the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on for further access to the local graphical user interface (GUI).\n\nSatisfies: SRG-OS-000023-GPOS-00006, SRG-OS-000024-GPOS-00007</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SUSE operating system displays the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on via the local GUI. \n\nNote: If a graphical user interface is not installed, this requirement is Not Applicable.\n\nCheck the configuration by running the following command:\n\n> more /etc/gdm/Xsession\n\nThe beginning of the file must contain the following text immediately after (#!/bin/sh):\n\nif ! zenity --text-info \\\n--title \"Consent\" \\\n--filename=/etc/gdm/banner \\\n--no-markup \\\n--checkbox=\"Accept.\" 10 10; then\nsleep 1;\nexit 1;\nfi\n\nIf the beginning of the file does not contain the above text immediately after the line (#!/bin/sh), this is a finding.",
+  "fix": "Configure the SUSE operating system to display the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on for further access.\n\nNote: If a graphical user interface is not installed, this requirement is Not Applicable.\n\nEdit the file \"/etc/gdm/Xsession\".\n\nAdd the following content to the file \"/etc/gdm/Xsession\" below the line #!/bin/sh:\n\nif ! zenity --text-info \\\n--title \"Consent\" \\\n--filename=/etc/gdm/banner \\\n--no-markup \\\n--checkbox=\"Accept.\" 10 10; then\nsleep 1;\nexit 1;\nfi\n\nSave the file \"/etc/gdm/Xsession\".",
+  "ccis": [
+    "CCI-000048",
+    "CCI-000050"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The SUSE operating system must display the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on for further access to the local graphical user interface (GUI).\n\nSatisfies: SRG-OS-000023-GPOS-00006, SRG-OS-000024-GPOS-00007",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-010050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

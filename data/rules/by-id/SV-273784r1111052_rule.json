@@ -1,0 +1,53 @@
+{
+  "id": "SV-273784r1111052_rule",
+  "full_rule_id": "SV-273784r1111052_rule",
+  "rule_id": "SV-273784",
+  "rule_revision": "1111052",
+  "group_id": "V-273784",
+  "group_title": "SRG-APP-000033-NDM-000212",
+  "title": "The RUCKUS ICX device must be configured to assign appropriate user roles or access levels to authenticated users.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Successful identification and authentication must not automatically give an entity full access to a network device or security domain. The lack of authorization-based access control could result in the immediate compromise of and unauthorized access to sensitive information. All DOD systems must be properly configured to incorporate access control methods that do not rely solely on authentication for authorized access.\n\nAuthorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset or set of resources. Information systems use access control policies and enforcement mechanisms to implement this requirement. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization.\n\nSome network devices are preconfigured with security groups. Other network devices enable operators to create custom security groups with custom permissions. For example, an information system security manager (ISSM) may require read-only access to audit the network device. Operators may create an audit security group, define permissions and access levels for members of the group, and then assign the ISSM's user persona to the audit security group. This is still considered privileged access, but the ISSM's security group is more restrictive than the network administrator's security group.\n\nNetwork devices that rely on AAA brokers for authentication and authorization services may need to identify the available security groups or access levels available on the network devices and convey that information to the AAA operator. Once the AAA broker identifies the user persona on the centralized directory service, the user's security group memberships can be retrieved. The AAA operator may need to create a mapping that links target security groups from the directory service to the appropriate security groups or access levels on the network device. Once these mappings are configured, authorizations can happen dynamically, based on each user's directory service group membership.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the network device is configured to assign appropriate user roles or access levels to authenticated users.\n\n1. Confirm login authentication is configured for a AAA server followed by local authentication.\nSSH@ICX(config)# show running-config | include (aaa.*login|aaa.*exec)\naaa authentication login default radius local\naaa authorization exec default radius\n\n2. Verify local accounts have desired privilege levels.\n\nSSH@ICX# show user\nUsername                                        Password                           Encrypt   Priv Status   Expire Time\n======================================================================================================================\nlocal                                           $1$b6Mn/o0q$/HIqAT.num4n80Pyd0um7  enabled   0    enabled  Never\n\nIf using a AAA for authentication and \"aaa authorization exec\" line is not present, this is a finding.\n\nIf the local user account does not have the correct privilege level assigned, this is a finding.",
+  "fix": "Configure the network device to assign appropriate user roles or access levels to authenticated users.\n\n1. Configure local account:\nusername [user] privilege [priv_lvl] password [password]\n\n... where priv_lvl equals:\n0 – Super User level (full read-write access)\n4 – Port Configuration level\n5 – Read Only level\n \n2. Configure a RADIUS (or TACACS+) server:\nradius-server host x.x.x.x auth-port 1812 acct-port 1813 default key [shared_secret]\n\n3. Configure AAA authentication:\naaa authentication login default radius local\naaa authorization exec default radius",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Successful identification and authentication must not automatically give an entity full access to a network device or security domain. The lack of authorization-based access control could result in the immediate compromise of and unauthorized access to sensitive information. All DOD systems must be properly configured to incorporate access control methods that do not rely solely on authentication for authorized access.\n\nAuthorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset or set of resources. Information systems use access control policies and enforcement mechanisms to implement this requirement. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization.\n\nSome network devices are preconfigured with security groups. Other network devices enable operators to create custom security groups with custom permissions. For example, an information system security manager (ISSM) may require read-only access to audit the network device. Operators may create an audit security group, define permissions and access levels for members of the group, and then assign the ISSM's user persona to the audit security group. This is still considered privileged access, but the ISSM's security group is more restrictive than the network administrator's security group.\n\nNetwork devices that rely on AAA brokers for authentication and authorization services may need to identify the available security groups or access levels available on the network devices and convey that information to the AAA operator. Once the AAA broker identifies the user persona on the centralized directory service, the user's security group memberships can be retrieved. The AAA operator may need to create a mapping that links target security groups from the directory service to the appropriate security groups or access levels on the network device. Once these mappings are configured, authorizations can happen dynamically, based on each user's directory service group membership.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-NDM-000100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1",
+      "name": "RUCKUS ICX NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1"
+  ]
+}

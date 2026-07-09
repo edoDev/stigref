@@ -1,0 +1,53 @@
+{
+  "id": "SV-254561r1137639_rule",
+  "full_rule_id": "SV-254561r1137639_rule",
+  "rule_id": "SV-254561",
+  "rule_revision": "1137639",
+  "group_id": "V-254561",
+  "group_title": "SRG-APP-000033-CTR-000095",
+  "title": "The Kubernetes kubelet must enable explicit authorization.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Kubelet is the primary agent on each node. The API server communicates with each kubelet to perform tasks such as starting/stopping pods. By default, kubelets allow all authenticated requests, even anonymous ones, without requiring any authorization checks from the API server. This default behavior bypasses any authorization controls put in place to limit what users may perform within the Kubernetes cluster. To change this behavior, the default setting of AlwaysAllow for the authorization mode must be set to \"Webhook\".</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Ensure authorization-mode is set correctly in the kubelet on each rke2 node.\n\nRun this command on each node:\n/bin/ps -ef | grep kubelet | grep -v grep\n\nIf --authorization-mode is not set to \"Webhook\" or is not configured, this is a finding.",
+  "fix": "Edit the RKE2 Configuration File /etc/rancher/rke2/config.yaml on every RKE2 node and set the following \"kubelet-arg\" argument:\n\n- authorization-mode=Webhook\n\nOnce the configuration file is updated, restart the RKE2 Server or Agent. Run the command:\nsystemctl restart rke2-server or systemctl restart rke2-agent",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Kubelet is the primary agent on each node. The API server communicates with each kubelet to perform tasks such as starting/stopping pods. By default, kubelets allow all authenticated requests, even anonymous ones, without requiring any authorization checks from the API server. This default behavior bypasses any authorization controls put in place to limit what users may perform within the Kubernetes cluster. To change this behavior, the default setting of AlwaysAllow for the authorization mode must be set to \"Webhook\".",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-R2-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268",
+      "name": "Rancher Government Solutions RKE2 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268"
+  ]
+}

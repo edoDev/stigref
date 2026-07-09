@@ -1,0 +1,54 @@
+{
+  "id": "SV-214532r997549_rule",
+  "full_rule_id": "SV-214532r997549_rule",
+  "rule_id": "SV-214532",
+  "rule_revision": "997549",
+  "group_id": "V-214532",
+  "group_title": "SRG-NET-000192-ALG-000121",
+  "title": "The Juniper SRX Services Gateway Firewall must block outbound traffic containing known and unknown denial-of-service (DoS) attacks to protect against the use of internal information systems to launch any DoS attacks against other networks or endpoints.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DoS attacks can take multiple forms but have the common objective of overloading or blocking a network or host to deny or seriously degrade performance. If the network does not provide safeguards against DoS attack, network resources will be unavailable to users. The Juniper SRX must include protection against DoS attacks that originate from inside the enclave, which can affect either internal or external systems. These attacks may use legitimate or rogue endpoints from inside the enclave. These attacks can be simple \"floods\" of traffic to saturate circuits or devices, malware that consumes CPU and memory on a device or causes it to crash, or a configuration issue that disables or impairs the proper function of a device. For example, an accidental or deliberate misconfiguration of a routing table can misdirect traffic for multiple networks.\n\nThe Juniper SRX Firewall uses Screens and Security Policies to detect known DoS attacks with known attack vectors. However, these Screens and policies must be applied to outbound traffic using zones and interface stanzas. \n\nTraffic exits the Juniper SRX by way of interfaces. Security zones are configured for one or more interfaces with the same security requirements for filtering data packets. A security zone implements a security policy for one or multiple network segments. These policies must be applied to inbound traffic as it crosses both the network perimeter and as it crosses internal security domain boundaries.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Obtain and review the list of outbound interfaces and zones. This is usually part of the System Design Specification or Accreditation Package.\n\nReview each of the configured outbound interfaces and zones. Verify zones that communicate outbound have been configured with DoS screens.\n\n[edit]\nshow security zones <security-zone-name>\n\nIf the zone for the security screen has not been applied to all outbound interfaces, this is a finding.",
+  "fix": "To enable screen protection, the screen profile must be associated with individual security zones using the following command. Recommend assigning \"untrust-screen\" profile name.\n\nApply screen to each outbound interface example:\n\nset security zones security-zone untrust interfaces <OUTBOUND-INTERFACE>\nset security zones security-zone trust screen untrust-screen",
+  "ccis": [
+    "CCI-001094",
+    "CCI-004866"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DoS attacks can take multiple forms but have the common objective of overloading or blocking a network or host to deny or seriously degrade performance. If the network does not provide safeguards against DoS attack, network resources will be unavailable to users. The Juniper SRX must include protection against DoS attacks that originate from inside the enclave, which can affect either internal or external systems. These attacks may use legitimate or rogue endpoints from inside the enclave. These attacks can be simple \"floods\" of traffic to saturate circuits or devices, malware that consumes CPU and memory on a device or causes it to crash, or a configuration issue that disables or impairs the proper function of a device. For example, an accidental or deliberate misconfiguration of a routing table can misdirect traffic for multiple networks.\n\nThe Juniper SRX Firewall uses Screens and Security Policies to detect known DoS attacks with known attack vectors. However, these Screens and policies must be applied to outbound traffic using zones and interface stanzas. \n\nTraffic exits the Juniper SRX by way of interfaces. Security zones are configured for one or more interfaces with the same security requirements for filtering data packets. A security zone implements a security policy for one or multiple network segments. These policies must be applied to inbound traffic as it crosses both the network perimeter and as it crosses internal security domain boundaries.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-AG-000124",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-alg-security-technical-implementation-guide-v3r3-f37abb9f",
+      "name": "Juniper SRX Services Gateway ALG Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-alg-security-technical-implementation-guide-v3r3-f37abb9f"
+  ]
+}

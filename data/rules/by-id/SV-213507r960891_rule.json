@@ -1,0 +1,53 @@
+{
+  "id": "SV-213507r960891_rule",
+  "full_rule_id": "SV-213507r960891_rule",
+  "rule_id": "SV-213507",
+  "rule_revision": "960891",
+  "group_id": "V-213507",
+  "group_title": "SRG-APP-000095-AS-000056",
+  "title": "JBoss must be configured to produce log records containing information to establish what type of events occurred.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information system logging capability is critical for accurate forensic analysis.  Without being able to establish what type of event occurred, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible. \n\nLog record content that may be necessary to satisfy the requirement of this control includes time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.\n\nApplication servers must log all relevant log data that pertains to the application server.  Examples of relevant data include, but are not limited to, Java Virtual Machine (JVM) activity, HTTPD/Web server activity, and application server-related system process activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log on to the OS of the JBoss server with OS permissions that allow access to JBoss.\nUsing the relevant OS commands and syntax, cd to the <JBOSS_HOME>/bin/ folder.\nRun the jboss-cli script to start the Command Line Interface (CLI).\nConnect to the server and authenticate.\nRun the command:\n\nFor a Managed Domain configuration:\n\"ls host=master/server=<SERVERNAME>/core-service=management/access=audit/logger=audit-log:write-attribute(name=enabled,value=true)\"\n\nFor a Standalone configuration:\n\"ls /core-service=management/access=audit/logger=audit-log:write-attribute(name=enabled,value=true)\"\n\nIf \"enabled\" = false, this is a finding.",
+  "fix": "Launch the jboss-cli management interface.\nConnect to the server by typing \"connect\", authenticate as a user in the Superuser role, and run the following command:\n\nFor a Managed Domain configuration:\n\"host=master/server/<SERVERNAME>/core-service=management/access=audit/logger=audit-log:write-attribute(name=enabled,value=true)\"\n\nFor a Standalone configuration:\n\"/core-service=management/access=audit/logger=audit-log:write-attribute(name=enabled,value=true)\"",
+  "ccis": [
+    "CCI-000130"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information system logging capability is critical for accurate forensic analysis.  Without being able to establish what type of event occurred, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible. \n\nLog record content that may be necessary to satisfy the requirement of this control includes time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.\n\nApplication servers must log all relevant log data that pertains to the application server.  Examples of relevant data include, but are not limited to, Java Virtual Machine (JVM) activity, HTTPD/Web server activity, and application server-related system process activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JBOS-AS-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9",
+      "name": "JBoss Enterprise Application Platform 6.3 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9"
+  ]
+}

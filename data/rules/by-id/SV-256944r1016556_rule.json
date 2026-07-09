@@ -1,0 +1,54 @@
+{
+  "id": "SV-256944r1016556_rule",
+  "full_rule_id": "SV-256944r1016556_rule",
+  "rule_id": "SV-256944",
+  "rule_revision": "1016556",
+  "group_id": "V-256944",
+  "group_title": "SRG-APP-000131-WSR-000051",
+  "title": "All Automation Controller NGINX front-end web server files must be verified for their integrity (e.g., checksums and hashes) before becoming part of the production web server.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Being able to verify that a patch, upgrade, certificate, etc., being added to the web server is unchanged from the producer of the file is essential for file validation and nonrepudiation of the information. \n\nThe Automation Controller NGINX web server host must have a mechanism to verify that files are valid prior to installation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As a System Administrator, for each Automation Controller NGINX web server host, verify the integrity of the Automation Controller NGINX web server hosts files:\n\naide --check\n\nVerify the displayed checksums against previously reserved checksums of the Advanced Intrusion Detection Environment (AIDE) database.\n\nIf there are any unauthorized or unexplained changes against previous checksums, this is a finding.",
+  "fix": "As a System Administrator, for each Automation Controller NGINX web server host, check for existing or install AIDE:\n\nyum install -y aide\n\nCreate or update the AIDE database immediately after initial installation of each Automation Controller NGINX web server host:\n\naide --init && mv /var/lib/aide/aide.db.new.gz  /var/lib/aide/aide.db.gz\n\nAccept any expected changes to the host by updating the AIDE database:\n\naide --update\n\nThe output will provide checksums for the AIDE database. Save in a protected location.",
+  "ccis": [
+    "CCI-003992",
+    "CCI-001749"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Being able to verify that a patch, upgrade, certificate, etc., being added to the web server is unchanged from the producer of the file is essential for file validation and nonrepudiation of the information. \n\nThe Automation Controller NGINX web server host must have a mechanism to verify that files are valid prior to installation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APWS-AT-000230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65",
+      "name": "Red Hat Ansible Automation Controller Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-256045r882477_rule",
+  "full_rule_id": "SV-256045r882477_rule",
+  "rule_id": "SV-256045",
+  "rule_revision": "882477",
+  "group_id": "V-256045",
+  "group_title": "SRG-NET-000364-RTR-000114",
+  "title": "The Arista multicast Designated Router (DR) must be configured to filter the Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Report messages to allow hosts to join only multicast groups that have been approved by the organization.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of the Arista DR to verify it is filtering IGMP or MLD report messages, allowing hosts to join only groups that have been approved.\n\nNote: This requirement is only applicable to Source Specific Multicast (SSM) implementation. This requirement is not applicable to Any Source Multicast (ASM) because the filtering is being performed by the Rendezvous Point router.\n\nStep 1: Verify the ACL filters the unauthorized IGMP groups. The ACL below is blocking the IGMP group sourced 232.0.0.0/8. Execute the command \"sh ip access-list\".\n\nip access-list FILTER_IGMP\n  10 deny igmp 232.0.0.0/8 any\n  20 permit ip any any\n\nStep 2: Verify the ACL is configured on internal host-facing interfaces (IGMP process) to filter IGMP.\n\nrouter igmp\n  ip igmp access-group FILTER_IGMP\n\nor \n\ninterface ethernet 3\n ip access-group FILTER_IGMP\n\nIf the Arista DR is not filtering IGMP or MLD report messages, this is a finding.",
+  "fix": "Configure the Arista DR to filter the IGMP and MLD report messages to allow hosts to join only multicast groups that have been approved.\n\nStep 1: Configure the ACL to filter the unauthorized IGMP groups.\n\nLEAF-1A(config-if-Et3)#ip access-list FILTER_IGMP\nLEAF-1A(config-acl-FILTER_IGMP)#  10 deny igmp 232.0.0.0/8 any\nLEAF-1A(config-acl-FILTER_IGMP)#  20 permit ip any any\n\nStep 2: Configure the IGMP filter in IGMP process.\n\nLEAF-1A(config-acl-FILTER_IGMP)#router igmp\nLEAF-1A(config-router-igmp)#  ip igmp access-group FILTER_IGMP\n\nor \n\nConfigure the IGMP filter on internal host-facing interfaces (IGMP process) to filter IGMP.\n\nLEAF-1A(config-router-igmp)#interface ethernet 3\nLEAF-1A(config-if-Et3)# ip access-group FILTER_IGMP in",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000660",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

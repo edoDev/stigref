@@ -1,0 +1,54 @@
+{
+  "id": "SV-215171r958388_rule",
+  "full_rule_id": "SV-215171r958388_rule",
+  "rule_id": "SV-215171",
+  "rule_revision": "958388",
+  "group_id": "V-215171",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "AIX must enforce the limit of three consecutive invalid login attempts by a user before the user account is locked and released by an administrator.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the command prompt, execute the following command to check the system default value for the maximum number of tries before the system will lock the account:\n# lssec -f /etc/security/user -s default -a loginretries\n\nThe above command should yield the following output:\ndefault loginretries=0\n\nIf the default value is \"0\" or greater than \"3\", this is a finding.\n\nFrom the command prompt, execute the following command to check all active accounts on the system for the maximum number of tries before the system will lock the account:\n# lsuser -a loginretries ALL | more\n\nThe above command should yield the following output:\nroot loginretries=3\nuser1 loginretries=2\n\nIf a user has values set to \"0\" or greater than \"3\", this is a finding.",
+  "fix": "From the command prompt, execute the following command to configure the number of unsuccessful logins resulting in account lockout for \"default:\" stanza in \"/etc/security/user\" file:\n# chsec -f /etc/security/user -s default -a loginretries=3 \n\nFrom the command prompt, execute the following command to configure the number of unsuccessful logins resulting in account lockout for all users who have loginretries values that are 0 or greater than 3:\n# chsec -f /etc/security/user -s [user_name] -a loginretries=3",
+  "ccis": [
+    "CCI-000044",
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

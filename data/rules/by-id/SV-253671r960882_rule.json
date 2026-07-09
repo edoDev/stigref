@@ -1,0 +1,53 @@
+{
+  "id": "SV-253671r960882_rule",
+  "full_rule_id": "SV-253671r960882_rule",
+  "rule_id": "SV-253671",
+  "rule_revision": "960882",
+  "group_id": "V-253671",
+  "group_title": "SRG-APP-000090-DB-000065",
+  "title": "MariaDB must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent or interfere with the auditing of critical events.\n\nSuppression of auditing could permit an adversary to evade detection.\n\nMisconfigured audits can degrade the systems performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "MariaDB Enterprise Audit plugin stores audit filters in the table mysql.server_audit_filters. Any users with update/delete/insert access to this table can modify the audit filters. \n\nUsers with global insert, update, delete, and/or drop privileges can modify audit filters. Find users with global insert, update, delete, and/or drop privileges: \n\nMariaDB> SELECT user, host, insert_priv, update_priv, delete_priv, drop_priv \nFROM mysql.user \nWHERE insert_priv = 'y'\nOR update_priv = 'y'\nOR delete_priv = 'y'\nOR drop_priv = 'y';\n\nUsers with insert, update, delete, and/or drop privileges on the mysql database can modify audit filters. Find users with insert, update, delete, and/or drop privileges on the mysql database: \n\nMariaDB> SELECT user, host, insert_priv, update_priv, delete_priv, drop_priv \nFROM mysql.db \nWHERE db = 'mysql'\nAND (insert_priv = 'y' \n  OR update_priv = 'y'\n  OR delete_priv = 'y'\n  OR drop_priv = 'y'\n  );\n\nUsers with insert, update, delete, and/or drop privileges on the server_audit_filters and server_audit_users tables can modify audit filters. Find users with insert, update, delete, and/or drop privileges on the mysql database: \n\nMariaDB> SELECT user, host, db, table_name, grantor, table_priv, timestamp, column_priv\nFROM mysql.tables_priv\nWHERE db = 'mysql'\nAND table_name IN ('server_audit_filters','server_audit_users')\nAND (table_priv LIKE '%Insert%'\n  OR table_priv LIKE '%Update%'\n  OR table_priv LIKE '%Delete%'\n  OR table_priv LIKE '%Drop%'\n);\n\nIf any users with the above privileges are found which should not have access to modify audit filters, this is a finding.",
+  "fix": "Grant the necessary privileges to authorized users. Example: \n\nMariaDB> GRANT ALL PRIVILEGES ON mysql.server_audit_filters TO 'username'@'host';\nMariaDB> GRANT ALL PRIVILEGES ON mysql.server_audit_users TO 'username'@'host';\n\nFor users found with access who are not authorized to modify audit filters, review the user's privileges, and update accordingly.",
+  "ccis": [
+    "CCI-000171"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without the capability to restrict which roles and individuals can select which events are audited, unauthorized personnel may be able to prevent or interfere with the auditing of critical events.\n\nSuppression of auditing could permit an adversary to evade detection.\n\nMisconfigured audits can degrade the systems performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-000600",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

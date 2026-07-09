@@ -1,0 +1,53 @@
+{
+  "id": "SV-256020r882402_rule",
+  "full_rule_id": "SV-256020r882402_rule",
+  "rule_id": "SV-256020",
+  "rule_revision": "882402",
+  "group_id": "V-256020",
+  "group_title": "SRG-NET-000205-RTR-000006",
+  "title": "The Arista BGP router must be configured to reject outbound route advertisements for any prefixes belonging to the IP core.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a non-optimized path.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router configuration to verify a filter is defined to block route advertisements for prefixes that belong to the IP core.\n\nThe prefix filter must be referenced outbound on the appropriate BGP neighbor statements.\n\nStep 1: The following example creates an outbound route advertise filter and configures CE Arista MLS to advertise the filter to IP Core PE (100.1.0.128). An IP prefix list named FILTER_OUT is created to specify the 172.16.1.0/24 subnet for outbound route advertisements filtering.\n\nip prefix-list FILTER_OUT seq 10 permit 172.16.1.0/24 \n\nStep 2: Verify the outbound prefix list is applied to the appropriate BGP neighbor in the BGP process. Execute the command \"sh run section router bgp\".\n\nrouter bgp 65001\n neighbor 100.1.0.128 remote-as 65200\n neighbor 100.1.0.128 prefix-list FILTER_OUT out\n exit\n\nIf the Arista router is not configured to reject outbound route advertisements that belong to the IP core, this is a finding.",
+  "fix": "Configure all eBGP Arista routers to filter outbound route advertisements belonging to the IP core.\n\nStep 1: Configure an outbound route advertise filter and configure CE Arista MLS to advertise the filter to IP Core PE (100.1.0.128). Also configure an IP prefix list named FILTER_OUT to specify the 172.16.1.0/24 subnet for outbound route advertisements filtering.\n\nLEAF-1A(config)#ip prefix-list FILTER_OUT seq 10 permit 172.16.1.0/24 \n\nStep 2: Apply the prefix-list outbound with the BGP neighbor in BGP process.\n\nLEAF-1A(config)#router bgp 65001\nLEAF-1A(config-router-bgp)#neighbor 100.1.0.128 remote-as 65200\nLEAF-1A(config-router-bgp)#neighbor 100.1.0.128 prefix-list FILTER_OUT out\nLEAF-1A(config-router-bgp)# exit",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a non-optimized path.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000390",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

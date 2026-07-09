@@ -1,0 +1,53 @@
+{
+  "id": "SV-220596r961068_rule",
+  "full_rule_id": "SV-220596r961068_rule",
+  "rule_id": "SV-220596",
+  "rule_revision": "961068",
+  "group_id": "V-220596",
+  "group_title": "SRG-APP-000190-NDM-000267",
+  "title": "The Cisco switch must be configured to terminate all network connections associated with device management after five minutes of inactivity.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at the operating system level or de-allocating networking assignments at the application level if multiple application sessions are using a single, operating system-level network connection. This does not mean that the device terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Cisco switch configuration to verify that all network connections associated with a device management have an idle timeout value set to five minutes or less as shown in the example below:\n\nip http secure-server\nip http timeout-policy idle 300 life nnnn requests nn\n…\n…\n…\nline con 0\n exec-timeout 5 0\nline vty 0 1\n exec-timeout 5 0\n\nIf the Cisco switch is not configured to terminate all network connections associated with a device management after five minutes of inactivity, this is a finding.",
+  "fix": "Set the idle timeout value to five minutes or less on all configured login classes as shown in the example below:\n\nSW1(config)#line vty 0 1\nSW1(config-line)#exec-timeout 5 0\nSW1(config-line)#exit\nSW1(config)#line con 0\nSW1(config-line)#exec-timeout 5 0\nSW1(config-line)#exit\nSW2(config)#ip http timeout-policy idle 300 life nnnn requests nn",
+  "ccis": [
+    "CCI-001133"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at the operating system level or de-allocating networking assignments at the application level if multiple application sessions are using a single, operating system-level network connection. This does not mean that the device terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-ND-000720",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-switch-ndm-security-technical-implementation-guide-v3r7-2be1035e",
+      "name": "Cisco IOS Switch NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-switch-ndm-security-technical-implementation-guide-v3r7-2be1035e"
+  ]
+}

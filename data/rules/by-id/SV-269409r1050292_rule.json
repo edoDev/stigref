@@ -1,0 +1,53 @@
+{
+  "id": "SV-269409r1050292_rule",
+  "full_rule_id": "SV-269409r1050292_rule",
+  "rule_id": "SV-269409",
+  "rule_revision": "1050292",
+  "group_id": "V-269409",
+  "group_title": "SRG-OS-000383-GPOS-00166",
+  "title": "AlmaLinux OS 9 must prohibit the use of cached authenticators after one day.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed as per policy requirements.\n\nIf cached authentication information is out-of-date, the validity of the authentication information may be questionable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If smart card authentication is not being used on the system, this requirement is Not Applicable.\n\nVerify that the System Security Services Daemon (SSSD) prohibits the use of cached authentications after one day.\n\nCheck that SSSD allows cached authentications with the following command:\n\n$  grep cache_credentials /etc/sssd/sssd.conf /etc/sssd/conf.d/*\n\n/etc/sssd/conf.d/certificate_verification.conf:cache_credentials = true\n\nIf \"cache_credentials\" is set to \"false\" or missing from the configuration, this is not a finding and no further checks are required.\n\nIf \"cache_credentials\" is set to \"true\", check that SSSD prohibits the use of cached authentications after one day with the following command:\n\n$ grep offline_credentials_expiration /etc/sssd/sssd.conf /etc/sssd/conf.d/\n\n/etc/sssd/conf.d/certificate_verification.conf:offline_credentials_expiration = 1\n\nIf \"offline_credentials_expiration\" is not set to a value of \"1\", this is a finding.",
+  "fix": "Configure the SSSD to prohibit the use of cached authentications after one day.\n\nAdd/modify the following line in \"/etc/sssd/sssd.conf\" (or a conf file in /etc/sssd/conf.d/) just below the line [pam]:\n\noffline_credentials_expiration = 1",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed as per policy requirements.\n\nIf cached authentication information is out-of-date, the validity of the authentication information may be questionable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-038630",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

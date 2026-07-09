@@ -1,0 +1,53 @@
+{
+  "id": "SV-269786r1052487_rule",
+  "full_rule_id": "SV-269786r1052487_rule",
+  "rule_id": "SV-269786",
+  "rule_revision": "1052487",
+  "group_id": "V-269786",
+  "group_title": "SRG-APP-000175-NDM-000262",
+  "title": "The Dell OS10 Switch must be configured to use DOD-approved OCSP responders or CRLs to validate certificates used for PKI-based authentication.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Once issued by a DOD certificate authority (CA), public key infrastructure (PKI) certificates are typically valid for three years or shorter within the DOD. However, there are many reasons a certificate may become invalid before the prescribed expiration date. For example, an employee may leave or be terminated and still possess the smartcard on which the PKI certificates were stored. Another example is that a smartcard containing PKI certificates may become lost or stolen. A more serious issue could be that the CA or server which issued the PKI certificates has become compromised, thereby jeopardizing every certificate keypair that was issued by the CA. These examples of revocation use cases and many more can be researched further using internet cybersecurity resources.\n\nPKI user certificates presented as part of the identification and authentication criteria (e.g., DOD PKI as multifactor authentication [MFA]) must be checked for validity by network devices. For example, valid PKI certificates are digitally signed by a trusted DOD CA. Additionally, valid PKI certificates are not expired, and valid certificates have not been revoked by a DOD CA.\n\nNetwork devices can verify the validity of PKI certificates by checking with an authoritative CA. One method of checking the status of PKI certificates is to query databases referred to as certificate revocation lists (CRL). These are lists which are published, updated, and maintained by authoritative DOD CAs. For example, once certificates are expired or revoked, issuing CAs place the certificates on a certificate revocation list (CRL). Organizations can download these lists periodically (i.e., daily or weekly) and store them locally on the devices themselves or even onto another nearby local enclave resource. Storing them locally ensures revocation status can be checked even if internet connectivity is severed at the enclave’s point of presence (PoP). However, CRLs can be rather large in storage size and further, the use of CRLs can be rather taxing on some computing resources.\n\nAnother method of validating certificate status is to use the online certificate status protocol (OCSP). Using OCSP, a requestor (i.e., the network device to which the user is trying to authenticate) sends a request to an authoritative CA challenging the validity of a certificate that has been presented for identification and authentication. The CA receives the request and sends a digitally signed response indicating the status of the user's certificate as valid, revoked, or unknown. Network devices should only allow access for responses that indicate the certificates presented by the user were considered valid by an approved DOD CA. OCSP is the preferred method because it is fast, provides the most current status, and is lightweight. </VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the OS10 Switch is configured to validate certificates used for PKI-based authentication using DOD-approved OCSP or CRL resources. \n\nVerify that OSCP validation using the appropriate DOD OCSP responder is enabled in the security profile:\n\nip ssh server x509v3-authentication security-profile cacpiv-prof\n...\ncrypto security-profile <profile-name>\n  ...\n  ocsp-check <ocsp-url>\n...\n\nIf the OS10 Switch is not configured to validate certificates used for PKI-based authentication using DOD approved OCSP or CRL sources, this is a finding.",
+  "fix": "Configure the OS10 Switch to validate certificates used for PKI-based authentication using DOD approved OCSP or CRL sources:\n\nOS10(config)#\nOS10(config)# crypto security-profile <profile-name>\nOS10(config-sec-profile)# ocsp-check <ocsp-url>\nOS10(config-sec-profile)# exit\nOS10(config)#",
+  "ccis": [
+    "CCI-000185"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Once issued by a DOD certificate authority (CA), public key infrastructure (PKI) certificates are typically valid for three years or shorter within the DOD. However, there are many reasons a certificate may become invalid before the prescribed expiration date. For example, an employee may leave or be terminated and still possess the smartcard on which the PKI certificates were stored. Another example is that a smartcard containing PKI certificates may become lost or stolen. A more serious issue could be that the CA or server which issued the PKI certificates has become compromised, thereby jeopardizing every certificate keypair that was issued by the CA. These examples of revocation use cases and many more can be researched further using internet cybersecurity resources.\n\nPKI user certificates presented as part of the identification and authentication criteria (e.g., DOD PKI as multifactor authentication [MFA]) must be checked for validity by network devices. For example, valid PKI certificates are digitally signed by a trusted DOD CA. Additionally, valid PKI certificates are not expired, and valid certificates have not been revoked by a DOD CA.\n\nNetwork devices can verify the validity of PKI certificates by checking with an authoritative CA. One method of checking the status of PKI certificates is to query databases referred to as certificate revocation lists (CRL). These are lists which are published, updated, and maintained by authoritative DOD CAs. For example, once certificates are expired or revoked, issuing CAs place the certificates on a certificate revocation list (CRL). Organizations can download these lists periodically (i.e., daily or weekly) and store them locally on the devices themselves or even onto another nearby local enclave resource. Storing them locally ensures revocation status can be checked even if internet connectivity is severed at the enclave’s point of presence (PoP). However, CRLs can be rather large in storage size and further, the use of CRLs can be rather taxing on some computing resources.\n\nAnother method of validating certificate status is to use the online certificate status protocol (OCSP). Using OCSP, a requestor (i.e., the network device to which the user is trying to authenticate) sends a request to an authoritative CA challenging the validity of a certificate that has been presented for identification and authentication. The CA receives the request and sends a digitally signed response indicating the status of the user's certificate as valid, revoked, or unknown. Network devices should only allow access for responses that indicate the certificates presented by the user were considered valid by an approved DOD CA. OCSP is the preferred method because it is fast, provides the most current status, and is lightweight.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

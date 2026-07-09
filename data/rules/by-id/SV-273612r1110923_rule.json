@@ -1,0 +1,53 @@
+{
+  "id": "SV-273612r1110923_rule",
+  "full_rule_id": "SV-273612r1110923_rule",
+  "rule_id": "SV-273612",
+  "rule_revision": "1110923",
+  "group_id": "V-273612",
+  "group_title": "SRG-NET-000205-RTR-000008",
+  "title": "The RUCKUS ICX PE router must be configured with Unicast Reverse Path Forwarding (uRPF) loose mode enabled on all CE-facing interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The uRPF feature is a defense against spoofing and denial-of-service (DoS) attacks by verifying if the source address of any ingress packet is reachable. To mitigate attacks that rely on forged source addresses, all provider edge routers must enable uRPF loose mode to guarantee that all packets received from a CE router contain source addresses that are in the route table.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if uRPF loose mode is enabled on all CE-facing interfaces.\n\n1. Check that RPF is configured globally (requires reload when initially set).  \nreverse-path-check\n\n2. Review the router configuration to determine if uRPF loose mode is enabled on all CE-facing interfaces.\nInterface ethernet 1/1/1\n rpf-mode loose\n\nIf uRPF loose mode is not enabled on all CE-facing interfaces, this is a finding.",
+  "fix": "Enable uRPF loose mode on all CE-facing interfaces.\n\n1. Configure reverse-path-check globally.\nICX(config)#reverse-path-check\nreverse-path-check setting changes requires a reload to take effect!\nNOTE:\n Configuring reverse-path-check reduces following system-max by half.\n Following system-max will be reset to default. Please configure them after reload\n Please adjust/remove max-route configuration in any vrf before reload.\n Ip-route,ip6-route, ip-route-default-vrf, ip6-route-default-vrf, ip-route-vrf, ip6-route-vrf\n\n2. Configure uRPF mode on CE interface(s).\nICX(config)#interface ethernet 1/1/1\nICX(config-if-e10000-1/1/1)#rpf-mode loose",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The uRPF feature is a defense against spoofing and denial-of-service (DoS) attacks by verifying if the source address of any ingress packet is reachable. To mitigate attacks that rely on forged source addresses, all provider edge routers must enable uRPF loose mode to guarantee that all packets received from a CE router contain source addresses that are in the route table.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000450",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

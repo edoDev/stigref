@@ -1,0 +1,53 @@
+{
+  "id": "SV-271465r1091107_rule",
+  "full_rule_id": "SV-271465r1091107_rule",
+  "rule_id": "SV-271465",
+  "rule_revision": "1091107",
+  "group_id": "V-271465",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 must not have a graphical display manager installed unless approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unnecessary service packages must not be installed to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 does not have a graphical user interface installed with the following command:\n\n$ dnf list --installed \"xorg*common\"\nError: No matching Packages to list\n\nIf the \"x11-server-common\" package is installed, and the use of a graphical user interface has not been documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "Remove all xorg packages with the following command:\n\nWarning: If accessing the system through the graphical user interface, change to the multi-user.target with the following command:\n\n$ sudo systemctl isolate multi-user.target\n\nWarning: Removal of the graphical user interface will immediately render it useless. The following commands must not be run from a virtual terminal emulator in the graphical interface.\n\n$ sudo dnf remove \"xorg*\"\n$ sudo systemctl set-default multi-user.target\n\nIf there is an operational requirement for a graphical user interface it must be documented with the ISSO.",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unnecessary service packages must not be installed to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-000145",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

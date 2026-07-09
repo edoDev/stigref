@@ -1,0 +1,53 @@
+{
+  "id": "SV-217071r992006_rule",
+  "full_rule_id": "SV-217071r992006_rule",
+  "rule_id": "SV-217071",
+  "rule_revision": "992006",
+  "group_id": "V-217071",
+  "group_title": "SRG-NET-000512-RTR-000008",
+  "title": "The Juniper PE router providing MPLS Virtual Private Wire Service (VPWS) must be configured to have the appropriate virtual circuit identification (VC ID) for each attachment circuit.",
+  "severity": "high",
+  "description": "<VulnDiscussion>VPWS is an L2VPN technology that provides a virtual circuit between two PE routers to forward Layer 2 frames between two customer-edge routers or switches through an MPLS-enabled IP core. The ingress PE router (virtual circuit head-end) encapsulates Ethernet frames inside MPLS packets using label stacking and forwards them across the MPLS network to the egress PE router (virtual circuit tail-end). During a virtual circuit setup, the J-PE routers exchange VC label bindings for the specified VC ID. The VC ID specifies a pseudowire associated with an ingress and egress PE router and the customer-facing attachment circuits. \n\nTo guarantee that all frames are forwarded onto the correct pseudowire and to the correct customer and attachment circuits, it is imperative that the correct VC ID is configured for each attachment circuit.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the ingress and egress PE router configuration for each virtual circuit that has been provisioned.\n\nVerify that the correct and unique VCID has been configured for the appropriate attachment circuit. In the example below ge-0/1/0 is the CE-facing interface that is configured for VPWS (aka pseudowire).\n\ninterfaces {\n    ge-0/1/0.0 {\n        encapsulation ethernet-ccc;\n        unit 0 {\n        }\n    }\n…\n…\n…\nprotocols {\n    …\n    …\n    …\n    }\n    l2circuit {\n        neighbor 8.8.8.8 {\n            interface ge-0/1/0.0{\n                virtual-circuit-id 13;\n            }\n        }\n    }\n\nIf the correct VC ID has not been configured on both routers, this is a finding.\n\nNote: Ethernet over MPLS in VLAN mode transports Ethernet traffic from a source 802.1Q VLAN to a destination 802.1Q VLAN over a core MPLS network. The VC ID must be unique and the same on each end as it is used to connect the endpoints of the VC.",
+  "fix": "Assign globally unique VC IDs for each virtual circuit and configure the attachment circuits with the appropriate VC ID. Configure the same VC ID on both ends of the VC.\n\n[edit protocols l2circuit]\nset neighbor 8.8.8.8 interface em0 virtual-circuit-id 13",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "VPWS is an L2VPN technology that provides a virtual circuit between two PE routers to forward Layer 2 frames between two customer-edge routers or switches through an MPLS-enabled IP core. The ingress PE router (virtual circuit head-end) encapsulates Ethernet frames inside MPLS packets using label stacking and forwards them across the MPLS network to the egress PE router (virtual circuit tail-end). During a virtual circuit setup, the J-PE routers exchange VC label bindings for the specified VC ID. The VC ID specifies a pseudowire associated with an ingress and egress PE router and the customer-facing attachment circuits. \n\nTo guarantee that all frames are forwarded onto the correct pseudowire and to the correct customer and attachment circuits, it is imperative that the correct VC ID is configured for each attachment circuit.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000650",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

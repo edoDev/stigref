@@ -1,0 +1,53 @@
+{
+  "id": "SV-254057r844204_rule",
+  "full_rule_id": "SV-254057r844204_rule",
+  "rule_id": "SV-254057",
+  "rule_revision": "844204",
+  "group_id": "V-254057",
+  "group_title": "SRG-NET-000364-RTR-000204",
+  "title": "The Juniper perimeter router must be configured to drop IPv6 packets containing an extension header with the Endpoint Identification option.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The optional and extensible natures of the IPv6 extension headers require higher scrutiny since many implementations do not always drop packets with headers that it cannot recognize, and hence could cause a denial-of-service on the target device. In addition, the type, length, value (TLV) formatting provides the ability for headers to be very large. This option type is associated with the Nimrod Routing system and has no defining RFC document.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router switch configuration and determine if filters are bound to the applicable interfaces to drop IPv6 packets containing an option type values of 0x8A (Endpoint Identification) regardless of whether it appears in a Hop-by-Hop or Destination Option header. \n\n[edit firewall family inet6]\nfilter <name> {\n    term 1 {\n        from {\n            next-header [ hop-by-hop dstopts ];\n        }\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n    <additional terms>\n    term default {\n        then {\n            log;\n            syslog;\n            discard;\n        }\n    }\n}\n\nNote: Juniper routers do not support configuring option types for Hop-by-Hop or Destination Options extension headers. Therefore, all packets with the Hop-by-Hop or Destination Options extension header are dropped.\n\nVerify the filter is applied to applicable interfaces.\n[edit interfaces]\n<interface name> {\n    unit <number> {\n        family inet6 {\n            filter {\n                input <filter name>;\n            }\n            address <IPv6 address>.<prefix>;\n        }\n    }\n}\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf the router is not configured to drop IPv6 packets containing an extension header with the Endpoint Identification option, this is a finding.",
+  "fix": "Configure the router to drop IPv6 packets containing an option type values of 0x8A (Endpoint Identification) regardless of whether it appears in a Hop-by-Hop or Destination Option header.\n\nset firewall family inet6 filter <name> term 1 from next-header hop-by-hop\nset firewall family inet6 filter <name> term 1 from next-header dstopts\nset firewall family inet6 filter <name> term 1 then log\nset firewall family inet6 filter <name> term 1 then syslog\nset firewall family inet6 filter <name> term 1 then discard\n<additional terms>\nset firewall family inet6 filter <name> term default then log\nset firewall family inet6 filter <name> term default then syslog\nset firewall family inet6 filter <name> term default then discard\n\nset interfaces <interface name> unit <number> family inet6 filter input <filter name>\nset interfaces <interface name> unit <number> family inet6 address <IPv6 address>.<prefix>",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The optional and extensible natures of the IPv6 extension headers require higher scrutiny since many implementations do not always drop packets with headers that it cannot recognize, and hence could cause a denial-of-service on the target device. In addition, the type, length, value (TLV) formatting provides the ability for headers to be very large. This option type is associated with the Nimrod Routing system and has no defining RFC document.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000850",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

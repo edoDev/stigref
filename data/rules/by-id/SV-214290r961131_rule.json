@@ -1,0 +1,53 @@
+{
+  "id": "SV-214290r961131_rule",
+  "full_rule_id": "SV-214290r961131_rule",
+  "rule_id": "SV-214290",
+  "rule_revision": "961131",
+  "group_id": "V-214290",
+  "group_title": "SRG-APP-000233-WSR-000146",
+  "title": "The Apache web server document directory must be in a separate partition from the Apache web servers system files.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A web server is used to deliver content on the request of a client. The content delivered to a client must be controlled, allowing only hosted application files to be accessed and delivered. To allow a client access to system files of any type is a major security risk that is entirely avoidable. Obtaining such access is the goal of directory traversal and URL manipulation vulnerabilities. To facilitate such access by misconfiguring the web document (home) directory is a serious error. In addition, having the path on the same drive as the system folder compounds potential attacks such as drive space exhaustion.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Run the following command: \n \ngrep \"DocumentRoot\"<'INSTALL PATH'>/conf/httpd.conf \n \nNote each location following the \"DocumentRoot\" string. This is the configured path to the document root directory(s). \n \nUse the command df -k to view each document root's partition setup. \n \nCompare that against the results for the operating system file systems and against the partition for the web server system files, which is the result of the command: \n \ndf -k <'INSTALL PATH'>/bin \n \nIf the document root path is on the same partition as the web server system files or the operating system file systems, this is a finding.",
+  "fix": "Move the web document (normally \"htdocs\") directory to a separate partition other than the operating system root partition and the web server’s system files.",
+  "ccis": [
+    "CCI-001084"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A web server is used to deliver content on the request of a client. The content delivered to a client must be controlled, allowing only hosted application files to be accessed and delivered. To allow a client access to system files of any type is a major security risk that is entirely avoidable. Obtaining such access is the goal of directory traversal and URL manipulation vulnerabilities. To facilitate such access by misconfiguring the web document (home) directory is a serious error. In addition, having the path on the same drive as the system folder compounds potential attacks such as drive space exhaustion.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U2-000580",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66",
+      "name": "Apache Server 2.4 UNIX Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66"
+  ]
+}

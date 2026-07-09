@@ -1,0 +1,53 @@
+{
+  "id": "SV-256007r882363_rule",
+  "full_rule_id": "SV-256007r882363_rule",
+  "rule_id": "SV-256007",
+  "rule_revision": "882363",
+  "group_id": "V-256007",
+  "group_title": "SRG-NET-000019-RTR-000013",
+  "title": "The multicast Rendezvous Point (RP) Arista router must be configured to filter Protocol Independent Multicast (PIM) Register and Join messages received from the Designated Router (DR) for any undesirable multicast groups and sources.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that register messages are accepted only for authorized multicast groups and sources.\n\nSatisfies: SRG-NET-000019-RTR-000013, SRG-NET-000019-RTR-000014</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the RP router is configured to filter PIM register and join messages. \n\nStep 1: To verify the ACL is configured to filter the multicast groups, execute the command \"show ip access-lists\".\n\nip access-list standard ALLOWED_MULTICAST_GROUP\n   10 permit 224.0.0.0/8\n   20 deny any\n\nStep 2: To verify the ACL is applied to the PIM process, execute the command \"show run section router pim\".\n\nrouter pim sparse-mode\n   ipv4\n      rp address 100.2.1.6 access-list ALLOWED_MULTICAST_GROUP\n\nIf the RP router peering with PIM-SM routers is not configured with a PIM import policy to block registration messages for any undesirable multicast groups and sources, this is a finding.",
+  "fix": "Configure the RP router to filter PIM register and join messages received from a multicast DR for any undesirable multicast groups or sources.\n\nStep 1: Configure an ACL to filter the multicast groups.\n\nLEAF-1A(config)#ip access-list standard ALLOWED_MULTICAST_GROUP\nLEAF-1A(config-std-acl-ALLOWED_MULTICAST_GROUP)#10 permit 224.0.0.0/8\nLEAF-1A(config-std-acl-ALLOWED_MULTICAST_GROUP)#20 deny any\n\nStep 2: Apply the ACL in the PIM process globally.\n\nLEAF-1A(config)#router pim sparse-mode\nLEAF-1A(config-router-pim-sparse)#ipv4\nLEAF-1A(config-router-pim-sparse-ipv4)#rp address 100.2.1.6 access-list ALLOWED_MULTICAST_GROUP",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that register messages are accepted only for authorized multicast groups and sources.\n\nSatisfies: SRG-NET-000019-RTR-000013, SRG-NET-000019-RTR-000014",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000210",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

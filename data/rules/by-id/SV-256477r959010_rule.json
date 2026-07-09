@@ -1,0 +1,53 @@
+{
+  "id": "SV-256477r959010_rule",
+  "full_rule_id": "SV-256477r959010_rule",
+  "rule_id": "SV-256477",
+  "rule_revision": "959010",
+  "group_id": "V-256477",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "Encryption must be enabled for Fault Tolerance on the virtual machine (VM).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Fault Tolerance log traffic can be encrypted. This could contain sensitive data from the protected machine's memory or CPU instructions.\n\nvSphere Fault Tolerance performs frequent checks between a primary VM and secondary VM so the secondary VM can quickly resume from the last successful checkpoint. The checkpoint contains the VM state that has been modified since the previous checkpoint.\n\nWhen Fault Tolerance is turned on, FT encryption is set to \"Opportunistic\" by default, which means it enables encryption only if both the primary and secondary host are capable of encryption.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the VM does not have Fault Tolerance enabled, this is not applicable.\n\nFrom the vSphere Client, select the Virtual Machine, right-click, and go to Edit Settings >> VM Options tab >> Encryption >> Encrypted FT. \n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:\n\nGet-VM | Where {$_.ExtensionData.Config.FtEncryptionMode -eq \"ftEncryptionDisabled\"}\n\nIf the setting does not have a value of \"Opportunistic\" or \"Required\", this is a finding.",
+  "fix": "From the vSphere Client, select the Virtual Machine, right-click, and go to Edit Settings >> VM Options tab >> Encryption >> FT Encryption.\n\nSet the value to \"Opportunistic\" or \"Required\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following commands:\n\n$spec = New-Object VMware.Vim.VirtualMachineConfigSpec\n$spec.FTEncryption = New-Object VMware.Vim.VMware.Vim.VirtualMachineConfigSpecEncryptedFtModes\n$spec.FT = ftEncryptionOpportunistic or ftEncryptionRequired\n(Get-VM -Name <vmname>).ExtensionData.ReconfigVM($spec)",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Fault Tolerance log traffic can be encrypted. This could contain sensitive data from the protected machine's memory or CPU instructions.\n\nvSphere Fault Tolerance performs frequent checks between a primary VM and secondary VM so the secondary VM can quickly resume from the last successful checkpoint. The checkpoint contains the VM state that has been modified since the previous checkpoint.\n\nWhen Fault Tolerance is turned on, FT encryption is set to \"Opportunistic\" by default, which means it enables encryption only if both the primary and secondary host are capable of encryption.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VMCH-70-000029",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-virtual-machine-security-technical-implementation-guide-v1r4-b00f70ea",
+      "name": "VMware vSphere 7.0 Virtual Machine Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-virtual-machine-security-technical-implementation-guide-v1r4-b00f70ea"
+  ]
+}

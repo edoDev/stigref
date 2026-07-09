@@ -1,0 +1,54 @@
+{
+  "id": "SV-256024r991787_rule",
+  "full_rule_id": "SV-256024r991787_rule",
+  "rule_id": "SV-256024",
+  "rule_revision": "991787",
+  "group_id": "V-256024",
+  "group_title": "SRG-NET-000205-RTR-000011",
+  "title": "The out-of-band management (OOBM) Arista gateway router must be configured to block any traffic destined to itself that is not sourced from the OOBM network or the NOC.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the gateway router is not a dedicated device for the OOBM network, several safeguards must be implemented for containment of management and production traffic boundaries. It is imperative that hosts from the managed network are not able to access the OOBM gateway router.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nReview the access control list (ACL) or filter for the router receive path.\n\nVerify only traffic sourced from the OOBM network or the NOC is allowed to access the router.\n\nNote: If the platform does not support the receive path filter, verify all non-OOBM interfaces have an ingress ACL to restrict access to that interface address or any of the router's loopback addresses to only traffic sourced from the management network. An exception would be to allow packets destined to these interfaces used for troubleshooting, such as ping and traceroute.\n\nStep 1: To verify the ACL is configured, execute \"show ip access-list OOBM_ACL\".\n\nStep 2: Determine the NOC management network subnet, which is 172.16.12.0/24.\n\nStep 3: Verify the ACL restricts all management plane traffic.\n\nip access-list OOBM_ACL\n   permit tcp 192.168.10.0/24 any eq ssh\n   permit udp host 172.16.12.42 any eq snmp\n   permit udp host 172.16.12.41 any eq ntp\n   permit icmp 172.16.12.0/24 any\n   deny ip any any log\n\nStep 4: To verify the ACL is applied ingress on the OOBM interface, execute the command \"sh run int Eth YY\".\n\ninterface ethernet 1\n  description LAN link\n  ip access-group OOBM_ACL in\n\nIf the Arista router does not block any traffic destined to itself that is not sourced from the OOBM network or the NOC, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nEnsure traffic from the managed network is not able to access the OOBM gateway router using either receive path or interface ingress ACLs.\n\nStep 1: Configure the ACL to restrict all management plane traffic.\n\nip access-list OOBM_ACL\n   permit tcp 192.168.10.0/24 any eq ssh\n   permit udp host 172.16.12.42 any eq snmp\n   permit udp host 172.16.12.41 any eq ntp\n   permit icmp 172.16.12.0/24 any\n   deny ip any any log\n\nStep 2: Apply the ACL ingress. Execute the command \"sh run int Eth YY\".\n\ninterface ethernet 1\n  description LAN link\n  ip access-group OOBM_ACL in",
+  "ccis": [
+    "CCI-001097",
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the gateway router is not a dedicated device for the OOBM network, several safeguards must be implemented for containment of management and production traffic boundaries. It is imperative that hosts from the managed network are not able to access the OOBM gateway router.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000430",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-233873r1082640_rule",
+  "full_rule_id": "SV-233873r1082640_rule",
+  "rule_id": "SV-233873",
+  "rule_revision": "1082640",
+  "group_id": "V-233873",
+  "group_title": "SRG-APP-000516-DNS-000101",
+  "title": "The DNS implementation must implement internal/external role separation.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DNS servers with an internal role only process name/address resolution requests from within the organization (i.e., internal clients). DNS servers with an external role only process name/address resolution information requests from clients external to the organization (i.e., on the external networks, including the Internet). The set of clients that can access an authoritative DNS server in a particular role is specified by the organization using address ranges, explicit access control lists, etc. \n\nTo protect internal DNS resource information, it is important to isolate the requests to internal DNS servers. Separating internal and external roles in DNS prevents address space that is private (e.g., 10.0.0.0/24) or is otherwise concealed by some form of Network Address Translation from leaking into the public DNS system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Infoblox Grid configuration and network architecture to verify the appropriate zones are served by the correct internal or external member(s).  \n\n1. Navigate to Data Management >> DNS >> Zones tab. Review the usage of DNS Views as necessary.  \n2. If DNS Views are used, review each DNS View Client Match list using the \"Edit\" function. \n3. Select the \"Members\" tab.  \n4. Review each zone and member assignment to ensure it is configured correctly with respect to its network assignment.  \n5. When complete, click \"Cancel\" to exit the \"Properties\" screen.  \n\nIf an external server contains internal data, or vice versa, this is a finding.",
+  "fix": "DNS Views:\n1. Navigate to Data Management >> DNS >> Members >> Edit Member >> Toggle Advanced Mode >> DNS Views.\n2. Modify the \"Recursive Views Assigned to This Member.\"\n3. When complete, click \"Save & Close\" to save the changes and exit the \"Properties\" screen.\n\nDNS Zones:\n1. Navigate to Data Management >> DNS >> Zones. Select the appropriate view.\n2. Verify zone data.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DNS servers with an internal role only process name/address resolution requests from within the organization (i.e., internal clients). DNS servers with an external role only process name/address resolution information requests from clients external to the organization (i.e., on the external networks, including the Internet). The set of clients that can access an authoritative DNS server in a particular role is specified by the organization using address ranges, explicit access control lists, etc. \n\nTo protect internal DNS resource information, it is important to isolate the requests to internal DNS servers. Separating internal and external roles in DNS prevents address space that is private (e.g., 10.0.0.0/24) or is otherwise concealed by some form of Network Address Translation from leaking into the public DNS system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDNS-8X-400015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46",
+      "name": "Infoblox 8.x DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46"
+  ]
+}

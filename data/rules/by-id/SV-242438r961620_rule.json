@@ -1,0 +1,53 @@
+{
+  "id": "SV-242438r961620_rule",
+  "full_rule_id": "SV-242438r961620_rule",
+  "rule_id": "SV-242438",
+  "rule_revision": "961620",
+  "group_id": "V-242438",
+  "group_title": "SRG-APP-000435-CTR-001070",
+  "title": "Kubernetes API Server must configure timeouts to limit attack surface.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Kubernetes API Server request timeouts sets the duration a request stays open before timing out. Since the API Server is the central component in the Kubernetes Control Plane, it is vital to protect this service. If request timeouts were not set, malicious attacks or unwanted activities might affect multiple deployments across different applications or environments. This might deplete all resources from the Kubernetes infrastructure causing the information system to go offline. The \"--request-timeout\" value must never be set to \"0\". This disables the request-timeout feature. (By default, the \"--request-timeout\" is set to \"1 minute\".)</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Change to the /etc/kubernetes/manifests/ directory on the Kubernetes Control Plane. Run the command:\ngrep -I request-timeout * \n\nIf Kubernetes API Server manifest file does not exist, this is a finding. \n\nIf the setting \"--request-timeout\" is set to \"0\" in the Kubernetes API Server manifest file, or is not configured this is a finding.",
+  "fix": "Edit the Kubernetes API Server manifest file in the /etc/kubernetes/manifests directory on the Kubernetes Control Plane. \n\nSet the value of \"--request-timeout\" greater than \"0\".",
+  "ccis": [
+    "CCI-002415"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Kubernetes API Server request timeouts sets the duration a request stays open before timing out. Since the API Server is the central component in the Kubernetes Control Plane, it is vital to protect this service. If request timeouts were not set, malicious attacks or unwanted activities might affect multiple deployments across different applications or environments. This might deplete all resources from the Kubernetes infrastructure causing the information system to go offline. The \"--request-timeout\" value must never be set to \"0\". This disables the request-timeout feature. (By default, the \"--request-timeout\" is set to \"1 minute\".)",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-002600",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

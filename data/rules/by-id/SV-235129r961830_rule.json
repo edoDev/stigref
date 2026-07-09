@@ -1,0 +1,53 @@
+{
+  "id": "SV-235129r961830_rule",
+  "full_rule_id": "SV-235129r961830_rule",
+  "rule_id": "SV-235129",
+  "rule_revision": "961830",
+  "group_id": "V-235129",
+  "group_title": "SRG-APP-000505-DB-000352",
+  "title": "The MySQL Database Server 8.0 must generate audit records showing starting and ending time for user access to the database(s).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>For completeness of forensic analysis, it is necessary to know how long a user's (or other principal's) connection to the Database Management System (DBMS) lasts. This can be achieved by recording disconnections, in addition to logons/connections, in the audit logs.  \n\nDisconnection may be initiated by the user or forced by the system (as in a timeout) or result from a system or network failure. To the greatest extent possible, all disconnections must be logged.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check if MySQL audit is configured and enabled. The my.cnf file will set the variable audit_file.\n\nTo further check, execute the following query: \nSELECT PLUGIN_NAME, PLUGIN_STATUS\n      FROM INFORMATION_SCHEMA.PLUGINS\n      WHERE PLUGIN_NAME LIKE 'audit%';\n\nThe status of the audit_log plugin must be \"active\". If it is not \"active\", this is a finding.\n\nReview audit filters and associated users by running the following queries:\nSELECT `audit_log_filter`.`NAME`,\n   `audit_log_filter`.`FILTER`\nFROM `mysql`.`audit_log_filter`;\n\nSELECT `audit_log_user`.`USER`,\n   `audit_log_user`.`HOST`,\n   `audit_log_user`.`FILTERNAME`\nFROM `mysql`.`audit_log_user`;\n\nAll currently defined audits for the MySQL server instance will be listed. If no audits are returned, this is a finding.\n\nTo check if the audit filters that are in place are generating records when successful logons or connections occur, log in to MySQL and then log out. \n\nBelow is an example using MySQL Shell:\n% mysqlsh —sql\n MySQL  SQL > \\connect newuser@localhost\nCreating a session to 'newuser@localhost'\n MySQL  localhost:33060+ ssl  SQL > \\quit\nBye!\n\nReview the audit log by running the Linux command:\n\"status\": 0 for each indicates successful.\n\"connection_id\": 19 is the same as the connections process id and there will be matching disconnect event with the same connection_id number. This can be used to differentiate multiple connections using the same login.\nEach connect and disconnect has a timestamp tag with the time in Coordinated Universal Time (UTC).\n\nsudo cat  <directory where audit log files are located>/audit.log | egrep  \"\\\"event\\\": \\”connect\\\"\"\nFor example if the values returned by - \"select @@datadir, @@audit_log_file; \" are  /usr/local/mysql/data/,  audit.log\nsudo cat  /usr/local/mysql/data/audit.log |egrep \"\\\"event\\\": \\”connect\\\"\"\n\nThe audit data will look similar to the example below:\nLogging in - connecting\n\n{ \"timestamp\": \"2020-08-21 17:47:09\", \"id\": 0, \"class\": \"connection\", \"event\": \"connect\", \"connection_id\": 19, \"account\": { \"user\": \"newuser\", \"host\": \"localhost\" }, \"login\": { \"user\": \"newuser\", \"os\": \"\", \"ip\": \"::1\", \"proxy\": \"\" }, \"connection_data\": { \"connection_type\": \"plugin\", \"status\": 0, \"db\": \"\" } },\n\nLogging out - disconnection\n\nsudo cat  <directory where audit log files are located>/audit.log | egrep  \"\\\"event\\\": \\\"disconnect\\”\"\n\n{ \"timestamp\": \"2020-08-21 17:47:11\", \"id\": 1, \"class\": \"connection\", \"event\": \"disconnect\", \"connection_id\": 19, \"account\": { \"user\": \"newuser\", \"host\": \"localhost\" }, \"login\": { \"user\": \"newuser\", \"os\": \"\", \"ip\": \"::1\", \"proxy\": \"\" }, \"connection_data\": { \"connection_type\": \"plugin\" } },",
+  "fix": "If currently required, configure the MySQL Database Server to produce audit records when successful logons or connections occur.\n\nSee the supplemental file \"MySQL80Audit.sql\".",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "For completeness of forensic analysis, it is necessary to know how long a user's (or other principal's) connection to the Database Management System (DBMS) lasts. This can be achieved by recording disconnections, in addition to logons/connections, in the audit logs.  \n\nDisconnection may be initiated by the user or forced by the system (as in a timeout) or result from a system or network failure. To the greatest extent possible, all disconnections must be logged.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MYS8-00-004200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-mysql-8-0-security-technical-implementation-guide-v2r2-2e81afb5",
+      "name": "Oracle MySQL 8.0 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "oracle-mysql-8-0-security-technical-implementation-guide-v2r2-2e81afb5"
+  ]
+}

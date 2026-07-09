@@ -1,0 +1,53 @@
+{
+  "id": "SV-253996r844021_rule",
+  "full_rule_id": "SV-253996r844021_rule",
+  "rule_id": "SV-253996",
+  "rule_revision": "844021",
+  "group_id": "V-253996",
+  "group_title": "SRG-NET-000076-RTR-000001",
+  "title": "The Juniper router must be configured to produce audit records containing information to establish where the events occurred.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without establishing where events occurred, it is impossible to establish, correlate, and investigate the events leading up to an outage or attack.\n\nTo compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know where events occurred, such as router components, modules, device identifiers, node names, and functionality.\n\nAssociating information about where the event occurred within the network provides a means of investigating an attack, recognizing resource utilization or capacity thresholds, or identifying an improperly configured router.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The router must log all packets that have been dropped via the stateless firewall filter. Verify all discarding firewall filter terms are configured to send events to syslog.\nNote: Stateless firewall filters support \"log\" and \"syslog\" actions. The \"log\" action maintains a temporary list of events and the \"syslog\" action generates events for local storage and/or external syslog servers. Verify at least \"syslog\" is associated with all discarding terms.\n\nFor example:\n[edit firewall]\nfamily inet {\n    filter <filter name> {\n        term 1 {\n            from {\n                <match conditions>;\n            }\n            then {\n                log;\n                syslog; <<< At a minimum, the 'syslog' action must be enabled for all discarding terms.\n                discard;\n            }\n        }\n    }\n}\nfamily inet6 {\n    filter <filter name> {\n        term 1 {\n            from {\n                <match conditions>;\n            }\n            then {\n                log;\n                syslog; <<< At a minimum, the 'syslog' action must be enabled for all discarding terms.\n                discard;\n            }\n        }\n    }\n}\n\nIf the router fails to log all packets that have been dropped via the firewall filter, this is a finding.\n\nVerify logging is enabled for local and/or external syslog. To meet this requirement, either the \"any\" or the \"firewall\" logging facility must be enabled.\nNote: To reduce log sizes and to segregate entries, a separate log file for firewall entries is permissible.\n\n[edit system syslog]\nhost <external syslog address> {\n    any info;\n    log-prefix <hostname>;\n    explicit-priority;\n}\nfile messages {\n    any info;\n}\ntime-format year;\n\nLog output must contain an interface name identifying where the packet was filtered.\nNote: Logged firewall events include the interface and cannot be configured otherwise. There is no provision for changing the log message or for removing the interface name.\n\nIf the logged output does not contain an interface name identifying where the packet was filtered, this is a finding.",
+  "fix": "Configure the router to record the interface in the log record for packets being dropped.\n\nExample firewall filter with logging enabled:\nset firewall family inet filter <filter name> term 1 from <match conditions>\nset firewall family inet filter <filter name> term 1 then log\nset firewall family inet filter <filter name> term 1 then syslog <<< Must be enabled for all discarding terms\nset firewall family inet filter <filter name> term 1 then discard\nset firewall family inet6 filter <filter name> term 1 from <match conditions>\nset firewall family inet6 filter <filter name> term 1 then log\nset firewall family inet6 filter <filter name> term 1 then syslog <<< Must be enabled for all discarding terms\nset firewall family inet6 filter <filter name> term 1 then discard\n\nExample consolidated logging:\nset syslog host <external syslog address> any info\nset system syslog file messages any info",
+  "ccis": [
+    "CCI-000132"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without establishing where events occurred, it is impossible to establish, correlate, and investigate the events leading up to an outage or attack.\n\nTo compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know where events occurred, such as router components, modules, device identifiers, node names, and functionality.\n\nAssociating information about where the event occurred within the network provides a means of investigating an attack, recognizing resource utilization or capacity thresholds, or identifying an improperly configured router.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000240",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

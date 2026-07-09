@@ -1,0 +1,53 @@
+{
+  "id": "SV-266262r1024580_rule",
+  "full_rule_id": "SV-266262r1024580_rule",
+  "rule_id": "SV-266262",
+  "rule_revision": "1024580",
+  "group_id": "V-266262",
+  "group_title": "SRG-NET-000392-FW-000042",
+  "title": "The F5 BIG-IP appliance must generate an alert that can be forwarded to, at a minimum, the information system security officer (ISSO) and information system security manager (ISSM) when denial-of-service (DoS) incidents are detected.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Without an alert, security personnel may be unaware of major detection incidents that require immediate action, and this delay may result in the loss or compromise of information.\n\nThe firewall generates an alert that notifies designated personnel of the Indicators of Compromise (IOCs), which require real-time alerts. These messages must include a severity level indicator or code as an indicator of the criticality of the incident. These indicators reflect the occurrence of a compromise or a potential compromise.\n\nSince these incidents require immediate action, these messages are assigned a critical or level 1 priority/severity, depending on the system's priority schema.\n\nCJCSM 6510.01B, \"Cyber Incident Handling Program\", lists nine Cyber Incident and Reportable Event Categories. DOD has determined that categories identified by CJCSM 6510.01B Major Indicators (category 1, 2, 4, or 7 detection events) will require an alert when an event is detected.\n\nAlerts may be transmitted, for example, telephonically, by electronic mail messages, or by text messaging. The firewall must either send the alert to a management console that is actively monitored by authorized personnel or use a messaging capability to send the alert directly to designated personnel.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the BIG-IP GUI:\n1. Security.\n2. Event Logs.\n3. Logging Profiles.\n4. Edit the global-network profile.\n5. DoS Protection tab.\n6. Verify the \"Publisher\" for each DoS type is configured to use a remote log destination (for production environments, use Remote High Speed Logging).\n\nFrom the BIG-IP Console, type the following commands:\n\ntmsh list security log profile global-network | grep dos\n\nVerify each DoS publisher is configured to use a remote log destination.\n\nIf the BIG-IP is not configured to generate an alert when DoS incidents are detected, this is a finding.",
+  "fix": "From the BIG-IP GUI:\n1. Security.\n2. Event Logs.\n3. Logging Profiles.\n4. Edit the global-network profile.\n5. Check \"Enabled\" for \"Dos Protection\".\n6. DoS Protection tab.\n7. Set the \"Publisher\" for each DoS type to use a remote log destination (for production environments, use Remote High Speed Logging).\n8. Click \"Update\".\n\nFrom the BIG-IP Console, type the following commands:\n\ntmsh modify security log profile global-network dos-network-publisher <publisher>\ntmsh modify security log profile global-network protocol-dns-dos-publisher <publisher>\ntmsh modify security log profile global-network protocol-sip-dos-publisher <publisher>\ntmsh save sys config",
+  "ccis": [
+    "CCI-002664"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without an alert, security personnel may be unaware of major detection incidents that require immediate action, and this delay may result in the loss or compromise of information.\n\nThe firewall generates an alert that notifies designated personnel of the Indicators of Compromise (IOCs), which require real-time alerts. These messages must include a severity level indicator or code as an indicator of the criticality of the incident. These indicators reflect the occurrence of a compromise or a potential compromise.\n\nSince these incidents require immediate action, these messages are assigned a critical or level 1 priority/severity, depending on the system's priority schema.\n\nCJCSM 6510.01B, \"Cyber Incident Handling Program\", lists nine Cyber Incident and Reportable Event Categories. DOD has determined that categories identified by CJCSM 6510.01B Major Indicators (category 1, 2, 4, or 7 detection events) will require an alert when an event is detected.\n\nAlerts may be transmitted, for example, telephonically, by electronic mail messages, or by text messaging. The firewall must either send the alert to a management console that is actively monitored by authorized personnel or use a messaging capability to send the alert directly to designated personnel.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-FW-300021",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-firewall-security-technical-implementation-guide-v1r1-97266c8c",
+      "name": "F5 BIG-IP TMOS Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-firewall-security-technical-implementation-guide-v1r1-97266c8c"
+  ]
+}

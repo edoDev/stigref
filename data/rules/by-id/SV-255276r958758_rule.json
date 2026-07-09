@@ -1,0 +1,53 @@
+{
+  "id": "SV-255276r958758_rule",
+  "full_rule_id": "SV-255276r958758_rule",
+  "rule_id": "SV-255276",
+  "rule_revision": "958758",
+  "group_id": "V-255276",
+  "group_title": "SRG-OS-000344-GPOS-00135",
+  "title": "The HPE 3PAR OS must provide an immediate real-time alert to the System Administrator (SA) and Information System Security Officer (ISSO), at a minimum, of all audit failure events requiring real-time alerts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without a real-time alert, security personnel may be unaware of an impending failure of the audit capability and system operation may be adversely affected.\n\nAlerts provide organizations with urgent messages. Real-time alerts provide these messages immediately (i.e., the time from event detection to alert occurs in seconds or less).\n\nIn HPE 3PAR OS all event logging responsibility is shared among the clustered nodes. If one node should panic, a surviving node will issue an SNMP trap, and take over event log management, recording the failure messages from the panic'ing node. If the panic'ing node was also the network owner (responsible for communications with outside entities such as the SIEM system), another node will take over the network ownership. Any messages not yet sent will be sent to the SIEM system at this time. When the panic'd node reboots, it will simply rejoin the cluster as a participant.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that an SNMPV3 user account is configured:\n\ncli% showsnmpuser\n\nUsername                        | AuthProtocol    | PrivProtocol\n<someusername>   | HMAC SHA 96   |   CFB128 AES 128\n\nIf the output is not in the above format, this is a finding.\n\nVerify the SNMP trap recipient and SNMP configuration:\n\ncli% showsnmpmgr\n\nIf the HostIP identified is not correct, this is a finding.\n\nIf the port is not 162, this is a finding.\n\nIf the version is not 3, this is a finding.\n\nIf the username does not match the user from above, this is a finding.\n\nSend a test trap and verify it is received:\n\ncli% checksnmp\n\nIf the response does not indicate a trap was successfully sent, this is a finding.",
+  "fix": "Configure SNMPV3 notifications.\n\nCreate an SNMPV3 user, and create associated keys for authentication and privacy.\n\ncli% createsnmpuser <someusername>\nwhere \"<someusername>\" is the desired username, and then enter a password at the prompts.\n\nAdd the SNMP trap recipient and the user just created.\n\ncli%  addsnmpmgr -version 3 -snmpuser <someusername> <ipaddress>\nwhere \"<someusername>\" is the user created above, and \"<ipaddress>\" is the address of the SNMPV3 trap recipient.\n\nGenerate a test trap:\ncli% checksnmp\n\nVerify that a trap was received by the manager specified.",
+  "ccis": [
+    "CCI-001858"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without a real-time alert, security personnel may be unaware of an impending failure of the audit capability and system operation may be adversely affected.\n\nAlerts provide organizations with urgent messages. Real-time alerts provide these messages immediately (i.e., the time from event detection to alert occurs in seconds or less).\n\nIn HPE 3PAR OS all event logging responsibility is shared among the clustered nodes. If one node should panic, a surviving node will issue an SNMP trap, and take over event log management, recording the failure messages from the panic'ing node. If the panic'ing node was also the network owner (responsible for communications with outside entities such as the SIEM system), another node will take over the network ownership. Any messages not yet sent will be sent to the SIEM system at this time. When the panic'd node reboots, it will simply rejoin the cluster as a participant.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HP3P-33-001301",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-storeserv-3-3-x-security-technical-implementation-guide-v2r1-7f70e64e",
+      "name": "HPE 3PAR StoreServ 3.3.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-storeserv-3-3-x-security-technical-implementation-guide-v2r1-7f70e64e"
+  ]
+}

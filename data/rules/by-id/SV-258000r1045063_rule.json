@@ -1,0 +1,53 @@
+{
+  "id": "SV-258000r1045063_rule",
+  "full_rule_id": "SV-258000r1045063_rule",
+  "rule_id": "SV-258000",
+  "rule_revision": "1045063",
+  "group_id": "V-258000",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "RHEL 9 SSH private host key files must have mode 0640 or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If an unauthorized user obtains the private SSH host key file, the host could be impersonated.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SSH private host key files have a mode of \"0640\" or less permissive with the following command:\n\n$ stat -c \"%a %n\" /etc/ssh/*_key\n\n640 /etc/ssh/ssh_host_dsa_key\n640 /etc/ssh/ssh_host_ecdsa_key\n640 /etc/ssh/ssh_host_ed25519_key\n640 /etc/ssh/ssh_host_rsa_key\n\nIf any private host key file has a mode more permissive than \"0640\", this is a finding.",
+  "fix": "Configure the mode of SSH private host key files under \"/etc/ssh\" to \"0640\" with the following command:\n\n$ sudo chmod 0640 /etc/ssh/ssh_host*key\n\nRestart the SSH daemon for the changes to take effect:\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If an unauthorized user obtains the private SSH host key file, the host could be impersonated.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-255120",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

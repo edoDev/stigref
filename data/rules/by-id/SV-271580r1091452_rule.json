@@ -1,0 +1,53 @@
+{
+  "id": "SV-271580r1091452_rule",
+  "full_rule_id": "SV-271580r1091452_rule",
+  "rule_id": "SV-271580",
+  "rule_revision": "1091452",
+  "group_id": "V-271580",
+  "group_title": "SRG-OS-000062-GPOS-00031",
+  "title": "OL 9 audit system must take appropriate action when the audit storage volume is full.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical that when the operating system is at risk of failing to process audit logs as required, it takes action to mitigate the failure. Audit processing failures include software/hardware errors; failures in the audit capturing mechanisms; and audit storage capacity being reached or exceeded. Responses to audit failure depend upon the nature of the failure mode.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 takes the appropriate action when the audit storage volume is full. \n\nCheck that OL 9 takes the appropriate action when the audit storage volume is full with the following command:\n\n$ sudo grep disk_full_action /etc/audit/auditd.conf\ndisk_full_action = HALT\n\nIf the value of the \"disk_full_action\" option is not \"SYSLOG\", \"SINGLE\", or \"HALT\", or the line is commented out, ask the system administrator (SA) to indicate how the system takes appropriate action when an audit storage volume is full. If there is no evidence of appropriate action, this is a finding.",
+  "fix": "Configure OL 9 to shut down by default upon audit failure (unless availability is an overriding concern).\n\nAdd or update the following line (depending on configuration \"disk_full_action\" can be set to \"SYSLOG\" or \"SINGLE\" depending on configuration) in \"/etc/audit/auditd.conf\" file:\n\ndisk_full_action = HALT\n\nIf availability has been determined to be more important, and this decision is documented with the information system security officer (ISSO), configure the operating system to notify SA staff and ISSO staff in the event of an audit processing failure by setting the \"disk_full_action\" to \"SYSLOG\".",
+  "ccis": [
+    "CCI-000169"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical that when the operating system is at risk of failing to process audit logs as required, it takes action to mitigate the failure. Audit processing failures include software/hardware errors; failures in the audit capturing mechanisms; and audit storage capacity being reached or exceeded. Responses to audit failure depend upon the nature of the failure mode.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-000765",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

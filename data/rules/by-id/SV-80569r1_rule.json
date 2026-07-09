@@ -1,0 +1,53 @@
+{
+  "id": "SV-80569r1_rule",
+  "full_rule_id": "SV-80569r1_rule",
+  "rule_id": "SV-80569",
+  "rule_revision": "1",
+  "group_id": "V-66079",
+  "group_title": "SRG-NET-000512-L2S-000004",
+  "title": "The HP FlexFabric Switch must enable Device Link Detection Protocol (DLDP) to protect against one-way connections.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In topologies where fiber optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability. Device Link Detection Protocol (DLDP) is a layer 2 protocol that can detect these physical misconfigurations by verifying that traffic is flowing bidirectionally between neighbors. Ports with DLDP enabled periodically transmit packets to neighbor devices. If the packets are not echoed back within a specific time frame, the link is flagged as unidirectional and the interface is shut down.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If any of the switch ports have fiber optic interconnections with neighbors, review the HP FlexFabric Switch configuration to verify that DLDP is enabled globally or on a per interface basis.\n\nIf the HP FlexFabric Switch has fiber optic interconnections with neighbors and DLDP is not enabled, this is a finding.\n\n<HP> display dldp\nDLDP global status : disable\nDLDP interval : 5s\nDLDP work-mode : enhance\nDLDP authentication-mode : none\nDLDP unidirectional-shutdown : auto\nDLDP delaydown-timer : 1s\nThe number of enabled ports is 2.\n[HP-Interface Ethernet1/1]\nDLDP port state : advertisement\nDLDP link state : up\nThe neighbor number of the port is 0.\n[HP-Interface Ethernet1/2]\nDLDP port state : advertisement\nDLDP link state : up\nThe neighbor number of the port is 0.",
+  "fix": "Configure the HP FlexFabric Switch to enable Device Link Detection Protocol (DLDP) to protect against one-way connections.\n\n[HP]dldp global enable\n\n[HP-Ten-GigabitEthernet1/0/47]dldp enable",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In topologies where fiber optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability. Device Link Detection Protocol (DLDP) is a layer 2 protocol that can detect these physical misconfigurations by verifying that traffic is flowing bidirectionally between neighbors. Ports with DLDP enabled periodically transmit packets to neighbor devices. If the packets are not echoed back within a specific time frame, the link is flagged as unidirectional and the interface is shut down.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-L2-000021",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-l2s-security-technical-implementation-guide-v1r3-0b7a302d",
+      "name": "HP FlexFabric Switch L2S Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-l2s-security-technical-implementation-guide-v1r3-0b7a302d"
+  ]
+}

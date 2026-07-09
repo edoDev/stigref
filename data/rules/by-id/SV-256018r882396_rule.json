@@ -1,0 +1,53 @@
+{
+  "id": "SV-256018r882396_rule",
+  "full_rule_id": "SV-256018r882396_rule",
+  "rule_id": "SV-256018",
+  "rule_revision": "882396",
+  "group_id": "V-256018",
+  "group_title": "SRG-NET-000205-RTR-000003",
+  "title": "The Arista perimeter router must be configured to filter ingress traffic at the external interface on an inbound direction.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Access lists are used to separate data traffic into that which it will route (permitted packets) and that which it will not route (denied packets). Secure configuration of routers makes use of access lists for restricting access to services on the router itself as well as for filtering traffic passing through the router.\n\nInbound versus Outbound: It should be noted that some operating systems default access lists are applied to the outbound queue. The more secure solution is to apply the access list to the inbound queue for three reasons:\n\n- The router can protect itself before damage is inflicted.\n- The input port is still known and can be filtered upon.\n- It is more efficient to filter packets before routing them.\n\nSatisfies: SRG-NET-000205-RTR-000003, SRG-NET-000205-RTR-000004</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nReview the Arista router configuration to verify the ingress ACL is bound to the external interface in an inbound direction.\n\nStep 1: To verify the ingress ACL is bound to the external interface in an inbound direction, execute the command \"sh ip access-list\".\n\nip access-list INBOUND\n   10 permit tcp 10.10.10.0/24 host 10.20.10.1 eq ssh telnet\n   20 permit ip 10.10.10.0/24 192.168.10.0/24 \n   30 permit udp 10.20.20.0/24 any eq bootps snmp\n\nStep 2: To verify the ACL is applied inbound on all external interfaces, execute the command \"sh run int Eth YY\".\n\ninterface ethernet 13\n  ip access-group INBOUND in\n\nIf the Arista router is not configured to filter traffic entering the network at the external interface in an inbound direction, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nBind the ingress ACL to the external interface (inbound).\n\nStep 1: Configure the ACL.\n\nLEAF-1A(config)#ip access-list INBOUND\nLEAF-1A(config-acl-INBOUND)#10 permit tcp 10.10.10.0/24 host 10.20.10.1 eq ssh telnet\nLEAF-1A(config-acl-INBOUND)#20 permit ip 10.10.10.0/24 192.168.10.0/24 \nLEAF-1A(config-acl-INBOUND)#30 permit udp 10.20.20.0/24 any eq bootps snmp\nLEAF-1A(config-acl-INBOUND)#40 deny ip any any log\n\nStep 2: Apply the ACL inbound on all external interfaces.\n\nLEAF-1A(config)#interface ethernet 13\nLEAF-1A(config-if-Et13)#ip access-group INBOUND in",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Access lists are used to separate data traffic into that which it will route (permitted packets) and that which it will not route (denied packets). Secure configuration of routers makes use of access lists for restricting access to services on the router itself as well as for filtering traffic passing through the router.\n\nInbound versus Outbound: It should be noted that some operating systems default access lists are applied to the outbound queue. The more secure solution is to apply the access list to the inbound queue for three reasons:\n\n- The router can protect itself before damage is inflicted.\n- The input port is still known and can be filtered upon.\n- It is more efficient to filter packets before routing them.\n\nSatisfies: SRG-NET-000205-RTR-000003, SRG-NET-000205-RTR-000004",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-255306r960960_rule",
+  "full_rule_id": "SV-255306r960960_rule",
+  "rule_id": "SV-255306",
+  "rule_revision": "960960",
+  "group_id": "V-255306",
+  "group_title": "SRG-APP-000133-DB-000200",
+  "title": "Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to Azure SQL Database, etc.) must be owned by database/Azure SQL Database principals authorized for ownership.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who utilizes the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review system documentation to identify Azure SQL Database accounts authorized to own database objects. \n\nIf the Azure SQL Database ownership list does not exist or needs to be updated, this is a finding. \n\nThe following query can be of use in making this determination: \n\n;with objects_cte as\n(SELECT o.name, o.type_desc,\nCASE\nWHEN o.principal_id is null then s.principal_id\nELSE o.principal_id\nEND as principal_id\nFROM sys.objects o\nINNER JOIN sys.schemas s\nON o.schema_id = s.schema_id\nWHERE o.is_ms_shipped = 0\n)\nSELECT cte.name, cte.type_desc, dp.name as ObjectOwner \nFROM objects_cte cte\nINNER JOIN sys.database_principals dp\nON cte.principal_id = dp.principal_id\nORDER BY dp.name, cte.name\n\nIf any of the listed owners is not authorized, this is a finding.",
+  "fix": "Document and obtain approval for any account(s) authorized for object ownership.\n\nIf necessary, use the ALTER AUTHORIZATION command to change object ownership to an authorized account. Example provided below. \n\nALTER AUTHORIZATION ON OBJECT::test.table TO AuthorizedUser;\n\nhttps://docs.microsoft.com/en-us/sql/t-sql/statements/alter-authorization-transact-sql",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who utilizes the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ASQL-00-001300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-database-security-technical-implementation-guide-v2r3-dea2fe81",
+      "name": "Microsoft Azure SQL Database Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-database-security-technical-implementation-guide-v2r3-dea2fe81"
+  ]
+}

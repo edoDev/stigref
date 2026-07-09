@@ -1,0 +1,53 @@
+{
+  "id": "SV-239966r1001252_rule",
+  "full_rule_id": "SV-239966r1001252_rule",
+  "rule_id": "SV-239966",
+  "rule_revision": "1001252",
+  "group_id": "V-239966",
+  "group_title": "SRG-NET-000320-VPN-001120",
+  "title": "The Cisco ASA remote access VPN server must be configured to use LDAP over SSL to determine authorization for granting access to the network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting authentication communications between the client, the VPN Gateway, and the authentication server keeps this critical information from being exploited.\n\nIn distributed information systems, authorization processes and access control decisions may occur in separate parts of the systems. In such instances, authorization information is transmitted securely so timely access control decisions can be enforced at the appropriate locations. To support the access control decisions, it may be necessary to transmit as part of the access authorization information, supporting security attributes. This is due to the fact that in distributed information systems, there are various access control decisions that need to be made and different entities (e.g., services) make these decisions in a serial fashion, each requiring some security attributes to make the decisions.\n\nThis applies to VPN gateways that have the concept of a user account and have the login function residing on the VPN gateway.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Step 1: Verify that authorization is enforced as shown in the example below.\n\ntunnel-group ANY_CONNECT type remote-access\ntunnel-group ANY_CONNECT general-attributes\n authorization-server-group LDAP\n authorization-required\n \nStep 2: Verify that LDAP over SSL has been enabled.\n\naaa-server LDAP protocol ldap\naaa-server LDAP (INSIDE) host 10.1.1.1\n ldap-over-ssl enable\n\nIf the ASA is not configured to use LDAP over SSL to determine authorization for granting access to the network, this is a finding.",
+  "fix": "Step 1: Configure the ASA to use LDAP over SSL as shown in the example below.\n\nASA2(config)# aaa-server LDAP protocol ldap\nASA2(config)# aaa-server LDAP (INSIDE) host 10.1.1.1\nASA2(config-aaa-server-host)# ldap-over-ssl enable \nASA2(config-aaa-server-host)# exit\n\nStep 2: Configure the ASA to enforce authorization using the common name (CN) from the user’s certificate.\n\nASA2(config)# tunnel-group ANY_CONNECT general-attributes\nASA2(config-tunnel-general)# authorization-required \nASA2(config-tunnel-general)# authorization-server-group LDAP\nASA2(config-tunnel-general)# end",
+  "ccis": [
+    "CCI-002353"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting authentication communications between the client, the VPN Gateway, and the authentication server keeps this critical information from being exploited.\n\nIn distributed information systems, authorization processes and access control decisions may occur in separate parts of the systems. In such instances, authorization information is transmitted securely so timely access control decisions can be enforced at the appropriate locations. To support the access control decisions, it may be necessary to transmit as part of the access authorization information, supporting security attributes. This is due to the fact that in distributed information systems, there are various access control decisions that need to be made and different entities (e.g., services) make these decisions in a serial fashion, each requiring some security attributes to make the decisions.\n\nThis applies to VPN gateways that have the concept of a user account and have the login function residing on the VPN gateway.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

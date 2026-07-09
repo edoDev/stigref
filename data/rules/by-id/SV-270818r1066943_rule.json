@@ -1,0 +1,53 @@
+{
+  "id": "SV-270818r1066943_rule",
+  "full_rule_id": "SV-270818r1066943_rule",
+  "rule_id": "SV-270818",
+  "rule_revision": "1066943",
+  "group_id": "V-270818",
+  "group_title": "SRG-OS-000343-GPOS-00134",
+  "title": "Ubuntu 24.04 LTS must immediately notify the system administrator (SA) and information system security officer (ISSO) (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If security personnel are not notified immediately when storage volume reaches 75 percent utilization, they are unable to plan for audit record storage capacity expansion.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu 24.04 LTS notifies the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity with the following command: \n \nNote: If the space_left_action is set to \"email\", an email package must be available.\n\n$ sudo grep ^space_left_action /etc/audit/auditd.conf\nspace_left_action email \n \n$ sudo grep ^space_left /etc/audit/auditd.conf\nspace_left 250000 \n \nIf the \"space_left\" parameter is set to \"syslog\", is missing, set to blanks, or set to a value less than 25 percent of the space free in the allocated audit record storage, this is a finding. \n \nIf the \"space_left_action\" parameter is missing or set to blanks, this is a finding. \n\nIf the \"space_left_action\" is set to \"email\", check the value of the \"action_mail_acct\" parameter with the following command: \n \n$ sudo grep ^action_mail_acct /etc/audit/auditd.conf\naction_mail_acct root@localhost \n \nThe \"action_mail_acct\" parameter, if missing, defaults to \"root\". If the \"action_mail_acct parameter\" is not set to the email address of the SA(s) and/or ISSO, this is a finding.   \n \nIf the \"space_left_action\" is set to \"exec\", the system executes a designated script. If this script informs the SA of the event, this is not a finding.",
+  "fix": "Edit \"/etc/audit/auditd.conf\" and set the \"space_left_action\" parameter to \"exec\" or \"email\".  \n \nIf the \"space_left_action\" parameter is set to \"email\", set the \"action_mail_acct\" parameter to an email address for the SA and ISSO. \n \nIf the \"space_left_action\" parameter is set to \"exec\", ensure the command being executed notifies the SA and ISSO. \n \nEdit \"/etc/audit/auditd.conf\" and set the \"space_left\" parameter to be at least 25 percent of the repository maximum audit record storage capacity.",
+  "ccis": [
+    "CCI-001855"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If security personnel are not notified immediately when storage volume reaches 75 percent utilization, they are unable to plan for audit record storage capacity expansion.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-900960",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

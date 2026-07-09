@@ -1,0 +1,67 @@
+{
+  "id": "SV-279565r1192081_rule",
+  "full_rule_id": "SV-279565r1192081_rule",
+  "rule_id": "SV-279565",
+  "rule_revision": "1192081",
+  "group_id": "V-279565",
+  "group_title": "SRG-OS-000254-GPOS-00095",
+  "title": "Nutanix OS must have the audit.x86_64 package installed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If auditing is enabled late in the start-up process, the actions of some start-up processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.\n\nSatisfies: SRG-OS-000254-GPOS-00095, SRG-OS-000255-GPOS-00096, SRG-OS-000051-GPOS-00024, SRG-OS-000054-GPOS-00025, SRG-OS-000122-GPOS-00063, SRG-OS-000358-GPOS-00145, SRG-OS-000446-GPOS-00200, SRG-OS-000447-GPOS-00201, SRG-OS-000348-GPOS-00136, SRG-OS-000349-GPOS-00137, SRG-OS-000350-GPOS-00138, SRG-OS-000351-GPOS-00139, SRG-OS-000352-GPOS-00140, SRG-OS-000353-GPOS-00141, SRG-OS-000354-GPOS-00142, SRG-OS-000358-GPOS-00145, SRG-OS-000365-GPOS-00152</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify Nutanix OS is configured with the ausearch tool using the following command. The ausearch tool is a feature of the audit rpm. \n\n$ sudo yum list installed audit\nInstalled Packages\naudit.x86_64\n\n2. Verify the package has not been removed using the following command.\n\n$ sudo yum list installed audit\nInstalled Packages\naudit.x86_64\n\n3. Verify the package has not been disabled using the following command.\n\n$ sudo systemctl status auditd.service\nauditd.service - Security Auditing Service\nLoaded: loaded (/usr/lib/systemd/system/auditd.service; enabled; vendor preset: enabled)\nActive: active (running) since Fri 2024-10-11 03:16:33 UTC; 21h ago\n\nIf audit.x86_64 is not installed or is not active, this is a finding.",
+  "fix": "1. For AOS, Files, and Prism Central, this setting is configured by default to have ownership and permission levels set correctly to meet this requirement. If these are found to be out of compliance, some corruption has taken place and the OS must be rebuilt. \n\n2. For AHV, configure the audit service to be active and start automatically with the system at startup. The audit service is protected and restricted to allow access or modifications only from the root account.\n\n$ sudo su -\n# systemctl start auditd.service",
+  "ccis": [
+    "CCI-001464",
+    "CCI-001487",
+    "CCI-000154",
+    "CCI-000158",
+    "CCI-001876",
+    "CCI-001889",
+    "CCI-002699",
+    "CCI-002702",
+    "CCI-001875",
+    "CCI-001879",
+    "CCI-001880",
+    "CCI-001881",
+    "CCI-001882",
+    "CCI-001889",
+    "CCI-003938"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If auditing is enabled late in the start-up process, the actions of some start-up processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.\n\nSatisfies: SRG-OS-000254-GPOS-00095, SRG-OS-000255-GPOS-00096, SRG-OS-000051-GPOS-00024, SRG-OS-000054-GPOS-00025, SRG-OS-000122-GPOS-00063, SRG-OS-000358-GPOS-00145, SRG-OS-000446-GPOS-00200, SRG-OS-000447-GPOS-00201, SRG-OS-000348-GPOS-00136, SRG-OS-000349-GPOS-00137, SRG-OS-000350-GPOS-00138, SRG-OS-000351-GPOS-00139, SRG-OS-000352-GPOS-00140, SRG-OS-000353-GPOS-00141, SRG-OS-000354-GPOS-00142, SRG-OS-000358-GPOS-00145, SRG-OS-000365-GPOS-00152",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000077",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-214303r961632_rule",
+  "full_rule_id": "SV-214303r961632_rule",
+  "rule_id": "SV-214303",
+  "rule_revision": "961632",
+  "group_id": "V-214303",
+  "group_title": "SRG-APP-000439-WSR-000155",
+  "title": "Cookies exchanged between the Apache web server and the client, such as session cookies, must have cookie properties set to force the encryption of cookies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Cookies can be sent to a client using TLS/SSL to encrypt the cookies, but TLS/SSL is not used by every hosted application since the data being displayed does not require the encryption of the transmission. To safeguard against cookies, especially session cookies, being sent in plaintext, a cookie can be encrypted before transmission. To force a cookie to be encrypted before transmission, the cookie \"Secure\" property can be set.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In a command line, run \"httpd -M | grep -i session_cookie_module\". \n \nIf \"session_cookie_module\" is not listed, this is a finding. \n \nDetermine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file:\n\n# apachectl -V | egrep -i 'httpd_root|server_config_file'\n-D HTTPD_ROOT=\"/etc/httpd\"\n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\"\n\nNote: The apachectl front end is the preferred method for locating the Apache httpd file. For some Linux distributions \"apache2ctl -V\" or  \"httpd -V\" can also be used. \n\nSearch for the \"Session\" and \"SessionCookieName\" directives:\n\n# cat /<path_to_file>/httpd.conf | grep -i \"Session\"\n# cat /<path_to_file>/httpd.conf | grep -i \"SessionCookieName\"\n\nIf \"Session\" is not \"on\" and \"SessionCookieName\" does not contain \"httpOnly\" and \"secure\", this is a finding.",
+  "fix": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file: \n \n# apachectl -V | egrep -i 'httpd_root|server_config_file' \n-D HTTPD_ROOT=\"/etc/httpd\" \n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\" \n \nSet \"Session\" to \"on\". \n \nEnsure the \"SessionCookieName\" directive includes \"httpOnly\" and \"secure\".",
+  "ccis": [
+    "CCI-002448"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Cookies can be sent to a client using TLS/SSL to encrypt the cookies, but TLS/SSL is not used by every hosted application since the data being displayed does not require the encryption of the transmission. To safeguard against cookies, especially session cookies, being sent in plaintext, a cookie can be encrypted before transmission. To force a cookie to be encrypted before transmission, the cookie \"Secure\" property can be set.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U2-000890",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66",
+      "name": "Apache Server 2.4 UNIX Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66"
+  ]
+}

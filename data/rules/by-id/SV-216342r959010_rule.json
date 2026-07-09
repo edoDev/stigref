@@ -1,0 +1,53 @@
+{
+  "id": "SV-216342r959010_rule",
+  "full_rule_id": "SV-216342r959010_rule",
+  "rule_id": "SV-216342",
+  "rule_revision": "959010",
+  "group_id": "V-216342",
+  "group_title": "SRG-OS-000480",
+  "title": "The default umask for FTP users must be 077.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Setting a very secure default value for umask ensures that users make a conscious choice about their file permissions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The package service/network/ftp must be installed for this check.\n\n# pkg list service/network/ftp\n\nIf the output of this command is:\n\npkg list: no packages matching 'service/network/ftp' installed\n\nno further action is required.\n\nDetermine if the FTP umask is set to 077.\n\n# egrep -i \"^UMASK\" /etc/proftpd.conf | awk '{ print $2 }'\n\nIf 077 is not displayed, this is a finding.",
+  "fix": "The root role is required.\n\n# pkg list service/network/ftp\n\nIf the output of this command is:\n\npkg list: no packages matching 'service/network/ftp' installed\n\nno further action is required. Otherwise, edit the FTP configuration file.\n\n# pfedit /etc/proftpd.conf\n\nLocate the line containing:\n\nUmask\n\nChange the line to read:\n\nUmask 077",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Setting a very secure default value for umask ensures that users make a conscious choice about their file permissions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

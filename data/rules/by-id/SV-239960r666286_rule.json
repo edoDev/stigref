@@ -1,0 +1,53 @@
+{
+  "id": "SV-239960r666286_rule",
+  "full_rule_id": "SV-239960r666286_rule",
+  "rule_id": "SV-239960",
+  "rule_revision": "666286",
+  "group_id": "V-239960",
+  "group_title": "SRG-NET-000019-VPN-000040",
+  "title": "The Cisco ASA VPN gateway must be configured to restrict what traffic is transported via the IPsec tunnel according to flow control policies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unrestricted traffic may contain malicious traffic which poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nVPN traffic received from another enclave with different security policy or level of trust must not bypass being inspected by the firewall before being forwarded to the private network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Step 1: Determine the ACL that is used to define what traffic will be transported via the IPsec tunnel.\n\ncrypto map IPSEC_MAP 10 match address SITE1_SITE2\ncrypto map IPSEC_MAP 10 set peer x.x.x.x\n\nStep 2: Verify that the traffic defined in the ACL is in accordance with flow control policies.\n\naccess-list SITE1_SITE2 extended permit ip 192.168.1.0 255.255.255.0 192.168.2.0 255.255.255.0\n\nIf the VPN gateway is not configured to restrict what traffic is transported via the IPsec tunnel, this is a finding.",
+  "fix": "Step 1: Define what traffic will be transported via the IPsec tunnel as shown in the example below.\n\nASA1(config)# access-list SITE1_SITE2 extended permit ip 192.168.1.0 255.255.255.0 192.168.2.0 255.255.255.0\n\nStep 2: Apply the ACL to the IPsec crypto map.\n\nASA1(config)# crypto map IPSEC_MAP 10 match address SITE1_SITE2",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unrestricted traffic may contain malicious traffic which poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nVPN traffic received from another enclave with different security policy or level of trust must not bypass being inspected by the firewall before being forwarded to the private network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

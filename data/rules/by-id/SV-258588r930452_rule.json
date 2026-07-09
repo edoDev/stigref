@@ -1,0 +1,53 @@
+{
+  "id": "SV-258588r930452_rule",
+  "full_rule_id": "SV-258588r930452_rule",
+  "rule_id": "SV-258588",
+  "rule_revision": "930452",
+  "group_id": "V-258588",
+  "group_title": "SRG-NET-000138-VPN-000490",
+  "title": "The ICS must be configured to uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To ensure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses except the following.\n\n(i) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n(ii) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals' in-group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.\n\nThis requirement only applies to components where this is specific to the function of the device or has the concept of an organizational user (e.g., VPN or proxy capability). This does not apply to authentication for the purpose of configuring the device itself (i.e., device management).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In the ICS Web UI, navigate to Users >> User Realms >> User Realms.\n1. Click the user realm that is currently being used on the ICS for standard remote access VPN logins.\n2. View \"General\" tab, under Servers >> Authentication. Verify a certificate authentication server is configured.\n3. View \"General\" tab, under Servers >> Directory/Attribute. Verify there is an entry defined.\n4. View \"Role Mapping\" tab, under \"when users meet these conditions\", verify \"Group\" is used with the local user active directory group selected and assigned to the role that was created.\n\nIf the ICS does not use DOD PKI for network access to nonprivileged accounts, this is a finding.",
+  "fix": "Configure an authentication server for the user realm.\n\nIn the ICS Web UI, navigate to Users >> User Realms >> User Realms.\n1. Click the user realm that is currently being used on the ICS for standard remote access VPN logins.\n2. In the \"General\" tab, under Servers >> Authentication.\n3. Click \"New Servers\". Under \"server type\", select Certificate Server >> New Server.\n4. Type a Name, then under User Name template type this exactly: <certAttr.altname.UPN>\n5. Click \"Save Changes\".\n6. Navigate to Authentication >> Auth Servers.\n7. Click \"New Servers\". Under \"server type\", select LDAP Server >> New Server.\n8. Type a name for the primary LDAP server domain.\n9. LDAP server: the FQDN of the server (an IP address may cause an error as the LDAP server certificate might not have an IP in the SAN field).\n10. LDAP port: 636 (this is for LDAPS).\n11. Backup LDAP Server1: the FQDN of the secondary server (an IP address may cause an error as the LDAP server certificate might not have an IP in the SAN field).\n12. Backup LDAP Port1: 636.\n13. If a third LDAP server is needed, add this and the port info under Backup LDAP Server2 and Backup LDAP Port2.\n14. LDAP Server Type: Active Directory.\n15. Connection: LDAPS.\n16. Ensure \"Validate Server Certificate\" is checked.\n17. Connection Timeout: 15.\n18. Search Timeout: 60.\n19. Scroll down to the bottom and click \"Save Changes\". Click \"Test Settings\" to ensure valid communications are possible.\nNOTE: If there are failures in this testing, ensure that the step for Device Certificates and Trusted Server CAs were completed, as this will cause LDAPS certificate issues.\n20. Under \"authentication required\", click the box for \"Authentication required\" to search LDAP.\n21. Enter the service account's Admin DN using this as an example format: CN=PCS.SVC,OU=IVANTI,DC=DOD,DC=mil\n22. Enter the service account's password.\n23. Under \"Finding user entries\", add the base DN of the domain as an example format: DC=DOD,DC=mil\n24. Under \"filter\", use this specific attribute configuration: userPrincipalName=<USER>\n25. Under \"group membership\", add the base DN of where admin users that will access, using this as an example format: OU=IVANTI,DC=DOD,DC=mil\n26. Under \"filter\", use the following: cn=<GROUPNAME>\n27. Under \"member attribute\", use the following: member.\n28. Click \"Save Changes\".\n29. In the same LDAP server configuration screen, scroll down and click the \"Server Catalog\" hyperlink.\n30. Under \"attributes\", click \"New\", Type: userPrincipalName, and click \"Save Changes\".\n31. Under \"groups\", click \"Search\". In the search box, type the group name used for user logins.\n32. Check the box next to the group that is found and click \"Add Selected\".\n33. Repeat these steps for all various groups needed for various user/computer roles on the ICS system.\n34. Click \"Save Changes\".",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To ensure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses except the following.\n\n(i) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n(ii) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals' in-group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.\n\nThis requirement only applies to components where this is specific to the function of the device or has the concept of an organizational user (e.g., VPN or proxy capability). This does not apply to authentication for the purpose of configuring the device itself (i.e., device management).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IVCS-VN-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f",
+      "name": "Ivanti Connect Secure VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f"
+  ]
+}

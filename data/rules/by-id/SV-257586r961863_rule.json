@@ -1,0 +1,53 @@
+{
+  "id": "SV-257586r961863_rule",
+  "full_rule_id": "SV-257586r961863_rule",
+  "rule_id": "SV-257586",
+  "rule_revision": "961863",
+  "group_id": "V-257586",
+  "group_title": "SRG-APP-000516-CTR-001335",
+  "title": "OpenShift must continuously scan components, containers, and images for vulnerabilities.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Finding vulnerabilities quickly within the container platform and within containers deployed within the platform is important to keep the overall platform secure. When a vulnerability within a component or container is unknown or allowed to remain unpatched, other containers and customers within the platform become vulnerability. The vulnerability can lead to the loss of application data, organizational infrastructure data, and Denial-of-Service (DoS) to hosted applications.\n\nVulnerability scanning can be performed by the container platform or by external applications.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To check if the Container Security Operator is running, execute the following:\n\noc get deploy -n openshift-operators container-security-operator -ojsonpath='{.status.readyReplicas}'\n\nIf this command returns an error or the number 0, and a separate tool is not being used to perform continuous vulnerability scans of components, containers, and container images, this is a finding.",
+  "fix": "Vulnerability scanning can be performed by the Container Security Operator, Red Hat Advanced Cluster Security (formerly StackRox) or by external applications. Follow instructions from the application vendor if using external tool for vulnerability scanning. To install the Container Security Operator into the cluster, run the following:\n\noc apply -f - << 'EOF'\n---\napiVersion: operators.coreos.com/v1alpha1\nkind: Subscription\nmetadata:\n  labels:\n    operators.coreos.com/container-security-operator.openshift-operators: ''\n  name: container-security-operator\n  namespace: openshift-operators\nspec:\n  channel: stable-3.8\n  installPlanApproval: Automatic\n  name: container-security-operator\n  source: redhat-operators\n  sourceNamespace: openshift-marketplace\nEOF",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Finding vulnerabilities quickly within the container platform and within containers deployed within the platform is important to keep the overall platform secure. When a vulnerability within a component or container is unknown or allowed to remain unpatched, other containers and customers within the platform become vulnerability. The vulnerability can lead to the loss of application data, organizational infrastructure data, and Denial-of-Service (DoS) to hosted applications.\n\nVulnerability scanning can be performed by the container platform or by external applications.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-OS-001060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2",
+      "name": "Red Hat OpenShift Container Platform 4.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-260939r966174_rule",
+  "full_rule_id": "SV-260939r966174_rule",
+  "rule_id": "SV-260939",
+  "rule_revision": "966174",
+  "group_id": "V-260939",
+  "group_title": "SRG-APP-000342-CTR-000775",
+  "title": "MKE users must not have permissions to create containers or pods that share the host user namespace.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To limit the attack surface of MKE, it is important that the nonessential services are not installed and access to the host system uses the concept of least privilege.\n\nUser namespaces ensure that a root process inside the container will be mapped to a nonroot process outside the container. Sharing the user namespaces of the host with the container thus does not isolate users on the host with users on the containers.\n\nBy default, the host user namespace is shared with the containers until user namespace support is enabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "When using Kubernetes orchestration, this check is Not Applicable.\n\nWhen using Swarm orchestration, ensure that the PIDs cgroup limit is used.\n\nLog in to the CLI as an MKE Admin and execute the following command using a Universal Control Plane (MKE) client bundle:\n\ndocker ps --quiet --all | xargs docker inspect --format '{{ .Id }}: UsernsMode={{ .HostConfig.UsernsMode }}'\n\nEnsure it does not return any value for UsernsMode. If it returns a value of \"host\", that means the host user namespace is shared with the containers, and this is a finding.",
+  "fix": "When using Kubernetes orchestration, this check is Not Applicable.\n \nWhen using Swarm orchestration, review and remove nonsystem containers previously created by these users without the runAsGroup using:\n\ndocker container rm [container]",
+  "ccis": [
+    "CCI-002233"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To limit the attack surface of MKE, it is important that the nonessential services are not installed and access to the host system uses the concept of least privilege.\n\nUser namespaces ensure that a root process inside the container will be mapped to a nonroot process outside the container. Sharing the user namespaces of the host with the container thus does not isolate users on the host with users on the containers.\n\nBy default, the host user namespace is shared with the containers until user namespace support is enabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-001200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

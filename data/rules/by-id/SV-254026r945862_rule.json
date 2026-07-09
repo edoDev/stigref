@@ -1,0 +1,54 @@
+{
+  "id": "SV-254026r945862_rule",
+  "full_rule_id": "SV-254026r945862_rule",
+  "rule_id": "SV-254026",
+  "rule_revision": "945862",
+  "group_id": "V-254026",
+  "group_title": "SRG-NET-000230-RTR-000002",
+  "title": "The Juniper BGP router must be configured to use a unique key for each autonomous system (AS) that it peers with.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the same keys are used between eBGP neighbors, the chance of a hacker compromising any of the BGP sessions increases. It is possible that a malicious user exists in one autonomous system who would know the key used for the eBGP session. This user would then be able to hijack BGP sessions with other trusted neighbors.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Interview the ISSM and router administrator to determine if unique keys are being used. \n\n[edit security ipsec]\nsecurity-association <sa name> {\n    manual {\n        direction bidirectional {\n            protocol esp;\n            spi <SPI value>;\n            authentication {\n                algorithm hmac-sha-256-128;\n                key ascii-text \"$8$aes256-gcm$hmac-sha2-256$100$SpJ/ERRFEsc$y1Wqf1zM3d3xI+ZVB9WzTw$lgM06LJZN3FcVbTaSkDz4g$bZVi57MkUWg\"; ## SECRET-DATA\n            }\n        }\n    }\n}\n[edit protocols bgp]\ngroup <group name> {\n    type external;\n    local-as <local AS number>;\n    neighbor <neighbor 1 address> {\n        authentication-key \"$8$aes256-gcm$hmac-sha2-256$100$cFQ99Gy83Og$SCMVXvnfna7/cZqH9fCECQ$bCVokm+es94xFJONmbKFNA$4561Uc/r\"; ## SECRET-DATA\n    }\n    neighbor <neighbor 2 address> {\n        ipsec-sa <sa name>;\n    }\n}\n\nNote: Juniper BGP routers support either an MD5 key, rotating MD5 keys, or an IPsec security association (SA). Verify the PSK for each MD5 and SA is different between all neighbors.\n\nIf unique keys are not being used, this is a finding.",
+  "fix": "Configure all eBGP routers with unique keys for each eBGP neighbor that it peers with.\n\nset security ipsec security-association <sa name> manual direction bidirectional protocol esp\nset security ipsec security-association <sa name> manual direction bidirectional spi <SPI value>\nset security ipsec security-association <sa name> manual direction bidirectional authentication algorithm hmac-sha-256-128\nset security ipsec security-association <sa name> manual direction bidirectional authentication key ascii-text <PSK value>\n\nset protocols bgp group <group name> type external\nset protocols bgp group <group name> local-as <local AS number>\nset protocols bgp group <group name> neighbor <neighbor 1 address> authentication-key <PSK value>\nset protocols bgp group <group name> neighbor <neighbor 2 address> ipsec-sa test",
+  "ccis": [
+    "CCI-000366",
+    "CCI-002205"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the same keys are used between eBGP neighbors, the chance of a hacker compromising any of the BGP sessions increases. It is possible that a malicious user exists in one autonomous system who would know the key used for the eBGP session. This user would then be able to hijack BGP sessions with other trusted neighbors.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000540",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

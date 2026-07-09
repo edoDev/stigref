@@ -1,0 +1,53 @@
+{
+  "id": "SV-221126r999735_rule",
+  "full_rule_id": "SV-221126r999735_rule",
+  "rule_id": "SV-221126",
+  "rule_revision": "999735",
+  "group_id": "V-221126",
+  "group_title": "SRG-NET-000205-RTR-000007",
+  "title": "The Cisco PE switch must be configured to block any traffic that is destined to the IP core infrastructure.",
+  "severity": "high",
+  "description": "<VulnDiscussion>IP/MPLS networks providing VPN and transit services must provide, at the least, the same level of protection against denial-of-service (DoS) attacks and intrusions as Layer 2 networks. Although the IP core network elements are hidden, security should never rely entirely on obscurity.\n\nIP addresses can be guessed. Core network elements must not be accessible from any external host. Protecting the core from any attack is vital for the integrity and privacy of customer traffic as well as the availability of transit services. A compromise of the IP core can result in an outage or, at a minimum, non-optimized forwarding of customer traffic. Protecting the core from an outside attack also prevents attackers from using the core to attack any customer. Hence, it is imperative that all switches at the edge deny traffic destined to any address belonging to the IP core infrastructure.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Step 1: Review the switch configuration to verify that an ingress ACL is applied to all external or CE-facing interfaces. \n\ninterface Ethernet1/2\n ip address x.1.12.2/30\n ip access-group BLOCK_TO_CORE in\n\nStep 2: Verify that the ingress ACL discards and logs packets destined to the IP core address space. \n\nip access-list BLOCK_TO_CORE\n deny ip any 10.1.x.0 0.0.255.255 log\n permit ip any any\n\nNote: Internet Control Message Protocol (ICMP) echo requests and traceroutes will be allowed to the edge from external adjacent neighbors.\n\nIf the PE switch is not configured to block any traffic with a destination address assigned to the IP core infrastructure, this is a finding.",
+  "fix": "Configure protection for the IP core to be implemented at the edges by blocking any traffic with a destination address assigned to the IP core infrastructure.\n\nStep 1: Configure an ingress ACL to discard and log packets destined to the IP core address space. \n\nSW1(config)# ip access-list BLOCK_TO_CORE\nSW1(config-acl)# deny ip any 10.1.x.0 0.0.255.255 log\nSW1(config-acl)# exit\n\nStep 2: Apply the ACL inbound to all external or CE-facing interfaces.\n\nSW1(config)#int e1/2\nSW1(config-if)# ip access-group BLOCK_TO_CORE in\nSW1(config-if)# end",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "IP/MPLS networks providing VPN and transit services must provide, at the least, the same level of protection against denial-of-service (DoS) attacks and intrusions as Layer 2 networks. Although the IP core network elements are hidden, security should never rely entirely on obscurity.\n\nIP addresses can be guessed. Core network elements must not be accessible from any external host. Protecting the core from any attack is vital for the integrity and privacy of customer traffic as well as the availability of transit services. A compromise of the IP core can result in an outage or, at a minimum, non-optimized forwarding of customer traffic. Protecting the core from an outside attack also prevents attackers from using the core to attack any customer. Hence, it is imperative that all switches at the edge deny traffic destined to any address belonging to the IP core infrastructure.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000730",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651",
+      "name": "Cisco NX OS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651"
+  ]
+}

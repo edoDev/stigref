@@ -1,0 +1,53 @@
+{
+  "id": "SV-214613r382900_rule",
+  "full_rule_id": "SV-214613r382900_rule",
+  "rule_id": "SV-214613",
+  "rule_revision": "382900",
+  "group_id": "V-214613",
+  "group_title": "SRG-NET-000113-IDPS-00189",
+  "title": "The Juniper Networks SRX Series Gateway IDPS must provide audit record generation with a configurable severity and escalation level capability.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without the capability to generate audit records with a severity code it is difficult to track and handle detection events.\n\nWhile auditing and logging are closely related, they are not the same. Logging is recording data about events that take place in a system, while auditing is the use of log records to identify security-relevant information such as system or user accesses. In short, log records are audited to establish an accurate history. Without logging, it would be impossible to establish an audit trail.\n\nThe IDPS must have the capability to collect and log the severity associated with the policy, rule, or signature. IDPS products often have either pre-configured and/or a configurable method for associating an impact indicator or severity code with signatures and rules, at a minimum.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Use the following command to view the IDP rules:\n\n[edit]\nshow security idp status\n\nThe IDP traffic log can also be inspected to verify that IDP detection events contain a severity level in the log record.\n\nIf active IDP rules exist that do not include a severity level, this is a finding.",
+  "fix": "Example configuration to set the severity level on the IDP rules:\n\nDefine an attack as match criteria.\n[edit security idp idp-policy base-policy rulebase-ips rule R1]\nset match attacks predefined-attack-groups \"TELNET-Critical\"\n\nSpecify an action for the rule.\n[edit security idp idp-policy base-policy rulebase-ips rule R1]\nset then action drop-connection\n\nSpecify notification and logging options for the rule.\n[edit security idp idp-policy base-policy rulebase-ips rule R1]\nset then notification log-attacks alert\n\nSet the severity level for the rule.\n\n[edit security idp idp-policy base-policy rulebase-ips rule R1] \n\nset then severity critical",
+  "ccis": [
+    "CCI-000169"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without the capability to generate audit records with a severity code it is difficult to track and handle detection events.\n\nWhile auditing and logging are closely related, they are not the same. Logging is recording data about events that take place in a system, while auditing is the use of log records to identify security-relevant information such as system or user accesses. In short, log records are audited to establish an accurate history. Without logging, it would be impossible to establish an audit trail.\n\nThe IDPS must have the capability to collect and log the severity associated with the policy, rule, or signature. IDPS products often have either pre-configured and/or a configurable method for associating an impact indicator or severity code with signatures and rules, at a minimum.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-IP-000004",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-idps-security-technical-implementation-guide-v2r1-7cfae184",
+      "name": "Juniper SRX Services Gateway IDPS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-idps-security-technical-implementation-guide-v2r1-7cfae184"
+  ]
+}

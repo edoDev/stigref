@@ -1,0 +1,53 @@
+{
+  "id": "SV-217050r604135_rule",
+  "full_rule_id": "SV-217050r604135_rule",
+  "rule_id": "SV-217050",
+  "rule_revision": "604135",
+  "group_id": "V-217050",
+  "group_title": "SRG-NET-000205-RTR-000013",
+  "title": "The Juniper router providing connectivity to the NOC must be configured to forward all in-band management traffic via an IPsec tunnel.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When the production network is managed in-band, the management network could be housed at a NOC that is located remotely at single or multiple interconnected sites. NOC interconnectivity, as well as connectivity between the NOC and the managed network, must be enabled using IPsec tunnels to provide the separation and integrity of the managed traffic.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DoDIN Backbone.\n\nVerify that all traffic from the managed network to the management network and vice-versa is secured via IPsec tunnel.\n\nReview the security association within the IPsec configuration to be used for encapsulating the management traffic and verify that it is in tunnel mode. Also note the security association to be used.\n\nsecurity {\n    ipsec {\n        proposal IPSEC_PHASE2_PROPOSAL {\n            protocol esp;\n            authentication-algorithm hmac-sha1-96;\n            encryption-algorithm aes-128-cbc;\n        }\n        policy IPSEC_POLICY {\n            perfect-forward-secrecy {\n                keys group14;\n            }\n            proposals IPSEC_PHASE2_PROPOSAL;\n        }\n        security-association IPSEC-SA_XYZ {\n            description \"For XYZ\";\n            mode transport;\n            manual {\n                direction bidirectional {\n                    protocol ah;\n                    spi 256;\n                    authentication {\n                        algorithm hmac-sha1-96;\n                        key ascii-text \"$8$oPJjH.P5F69mSHqPQn6u0RhSreW-dsZGi8XYoZDmP\"; ## SECRET-DATA\n                    }\n                }\n            }\n        }\n        security-association IPSEC_SA_MGMT {\n            description \"IPsec Tunnel for Mgmt Traffic\";\n            mode tunnel;\n            dynamic {\n                ipsec-policy IPSEC_POLICY;\n            }\n        }\n    }\n    ike {\n        proposal IKE_PHASE1_PROPOSAL {\n            authentication-method pre-shared-keys;\n            dh-group group14;\n            authentication-algorithm sha-256;\n            encryption-algorithm aes-128-cbc;\n        }\n        policy 10.1.25.2 {\n            mode main;\n            proposals IKE_PHASE1_PROPOSAL;\n            pre-shared-key ascii-text \"$8$J4UDkCA01IcHqEy\"; ## SECRET-DATA\n        }\n    }\n\nVerify there is a filter to direct the management traffic to the IPsec tunnel by verifying the name of the IPsec SA referenced in the then statement as shown in the example below.\n\nfirewall {\n    family inet {\n        …\n        …\n        …\n       filter MGMT_TRAFFIC {\n            term ALLOW_SNMP {\n                from {\n                    protocol udp;\n                    port [ snmp snmptrap ];\n                }\n                then ipsec-sa IPSEC_SA_MGMT;\n            }\n            term ALLOW_TACACS {\n                from {\n                    protocol tcp;\n                    port tacacs;\n                }\n                then ipsec-sa IPSEC_SA_MGMT;\n            }\n            term ALLOW_NETFLOW {\n                from {\n                    protocol udp;\n                    port [ 2055 9995 9996 ];\n                }\n                then ipsec-sa IPSEC_SA_MGMT;\n            }\n            term OTHER {\n                then accept;\n            }\n        }\n    }\n\nIf the management traffic is not secured via IPsec tunnel, this is a finding.",
+  "fix": "This requirement is not applicable for the DoDIN Backbone.\n\nEnsure that all traffic from the managed network to the management network is secured via IPsec tunnel as shown in the configuration examples below.\n\nConfigure an IPsec tunnel to be used to transport the management traffic.\n\n[edit security]\nset ike proposal IKE_PHASE1_PROPOSAL authentication-method pre-shared-keys\nset ike proposal IKE_PHASE1_PROPOSAL authentication-algorithm sha-256\nset ike proposal IKE_PHASE1_PROPOSAL dh-group group14\nset ike proposal IKE_PHASE1_PROPOSAL encryption-algorithm aes-128-cbc\nset ike policy 10.1.25.2 proposals IKE_PHASE1_PROPOSAL\nset ike policy 10.1.25.2 mode main\nset ike policy 10.1.25.2 pre-shared-key ascii-text xxxxxxxxx\nset ipsec proposal IPSEC_PHASE2_PROPOSAL protocol esp\nset ipsec proposal IPSEC_PHASE2_PROPOSAL authentication-algorithm hmac-sha1-96\nset ipsec proposal IPSEC_PHASE2_PROPOSAL encryption-algorithm aes-128-cbc\nset policy IPSEC_POLICY perfect-forward-secrecy keys group14\nset policy IPSEC_POLICY proposals xxxxx\nset ipsec security-association IPSEC_SA_MGMT mode tunnel\nset ipsec security-association IPSEC_SA_MGMT dynamic ipsec-policy IPSEC_POLICY\n\nConfigure a filter that will select which traffic to be forwarded via the IPsec tunnel by specifying the security association bound to the tunnel.\n\n[edit firewall family inet]\nset filter MGMT_TRAFFIC term ALLOW_SNMP from protocol udp port [snmp snmptrap]\nset filter MGMT_TRAFFIC term ALLOW_SNMP then ipsec-sa IPSEC_SA_MGMT\nset filter MGMT_TRAFFIC term ALLOW_TACACS from protocol tcp port tacacs\nset filter MGMT_TRAFFIC term ALLOW_TACACS then ipsec-sa IPSEC_SA_MGMT\nset filter MGMT_TRAFFIC term ALLOW_NETFLOW from protocol udp port [2055 9995 9996]\nset filter MGMT_TRAFFIC term ALLOW_NETFLOW then ipsec-sa IPSEC_SA_MGMT\nset filter MGMT_TRAFFIC term OTHER then accept",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When the production network is managed in-band, the management network could be housed at a NOC that is located remotely at single or multiple interconnected sites. NOC interconnectivity, as well as connectivity between the NOC and the managed network, must be enabled using IPsec tunnels to provide the separation and integrity of the managed traffic.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000450",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

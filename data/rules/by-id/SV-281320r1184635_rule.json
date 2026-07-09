@@ -1,0 +1,53 @@
+{
+  "id": "SV-281320r1184635_rule",
+  "full_rule_id": "SV-281320r1184635_rule",
+  "rule_id": "SV-281320",
+  "rule_revision": "1184635",
+  "group_id": "V-281320",
+  "group_title": "SRG-OS-000312-GPOS-00124",
+  "title": "RHEL 10 must disable acquiring, saving, and processing core dumps.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers trying to debug problems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If kernel dumps are disabled in accordance with RHEL-10-701090, this requirement is not applicable.\n\nVerify RHEL 10 is not configured to acquire, save, or process core dumps with the following command:\n\n$ sudo systemctl status systemd-coredump.socket\no systemd-coredump.socket\n    Loaded: masked (Reason: Unit systemd-coredump.socket is masked.)\n    Active: inactive (dead)\n    ...\n\nIf the \"systemd-coredump.socket\" is loaded and not masked, and the need for core dumps is not documented with the information system security officer as an operational requirement, this is a finding.",
+  "fix": "Configure RHEL 10 to disable the systemd-coredump.socket with the following command:\n\n$ sudo systemctl mask --now systemd-coredump.socket\nCreated symlink /etc/systemd/system/systemd-coredump.socket -> /dev/null\n\nReload the daemon for this change to take effect.\n\n$ sudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-002165"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A core dump includes a memory image taken at the time the operating system terminates an application. The memory image could contain sensitive data and is generally useful only for developers trying to debug problems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-701180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-269780r1051725_rule",
+  "full_rule_id": "SV-269780r1051725_rule",
+  "rule_id": "SV-269780",
+  "rule_revision": "1051725",
+  "group_id": "V-269780",
+  "group_title": "SRG-APP-000156-NDM-000250",
+  "title": "The Dell OS10 Switch must implement replay-resistant authentication mechanisms for network access to privileged accounts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A replay attack may enable an unauthorized user to gain access to the application. Authentication sessions between the authenticator and the application validating the user credentials must not be vulnerable to a replay attack.\n\nAn authentication process resists replay attacks if it is impractical to achieve a successful authentication by recording and replaying a previous authentication message. \n\nTechniques used to address this include protocols using nonces (e.g., numbers generated for a specific one-time use) or challenges (e.g., TLS, WS_Security). Additional techniques include time-synchronous or challenge-response one-time authenticators.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the OS10 Switch configuration to determine if replay-resistant authentication mechanisms are implemented for network access to privileged accounts.\n\nReview the FIPS status to verify that FIPS mode is enabled, as shown below:\n\nOS10# show fips status\n\nFIPS mode:           Enabled\nCrypto Library:      OpenSSL 1.0.2zg-fips  7 Feb 2023\nFIPS Object Module:  DELL OpenSSL FIPS Crypto Module v2.6 July 2021\nOS10#\n\nVerify that SSH is enabled for network access by reviewing the SSH server status:\n\nOS10# show ip ssh | grep \"SSH Server:\"\nSSH Server:                   Enabled\n\nVerify that telnet is disabled on the switch by verifying that the following is not in the running-configuration: \n\nip telnet server enable\n\nIf FIPS mode is not enabled or if the SSH is not enabled or if telnet is enabled in the OS10 Switch, this is a finding.",
+  "fix": "Configure the OS10 Switch to implement replay-resistant authentication mechanisms for network access to privileged accounts:\n\nOS10(config)# crypto fips enable\n\nWARNING: Upon committing this configuration, the system will regenerate SSH keys. Please consult documentation and toggle FIPS mode only if you know what you are doing!\nContinue? [yes/no(default)]:yes\nOS10(config)#\n\nDisable telnet if it has been enabled:\n OS10(config)# no ip telnet server enable\n\nEnable SSH if it has been disabled:\n OS10(config)# ip ssh server enable",
+  "ccis": [
+    "CCI-001941"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A replay attack may enable an unauthorized user to gain access to the application. Authentication sessions between the authenticator and the application validating the user credentials must not be vulnerable to a replay attack.\n\nAn authentication process resists replay attacks if it is impractical to achieve a successful authentication by recording and replaying a previous authentication message. \n\nTechniques used to address this include protocols using nonces (e.g., numbers generated for a specific one-time use) or challenges (e.g., TLS, WS_Security). Additional techniques include time-synchronous or challenge-response one-time authenticators.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000390",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-256055r991794_rule",
+  "full_rule_id": "SV-256055r991794_rule",
+  "rule_id": "SV-256055",
+  "rule_revision": "991794",
+  "group_id": "V-256055",
+  "group_title": "SRG-NET-000512-RTR-000008",
+  "title": "The PE router providing MPLS Virtual Private Wire Service (VPWS) must be configured to have the appropriate virtual circuit identification (VC ID) for each attachment circuit.",
+  "severity": "high",
+  "description": "<VulnDiscussion>VPWS is an L2VPN technology that provides a virtual circuit between two PE routers to forward Layer 2 frames between two customer-edge routers or routers through an MPLS-enabled IP core. The ingress PE router (virtual circuit head-end) encapsulates Ethernet frames inside MPLS packets using label stacking and forwards them across the MPLS network to the egress PE router (virtual circuit tail-end). During a virtual circuit setup, the PE routers exchange VC label bindings for the specified VC ID. The VC ID specifies a pseudowire associated with an ingress and egress PE router and the customer-facing attachment circuits.\n\nTo guarantee that all frames are forwarded onto the correct pseudowire and to the correct customer and attachment circuits, it is imperative that the correct VC ID is configured for each attachment circuit.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the ingress and egress PE router configuration for each virtual circuit that has been provisioned.\n\nVerify the correct and unique VCID has been configured for the appropriate attachment circuit.\n\nRun the command sh run | section patch\npatch panel\n   patch port\n      connector 1 interface Ethernet2\n      connector 2 pseudowire bgp vpws evi-1 pseudowire pw1\n   patch subintf\n      connector 1 interface Ethernet3.1\n      connector 2 pseudowire bgp vpws evi-1 pseudowire pw2\n\nRun the command sh run | section router bgp          \nrouter bgp 65000\n   neighbor 10.0.0.1 remote-as 1\n   neighbor 10.0.0.1 send-community extended\n   neighbor 10.0.0.1 maximum-routes 12000\n   !\n   vpws evi-1\n      rd 10.2.2.2:2\n      route-target import export evpn 0.0.0.0:1\n      mpls control-word\n      !\n      pseudowire pw1\n         evpn vpws id local 2001 remote 1001\n      !\n      pseudowire pw2\n         evpn vpws id local 2002 remote 1002\n   !\n   address-family evpn\n      neighbor default encapsulation mpls next-hop-self source-interface Loopback0\n      neighbor 10.0.0.1 activate\n\nIf the correct VC ID has not been configured on both routers, this is a finding.",
+  "fix": "Assign globally unique VC IDs for each virtual circuit and configure the attachment circuits with the appropriate VC ID.\n\nConfigure the same VC ID on both ends of the VC.\n\npatch panel\n   patch port\n      connector 1 interface Ethernet2\n      connector 2 pseudowire bgp vpws evi-1 pseudowire pw1\n   patch subintf\n      connector 1 interface Ethernet3.1\n      connector 2 pseudowire bgp vpws evi-1 pseudowire pw2\n          \nrouter bgp 65000\n   neighbor 10.0.0.1 remote-as 1\n   neighbor 10.0.0.1 send-community extended\n   neighbor 10.0.0.1 maximum-routes 12000\n   !\n   vpws evi-1\n      rd 10.2.2.2:2\n      route-target import export evpn 0.0.0.0:1\n      mpls control-word\n      !\n      pseudowire pw1\n         evpn vpws id local 2001 remote 1001\n      !\n      pseudowire pw2\n         evpn vpws id local 2002 remote 1002\n   !\n   address-family evpn\n      neighbor default encapsulation mpls next-hop-self source-interface Loopback0\n      neighbor 10.0.0.1 activate\n                    \nVLAN mode example:\n\ninterface Ethernet3\n   no routerport\n!   \ninterface Ethernet3.1\n   encapsulation dot1q vlan 1\n      \nFlexible Encapsulation example:\n\ninterface Ethernet3\n   no routerport\n!   \ninterface Ethernet3.1\n   encapsulation vlan\n      client dot1q 11 network client",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "VPWS is an L2VPN technology that provides a virtual circuit between two PE routers to forward Layer 2 frames between two customer-edge routers or routers through an MPLS-enabled IP core. The ingress PE router (virtual circuit head-end) encapsulates Ethernet frames inside MPLS packets using label stacking and forwards them across the MPLS network to the egress PE router (virtual circuit tail-end). During a virtual circuit setup, the PE routers exchange VC label bindings for the specified VC ID. The VC ID specifies a pseudowire associated with an ingress and egress PE router and the customer-facing attachment circuits.\n\nTo guarantee that all frames are forwarded onto the correct pseudowire and to the correct customer and attachment circuits, it is imperative that the correct VC ID is configured for each attachment circuit.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000760",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-259347r961863_rule",
+  "full_rule_id": "SV-259347r961863_rule",
+  "rule_id": "SV-259347",
+  "rule_revision": "961863",
+  "group_id": "V-259347",
+  "group_title": "SRG-APP-000516-DNS-000085",
+  "title": "The Windows DNS Server's zone files must have NS records that point to active name servers authoritative for the domain specified in that record.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Poorly constructed NS records pose a security risk because they create conditions under which an adversary might be able to provide the missing authoritative name services that are improperly specified in the zone file. The adversary could issue bogus responses to queries that clients would accept because they learned of the adversary's name server from a valid authoritative name server, one that need not be compromised for this attack to be successful. \n\nThe list of secondary servers must remain current within 72 hours of any changes to the zone architecture that would affect the list of secondaries. If a secondary server has been retired or is not operational but remains on the list, an adversary might have a greater opportunity to impersonate that secondary without detection, rather than if the secondary was online. For example, the adversary may be able to spoof the retired secondary's IP address without an IP address conflict, which would not be likely to occur if the true secondary were active.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This check is not applicable if Windows DNS Server is only serving as a caching server and does not host any zones authoritatively.\n\nLog on to the DNS server using the Domain Admin or Enterprise Admin account or Local Administrator account.\n\nPress the Windows key + R and execute \"dnsmgmt.msc\".\n\nOn the opened DNS Manager snap-in from the left pane, expand the server name for the DNS server and then expand \"Forward Lookup Zones\".\n\nFrom the expanded list, click to select the zone.\n\nReview the NS records for the zone.\n\nVerify each of the name servers, represented by the NS records, is active.\n\nAt a command prompt on any system, type:\n\nnslookup <enter>;\n\nAt the nslookup prompt, type: \n\nserver ###.###.###.### <enter>;\n(where the ###.###.###.### is replaced by the IP of each NS record) \n\nEnter a FQDN for a known host record in the zone.\n\nIf the NS server does not respond at all or responds with a nonauthoritative answer, this is a finding.",
+  "fix": "If DNS servers are Active Directory (AD) integrated, troubleshoot and remedy the replication problem where the nonresponsive name server is not being updated.\n\nIf DNS servers are not AD integrated, log on to the DNS server using the Domain Admin or Enterprise Admin account or Local Administrator account.\n\nPress the Windows key + R and execute \"dnsmgmt.msc\".\n\nOn the opened DNS Manager snap-in from the left pane, expand the server name for the DNS server, and then expand \"Forward Lookup Zones\".\n\nFrom the expanded list, click to select the zone. \n\nReview the NS records for the zone.\n\nSelect the NS record for the nonresponsive name server and remove the record.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Poorly constructed NS records pose a security risk because they create conditions under which an adversary might be able to provide the missing authoritative name services that are improperly specified in the zone file. The adversary could issue bogus responses to queries that clients would accept because they learned of the adversary's name server from a valid authoritative name server, one that need not be compromised for this attack to be successful. \n\nThe list of secondary servers must remain current within 72 hours of any changes to the zone architecture that would affect the list of secondaries. If a secondary server has been retired or is not operational but remains on the list, an adversary might have a greater opportunity to impersonate that secondary without detection, rather than if the secondary was online. For example, the adversary may be able to spoof the retired secondary's IP address without an IP address conflict, which would not be likely to occur if the true secondary were active.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WDNS-22-000016",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-domain-name-system-dns-security-technical-implementatio-v2r4-4d0efd47",
+      "name": "Microsoft Windows Server Domain Name System (DNS) Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-domain-name-system-dns-security-technical-implementatio-v2r4-4d0efd47"
+  ]
+}

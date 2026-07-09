@@ -1,0 +1,53 @@
+{
+  "id": "SV-217019r604135_rule",
+  "full_rule_id": "SV-217019r604135_rule",
+  "rule_id": "SV-217019",
+  "rule_revision": "604135",
+  "group_id": "V-217019",
+  "group_title": "SRG-NET-000205-RTR-000001",
+  "title": "The Juniper router must be configured to restrict traffic destined to itself.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The Routing Engine handles traffic destined to the router—the key component used to build forwarding paths and is instrumental with all network management functions. Hence, any disruption or DoS attack to the Routing Engine can result in mission critical network outages.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the filter for the router’s receive path and verify that it will only allow specific management plane traffic from specific sources.\n\nVerify filter has been configured as shown in the example below.\n\nfirewall {\n    family inet {\n         …\n        …\n        …\n        }\n        filter DESTINED_TO_RE {\n            term ALLOW_OSPF {\n                from {\n                    protocol ospf;\n                }\n                then accept;\n            }\n            term ALLOW_BGP {\n                from {\n                    source-address {\n                        11.1.12.1/32;\n                        11.1.23.3/32;\n                        11.1.25.5/32;\n                    }\n                    protocol tcp;\n                    port bgp;\n                }\n            }\n            term FILTER_TCP {\n                from {\n                    destination-address {\n                        11.1.12.0/24;\n                    }\n                    protocol tcp;\n                    destination-port [ ssh tacacs telnet ];\n                }\n                then accept;\n            }\n            term FILTER_UDP {\n                from {\n                    destination-address {\n                        11.1.12.0/24;\n                    }\n                    protocol udp;\n                    destination-port [ntp snmp ];\n                }\n                then accept;\n            }\n            term ICMP_ANY {\n                from {\n                    protocol icmp;\n                }\n                then accept;\n            }\n            term DENY_BY_DEFAULT {\n                then {\n                    log;\n                    discard;\n                }\n            }\n        }\n    }\n\nVerify that the input filter has been applied to loopback interface as shown in the example below.\n    \ninterfaces {\n…\n…\n…\n    lo0 {\n        unit 0 {\n            family inet {\n                filter {\n                    input-list [ DESTINED_TO_RE CoPP_Policy ];\n                }\n                address 2.2.2.2/32;\n            }\n         }\n    }\n}\n\nIf the router is not configured with a receive-path filter to restrict traffic destined to itself, this is a finding",
+  "fix": "Configure the router’s receive path filters to restrict traffic destined to the router.\n\nConfigure a filter to define what traffic should be received by the Routing Engine.\n\n[edit firewall family inet]\nset filter DESTINED_TO_RP term FILTER_TCP from destination-address 11.1.12.0/24  \nset filter DESTINED_TO_RP term FILTER_TCP from protocol tcp destination-port ssh\nset filter DESTINED_TO_RP term FILTER_TCP from protocol tcp destination-port tacacs\nset filter DESTINED_TO_RP term FILTER_TCP then accept\nset filter DESTINED_TO_RP term FILTER_UDP from destination-address 11.1.12.0/24  \nset filter DESTINED_TO_RP term FILTER_UDP from protocol udp destination-port ntp\nset filter DESTINED_TO_RP term FILTER_UDP from protocol udp destination-port snmp\nset filter DESTINED_TO_RP term FILTER_UDP then accept\nset filter DESTINED_TO_RP term ICMP_ANY from protocol icmp \nset filter DESTINED_TO_RP term ICMP_ANY from protocol icmp then accept\nset filter DESTINED_TO_RP term DENY_BY_DEFAULT then log discard\n\nApply the filter to the loopback interface.\n\n[edit interfaces lo0 unit 0 family inet] \nset filter input-list DESTINED_TO_RP.",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Routing Engine handles traffic destined to the router—the key component used to build forwarding paths and is instrumental with all network management functions. Hence, any disruption or DoS attack to the Routing Engine can result in mission critical network outages.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

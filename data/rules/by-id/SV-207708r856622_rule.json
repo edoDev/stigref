@@ -1,0 +1,53 @@
+{
+  "id": "SV-207708r856622_rule",
+  "full_rule_id": "SV-207708r856622_rule",
+  "rule_id": "SV-207708",
+  "rule_revision": "856622",
+  "group_id": "V-207708",
+  "group_title": "SRG-NET-000385-IDPS-00211",
+  "title": "The Palo Alto Networks security platform must generate an alert to the ISSO and ISSM, at a minimum, when unauthorized network services are detected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unauthorized or unapproved network services lack organizational verification or validation and therefore may be unreliable or serve as malicious rogues for valid services.\n\nAutomated mechanisms can be used to send automatic alerts or notifications. Such automatic alerts or notifications can be conveyed in a variety of ways (e.g., telephonically, via electronic mail, via text message, or via websites).\n\nThe IDPS must either send the alert to a management console that is actively monitored by authorized personnel or use a messaging capability to send the alert directly to designated personnel.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Obtain the list of network services that have not been authorized or approved by the ISSM and ISSO.  For each prohibited network service, view the security policies that denies traffic associated with it and logs the denied traffic. \nAsk the Administrator how the ISSO and ISSM are receiving alerts (E-mail, SNMP Trap, or Syslog).\n\nView the configured Server Profile; if there is no Server Profile for the method explained, this is a finding.\n \nView the Log Forwarding Profiles; this is under Objects >> Log Forwarding.  Determine which Server Profile is associated with each Log Forwarding Profile.\nView the Security Policies that are used to block unauthorized network services.\nGo to Policies >> Security\nSelect the name of the security policy to view it. \nIn the \"Actions\" tab, in the \"Log Setting\" section, view the Log Forwarding Profile.\n\nIf there is no Log Forwarding Profile, this is a finding.",
+  "fix": "Obtain the list of network services that have not been authorized or approved by the ISSM and ISSO.  For each prohibited network service, configure a security policy that  generates an alert to, at a minimum, the ISSO and ISSM when unauthorized network services are detected.\nConfigure a Server Profile for use with Log Forwarding Profile(s);  if email is used, the ISSO and ISSM must be recipients.\n   \nTo create an email server profile:\nGo to Device >> Server Profiles >> Email\nSelect \"Add\". \nIn the Email Server Profile, enter the name of the profile.\nSelect \"Add\".\nIn the \"Servers\" tab, enter the required information:\nIn the \"Name\" field, enter the name of the Email server\nIn the \"Email Display Name\" field, enter the name shown in the \"From\" field of the email.\nIn the \"From\" field, enter the From email address.\nIn the \"To\" field, enter the email address of the recipient.\nIn the \"Additional Recipient\" field, enter the email address of another recipient. You can only add one additional recipient. To add multiple recipients, add the email address of a distribution list.\nIn the \"Gateway\" field, enter the IP address or host name of the Simple Mail Transport Protocol (SMTP) server used to send the email.\nSelect \"OK\".\n  \nConfigure a Log Forwarding Profile; this is under Objects >> Log Forwarding\nGo to Policies >> Security\nSelect \"Add\" to create a new security policy or select the name of the security policy to edit it. \nConfigure the specific parameters of the policy by completing the required information in the fields of each tab.\nIn the \"Actions\" tab, select the Log forwarding profile and select \"Log at Session End\".\n\"Log at Session Start\" may be selected under specific circumstances, but \"Log at Session End\" is preferred.\nCommit changes by selecting \"Commit\" in the upper-right corner of the screen.\nSelect \"OK\" when the confirmation dialog appears.",
+  "ccis": [
+    "CCI-002684"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unauthorized or unapproved network services lack organizational verification or validation and therefore may be unreliable or serve as malicious rogues for valid services.\n\nAutomated mechanisms can be used to send automatic alerts or notifications. Such automatic alerts or notifications can be conveyed in a variety of ways (e.g., telephonically, via electronic mail, via text message, or via websites).\n\nThe IDPS must either send the alert to a management console that is actively monitored by authorized personnel or use a messaging capability to send the alert directly to designated personnel.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PANW-IP-000048",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "palo-alto-networks-idps-security-technical-implementation-guide-v3r2-7cc74b58",
+      "name": "Palo Alto Networks IDPS Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "palo-alto-networks-idps-security-technical-implementation-guide-v3r2-7cc74b58"
+  ]
+}

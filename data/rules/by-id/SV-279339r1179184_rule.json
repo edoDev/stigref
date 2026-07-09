@@ -1,0 +1,53 @@
+{
+  "id": "SV-279339r1179184_rule",
+  "full_rule_id": "SV-279339r1179184_rule",
+  "rule_id": "SV-279339",
+  "rule_revision": "1179184",
+  "group_id": "V-279339",
+  "group_title": "SRG-APP-000133-DB-000198",
+  "title": "MongoDB software installation account must be restricted to authorized users.",
+  "severity": "high",
+  "description": "<VulnDiscussion>When dealing with change control issues, it should be noted that any changes to the hardware, software, and/or firmware components of the information system and/or application can have significant effects on the overall security of the system. \n\nIf the system were to allow any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.\n\nAccordingly, only qualified and authorized individuals shall be allowed access to information system components for purposes of initiating changes, including upgrades and modifications.\n\nDBA and other privileged administrative or application owner accounts are granted privileges that allow actions that can have a great impact on database security and operation. It is especially important to grant privileged access to only those persons who are qualified and authorized to use them.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To ensure log, network, security, and other audit configurations are not modifiable by unauthorized operating system users, the default installation of MongoDB restricts permission on the configuration file. \n\nVerify User ownership, Group ownership, and permissions on the \"<MongoDB configuration file>\":\n\n(default name and location is /etc/mongod.conf)\n\nUsing the default name and location the command would be:\n\n$ stat /etc/mongod.conf\n\nIf the User owner is not \"mongod\", this is a finding.\n\nIf the Group owner is not \"mongod\", this is a finding.\n\nIf the filename is more permissive than \"600\", this is a finding.\n\nNote that the audit destination cannot be modified at runtime.",
+  "fix": "It is recommended to use the official installation packages provided by MongoDB. In the event the software was installed manually, and permissions need to be restricted, consider a clean reinstallation. \n\nAlternatively, run the following commands to properly set permissions on the configuration file: \n\n$ chown mongod <MongoDB configuration file> \n$ chgrp mongod <MongoDB configuration file>\n$ chmod 600 <<MongoDB configuration file>\n\nThe name and location for the MongoDB configuration file will vary according to local circumstances. The default name and location is /etc/mongod.conf.\n\nUsing the default name and location the commands would be:\n\n$ chown mongod /etc/mongod.conf  \n$ chgrp  mongod /etc/mongod.conf  \n$ chmod 600 /etc/mongod.conf",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When dealing with change control issues, it should be noted that any changes to the hardware, software, and/or firmware components of the information system and/or application can have significant effects on the overall security of the system. \n\nIf the system were to allow any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.\n\nAccordingly, only qualified and authorized individuals shall be allowed access to information system components for purposes of initiating changes, including upgrades and modifications.\n\nDBA and other privileged administrative or application owner accounts are granted privileges that allow actions that can have a great impact on database security and operation. It is especially important to grant privileged access to only those persons who are qualified and authorized to use them.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MD8X-00-002500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mongodb-enterprise-advanced-8-x-security-technical-implementation-guide-v1r1-76f1e3ed",
+      "name": "MongoDB Enterprise Advanced 8.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mongodb-enterprise-advanced-8-x-security-technical-implementation-guide-v1r1-76f1e3ed"
+  ]
+}

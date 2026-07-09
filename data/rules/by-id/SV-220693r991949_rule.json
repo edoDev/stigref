@@ -1,0 +1,53 @@
+{
+  "id": "SV-220693r991949_rule",
+  "full_rule_id": "SV-220693r991949_rule",
+  "rule_id": "SV-220693",
+  "rule_revision": "991949",
+  "group_id": "V-220693",
+  "group_title": "SRG-NET-000512-L2S-000010",
+  "title": "The Cisco switch must not use the default VLAN for management traffic.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Switches use the default VLAN (i.e., VLAN 1) for in-band management and to communicate with directly connected switches using Spanning-Tree Protocol (STP), Dynamic Trunking Protocol (DTP), VLAN Trunking Protocol (VTP), and Port Aggregation Protocol (PAgP)—all untagged traffic. As a consequence, the default VLAN may unwisely span the entire network if not appropriately pruned. If its scope is large enough, the risk of compromise can increase significantly.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration and verify that the default VLAN is not used to access the switch for management.\n\ninterface Vlan1\n\ninterface Vlan44\n description Management VLAN\n ip address 10.1.12.1/24\n\nIf the default VLAN is being used for management access to the switch, this is a finding.",
+  "fix": "Configure the switch for management access to use a VLAN other than the default VLAN.\n\nSW1(config)# interface vlan 44\nSW1(config-if)# ip add 10.1.12.1/24\nSW1(config-if)# end",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Switches use the default VLAN (i.e., VLAN 1) for in-band management and to communicate with directly connected switches using Spanning-Tree Protocol (STP), Dynamic Trunking Protocol (DTP), VLAN Trunking Protocol (VTP), and Port Aggregation Protocol (PAgP)—all untagged traffic. As a consequence, the default VLAN may unwisely span the entire network if not appropriately pruned. If its scope is large enough, the risk of compromise can increase significantly.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-L2-000240",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-l2s-security-technical-implementation-guide-v3r2-c012221b",
+      "name": "Cisco NX OS Switch L2S Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-l2s-security-technical-implementation-guide-v3r2-c012221b"
+  ]
+}

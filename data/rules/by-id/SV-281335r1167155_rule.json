@@ -1,0 +1,53 @@
+{
+  "id": "SV-281335r1167155_rule",
+  "full_rule_id": "SV-281335r1167155_rule",
+  "rule_id": "SV-281335",
+  "rule_revision": "1167155",
+  "group_id": "V-281335",
+  "group_title": "SRG-OS-000132-GPOS-00067",
+  "title": "RHEL 10 must disable access to the network bpf system call from nonprivileged processes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Loading and accessing the packet filters programs and maps using the bpf() system call has the potential to reveal sensitive information about the kernel state.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 prevents privilege escalation through the kernel by disabling access to the bpf system call.\n\nCheck the status of the \"kernel.unprivileged_bpf_disabled\" kernel parameter with the following command:\n\n$ sysctl kernel.unprivileged_bpf_disabled\nkernel.unprivileged_bpf_disabled = 1\n\nIf \"kernel.unprivileged_bpf_disabled\" is not set to \"1\" or is missing, this is a finding.",
+  "fix": "Configure RHEL 10 to prevent privilege escalation through the kernel by disabling access to the bpf system call.\n\nCreate the drop-in file if it does not already exist:\n\n$ sudo vi /etc/sysctl.d/99-kernel_unprivileged_bpf_disabled\n\nAdd the following line to the file:\n\nkernel.unprivileged_bpf_disabled = 1\n\nReload settings from all system configuration files with the following command:\n\n$ sudo sysctl --system",
+  "ccis": [
+    "CCI-001082"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Loading and accessing the packet filters programs and maps using the bpf() system call has the potential to reveal sensitive information about the kernel state.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-800030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

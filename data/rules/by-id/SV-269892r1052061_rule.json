@@ -1,0 +1,53 @@
+{
+  "id": "SV-269892r1052061_rule",
+  "full_rule_id": "SV-269892r1052061_rule",
+  "rule_id": "SV-269892",
+  "rule_revision": "1052061",
+  "group_id": "V-269892",
+  "group_title": "SRG-NET-000362-RTR-000121",
+  "title": "The Dell OS10 multicast Rendezvous Point (RP) must be configured to rate limit the number of Protocol Independent Multicast (PIM) Register messages.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When a new source starts transmitting in a PIM Sparse Mode network, the DR will encapsulate the multicast packets into register messages and forward them to the RP using unicast. This process can be taxing on the CPU for both the DR and the RP if the source is running at a high data rate and there are many new sources starting at the same time. This scenario can potentially occur immediately after a network failover. The rate limit for the number of register messages should be set to a relatively low value based on the known number of multicast sources within the multicast domain.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of the RP to verify that it is rate limiting the number of multicast register messages.\n\nStep 1: Verify that a control-plane class map for PIM packets has been configured.\n\nOS10# show running-configuration class-map\n!\nclass-map type control-plane PIM-CLASS-MAP\nmatch pim\n\nStep 2: Verify that a control-plane policy map for PIM packets has been configured that applies an appropriate rate limit in packets per second.\n\nOS10# show running-configuration policy-map\n!\npolicy-map type control-plane PIM-POLICY-MAP\n!\nclass PIM-CLASS-MAP\n  set qos-group 2\n  police cir 10 pir 50\n\nStep 3: Verify the service policy has been assigned to the control plane.\n\nOS10# show running-configuration control-plane\n!\ncontrol-plane\nservice-policy input PIM-POLICY-MAP\n\nIf the RP is not limiting multicast register messages, this is a finding.",
+  "fix": "Configure the RP to rate limit the number of multicast register messages.\n\nStep 1: Configure a control-plane class map for PIM packets.\n\nOS10(config)# class-map type control-plane PIM-CLASS-MAP\nOS10(config-cmap-control-plane)# match pim\n\nStep 2: Configure a control-plane policy map for PIM packets that applies an appropriate rate limit in packets per second.\n\nOS10(config)# policy-map type control-plane PIM-POLICY-MAP\nOS10(config-pmap-control-plane)# class PIM-CLASS-MAP\nOS10 (config-pmap-c)# set qos-group 2\nOS10 (config-pmap-c)# police cir 10 pir 50\n\nStep 3: Assign the service policy to the control plane.\n\nOS10(config)# control-plane\nOS10(config-control-plane)# service-policy input PIM-POLICY-MAP",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When a new source starts transmitting in a PIM Sparse Mode network, the DR will encapsulate the multicast packets into register messages and forward them to the RP using unicast. This process can be taxing on the CPU for both the DR and the RP if the source is running at a high data rate and there are many new sources starting at the same time. This scenario can potentially occur immediately after a network failover. The rate limit for the number of register messages should be set to a relatively low value based on the known number of multicast sources within the multicast domain.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000710",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

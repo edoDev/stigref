@@ -1,0 +1,53 @@
+{
+  "id": "SV-279331r1179501_rule",
+  "full_rule_id": "SV-279331r1179501_rule",
+  "rule_id": "SV-279331",
+  "rule_revision": "1179501",
+  "group_id": "V-279331",
+  "group_title": "SRG-APP-000001-DB-000031",
+  "title": "MongoDB must limit the total number of concurrent connections to the database.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Database management includes the ability to control the number of users and user sessions utilizing a DBMS. Unlimited concurrent connections to the DBMS could allow a successful denial-of-service (DoS) attack by exhausting connection resources; and a system can also fail or be degraded by an overload of legitimate users. Limiting the number of concurrent sessions per user is helpful in reducing these risks.\n\nThis requirement addresses concurrent session control for the total number of sessions across all accounts.\n\n(Sessions may also be referred to as connections or logons, which for the purposes of this requirement are synonyms.)</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Mongo can limit the total number of connections.\n\nVerify the MongoDB configuration file (default location: /etc/mongod.conf) contains the following:\n\nnet:\n  maxIncomingConnections:  %int%      \n\nIf this parameter is not present, or the OS is not used to limit connections, this is a finding.",
+  "fix": "MongoDB can limit the total number of connections served by the mongod process by setting the following in the MongoDB configuration file (default location: /etc/mongod.conf):\n\nnet:\n  maxIncomingConnections:  %int%      \n\nRefer to the following documentation: \nhttps://www.mongodb.com/docs/manual/reference/configuration-options/\n\nProducts outside of MongoDB can be used to monitor database sessions and limit the maximum number of connections that can be made. \n\nAlternatively, most Unix-like operating systems, including Linux and macOS, provide ways to limit and control the usage of system resources such as threads, files, and network connections on a per-process and per-user basis. \n\nThese ulimits prevent single users from using too many system resources. \n\nThe following is the MongoDB documentation regarding these user limits: https://www.mongodb.com/docs/manual/reference/ulimit/.",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Database management includes the ability to control the number of users and user sessions utilizing a DBMS. Unlimited concurrent connections to the DBMS could allow a successful denial-of-service (DoS) attack by exhausting connection resources; and a system can also fail or be degraded by an overload of legitimate users. Limiting the number of concurrent sessions per user is helpful in reducing these risks.\n\nThis requirement addresses concurrent session control for the total number of sessions across all accounts.\n\n(Sessions may also be referred to as connections or logons, which for the purposes of this requirement are synonyms.)",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MD8X-00-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mongodb-enterprise-advanced-8-x-security-technical-implementation-guide-v1r1-76f1e3ed",
+      "name": "MongoDB Enterprise Advanced 8.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mongodb-enterprise-advanced-8-x-security-technical-implementation-guide-v1r1-76f1e3ed"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-274151r1120441_rule",
+  "full_rule_id": "SV-274151r1120441_rule",
+  "rule_id": "SV-274151",
+  "rule_revision": "1120441",
+  "group_id": "V-274151",
+  "group_title": "SRG-OS-000312-GPOS-00123",
+  "title": "Amazon Linux 2023 must restrict the use of the \"su\" command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The \"su\" program allows to run commands with a substitute user and group ID. It is commonly used to run commands as the root user. Limiting access to such commands is considered a good security practice.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 requires uses to be members of the \"wheel\" group with the following command:\n\n$ grep pam_wheel /etc/pam.d/su \nauth required pam_wheel.so use_uid \n\nIf a line for \"pam_wheel.so\" does not exist, or is commented out, this is a finding.",
+  "fix": "Configure Amazon Linux 2023 to require users to be in the \"wheel\" group to run \"su\" command.\n\nIn file \"/etc/pam.d/su\", uncomment the following line:\n\n\"#auth required pam_wheel.so use_uid\"\n\n$ sudo sed '/^[[:space:]]*#[[:space:]]*auth[[:space:]]\\+required[[:space:]]\\+pam_wheel\\.so[[:space:]]\\+use_uid$/s/^[[:space:]]*#//' -i /etc/pam.d/su\n\nIf necessary, create a \"wheel\" group and add administrative users to the group.",
+  "ccis": [
+    "CCI-002165"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The \"su\" program allows to run commands with a substitute user and group ID. It is commonly used to run commands as the root user. Limiting access to such commands is considered a good security practice.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-002440",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

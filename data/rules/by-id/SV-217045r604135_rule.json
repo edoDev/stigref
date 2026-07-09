@@ -1,0 +1,53 @@
+{
+  "id": "SV-217045r604135_rule",
+  "full_rule_id": "SV-217045r604135_rule",
+  "rule_id": "SV-217045",
+  "rule_revision": "604135",
+  "group_id": "V-217045",
+  "group_title": "SRG-NET-000205-RTR-000010",
+  "title": "The Juniper out-of-band management (OOBM) gateway router must be configured to forward only authorized management traffic to the Network Operations Center (NOC).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The OOBM network is an IP network used exclusively for the transport of OAM&P data from the network being managed to the OSS components located at the NOC. Its design provides connectivity to each managed network device, enabling network management traffic to flow between the managed network elements and the NOC. This allows the use of paths separate from those used by the managed network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DoDIN Backbone.\n\nReview the network topology diagram to determine connectivity between the managed network and the NOC. Review the OOBM gateway router configuration to validate the path that the management traffic traverses. Verify that only management traffic is forwarded through the OOBM interface or IPsec tunnel.\n\nIf an OOBM link is used, verify that the only authorized management traffic is transported to the NOC by reviewing the outbound filter applied to the OOBM interface as shown in the example below.\n\ninterfaces {\n     description \"OOBM Net\";\n    ge-1/1/0 {\n        unit 0 {\n            family inet {\n                filter {\n                    output MGMT_TRAFFIC;\n                }\n                address 10.2.22.2/24;\n            }\n        }\n    }\n…\n…\n…\nfirewall {\n    family inet {\n        …\n        …\n        …\n       filter MGMT_TRAFFIC {\n            term ALLOW_SNMP {\n                from {\n                    protocol udp;\n                    port [ snmp snmptrap ];\n                }\n                then accept;\n            }\n            term ALLOW_TACACS {\n                from {\n                    protocol tcp;\n                    port tacacs;\n                }\n                then accept;\n            }\n            term ALLOW_NETFLOW {\n                from {\n                    protocol udp;\n                    port [ 2055 9995 9996 ];\n                }\n                then accept;\n            }\n            term DENY_OTHER {\n                then {\n                    syslog;\n                    discard;\n                }\n            }\n        }\n    }\n\nIf an IPsec tunnel is used, verify that the only authorized management traffic is transported to the NOC by reviewing the filter referencing the applicable security association as shown int example below.\n\nfirewall {\n    family inet {\n        …\n        …\n        …\n       filter MGMT_TRAFFIC {\n            term ALLOW_SNMP {\n                from {\n                    protocol udp;\n                    port [ snmp snmptrap ];\n                }\n                then ipsec-sa IPSEC_SA_MGMT;\n            }\n            term ALLOW_TACACS {\n                from {\n                    protocol tcp;\n                    port tacacs;\n                }\n                then ipsec-sa IPSEC_SA_MGMT;\n            }\n            term ALLOW_NETFLOW {\n                from {\n                    protocol udp;\n                    port [ 2055 9995 9996 ];\n                }\n                then ipsec-sa IPSEC_SA_MGMT;\n            }\n            term OTHER {\n                then accept;\n            }\n        }\n    }\n\nIf traffic other than authorized management traffic is permitted through the OOBM interface or IPsec tunnel, this is a finding.",
+  "fix": "This requirement is not applicable for the DoDIN Backbone.\n\nConfigure filters to permit only authorized management traffic into IPsec tunnels or the OOBM interface used for forwarding management data as shown in the examples below.\n\nOOBM Link\n[edit firewall family inet]\nset filter MGMT_TRAFFIC term ALLOW_SNMP from protocol udp port [snmp snmptrap]\nset filter MGMT_TRAFFIC term ALLOW_SNMP then accept\nset filter MGMT_TRAFFIC term ALLOW_TACACS from protocol tcp port tacacs\nset filter MGMT_TRAFFIC term ALLOW_TACACS then accept\nset filter MGMT_TRAFFIC term ALLOW_NETFLOW from protocol udp port [2055 9995 9996]\nset filter MGMT_TRAFFIC term ALLOW_NETFLOW then accept\nset filter MGMT_TRAFFIC term DENY_OTHER then syslog discard\n\n[edit interfaces ge-1/1/0  unit 0 family inet]\nset filter output MGMT_TRAFFIC\n\nIPsec Tunnel\n[edit firewall family inet]\nset filter MGMT_TRAFFIC term ALLOW_SNMP from protocol udp port [snmp snmptrap]\nset filter MGMT_TRAFFIC term ALLOW_SNMP then ipsec-sa IPSEC_SA_MGMT\nset filter MGMT_TRAFFIC term ALLOW_TACACS from protocol tcp port tacacs\nset filter MGMT_TRAFFIC term ALLOW_TACACS then ipsec-sa IPSEC_SA_MGMT\nset filter MGMT_TRAFFIC term ALLOW_NETFLOW from protocol udp port [2055 9995 9996]\nset filter MGMT_TRAFFIC term ALLOW_NETFLOW then ipsec-sa IPSEC_SA_MGMT\nset filter MGMT_TRAFFIC term OTHER then accept",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The OOBM network is an IP network used exclusively for the transport of OAM&P data from the network being managed to the OSS components located at the NOC. Its design provides connectivity to each managed network device, enabling network management traffic to flow between the managed network elements and the NOC. This allows the use of paths separate from those used by the managed network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000400",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

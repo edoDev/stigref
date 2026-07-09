@@ -1,0 +1,53 @@
+{
+  "id": "SV-279219r1170647_rule",
+  "full_rule_id": "SV-279219r1170647_rule",
+  "rule_id": "SV-279219",
+  "rule_revision": "1170647",
+  "group_id": "V-279219",
+  "group_title": "SRG-NET-000362-ALG-000120",
+  "title": "The Edge must implement load balancing to limit the effects of known and unknown types of denial-of-service (DoS) attacks.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the network does not provide safeguards against DoS attacks, network resources will be unavailable to users. Load balancing provides service redundancy, which reduces the susceptibility of the ALG to many DoS attacks.\n\nThe ALG must be configured to prevent or mitigate the impact on network availability and traffic flow of DoS attacks that have occurred or are ongoing.\n\nThis requirement applies to the network traffic functionality of the device as it pertains to handling network traffic. Some types of attacks may be specialized to certain network technologies, functions, or services. For each technology, known and potential DoS attacks must be identified and solutions for each type implemented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Implementation of multiple Edge SWG nodes must be done in a transparent proxy using an ethernet bridge. This is done using the Symantec Integrates Secure Gateway (ISG).\n\n1. In the Edge SWG Web UI, navigate to the Configuration tab.\n2. Go to \"Network and Adapters\".\n3. Scroll down to the \"Bridge\" section, if a bridge is not configured, this is a finding.\n\nIf a bridge is configured but the two network interfaces on the ISG are not added, this is a finding.",
+  "fix": "Implementation of multiple Edge SWG nodes must be done in a transparent proxy using an ethernet bridge. This is done using the Symantec Integrates Secure Gateway (ISG).\n\n1. Log in to the ISG SSH CLI.\n2. Enter \"enable\" and \"configure terminal\".\n3. Enter \"bridge view\". There should be no interfaces added to a bridge.\n4. Enter \"bridge edit passthru-2:0 mode fail-closed\".\n5. Create the network definition and type \"network-definition create <NAME>\".\n6. Add the bridge to the network definition and type \"network-definition edit <NAME> add mode reserved bridges passthru-2:0\".\n7. Add the definition to the Edge SWG image by typing: \"applications edit <SWG NAME> network-definition <NAME>\".\n8. Start the image by entering the command \"applications start<SWG NAME>\".\n9. Repeat these steps for any other Edge SWGs being added for high availability. \n\n1. In the Edge SWG Web UI, navigate to the Configuration tab.\n2. Go to \"Network and Adapters\".\n3. Scroll down to the Bridge section and click the \"pass-through-2:0\" bridge.\n4. Click \"Add Interface\".\n5. Find the two interfaces being used and add them.\n6. Click \"Apply and Save\".",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the network does not provide safeguards against DoS attacks, network resources will be unavailable to users. Load balancing provides service redundancy, which reduces the susceptibility of the ALG to many DoS attacks.\n\nThe ALG must be configured to prevent or mitigate the impact on network availability and traffic flow of DoS attacks that have occurred or are ongoing.\n\nThis requirement applies to the network traffic functionality of the device as it pertains to handling network traffic. Some types of attacks may be specialized to certain network technologies, functions, or services. For each technology, known and potential DoS attacks must be identified and solutions for each type implemented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SYME-00-009800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "symantec-edge-swg-alg-security-technical-implementation-guide-v1r1-1d3ef960",
+      "name": "Symantec Edge SWG ALG Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "symantec-edge-swg-alg-security-technical-implementation-guide-v1r1-1d3ef960"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-269968r1052290_rule",
+  "full_rule_id": "SV-269968r1052290_rule",
+  "rule_id": "SV-269968",
+  "rule_revision": "1052290",
+  "group_id": "V-269968",
+  "group_title": "SRG-NET-000512-L2S-000009",
+  "title": "The Dell OS10 Switch must have the default VLAN pruned from all trunk ports that do not require it.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The default VLAN (i.e., VLAN 1) is a special VLAN used for control plane traffic such as Spanning-Tree Protocol (STP), Dynamic Trunking Protocol (DTP), VLAN Trunking Protocol (VTP), and Port Aggregation Protocol (PAgP). VLAN 1 is enabled on all trunks and ports by default. With larger campus networks, use caution regarding the diameter of the STP domain for the default VLAN. Instability in one part of the network could affect the default VLAN, thereby influencing control-plane stability and therefore STP stability for all other VLANs.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the OS10 switch configuration and verify that the default VLAN is pruned from the allowed VLANs on trunk links that do not require it:\n\ninterface ethernet 1/1/1\n no shutdown\n switchport mode trunk\n switchport access vlan 99\n switchport trunk allowed vlan 2100-2102\n\nIf the default VLAN is not pruned from trunk links that should not be transporting frames for the VLAN, this is a finding.",
+  "fix": "Best practice for VLAN-based networks is to prune unnecessary trunk links from gaining access to the default VLAN, and to ensure that frames belonging to the default VLAN do not traverse trunks not requiring frames from the VLAN:\n\nOS10(config)# interface ethernet 1/1/1\nOS10(conf-if-eth1/1/1)# switchport access vlan 99\nOS10(conf-if-eth1/1/1)# switchport trunk allowed vlan 2100-2102",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The default VLAN (i.e., VLAN 1) is a special VLAN used for control plane traffic such as Spanning-Tree Protocol (STP), Dynamic Trunking Protocol (DTP), VLAN Trunking Protocol (VTP), and Port Aggregation Protocol (PAgP). VLAN 1 is enabled on all trunks and ports by default. With larger campus networks, use caution regarding the diameter of the STP domain for the default VLAN. Instability in one part of the network could affect the default VLAN, thereby influencing control-plane stability and therefore STP stability for all other VLANs.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-L2S-000230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff",
+      "name": "Dell OS10 Switch Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff"
+  ]
+}

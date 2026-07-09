@@ -1,0 +1,53 @@
+{
+  "id": "SV-274879r1106564_rule",
+  "full_rule_id": "SV-274879r1106564_rule",
+  "rule_id": "SV-274879",
+  "rule_revision": "1106564",
+  "group_id": "V-274879",
+  "group_title": "SRG-OS-000471-GPOS-00215",
+  "title": "The SUSE operating system must audit any script or executable called by cron as root or by any privileged user.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any script or executable called by cron as root or by any privileged user must be owned by that user, must have the permissions 755 or more restrictive, and have no extended rights that allow any nonprivileged user to modify the script or executable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SUSE operating system is configured to audit the execution of any system call made by cron as root or as any privileged user.\n\n> sudo auditctl -l | grep /etc/cron.d\n-w /etc/cron.d -p wa -k cronjobs\n\n$ sudo auditctl -l | grep /var/spool/cron\n-w /var/spool/cron -p wa -k cronjobs\n\nIf either of these commands do not return the expected output, or the lines are commented out, this is a finding.",
+  "fix": "Configure the SUSE operating system to audit the execution of any system call made by cron as root or as any privileged user.\n\nAdd or update the following file system rules to \"/etc/audit/rules.d/audit.rules\":\n\nauditctl -w /etc/cron.d/ -p wa -k cronjobs\nauditctl -w /var/spool/cron/ -p wa -k cronjobs\n\nTo load the rules to the kernel immediately, use the following command:\n\n> sudo augenrules --load",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any script or executable called by cron as root or by any privileged user must be owned by that user, must have the permissions 755 or more restrictive, and have no extended rights that allow any nonprivileged user to modify the script or executable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-030015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

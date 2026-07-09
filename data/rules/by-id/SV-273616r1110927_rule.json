@@ -1,0 +1,53 @@
+{
+  "id": "SV-273616r1110927_rule",
+  "full_rule_id": "SV-273616r1110927_rule",
+  "rule_id": "SV-273616",
+  "rule_revision": "1110927",
+  "group_id": "V-273616",
+  "group_title": "SRG-NET-000205-RTR-000012",
+  "title": "The RUCKUS ICX router must be configured to only permit management traffic that ingresses and egresses the OOBM interface.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The OOBM access switch will connect to the management interface of the managed network elements. The management interface can be a true OOBM interface or a standard interface functioning as the management interface. In either case, the management interface of the managed network element will be directly connected to the OOBM network.\n\nAn OOBM interface does not forward transit traffic, thereby providing complete separation of production and management traffic. Since all management traffic is immediately forwarded into the management network, it is not exposed to possible tampering. The separation also ensures that congestion or failures in the managed network do not affect the management of the device. If the device does not have an OOBM port, the interface functioning as the management interface must be configured so that management traffic does not leak into the managed network and that production traffic does not leak into the management network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the OOBM interface does not forward transit traffic.\n\n1. Verify the managed interface has an inbound and outbound ACL configured.  \n2. Verify the ingress filter only allows management, IGP, and ICMP traffic.\n\nNote: If the management interface is a true OOBM interface, this requirement is not applicable.\n\nIf the router does not restrict traffic that ingresses and egresses the management interface, this is a finding.",
+  "fix": "Configure the OOBM interface with both an ingress and egress ACL.\n\n1. Configure an ingress ACL a shown in the example below:\nICX(config)#ip access-list ext INGRESS_MGMT_ACL\nICX(config-ext-ipacl-INGRESS_MGMT_ACL)#permit tcp any host 10.11.1.22 eq radius\nICX(config-ext-ipacl-INGRESS_MGMT_ACL)#permit tcp any host 10.11.1.22 eq ssh\nICX(config-ext-ipacl-INGRESS_MGMT_ACL)#permit tcp any host 10.11.1.22 eq snmp\nICX(config-ext-ipacl-INGRESS_MGMT_ACL)#permit udp any host 10.11.1.22 eq ntp\nICX(config-ext-ipacl-INGRESS_MGMT_ACL)#permit icmp any host 10.11.1.22\nICX(config-ext-ipacl-INGRESS_MGMT_ACL)#deny ip any any log\n\n2. Configure an egress ACL a shown in the example below:\nICX(config)#enable egress-acl-on-cpu-traffic\nICX(config)#ip access-list ext EGRESS_MGMT_ACL\nICX(config-ext-ipacl-EGRESS_MGMT_ACL)#permit ip host 10.11.1.22 any\nICX(config-ext-ipacl-EGRESS_MGMT_ACL)#deny ip any any log\n\n3. Apply the ACLs to the OOBM interfaces.\nICX(config-ext-ipacl-EGRESS_MGMT_ACL)#interface ethernet 1/2/1\nICX(config-if-e10000-1/2/1)#port-name Link_to_OOBM_ACCESS_SW\nICX(config-if-e10000-1/2/1)#ip addr 10.11.1.22/24\nICX(config-if-e10000-1/2/1)#ip access-group INGRESS_MGMT_ACL in logging enable\nICX(config-if-e10000-1/2/1)#ip access-group EGRESS_MGMT_ACL out logging enable",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The OOBM access switch will connect to the management interface of the managed network elements. The management interface can be a true OOBM interface or a standard interface functioning as the management interface. In either case, the management interface of the managed network element will be directly connected to the OOBM network.\n\nAn OOBM interface does not forward transit traffic, thereby providing complete separation of production and management traffic. Since all management traffic is immediately forwarded into the management network, it is not exposed to possible tampering. The separation also ensures that congestion or failures in the managed network do not affect the management of the device. If the device does not have an OOBM port, the interface functioning as the management interface must be configured so that management traffic does not leak into the managed network and that production traffic does not leak into the management network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000490",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

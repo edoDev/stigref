@@ -1,0 +1,53 @@
+{
+  "id": "SV-217330r961362_rule",
+  "full_rule_id": "SV-217330r961362_rule",
+  "rule_id": "SV-217330",
+  "rule_revision": "961362",
+  "group_id": "V-217330",
+  "group_title": "SRG-APP-000343-NDM-000289",
+  "title": "The Juniper router must be configured to audit the execution of privileged functions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that it is compliant with this requirement. The configuration example below will log all commands entered from the command line interface as well as log all configuration changes.\n  \nsyslog {\n        file LOG_FILE {\n            interactive-commands;\n            change-log info  \n        }\n    }\n\nNote: The parameter \"any\" can be in place of configuring specific events as this will log everything. Also, a syslog server can be configured in addition to or in lieu of logging to a file as shown in the example below.\n\nsystem {\n   syslog {\n        host 10.1.58.2 {\n            any info;\n        }\n    }\n\nIf the router is not configured to log all commands entered from the command line interface as well as log all configuration changes, this is a finding.",
+  "fix": "Configure the router to log all commands entered from the command line interface as well as log all configuration changes as shown in the following example:\n\n[edit system]\nset syslog file LOG_FILE interactive-commands\nset syslog file LOG_FILE change-log info\n\nNote: The parameter \"any\" can be in place of configuring specific events as this will log everything. Also, a syslog server can be configured in addition to or in lieu of logging to a file as shown in the example below.\n\nset syslog host 10.1.58.2 any info",
+  "ccis": [
+    "CCI-002234"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-ND-000930",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-ndm-security-technical-implementation-guide-v3r2-b0e284b4",
+      "name": "Juniper Router NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-ndm-security-technical-implementation-guide-v3r2-b0e284b4"
+  ]
+}

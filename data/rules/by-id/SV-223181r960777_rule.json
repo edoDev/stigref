@@ -1,0 +1,53 @@
+{
+  "id": "SV-223181r960777_rule",
+  "full_rule_id": "SV-223181r960777_rule",
+  "rule_id": "SV-223181",
+  "rule_revision": "960777",
+  "group_id": "V-223181",
+  "group_title": "SRG-APP-000026-NDM-000208",
+  "title": "For local accounts created on the device, the Juniper SRX Services Gateway must automatically generate log records for account creation events.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Upon gaining access to a network device, an attacker will often first attempt to create a persistent method of reestablishing access. One way to accomplish this is to create a new account. Notification of account creation helps to mitigate this risk. Auditing account creation provides the necessary reconciliation that account management procedures are being followed. Without this audit trail, personnel without the proper authorization may gain access to critical network nodes.\n\nAn AAA server is required for account management in accordance with CCI-000370. Only a single account of last resort is permitted on the local device. However, since it is still possible for administrators to create local accounts either maliciously or to support mission needs, the SRX must be configured to log account management events.\n\nTo log local account management events, ensure at least one external syslog server is configured to log facility any or facility change-log, and severity info or severity any.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the device logs change-log events of severity info or any to an external syslog server.\n\n[edit]\nshow system syslog\n\nhost <syslog server address> {\n  any <info | any>;\n  source-address <device address>;\n}\n\n-OR-\n\nhost <syslog server address> {\n  change-log <info | any>;\n  source-address <device address>;\n}\n\nIf an external syslog host is not configured to log facility change-log severity <info | any>, or configured for facility any severity <info | any>, this is a finding.",
+  "fix": "Configure at least one external syslog host is configured to log facility change-log or any, and severity info or any. \n\n[edit system syslog]\nset host <syslog server address> any <info | any> \n\n -OR-\n\n[edit]\nset host <syslog server address> change-log <info | any>",
+  "ccis": [
+    "CCI-000018"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Upon gaining access to a network device, an attacker will often first attempt to create a persistent method of reestablishing access. One way to accomplish this is to create a new account. Notification of account creation helps to mitigate this risk. Auditing account creation provides the necessary reconciliation that account management procedures are being followed. Without this audit trail, personnel without the proper authorization may gain access to critical network nodes.\n\nAn AAA server is required for account management in accordance with CCI-000370. Only a single account of last resort is permitted on the local device. However, since it is still possible for administrators to create local accounts either maliciously or to support mission needs, the SRX must be configured to log account management events.\n\nTo log local account management events, ensure at least one external syslog server is configured to log facility any or facility change-log, and severity info or severity any.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

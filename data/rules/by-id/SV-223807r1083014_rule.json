@@ -1,0 +1,54 @@
+{
+  "id": "SV-223807r1083014_rule",
+  "full_rule_id": "SV-223807r1083014_rule",
+  "rule_id": "SV-223807",
+  "rule_revision": "1083014",
+  "group_id": "V-223807",
+  "group_title": "SRG-OS-000033-GPOS-00014",
+  "title": "The IBM RACF SSH daemon must be configured to use a FIPS 140-2 compliant cryptographic algorithm to protect confidential information and remote access sessions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. Cryptographic modules must adhere to the higher standards approved by the federal government since this provides assurance they have been tested and validated.\n\nRemote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Locate the SSH daemon configuration file, which may be found in /etc/ssh/ directory.\n\nAlternately:\nFrom the Unix System Services ISPF Shell, navigate to ribbon select tools.\nSelect option 1 - Work with Processes.\n\nIf SSH Daemon is not active, this is not a finding.\n\nExamine SSH daemon configuration file. \nsshd_config\n\nIf there are no \"Ciphers\" lines, or the ciphers list contains any cipher not starting with \"aes\", this is a finding.\n\nIf the MACs line is not configured to \"hmac-sha1\" or greater this is a finding.\n\nExamine the z/OS-specific sshd server systemwide configuration: \nzos_sshd_config\n\nIf any of the following is untrue, this is a finding.\n\nFIPSMODE=YES\nCiphersSource=ICSF\nMACsSource=ICSF",
+  "fix": "Edit the SSH daemon configuration and remove any ciphers not starting with  \"aes\". If necessary, add a \"Ciphers\" line using FIPS 140-2 compliant algorithms.\n\nConfigure for message authentication to MACs \"hmac-sha1\" or greater.\n\nEdit the z/OS-specific sshd server systemwide configuration file configuration as follows:\nFIPSMODE=YES\nCiphersSource=ICSF\nMACsSource=ICSF",
+  "ccis": [
+    "CCI-000068",
+    "CCI-001453"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. Cryptographic modules must adhere to the higher standards approved by the federal government since this provides assurance they have been tested and validated.\n\nRemote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nCryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-SH-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

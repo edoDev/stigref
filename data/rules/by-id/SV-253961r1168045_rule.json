@@ -1,0 +1,53 @@
+{
+  "id": "SV-253961r1168045_rule",
+  "full_rule_id": "SV-253961r1168045_rule",
+  "rule_id": "SV-253961",
+  "rule_revision": "1168045",
+  "group_id": "V-253961",
+  "group_title": "SRG-NET-000362-L2S-000027",
+  "title": "The Juniper EX switch must be configured to enable Dynamic Address Resolution Protocol (ARP) Inspection (DAI) on all user VLANs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DAI intercepts ARP requests and verifies that each of these packets has a valid IP-to-MAC address binding before updating the local ARP cache and before forwarding the packet to the appropriate destination. Invalid ARP packets are dropped and logged. DAI determines the validity of an ARP packet based on valid IP-to-MAC address bindings stored in the DHCP snooping binding database. If the ARP packet is received on a trusted interface, the switch forwards the packet without any checks. On untrusted interfaces, the switch forwards the packet only if it is valid.\n\nThis requirement is applicable to VLANs with active access interfaces assigned but not to switches that only trunk the VLANs between switches. </VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify that Dynamic ARP DAI feature is enabled on all user VLANs. Configuring DAI automatically enables DHCP snooping.\n\nDevices like printers, servers, and VoIP phones are under enterprise control and connected to controlled access interfaces (802.1x, Static MAC Bypass, or MAC RADIUS), making them trusted sources in non-user-facing VLANs.\n\nVerify DAI on user-facing or untrusted VLANs.\n[edit vlans]\n<untrusted VLAN name> {\n    vlan-id <VLAN ID>;\n    forwarding-options {\n        dhcp-security {\n            arp-inspection;\n        }\n    }\n}\nNote: DAI depends upon DHCP snooping or static MAC address bindings.\n\nIf DAI is not enabled on all user VLANs, this is a finding.",
+  "fix": "Configure the switch to have ARP DAI enabled on all user VLANs. This requirement is applicable to VLANs with active access interfaces assigned but not to switches that only trunk the VLANs between switches. \n\nset vlans <untrusted VLAN name> vlan-id <VLAN ID>\nset vlans <untrusted VLAN name> forwarding-options dhcp-security arp-inspection",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DAI intercepts ARP requests and verifies that each of these packets has a valid IP-to-MAC address binding before updating the local ARP cache and before forwarding the packet to the appropriate destination. Invalid ARP packets are dropped and logged. DAI determines the validity of an ARP packet based on valid IP-to-MAC address bindings stored in the DHCP snooping binding database. If the ARP packet is received on a trusted interface, the switch forwards the packet without any checks. On untrusted interfaces, the switch forwards the packet only if it is valid.\n\nThis requirement is applicable to VLANs with active access interfaces assigned but not to switches that only trunk the VLANs between switches.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-L2-000140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf",
+      "name": "Juniper EX Series Switches Layer 2 Switch Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-layer-2-switch-security-technical-implementation-guid-v2r4-19feeadf"
+  ]
+}

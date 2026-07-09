@@ -1,0 +1,54 @@
+{
+  "id": "SV-270682r1066535_rule",
+  "full_rule_id": "SV-270682r1066535_rule",
+  "rule_id": "SV-270682",
+  "rule_revision": "1066535",
+  "group_id": "V-270682",
+  "group_title": "SRG-OS-000002-GPOS-00002",
+  "title": "Ubuntu 24.04 LTS must automatically remove or disable emergency accounts after 72 hours.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Temporary accounts are privileged or nonprivileged accounts established during pressing circumstances, such as new software or hardware configuration or an incident response, where the need for prompt account activation requires bypassing normal account authorization procedures. If any inactive temporary accounts are left enabled on the system and are not either manually removed or automatically expired within 72 hours, the security posture of the system will be degraded and exposed to exploitation by unauthorized users or insider threat actors.\n\nTemporary accounts are different from emergency accounts. Emergency accounts, also known as \"last resort\" or \"break glass\" accounts, are local logon accounts enabled on the system for emergency use by authorized system administrators to manage a system when standard logon methods are failing or not available. Emergency accounts are not subject to manual removal or scheduled expiration requirements.\n\nThe automatic expiration of temporary accounts may be extended as needed by the circumstances but it must not be extended indefinitely. A documented permanent account must be established for privileged users who need long-term maintenance accounts.\n\nSatisfies: SRG-OS-000002-GPOS-00002, SRG-OS-000123-GPOS-00064</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify temporary accounts have been provisioned with an expiration date of 72 hours with the following command:\n\n$ sudo chage -l <temporary_account_name> | grep -i \"account expires\"\n\nVerify each of these accounts has an expiration date set within 72 hours.\n\nIf any temporary accounts have no expiration date set or do not expire within 72 hours, this is a finding.",
+  "fix": "Configure Ubuntu 24.04 LTS to expire temporary accounts after 72 hours with the following command:\n\n$ sudo chage -E $(date -d +3days +%Y-%m-%d) <temporary_account_name>",
+  "ccis": [
+    "CCI-000016",
+    "CCI-001682"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Temporary accounts are privileged or nonprivileged accounts established during pressing circumstances, such as new software or hardware configuration or an incident response, where the need for prompt account activation requires bypassing normal account authorization procedures. If any inactive temporary accounts are left enabled on the system and are not either manually removed or automatically expired within 72 hours, the security posture of the system will be degraded and exposed to exploitation by unauthorized users or insider threat actors.\n\nTemporary accounts are different from emergency accounts. Emergency accounts, also known as \"last resort\" or \"break glass\" accounts, are local logon accounts enabled on the system for emergency use by authorized system administrators to manage a system when standard logon methods are failing or not available. Emergency accounts are not subject to manual removal or scheduled expiration requirements.\n\nThe automatic expiration of temporary accounts may be extended as needed by the circumstances but it must not be extended indefinitely. A documented permanent account must be established for privileged users who need long-term maintenance accounts.\n\nSatisfies: SRG-OS-000002-GPOS-00002, SRG-OS-000123-GPOS-00064",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-200250",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

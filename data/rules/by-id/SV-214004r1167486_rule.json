@@ -1,0 +1,53 @@
+{
+  "id": "SV-214004r1167486_rule",
+  "full_rule_id": "SV-214004r1167486_rule",
+  "rule_id": "SV-214004",
+  "rule_revision": "1167486",
+  "group_id": "V-214004",
+  "group_title": "SRG-APP-000496-DB-000335",
+  "title": "SQL Server must generate audit records when successful and unsuccessful attempts to modify security objects occur.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Changes in the database objects (tables, views, procedures, functions) that record and control permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized changes to the security subsystem could go undetected. The database could be severely compromised or rendered inoperative. \n \nTo aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.\n\nSatisfies: SRG-APP-000496-DB-000334, SRG-APP-000496-DB-000335, SRG-APP-000501-DB-000336, SRG-APP-000501-DB-000337</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if an audit is configured and started by executing the following query: \n \nSELECT name AS 'Audit Name', \n  status_desc AS 'Audit Status', \n  audit_file_path AS 'Current Audit File' \nFROM sys.dm_server_audit_status \n \nIf no records are returned, this is a finding. \n \nExecute the following query to verify the \"SCHEMA_OBJECT_CHANGE_GROUP\" is included in the server audit specification. \n \nSELECT a.name AS 'AuditName', \n  s.name AS 'SpecName', \n  d.audit_action_name AS 'ActionName', \n  d.audited_result AS 'Result' \nFROM sys.server_audit_specifications s \nJOIN sys.server_audits a ON s.audit_guid = a.audit_guid \nJOIN sys.server_audit_specification_details d ON s.server_specification_id = d.server_specification_id \nWHERE a.is_state_enabled = 1 AND d.audit_action_name = 'SCHEMA_OBJECT_CHANGE_GROUP' \n \nIf the \"SCHEMA_OBJECT_CHANGE_GROUP\" is not returned in an active audit, this is a finding.",
+  "fix": "Add the \"SCHEMA_OBJECT_CHANGE_GROUP\" to the server audit specification \nUSE [master]; \nGO  \n \nALTER SERVER AUDIT SPECIFICATION STIG_AUDIT_SERVER_SPECIFICATION WITH (STATE = OFF);  \nGO  \n \nALTER SERVER AUDIT SPECIFICATION STIG_AUDIT_SERVER_SPECIFICATION ADD (SCHEMA_OBJECT_CHANGE_GROUP);  \nGO  \n \nALTER SERVER AUDIT SPECIFICATION STIG_AUDIT_SERVER_SPECIFICATION WITH (STATE = ON);  \nGO \n \nSee supplemental script \"SQL 2016 Audit.sql\".",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Changes in the database objects (tables, views, procedures, functions) that record and control permissions, privileges, and roles granted to users and roles must be tracked. Without an audit trail, unauthorized changes to the security subsystem could go undetected. The database could be severely compromised or rendered inoperative. \n \nTo aid in diagnosis, it is necessary to keep track of failed attempts in addition to the successful ones.\n\nSatisfies: SRG-APP-000496-DB-000334, SRG-APP-000496-DB-000335, SRG-APP-000501-DB-000336, SRG-APP-000501-DB-000337",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQL6-D0-013800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a",
+      "name": "MS SQL Server 2016 Instance Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "ms-sql-server-2016-instance-security-technical-implementation-guide-v3r6-c6dedf3a"
+  ]
+}

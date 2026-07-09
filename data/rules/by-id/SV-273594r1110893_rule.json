@@ -1,0 +1,53 @@
+{
+  "id": "SV-273594r1110893_rule",
+  "full_rule_id": "SV-273594r1110893_rule",
+  "rule_id": "SV-273594",
+  "rule_revision": "1110893",
+  "group_id": "V-273594",
+  "group_title": "SRG-NET-000078-RTR-000001",
+  "title": "The RUCKUS ICX router must be configured to log all packets that have been dropped.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Auditing and logging are key components of any security architecture. It is essential for security personnel to know what is being done or attempted to be done, and by whom, to compile an accurate risk assessment. Auditing the actions on network devices provides a means to recreate an attack or identify a configuration mistake on the device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check ACL deny statements for log keywords and that logging is enabled on applicable bindings:\n\nICX# show ip access Block_host_v4\n\nExtended IP access list Block_host_v4: 3 entries\n10: permit ipv6 any any\n20: deny ip host 192.168.10.253 any log\n30: permit ip any any\n\nICX# show running-config vlan 10\n...\n ip access-group Block_host_v4 in ethernet 1/3/1 logging enable\n\nIf ACL deny statements lack the log keyword or logging is not enabled in the \"ip access-group...\" command, this is a finding.",
+  "fix": "Configure ACL deny statements to include \"log\" and verify logging is enabled where the ACL is applied:\n\nip access-list extended Block_host_v4\n sequence 10 permit ipv6 any any\n sequence 20 deny ip host 192.168.10.253 any log\n sequence 30 permit ip any any\n!\nvlan 10 by port\n tagged ethernet x/x/x\n untagged ethernet y/y/y\n ip access-group Block_host_v4 in ethernet 1/3/1 logging enable",
+  "ccis": [
+    "CCI-000134"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Auditing and logging are key components of any security architecture. It is essential for security personnel to know what is being done or attempted to be done, and by whom, to compile an accurate risk assessment. Auditing the actions on network devices provides a means to recreate an attack or identify a configuration mistake on the device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

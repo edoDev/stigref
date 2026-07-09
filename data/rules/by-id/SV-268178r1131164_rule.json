@@ -1,0 +1,53 @@
+{
+  "id": "SV-268178r1131164_rule",
+  "full_rule_id": "SV-268178r1131164_rule",
+  "rule_id": "SV-268178",
+  "rule_revision": "1131164",
+  "group_id": "V-268178",
+  "group_title": "SRG-OS-000383-GPOS-00166",
+  "title": "NixOS must prohibit the use of cached authenticators after one day.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If cached authentication information is out-of-date, the validity of the authentication information may be questionable.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS, for PKI-based authentication, only caches authenticators for one day with the following command:\n\n$ sudo grep expiration /etc/sssd/sssd.conf\n\noffline_credentials_expiration = 1\n\nIf the offline_credentials_expiration is not set to \"1\" or is commented out, this is a finding.",
+  "fix": "Configure NixOS to prohibit the use of cached credentials older than one day.\n\nAdd the following Nix code to the NixOS Configuration, usually located in /etc/nixos/configuration.nix or /etc/nixos/flake.nix:\n\nNote: The entire sssd.conf must be entered in this option.\n\n services.sssd.config = ''\n  ...\n  [pam]\n  offline_credentials_expiration = 1\n  ...\n '';\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If cached authentication information is out-of-date, the validity of the authentication information may be questionable.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-002050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

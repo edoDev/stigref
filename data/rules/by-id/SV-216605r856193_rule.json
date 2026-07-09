@@ -1,0 +1,53 @@
+{
+  "id": "SV-216605r856193_rule",
+  "full_rule_id": "SV-216605r856193_rule",
+  "rule_id": "SV-216605",
+  "rule_revision": "856193",
+  "group_id": "V-216605",
+  "group_title": "SRG-NET-000362-RTR-000118",
+  "title": "The Cisco BGP router must be configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to determine if it is compliant with this requirement.\n\nStep 1: Verify that a route filter has been configured to reject prefixes longer than /24, or the least significant prefixes issued to the customers as shown in the example below:\n\nip prefix-list FILTER_PREFIX_LENGTH seq 5 permit 0.0.0.0/0 ge 8 le 24\nip prefix-list FILTER_PREFIX_LENGTH seq 10 deny 0.0.0.0/0 le 32\n\nStep 2: Verify that prefix filtering has been applied to each eBGP peer as shown in the example:\n\nrouter bgp xx\n neighbor x.1.1.9 remote-as yy\n neighbor x.1.1.9 prefix-list FILTER_PREFIX_LENGTH in\n neighbor x.2.1.7 remote-as zz\n neighbor x.2.1.7 prefix-list FILTER_PREFIX_LENGTH in\n\n\nIf the router is not configured to limit the prefix size on any inbound route advertisement to /24, or the least significant prefixes issued to the customer, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the router to limit the prefix size on any route advertisement to /24 or the least significant prefixes issued to the customer.\n\nStep 1: Configure a prefix list to reject any prefix that is longer than /24.\n\nR1(config)#ip prefix-list FILTER_PREFIX_LENGTH permit 0.0.0.0/0 ge 8 le 24\nR1(config)#ip prefix-list FILTER_PREFIX_LENGTH deny  0.0.0.0/0 le 32\n\n\nStep 2: Apply the prefix list to all eBGP peers as shown in the example below.\n\nR1(config)#router bgp xx\nR1(config-router)#neighbor x.1.1.9 prefix-list FILTER_PREFIX_LENGTH in\nR1(config-router)#neighbor x.2.1.7 prefix-list FILTER_PREFIX_LENGTH in",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000570",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-router-rtr-security-technical-implementation-guide-v3r4-e4098b9a",
+      "name": "Cisco IOS Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-router-rtr-security-technical-implementation-guide-v3r4-e4098b9a"
+  ]
+}

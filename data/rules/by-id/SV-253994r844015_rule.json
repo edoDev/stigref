@@ -1,0 +1,53 @@
+{
+  "id": "SV-253994r844015_rule",
+  "full_rule_id": "SV-253994r844015_rule",
+  "rule_id": "SV-253994",
+  "rule_revision": "844015",
+  "group_id": "V-253994",
+  "group_title": "SRG-NET-000019-RTR-000013",
+  "title": "The Juniper multicast Rendezvous Point (RP) router must be configured to filter Protocol Independent Multicast (PIM) Register messages received from the Designated Router (DR) for any undesirable multicast groups and sources.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that register messages are accepted only for authorized multicast groups and sources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the RP router is configured to filter PIM register messages from unauthorized multicast groups and sources.\n[edit policy-options]\npolicy-statement <name> {\n    term filter_groups {\n        from {\n            route-filter <multicast address>/<mask> orlonger;\n            route-filter <multicast address>/<mask> exact;\n            <additional groups to filter>\n        }\n        then reject;\n    }\n    term filter_sources {\n        from {\n            source-address-filter <source host address>/32 exact;\n            source-address-filter <source subnet address>/<mask> orlonger;\n            <additional source addresses to filter>\n        }\n        then reject;\n    }\n    term accept_others {\n        then accept;\n    }\n}\n\n[edit protocols pim]\nrp {\n    rp-register-policy <policy name>;\n} \n\nIf the RP router peering with PIM-SM routers is not configured with a PIM import policy to block registration messages for any undesirable multicast groups and sources, this is a finding.",
+  "fix": "Configure the RP router to filter PIM register messages received from a multicast DR for any undesirable multicast groups or sources.\n\nset policy-options policy-statement <name> term filter_groups from route-filter <multicast address>/<mask> <match criterion>\nset policy-options policy-statement <name> term filter_groups from route-filter <additional multicast address>/<mask> <match criterion>\nset policy-options policy-statement <name> term filter_groups then reject\n\nset policy-options policy-statement <name> term filter_source from source-address-filter <source address>/<mask> <match criterion>\nset policy-options policy-statement <name> term filter_source from source-address-filter <additional source address>/<mask> <match criterion>\nset policy-options policy-statement <name> term filter_source then reject\n\nset policy-options policy-statement <name> term accept_others then accept\n\nset protocols pim rp rp-register-policy <policy name>",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that register messages are accepted only for authorized multicast groups and sources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000220",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

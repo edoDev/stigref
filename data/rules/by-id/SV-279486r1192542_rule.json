@@ -1,0 +1,53 @@
+{
+  "id": "SV-279486r1192542_rule",
+  "full_rule_id": "SV-279486r1192542_rule",
+  "rule_id": "SV-279486",
+  "rule_revision": "1192542",
+  "group_id": "V-279486",
+  "group_title": "SRG-APP-000211-AS-000146",
+  "title": "Nutanix VMM must separate user functionality (including user interface services) from VMM management functionality.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>VMM management functionality includes functions necessary for administration and requires privileged user access. Allowing nonprivileged users to access VMM management functionality capabilities increases the risk that nonprivileged users may obtain elevated privileges. \n\nVMM management functionality includes functions necessary to administer console, network components, workstations, or servers, and typically requires privileged user access. \n\nThe separation of user functionality from VMM management functionality is either physical or logical and is accomplished by using different guest VMs, different computers, different central processing units, different instances of the VMM, different network addresses, different TCP/UDP ports, other virtualization techniques, combinations of these methods, or other methods, as appropriate.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Management information flow can be isolated to a separate VLAN from the guest VMs. Verify a management LAN is configured.\n\n1. Log in to Prism Element.\n2. Click the gear icon in the upper right-corner.\n3. Under the \"Settings\" menu, click \"Network Configuration\", then select the \"Internal Interfaces\" tab.\n4. Click \"Management LAN\".\n\nIf \"VLAN ID\" is \"0\" or blank, this is a finding.",
+  "fix": "Configure management information flow to isolate to a separate VLAN from the guest VMs.\n\n1. Log in to Prism Element.\n2. Click the gear icon in the upper-right corner.\n3. Under the \"Settings\" menu, click \"Network Configuration\", then select the \"Internal Interfaces\" tab.\n4. Click \"Management LAN\".\n5. Set the VLAN to the VLAN used for management functions.\na. SSH into each CVM host as user \"Nutanix\" and issue the following command: \n\nchange_cvm_vlan vlan_id.\n\nb. SSH into each AHV host as root and issue the following command: \n\novs-vsctl set port br0 tag=vlan_id\n\nNote: All network switches connected to Nutanix nodes must be appropriately configured with the same VLAN ID.",
+  "ccis": [
+    "CCI-001082"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "VMM management functionality includes functions necessary for administration and requires privileged user access. Allowing nonprivileged users to access VMM management functionality capabilities increases the risk that nonprivileged users may obtain elevated privileges. \n\nVMM management functionality includes functions necessary to administer console, network components, workstations, or servers, and typically requires privileged user access. \n\nThe separation of user functionality from VMM management functionality is either physical or logical and is accomplished by using different guest VMs, different computers, different central processing units, different instances of the VMM, different network addresses, different TCP/UDP ports, other virtualization techniques, combinations of these methods, or other methods, as appropriate.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-AS-000089",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-application-server-security-technical-implementation-guide-v1r1-f6da8c0a",
+      "name": "Nutanix Acropolis Application Server Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-application-server-security-technical-implementation-guide-v1r1-f6da8c0a"
+  ]
+}

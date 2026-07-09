@@ -1,0 +1,53 @@
+{
+  "id": "SV-266257r1024871_rule",
+  "full_rule_id": "SV-266257r1024871_rule",
+  "rule_id": "SV-266257",
+  "rule_revision": "1024871",
+  "group_id": "V-266257",
+  "group_title": "SRG-NET-000089-FW-000019",
+  "title": "In the event that communication with the central audit server is lost, the F5 BIG-IP appliance must continue to queue traffic log records locally.",
+  "severity": "low",
+  "description": "<VulnDiscussion>It is critical that when the network element is at risk of failing to process traffic logs as required, it takes action to mitigate the failure. Audit processing failures include software/hardware errors, failures in the audit capturing mechanisms, and audit storage capacity being reached or exceeded. Responses to audit failure depend on the nature of the failure mode.\n\nIn accordance with DOD policy, the traffic log must be sent to a central audit server. When logging functions are lost, system processing cannot be shut down because firewall availability is an overriding concern given the role of the firewall in the enterprise. The system must either be configured to log events to an alternative server or queue log records locally. Upon restoration of the connection to the central audit server, action must be taken to synchronize the local log data with the central audit server.\n\nIf the central audit server uses UDP communications instead of a connection oriented protocol such as TCP, a method for detecting a lost connection must be implemented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If using Remote High Speed Logging (recommended):\nFrom the BIG-IP GUI:\n1. Local Traffic.\n2. Pools.\n3. Pool List.\n4. <Logging Pool Name>\n5. Verify that \"Enable Request Queueing\" is set to \"Yes\".\n\nFrom the BIG-IP Console, type the following commands:\n\ntmsh list ltm pool <Logging Pool Name> queue-on-connection-limit\n\nNote: Verify this is enabled.\n\nIf the BIG-IP appliance is not configured to queue traffic log records locally in the event that communication with the central audit server is lost, this is a finding.",
+  "fix": "If using Remote High Speed Logging (recommended):\nFrom the BIG-IP GUI:\n1. Local Traffic.\n2. Pools.\n3. Pool List.\n4. <Logging Pool Name>\n5. Verify that \"Enable Request Queueing\" is set to \"Yes\".\nNote: Configuration must be set to \"Advanced\" to view this option.\n\nFrom the BIG-IP Console, type the following commands:\n\ntmsh modify ltm pool <Logging Pool Name> queue-on-connection-limit enabled\ntmsh save sys config",
+  "ccis": [
+    "CCI-000140"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical that when the network element is at risk of failing to process traffic logs as required, it takes action to mitigate the failure. Audit processing failures include software/hardware errors, failures in the audit capturing mechanisms, and audit storage capacity being reached or exceeded. Responses to audit failure depend on the nature of the failure mode.\n\nIn accordance with DOD policy, the traffic log must be sent to a central audit server. When logging functions are lost, system processing cannot be shut down because firewall availability is an overriding concern given the role of the firewall in the enterprise. The system must either be configured to log events to an alternative server or queue log records locally. Upon restoration of the connection to the central audit server, action must be taken to synchronize the local log data with the central audit server.\n\nIf the central audit server uses UDP communications instead of a connection oriented protocol such as TCP, a method for detecting a lost connection must be implemented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-FW-300012",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-firewall-security-technical-implementation-guide-v1r1-97266c8c",
+      "name": "F5 BIG-IP TMOS Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-firewall-security-technical-implementation-guide-v1r1-97266c8c"
+  ]
+}

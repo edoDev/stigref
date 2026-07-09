@@ -1,0 +1,53 @@
+{
+  "id": "SV-216357r959010_rule",
+  "full_rule_id": "SV-216357r959010_rule",
+  "rule_id": "SV-216357",
+  "rule_revision": "959010",
+  "group_id": "V-216357",
+  "group_title": "SRG-OS-000480",
+  "title": "Host-based authentication for login-based services must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The use of .rhosts authentication is an insecure protocol and can be replaced with public-key authentication using Secure Shell. As automatic authentication settings in the .rhosts files can provide a malicious user with sensitive system credentials, the use of .rhosts files should be disabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This is the location for Solaris 11.1. For earlier versions, the information is in /etc/pam.conf.\n\nDetermine if host-based authentication services are enabled.\n\n# grep 'pam_rhosts_auth.so.1' /etc/pam.conf /etc/pam.d/*| grep -vc '^#'\n\nIf the returned result is not 0 (zero), this is a finding.",
+  "fix": "Note: This is the location for Solaris 11.1. For earlier versions, the information is in /etc/pam.conf.\n\nThe root role is required.\n\n# ls -l /etc/pam.d\nto identify the various configuration files used by PAM.\n\nSearch each file for the pam_rhosts_auth.so.1 entry.\n\n# grep pam_rhosts_auth.so.1 [filename]\n\nIdentify the file with the line pam_hosts_auth.so.1 in it.\n\n# pfedit [filename]\n\nInsert a comment character (#) at the beginning of the line containing \"pam_hosts_auth.so.1\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The use of .rhosts authentication is an insecure protocol and can be replaced with public-key authentication using Secure Shell. As automatic authentication settings in the .rhosts files can provide a malicious user with sensitive system credentials, the use of .rhosts files should be disabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040390",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

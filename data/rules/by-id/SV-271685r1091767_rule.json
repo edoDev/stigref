@@ -1,0 +1,53 @@
+{
+  "id": "SV-271685r1091767_rule",
+  "full_rule_id": "SV-271685r1091767_rule",
+  "rule_id": "SV-271685",
+  "rule_revision": "1091767",
+  "group_id": "V-271685",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 must disable the ability of a user to restart the system from the login screen.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons are pressed at the login screen, this can create the risk of short-term loss of availability of systems due to reboot.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement assumes the use of the OL 9 default graphical user interface—the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.\n\nVerify that OL 9 disables a user's ability to restart the system with the following command:\n\n$ grep -R disable-restart-buttons /etc/dconf/db/*\n/etc/dconf/db/distro.d/20-authselect:disable-restart-buttons='true'\n\nIf the \"disable-restart-button\" setting is not set to \"true\", is missing or commented out from the dconf database files, this is a finding.",
+  "fix": "Configure OL 9 to disable a user's ability to restart the system.\n\nAdd or update the [org/gnome/settings-daemon/] section of the /etc/dconf/db/local.d/00-security-settings\" database file and add or update the following lines:\n\n[org/gnome/settings-daemon/peripherals/smartcard]\ndisable-restart-buttons='true'\n\nThen update the dconf system databases:\n\n$ sudo dconf update",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A user who is at the console can reboot the system at the login screen. If restart or shutdown buttons are pressed at the login screen, this can create the risk of short-term loss of availability of systems due to reboot.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002127",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "SV-256331r885604_rule",
+  "full_rule_id": "SV-256331r885604_rule",
+  "rule_id": "SV-256331",
+  "rule_revision": "885604",
+  "group_id": "V-256331",
+  "group_title": "SRG-APP-000172",
+  "title": "The vCenter Server must enable FIPS-validated cryptography.",
+  "severity": "high",
+  "description": "<VulnDiscussion>FIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules use authentication that meets DOD requirements.\n\nIn vSphere 6.7 and later, ESXi and vCenter Server use FIPS-validated cryptography to protect management interfaces and the VMware Certificate Authority (VMCA).\n\nvSphere 7.0 Update 2 and later adds additional FIPS-validated cryptography to vCenter Server Appliance. By default, this FIPS validation option is disabled and must be enabled.\n\nSatisfies: SRG-APP-000172, SRG-APP-000179, SRG-APP-000224, SRG-APP-000231, SRG-APP-000412, SRG-APP-000514, SRG-APP-000555, SRG-APP-000600, SRG-APP-000610, SRG-APP-000620, SRG-APP-000630, SRG-APP-000635</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Web Client, go to Developer Center >> API Explorer.\n\nFrom the \"Select API\" drop-down menu, select appliance.\n\nExpand system/security/global_fips >> GET.\n\nClick \"Execute\" and then \"Copy Response\"  to view the results.\n\nExample response:\n\n{\n    \"enabled\": true\n}\n\nIf global FIPS mode is not enabled, this is a finding.",
+  "fix": "From the vSphere Web Client, go to Developer Center >> API Explorer.\n\nFrom the \"Select API\" drop-down menu, select appliance.\n\nExpand system/security/global_fips >> PUT.\n\nIn the response body under \"Try it out\", paste the following:\n\n{\n    \"enabled\": true\n}\n\nClick \"Execute\".\n\nNote: The vCenter server reboots after FIPS is enabled or disabled.",
+  "ccis": [
+    "CCI-000197",
+    "CCI-000803",
+    "CCI-001188",
+    "CCI-001199",
+    "CCI-001967",
+    "CCI-002450",
+    "CCI-003123"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "FIPS 140-2 is the current standard for validating that mechanisms used to access cryptographic modules use authentication that meets DOD requirements.\n\nIn vSphere 6.7 and later, ESXi and vCenter Server use FIPS-validated cryptography to protect management interfaces and the VMware Certificate Authority (VMCA).\n\nvSphere 7.0 Update 2 and later adds additional FIPS-validated cryptography to vCenter Server Appliance. By default, this FIPS validation option is disabled and must be enabled.\n\nSatisfies: SRG-APP-000172, SRG-APP-000179, SRG-APP-000224, SRG-APP-000231, SRG-APP-000412, SRG-APP-000514, SRG-APP-000555, SRG-APP-000600, SRG-APP-000610, SRG-APP-000620, SRG-APP-000630, SRG-APP-000635",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-70-000077",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8",
+      "name": "VMware vSphere 7.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8"
+  ]
+}

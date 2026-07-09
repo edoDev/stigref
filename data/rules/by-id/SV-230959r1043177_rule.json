@@ -1,0 +1,53 @@
+{
+  "id": "SV-230959r1043177_rule",
+  "full_rule_id": "SV-230959r1043177_rule",
+  "rule_id": "SV-230959",
+  "rule_revision": "1043177",
+  "group_id": "V-230959",
+  "group_title": "SRG-APP-000142-NDM-000245",
+  "title": "Forescout must use DOD-approved PKI rather than proprietary or self-signed device certificates.",
+  "severity": "high",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs.\n\nForescout generates a key-pair and a Certificate Signing Request (CSR). The CSR is sent to the approved certificate authority (CA), who signs it and returns it as a certificate. That certificate is then installed.\n\nThe process to obtain a device PKI certificate requires the generation of a CSR, submission of the CSR to a CA, approval of the request by an RA, and retrieval of the issued certificate from the CA.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Navigate to Tools >> Options >> Certificates >> Trusted Certificates.\n\n1. The System Certificates page appears and provides information for the local certificates.\n2. Select a certificate to display the certificate details.\n\nIf Forescout does not obtain its public key certificates from an appropriate certificate policy through an approved service provider, this is a finding.",
+  "fix": "Replace the self-signed certificate with a CA-signed certificates for greater security. To obtain a CA-signed certificate:\n\nGenerate a certificate signing request (CSR) to obtain a CA-signed certificate for the nodes in your deployment.\n1. Navigate to Tools >> Options >> Certificates >> System Certificates.\n2. On the right of the screen click \"Generate CSR\".\n3. Enter the values for generating a CSR.\n- Key Length – <select an approved key length from the drop down list>\n- Signature Algorithm – <select an approved algorithm from the drop down list>\nExamples:\nRSA: rsa size <512 | 1024 | 2048 | 4096>>\nECDSA: size <256 | 384>>\n- Key Usages – < Checking all items that apply Client Authentication, Server Authentication and Email Signing>\n- Validity – <years>\n4. Click \"Next\".\n\nTo import the required trusted CA certificates by completing the following procedures:\n1. Login to the console.\n2. Navigate to Tools >>  Options >> Certificates >> Trusted Certificates.\n3. Click \"Add\".\n4. Specify the Certificate file.\n5. Ensure \"Enable trusting this certificate\" is checked.\n6. Click \"Next\".\n7. Click \"Next\" after reviewing the certificate data.\n8. Ensure \"All subsystems\" is selected, and then click \"Next\".\n9. Ensure \"All Forescout devices\" is selected, and then click \"Finish\".\n10. Click \"Apply\".",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs.\n\nForescout generates a key-pair and a Certificate Signing Request (CSR). The CSR is sent to the approved certificate authority (CA), who signs it and returns it as a certificate. That certificate is then installed.\n\nThe process to obtain a device PKI certificate requires the generation of a CSR, submission of the CSR to a CA, approval of the request by an RA, and retrieval of the issued certificate from the CA.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "FORE-NM-000330",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "forescout-network-device-management-security-technical-implementation-guide-v2r3-74e33b0d",
+      "name": "Forescout Network Device Management Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "forescout-network-device-management-security-technical-implementation-guide-v2r3-74e33b0d"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-217072r992007_rule",
+  "full_rule_id": "SV-217072r992007_rule",
+  "rule_id": "SV-217072",
+  "rule_revision": "992007",
+  "group_id": "V-217072",
+  "group_title": "SRG-NET-000512-RTR-000009",
+  "title": "The Juniper PE router providing Virtual Private LAN Services (VPLS) must be configured to have all attachment circuits defined to the routing instance with the globally unique VPLS ID assigned for each customer VLAN.",
+  "severity": "high",
+  "description": "<VulnDiscussion>VPLS defines an architecture that delivers Ethernet multipoint services over an MPLS network. Customer Layer 2 frames are forwarded across the MPLS core via pseudowires using IEEE 802.1q Ethernet bridging principles. A pseudowire is a virtual bidirectional connection between two attachment circuits (virtual connections between PE and CE routers). A pseudowire contains two unidirectional label-switched paths (LSP) between two PE routers. Each MAC virtual forwarding table instance is interconnected using pseudowires provisioned for the bridge domain, thereby maintaining privacy and logical separation between each VPLS bridge domain.\n\nThe forwarding table instance specifies the pseudowires associated with connecting PE routers and the customer-facing attachment circuits belonging to a given VLAN. Resembling a Layer 2 switch, the forwarding table instance is responsible for learning MAC addresses and providing loop-free forwarding of customer traffic to the appropriate end nodes. Each VPLS domain is identified by a globally unique VPN ID; hence, VFIs of the same VPLS domain must be configured with the same VPLS ID on all participating PE routers. To guarantee traffic separation for all customer VLANs and that all packets are forwarded to the correct destination, it is imperative that the correct attachment circuits are associated with the appropriate forwarding table instance and that each forwarding table instance is associated to the unique VPLS ID assigned to the customer VLAN.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the implementation plan and the VPLS IDs assigned to customer VLANs for the VPLS deployment.\n\nReview the PE router configuration to verify that customer attachment circuits are associated to the appropriate routing instance configured for the customers VPLS ID.\n\ninterfaces {\n    ge-0/1/0.0 {\n        encapsulation ethernet-vpls;\n        unit 0 {\n        }\n    }\n…\n…\n…\nrouting-instances {\n    VPLS_CUST2 {\n        instance-type vpls;\n        interface ge-0/1/0.0;\n        route-distinguisher 22:22;\n        vrf-target target:22:22;\n        protocols {\n            vpls {\n                site-range 9;\n                no-tunnel-services;\n                site R8 {\n                    site-identifier 8;\n                    interface ge-0/1/0.0;\n                }\n                vpls-id 102;\n                neighbor 8.8.8.8;\n            }\n        }\n    }\n}\n\nIf the attachment circuits have not been bound to appropriate routing instance configured with the assigned VPLS ID for each customer VLAN, this is a finding.",
+  "fix": "Assign globally unique VPLS ID to each VPLS routing instance as shown in the example.\n\n[edit routing-instances VPLS_CUST2 protocols vpls]\nset vpls-id 102 neighbor 8.8.8.8",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "VPLS defines an architecture that delivers Ethernet multipoint services over an MPLS network. Customer Layer 2 frames are forwarded across the MPLS core via pseudowires using IEEE 802.1q Ethernet bridging principles. A pseudowire is a virtual bidirectional connection between two attachment circuits (virtual connections between PE and CE routers). A pseudowire contains two unidirectional label-switched paths (LSP) between two PE routers. Each MAC virtual forwarding table instance is interconnected using pseudowires provisioned for the bridge domain, thereby maintaining privacy and logical separation between each VPLS bridge domain.\n\nThe forwarding table instance specifies the pseudowires associated with connecting PE routers and the customer-facing attachment circuits belonging to a given VLAN. Resembling a Layer 2 switch, the forwarding table instance is responsible for learning MAC addresses and providing loop-free forwarding of customer traffic to the appropriate end nodes. Each VPLS domain is identified by a globally unique VPN ID; hence, VFIs of the same VPLS domain must be configured with the same VPLS ID on all participating PE routers. To guarantee traffic separation for all customer VLANs and that all packets are forwarded to the correct destination, it is imperative that the correct attachment circuits are associated with the appropriate forwarding table instance and that each forwarding table instance is associated to the unique VPLS ID assigned to the customer VLAN.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000660",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

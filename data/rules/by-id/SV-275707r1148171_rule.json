@@ -1,0 +1,53 @@
+{
+  "id": "SV-275707r1148171_rule",
+  "full_rule_id": "SV-275707r1148171_rule",
+  "rule_id": "SV-275707",
+  "rule_revision": "1148171",
+  "group_id": "V-275707",
+  "group_title": "SRG-OS-000064-GPOS-00033",
+  "title": "Ubuntu OS must generate audit records for successful/unsuccessful uses of the su command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without generating audit records specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.  \n  \nAudit records can be generated from various components within the information system (e.g., module or policy filter).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu OS generates audit records upon successful/unsuccessful attempts to use the \"su\" command by using the following command:  \n  \n     $ sudo auditctl -l | grep /bin/su \n     -a always,exit -S all -F path=/bin/su -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged-priv_change  \n  \nIf the command does not return lines that match the example or the lines are commented out, this is a finding.  \n  \nNote: The \"key=\" value is arbitrary and can be different from the example output above.",
+  "fix": "Configure Ubuntu OS to generate audit records when successful/unsuccessful attempts to use the \"su\" command occur.  \n  \nAdd or modify the following line in the \"/etc/audit/rules.d/stig.rules\" file:  \n  \n-a always,exit -F path=/bin/su -F perm=x -F auid>=1000 -F auid!=unset -k privileged-priv_change   \n  \nTo reload the rules file, issue the following command:  \n  \n     $ sudo augenrules --load \n \nNote: The \"-k <keyname>\" at the end of the line gives the rule a unique meaning to help during an audit investigation. The <keyname> does not need to match the example above.",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without generating audit records specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.  \n  \nAudit records can be generated from various components within the information system (e.g., module or policy filter).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RIIM-OS-654100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd",
+      "name": "Riverbed NetIM OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "riverbed-netim-os-security-technical-implementation-guide-v1r1-dd8f40bd"
+  ]
+}

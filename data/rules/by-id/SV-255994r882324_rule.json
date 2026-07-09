@@ -1,0 +1,53 @@
+{
+  "id": "SV-255994r882324_rule",
+  "full_rule_id": "SV-255994r882324_rule",
+  "rule_id": "SV-255994",
+  "rule_revision": "882324",
+  "group_id": "V-255994",
+  "group_title": "SRG-NET-000018-RTR-000008",
+  "title": "The Arista Multicast Source Discovery Protocol (MSDP) router must be configured to filter source-active multicast advertisements to external MSDP peers to avoid global visibility of local-only multicast sources and groups.",
+  "severity": "low",
+  "description": "<VulnDiscussion>To avoid global visibility of local information, there are a number of source-group (S, G) states in a PIM-SM domain that must not be leaked to another domain, such as multicast sources with private address, administratively scoped multicast addresses, and the auto-RP groups (224.0.1.39 and 224.0.1.40).\n\nAllowing a multicast distribution tree, local to the core, to extend beyond its boundary could enable local multicast traffic to leak into other autonomous systems and customer networks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router configuration to determine if there is export policy to block local source-active multicast advertisements.\n\nStep 1: Verify that an outbound source-active filter is bound to each MSDP peer.\n\nTo verify the MSDP peer is configured and to verify the source-active filter is configured outbound, execute the command \"show ip msdp peer X.1.12.2 and show ip msdp summary\".\n\nrouter msdp \n peer 10.1.12.2\n  sa-filter out PIM_NEIGHBOR_SA_FILTER\n\nStep 2: Review the access lists referenced by the source-active filters and verify that MSDP source-active messages being sent to MSDP peers do not leak advertisements that are local.\n\nTo verify IP access lists are configured, execute the command \"show ip access-lists\".\n\nip access-list PIM_NEIGHBOR_SA_FILTER\n   10 deny ip any 224.1.1.0/24\n   20 deny ip any 224.1.2.0/24\n   30 deny ip any 224.1.3.0/24\n   40 deny ip any 224.1.4.0/24\n   100 permit ip any any\n\nIf the router is not configured with an export policy to block local source-active multicast advertisements, this is a finding.",
+  "fix": "Step 1: Configure Arista router to ensure an export policy is implemented on all MSDP routers to avoid global visibility of local multicast (S,G) states.\n\nrouter msdp \n peer 10.1.12.2\n  sa-filter in PIM_NEIGHBOR_SA_FILTER\n\nStep 2: Configure the source active access-list.\n\nip access-list PIM_NEIGHBOR_SA_FILTER\n   10 deny ip any 224.1.1.0/24\n   20 deny ip any 224.1.2.0/24\n   30 deny ip any 224.1.3.0/24\n   40 deny ip any 224.1.4.0/24\n   100 permit ip any any",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To avoid global visibility of local information, there are a number of source-group (S, G) states in a PIM-SM domain that must not be leaked to another domain, such as multicast sources with private address, administratively scoped multicast addresses, and the auto-RP groups (224.0.1.39 and 224.0.1.40).\n\nAllowing a multicast distribution tree, local to the core, to extend beyond its boundary could enable local multicast traffic to leak into other autonomous systems and customer networks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

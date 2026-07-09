@@ -1,0 +1,53 @@
+{
+  "id": "SV-223004r1135506_rule",
+  "full_rule_id": "SV-223004r1135506_rule",
+  "rule_id": "SV-223004",
+  "rule_revision": "1135506",
+  "group_id": "V-223004",
+  "group_title": "SRG-APP-000516-AS-000237",
+  "title": "ALLOW_BACKSLASH must be set to false.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When Tomcat is installed behind a proxy configured to only allow access to certain Tomcat contexts (web applications), an HTTP request containing \"/\\../\" may allow attackers to work around the proxy restrictions using directory traversal attack methods. If allow_backslash is true the '\\' character will be permitted as a path delimiter. The default value for the setting is false but Tomcat should always be configured as if no proxy restricting context access was used and allow_backslash should be set to false to prevent directory traversal style attacks. This setting can create operability issues with non-compliant clients. In order to accommodate a non-compliant client, any deviation from the STIG setting must be approved by the ISSO.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the ISSO has accepted the risk for enabling the ALLOW_BACKSLASH setting, this requirement is NA.\n\nFrom the Tomcat server as an elevated user, run the following command:\n\nsudo grep -i ALLOW_BACKSLASH $CATALINA_BASE/conf/catalina.properties\n\nsudo grep -i catalina_opts /etc/systemd/system/tomcat.service\n\nIf org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true, this is a finding.",
+  "fix": "As a privileged user on the Tomcat server:\n\nIf the finding is in the catalina.properties file, edit the $CATALINA_BASE/conf/catalina.properties file.\n\nsudo nano $CATALINA_BASE/conf/catalina.properties\n\nChange the org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true setting to =false.\n\nIf the finding is in the /etc/systemd/services/tomcat/service file, edit the file using a text editor.\n\nsudo nano /etc/systemd/services/tomcat.service\n\nLocate the Environment='CATALINA_OPTS=' line and change the -D.org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true setting to =false.\n\nRestart Tomcat by running the following commands:\nsudo systemctl restart tomcat\nsudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When Tomcat is installed behind a proxy configured to only allow access to certain Tomcat contexts (web applications), an HTTP request containing \"/\\../\" may allow attackers to work around the proxy restrictions using directory traversal attack methods. If allow_backslash is true the '\\' character will be permitted as a path delimiter. The default value for the setting is false but Tomcat should always be configured as if no proxy restricting context access was used and allow_backslash should be set to false to prevent directory traversal style attacks. This setting can create operability issues with non-compliant clients. In order to accommodate a non-compliant client, any deviation from the STIG setting must be approved by the ISSO.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-001680",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

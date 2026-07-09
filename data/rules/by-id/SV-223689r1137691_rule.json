@@ -1,0 +1,54 @@
+{
+  "id": "SV-223689r1137691_rule",
+  "full_rule_id": "SV-223689r1137691_rule",
+  "rule_id": "SV-223689",
+  "rule_revision": "1137691",
+  "group_id": "V-223689",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS MCS consoles access authorization(s) for CONSOLE resource(s) must be properly protected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>MCS consoles can be used to issue operator commands. Failure to properly control access to MCS consoles could result in unauthorized personnel issuing sensitive operator commands. This exposure may threaten the integrity and availability of the operating system environment, and compromise the confidentiality of customer data.\n\nPreventing non-privileged users from executing privileged functions mitigates the risk that unauthorized individuals or processes may gain unnecessary access to information or privileges.\n\nPrivileged functions include, for example, establishing accounts, performing system integrity checks, or administering cryptographic key management activities. Non-privileged users are individuals that do not possess appropriate authorizations. Circumventing intrusion detection and prevention mechanisms or malicious code protection mechanisms are examples of privileged functions that require protection from non-privileged users.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000324-GPOS-00125</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the CONSOLxx member of SYS1.PARMLIB.console is defined to RACF with a corresponding profile in the CONSOLE resource class.\n\nIf each console is defined to RACF with a corresponding profile in the CONSOLE resource class, this is not a finding.\n\nIf the userid associated with each console has READ access to the corresponding resource defined in the CONSOLE resource class, this is not a finding.\n\nIf access authorization for CONSOLE resources restricts READ access to operations and system programming personnel or authorized personnel, this is not a finding.",
+  "fix": "Define all MCS consoles to the CONSOLE resource class and configure READ access to be limited to operators and system programmers.\n\nConfigure the MCS console resources defined to z/OS and the ESM to conform to those outlined below.\n\nEach console defined in the CONSOLxx parmlib member is defined to RACF with a corresponding profile in the CONSOLE resource class. See the IBM zOS OPERATIONS AND PLANNING guide for further information.\n\nEach CONSOLE profile is defined with UACC(NONE). \n\nExample:\nRDEF CONSOLE MMDMST UACC(NONE) OWNER(syspsmpl) \nRDEF CONSOLE MMD041 UACC(NONE) OWNER(syspsmpl) \nRDEF CONSOLE MMDSCN UACC(NONE) OWNER(syspsmpl)\nRDEF CONSOLE ** UACC(NONE) OWNER(syspsmpl) DATA(** represents all consoles not specifically defined)\n\nDo not permit any user or group access to the ** profile. If a new console is added to the CONSOLxx member it will be covered by this profile and a subsequent error will display in the log, which will allow identification of the undefined console.\n\nThe userid associated with each console will have READ access to the corresponding resource defined in the CONSOLE resource class. A sample command file to accomplish this is shown here:\n\nPE MMDMST CL(CONSOLE) ID(mmdmst)\nPE MMDSCN CL(CONSOLE) ID(mmdscn)\nPE MMD041 CL(CONSOLE) ID(mmd041)\n\nAccess authorization for CONSOLE resources restricts READ access to operations and system programming personnel or authorized personnel. A sample command file showing a permission of READ access for sysprogs and operators is shown here:\n\nPE MMDMST CL(CONSOLE) ID(syspsmpl opersmpl)\nPE MMDSCN CL(CONSOLE) ID(syspsmpl opersmpl)\nPE MMD041 CL(CONSOLE) ID(syspsmpl opersmpl)",
+  "ccis": [
+    "CCI-000213",
+    "CCI-002235"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "MCS consoles can be used to issue operator commands. Failure to properly control access to MCS consoles could result in unauthorized personnel issuing sensitive operator commands. This exposure may threaten the integrity and availability of the operating system environment, and compromise the confidentiality of customer data.\n\nPreventing non-privileged users from executing privileged functions mitigates the risk that unauthorized individuals or processes may gain unnecessary access to information or privileges.\n\nPrivileged functions include, for example, establishing accounts, performing system integrity checks, or administering cryptographic key management activities. Non-privileged users are individuals that do not possess appropriate authorizations. Circumventing intrusion detection and prevention mechanisms or malicious code protection mechanisms are examples of privileged functions that require protection from non-privileged users.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000324-GPOS-00125",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000410",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

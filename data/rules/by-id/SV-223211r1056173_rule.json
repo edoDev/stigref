@@ -1,0 +1,54 @@
+{
+  "id": "SV-223211r1056173_rule",
+  "full_rule_id": "SV-223211r1056173_rule",
+  "rule_id": "SV-223211",
+  "rule_revision": "1056173",
+  "group_id": "V-223211",
+  "group_title": "SRG-APP-000142-NDM-000245",
+  "title": "The Juniper SRX Services Gateway must use and securely configure SNMPv3 if SNMP is enabled.",
+  "severity": "high",
+  "description": "<VulnDiscussion>To prevent nonsecure protocol communications with the organization's local SNMPv3 services, the SNMP client on the Juniper SRX must be configured for proper identification and strong cryptographically based protocol for authentication.\n\nSNMPv3 defines a user-based security model (USM) and a view-based access control model (VACM). SNMPv3 USM provides data integrity, data origin authentication, message replay protection, and protection against disclosure of the message payload. SNMPv3 VACM provides access control to determine whether a specific type of access (read or write) to the management information is allowed.\n\nThe Junos operating system allows the use of SNMPv3 to monitor or query the device for management purposes. Junos does not allow SNMPv3, of any type, to be used to make configuration changes to the device. SNMPv3 is disabled by default and must be enabled for use. SNMPv3 is the DOD-preferred method for monitoring the device securely. If SNMPv3 is not being used, it must be disabled. The commands in the Fix Text will configure SNMPv3. The Junos operating system allows the use of FIPS 140-2/140-3 validated protocols for secure connections.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If an SNMP stanza does not exist, this is not a finding.\n\nVerify SNMPv3 is enabled and configured.\n\n[edit]\nshow snmp\n\nIf versions earlier than SNMPv3 are enabled, this is a finding.",
+  "fix": "Enable and configure SNMPv3 and configure a trap and community string.\n\n[edit]\nset snmp location <LOCATION-NAME>\nset snmp v3 usm local-engine user <USER-NAME> privacy-AES128 authentication-sha256\nset snmp v3 vacm security-to-group security-model usm security-name <SECURITY-NAME> group <GROUP-NAME>\nset snmp v3 vacm access group <GROUP-NAME> default-context-prefix security-model usm\nsecurity-level privacy read-view all\nset snmp v3 vacm access group <GROUP-NAME> default-context-prefix security-model usm\nsecurity-level privacy notify-view all\nset snmp v3 target-address <target-address-name> tag-list <SNMP-trap-receiver>\nset snmp v3 target-address <TARGER-ADDRESS-NAME> target-parameters <PARMS-NAME>\nset snmp v3 target-parameters <PARMS-NAME> parameters message-processing-model v3\nset snmp v3 target-parameters <PARMS-NAME> parameters security-model usm\nset snmp v3 target-parameters <PARMS-NAME> parameters security-level privacy\nset snmp v3 target-parameters <PARMS-NAME> parameters security-name <SECURITY-NAME>\nset snmp v3 target-parameters <PARMS-NAME> notify-filter device-traps\nset snmp v3 notify <SNMP-TRAPS> type trap\nset snmp v3 notify <SNMP-TRAPS> tag <SNMP-TRAP-RECEIVER>\nset snmp v3 notify-filter device-traps oid jnxChassisTraps include\nset snmp v3 notify-filter device-traps oid jnxChassisOKTraps include\nset snmp v3 notify-filter device-traps oid system include\nset snmp v3 notify-filter device-traps oid .1 include\nset snmp v3 notify-filter device-traps oid snmpMIBObjects include\nset snmp engine-id use-mac-address\nset snmp view all oid .1 include\nset snmp view all oid system include\nset snmp view all oid jnxBoxAnatomy include\nset snmp view all oid snmpMIBObjects include",
+  "ccis": [
+    "CCI-000382",
+    "CCI-001967"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To prevent nonsecure protocol communications with the organization's local SNMPv3 services, the SNMP client on the Juniper SRX must be configured for proper identification and strong cryptographically based protocol for authentication.\n\nSNMPv3 defines a user-based security model (USM) and a view-based access control model (VACM). SNMPv3 USM provides data integrity, data origin authentication, message replay protection, and protection against disclosure of the message payload. SNMPv3 VACM provides access control to determine whether a specific type of access (read or write) to the management information is allowed.\n\nThe Junos operating system allows the use of SNMPv3 to monitor or query the device for management purposes. Junos does not allow SNMPv3, of any type, to be used to make configuration changes to the device. SNMPv3 is disabled by default and must be enabled for use. SNMPv3 is the DOD-preferred method for monitoring the device securely. If SNMPv3 is not being used, it must be disabled. The commands in the Fix Text will configure SNMPv3. The Junos operating system allows the use of FIPS 140-2/140-3 validated protocols for secure connections.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000111",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-223592r1196248_rule",
+  "full_rule_id": "SV-223592r1196248_rule",
+  "rule_id": "SV-223592",
+  "rule_revision": "1196248",
+  "group_id": "V-223592",
+  "group_title": "SRG-OS-000104-GPOS-00051",
+  "title": "IBM z/OS Syslog daemon must be properly defined and secured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Syslog daemon, known as syslogd, is a z/OS Unix daemon that provides a central processing point for log messages issued by other z/OS Unix processes. It is also possible to receive log messages from other network-connected hosts. Some of the IBM Communications Server components that may send messages to Syslog are the FTP, z/OS Unix Telnet, DNS, and DHCP servers. The messages may be of varying importance and may include general process information, diagnostic information, critical error notification, and audit-class information. There is a security interest in protecting the syslogd process and its associated data because of the potential to use this information in an audit process. \n\nThe Syslog daemon requires special privileges and access to sensitive resources to provide its system services. Failure to properly define and control the Syslog daemon could lead to unauthorized access. This exposure may result in the compromise of the integrity and availability of the operating system environment, ACP, and customer data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The Syslog daemon is defined as SYSLOGD.\n\nFrom the ACF command screen enter:\nSET LID\nLIST SYSLOGD\n\nIf the Syslog daemon is not defined, this is a finding.\n\nIf the SYSLOGD logonid is not defined with the STC attribute, this is a finding.\n\nIf the SYSLOGD userid has UID(0), HOME('/'), and PROGRAM('/bin/sh') specified in the OMVS segment, this is not a finding. \n\nIf Syslog daemon is started from /etc/rc then ensure that the _BPX_JOBNAME and _BPX_USERID environment variables are assigned a value of SYSLOGD.",
+  "fix": "Define the Syslog daemon logonid as SYSLOGD with the STC attribute.\n\nTo set up and use as an MVS Started Proc, the following sample commands are provided:\nSET LID\nINSERT SYSLOGD NAME(SYSLOGD STC) GROUP(stctcpx) STC\n\nThe SYSLOGD userid has UID(0), HOME('/'), and PROGRAM('/bin/sh') specified in the OMVS segment.\n\nSET PROFILE(USER) DIVISION(OMVS)\nINSERT SYSLOGD UID(0) HOME(/) PROGRAM(/bin/sh)\n\nF ACF2,REBUILD(USR),CLASS(P)\n\nIf /etc/rc is used to start the Syslog daemon ensure that the _BPX_JOBNAME and _BPX_ USERID environment variables are assigned a value of SYSLOGD.",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Syslog daemon, known as syslogd, is a z/OS Unix daemon that provides a central processing point for log messages issued by other z/OS Unix processes. It is also possible to receive log messages from other network-connected hosts. Some of the IBM Communications Server components that may send messages to Syslog are the FTP, z/OS Unix Telnet, DNS, and DHCP servers. The messages may be of varying importance and may include general process information, diagnostic information, critical error notification, and audit-class information. There is a security interest in protecting the syslogd process and its associated data because of the potential to use this information in an audit process. \n\nThe Syslog daemon requires special privileges and access to sensitive resources to provide its system services. Failure to properly define and control the Syslog daemon could lead to unauthorized access. This exposure may result in the compromise of the integrity and availability of the operating system environment, ACP, and customer data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ACF2-SL-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad",
+      "name": "IBM z/OS ACF2 Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad"
+  ]
+}

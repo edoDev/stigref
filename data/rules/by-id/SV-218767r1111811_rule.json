@@ -1,0 +1,53 @@
+{
+  "id": "SV-218767r1111811_rule",
+  "full_rule_id": "SV-218767r1111811_rule",
+  "rule_id": "SV-218767",
+  "rule_revision": "1111811",
+  "group_id": "V-218767",
+  "group_title": "SRG-APP-000427-WSR-000186",
+  "title": "The IIS 10.0 website must only accept client certificates issued by DOD PKI or DOD-approved PKI Certification Authorities (CAs).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The use of a DOD PKI certificate ensures clients the private website they are connecting to is legitimate, and is an essential part of the DOD defense-in-depth strategy.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If the server being reviewed is hosting WSUS, this is not applicable.\nNote: If the server is providing OCSP, and not otherwise hosting any content, this requirement is not applicable.\n\nFollow the procedures below for each site hosted on the IIS 10.0 web server:\n\nOpen the IIS 10.0 Manager.\n\nClick the site name under review.\n\nClick \"Bindings\" in the \"Action\" Pane.\n\nClick the \"HTTPS type\" from the box.\n\nClick \"Edit\".\n\nClick \"View\" and then review and verify the certificate path.\n\nIf the list of CAs in the trust hierarchy does not lead to the DOD PKI Root CA, DOD-approved external certificate authority (ECA), or DOD-approved external partner, this is a finding.\n\nIf HTTPS is not an available type under site bindings, this is a finding.\n\nIf HTTPS is not an available type under site bindings, and the Web Server ONLY communicates directly with a load balancer/proxy server with IP address and Domain Restrictions in place, this is not a finding.",
+  "fix": "To add DOD Certificates to the Server, if not already present:\n\nOpen the IIS 10.0 Manager.\n\nClick the Server name.\n\nDouble-click \"Server Certificates\".\n\nClick \"Import\" under the \"Actions\" pane.\n\nBrowse to the DOD certificate location, select it, and click \"OK\".\n\nRemove any non-DOD certificates if present.\n\nFollow the procedures below for each site hosted on the IIS 10.0 web server to bind the certificates to the site:\n\nClick on the site needing the certificate.\n\nSelect \"Bindings\" under the \"Actions\" pane.\n\nClick on the binding needing a certificate and select \"Edit\", or add a site binding for HTTPS.\n\nAssign the certificate to the website by choosing it under the \"SSL Certificate\" drop-down and clicking \"OK\".",
+  "ccis": [
+    "CCI-002470"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The use of a DOD PKI certificate ensures clients the private website they are connecting to is legitimate, and is an essential part of the DOD defense-in-depth strategy.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IIST-SI-000241",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-iis-10-0-site-security-technical-implementation-guide-v2r15-f7e4aa41",
+      "name": "Microsoft IIS 10.0 Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "15"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-iis-10-0-site-security-technical-implementation-guide-v2r15-f7e4aa41"
+  ]
+}

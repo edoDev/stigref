@@ -1,0 +1,53 @@
+{
+  "id": "SV-206519r960735_rule",
+  "full_rule_id": "SV-206519r960735_rule",
+  "rule_id": "SV-206519",
+  "rule_revision": "960735",
+  "group_id": "V-206519",
+  "group_title": "SRG-APP-000001",
+  "title": "The DBMS must limit the number of concurrent sessions to an organization-defined number per user for all accounts and/or account types.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Database management includes the ability to control the number of users and user sessions utilizing a DBMS. Unlimited concurrent connections to the DBMS could allow a successful Denial of Service (DoS) attack by exhausting connection resources; and a system can also fail or be degraded by an overload of legitimate users. Limiting the number of concurrent sessions per user is helpful in reducing these risks.\n\nThis requirement addresses concurrent session control for a single account. It does not address concurrent sessions by a single user via multiple system accounts; and it does not deal with the total number of sessions across all accounts.\n\nThe capability to limit the number of concurrent sessions per user must be configured in or added to the DBMS (for example, by use of a logon trigger), when this is technically feasible. Note that it is not sufficient to limit sessions via a web server or application server alone, because legitimate users and adversaries can potentially connect to the DBMS by other means.\n\nThe organization will need to define the maximum number of concurrent sessions by account type, by account, or a combination thereof. In deciding on the appropriate number, it is important to consider the work requirements of the various types of users. For example, 2 might be an acceptable limit for general users accessing the database via an application; but 10 might be too few for a database administrator using a database management GUI tool, where each query tab and navigation pane may count as a separate session.\n\n(Sessions may also be referred to as connections or logons, which for the purposes of this requirement are synonyms.)</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine whether the system documentation specifies limits on the number of concurrent DBMS sessions per account by type of user. If it does not, assume a limit of 10 for database administrators and 2 for all other users.\n\nReview the concurrent-sessions settings in the DBMS and/or the applications using it, and/or the system software supporting it. \n\nIf the DBMS is capable of enforcing this restriction but is not configured to do so, this is a finding. This holds even if the restriction is enforced by applications or supporting software.\n\nIf it is not technically feasible for the DBMS to enforce this restriction, but the application(s) or supporting software are configured to do so, this is not a finding. \n\nIf it is not technically feasible for the DBMS to enforce this restriction, and applications and supporting software are not so configured, this is a finding.\n\nIf the value for any type of user account is not set, this is a finding.\n\nIf a value is set but is not equal to the value specified in the documentation (or the default value defined in this check) for the type of user, this is a finding.",
+  "fix": "If the DBMS is capable of enforcing this restriction, but is not configured to do so, configure it to do so. (This may involve the development of one or more triggers.)\n\nIf it is not technically feasible for the DBMS to enforce this restriction, and the application(s) and supporting software are not configured to do so, configure them to do so.\n\nIf the value for any type of user account is not set, determine the correct value and set it. \n\nIf a value is set but is not equal to the value specified for the type of user, determine the correct value, set it, and update the documentation, as appropriate.",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Database management includes the ability to control the number of users and user sessions utilizing a DBMS. Unlimited concurrent connections to the DBMS could allow a successful Denial of Service (DoS) attack by exhausting connection resources; and a system can also fail or be degraded by an overload of legitimate users. Limiting the number of concurrent sessions per user is helpful in reducing these risks.\n\nThis requirement addresses concurrent session control for a single account. It does not address concurrent sessions by a single user via multiple system accounts; and it does not deal with the total number of sessions across all accounts.\n\nThe capability to limit the number of concurrent sessions per user must be configured in or added to the DBMS (for example, by use of a logon trigger), when this is technically feasible. Note that it is not sufficient to limit sessions via a web server or application server alone, because legitimate users and adversaries can potentially connect to the DBMS by other means.\n\nThe organization will need to define the maximum number of concurrent sessions by account type, by account, or a combination thereof. In deciding on the appropriate number, it is important to consider the work requirements of the various types of users. For example, 2 might be an acceptable limit for general users accessing the database via an application; but 10 might be too few for a database administrator using a database management GUI tool, where each query tab and navigation pane may count as a separate session.\n\n(Sessions may also be referred to as connections or logons, which for the purposes of this requirement are synonyms.)",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SRG-APP-000001-DB-000031",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "database-security-requirements-guide-v4r5-e4f077d7",
+      "name": "Database Security Requirements Guide",
+      "version": "4",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "database-security-requirements-guide-v4r5-e4f077d7"
+  ]
+}

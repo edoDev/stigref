@@ -1,0 +1,53 @@
+{
+  "id": "SV-223191r960885_rule",
+  "full_rule_id": "SV-223191r960885_rule",
+  "rule_id": "SV-223191",
+  "rule_revision": "960885",
+  "group_id": "V-223191",
+  "group_title": "SRG-APP-000091-NDM-000223",
+  "title": "The Juniper SRX Services Gateway must generate log records when successful attempts to configure the device and use commands occur.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Without generating log records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one. \n\nWhile the Juniper SRX inherently has the capability to generate log records, by default only the high facility levels are captured by default to local files. \n\nEnsure at least one Syslog server and local files are configured to support requirements. However, the Syslog itself must also be configured to filter event records so it is not overwhelmed. A best practice when configuring the external Syslog server is to add similar log-prefixes to the log file names to help and researching of central Syslog server. Another best practice is to add a match condition to limit the recorded events to those containing the regular expression (REGEX).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify logging has been enabled and configured.\n\n[edit] \nshow system syslog\n\nIf a valid syslog host server and the syslog file names are not configured to capture \"any\" facility and \"any\" event, this is a finding.",
+  "fix": "The following example commands configure Syslog and local backup files to capture DoD-defined auditable events. \n\n[edit]\nset system syslog user * any emergency\nset system syslog host <IP-syslog-server> any any\nset system syslog host <IP-syslog-server> source-address <MGT-IP-Address>\nset system syslog host <IP-syslog-server> log-prefix <host-name>\nset system syslog file messages any info\nset system syslog file messages authorization none\nset system syslog file messages interactive-commands none \nset system syslog file messages daemon none \nset system syslog file User-Auth authorization any\nset system syslog file interactive-commands interactive-commands any\nset system syslog file processes daemon any\nset system syslog file account-actions change-log any any\nset file account-actions match “system login user”\nset system syslog console any any",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without generating log records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one. \n\nWhile the Juniper SRX inherently has the capability to generate log records, by default only the high facility levels are captured by default to local files. \n\nEnsure at least one Syslog server and local files are configured to support requirements. However, the Syslog itself must also be configured to filter event records so it is not overwhelmed. A best practice when configuring the external Syslog server is to add similar log-prefixes to the log file names to help and researching of central Syslog server. Another best practice is to add a match condition to limit the recorded events to those containing the regular expression (REGEX).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

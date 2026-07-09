@@ -1,0 +1,53 @@
+{
+  "id": "SV-274148r1120432_rule",
+  "full_rule_id": "SV-274148r1120432_rule",
+  "rule_id": "SV-274148",
+  "rule_revision": "1120432",
+  "group_id": "V-274148",
+  "group_title": "SRG-OS-000076-GPOS-00044",
+  "title": "Amazon Linux 2023 must be able to enforce a 60-day maximum password lifetime restriction.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Any password, no matter how complex, can eventually be cracked. Therefore, passwords need to be changed periodically. If Amazon Linux 2023 does not limit the lifetime of passwords and force users to change their passwords, there is the risk that Amazon Linux 2023 passwords could be compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 enforces the maximum time period for existing passwords is restricted to 60 days with the following commands:\n\n$ sudo awk -F: '$5 > 60 {print $1 \" \" $5}' /etc/shadow\n\n$ sudo awk -F: '$5 <= 0 {print $1 \" \" $5}' /etc/shadow\n\nIf any results are returned that are not associated with a system account, this is a finding.",
+  "fix": "Configure Amazon Linux 2023 to set noncompliant accounts to enforce a 60-day maximum password lifetime restriction.\n\n$ sudo chage -M 60 [user]",
+  "ccis": [
+    "CCI-004066"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Any password, no matter how complex, can eventually be cracked. Therefore, passwords need to be changed periodically. If Amazon Linux 2023 does not limit the lifetime of passwords and force users to change their passwords, there is the risk that Amazon Linux 2023 passwords could be compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-002425",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

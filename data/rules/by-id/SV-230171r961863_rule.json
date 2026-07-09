@@ -1,0 +1,53 @@
+{
+  "id": "SV-230171r961863_rule",
+  "full_rule_id": "SV-230171r961863_rule",
+  "rule_id": "SV-230171",
+  "rule_revision": "961863",
+  "group_id": "V-230171",
+  "group_title": "SRG-APP-000516-NDM-000317",
+  "title": "The HP FlexFabric Switch must map the authenticated identity to the user account for PKI-based authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Authorization for access to any network device requires an approved and assigned individual account identifier. To ensure only the assigned individual is using the account, the account must be bound to a user certificate when PKI-based authentication is implemented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the HP FlexFabric Switch maps the authenticated identity to the user account for PKI-based authentication. \n\n[HP] display ssh user-information\n\n Total ssh users: 3\n Username            Authentication-type  User-public-key-name  Service-type\n pkiuser            password-publickey           hp                 all\n\nIf the HP FlexFabric Switch does not map the authenticated identity to the user account for PKI-based authentication, this is a finding.",
+  "fix": "Configure the HP FlexFabric Switch to map the authenticated identity to the user account for PKI-based authentication.\n\nConfigure PKI entity:\n[HP] pki entity HP\n[HP-pki-entity-HP] common-name HP\n[HP-pki-entity-HP] country US\n[HP-pki-entity-HP] locality Littleton\n[HP-pki-entity-HP] organization-unit STG\n[HP-pki-entity-HP] organization HP\n[HP-pki-entity-HP] state MA\n[HP-pki-entity-HP] ip 15.252.76.101\n[HP-pki-entity-HP] quit\n\nConfigure PKI domain:\n[HP] pki domain HP\n[HP-pki-domain-HP] certificate request entity HP\n[HP-pki-domain-HP] public-key rsa general name hostkey\n[HP-pki-domain-HP] source ip 15.252.76.101\n[HP-pki-domain-HP] undo crl check enable\n[HP-pki-domain-HP] quit\n\nSubmit certificate request on the switch:\n[HP] pki request-certificate domain HP pkcs10\n\nTransfer and import downloaded CA and user certificates to the switch:\n[HP] pki import domain jitc pem ca filename rae-root-ca.cer\n[HP] pki import domain jitc pem local filename HP.cer\n\nConfigure a local user:\n[HP] local-user pkiuser\n[HP-luser-pkiuser] service-type ssh\n[HP-luser-pkiuser] authorization-attribute user-role network-admin\n[HP-luser-pkiuser] password\n\nSet this user as an SSH user and set authentication type to password-public key and assign pki domain:\n[HP] ssh user pkiuser service-type all authentication-type password-publickey assign pki-domain hp\n\nNote: Configuration required on the server side is not covered here.",
+  "ccis": [
+    "CCI-000187"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Authorization for access to any network device requires an approved and assigned individual account identifier. To ensure only the assigned individual is using the account, the account must be bound to a user certificate when PKI-based authentication is implemented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-ND-000065",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881",
+      "name": "HP FlexFabric Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881"
+  ]
+}

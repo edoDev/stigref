@@ -1,0 +1,53 @@
+{
+  "id": "SV-104491r1_rule",
+  "full_rule_id": "SV-104491r1_rule",
+  "rule_id": "SV-104491",
+  "rule_revision": "1",
+  "group_id": "V-94661",
+  "group_title": "SRG-APP-000065-NDM-000214",
+  "title": "Symantec ProxySG must be configured to enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the lockout policy is configured.\n\n1. SSH into the ProxySG console, type \"enable\", press \"Enter\".\n2. Enter the appropriate password, type \"config\", press \"Enter\". \n3. Type \"show security local-user-list\", press \"Enter\". \n\nThis should return a value of \"3\" for the \"Max failed attempts\" and \"900\" for the value of both the \"lockout duration\" and \"reset interval\" fields.\n\nIf Symantec ProxySG is not configured to enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period, this is a finding.",
+  "fix": "The lockout policy may be configured for both SSH and Web Management Console sessions. \n\n1. SSH into the ProxySG console, type \"enable\", press \"Enter\".\n2. Enter the appropriate password, type \"config\", press \"Enter\". \n3. Type \"security local-user-list edit local_user_database\", press \"Enter\". \n4. Type \"lockout-duration 900\", type \"max-failed-attempts 3\", press \"Enter\".",
+  "ccis": [
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SYMP-NM-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "symantec-proxysg-ndm-security-technical-implementation-guide-v1r2-5788060e",
+      "name": "Symantec ProxySG NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "symantec-proxysg-ndm-security-technical-implementation-guide-v1r2-5788060e"
+  ]
+}

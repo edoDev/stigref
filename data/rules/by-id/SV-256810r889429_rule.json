@@ -1,0 +1,53 @@
+{
+  "id": "SV-256810r889429_rule",
+  "full_rule_id": "SV-256810r889429_rule",
+  "rule_id": "SV-256810",
+  "rule_revision": "889429",
+  "group_id": "V-256810",
+  "group_title": "SRG-APP-000516-WSR-000174",
+  "title": "The vSphere UI default servlet must be set to \"readonly\".",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The default servlet (or DefaultServlet) is a special servlet provided with Tomcat that is called when no other suitable page is found in a particular folder. The DefaultServlet serves static resources as well as directory listings. The DefaultServlet is configured by default with the \"readonly\" parameter set to \"true\" where HTTP commands such as PUT and DELETE are rejected. \n \nChanging this to \"false\" allows clients to delete or modify static resources on the server and to upload new resources. DefaultServlet \"readonly\" must be set to \"true\", either literally or by absence (default).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/servlet/servlet-name[text()=\"default\"]/../init-param/param-name[text()=\"readonly\"]/../param-value[text()=\"false\"]' - \n \nExpected result: \n \nXPath set is empty \n \nIf the output of the command does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open: \n \n/usr/lib/vmware-vsphere-ui/server/conf/web.xml \n \nNavigate to the /<web-apps>/<servlet>/<servlet-name>default</servlet-name>/ node and remove the following node: \n \n<init-param> \n      <param-name>readonly</param-name> \n      <param-value>false</param-value> \n</init-param> \n \nRestart the service with the following command: \n \n# vmon-cli --restart vsphere-ui",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The default servlet (or DefaultServlet) is a special servlet provided with Tomcat that is called when no other suitable page is found in a particular folder. The DefaultServlet serves static resources as well as directory listings. The DefaultServlet is configured by default with the \"readonly\" parameter set to \"true\" where HTTP commands such as PUT and DELETE are rejected. \n \nChanging this to \"false\" allows clients to delete or modify static resources on the server and to upload new resources. DefaultServlet \"readonly\" must be set to \"true\", either literally or by absence (default).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCUI-70-000033",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c",
+      "name": "VMware vSphere 7.0 vCenter Appliance UI Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c"
+  ]
+}

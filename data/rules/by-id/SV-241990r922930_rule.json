@@ -1,0 +1,53 @@
+{
+  "id": "SV-241990r922930_rule",
+  "full_rule_id": "SV-241990r922930_rule",
+  "rule_id": "SV-241990",
+  "rule_revision": "922930",
+  "group_id": "V-241990",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "Windows Defender Firewall with Advanced Security must be enabled when connected to a private network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A firewall provides a line of defense against attack. To be effective, it must be enabled and properly configured. This setting enables the firewall when connected to a private network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the following policy-based registry value exists and is not configured as specified, this is a finding.\n\nRegistry Hive:  HKEY_LOCAL_MACHINE\nRegistry Path:  \\SOFTWARE\\Policies\\Microsoft\\WindowsFirewall\\PrivateProfile\\\n\nValue Name:  EnableFirewall\n\nType:  REG_DWORD\nValue:  0x00000001 (1)\n\nIf the policy-based registry value does not exist, verify the following registry value. If it is not configured as specified, this is a finding.\n\nRegistry Hive:  HKEY_LOCAL_MACHINE\nRegistry Path:  \\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\StandardProfile\\\n\nValue Name:  EnableFirewall\n\nType:  REG_DWORD\nValue:  0x00000001 (1)",
+  "fix": "The preferred method of configuring the firewall settings is with a policy, particularly in a domain environment.\n\nConfigure the policy value for Computer Configuration >> Windows Settings >> Security Settings >> Windows Defender Firewall with Advanced Security >> Windows Defender Firewall with Advanced Security >> Windows Defender Firewall Properties (this link will be in the right pane) >> Private Profile tab >> State, \"Firewall state\" to \"On (recommended)\".\n\nIn addition to using policies, systems may also be configured using the firewall GUI or Netsh commands. These methods may be more appropriate for standalone systems.\n\nThe configuration settings in the GUI are the same as those specified in the policy above. Microsoft Defender Firewall Properties will be a link in the center pane after opening Microsoft Defender Firewall with Advanced Security.\n\nThe following Netsh commands may also be used to configure this setting:\n\n\"Netsh advfirewall set privateprofile state on\".\nor\n\"Netsh advfirewall set allprofiles state on\".",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A firewall provides a line of defense against attack. To be effective, it must be enabled and properly configured. This setting enables the firewall when connected to a private network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WNFWA-000002",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-defender-firewall-with-advanced-security-security-technical-im-v2r2-39815600",
+      "name": "Microsoft Windows Defender Firewall with Advanced Security Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-defender-firewall-with-advanced-security-security-technical-im-v2r2-39815600"
+  ]
+}

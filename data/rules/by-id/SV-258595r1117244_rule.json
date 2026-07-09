@@ -1,0 +1,53 @@
+{
+  "id": "SV-258595r1117244_rule",
+  "full_rule_id": "SV-258595r1117244_rule",
+  "rule_id": "SV-258595",
+  "rule_revision": "1117244",
+  "group_id": "V-258595",
+  "group_title": "SRG-NET-000352-VPN-001460",
+  "title": "The ICS must be configured to use an approved Commercial Solution for Classified (CSfC) when transporting classified traffic across an unclassified network.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of weak or untested encryption algorithms undermines the purposes of using encryption to protect data.\n\nThe National Security Agency/Central Security Service's (NSA/CSS) CSfC Program enables commercial products to be used in layered solutions to protect classified National Security Systems (NSS) data. Currently, Suite B cryptographic algorithms are specified by NIST and are used by NSA's Information Assurance Directorate in solutions approved for protecting classified and unclassified NSS. However, quantum resistant algorithms will be required for future required Suite B implementations.\n\nSatisfies: SRG-NET-000352-VPN-001460, SRG-NET-000565-VPN-002400, SRG-NET-000565-VPN-002390</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the ICS VPN Gateway is not being used to carry classified data (e.g., Secret, Top Secret, etc.), this is Not Applicable.\n\n1. Navigate to System >> Configuration >> Inbound SSL Options. Verify that under \"Allowed Encryption Strength\", if \"SuiteB - Accept only SuiteB ciphers\" is checked.\n2. Navigate to System >> Configuration >> Certificates >> Device Certificates. Verify the certificate being used by the ICS is an ECC P-384 Public Key.\n\nIf the ICS is not configured to use only SuiteB ciphers with ECC P-384 keys for transporting classified traffic, this is a finding.",
+  "fix": "In the ICS Web UI, navigate to System >> Configuration >> Certificates >> Device Certificates.\n1. Click \"New CSR\".\n2. Add a Common Name in FQDN format.\n3. Add a Country code of \"US\".\n4. Under key type, select \"ECC\".\n5. Under the key length, select \"P-384\".\n6. Click \"Create CSR\".\n7. Copy the Base 64/PEM encoded certificate request that is shown on the screen and paste it to a text file. Ensure the file has the file suffix of .csr.\n8. Go through the local RA process for DOD Web Server certificate requests. Ensure that SANs are added to the certificate by the issuing CA to include the hostname, cluster names, and all FQDNs.\n9. Once the certificate is provided by the CA, go to System >> Configuration >> Certificates >> Device Certificates.\n10. Click \"Browse\" and select the certificate file issued by the CA. Then click \"Import\".\n11. Click \"Save Changes\".\n12. Click on the imported certificate.\n13. On the \"Internal Port\", click \"add\" for the cluster internal VIP and <Internal Port>.\n14. On the \"External Port\" click \"add\" for the cluster external VIP and <External Port>.\n15. Check the box for \"Management Port\".\n16. Under \"Certificate Status Checking\", click the box for \"Use CRLs\".\n17. Click \"Save Changes\".\n\nIn the ICS Web UI, navigate to System >> Configuration >> Inbound SSL Options.\n1. Under \"Allowed Encryption Strength\", click \"SuiteB - Accept only SuiteB ciphers\".\n2. Click \"Save Changes\" and accept the cipher suite changes.",
+  "ccis": [
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of weak or untested encryption algorithms undermines the purposes of using encryption to protect data.\n\nThe National Security Agency/Central Security Service's (NSA/CSS) CSfC Program enables commercial products to be used in layered solutions to protect classified National Security Systems (NSS) data. Currently, Suite B cryptographic algorithms are specified by NIST and are used by NSA's Information Assurance Directorate in solutions approved for protecting classified and unclassified NSS. However, quantum resistant algorithms will be required for future required Suite B implementations.\n\nSatisfies: SRG-NET-000352-VPN-001460, SRG-NET-000565-VPN-002400, SRG-NET-000565-VPN-002390",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IVCS-VN-000350",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f",
+      "name": "Ivanti Connect Secure VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f"
+  ]
+}

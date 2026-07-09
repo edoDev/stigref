@@ -1,0 +1,55 @@
+{
+  "id": "SV-281325r1184772_rule",
+  "full_rule_id": "SV-281325r1184772_rule",
+  "rule_id": "SV-281325",
+  "rule_revision": "1184772",
+  "group_id": "V-281325",
+  "group_title": "SRG-OS-000375-GPOS-00160",
+  "title": "RHEL 10 must implement certificate status checking for multifactor authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Using an authentication device, such as a DOD common access card (CAC) or token that is separate from the information system, ensures that even if the information system is compromised, credentials stored on the authentication device will not be affected.\n\nMultifactor solutions that require devices separate from information systems gaining access include, for example, hardware tokens providing time-based or challenge-response authenticators and smart cards such as the U.S. Government Personal Identity Verification (PIV) card and the DOD CAC.\n\nRHEL 10 includes multiple options for configuring certificate status checking but for this requirement focuses on the System Security Services Daemon (SSSD). By default, SSSD performs Online Certificate Status Protocol (OCSP) checking and certificate verification using a sha256 digest function.\n\nSatisfies: SRG-OS-000375-GPOS-00160, SRG-OS-000377-GPOS-00162, SRG-OS-000705-GPOS-00150</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If the system administrator (SA) demonstrates the use of an approved alternate multifactor authentication method, this requirement is not applicable.\n\nVerify RHEL 10 implements OCSP and is using the proper digest value on the system with the following command:\n\n$ sudo grep -irs certificate_verification /etc/sssd/sssd.conf /etc/sssd/conf.d/ | grep -v \"^#\"\n/etc/sssd/conf.d/certificate_verification.conf:certificate_verification = ocsp_dgst=sha512\n\nIf the certificate_verification line is missing from the [sssd] section, or is missing \"ocsp_dgst=sha512\", ask the SA to indicate what type of multifactor authentication is being used and how the system implements certificate status checking. \n\nIf there is no evidence of certificate status checking being used, this is a finding.",
+  "fix": "Configure RHEL 10 to implement certificate status checking for multifactor authentication.\n\nReview the \"/etc/sssd/conf.d/certificate_verification.conf\" file to determine if the system is configured to prevent OCSP or certificate verification.\n\nAdd the following line to the [sssd] section of the \"/etc/sssd/conf.d/certificate_verification.conf\" file:\n\ncertificate_verification = ocsp_dgst=sha512\n\nSet the correct ownership and permissions on the \"/etc/sssd/conf.d/certificate_verification.conf\" file by running these commands:\n\n$ sudo chown root:root \"/etc/sssd/conf.d/certificate_verification.conf\"\n$ sudo chmod 600 \"/etc/sssd/conf.d/certificate_verification.conf\"\n\nRestart the \"sssd\" service with the following command for the changes to take effect: \n\n$ sudo systemctl restart sssd.service",
+  "ccis": [
+    "CCI-004046",
+    "CCI-001954",
+    "CCI-004047"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using an authentication device, such as a DOD common access card (CAC) or token that is separate from the information system, ensures that even if the information system is compromised, credentials stored on the authentication device will not be affected.\n\nMultifactor solutions that require devices separate from information systems gaining access include, for example, hardware tokens providing time-based or challenge-response authenticators and smart cards such as the U.S. Government Personal Identity Verification (PIV) card and the DOD CAC.\n\nRHEL 10 includes multiple options for configuring certificate status checking but for this requirement focuses on the System Security Services Daemon (SSSD). By default, SSSD performs Online Certificate Status Protocol (OCSP) checking and certificate verification using a sha256 digest function.\n\nSatisfies: SRG-OS-000375-GPOS-00160, SRG-OS-000377-GPOS-00162, SRG-OS-000705-GPOS-00150",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-701230",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

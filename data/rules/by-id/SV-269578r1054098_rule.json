@@ -1,0 +1,53 @@
+{
+  "id": "SV-269578r1054098_rule",
+  "full_rule_id": "SV-269578r1054098_rule",
+  "rule_id": "SV-269578",
+  "rule_revision": "1054098",
+  "group_id": "V-269578",
+  "group_title": "SRG-APP-000133",
+  "title": "The Xylok Security Suite READONLY configuration must be True.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By default, the Xylok container is created not allowing users to modify any files inside the container.\n\nThe only paths that can be altered are mounted from the host. Mount the database files from the host, so that the database server running inside the container can write data.\n\nIf READONLY=false, then a user could go into the container as root and change other files. This approach helps protect the application from both external attacks and internal threats.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that Xylok's default read-only status is disabled by using the following command:\n\n$ grep READONLY /etc/xylok.conf\n\nIf \"READONLY\" is set to False (case insensitive), is commented out or is missing, this is not a finding.",
+  "fix": "Revert Xylok to its default read-only configuration:\n\n1. As root, open /etc/xylok.conf in a text editor.\n\n2. Add/Amend \"READONLY=True\" to the configuration file.\n\n3. Restart Xylok to apply settings:\n\n    # systemctl restart xylok",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By default, the Xylok container is created not allowing users to modify any files inside the container.\n\nThe only paths that can be altered are mounted from the host. Mount the database files from the host, so that the database server running inside the container can write data.\n\nIf READONLY=false, then a user could go into the container as root and change other files. This approach helps protect the application from both external attacks and internal threats.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "XYLK-20-000052",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "xylok-security-suite-20-x-security-technical-implementation-guide-v1r2-31f543fd",
+      "name": "Xylok Security Suite 20.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "xylok-security-suite-20-x-security-technical-implementation-guide-v1r2-31f543fd"
+  ]
+}

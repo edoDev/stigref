@@ -1,0 +1,55 @@
+{
+  "id": "SV-215250r991557_rule",
+  "full_rule_id": "SV-215250r991557_rule",
+  "rule_id": "SV-215250",
+  "rule_revision": "991557",
+  "group_id": "V-215250",
+  "group_title": "SRG-OS-000256-GPOS-00097",
+  "title": "AIX audit tools must be set to 4550 or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information.\n\nOperating systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys in order to make access decisions regarding the access to audit tools.\n\nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000256-GPOS-00097, SRG-OS-000257-GPOS-00098, SRG-OS-000258-GPOS-00099</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the following audit tools are set to \"4550\" or less permissive:\n\n    /usr/sbin/audit\n    /usr/sbin/auditbin\n    /usr/sbin/auditcat\n    /usr/sbin/auditconv\n    /usr/sbin/auditmerge\n    /usr/sbin/auditpr\n    /usr/sbin/auditselect\n    /usr/sbin/auditstream\n\n# ls -l /usr/sbin/audit*|grep -v ldap\n-r-sr-x---    1 root     audit         64926 Mar 30 2016  /usr/sbin/audit\n-r-sr-x---    1 root     audit         41240 Mar 30 2016  /usr/sbin/auditbin\n-r-sr-x---    1 root     audit         40700 Mar 30 2016  /usr/sbin/auditcat\n-r-sr-x---    1 root     audit         13072 Mar 30 2016  /usr/sbin/auditconv\n-r-sr-x---    1 root     audit         11328 Mar 30 2016  /usr/sbin/auditmerge\n-r-sr-x---    1 root     audit         53466 Mar 30 2016  /usr/sbin/auditpr\n-r-sr-x---    1 root     audit         33128 Mar 30 2016  /usr/sbin/auditselect\n-r-sr-x---    1 root     audit         29952 Mar 30 2016  /usr/sbin/auditstream\n\nIf any above file's permission is greater than \"4550\", this is a finding. \n\nVerify that \"/usr/sbin/auditldap\" is set to \"500\" or less permissive: \n\n# ls -l /usr/sbin/auditldap\n-r-x------    1 root     security      12204 Mar 30 2016  /usr/sbin/auditldap\n\nIf the permission of \"/usr/sbin/auditldap\" is greater than \"500\", this is a finding.",
+  "fix": "For each audit tool in: \n   /usr/sbin/audit\n    /usr/sbin/auditbin\n    /usr/sbin/auditcat\n    /usr/sbin/auditconv\n    /usr/sbin/auditmerge\n    /usr/sbin/auditpr\n    /usr/sbin/auditselect\n    /usr/sbin/auditstream\n\nSet the permission to \"4550\".\n# chmod 4550 <audit tool>\n\nFor  /usr/sbin/auditldap:\n\nSet the permission to \"500\".\n# chmod 500 /usr/sbin/auditldap",
+  "ccis": [
+    "CCI-001493",
+    "CCI-001494",
+    "CCI-001495"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information.\n\nOperating systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys in order to make access decisions regarding the access to audit tools.\n\nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000256-GPOS-00097, SRG-OS-000257-GPOS-00098, SRG-OS-000258-GPOS-00099",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002027",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

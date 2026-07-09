@@ -1,0 +1,54 @@
+{
+  "id": "SV-254010r997524_rule",
+  "full_rule_id": "SV-254010r997524_rule",
+  "rule_id": "SV-254010",
+  "rule_revision": "997524",
+  "group_id": "V-254010",
+  "group_title": "SRG-NET-000205-RTR-000001",
+  "title": "The Juniper router must be configured to restrict traffic destined to itself.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The routing engine (RE) handles traffic destined to the router—the key component used to build forwarding paths and is also instrumental with all network management functions. Hence, any disruption or DoS attack to the RE can result in mission critical network outages.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the firewall filter for the router receive path and verify that it will only process specific management plane and control plane traffic from specific sources. For example:\n[edit policy-options]\nauth_mgt_networks-ipv4 {\n    <IPv4 subnet / mask>;\n}\nauth_mgt_networks-ipv6 {\n    <IPv6 subnet / prefix>;\n}\ndevice_mgt_address-ipv4 {\n    <IPv4 address>/32;\n}\ndevice_mgt_address-ipv6 {\n    <IPv6 address>/128;\n}\n[edit firewall]\nfamily inet {\n    filter protect_re-ipv4 {\n        term 1 {\n            from {\n                source-prefix-list auth_mgt_networks-ipv4;\n                destination-prefix-list device_mgt_address-ipv4;\n                <additional match criteria>;\n            }\n        }\n        <additional permit terms>\n        term default {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\nfamily inet6 {\n    filter protect_re-ipv6 {\n        term 1 {\n            from {\n                source-prefix-list auth_mgt_networks-ipv6;\n                destination-prefix-list device_mgt_address-ipv6;\n                <additional match criteria>;\n            }\n        }\n        <additional permit terms>\n        term default {\n            then {\n                log;\n                syslog;\n                discard;\n            }\n        }\n    }\n}\n\nNote: Additional match criteria includes protocol (next-header for IPv6), source and destination ports, ICMP type and code, etc. When applied to the loopback interface, the filter affects identified traffic regardless of ingress interface. Ensure the filter addresses all traffic destined to the RE like routing protocols, ICMP messages, SSH and SCP traffic, SNMP, etc.\n\nVerify filters are applied to loopback, all L3 interfaces, or both. For example:\n[edit interfaces]\nlo0 {\n    unit 0 {\n        family inet {\n            filter {\n                input protect_re-ipv4;\n            }\n            address <IPv4 address>/32;\n        }\n        family inet6 {\n            filter {\n                input protect_re-ipv6;\n            }\n            address <IPv6 address>/32;\n        }\n    }\n}\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output\" change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf the router is not configured with a receive-path filter to restrict traffic destined to itself, this is a finding.\n\nNote: If the platform does not support the receive path filter, verify that all layer 3 interfaces have an ingress firewall filter to control what packets are allowed to be destined to the router for processing.",
+  "fix": "Configure all routers with receive path filters to restrict traffic destined to the router.\n\nExample prefix lists for management networks and the device management address(es):\nset prefix-list auth_mgt_networks-ipv4 <IPv4 subnet / mask>\nset prefix-list auth_mgt_networks-ipv6 <IPv6 subnet / mask>\nset prefix-list device_mgt_address-ipv4 <IPv4 address>/32\nset prefix-list device_mgt_address-ipv6 <IPv6 address>/128\n\nExample firewall filters:\nset firewall family inet filter protect_re-ipv4 term 1 from source-prefix-list auth_mgt_networks-ipv4\nset firewall family inet filter protect_re-ipv4 term 1 from destination-prefix-list device_mgt_address-ipv4\nset firewall family inet filter protect_re-ipv4 term 1 from <additional match criteria>\nset firewall family inet filter protect_re-ipv4 term 1 then accept\nset firewall family inet filter protect_re-ipv4 term <additional permit terms>\nset firewall family inet filter protect_re-ipv4 term default then log\nset firewall family inet filter protect_re-ipv4 term default then syslog\nset firewall family inet filter protect_re-ipv4 term default then discard\n\nset firewall family inet6 filter protect_re-ipv6 term 1 from source-prefix-list auth_mgt_networks-ipv6\nset firewall family inet6 filter protect_re-ipv6 term 1 from destination-prefix-list device_mgt_address-ipv6\nset firewall family inet6 filter protect_re-ipv6 term 1 from <additional match criteria>\nset firewall family inet6 filter protect_re-ipv6 term 1 then accept\nset firewall family inet6 filter protect_re-ipv6 term <additional permit terms>\nset firewall family inet6 filter protect_re-ipv6 term default then log\nset firewall family inet filter protect_re-ipv6 term default then syslog\nset firewall family inet filter protect_re-ipv6 term default then discard\n\nExample application on loopback:\nset interfaces lo0 unit 0 family inet filter input protect_re-ipv4\nset interfaces lo0 unit 0 family inet address <IPv4 address>/32\nset interfaces lo0 unit 0 family inet6 filter input protect_re-ipv6\nset interfaces lo0 unit 0 family inet6 address <IPv6 address>/128",
+  "ccis": [
+    "CCI-001097",
+    "CCI-004866"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The routing engine (RE) handles traffic destined to the router—the key component used to build forwarding paths and is also instrumental with all network management functions. Hence, any disruption or DoS attack to the RE can result in mission critical network outages.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000380",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

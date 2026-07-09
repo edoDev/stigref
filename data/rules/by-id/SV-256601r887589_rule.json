@@ -1,0 +1,54 @@
+{
+  "id": "SV-256601r887589_rule",
+  "full_rule_id": "SV-256601r887589_rule",
+  "rule_id": "SV-256601",
+  "rule_revision": "887589",
+  "group_id": "V-256601",
+  "group_title": "SRG-APP-000172-DB-000075",
+  "title": "VMware Postgres must be configured to use Transport Layer Security (TLS).",
+  "severity": "high",
+  "description": "<VulnDiscussion>The DOD standard for authentication is DOD-approved public key infrastructure (PKI) certificates. Authentication based on user ID and password may be used only when it is not possible to employ a PKI certificate.\n\nIn such cases, passwords, must be protected at all times, and encryption is the standard method for protecting passwords during transmission.\n\nVMware Postgres is configured out of the box to require TLS connections with remote clients. As an embedded database and available only on \"localhost\" for standalone vCenter Server Appliances (VCSAs), TLS connections are used only in high-availability deployments for connections between a primary and a standby. This configuration must be verified and maintained.\n\nSatisfies: SRG-APP-000172-DB-000075, SRG-APP-000442-DB-000379</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW ssl;\"\n\nExpected result:\n\non\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "At the command prompt, run the following commands:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET ssl TO 'on';\"\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT pg_reload_conf();\"",
+  "ccis": [
+    "CCI-000197",
+    "CCI-002422"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DOD standard for authentication is DOD-approved public key infrastructure (PKI) certificates. Authentication based on user ID and password may be used only when it is not possible to employ a PKI certificate.\n\nIn such cases, passwords, must be protected at all times, and encryption is the standard method for protecting passwords during transmission.\n\nVMware Postgres is configured out of the box to require TLS connections with remote clients. As an embedded database and available only on \"localhost\" for standalone vCenter Server Appliances (VCSAs), TLS connections are used only in high-availability deployments for connections between a primary and a standby. This configuration must be verified and maintained.\n\nSatisfies: SRG-APP-000172-DB-000075, SRG-APP-000442-DB-000379",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-70-000011",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497",
+      "name": "VMware vSphere 7.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497"
+  ]
+}

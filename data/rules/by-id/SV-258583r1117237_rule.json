@@ -1,0 +1,53 @@
+{
+  "id": "SV-258583r1117237_rule",
+  "full_rule_id": "SV-258583r1117237_rule",
+  "rule_id": "SV-258583",
+  "rule_revision": "1117237",
+  "group_id": "V-258583",
+  "group_title": "SRG-NET-000019-VPN-000040",
+  "title": "The ICS must be configured to ensure inbound and outbound traffic is configured with a security policy in compliance with information flow control policies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unrestricted traffic may contain malicious traffic which poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nVPN traffic received from another enclave with different security policy or level of trust must not bypass be inspected by the firewall before being forwarded to the private network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In the ICS Web UI, navigate to Users >> Resource Policies >> VPN Tunneling >> Access Control.\n1. Verify that an Access Control Policy exists.\n2. Verify the Access Control Policy is not configured to allows all IPv4/IPv6 addresses or all TCP/UDP ports.\n\nIf the ICS does not use one or more Access Control Policies to restrict inbound and outbound traffic compliance with the sites documented information flow control policy, this is a finding.",
+  "fix": "Establish Access Control policy in accordance with the site's system security plan. Policies will vary based on security policies and architecture.\n\nIn the ICS Web UI, navigate to Users >> Resource Policies >> VPN Tunneling >> Access Control.\n1. Click \"New Policy\".\n2. Enter a name.\n3. Under IPv4 Resources, add all allowed ports and protocols required for users. Examples provided below:\n- For ICMP configure the following: icmp://10.0.0.0/255.255.255.0 to allow ICMP communications for the 10.0.0.0/24 subnet.\n- For TCP configure the following: tcp://*:80,443 to allow TCP communications for all IPv4 addresses going to TCP port 80 and 443 (web traffic).\n- For UDP configure the following: udp://10.0.0.0/255.255.255.0:53,123 to allow UDP communications for the 10.0.0.0/24 IPv4 addresses going to UDP port 53 (DNS) and 123 (NTP).\n4. Under IPv6 Resources, add all allowed ports and protocols required for users. Examples provided below:\n- For ICMP configure the following: icmpv6://[2001:db8:1::/64] to allow ICMPv6 communications for the 2001:db8:1::/64 subnet.\n- For TCP configure the following: tcp://[*]:80,443 to allow TCP communications for all IPv6 addresses going to TCP port 80 and 443 (web traffic).\n- For UDP configure the following: udp://[2001:db8:2::/64]:53,123 to allow UDP communications for the 2001:db8:2::/64 IPv6 addresses going to UDP port 53 (DNS) and 123 (NTP).\n5. For FQDN, add specific URLs to allow, if needed.\n6. Select \"Policy applies to SELECTED roles\" and select the role that remote access VPN users are assigned. If there are multiple, select each one and click \"Add\".\n7. Click \"Allow Access\".\n8. Click \"Save Changes\".",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unrestricted traffic may contain malicious traffic which poses a threat to an enclave or to other connected networks. Additionally, unrestricted traffic may transit a network, which uses bandwidth and other resources.\n\nVPN traffic received from another enclave with different security policy or level of trust must not bypass be inspected by the firewall before being forwarded to the private network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IVCS-VN-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f",
+      "name": "Ivanti Connect Secure VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f"
+  ]
+}

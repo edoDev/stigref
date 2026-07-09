@@ -1,0 +1,53 @@
+{
+  "id": "SV-225230r1117185_rule",
+  "full_rule_id": "SV-225230r1117185_rule",
+  "rule_id": "SV-225230",
+  "rule_revision": "1117185",
+  "group_id": "V-225230",
+  "group_title": "SRG-APP-000635",
+  "title": "The .NET CLR must be configured to use FIPS approved encryption modules.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>FIPS encryption is configured via .NET configuration files.  There are numerous configuration files that affect different aspects of .Net behavior.  The .NET config files are described below.\n \nMachine Configuration Files:\nThe machine configuration file, Machine.config, contains settings that apply to an entire computer. This file is located in the %SYSTEMROOT%\\Microsoft.NET\\Framework\\v4.0.30319\\Config directory for 32 bit .NET 4 installations and %SYSTEMROOT%\\Microsoft.NET\\Framework64\\v4.0.30319\\Config for 64 bit systems.   Machine.config contains configuration settings for machine-wide assembly binding, built-in remoting channels, and ASP.NET.\n\nApplication Configuration Files:\nApplication configuration files contain settings specific to an application. If checking these files, a .NET review of a specific .NET application is most likely being conducted. These files contain configuration settings that the Common Language Runtime reads (such as assembly binding policy, remoting objects, and so on), and settings that the application can read. \n\nThe name and location of the application configuration file depends on the application's host, which can be one of the following: \n\nExecutable–hosted application configuration files. \n\nThe configuration file for an application hosted by the executable host is in the same directory as the application. The name of the configuration file is the name of the application with a .config extension. For example, an application called myApp.exe can be associated with a configuration file called myApp.exe.config. \n\nInternet Explorer-hosted application configuration files. \n\nIf an application hosted in Internet Explorer has a configuration file, the location of this file is specified in a <link> tag with the following syntax.\n\n<link rel=\"ConfigurationFileName\" href=\"location\">\n\nIn this tag, \"location\" represents a URL that point to the configuration file. This sets the application base. The configuration file must be located on the same web site as the application. \n\n.NET 4.0 allows the CLR runtime to be configured to ignore FIPS encryption requirements.  If the CLR is not configured to use FIPS encryption modules, insecure encryption modules might be employed which could introduce an application confidentiality or integrity issue.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Examine the .NET CLR configuration files from the vulnerability discussion to find the runtime element and then the \"enforceFIPSPolicy\" element.\n\nExample:\n<configuration> \n  <runtime> \n                <enforceFIPSPolicy enabled=\"true|false\" />\n  </runtime>\n</configuration>\n\nBy default, the .NET \"enforceFIPSPolicy\" element is set to \"true\".\n\nIf the \"enforceFIPSPolicy\" element does not exist within the \"runtime\" element of the CLR configuration, this is not a finding.\n\nIf the \"enforceFIPSPolicy\" element exists and is set to \"false\", and the IAO has not accepted the risk and documented the risk acceptance, this is a finding.",
+  "fix": "Examine the .NET CLR configuration files to find the runtime element and then the \"enforceFIPSPolicy\" element.\n\nExample:\n<configuration> \n  <runtime> \n                <enforceFIPSPolicy enabled=\"true|false\" />\n  </runtime>\n</configuration>\n\nDelete the \"enforceFIPSPolicy\" runtime element, change the setting to \"true\" or there must be documented IAO approvals for the FIPS setting.",
+  "ccis": [
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "FIPS encryption is configured via .NET configuration files.  There are numerous configuration files that affect different aspects of .Net behavior.  The .NET config files are described below.\n \nMachine Configuration Files:\nThe machine configuration file, Machine.config, contains settings that apply to an entire computer. This file is located in the %SYSTEMROOT%\\Microsoft.NET\\Framework\\v4.0.30319\\Config directory for 32 bit .NET 4 installations and %SYSTEMROOT%\\Microsoft.NET\\Framework64\\v4.0.30319\\Config for 64 bit systems.   Machine.config contains configuration settings for machine-wide assembly binding, built-in remoting channels, and ASP.NET.\n\nApplication Configuration Files:\nApplication configuration files contain settings specific to an application. If checking these files, a .NET review of a specific .NET application is most likely being conducted. These files contain configuration settings that the Common Language Runtime reads (such as assembly binding policy, remoting objects, and so on), and settings that the application can read. \n\nThe name and location of the application configuration file depends on the application's host, which can be one of the following: \n\nExecutable–hosted application configuration files. \n\nThe configuration file for an application hosted by the executable host is in the same directory as the application. The name of the configuration file is the name of the application with a .config extension. For example, an application called myApp.exe can be associated with a configuration file called myApp.exe.config. \n\nInternet Explorer-hosted application configuration files. \n\nIf an application hosted in Internet Explorer has a configuration file, the location of this file is specified in a <link> tag with the following syntax.\n\n<link rel=\"ConfigurationFileName\" href=\"location\">\n\nIn this tag, \"location\" represents a URL that point to the configuration file. This sets the application base. The configuration file must be located on the same web site as the application. \n\n.NET 4.0 allows the CLR runtime to be configured to ignore FIPS encryption requirements.  If the CLR is not configured to use FIPS encryption modules, insecure encryption modules might be employed which could introduce an application confidentiality or integrity issue.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPNET0062",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-dotnet-framework-4-0-security-technical-implementation-guide-v2r8-cf94354a",
+      "name": "Microsoft DotNet Framework 4.0 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-dotnet-framework-4-0-security-technical-implementation-guide-v2r8-cf94354a"
+  ]
+}

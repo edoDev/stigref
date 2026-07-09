@@ -1,0 +1,56 @@
+{
+  "id": "SV-255295r958408_rule",
+  "full_rule_id": "SV-255295r958408_rule",
+  "rule_id": "SV-255295",
+  "rule_revision": "958408",
+  "group_id": "V-255295",
+  "group_title": "SRG-OS-000033-GPOS-00014",
+  "title": "The HPE 3PAR OS WSAPI process must be configured to use approved encryption and communications protocols to protect the confidentiality of remote access sessions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session.\n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nEncryption provides a means to secure the remote connection to prevent unauthorized access to the data traversing the remote access connection (e.g., RDP), thereby providing a degree of confidentiality. The encryption strength of a mechanism is selected based on the security categorization of the information.\n\nThe WSAPI provides an, optional, REST interface for programmatic monitoring and control of the array operations and configuration. These configuration settings confine the server to using only TLS1.2.\n\nSatisfies: SRG-OS-000033-GPOS-00014, SRG-OS-000096-GPOS-00050, SRG-OS-000112-GPOS-00057, SRG-OS-000074-GPOS-00042</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the mission does not require WSAPI functionality, this requirement is not applicable.\n\nVerify if WSAPI is configured to run.\nUse the command:\ncli% showwsapi -d\n\nIf \"Service State\" shows \"Disabled\", this is not applicable.\n\nIf \"HTTP State\" shows \"Enabled\", this is a finding.\n\nIf \"HTTPS State\" shows \"Disabled\", this is a finding.\n\nIf \"Policy\" contains \"no_tls_strict\", this is a finding.",
+  "fix": "Verify if WSAPI is configured to run. Use the command:\ncli% showwsapi -d\n\nIf \"Service State\" shows \"Disabled\", this is not applicable.\n\nTemporarily stop the WSAPI server with the command:\ncli% stopwsapi -f\n\nTo disable the HTTP listener, and enable the HTTPS listener, use the command:\ncli% setwsapi -http disable -https enable\n\nTo set the TLS policy to TLSv1.2 only, use the command:\ncli% setwsapi -pol tls_strict\n\nRestart the server with the following command:\ncli% startwsapi",
+  "ccis": [
+    "CCI-000068",
+    "CCI-000197",
+    "CCI-000382",
+    "CCI-001941"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session.\n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nEncryption provides a means to secure the remote connection to prevent unauthorized access to the data traversing the remote access connection (e.g., RDP), thereby providing a degree of confidentiality. The encryption strength of a mechanism is selected based on the security categorization of the information.\n\nThe WSAPI provides an, optional, REST interface for programmatic monitoring and control of the array operations and configuration. These configuration settings confine the server to using only TLS1.2.\n\nSatisfies: SRG-OS-000033-GPOS-00014, SRG-OS-000096-GPOS-00050, SRG-OS-000112-GPOS-00057, SRG-OS-000074-GPOS-00042",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HP3P-33-121100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-storeserv-3-3-x-security-technical-implementation-guide-v2r1-7f70e64e",
+      "name": "HPE 3PAR StoreServ 3.3.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-storeserv-3-3-x-security-technical-implementation-guide-v2r1-7f70e64e"
+  ]
+}

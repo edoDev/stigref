@@ -1,0 +1,54 @@
+{
+  "id": "SV-277075r1148677_rule",
+  "full_rule_id": "SV-277075r1148677_rule",
+  "rule_id": "SV-277075",
+  "rule_revision": "1148677",
+  "group_id": "V-277075",
+  "group_title": "SRG-OS-000046-GPOS-00022",
+  "title": "The macOS system must configure audit capacity warning.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The audit service must be configured to notify the system administrator when the amount of free disk space remaining reaches an organization-defined value.\n\nThis rule ensures that the system administrator is notified in advance that action is required to free up more disk space for audit logs.\n\nSatisfies: SRG-OS-000046-GPOS-00022, SRG-OS-000343-GPOS-00134</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to require a minimum of 25 percent free disk space for audit record storage with the following command:\n\n/usr/bin/awk -F: '/^minfree/{print $2}' /etc/security/audit_control\n\nIf the result is not \"25\", this is a finding.",
+  "fix": "Configure the macOS system to require a minimum of 25 percent free disk space for audit record storage with the following command:\n\n/usr/bin/sed -i.bak 's/.*minfree.*/minfree:25/' /etc/security/audit_control; /usr/sbin/audit -s",
+  "ccis": [
+    "CCI-000139",
+    "CCI-001855"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The audit service must be configured to notify the system administrator when the amount of free disk space remaining reaches an organization-defined value.\n\nThis rule ensures that the system administrator is notified in advance that action is required to free up more disk space for audit logs.\n\nSatisfies: SRG-OS-000046-GPOS-00022, SRG-OS-000343-GPOS-00134",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-26-001030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2",
+      "name": "Apple macOS 26 (Tahoe) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2"
+  ]
+}

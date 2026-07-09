@@ -1,0 +1,53 @@
+{
+  "id": "SV-217022r855890_rule",
+  "full_rule_id": "SV-217022r855890_rule",
+  "rule_id": "SV-217022",
+  "rule_revision": "855890",
+  "group_id": "V-217022",
+  "group_title": "SRG-NET-000362-RTR-000113",
+  "title": "The Juniper router must be configured to have Internet Control Message Protocol (ICMP) unreachable messages disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Host unreachable ICMP messages are commonly used by attackers for network mapping and diagnosis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the firewall hierarchy configuration to verify that all packets that are not permitted are silently dropped using the discard parameter as shown in the configuration example below.\n\nfirewall {\n    family inet {\n        …\n        …\n        …\n        }\n        filter FILTER_INBOUND {\n            term ALLOW_XYZ {\n                from {\n                    protocol xyz;\n                }\n                then accept;\n            }\n            …\n            …\n            …\n            }\n            term DENY_BY_DEFAULT {\n                then {\n                    log;\n                    discard;\n                }\n            }\n        }\n    }\n\nIf ICMP unreachable notifications are sent for packets that are dropped, this is a finding.",
+  "fix": "[edit firewall family inet]\nset filter FILTER_INBOUND term DENY_BY_DEFAULT then log discard",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Host unreachable ICMP messages are commonly used by attackers for network mapping and diagnosis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

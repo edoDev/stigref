@@ -1,0 +1,54 @@
+{
+  "id": "SV-258589r954210_rule",
+  "full_rule_id": "SV-258589r954210_rule",
+  "rule_id": "SV-258589",
+  "rule_revision": "954210",
+  "group_id": "V-258589",
+  "group_title": "SRG-NET-000140-VPN-000500",
+  "title": "The ICS must be configured to use multifactor authentication (e.g., DOD PKI) for network access to nonprivileged accounts.",
+  "severity": "high",
+  "description": "<VulnDiscussion>To ensure accountability and prevent unauthenticated access, nonprivileged users must use multifactor authentication to prevent potential misuse and compromise of the system.\n\nMultifactor authentication uses two or more factors to achieve authentication. Use of password for user remote access for nonprivileged account is not authorized.\n\nFactors include:\n(i) Something you know (e.g., password/PIN);\n(ii) Something you have (e.g., cryptographic identification device, token); or\n(iii) Something you are (e.g., biometric).\n\nA nonprivileged account is any information system account with authorizations of a nonprivileged user.\n\nNetwork access is any access to a network element by a user (or a process acting on behalf of a user) communicating through a network.\n\nThe DOD CAC with DOD-approved PKI is an example of multifactor authentication.\n\nSatisfies: SRG-NET-000140-VPN-000500, SRG-NET-000342-VPN-001360</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "In the ICS Web UI, navigate to Users >> User Realms >> User Realms.\n1. Click the user realm that is currently being used on the ICS for standard remote access VPN logins.\n2. View \"General\" tab, under Servers >> Authentication. Verify a certificate authentication server is configured.\n3. View \"General\" tab, under Servers >> Directory/Attribute. Verify there is an entry defined.\n4. View \"Role Mapping\" tab, under \"when users meet these conditions\", verify \"Group\" is used with the local user active directory group selected and assigned to the role that was created.\n\nIf the ICS does not use DOD PKI for network access to nonprivileged accounts, this is a finding.",
+  "fix": "Configure the user realm to use DOD PKI and the site's authentication servers. A sign-in policy is then applied in accordance with the site's access configuration. The focus for this requirement is on the path so the installation of the device certificates is not included.\n\nIn the ICS Web UI, navigate to Authentication >> Auth Servers.\n1. Click \"New Servers\". Under \"server type\", select Certificate Server >> New Server.\n2. Type a Name. Under User Name template type this exactly: <certAttr.altname.UPN>\n3. Click \"Save Changes\".\n4. Navigate to Authentication >> Auth Servers.\n5. Click \"New Servers\". Under \"server type\", select LDAP Server >> New Server.\n6. Type a name for the primary LDAP server domain.\n7. LDAP server: the FQDN of the server (an IP address may cause an error as the LDAP server certificate might not have an IP in the SAN field).\n8. LDAP port: 636 (this is for LDAPS).\n9. Backup LDAP Server1: the FQDN of the secondary server (an IP address may cause an error as the LDAP server certificate might not have an IP in the SAN field).\n10. Backup LDAP Port1: 636.\n11. If a third LDAP server is needed, add this and the port info under Backup LDAP Server2 and Backup LDAP Port2.\n12. LDAP Server Type: Active Directory.\n13. Connection: LDAPS.\n14. Ensure Validate Server Certificate is checked.\n15. Connection Timeout: 15.\n16. Search Timeout: 60.\n17. Scroll down to the bottom and click \"Save Changes\". Click \"Test Settings\" to ensure valid communications are possible.\nNOTE: If there are failures in this testing, ensure that the step for Device Certificates and Trusted Server CAs were completed as this will cause LDAPS certificate issues.\n18. Under authentication required, click the box for Authentication required to search LDAP.\n19. Enter the service account's Admin DN using this as an example format: CN=PCS.SVC,OU=IVANTI,DC=DOD,DC=mil\n20. Enter the service account's password.\n21. Under \"Finding user entries\", add the base DN of the domain as an example format: DC=DOD,DC=mil\n22. Under \"filter\", use this specific attribute configuration: userPrincipalName=<USER>\n23. Under \"group membership\", add the base DN of where admin users that will access, using this as an example format: OU=IVANTI,DC=DOD,DC=mil\n24. Under \"filter\", use the following: cn=<GROUPNAME>\n25. Under \"member attribute\", use the following: member.\n26. Click \"Save Changes\".\n27. Now back in the same LDAP server configuration screen, scroll down and click the \"Server Catalog\" hyperlink.\n28. Under \"attributes\", click \"New\", Type: userPrincipalName, and click \"Save Changes\".\n29. Under \"groups\", click \"Search\". In the search box, type the group name used for user logins.\n30. Check the box next to the group that is found and click \"Add Selected\".\n31. Repeat these steps for all various groups needed for various user/computer roles on the ICS system.\n\nIn the ICS Web UI, navigate to Users >> Users Realms.\n1. Click the user realm being used for remote access VPN logins.\n2. Under \"servers\", go to \"Authentication\" and select the certificate authentication realm created that included the customized User template of <certAttr.altname.UPN>.\n3. Under \"Directory/Attribute\", select the previously created LDAP server.\n4. Check the box for \"Enable dynamic policy evaluation\".\n5. Check both the \"Refresh roles\" and \"refresh resource policies\".\n6. Click \"Save Changes\".\n7. Go to the \"Role Mapping\" tab.\n8. Click \"New Rule\".\n9. Select \"Rule based on Group Membership\" and click \"Update\".\n10. Type a name for this rule.\n11. Select \"is\".\n12. Type the group name exactly as it appears as the CN LDAP attribute.\n13. Select the role needed for these VPN logins.\n14. Click \"Save Changes\".",
+  "ccis": [
+    "CCI-000766",
+    "CCI-001954"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To ensure accountability and prevent unauthenticated access, nonprivileged users must use multifactor authentication to prevent potential misuse and compromise of the system.\n\nMultifactor authentication uses two or more factors to achieve authentication. Use of password for user remote access for nonprivileged account is not authorized.\n\nFactors include:\n(i) Something you know (e.g., password/PIN);\n(ii) Something you have (e.g., cryptographic identification device, token); or\n(iii) Something you are (e.g., biometric).\n\nA nonprivileged account is any information system account with authorizations of a nonprivileged user.\n\nNetwork access is any access to a network element by a user (or a process acting on behalf of a user) communicating through a network.\n\nThe DOD CAC with DOD-approved PKI is an example of multifactor authentication.\n\nSatisfies: SRG-NET-000140-VPN-000500, SRG-NET-000342-VPN-001360",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IVCS-VN-000190",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f",
+      "name": "Ivanti Connect Secure VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ivanti-connect-secure-vpn-security-technical-implementation-guide-v2r2-dfb3e65f"
+  ]
+}

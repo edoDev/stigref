@@ -1,0 +1,53 @@
+{
+  "id": "SV-270553r1064937_rule",
+  "full_rule_id": "SV-270553r1064937_rule",
+  "rule_id": "SV-270553",
+  "rule_revision": "1064937",
+  "group_id": "V-270553",
+  "group_title": "SRG-APP-000141-DB-000091",
+  "title": "Unused database components, database management system (DBMS) software, and database objects must be removed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).\n\nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives. Examples include, but are not limited to, installing advertising software, demonstrations, or browser plug-ins not related to requirements or providing a wide array of functionality not required for the mission.\n\nApplications must adhere to the principles of least functionality by providing only essential capabilities.\n\nDemonstration and sample database objects and applications present publicly known attack points for malicious users. These demonstration and sample objects are meant to provide simple examples of coding specific functions and are not developed to prevent vulnerabilities from being introduced to the database management system (DBMS) and host system.\n\nUnused and unnecessary DBMS components increase the attack vector for the DBMS by introducing additional targets for attack. By minimizing the services and applications installed on the system, the number of potential vulnerabilities is reduced.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Run this query to produce a list of components and features installed with the database:\n\nSELECT comp_id, comp_name, version, status from dba_registry\nWHERE comp_id not in ('CATJAVA','CATALOG','CATPROC','SDO','DV','XDB')\nAND status <> 'OPTION OFF';\n\nReview the list. If unused components are installed and are not documented and authorized, this is a finding.",
+  "fix": "If any components are required for operation of applications that will be accessing the DBMS, include them in the system documentation.\n\nComponents cannot be removed via Database Configuration Assistant (DBCA) or manually once the database has been created, either from a container or a noncontainer database.\n\nHowever DBCA can be used to create a noncontainer database and remove components during the creation process before the database is created.\n\nWhen using DBCA to create a custom noncontainer database, select:\ncreation mode = advanced\nDatabase Template = Custom\nDatabase Options..Database Component\n\nComponents that can be selected or deselected are Oracle JVM, Oracle Text, Oracle Multimedia, Oracle OLAP, Oracle Spatial, Oracle Label Security, Oracle Application Express, and Oracle Database Vault.\n\nFor a container database (CDB), the CDB$ROOT must have all possible database components available. When a pluggable database (PDB) is plugged into the CDB, the CDB must have the same components installed as the PDB. Since it is unknown what components the PDBS may have, the CDB must be able to support all possible PDB configurations.\n\nComponents installed in the CDB$ROOT do not need to be licensed. Components are only considered to be used if they are installed in the PDB.\n\nTo configure a PDB to only use specific components:\n\n1. Create a non-CDB 19.0 database and configure that database with the components desired.\n\n2. Plug the non-CDB database into a CDB database, creating a new PDB. Then if desired, create additional clones from the new PDB.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).\n\nIt is detrimental for applications to provide, or install by default, functionality exceeding requirements or mission objectives. Examples include, but are not limited to, installing advertising software, demonstrations, or browser plug-ins not related to requirements or providing a wide array of functionality not required for the mission.\n\nApplications must adhere to the principles of least functionality by providing only essential capabilities.\n\nDemonstration and sample database objects and applications present publicly known attack points for malicious users. These demonstration and sample objects are meant to provide simple examples of coding specific functions and are not developed to prevent vulnerabilities from being introduced to the database management system (DBMS) and host system.\n\nUnused and unnecessary DBMS components increase the attack vector for the DBMS by introducing additional targets for attack. By minimizing the services and applications installed on the system, the number of potential vulnerabilities is reduced.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-013000",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

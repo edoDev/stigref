@@ -1,0 +1,55 @@
+{
+  "id": "SV-224044r1083018_rule",
+  "full_rule_id": "SV-224044r1083018_rule",
+  "rule_id": "SV-224044",
+  "rule_revision": "1083018",
+  "group_id": "V-224044",
+  "group_title": "SRG-OS-000033-GPOS-00014",
+  "title": "The SSH daemon must be configured to use a FIPS 140-2 compliant cryptographic algorithm.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Audit record content that may be necessary to satisfy this requirement includes, for example, time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.\n\nSatisfies: SRG-OS-000033-GPOS-00014, SRG-OS-000120-GPOS-00061, SRG-OS-000250-GPOS-00093</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Locate the SSH daemon configuration file found in /etc/ssh/ directory.\n\nAlternately:\nFrom the Unix System Services ISPF Shell, navigate to ribbon select tools.\nSelect option 1 - Work with Processes.\n\nIf SSH Daemon is not active, this is not a finding.\n\nExamine SSH daemon configuration file. \nsshd_config\n\nIf there are no Ciphers lines, or the ciphers list contains any cipher not starting with \"aes\", this is a finding.\n\nIf the MACs line is not configured to \"hmac-sha1\" or greater, this is a finding.\n\nExamine the z/OS-specific sshd server systemwide configuration: \nzos_sshd_config\n\nIf any of the following is untrue, this is a finding.\n\nFIPSMODE=YES\nCiphersSource=ICSF\nMACsSource=ICSF",
+  "fix": "Edit the SSH daemon configuration and remove any ciphers not starting with \"aes\". If necessary, add a \"Ciphers\" line using FIPS 140-2 compliant algorithms.\n\nConfigure for message authentication to MACs \"hmac-sha1\" or greater.\n\nEdit the z/OS-specific sshd server systemwide configuration file configuration as follows:\nFIPSMODE=YES\nCiphersSource=ICSF\nMACsSource=ICSF",
+  "ccis": [
+    "CCI-000068",
+    "CCI-000803",
+    "CCI-001453"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Audit record content that may be necessary to satisfy this requirement includes, for example, time stamps, source and destination addresses, user/process identifiers, event descriptions, success/fail indications, filenames involved, and access control or flow control rules invoked.\n\nSatisfies: SRG-OS-000033-GPOS-00014, SRG-OS-000120-GPOS-00061, SRG-OS-000250-GPOS-00093",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-SH-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

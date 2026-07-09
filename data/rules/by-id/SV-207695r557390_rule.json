@@ -1,0 +1,53 @@
+{
+  "id": "SV-207695r557390_rule",
+  "full_rule_id": "SV-207695r557390_rule",
+  "rule_id": "SV-207695",
+  "rule_revision": "557390",
+  "group_id": "V-207695",
+  "group_title": "SRG-NET-000249-IDPS-00176",
+  "title": "The Palo Alto Networks security platform must detect and drop any prohibited mobile or otherwise malicious code at internal boundaries.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Mobile code is defined as software modules obtained from remote systems, transferred across a network, and then downloaded and executed on a local system without explicit installation or execution by the recipient. Examples of mobile code include JavaScript, VBScript, Java applets, ActiveX controls, Flash animations, Shockwave videos, and macros embedded within Microsoft Office documents. Mobile code can be exploited to attack a host. It can be sent as an e-mail attachment or embedded in other file formats not traditionally associated with executable code.\n\nWhile the IDPS cannot replace the anti-virus and host-based IDS (HIDS) protection installed on the network's endpoints, vendor or locally created sensor rules can be implemented, which provide preemptive defense against both known and zero-day vulnerabilities. Many of the protections may provide defenses before vulnerabilities are discovered and rules or blacklist updates are distributed by anti-virus or malicious code solution vendors.\n\nThe Palo Alto Networks security platform allows customized profiles to be used to perform antivirus inspection for traffic between zones. Antivirus, anti-spyware, and vulnerability protection features require a specific license. There is a default Antivirus Profile; the profile inspects all of the listed protocol decoders for viruses, and generates alerts for SMTP, IMAP, and POP3 protocols while dropping for FTP, HTTP, and SMB protocols. However, these default actions cannot be edited and the values for the FTP, HTTP, and SMB protocols do not meet the requirement, so customized profiles must be used.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Go to Objects >> Security Profiles >> Antivirus.\n\nIf there are no Antivirus Profiles configured other than the default, this is a finding.\n\nView the configured Antivirus Profiles; for each protocol decoder (SMTP, IMAP, POP3, FTP, HTTP, SMB).\n\nIf the \"Action\" is anything other than \"drop\" or \"reset-both\", this is a finding.\n\nGo to Policies >> Security.\n\nReview each of the configured security policies in turn. For any Security Policy that affects traffic between internal Zones (interzone), view the \"Profile\" column.\n\nIf the \"Profile\" column does not display the “Antivirus Profile” symbol, this is a finding.",
+  "fix": "To create an Antivirus Profile:\nGo to Objects >> Security Profiles >> Antivirus.\n\nSelect \"Add\".\n\nIn the \"Antivirus Profile\" window, complete the required fields.\n\nComplete the \"Name\" and \"Description\" fields.\n\nIn the \"Antivirus\" tab, for all Decoders (SMTP, IMAP, POP3, FTP, HTTP, SMB protocols), set the \"Action\" to \"drop\" or \"reset-both\".\n\nSelect \"OK\".\n\nUse the Antivirus Profile in a Security Policy:\nGo to Policies >> Security.\n\nSelect an existing policy rule or select \"Add\" to create a new one.\n\nIn the \"Actions\" tab in the \"Profile Setting\" section; in the \"Profile Type\" field, select \"Profiles\". The window will change to display the different categories of Profiles.\n\nIn the \"Actions\" tab in the \"Profile Setting\" section; in the \"Antivirus\" field, select the configured Antivirus Profile.\n\nSelect \"OK\".\n\nCommit changes by selecting \"Commit\" in the upper-right corner of the screen.\n\nSelect \"OK\" when the confirmation dialog appears.\n\nUse the Antivirus Profile in a Security Policy applied to traffic between internal zones.\n\nGo to Policies >> Security.\n\nSelect an existing policy rule or select \"Add\" to create a new one. \n\nIn the \"Actions” tab in the “Profile Setting” section;: \nIin the \"Profile Type\" field, select \"Profiles\". The window will change to display the different categories of Profiles.\n\nIn the \"Antivirus\" field, select the configured Antivirus Profile.\n\nIn the \"Anti-Spyware\" field, select the configured “Anti-Spyware” Profile. \n\nIn the \"Vulnerability Protection\" field, select the configured “Vulnerability Protection Profile”. \n\nSelect \"OK\".\n\nCommit changes by selecting \"Commit\" in the upper-right corner of the screen. \n\nSelect \"OK\" when the confirmation dialog appears",
+  "ccis": [
+    "CCI-001243"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Mobile code is defined as software modules obtained from remote systems, transferred across a network, and then downloaded and executed on a local system without explicit installation or execution by the recipient. Examples of mobile code include JavaScript, VBScript, Java applets, ActiveX controls, Flash animations, Shockwave videos, and macros embedded within Microsoft Office documents. Mobile code can be exploited to attack a host. It can be sent as an e-mail attachment or embedded in other file formats not traditionally associated with executable code.\n\nWhile the IDPS cannot replace the anti-virus and host-based IDS (HIDS) protection installed on the network's endpoints, vendor or locally created sensor rules can be implemented, which provide preemptive defense against both known and zero-day vulnerabilities. Many of the protections may provide defenses before vulnerabilities are discovered and rules or blacklist updates are distributed by anti-virus or malicious code solution vendors.\n\nThe Palo Alto Networks security platform allows customized profiles to be used to perform antivirus inspection for traffic between zones. Antivirus, anti-spyware, and vulnerability protection features require a specific license. There is a default Antivirus Profile; the profile inspects all of the listed protocol decoders for viruses, and generates alerts for SMTP, IMAP, and POP3 protocols while dropping for FTP, HTTP, and SMB protocols. However, these default actions cannot be edited and the values for the FTP, HTTP, and SMB protocols do not meet the requirement, so customized profiles must be used.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PANW-IP-000026",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "palo-alto-networks-idps-security-technical-implementation-guide-v3r2-7cc74b58",
+      "name": "Palo Alto Networks IDPS Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "palo-alto-networks-idps-security-technical-implementation-guide-v3r2-7cc74b58"
+  ]
+}

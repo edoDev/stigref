@@ -1,0 +1,53 @@
+{
+  "id": "SV-217024r855892_rule",
+  "full_rule_id": "SV-217024r855892_rule",
+  "rule_id": "SV-217024",
+  "rule_revision": "855892",
+  "group_id": "V-217024",
+  "group_title": "SRG-NET-000362-RTR-000115",
+  "title": "The Juniper router must be configured to have Internet Control Message Protocol (ICMP) redirect messages disabled on all external interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Redirect ICMP messages are commonly used by attackers for network mapping and diagnosis.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the device configuration to determine if it has been configured to ensure the router does not send ICMP Redirect messages out to any external interface.\n\ninterfaces {\n    ge-1/0/0 {\n        unit 0 {\n            family inet {\n                no-redirects;\n                address 11.1.12.2/24;\n            }\n        }\n    }\n    ge-1/1/0  {\n        unit 0 {\n            family inet {\n                no-redirects;\n                address 11.1.23.2/24;\n            }\n        }\n    }\n\nIf ICMP Redirect messages are enabled on any external interfaces, this is a finding.",
+  "fix": "Disable ICMP redirects on all external interfaces as shown in the example below.\n\n[edit interfaces]\nset ge-1/0/0 unit 0 family inet no-redirects\nset ge-1/1/0 unit 0 family inet no-redirects",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ICMP supports IP traffic by relaying information about paths, routes, and network conditions. Routers automatically send ICMP messages under a wide variety of conditions. Redirect ICMP messages are commonly used by attackers for network mapping and diagnosis.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000190",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

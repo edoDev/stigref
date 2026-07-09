@@ -1,0 +1,53 @@
+{
+  "id": "SV-222949r960960_rule",
+  "full_rule_id": "SV-222949r960960_rule",
+  "rule_id": "SV-222949",
+  "rule_revision": "960960",
+  "group_id": "V-222949",
+  "group_title": "SRG-APP-000133-AS-000092",
+  "title": "Tomcat user UMASK must be set to 0027.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>For Unix-based systems, umask settings affect file creation permissions. If the permissions are too loose, newly created log files and applications could be accessible to unauthorized users via the file system.  Ensure the Tomcat OS user account has the correct file creation permission settings by validating the OS umask settings for the Tomcat user. Setting umask to 0027 gives the Tomcat user full rights, group users r-x permission and all others no access. Tomcat will most likely be running as a systemd service. Locate the systemd service file for Tomcat. The default location for the link to the service file is in /etc/systemd/system folder. The service file name should be indicative of the Tomcat process so tomcat.service is the logical name for the service file and is the name referenced by the STIG.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Reference the system documentation and make relevant changes to the following commands if the system differs:\n\nFrom the Tomcat server command line run the following command:\n\nsudo cat /etc/systemd/system/tomcat.service | grep -i umask\n\nIf the umask is not = 0027, this is a finding.",
+  "fix": "From the Tomcat server as a privileged user:\n\nUse a file editor like nano or vi and edit the /etc/systemd/system/tomcat.service file.\n\nChange the \"UMask=\" setting to 0027.\n \nUMask =0027\n\nSave the file and restart Tomcat:\nsudo systemctl restart tomcat\nsudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "For Unix-based systems, umask settings affect file creation permissions. If the permissions are too loose, newly created log files and applications could be accessible to unauthorized users via the file system.  Ensure the Tomcat OS user account has the correct file creation permission settings by validating the OS umask settings for the Tomcat user. Setting umask to 0027 gives the Tomcat user full rights, group users r-x permission and all others no access. Tomcat will most likely be running as a systemd service. Locate the systemd service file for Tomcat. The default location for the link to the service file is in /etc/systemd/system folder. The service file name should be indicative of the Tomcat process so tomcat.service is the logical name for the service file and is the name referenced by the STIG.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000450",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

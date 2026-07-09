@@ -1,0 +1,54 @@
+{
+  "id": "SV-269778r1051719_rule",
+  "full_rule_id": "SV-269778r1051719_rule",
+  "rule_id": "SV-269778",
+  "rule_revision": "1051719",
+  "group_id": "V-269778",
+  "group_title": "SRG-APP-000148-NDM-000346",
+  "title": "The Dell OS10 Switch must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Authentication for administrative (privileged level) access to the device is always required. An account can be created on the device's local database for use when the authentication server is down or connectivity between the device and the authentication server is not operable. This account is referred to as the account of last resort since it is intended to be used as a last resort and when immediate administrative access is necessary.\n\nThe account of last resort logon credentials must be stored in a sealed envelope and kept in a safe. The safe must be periodically audited to verify the envelope remains sealed. The signature of the auditor and the date of the audit should be added to the envelope as a record. Administrators should secure the credentials and disable the root account (if possible) when not needed for system administration functions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the network device configuration to determine if an account of last resort is configured. Verify default admin and other vendor-provided accounts are disabled, removed, or renamed where possible. Verify the username and password for the account of last resort is contained within a sealed envelope and kept in a safe. \n\nStep 1: Verify the Dell OS10 Switch is configured with only a single local user account. If one local account does not exist for use as the account of last resort, this is a finding. \n\nVerify the role is sysadmin.\n\nOS10# show running-configuration users\nusername alradmin password **** role sysadmin priv-lvl 15\nOS10#\n\nStep 2: Verify the linuxadmin system user has been disabled:\n\nOS10# show running-configuration | grep system-user\nsystem-user linuxadmin disable\nsystem-user linuxadmin password ****\nOS10#\n\nIf one local account does not exist for use as the account of last resort or the linuxadmin system-user has not been disabled, this is a finding.",
+  "fix": "Configure the OS10 Switch to only allow one local account for use as the account of last resort.\n\nDisable the linuxadmin system user:\n\nOS10(config)# system-user linuxadmin disable\n\n%Warning : Operation is not recommended in absence of console access.\nDo you want to proceed ? [yes/no(default)]:yes\nOS10(config)#\n\nDelete any extra local users with the following command:\n\nOS10(config)# no username admin\n\nNote: The account of last resort must be added before the default admin account can be deleted.",
+  "ccis": [
+    "CCI-001358",
+    "CCI-002111"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Authentication for administrative (privileged level) access to the device is always required. An account can be created on the device's local database for use when the authentication server is down or connectivity between the device and the authentication server is not operable. This account is referred to as the account of last resort since it is intended to be used as a last resort and when immediate administrative access is necessary.\n\nThe account of last resort logon credentials must be stored in a sealed envelope and kept in a safe. The safe must be periodically audited to verify the envelope remains sealed. The signature of the auditor and the date of the audit should be added to the envelope as a record. Administrators should secure the credentials and disable the root account (if possible) when not needed for system administration functions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000360",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

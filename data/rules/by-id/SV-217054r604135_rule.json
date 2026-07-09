@@ -1,0 +1,53 @@
+{
+  "id": "SV-217054r604135_rule",
+  "full_rule_id": "SV-217054r604135_rule",
+  "rule_id": "SV-217054",
+  "rule_revision": "604135",
+  "group_id": "V-217054",
+  "group_title": "SRG-NET-000018-RTR-000003",
+  "title": "The Juniper BGP router must be configured to reject inbound route advertisements for any prefixes belonging to the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Accepting route advertisements belonging to the local AS can result in traffic looping or being black holed, or at a minimum using a non-optimized path.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to verify that it will reject routes belonging to the local AS.\n\nVerify a prefix list has been configured containing prefixes belonging to the local autonomous system as shown in the example below.\n\npolicy-options {\n    …\n    …\n    …\n    prefix-list OUR_PREFIXES {\n        x.x.x.x/16;\n    }\n\nVerify that a policy has been configured to reject the local prefixes.\n\npolicy-options {\n    …\n    …\n    …\n    policy-statement FILTER_ROUTES {\n        term REJECT_BOGONS {\n            from {\n                prefix-list BOGON_PREFIXES;\n            }\n            then reject;\n        }\n        term REJECT_OUR_PREFIXES {\n            from {\n                prefix-list OUR_PREFIXES;\n            }\n            then reject;\n        }\n        term ACCEPT_OTHER {\n            then accept;\n        }\n    }\n}\n\nVerify that the configured policy to filter local prefixes has been applied to external BGP peers as shown in the example below.\n\nprotocols {\n    bgp {\n        group GROUP_AS4 {\n            type external;\n            import FILTER_ROUTES;\n            peer-as 4;\n            neighbor x.x.x.x;\n        }\n    }\n\nIf the router is not configured to reject inbound route advertisements belonging to the local AS, this is a finding.",
+  "fix": "Configure the router to reject inbound route advertisements for any prefixes belonging to the local AS.\n\nConfigure a prefix list containing prefixes belonging to the local autonomous system.\n\n[edit policy-options]\nset prefix-list OUR_PREFIXES x.x.x.x/16\n\nConfigure a policy-statement to reject prefixes belonging to the local autonomous system. This can be done by adding a term to the existing policy to filter Bogons as shown in the example below.\n\n[edit policy-options policy-statement FILTER_ROUTES]\nset term REJECT_OUR_PREFIXES from prefix-list OUR_PREFIXES\nset term REJECT_OUR_PREFIXES then reject\ninsert term REJECT_OUR_PREFIXES before term ACCEPT_OTHER\n\nNote: There is no need change the BGP configuration assuming the import statement is already configured for all external neighbors.",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Accepting route advertisements belonging to the local AS can result in traffic looping or being black holed, or at a minimum using a non-optimized path.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000490",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

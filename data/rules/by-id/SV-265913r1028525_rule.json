@@ -1,0 +1,53 @@
+{
+  "id": "SV-265913r1028525_rule",
+  "full_rule_id": "SV-265913r1028525_rule",
+  "rule_id": "SV-265913",
+  "rule_revision": "1028525",
+  "group_id": "V-265913",
+  "group_title": "SRG-APP-000133-DB-000200",
+  "title": "Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to MongoDB, etc.) must be owned by database/DBMS principals authorized for ownership.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who uses the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.\n\nConversely, if critical tables or other objects rely on unauthorized owner accounts, these objects may be lost when an account is removed.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For each database in MongoDB, run the following commands:\n\nuse <database>\ndb.getUsers()\n\nExample output: \n\n{\n      _id: 'admin.user1',\n      userId: UUID('b78e490a-4661-491f-8197-c3251934e785'),\n      user: 'user1',\n      db: 'admin',\n      roles: [\n        { role: 'readWrite', db: 'myDatabase' },\n        { role: 'dbOwner', db: 'myDatabase' },\n        { role: 'dbOwner', db: 'anotherDatabase' }\n      ]\n\nHere, the user named \"user1\" in the \"admin\" database has a role of \"dbOwner\" for the database (db:) \"myDatabase\" and the database (db:) \"anotherDatabase\".\n\nFor users where the role of \"dbOwner\" is found, verify with the organization or site-specific documentation whether the user is authorized for the \"dbOwner\" role on the database resources listed.\n\nIf the user account has the role of \"dbOwner\" but is not authorized for the role for any database listed in their output, this is a finding.",
+  "fix": "For each user identified as having a \"dbOwner\" role on a database they are not authorized for, revoke the \"dbOwner\" role from that user on that database by running the following commands:\n\nuse <database>\ndb.revokeRolesFromUser() command\n\nhttps://www.mongodb.com/docs/v7.0/reference/command/revokeRolesFromUser/\n\nExample to revoke \"dbOwner\" role from \"user1\" on the \"anotherDatabase\" in the \"admin\" database:\n\nuse admin\ndb.revokeRolesFromUser(\n    \"user1\",\n    [\n        { role: \"dbOwner\", db: \"anotherDatabase\" }\n    ]\n)",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who uses the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.\n\nConversely, if critical tables or other objects rely on unauthorized owner accounts, these objects may be lost when an account is removed.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MD7X-00-002900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mongodb-enterprise-advanced-7-x-security-technical-implementation-guide-v1r1-f117b5bb",
+      "name": "MongoDB Enterprise Advanced 7.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mongodb-enterprise-advanced-7-x-security-technical-implementation-guide-v1r1-f117b5bb"
+  ]
+}

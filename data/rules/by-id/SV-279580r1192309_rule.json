@@ -1,0 +1,53 @@
+{
+  "id": "SV-279580r1192309_rule",
+  "full_rule_id": "SV-279580r1192309_rule",
+  "rule_id": "SV-279580",
+  "rule_revision": "1192309",
+  "group_id": "V-279580",
+  "group_title": "SRG-OS-000710-GPOS-00160",
+  "title": "Nutanix OS must prevent using dictionary words for passwords.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the operating system allows the user to select passwords based on dictionary words, then this increases the chances of password compromise by increasing the opportunity for successful guesses and brute-force attacks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS prevents dictionary attacks.\n\n1. For AOS, Prism Central, and Files, verify the \"dictcheck\" parameter is set to \"1\", or is commented out using the following command.\n\n$ sudo grep -i dictcheck /etc/security/pwquality.conf\ndictcheck = 1\n\n2. For AHV, verify the output contains \"pam_pwquality.so\" with the option of \"required\" or \"requisite\" using the following commands.\n\n$ sudo grep pwquality.so /etc/pam.d/password-auth\npassword    requisite     pam_pwquality.so try_first_pass local_users_only enforce_for_root retry=3 authtok_type=\n\nIf Nutanix OS VMs are not configured to prevent dictionary attacks, this is a finding.",
+  "fix": "Configure the use of complex passwords for Nutanix OS VMs.\n\n1. For AOS, configure the use of complex passwords using the following command.\n\n$ sudo salt-call state.sls security/CVM/pamCVM.sls\n\n2. For Prism Central, configure the use of complex passwords using the following command.\n\n$ sudo salt-call state.sls security/PCVM/pamPCVM.sls\n\n3. For Files, configure the use of complex passwords using the following command.\n\n$ sudo salt-call state.sls security/AFS/pamAFS.sls\n\n4. For Prism Central, configure the use of complex passwords using the following command.\n\n$ ncli cluster edit-hypervisor-security-params enable-high-strength-password=true",
+  "ccis": [
+    "CCI-004061"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the operating system allows the user to select passwords based on dictionary words, then this increases the chances of password compromise by increasing the opportunity for successful guesses and brute-force attacks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000127",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

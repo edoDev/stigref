@@ -1,0 +1,53 @@
+{
+  "id": "SV-253990r844003_rule",
+  "full_rule_id": "SV-253990r844003_rule",
+  "rule_id": "SV-253990",
+  "rule_revision": "844003",
+  "group_id": "V-253990",
+  "group_title": "SRG-NET-000019-RTR-000009",
+  "title": "The Juniper perimeter router must not be configured to be a Border Gateway Protocol (BGP) peer to an alternate gateway service provider.",
+  "severity": "high",
+  "description": "<VulnDiscussion>ISPs use BGP to share route information with other autonomous systems (i.e., other ISPs and corporate networks). If the perimeter router was configured to BGP peer with an ISP, NIPRNet routes could be advertised to the ISP; thereby creating a backdoor connection from the internet to the NIPRNet.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the configuration of the router connecting to the alternate gateway.\n\nReview the [edit protocols bgp] hierarchy and verify there are no BGP neighbors configured to the remote AS that belongs to the alternate gateway service provider. For example:\n[edit protocols bgp]\ngroup eBGP {\n    type external;\n    peer-as 2;\n    neighbor <address-1> {\n        <bgp neighbor configuration>;\n    }\n    neighbor <address-2> {\n        <bgp neighbor configuration>;\n    }\n}\n\nNote: Neither neighbor can belong to a peer AS belonging to the alternate gateway service provider.\n\nVerify static routing to the peer AS belonging to the alternate gateway service provider. For example:\n[edit routing-options]\nrib inet6.0 {\n    static {\n        route <peer AS IPv6 subnet>/<prefix> next-hop <peer AS router>;\n    }\n}\nstatic {\n    route <peer AS IPv4 subnet>/<mask> next-hop <peer AS router>;\n}\n\nIf there are BGP neighbors connecting the remote AS of the alternate gateway service provider, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nRemove BGP neighbors belonging to the alternate gateway service provider.\n\ndelete protocols bgp group <name> neighbor <peer AS belonging to alternate gateway service provider>\n\nConfigure a static route on the perimeter router to reach the AS of a router connecting to an alternate gateway.\n\nset routing-options rib inet6.0 static route <IPv6 subnet>/<prefix> next-hop <peer AS router>\nset routing-options static route <IPv4 subnet>/<mask> next-hop <peer AS router>",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ISPs use BGP to share route information with other autonomous systems (i.e., other ISPs and corporate networks). If the perimeter router was configured to BGP peer with an ISP, NIPRNet routes could be advertised to the ISP; thereby creating a backdoor connection from the internet to the NIPRNet.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

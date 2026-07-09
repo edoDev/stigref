@@ -1,0 +1,53 @@
+{
+  "id": "SV-251793r916114_rule",
+  "full_rule_id": "SV-251793r916114_rule",
+  "rule_id": "SV-251793",
+  "rule_revision": "916114",
+  "group_id": "V-251793",
+  "group_title": "SRG-APP-000516-NDM-000350",
+  "title": "The NSX-T Manager must be configured to send log data to a central log server for the purpose of forwarding alerts to the administrators and the Information System Security Officer (ISSO).",
+  "severity": "high",
+  "description": "<VulnDiscussion>The aggregation of log data kept on a syslog server can be used to detect attacks and trigger an alert to the appropriate security personnel. The stored log data can used to detect weaknesses in security that enable the network IA team to find and address these weaknesses before breaches can occur. Reviewing these logs, whether before or after a security breach, is important in showing whether someone is an internal employee or an outside threat.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an NSX-T Manager shell, run the following command(s):\n\n> get logging-servers\n\nIf any configured logging-servers are not configured with protocol of \"tcp\", \"li-tls\", or \"tls\" and level of \"info\", this is a finding.\n\nIf no logging-servers are configured, this is a finding.\n\nNote: This check must be run from each NSX-T Manager as they are configured individually.",
+  "fix": "(Optional) From an NSX-T Manager shell, run the following command(s) to clear any existing incorrect logging-servers:\n\n> clear logging-servers\n\nFrom an NSX-T Manager shell, run the following command(s) to configure a tcp syslog server:\n\n> set logging-server <server-ip or server-name> proto tcp level info\n\nFrom an NSX-T Manager shell, run the following command(s) to configure a tls syslog server:\n\n> set logging-server <server-ip or server-name> proto tls level info serverca ca.pem clientca ca.pem certificate cert.pem key key.pem\n\nFrom an NSX-T Manager shell, run the following command(s) to configure a li-tls syslog server:\n\n> set logging-server <server-ip or server-name> proto li-tls level info serverca root-ca.crt\n\nNote: If  using the protocols TLS or LI-TLS to configure a secure connection to a log server, the server and client certificates must be stored in /image/vmware/nsx/file-store on each NSX-T Manager appliance.",
+  "ccis": [
+    "CCI-002605"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The aggregation of log data kept on a syslog server can be used to detect attacks and trigger an alert to the appropriate security personnel. The stored log data can used to detect weaknesses in security that enable the network IA team to find and address these weaknesses before breaches can occur. Reviewing these logs, whether before or after a security breach, is important in showing whether someone is an internal employee or an outside threat.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TNDM-3X-000096",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-t-manager-ndm-security-technical-implementation-guide-v1r3-a6224326",
+      "name": "VMware NSX-T Manager NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-t-manager-ndm-security-technical-implementation-guide-v1r3-a6224326"
+  ]
+}

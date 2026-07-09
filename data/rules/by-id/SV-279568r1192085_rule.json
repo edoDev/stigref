@@ -1,0 +1,53 @@
+{
+  "id": "SV-279568r1192085_rule",
+  "full_rule_id": "SV-279568r1192085_rule",
+  "rule_id": "SV-279568",
+  "rule_revision": "1192085",
+  "group_id": "V-279568",
+  "group_title": "SRG-OS-000343-GPOS-00134",
+  "title": "Nutanix OS must immediately notify the system administrator (SA) and information system security officer (ISSO) (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If security personnel are not notified immediately when storage volume reaches 75 percent usage, they are unable to plan for audit record storage capacity expansion.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify Nutanix OS is configured to act when allocated audit record storage volume reaches 75 percent utilization using the following command.\n\n$ sudo grep -w space_left /etc/audit/auditd.conf\nspace_left = 25%\n\nIf the value of the \"space_left\" keyword is not set to \"25%\", or is commented out, this is a finding.\n\n2. Run the following command. \n\n$ sudo grep -w space_left_action /etc/audit/auditd.conf\nspace_left_action = SYSLOG\n\nIf the value of the \"space_left_action\" is not set to \"SYSLOG\" or is commented out, this is a finding.",
+  "fix": "1. For AOS, configure the audit rules.\n\n$ sudo salt-call state.sls security/CVM/auditCVM\n\n2. For Prism Central, configure the audit rules.\n\n$ sudo salt-call state.sls security/PCVM/auditPCVM\n\n3. For Files, configure the audit rules.\n\n$ sudo salt-call state.sls security/AFS/auditAFS\n\n4. For AHV, configure the audit rules.\n\n$ sudo salt-call state.sls security/KVM/auditKVM",
+  "ccis": [
+    "CCI-001855"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If security personnel are not notified immediately when storage volume reaches 75 percent usage, they are unable to plan for audit record storage capacity expansion.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000091",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

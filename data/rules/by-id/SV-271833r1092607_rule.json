@@ -1,0 +1,53 @@
+{
+  "id": "SV-271833r1092607_rule",
+  "full_rule_id": "SV-271833r1092607_rule",
+  "rule_id": "SV-271833",
+  "rule_revision": "1092607",
+  "group_id": "V-271833",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 local interactive users must have a home directory assigned in the /etc/passwd file.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If local interactive users are not assigned a valid home directory, there is no place for the storage and control of files they should own.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 configures interactive users on the system have a home directory assigned with the following command:\n \n$ sudo awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1, $3, $6}' /etc/passwd\nsmithk:x:1000:1000:smithk:/home/smithk:/bin/bash\nscsaustin:x:1001:1001:scsaustin:/home/scsaustin:/bin/bash\ndjohnson:x:1002:1002:djohnson:/home/djohnson:/bin/bash\n\nInspect the output and verify that all interactive users (normally users with a user identifier [UID] greater that 1000) have a home directory defined.\n\nIf users home directory is not defined, this is a finding.",
+  "fix": "Create and assign home directories to all local interactive users on OL 9 that currently do not have a home directory assigned.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If local interactive users are not assigned a valid home directory, there is no place for the storage and control of files they should own.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-003002",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

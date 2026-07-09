@@ -1,0 +1,56 @@
+{
+  "id": "SV-261428r996691_rule",
+  "full_rule_id": "SV-261428r996691_rule",
+  "rule_id": "SV-261428",
+  "rule_revision": "996691",
+  "group_id": "V-261428",
+  "group_title": "SRG-OS-000037-GPOS-00015",
+  "title": "SLEM 5 must generate audit records for all uses of the \"chfn\" command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Reconstruction of harmful events or forensic analysis is not possible if audit records do not contain enough information.\n\nAt a minimum, the organization must audit the full-text recording of privileged commands. The organization must maintain audit trails in sufficient detail to reconstruct events to determine the cause and impact of compromise.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 generates an audit record for all uses of the \"chfn\" command with the following command:\n\n     > sudo auditctl -l | grep -w '/usr/bin/chfn'\n     -a always,exit -S all -F path=/usr/bin/chfn -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged-chfn\n\nIf the command does not return any output or the returned line is commented out, this is a finding.\n\nNote: The \"key=\" value is arbitrary and can be different from the example output above.",
+  "fix": "Configure SLEM 5 to generate an audit record for all uses of the \"chfn\" command.\n\nAdd or modify the following line in the \"/etc/audit/rules.d/audit.rules\" file:\n\n-a always,exit -F path=/usr/bin/chfn -F perm=x -F auid>=1000 -F auid!=unset -k privileged-chfn\n\nTo reload the rules file, restart the audit daemon:\n\n     > sudo systemctl restart auditd.service\n\nor issue the following command:\n\n     > sudo augenrules --load",
+  "ccis": [
+    "CCI-000130",
+    "CCI-000169",
+    "CCI-002884",
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Reconstruction of harmful events or forensic analysis is not possible if audit records do not contain enough information.\n\nAt a minimum, the organization must audit the full-text recording of privileged commands. The organization must maintain audit trails in sufficient detail to reconstruct events to determine the cause and impact of compromise.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-654025",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

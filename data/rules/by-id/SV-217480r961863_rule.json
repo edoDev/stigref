@@ -1,0 +1,54 @@
+{
+  "id": "SV-217480r961863_rule",
+  "full_rule_id": "SV-217480r961863_rule",
+  "rule_id": "SV-217480",
+  "rule_revision": "961863",
+  "group_id": "V-217480",
+  "group_title": "SRG-APP-000516-NDM-000335",
+  "title": "The HP FlexFabric Switch must enforce access restrictions associated with changes to the system components.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Changes to the hardware or software components of the HP FlexFabric Switch can have significant effects on the overall security of the network. Therefore, only qualified and authorized individuals should be allowed administrative access to the HP FlexFabric Switch for implementing any changes or upgrades. This requirement applies to updates of the application files, configuration, ACLs, and policy filters.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the HP FlexFabric Switch to determine if only authorized administrators have permissions for changes, deletions and updates on HP FlexFabric Switch.\n\n[HP] display local-user\n\nDevice management user user1:\n State:                    Active\n Service type:             SSH\n User group:               system\n Bind attributes:\n Authorization attributes:\n  Work directory:          flash:\n  User role list:          role1\n\n[HP] display role\n\nRole: role1\n  Description:\n  VLAN policy: deny\n  Permitted VLANs: 10 to 20\n  Interface policy: permit (default)\n  VPN instance policy: permit (default)\n  -------------------------------------------------------------------\n  Rule    Perm   Type  Scope         Entity\n  -------------------------------------------------------------------\n  1       permit R--   feature       -\n  2       permit       command       system-view ; vlan *\n  R:Read W:Write X:Execute\n\nIf unauthorized users are allowed to change the hardware or software, this is a finding.",
+  "fix": "Configure the HP FlexFabric Switch to enforce access restrictions associated with changes to the system components. \n\nBelow is an example how to configure a user-role and assign it to a user:\n\nCreate the user role role1: \n\n[HP] role name role1\n\nConfigure rule 1 to permit the user role to access read commands of all features: \n\n[HP-role-role1] rule 1 permit read feature\n\nConfigure rule 2 to permit the user role to create VLANs and access commands in VLAN view: \n\n[HP-role-role1] rule 2 permit command system-view ; vlan *\n\nChange the VLAN policy to permit the user role to configure only VLANs 10 to 20: \n\n[HP-role-role1] vlan policy deny\n[HP-role-role1-vlanpolicy] permit vlan 10 to 20\n[HP-role-role1-vlanpolicy] quit\n[HP-role-role1] quit\n\nCreate a management local user named user1 and enter its view: \n\n[HP] local-user user1 class manage\n\nSet a password for the user: \n\n[HP-luser-manage-user1] password simple xxxxxx\n\nSet the service type to SSH: \n\n[HP-luser-manage-user1] service-type ssh\n\nAssign role1 to the user: \n\n[HP-luser-manage-user1] authorization-attribute user-role role1\n\nTo make sure that the user has only the permissions of role1, remove the user from the default user role network-operator: \n\n[HP-luser-manage-user1] undo authorization-attribute user-role network-operator\n[HP-luser-manage-user1] quit",
+  "ccis": [
+    "CCI-000345",
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Changes to the hardware or software components of the HP FlexFabric Switch can have significant effects on the overall security of the network. Therefore, only qualified and authorized individuals should be allowed administrative access to the HP FlexFabric Switch for implementing any changes or upgrades. This requirement applies to updates of the application files, configuration, ACLs, and policy filters.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-ND-000132",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881",
+      "name": "HP FlexFabric Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-ndm-security-technical-implementation-guide-v1r4-4c24c881"
+  ]
+}

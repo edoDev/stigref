@@ -1,0 +1,53 @@
+{
+  "id": "SV-270541r1065276_rule",
+  "full_rule_id": "SV-270541r1065276_rule",
+  "rule_id": "SV-270541",
+  "rule_revision": "1065276",
+  "group_id": "V-270541",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "The /diag subdirectory under the directory assigned to the DIAGNOSTIC_DEST parameter must be protected from unauthorized access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion><DIAGNOSTIC_DEST>/diag indicates the directory where trace, alert, core, and incident directories and files are located. The files may contain sensitive data or information that could prove useful to potential attackers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From SQL*Plus:\n\nselect value from v$parameter where name='diagnostic_dest';\n\nOn Unix Systems:\n\nls -ld [pathname]/diag\n\nSubstitute [pathname] with the directory path listed from the above SQL command, and append \"/diag\" to it, as shown.\n\nIf permissions are granted for world access, this is a finding.\n\nIf any groups that include members other than the Oracle process and software owner accounts, DBAs, auditors, or backup accounts are listed, this is a finding.\n\nOn Windows Systems (from Windows Explorer):\n\nBrowse to the \\diag directory under the directory specified.\n\nSelect and right-click on the directory >> Properties >> Security tab.\n\nIf permissions are granted to everyone, this is a finding.\n\nIf any account other than the Oracle process and software owner accounts, administrators, database administrators (DBAs), system group or developers authorized to write and debug applications on this database are listed, this is a finding.",
+  "fix": "Alter host system permissions to the <DIAGNOSTIC_DEST>/diag directory to the Oracle process and software owner accounts, DBAs, system administrators (SAs) (if required), and developers or other users that may specifically require access for debugging or other purposes.\n\nAuthorize and document user access requirements to the directory outside of the Oracle, DBA, and SA account list.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "<DIAGNOSTIC_DEST>/diag indicates the directory where trace, alert, core, and incident directories and files are located. The files may contain sensitive data or information that could prove useful to potential attackers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-011500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

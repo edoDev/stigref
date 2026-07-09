@@ -1,0 +1,55 @@
+{
+  "id": "SV-228672r997690_rule",
+  "full_rule_id": "SV-228672r997690_rule",
+  "rule_id": "SV-228672",
+  "rule_revision": "997690",
+  "group_id": "V-228672",
+  "group_title": "SRG-APP-000516-NDM-000317",
+  "title": "The Palo Alto Networks security platform must use automated mechanisms to alert security personnel to threats identified by authoritative sources (e.g., CTOs) and IAW CJCSM 6510.01B.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>CJCSM 6510.01B, \"Cyber Incident Handling Program\", in subsection e.(6)(c) sets forth three requirements for Cyber events detected by an automated system:\nIf the cyber event is detected by an automated system, an alert will be sent to the POC designated for receiving such automated alerts.\nCC/S/A/FAs that maintain automated detection systems and sensors must ensure that a POC for receiving the alerts has been defined and that the IS configured to send alerts to that POC.\nThe POC must then ensure that the cyber event is reviewed as part of the preliminary analysis phase and reported to the appropriate individuals if it meets the criteria for a reportable cyber event or incident.\n\nBy immediately displaying an alarm message, potential security violations can be identified more quickly even when administrators are not logged on to the network device. An example of a mechanism to facilitate this would be through the utilization of SNMP traps.\n\nThe Palo Alto Networks security platform can be configured to send messages to an SNMP server and to an email server as well as a Syslog server. SNMP traps can be generated for each of the five logging event types on the firewall: traffic, threat, system, hip, config. For this requirement, only the threat logs must be sent. Note that only traffic that matches an action in a rule will be logged and forwarded. In the case of traps, the messages are initiated by the firewall and sent unsolicited to the management stations. \n\nThe use of email as a notification method may result in a very larger number of messages being sent and possibly overwhelming the email server as well as the POC. The use of SNMP is preferred over email in general, but organizations may want to use email in addition to SNMP for high-priority messages.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: The actual method is determined by the organization.\nReview the system/network documentation to determine who the Points of Contact are and which methods are being used. \nIf the selected method is SNMP, verify that the device is configured.\nGo to Device >> Server Profiles.\nIf no SNMP servers are configured, this is a finding.\n \nGo to Objects >> Log Forwarding.\nIf no Log Forwarding Profile is listed, this is a finding.\n\nIf the \"Log Type\" column does not include \"Threat\", this is a finding.\n\nIf any Severity is not listed, this is a finding.",
+  "fix": "For SNMP traps, follow the following steps:\nConfigure the SNMP Trap Destinations; go to Device >> Server Profiles >> SNMP Trap.\nSelect \"Add\".\n\nIn the \"SNMP Trap Server Profile\" window, enter the required information.\nFor SNMP Version, select \"V3\". \nEnter the name of the SNMP Server Profile.\nSelect \"Add\". \nServer—Specify the SNMP trap destination name (up to 31 characters).\nManager—Specify the IP address of the trap destination.\nUser—Specify the SNMP user.\nEngineID—Specify the engine ID of the firewall. The input is a string in hexadecimal representation. The engine ID is any number between 5 to 64 bytes. When represented as a hexadecimal string, this is between 10 and 128 characters (2 characters for each byte) with two additional characters for 0x that must be used as a prefix in the input string.\nAuth Password—Specify the user’s authentication password (minimum 8 characters, maximum of 256 characters, and no character restrictions). Only Secure Hash Algorithm (SHA) is supported.\nPriv Password—Specify the user’s encryption password (minimum 8 characters, maximum of 256 characters, and no character restrictions). Only Advanced Encryption Standard (AES) is supported.\nSelect \"OK\".\n\nConfigure generating \"Traps for Threat\" events:\nGo to Objects >> Log Forwarding.\nSelect \"Add\".\nIn the \"Log Forwarding Profile\" window, enter the required information.\nEnter the name of the Log Forwarding Profile.\nIn the \"Threat Settings\" section, in the \"SNMP Trap\" field for each Severity, select the SNMP Trap Server Profile.\nSelect \"OK\".\n\nAdd the Log Forwarding Profile to the security policies to trigger log forwarding to the SNMP server.\nGo to Policies >> Security.\nSelect the rule for which the log forwarding needs to be applied. Apply the security profiles to the rule.\nGo to \"Actions\" (tab); in the \"Log forwarding\" field, select the \"log forwarding\" profile.\nCommit changes by selecting \"Commit\" in the upper-right corner of the screen.\nSelect \"OK\" when the confirmation dialog appears.",
+  "ccis": [
+    "CCI-000366",
+    "CCI-001274",
+    "CCI-003831"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "CJCSM 6510.01B, \"Cyber Incident Handling Program\", in subsection e.(6)(c) sets forth three requirements for Cyber events detected by an automated system:\nIf the cyber event is detected by an automated system, an alert will be sent to the POC designated for receiving such automated alerts.\nCC/S/A/FAs that maintain automated detection systems and sensors must ensure that a POC for receiving the alerts has been defined and that the IS configured to send alerts to that POC.\nThe POC must then ensure that the cyber event is reviewed as part of the preliminary analysis phase and reported to the appropriate individuals if it meets the criteria for a reportable cyber event or incident.\n\nBy immediately displaying an alarm message, potential security violations can be identified more quickly even when administrators are not logged on to the network device. An example of a mechanism to facilitate this would be through the utilization of SNMP traps.\n\nThe Palo Alto Networks security platform can be configured to send messages to an SNMP server and to an email server as well as a Syslog server. SNMP traps can be generated for each of the five logging event types on the firewall: traffic, threat, system, hip, config. For this requirement, only the threat logs must be sent. Note that only traffic that matches an action in a rule will be logged and forwarded. In the case of traps, the messages are initiated by the firewall and sent unsolicited to the management stations. \n\nThe use of email as a notification method may result in a very larger number of messages being sent and possibly overwhelming the email server as well as the POC. The use of SNMP is preferred over email in general, but organizations may want to use email in addition to SNMP for high-priority messages.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PANW-NM-000131",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "palo-alto-networks-ndm-security-technical-implementation-guide-v3r3-90db7705",
+      "name": "Palo Alto Networks NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "palo-alto-networks-ndm-security-technical-implementation-guide-v3r3-90db7705"
+  ]
+}

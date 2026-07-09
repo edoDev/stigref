@@ -1,0 +1,53 @@
+{
+  "id": "SV-271473r1091131_rule",
+  "full_rule_id": "SV-271473r1091131_rule",
+  "rule_id": "SV-271473",
+  "rule_revision": "1091131",
+  "group_id": "V-271473",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 must be configured so that the firewall employs a deny-all, allow-by-exception policy for allowing connections to other systems.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failure to restrict network connectivity only to authorized systems permits inbound connections from malicious systems. It also permits outbound connections that may facilitate exfiltration of DOD data.\n\nOL 9 incorporates the \"firewalld\" daemon, which allows for many different configurations. One of these configurations is zones. Zones can be used to a deny-all, allow-by-exception approach. The default \"drop\" zone will drop all incoming network packets unless it is explicitly allowed by the configuration file or is related to an outgoing network connection.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 is configured to employ a deny-all, allow-by-exception policy for allowing connections to other systems with the following commands:\n\n$ sudo  firewall-cmd --state\nrunning\n\n$ sudo firewall-cmd --get-active-zones\npublic\n   interfaces: ens33\n\n$ sudo firewall-cmd --info-zone=public | grep target\n   target: DROP\n\n$ sudo firewall-cmd --permanent --info-zone=public | grep target\n   target: DROP\n\nIf no zones are active on the OL 9 interfaces or if runtime and permanent targets are set to a different option other than \"DROP\", this is a finding.",
+  "fix": "Configure the firewalld daemon to employ a deny-all, allow-by-exception with the following commands:\n\nStart by adding the exceptions that are required for mission functionality to the \"drop\" zone. If SSH access on port 22 is needed, for example, run the following: \"sudo firewall-cmd --permanent --add-service=ssh --zone=drop\"\n\nReload the firewall rules to update the runtime configuration from the \"--permanent\" changes made above:\n$ sudo firewall-cmd --reload\n\nSet the default zone to the drop zone:\n$ sudo firewall-cmd --set-default-zone=drop\nNote: This is a runtime and permanent change.\n\nAdd any interfaces to the newly modified \"drop\" zone:\n$ sudo firewall-cmd --permanent --zone=drop --change-interface=ens33\n\nReload the firewall rules for changes to take effect:\n$ sudo firewall-cmd --reload",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to restrict network connectivity only to authorized systems permits inbound connections from malicious systems. It also permits outbound connections that may facilitate exfiltration of DOD data.\n\nOL 9 incorporates the \"firewalld\" daemon, which allows for many different configurations. One of these configurations is zones. Zones can be used to a deny-all, allow-by-exception approach. The default \"drop\" zone will drop all incoming network packets unless it is explicitly allowed by the configuration file or is related to an outgoing network connection.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-000224",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-230047r950991_rule",
+  "full_rule_id": "SV-230047r950991_rule",
+  "rule_id": "SV-230047",
+  "rule_revision": "950991",
+  "group_id": "V-230047",
+  "group_title": "SRG-NET-000364-RTR-000200",
+  "title": "The Cisco perimeter router must be configured to drop IPv6 undetermined transport packets.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>One of the fragmentation weaknesses known in IPv6 is the undetermined transport packet. This packet contains an undetermined protocol due to fragmentation. Depending on the length of the IPv6 extension header chain, the initial fragment may not contain the layer four port information of the packet.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration to determine if it is configured to drop IPv6 undetermined transport packets.\n\nStep 1: Verify that an inbound IPv6 ACL has been configured on the external interface.\n\ninterface gigabitethernet1/0\n ipv6 address 2001::1:0:22/64\n ipv6 traffic-filter FILTER_IPV6 in\n\nStep 2: Verify that the ACL drops undetermined transport packets as shown in the example below.\n\nipv6 access-list FILTER_IPV6\n deny ipv6 any any log undetermined-transport\n permit ipv6 …\n …\n …\n …\n deny ipv6 any any log\n\nIf the router is not configured to drop IPv6 undetermined transport packets, this is a finding.",
+  "fix": "Configure the router to drop IPv6 undetermined transport packets as shown in the example below.\nR1(config)#ipv6 access-list FILTER_IPV6\nR1(config-ipv6-acl)#deny ipv6 any any undetermined-transport log\nR1(config-ipv6-acl)#permit ipv6 …\n…\n…\n…\nR1(config-ipv6-acl)#deny ipv6 any any log\nR1(config-ipv6-acl)#exit\nR1(config)#int g1/0\nR1(config-if)#ipv6 traffic-filter FILTER_IPV6 in",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "One of the fragmentation weaknesses known in IPv6 is the undetermined transport packet. This packet contains an undetermined protocol due to fragmentation. Depending on the length of the IPv6 extension header chain, the initial fragment may not contain the layer four port information of the packet.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000392",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-router-rtr-security-technical-implementation-guide-v3r4-e4098b9a",
+      "name": "Cisco IOS Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-router-rtr-security-technical-implementation-guide-v3r4-e4098b9a"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-234998r991589_rule",
+  "full_rule_id": "SV-234998r991589_rule",
+  "rule_id": "SV-234998",
+  "rule_revision": "991589",
+  "group_id": "V-234998",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "SUSE operating system file systems that contain user home directories must be mounted to prevent files with the setuid and setgid bit set from being executed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The \"nosuid\" mount option causes the system to not execute setuid and setgid files with owner privileges. This option must be used for mounting any file system not containing approved setuid and setguid files. Executing files from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized administrative access.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SUSE operating system file systems that contain user home directories are mounted with the \"nosuid\" option.\n\nPrint the currently active file system mount options of the file system(s) that contain the user home directories with the following command:\n\n> for X in `awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd`; do findmnt -nkT $X; done | sort -r\n/home /dev/mapper/system-home ext4 rw,nosuid,relatime,data=ordered\n\nIf a file system containing user home directories is not mounted with the FSTYPE OPTION nosuid, this is a finding.\n\nNote: If a separate file system has not been created for the user home directories (user home directories are mounted under \"/\"), this is not a finding as the \"nosuid\" option cannot be used on the \"/\" system.",
+  "fix": "Configure the SUSE operating system \"/etc/fstab\" file to use the \"nosuid\" option on file systems that contain user home directories for interactive users.\n\nRe-mount the filesystems.\n\n> sudo mount -o remount /home",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The \"nosuid\" mount option causes the system to not execute setuid and setgid files with owner privileges. This option must be used for mounting any file system not containing approved setuid and setguid files. Executing files from untrusted file systems increases the opportunity for unprivileged users to attain unauthorized administrative access.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-040140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

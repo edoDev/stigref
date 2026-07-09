@@ -1,0 +1,54 @@
+{
+  "id": "SV-268440r1131197_rule",
+  "full_rule_id": "SV-268440r1131197_rule",
+  "rule_id": "SV-268440",
+  "rule_revision": "1131197",
+  "group_id": "V-268440",
+  "group_title": "SRG-OS-000021-GPOS-00005",
+  "title": "The macOS system must set account lockout time to 15 minutes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The macOS system must be configured to enforce a lockout time of at least 15 minutes when the maximum number of failed login attempts is reached.\n\nThis rule protects against malicious users attempting to gain access to the system via brute-force hacking methods.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to set account lockout time to 15 minutes with the following command:\n\n/usr/bin/pwpolicy -getaccountpolicies 2> /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()=\"autoEnableInSeconds\"]/following-sibling::integer[1]/text()' - | /usr/bin/awk '{ if ($1/60 >= 15 ) {print \"yes\"} else {print \"no\"}}' | /usr/bin/uniq\n\nIf the result is not \"yes\", this is a finding.",
+  "fix": "Configure the macOS system to set account lockout time to 15 minutes by installing the \"com.apple.mobiledevice.passwordpolicy\" configuration profile.",
+  "ccis": [
+    "CCI-000044",
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The macOS system must be configured to enforce a lockout time of at least 15 minutes when the maximum number of failed login attempts is reached.\n\nThis rule protects against malicious users attempting to gain access to the system via brute-force hacking methods.\n\nSatisfies: SRG-OS-000021-GPOS-00005, SRG-OS-000329-GPOS-00128",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-15-000060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66",
+      "name": "Apple macOS 15 (Sequoia) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66"
+  ]
+}

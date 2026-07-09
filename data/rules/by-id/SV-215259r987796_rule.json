@@ -1,0 +1,53 @@
+{
+  "id": "SV-215259r987796_rule",
+  "full_rule_id": "SV-215259r987796_rule",
+  "rule_id": "SV-215259",
+  "rule_revision": "987796",
+  "group_id": "V-215259",
+  "group_title": "SRG-OS-000074-GPOS-00042",
+  "title": "AIX ftpd daemon must not be running.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The ftp service is used to transfer files from or to a remote machine. The username and passwords are passed over the network in clear text and therefore insecurely. Remote file transfer, if required, should be facilitated through SSH.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the \"ftp\" daemon is running by running the following command:\n# grep \"^ftp[[:blank:]]\" /etc/inetd.conf\n\nIf an entry is returned like the following line, the \"ftp\" daemon is running:\nftp stream tcp6 nowait root /usr/sbin/ftpd ftpd \n\nIf the above grep command returned a line that contains \"ftpd\", this is a finding.",
+  "fix": "Disable \"ftp\" daemon entry in \"/etc/inetd.conf\" using command: \n# chsubserver -r inetd -C /etc/inetd.conf -d -v 'ftp' -p 'tcp6'\n\nReload the inetd process:\n# refresh -s inetd",
+  "ccis": [
+    "CCI-000197"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ftp service is used to transfer files from or to a remote machine. The username and passwords are passed over the network in clear text and therefore insecurely. Remote file transfer, if required, should be facilitated through SSH.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

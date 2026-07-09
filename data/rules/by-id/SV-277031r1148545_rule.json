@@ -1,0 +1,53 @@
+{
+  "id": "SV-277031r1148545_rule",
+  "full_rule_id": "SV-277031r1148545_rule",
+  "rule_id": "SV-277031",
+  "rule_revision": "1148545",
+  "group_id": "V-277031",
+  "group_title": "SRG-OS-000030-GPOS-00011",
+  "title": "The macOS system must configure user session lock when a smart token is removed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The screen lock must be configured to initiate automatically when the smart token is removed from the system.\n\nSession locks are temporary actions taken when users stop work and move away from the immediate vicinity of the information system but do not want to log out because of the temporary nature of their absences. While a session lock is not an acceptable substitute for logging out of an information system for longer periods of time, they prevent a malicious user from accessing the information system when a user has removed their smart token.\n\n[IMPORTANT]\n====\nInformation system security officers (ISSOs) may make the risk-based decision not to enforce a session lock when a smart token is removed to maintain necessary workflow capabilities, but they are advised to first fully weigh the potential risks posed to their organization.\n====</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to lock the user session when a smart token is removed with the following command:\n\n/usr/bin/osascript -l JavaScript << EOS\n$.NSUserDefaults.alloc.initWithSuiteName('com.apple.security.smartcard')\\\n.objectForKey('tokenRemovalAction').js\nEOS\n\nIf the result is not \"1\", this is a finding.",
+  "fix": "Configure the macOS system to lock the user session when a smart token is removed by installing the \"com.apple.security.smartcard\" configuration profile.\n\nNote: To ensure continued access to the operating system, consult the supplemental guidance provided with the STIG before applying the configuration profile.",
+  "ccis": [
+    "CCI-000057"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The screen lock must be configured to initiate automatically when the smart token is removed from the system.\n\nSession locks are temporary actions taken when users stop work and move away from the immediate vicinity of the information system but do not want to log out because of the temporary nature of their absences. While a session lock is not an acceptable substitute for logging out of an information system for longer periods of time, they prevent a malicious user from accessing the information system when a user has removed their smart token.\n\n[IMPORTANT]\n====\nInformation system security officers (ISSOs) may make the risk-based decision not to enforce a session lock when a smart token is removed to maintain necessary workflow capabilities, but they are advised to first fully weigh the potential risks posed to their organization.\n====",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-26-000005",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2",
+      "name": "Apple macOS 26 (Tahoe) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-26-tahoe-security-technical-implementation-guide-v1r2-4460e3b2"
+  ]
+}

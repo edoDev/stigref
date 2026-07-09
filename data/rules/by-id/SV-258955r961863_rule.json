@@ -1,0 +1,53 @@
+{
+  "id": "SV-258955r961863_rule",
+  "full_rule_id": "SV-258955r961863_rule",
+  "rule_id": "SV-258955",
+  "rule_revision": "961863",
+  "group_id": "V-258955",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must use secure Lightweight Directory Access Protocol (LDAPS) when adding an LDAP identity source.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>LDAP is an industry standard protocol for querying directory services such as Active Directory. This protocol can operate in clear text or over a Secure Sockets Layer (SSL)/Transport Layer Security (TLS) encrypted tunnel. To protect confidentiality of LDAP communications, secure LDAP (LDAPS) must be explicitly configured when adding an LDAP identity source in vSphere Single Sign-On (SSO).\n\nWhen configuring an identity source and supplying an SSL certificate, vCenter will enforce LDAPS. The server URLs do not need to be explicitly provided if an SSL certificate is uploaded.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If LDAP is not used as an identity provider, this is not applicable.\n\nFrom the vSphere Client, go to Administration >> Single Sign On >> Configuration >> Identity Provider.\n\nClick the \"Identity Sources\" tab.\n\nFor each identity source of type \"Active Directory over LDAP\", if the \"Server URL\" does not indicate \"ldaps://\", this is a finding.",
+  "fix": "From the vSphere Client, go to Administration >> Single Sign On >> Configuration >> Identity Provider.\n\nClick the \"Identity Sources\" tab.\n\nFor each identity source of type \"Active Directory over LDAP\" where LDAPS is not configured, highlight the item and click \"Edit\".\n\nEnsure the primary and secondary server URLs, if specified, are configured for \"ldaps://\".\n\nAt the bottom, click the \"Browse\" button, select the AD LDAP cert previously exported to your local computer, click \"Open\", and \"Save\" to complete modifications.\n\nNote: With LDAPS, the server must be a specific domain controller and its specific certificate or the domain alias with a certificate that is valid for that URL.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "LDAP is an industry standard protocol for querying directory services such as Active Directory. This protocol can operate in clear text or over a Secure Sockets Layer (SSL)/Transport Layer Security (TLS) encrypted tunnel. To protect confidentiality of LDAP communications, secure LDAP (LDAPS) must be explicitly configured when adding an LDAP identity source in vSphere Single Sign-On (SSO).\n\nWhen configuring an identity source and supplying an SSL certificate, vCenter will enforce LDAPS. The server URLs do not need to be explicitly provided if an SSL certificate is uploaded.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000288",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3"
+  ]
+}

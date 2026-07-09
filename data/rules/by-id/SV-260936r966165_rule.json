@@ -1,0 +1,53 @@
+{
+  "id": "SV-260936r966165_rule",
+  "full_rule_id": "SV-260936r966165_rule",
+  "rule_id": "SV-260936",
+  "rule_revision": "966165",
+  "group_id": "V-260936",
+  "group_title": "SRG-APP-000342-CTR-000775",
+  "title": "All containers must be restricted to mounting the root filesystem as read only.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The container's root filesystem must be treated as a \"golden image\" by using Docker run's --read-only option. This prevents any writes to the container's root filesystem at container runtime and enforces the principle of immutable infrastructure.\n\nEnabling this option forces containers at runtime to explicitly define their data writing strategy to persist or not persist their data. This also reduces security attack vectors since the container instance's filesystem cannot be tampered with or written to unless it has explicit read-write permissions on its filesystem folder and directories.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "When using Kubernetes orchestration, this check is Not Applicable.\n\nFor Swarm orchestration, check via CLI:\n\nLinux: As an MKE Admin, execute the following command using a Universal Control Plane (MKE) client bundle:\n\ndocker ps --quiet --all | xargs -L 1 docker inspect --format '{{ .Name }}: ReadonlyRootfs={{ .HostConfig.ReadonlyRootfs }}' \n\nIf ReadonlyRootfs=false, it means the container's root filesystem is writable and this is a finding.",
+  "fix": "When using Kubernetes orchestration, this check is Not Applicable.\n\nWhen using Swarm orchestration, review and remove nonsystem containers previously created by these users with read write permissions using:\n\ndocker container rm [container]\n\nAdd a --read-only flag at a container's runtime to enforce the container's root filesystem to be mounted as read only:\n\ndocker run <Run arguments> --read-only <Container Image Name or ID> <Command>\n\nEnabling the --read-only option at a container's runtime must be used by administrators to force a container's executable processes to only write container data to explicit storage locations during the container's runtime.\n\nExamples of explicit storage locations during a container's runtime include, but are not limited to:\n\n1. Use the --tmpfs option to mount a temporary file system for nonpersistent data writes. Example:\n\ndocker run --interactive --tty --read-only --tmpfs \"/run\" --tmpfs \"/tmp\" [image] [command]\n\n2. Enabling Docker rw mounts at a container's runtime to persist container data directly on the Docker host filesystem. Example:\n\ndocker run --interactive --tty --read-only -v /opt/app/data:/run/app/data:rw [image] [command]\n\n3. Utilizing Docker shared-storage volume plugins for Docker data volume to persist container data.\n\ndocker volume create -d convoy --opt o=size=20GB my-named-volume\n\ndocker run --interactive --tty --read-only -v my-named-volume:/run/app/data [image] [command]",
+  "ccis": [
+    "CCI-002233"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The container's root filesystem must be treated as a \"golden image\" by using Docker run's --read-only option. This prevents any writes to the container's root filesystem at container runtime and enforces the principle of immutable infrastructure.\n\nEnabling this option forces containers at runtime to explicitly define their data writing strategy to persist or not persist their data. This also reduces security attack vectors since the container instance's filesystem cannot be tampered with or written to unless it has explicit read-write permissions on its filesystem folder and directories.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-001160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

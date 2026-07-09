@@ -1,0 +1,55 @@
+{
+  "id": "SV-279529r1192546_rule",
+  "full_rule_id": "SV-279529r1192546_rule",
+  "rule_id": "SV-279529",
+  "rule_revision": "1192546",
+  "group_id": "V-279529",
+  "group_title": "SRG-OS-000029-GPOS-00010",
+  "title": "Nutanix OS must set the value of \"lock-after-time\" to 890 seconds for remote access sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, operating systems must be able to identify when a user's session is idle and take action to initiate the session lock.\n\nThe session lock is implemented at the point where session activity can be determined and/or controlled.\n\nSatisfies: SRG-OS-000029-GPOS-00010, SRG-OS-000031-GPOS-00012, SRG-OS-000030-GPOS-00011, SRG-OS-000028-GPOS-00009</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix TMUX shell is enabled, which sets the user session lock for the Admin account of last resort. \n\n1. For AOS, Prism Central, and Files, log in to the CVM as the Admin user. \n \n2. For AHV, verify the value of \"locl-after-time\" is set to \"890\" using the following command.\n\n$ sudo grep -i \"lock-after-time\" /etc/tmux.conf\nset -g lock-after-time 890\n\nIf the Nutanix TMUX shell is not enabled or if \"lock-after-time\" is not configured, this is a finding.",
+  "fix": "1. For AOS, Prism Central, and Files, log in as Admin and run the following command to set the Nutanix TMUX and configure options for the Admin account of last resort.\n\n$ configure_dod_mode.sh enter_dod_mode\n\n2. For AHV, this is set by default in the OS. The value of \"lock-after-time\" is set to \"890\" by the vendor and must not be altered by customers. If the value is not set to the default, this is an unauthorized modification which may indicate the security settings for the build has been modified. Rebuild the system from source to correct this issue.",
+  "ccis": [
+    "CCI-000057",
+    "CCI-000060",
+    "CCI-000056"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, operating systems must be able to identify when a user's session is idle and take action to initiate the session lock.\n\nThe session lock is implemented at the point where session activity can be determined and/or controlled.\n\nSatisfies: SRG-OS-000029-GPOS-00010, SRG-OS-000031-GPOS-00012, SRG-OS-000030-GPOS-00011, SRG-OS-000028-GPOS-00009",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000003",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

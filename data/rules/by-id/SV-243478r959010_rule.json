@@ -1,0 +1,53 @@
+{
+  "id": "SV-243478r959010_rule",
+  "full_rule_id": "SV-243478r959010_rule",
+  "rule_id": "SV-243478",
+  "rule_revision": "959010",
+  "group_id": "V-243478",
+  "group_title": "SRG-OS-000480",
+  "title": "Domain-joined systems (excluding domain controllers) must not be configured for unconstrained delegation.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unconstrained delegation enabled on a computer can allow the computer account to be impersonated without limitation. If delegation is required, it must be limited/constrained to the specific services and accounts required.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Open \"Windows PowerShell\" on a domain controller.\n\nEnter \"Get-ADComputer -Filter {(TrustedForDelegation -eq $True) -and (PrimaryGroupID -eq 515)} -Properties TrustedForDelegation, TrustedToAuthForDelegation, ServicePrincipalName, Description, PrimaryGroupID\".\n\nIf any computers are returned, this is a finding. \n(TrustedForDelegation equaling True indicates unconstrained delegation.)\n\nPrimaryGroupID 515 = Domain computers (excludes DCs)\nTrustedForDelegation = Unconstrained Delegation\nTrustedToAuthForDelegation = Constrained delegation\nServicePrincipalName = Service Names\nDescription = Computer Description",
+  "fix": "Remove unconstrained delegation from computers in the domain. \n\nSelect \"Properties\" for the computer object.\n\nSelect the \"Delegation\" tab.\n\nDe-select \"Trust this computer for delegation to any service (Kerberos only)\"\n\nConfigured constrained delegation for specific services where required.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unconstrained delegation enabled on a computer can allow the computer account to be impersonated without limitation. If delegation is required, it must be limited/constrained to the specific services and accounts required.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AD.0018",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "active-directory-domain-security-technical-implementation-guide-v3r7-bf0c1d17",
+      "name": "Active Directory Domain Security Technical Implementation Guide",
+      "version": "3",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "active-directory-domain-security-technical-implementation-guide-v3r7-bf0c1d17"
+  ]
+}

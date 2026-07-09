@@ -1,0 +1,53 @@
+{
+  "id": "SV-205708r971535_rule",
+  "full_rule_id": "SV-205708r971535_rule",
+  "rule_id": "SV-205708",
+  "rule_revision": "971535",
+  "group_id": "V-205708",
+  "group_title": "SRG-OS-000120-GPOS-00061",
+  "title": "Windows Server 2019 Kerberos encryption types must be configured to prevent the use of DES and RC4 encryption suites.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Certain encryption types are no longer considered secure. The DES and RC4 encryption suites must not be used for Kerberos encryption.\n\nNote: Organizations with domain controllers running earlier versions of Windows where RC4 encryption is enabled, selecting \"The other domain supports Kerberos AES Encryption\" on domain trusts, may be required to allow client communication across the trust relationship.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the following registry value does not exist or is not configured as specified, this is a finding:\n\nRegistry Hive: HKEY_LOCAL_MACHINE\nRegistry Path: \\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\Kerberos\\Parameters\\\n\nValue Name: SupportedEncryptionTypes\n\nValue Type: REG_DWORD\nValue: 0x7ffffff8 (2147483640)",
+  "fix": "Configure the policy value for Computer Configuration >> Windows Settings >> Security Settings >> Local Policies >> Security Options >> \"Network security: Configure encryption types allowed for Kerberos\" to \"Enabled\" with only the following selected:\n\nAES128_HMAC_SHA1\nAES256_HMAC_SHA1\nFuture encryption types\n\nNote: Organizations with domain controllers running earlier versions of Windows where RC4 encryption is enabled, selecting \"The other domain supports Kerberos AES Encryption\" on domain trusts, may be required to allow client communication across the trust relationship.",
+  "ccis": [
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Certain encryption types are no longer considered secure. The DES and RC4 encryption suites must not be used for Kerberos encryption.\n\nNote: Organizations with domain controllers running earlier versions of Windows where RC4 encryption is enabled, selecting \"The other domain supports Kerberos AES Encryption\" on domain trusts, may be required to allow client communication across the trust relationship.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN19-SO-000290",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2019-security-technical-implementation-guide-v3r8-b8ffc6b1",
+      "name": "Microsoft Windows Server 2019 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2019-security-technical-implementation-guide-v3r8-b8ffc6b1"
+  ]
+}

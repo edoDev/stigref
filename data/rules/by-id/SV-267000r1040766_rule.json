@@ -1,0 +1,53 @@
+{
+  "id": "SV-267000r1040766_rule",
+  "full_rule_id": "SV-267000r1040766_rule",
+  "rule_id": "SV-267000",
+  "rule_revision": "1040766",
+  "group_id": "V-267000",
+  "group_title": "SRG-NET-000369-VPN-001620",
+  "title": "AOS, when used as a VPN Gateway, must disable split-tunneling for remote client VPNs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Split tunneling would in effect allow unauthorized external connections, making the system more vulnerable to attack and to exfiltration of organizational information.\n\nA VPN hardware or software client with split tunneling enabled provides an unsecured backdoor to the enclave from the internet. With split tunneling enabled, a remote client has access to the internet while at the same time has established a secured path to the enclave via an IPsec tunnel. A remote client connected to the internet that has been compromised by an attacker on the internet provides an attack base to the enclave's private network via the IPsec tunnel. Hence, it is imperative that the VPN gateway enforces a no split-tunneling policy to all remote clients.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration with the following commands:\nshow wlan virtual-ap\n\nFor each active WLAN virtual-ap profile:\nshow wlan virtual-ap <name> | include \"Forward mode\"\n \nshow ap system-profile\n\nFor each active AP system-profile:\nshow ap system-profile <name> | include \"Double Encrypt\"\n \nshow aaa authentication via connection-profile\n\nFor each referenced profile:\nshow aaa authentication via connection-profile <name> | include \"Enable split tunneling\"\n \nIf any instances of remote access or virtual-ap profile forward mode of split-tunnel are found or if double-encrypt is not enabled per active AP system profile, this is a finding.",
+  "fix": "Configure AOS using the following commands:\nconfigure terminal\nwlan virtual-ap <profile name>\nforward-mode tunnel\nexit\nwrite memory\nap system-profile <profile name>\ndouble-encrypt\nexit\nwrite memory\n\nFor each VIA connection profile:\nvaaa authentication via connection-profile <name>\nno split-tunneling\nexit\nwrite memory",
+  "ccis": [
+    "CCI-002397"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Split tunneling would in effect allow unauthorized external connections, making the system more vulnerable to attack and to exfiltration of organizational information.\n\nA VPN hardware or software client with split tunneling enabled provides an unsecured backdoor to the enclave from the internet. With split tunneling enabled, a remote client has access to the internet while at the same time has established a secured path to the enclave via an IPsec tunnel. A remote client connected to the internet that has been compromised by an attacker on the internet provides an attack base to the enclave's private network via the IPsec tunnel. Hence, it is imperative that the VPN gateway enforces a no split-tunneling policy to all remote clients.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-VN-001620",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a",
+      "name": "HPE Aruba Networking AOS VPN Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a"
+  ]
+}

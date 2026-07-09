@@ -1,0 +1,53 @@
+{
+  "id": "SV-272401r1156953_rule",
+  "full_rule_id": "SV-272401r1156953_rule",
+  "rule_id": "SV-272401",
+  "rule_revision": "1156953",
+  "group_id": "V-272401",
+  "group_title": "SRG-APP-000516-DNS-000087",
+  "title": "On a BIND 9.x server, all authoritative name servers for a zone must be located on different network segments.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Most enterprises have an authoritative primary server and a host of authoritative secondary name servers. It is essential that these authoritative name servers for an enterprise be located on different network segments. This dispersion ensures the availability of an authoritative name server not only in situations in which a particular router or switch fails but also during events involving an attack on an entire network segment.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that each name server listed on the BIND 9.x server is on a separate network segment.\n\nInspect the \"named.conf\" file and identify all of the zone files that the BIND 9.x server is using.\n\nzone \"example.com\" {\nfile \"zone_file\";\n};\n\nInspect each zone file and identify each A record for each NS record listed:\n\nns1.example.com 86400 IN A 192.168.1.4\nns2.example.com 86400 IN A 192.168.2.4\n\nIf name servers are listed in the zone file that are not on different network segments for the specified domain, this is a finding.",
+  "fix": "Edit the zone file and configure each name server on a separate network segment.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Most enterprises have an authoritative primary server and a host of authoritative secondary name servers. It is essential that these authoritative name servers for an enterprise be located on different network segments. This dispersion ensures the availability of an authoritative name server not only in situations in which a particular router or switch fails but also during events involving an attack on an entire network segment.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BIND-9X-001480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460",
+      "name": "BIND 9.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-239978r916146_rule",
+  "full_rule_id": "SV-239978r916146_rule",
+  "rule_id": "SV-239978",
+  "rule_revision": "916146",
+  "group_id": "V-239978",
+  "group_title": "SRG-NET-000063-VPN-000220",
+  "title": "The Cisco ASA remote access VPN server must be configured to use SHA-2 at 384 bits or greater for hashing to protect the integrity of IPsec remote access sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without strong cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nSHA-1 is considered a compromised hashing standard and is being phased out of use by industry and Government standards. DOD systems must not be configured to use SHA-1 for integrity of remote access sessions. \n\nThe remote access VPN provides access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the ASA uses SHA-2 at 384 bits or greater for hashing to protect the integrity of IPsec remote access sessions as shown in the example below.\n\nStep 1: Verify that SHA-2 at 384 bits or greater is used for IKE Phase 1 as shown in the example below.\n \ncrypto ikev2 policy 1\n…\n…\n…\n integrity sha384\n\nStep 2: Verify that SHA-2 at 384 bits or greater is used for the IPsec Security Association.\n\ncrypto ipsec ikev2 ipsec-proposal IPSEC_TRANS\n protocol esp integrity sha-384\n\nIf the ASA does not use SHA-2 at 384 bits or greater for hashing to protect the integrity of IPsec remote access sessions, this is a finding.",
+  "fix": "Configure the ASA to use SHA-2 at 384 bits or greater for hashing to protect the integrity of IPsec remote access sessions as shown in the example below.\n\nASA1(config)# crypto ikev2 policy 1\nASA1(config-ikev2-policy)# integrity sha384\nASA1(config-ikev2-policy)# exit\nASA1(config)# crypto ipsec ikev2 ipsec-proposal IPSEC_TRANS\nASA1(config-ipsec-proposal)# protocol esp integrity sha-384\nASA1(config-ikev2-policy)# end",
+  "ccis": [
+    "CCI-001453"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without strong cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nSHA-1 is considered a compromised hashing standard and is being phased out of use by industry and Government standards. DOD systems must not be configured to use SHA-1 for integrity of remote access sessions. \n\nThe remote access VPN provides access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000630",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

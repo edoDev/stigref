@@ -1,0 +1,53 @@
+{
+  "id": "SV-248642r991589_rule",
+  "full_rule_id": "SV-248642r991589_rule",
+  "rule_id": "SV-248642",
+  "rule_revision": "991589",
+  "group_id": "V-248642",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 8 must be configured so that all files and directories contained in local interactive user home directories are group-owned by a group of which the home directory owner is a member.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If a local interactive user's files are group-owned by a group of which the user is not a member, unintended users may be able to access them.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify all files and directories in a local interactive user home directory are group-owned by a group that the user is a member.\n\nCheck the group owner of all files and directories in a local interactive user's home directory with the following command:\n\nNote: The example will be for the user \"smithj\", who has a home directory of \"/home/smithj\".\n\n$ sudo ls -lLR /<home directory>/<users home directory>/\n-rw-r--r-- 1 smithj smithj  18 Mar  5 17:06 file1\n-rw-r--r-- 1 smithj smithj 193 Mar  5 17:06 file2\n-rw-r--r-- 1 smithj sa        231 Mar  5 17:06 file3\n\nIf any files found with a group-owner different from the home directory user private group, determine if the user is a member of that group with the following command:\n\n$ sudo grep smithj /etc/group\nsa:x:100:juan,shelley,bob,smithj \nsmithj:x:521:smithj\n\nIf any files or directories are group owned by a group that the directory owner is not a member of, this is a finding.",
+  "fix": "Change the group of a local interactive user's files and directories to a group that the interactive user is a member. To change the group owner of a local interactive user's files and directories, use the following command:\n\nNote: The example will be for the user smithj, who has a home directory of \"/home/smithj\" and is a member of the users group.\n\n$ sudo chgrp smithj /home/smithj/<file or directory>",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If a local interactive user's files are group-owned by a group of which the user is not a member, unintended users may be able to access them.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL08-00-010741",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96",
+      "name": "Oracle Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96"
+  ]
+}

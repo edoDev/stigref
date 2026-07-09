@@ -1,0 +1,53 @@
+{
+  "id": "SV-222951r960963_rule",
+  "full_rule_id": "SV-222951r960963_rule",
+  "rule_id": "SV-222951",
+  "rule_revision": "960963",
+  "group_id": "V-222951",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "The shutdown port must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Tomcat listens on TCP port 8005 to accept shutdown requests. By connecting to this port and sending the SHUTDOWN command, all applications within Tomcat are halted. The shutdown port is not exposed to the network as it is bound to the loopback interface. Set the shutdown attribute in $CATALINA_BASE/conf/server.xml.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the Tomcat server run the following OS command:\n\n$ sudo grep -i shutdown $CATALINA_BASE/conf/server.xml\n\nEnsure the server shutdown port attribute in $CATALINA_BASE/conf/server.xml is set to -1. \n\nEXAMPLE:\n<Server port=\"-1\" shutdown=\"SHUTDOWN\">\n\nIf Server port not = \"-1\" shutdown=\"SHUTDOWN\", this is a finding.",
+  "fix": "From the Tomcat server as a privileged user, edit the $CATALINA_BASE/conf/server.xml file: set the Server port setting to -1 and restart the Tomcat server.\n\n<Server port=\"-1\" shutdown=\"SHUTDOWN\">\n\nsudo systemctl restart tomcat\nsudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Tomcat listens on TCP port 8005 to accept shutdown requests. By connecting to this port and sending the SHUTDOWN command, all applications within Tomcat are halted. The shutdown port is not exposed to the network as it is bound to the loopback interface. Set the shutdown attribute in $CATALINA_BASE/conf/server.xml.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000490",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

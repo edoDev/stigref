@@ -1,0 +1,53 @@
+{
+  "id": "SV-255963r961863_rule",
+  "full_rule_id": "SV-255963r961863_rule",
+  "rule_id": "SV-255963",
+  "rule_revision": "961863",
+  "group_id": "V-255963",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "The network device must be configured to use an authentication server to authenticate users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the Arista network device is configured to use an authentication server as primary source for authentication.\n\nVerify the Arista network device configuration for RADIUS server IP, aaa group server, and defined encryption key using the following example command:\n\nswitch#show running-config |section radius\nradius-server host 192.168.10.101 key 7 106D1A182224E12AZ\n!\naaa group server radius RADIUS_1\n   server 192.168.10.101\n!\nswitch#show running-config | section aaa\naaa authentication login default group radius local\naaa authentication login console group radius local\naaa authentication dot1x default group radius\naaa authentication policy on-success log\naaa authentication policy on-failure log\naaa authorization console\naaa authorization commands all default local\naaa accounting exec default start-stop group radius logging\naaa accounting system default start-stop group radius logging\naaa accounting commands all default start-stop logging group radius\n\nIf the Arista network device is not configured to use an authentication server to authenticate users prior to granting administrative access, this is a finding.",
+  "fix": "Configure the Arista network device to use an authentication server.\n\nStep 1: Configure the Arista network device to use RADIUS server using the following commands:\n\nswitch#config\nswitch(config)#radius-server host 192.168.10.101 key 7 106D1A182224E12AZ\naaa group server radius RADIUS_1\n   server 192.168.10.101\n\nStep 2: Configure all network connections associated with device management to use an authentication server for login authentication.\n\nswitch(config)#aaa authentication login default group radius local\naaa authentication login console group radius local\naaa authentication dot1x default group radius\naaa authentication policy on-success log\naaa authentication policy on-failure log\naaa authorization console\naaa authorization commands all default local\naaa accounting exec default start-stop group radius logging\naaa accounting system default start-stop group radius logging\naaa accounting commands all default start-stop logging group radius\nswitch(config)#exit",
+  "ccis": [
+    "CCI-000370"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-ND-000810",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-ndm-security-technical-implementation-guide-v2r2-273eebe1",
+      "name": "Arista MLS EOS 4.X NDM Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-ndm-security-technical-implementation-guide-v2r2-273eebe1"
+  ]
+}

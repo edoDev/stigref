@@ -1,0 +1,53 @@
+{
+  "id": "SV-253894r960906_rule",
+  "full_rule_id": "SV-253894r960906_rule",
+  "rule_id": "SV-253894",
+  "rule_revision": "960906",
+  "group_id": "V-253894",
+  "group_title": "SRG-APP-000100-NDM-000230",
+  "title": "The Juniper EX switch must be configured to generate audit records containing information that establishes the identity of any individual or process associated with the event.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without information that establishes the identity of the subjects (i.e., administrators or processes acting on behalf of administrators) associated with the events, security personnel cannot determine responsibility for the potentially harmful event.\n\nEvent identifiers (if authenticated or otherwise known) include, but are not limited to, user database tables, primary key values, user names, or process identifiers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the network device generates audit records containing information that establishes the identity of any individual or process associated with the event. This requirement may be verified by demonstration or validated test results. \n\nJunos standard event log messages are configurable for time format, inclusion of logging facility and severity levels, and format. Setting \"structured-data\" automatically includes \"explicit-priority\" and \"time-format year millisecond\". Verify logging is enabled.\n\n[edit system]\nsyslog {\n    host <syslog IPv4 or IPv6 address> {\n        any info;\n        structured-data; <<< Includes 'explicit-priority' and 'time-format'\n    }\n    host <syslog IPv4 or IPv6 address> {\n        any info;\n        explicit-priority; <<< Includes logging facility and severity in standard format\n    }\n    file <file name> {\n        any info; <<< Uses only standard format\n    }\n    time-format year; <<< Applied only to standard format\n}\nNote: In the example, events sent to the first external syslog server include the year and time is expressed in milliseconds. The second syslog server and the file both include the year, but time is expressed in seconds.\n\nIf the network device does not generate audit records containing information that establishes the identity of any individual or process associated with the event, this is a finding.",
+  "fix": "Configure the network device to generate audit records containing information that establishes the identity of any individual or process associated with the event.\n\nset system syslog host <syslog IPv4 or IPv6 address> any info\nset system syslog host <syslog IPv4 or IPv6 address> structured-data <<< Includes the 'explicit-priority' and 'time-format year millisecond' directives\nset system syslog file <file name> any info\nset system syslog file <file name> structured-data <<< Includes the 'explicit-priority' and 'time-format year millisecond' directives\n-or-\nset system syslog host <syslog IPv4 or IPv6 address> any info\nset system syslog host <syslog IPv4 or IPv6 address> explicit-priority <<< Only if log level and severity are required\nset system syslog file <file name> any info\nset system syslog file <file name> explicit-priority <<< Only if log level and severity are required\nset system syslog time-format year",
+  "ccis": [
+    "CCI-001487"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without information that establishes the identity of the subjects (i.e., administrators or processes acting on behalf of administrators) associated with the events, security personnel cannot determine responsibility for the potentially harmful event.\n\nEvent identifiers (if authenticated or otherwise known) include, but are not limited to, user database tables, primary key values, user names, or process identifiers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-NM-000170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685",
+      "name": "Juniper EX Series Switches Network Device Management Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685"
+  ]
+}

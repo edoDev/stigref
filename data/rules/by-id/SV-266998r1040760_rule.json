@@ -1,0 +1,53 @@
+{
+  "id": "SV-266998r1040760_rule",
+  "full_rule_id": "SV-266998r1040760_rule",
+  "rule_id": "SV-266998",
+  "rule_revision": "1040760",
+  "group_id": "V-266998",
+  "group_title": "SRG-NET-000132-VPN-000470",
+  "title": "The Remote Access VPN Gateway must be configured to prohibit Point-to-Point Tunneling Protocol (PPTP) and Layer 2 Forwarding (L2F).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>PPTP and L2F are obsolete methods for implementing virtual private networks. Both protocols may be easy to use and readily available, but they have many well-known security issues and exploits. Encryption and authentication are both weak.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the AOS configuration with the following commands:\nshow ip access-list vpnlogon\nshow firewall-cp\n\nIf PPTP or TCP 1723 are permitted, this is a finding.",
+  "fix": "Configure AOS with the following commands:\nconfigure terminal\ncd /mm\nip access-list session vpnlogon\nany any svc-pptp deny\nexit\nwrite memory\ncd /mynode\nfirewall cp\nipv4 deny any proto 6 ports 1723 1723\nipv6 deny any proto 6 ports 1723 1723\nexit\nwrite memory",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "PPTP and L2F are obsolete methods for implementing virtual private networks. Both protocols may be easy to use and readily available, but they have many well-known security issues and exploits. Encryption and authentication are both weak.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-VN-000470",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a",
+      "name": "HPE Aruba Networking AOS VPN Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "SV-261439r996724_rule",
+  "full_rule_id": "SV-261439r996724_rule",
+  "rule_id": "SV-261439",
+  "rule_revision": "996724",
+  "group_id": "V-261439",
+  "group_title": "SRG-OS-000037-GPOS-00015",
+  "title": "SLEM 5 must generate audit records for all uses of the \"rm\" command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without generating audit records specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nAudit records can be generated from various components within the information system (e.g., module or policy filter).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 generates an audit record for all uses of the \"rm\" command with the following command:\n\n     > sudo auditctl -l | grep -w '/usr/bin/rm'\n     -a always,exit -S all -F path=/usr/bin/rm -F perm=x -F auid>=1000 -F auid!=-1 -F key=prim_mod\n\nIf the command does not return any output, this is a finding.\n\nNote: The \"key=\" value is arbitrary and can be different from the example output above.",
+  "fix": "Configure SLEM 5 to generate an audit record for all uses of the \"rm\" command. \n\nAdd or modify the following line in the \"/etc/audit/rules.d/audit.rules\" file:\n\n-a always,exit -F path=/usr/bin/rm -F perm=x -F auid>=1000 -F auid!=unset -k prim_mod\n\nTo reload the rules file, restart the audit daemon:\n\n     > sudo systemctl restart auditd.service\n\nor issue the following command:\n\n     > sudo augenrules --load",
+  "ccis": [
+    "CCI-000130",
+    "CCI-000169",
+    "CCI-002884",
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without generating audit records specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.\n\nAudit records can be generated from various components within the information system (e.g., module or policy filter).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-654080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

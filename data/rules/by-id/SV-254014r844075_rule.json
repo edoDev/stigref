@@ -1,0 +1,53 @@
+{
+  "id": "SV-254014r844075_rule",
+  "full_rule_id": "SV-254014r844075_rule",
+  "rule_id": "SV-254014",
+  "rule_revision": "844075",
+  "group_id": "V-254014",
+  "group_title": "SRG-NET-000205-RTR-000005",
+  "title": "The Juniper perimeter router must be configured to filter egress traffic at the internal interface on an inbound direction.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Firewall filters are used to separate data traffic into that which it will route (permitted packets) and that which it will not route (denied packets). Secure configuration of routers makes use of firewall filters for restricting access to services on the router itself as well as for filtering traffic passing through the router. \n\nInbound versus Outbound: It should be noted that some operating systems default access lists are applied to the outbound queue. The more secure solution is to apply the access list to the inbound queue for three reasons:\n\n- The router can protect itself before damage is inflicted.\n- The input port is still known and can be filtered upon.\n- It is more efficient to filter packets before routing them.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration to verify that the egress firewall filter is bound to the internal interface in an inbound direction. \n\n[edit interfaces]\n<internal interface> {\n    unit <number> {\n        family inet {\n            filter {\n                input outbound-ipv4;\n            }\n        }\n        family inet6 {\n            filter {\n                input outbound-ipv6;\n            }\n        }\n    }\n}\n\nNote: Some Juniper devices support both monolithic filters and filter lists. Filter lists separate each term, or set of terms, into a separate filter that is applied sequentially to an interface. If using filter lists, the keywords \"input\" or \"output' change to \"input-list\" or \"output-list\". Verify the final list item is a deny-all filter. The deny-all filter is created once per family and can be reused across multiple lists. For example:\n\ninput-list [ permit_mgt permit_routing_protocols default-deny ];\n\nIf the router is not configured to filter traffic leaving the network at the internal interface in an inbound direction, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure an egress firewall filter bound to the internal interface in an inbound direction to filter traffic leaving the network.\n\nset interfaces <internal interface name> unit <number> family inet filter input outbound-ipv4\nset interfaces <internal interface name> unit <number> family inet6 filter input outbound-ipv6",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Firewall filters are used to separate data traffic into that which it will route (permitted packets) and that which it will not route (denied packets). Secure configuration of routers makes use of firewall filters for restricting access to services on the router itself as well as for filtering traffic passing through the router. \n\nInbound versus Outbound: It should be noted that some operating systems default access lists are applied to the outbound queue. The more secure solution is to apply the access list to the inbound queue for three reasons:\n\n- The router can protect itself before damage is inflicted.\n- The input port is still known and can be filtered upon.\n- It is more efficient to filter packets before routing them.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000420",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

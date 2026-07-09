@@ -1,0 +1,53 @@
+{
+  "id": "SV-217086r604135_rule",
+  "full_rule_id": "SV-217086r604135_rule",
+  "rule_id": "SV-217086",
+  "rule_revision": "604135",
+  "group_id": "V-217086",
+  "group_title": "SRG-NET-000019-RTR-000013",
+  "title": "The Juniper multicast Rendezvous Point (RP) router must be configured to filter Protocol Independent Multicast (PIM) Register messages received from the Designated Router (DR) for any undesirable multicast groups and sources.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that register messages are accepted only for authorized multicast groups and sources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the RP router is configured to filter PIM register messages.\n\nVerify that the RP has a register policy enabled as shown in the example below.\n\nprotocols {\n    …\n    …\n    …\n    }\n    pim {\n        rp {\n            rp-register-policy MULTICAST_REGISTER_POLICY;\n            local {\n                address 2.2.2.2;\n            }\n        }\n\nVerify that the register policy has defined both bad multicast groups and sources as shown in the example below.\n\npolicy-options {\n    …\n    …\n    …\n    }\n    policy-statement MULTICAST_REGISTER_POLICY {\n        term BAD_SOURCES {\n            from {\n                source-address-filter x.x.x.x/32 exact;\n                source-address-filter x.x.x.x/24 orlonger;\n            }\n            then reject;\n        }\n        term BAD_GROUPS {\n            from {\n                route-filter 224.1.1.0/24 orlonger;\n                route-filter 225.1.2.3/32 exact;\n                route-filter 239.0.0.0/8 orlonger;\n                …\n                …\n                …\n                route-filter 232.0.0.0/8 orlonger;\n            }\n            then reject;\n        }\n        term ALLOW_OTHER {\n            then accept;\n        }\n    }\n\nIf the RP router peering with PIM-SM routers is not configured with a policy to block registration messages for any undesirable multicast groups and sources, this is a finding.",
+  "fix": "Configure the router to filter PIM register messages received from a multicast DR for any undesirable multicast groups and sources.\n\n[edit policy-options policy-statement MULTICAST_REGISTER_POLICY]\nset term BAD_SOURCES from source-address-filter x.x.x.x/32 exact\nset term BAD_SOURCES from source-address-filter x.x.x.x/24 orlonger\nset term BAD_GROUPS from route-filter 224.1.1.0/24 orlonger\nset term BAD_GROUPS from route-filter 225.1.2.3/32 exact\nset term BAD_GROUPS from route-filter 239.0.0.0/8 orlonger\nset term BAD_GROUPS then reject\nset term ALLOW_OTHER then accept\n\n[edit protocols pim rp]\nset rp-register-policy MULTICAST_REGISTER_POLICY",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that register messages are accepted only for authorized multicast groups and sources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000820",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-274155r1120453_rule",
+  "full_rule_id": "SV-274155r1120453_rule",
+  "rule_id": "SV-274155",
+  "rule_revision": "1120453",
+  "group_id": "V-274155",
+  "group_title": "SRG-OS-000329-GPOS-00128",
+  "title": "Amazon Linux 2023 must automatically lock the root account until the root account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 is configured to lock the root account after three unsuccessful logon attempts with the command:\n\n$ grep even_deny_root /etc/security/faillock.conf\neven_deny_root\n\nIf the \"even_deny_root\" option is not set, is missing or commented out, this is a finding.",
+  "fix": "Configure Amazon Linux 2023 to lock out the \"root\" account after a number of incorrect login attempts using \"pam_faillock.so\", first enable the feature using the following command:\n \n$ sudo authselect enable-feature with-faillock \n\nThen edit the \"/etc/security/faillock.conf\" file as follows:\n \nadd or uncomment the following line:\neven_deny_root",
+  "ccis": [
+    "CCI-002238"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced. Limits are imposed by locking the account.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-002460",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

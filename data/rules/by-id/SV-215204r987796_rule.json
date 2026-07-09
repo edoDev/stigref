@@ -1,0 +1,53 @@
+{
+  "id": "SV-215204r987796_rule",
+  "full_rule_id": "SV-215204r987796_rule",
+  "rule_id": "SV-215204",
+  "rule_revision": "987796",
+  "group_id": "V-215204",
+  "group_title": "SRG-OS-000074-GPOS-00042",
+  "title": "IF LDAP is used, AIX LDAP client must use SSL to authenticate with LDAP server.",
+  "severity": "high",
+  "description": "<VulnDiscussion>While LDAP client's authentication type is ldap_auth (server-side authentication), the client sends password to the server in clear text for authentication. SSL must be used in this case.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Run the following command to check if \"authtype\" is \"ldap_auth\":\n# grep -iE \"^authtype:[[:blank:]]*ldap_auth\" /etc/security/ldap/ldap.cfg\n\nThe above command should yield the following output:\nauthtype:ldap_auth\n\nRun the following command to check if SSL is not used in the \"/etc/security/ldap/ldap.cfg\" file:\n# grep -iE \"^useSSL:[[:blank:]]*yes\" /etc/security/ldap/ldap.cfg\n\nThe above command should yield the following output:\nuseSSL:yes\n\nIf the first command displays \"authtype:ldap_auth\" but the second command does not display \"useSSL:yes\",  this is a finding.",
+  "fix": "Edit the \"/etc/security/ldap/ldap.cfg\" file to have the following line:\nuseSSL:yes\n\nConfigure the LDAP server and LDAP client to use the SSL according to AIX LDAP documentation.\n\nRestart the client daemon:\n# restart-secldapclntd",
+  "ccis": [
+    "CCI-000197"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "While LDAP client's authentication type is ldap_auth (server-side authentication), the client sends password to the server in clear text for authentication. SSL must be used in this case.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001045",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

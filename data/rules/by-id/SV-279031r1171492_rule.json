@@ -1,0 +1,53 @@
+{
+  "id": "SV-279031r1171492_rule",
+  "full_rule_id": "SV-279031r1171492_rule",
+  "rule_id": "SV-279031",
+  "rule_revision": "1171492",
+  "group_id": "V-279031",
+  "group_title": "SRG-APP-000015-AS-000010",
+  "title": "The ColdFusion built-in Tomcat Web Server must use FIPS-validated ciphers on secured connectors.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Using only FIPS 140-2/140-3 or higher approved cryptographic modules for encryption helps ensure the confidentiality and integrity of transmitted data. Allowing using non-FIPS-approved or outdated encryption modules increases the attack surface and exposes the system to known vulnerabilities. Attacks such as POODLE and its variants exploit weaknesses in noncompliant cryptographic protocols by forcing HTTPS communications to downgrade to insecure cipher suites. This allows an attacker to decrypt sensitive data through man-in-the-middle techniques. \n\nEnforcing FIPS 140-2/140-3 and higher validated modules mitigates this risk by preventing fallback to weak encryption algorithms.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify FIPS Mode in Configuration. \n\n1. For each ColdFusion instance, locate the server.xml file in the following directory:\n<ColdFusion Install Directory>\\runtime\\conf\n\n2. Open server.xml.\n\n3. Search for the <Listener> tag for AprLifecycleListener, confirm that it includes the attribute:\nfipsmode=\"on\"\n\nIf the fipsmode=\"on\" attribute is not present, this is a finding.\n\n4. Verify FIPS Mode at Runtime. After starting ColdFusion, open the coldfusion-error.log file.\n\n5. Search for the term \"fipsmode\".\n\n6. Check for the following message:\nfailed to set property[FIPSMODE] to [on]\n\nIf this error message is present in the log, this is a finding.",
+  "fix": "1. Enable FIPS Mode in Tomcat by editing the Tomcat server.xml configuration file.\n\n2. From the Tomcat server, log in as a privileged user, open the server.xml file:\nsudo nano $CATALINA_BASE/conf/server.xml\n\n3. Locate or add the <Listener> element for AprLifecycleListener.\n\n4. Ensure the element includes the FIPSMode=\"on\" attribute.\nExample configuration:\n<Listener\n    className=\"org.apache.catalina.core.AprLifecycleListener\"\n    SSLEngine=\"on\"\n    FIPSMode=\"on\"\n/>\n\n5. Save and close the file.\n\n6. Restart ColdFusion to apply the changes.\n\n7. Check coldfusion-error.log after startup to confirm there are no errors indicating failure to set FIPSMode.",
+  "ccis": [
+    "CCI-001453"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using only FIPS 140-2/140-3 or higher approved cryptographic modules for encryption helps ensure the confidentiality and integrity of transmitted data. Allowing using non-FIPS-approved or outdated encryption modules increases the attack surface and exposes the system to known vulnerabilities. Attacks such as POODLE and its variants exploit weaknesses in noncompliant cryptographic protocols by forcing HTTPS communications to downgrade to insecure cipher suites. This allows an attacker to decrypt sensitive data through man-in-the-middle techniques. \n\nEnforcing FIPS 140-2/140-3 and higher validated modules mitigates this risk by preventing fallback to weak encryption algorithms.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APAS-CF-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878",
+      "name": "Adobe ColdFusion Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878"
+  ]
+}

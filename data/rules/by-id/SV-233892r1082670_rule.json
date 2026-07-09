@@ -1,0 +1,54 @@
+{
+  "id": "SV-233892r1082670_rule",
+  "full_rule_id": "SV-233892r1082670_rule",
+  "rule_id": "SV-233892",
+  "rule_revision": "1082670",
+  "group_id": "V-233892",
+  "group_title": "SRG-APP-000350-DNS-000044",
+  "title": "The Infoblox system must send a notification in the event of an error when validating the binding of another DNS service member's identity to the DNS information.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failing to act on validation errors may result in the use of invalid, corrupted, or compromised information. The validation of bindings can be achieved, for example, by the use of cryptographic checksums. Validations must be performed automatically.\n\nAt a minimum, the application must log the validation error. However, more stringent actions can be taken based on the security posture and value of the information. The organization must consider the system's environment and impact of the errors when defining the actions. Additional examples of actions include automated notification to administrators, halting system process, or halting the specific operation.\n\nThe DNS server must audit all failed attempts at server authentication through DNSSEC and TSIG/SIG(0). The actual auditing is performed by the OS/NDM, but the configuration to trigger the auditing is controlled by the DNS server.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Infoblox systems allow configuration of DNS auditing based on selectable events. Verify that important event categories are enabled to log events. \n\n1. Navigate to Data Management >> DNS and select \"Grid DNS Properties\". \n2. Toggle Advanced Mode and review the \"Logging\" tab.\n3. Validate that at a minimum the following categories are enabled:\nclient\nconfig\ndatabase\ndnssec\nlame servers\nnetwork\nnotify\nrate-limit\nresolver\nsecurity\ntransfer-in\ntransfer-out\nupdate\nupdate-security\n4. When complete, click \"Cancel\" to exit the \"Properties\" screen. \n\nIf the named logging categories are not enabled, this is a finding.",
+  "fix": "1. Navigate to Data Management >> DNS. Select \"Grid DNS Properties\".\n2. Toggle Advanced Mode and review the \"Logging\" tab.\n3. Enable the following categories using the check boxes: \nclient\nconfig\ndatabase\ndnssec\nlame servers\nnetwork\nnotify\nrate-limit\nresolver\nsecurity\ntransfer-in\ntransfer-out\nupdate\nupdate-security\n4. When complete, click \"Save & Close\" to save the changes and exit the \"Properties\" screen.\n5. Perform a service restart if necessary.",
+  "ccis": [
+    "CCI-001906",
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failing to act on validation errors may result in the use of invalid, corrupted, or compromised information. The validation of bindings can be achieved, for example, by the use of cryptographic checksums. Validations must be performed automatically.\n\nAt a minimum, the application must log the validation error. However, more stringent actions can be taken based on the security posture and value of the information. The organization must consider the system's environment and impact of the errors when defining the actions. Additional examples of actions include automated notification to administrators, halting system process, or halting the specific operation.\n\nThe DNS server must audit all failed attempts at server authentication through DNSSEC and TSIG/SIG(0). The actual auditing is performed by the OS/NDM, but the configuration to trigger the auditing is controlled by the DNS server.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDNS-8X-400034",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46",
+      "name": "Infoblox 8.x DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46"
+  ]
+}

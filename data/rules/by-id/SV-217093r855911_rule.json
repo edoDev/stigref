@@ -1,0 +1,53 @@
+{
+  "id": "SV-217093r855911_rule",
+  "full_rule_id": "SV-217093r855911_rule",
+  "rule_id": "SV-217093",
+  "rule_revision": "855911",
+  "group_id": "V-217093",
+  "group_title": "SRG-NET-000364-RTR-000116",
+  "title": "The Juniper Multicast Source Discovery Protocol (MSDP) router must be configured to only accept MSDP packets from known MSDP peers.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>MSDP peering with customer network routers presents additional risks to the DISN Core, whether from a rogue or misconfigured MSDP-enabled router. To guard against an attack from malicious MSDP traffic, the receive path or interface filter for all MSDP-enabled RP routers must be configured to only accept MSDP packets from known MSDP peers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if there is a receive path or interface filter to only accept MSDP packets from known MSDP peers.\n\nVerify that the loopback has been configured to filter packets destined to the routing engine as shown in the example below.\n\ninterfaces {\n    …\n    …\n    …\n    }\n    lo0 {\n        unit 0 {\n            family inet {\n                filter {\n                    input PROTECT_RE;\n                }\n                address 2.2.2.2/32;\n            }\n        }\n    }\n}\n\nVerify that the filter is configured to only accept MSDP packets from known MSDP peers as shown in the example below.\n\nfirewall {\n    family inet {\n        filter PROTECT_RE {\n            term MSDP_PEERS {\n                from {\n                    source-address {\n                        0.0.0.0/0;\n                        1.1.1.1/32 except;\n                        5.5.5.5/32 except;\n                    }\n                    protocol tcp;\n                    port msdp;\n                }\n                then {\n                    discard;\n                }\n            }\n            term ALLOW_OTHER {\n                then accept;\n            }\n        }\n    }\n}\n\nIf the router is not configured to only accept MSDP packets from known MSDP peers, this is a finding.",
+  "fix": "Configure the receive path filter to only accept MSDP packets from known MSDP peers as shown in the following example:\n\n[edit firewall family inet filter PROTECT_RE]\nset term MSDP_PEERS from protocol tcp port msdp\nset term MSDP_PEERS from source-address 0.0.0.0/0\nset term MSDP_PEERS from source-address 1.1.1.1/32 except\nset term MSDP_PEERS from source-address 5.5.5.5/32 except\nset term MSDP_PEERS then discard\nset term ALLOW_OTHER then accept\n\nApply the filter to the loopback interface.\n\n[edit interfaces lo0 unit 0 family inet]\nset filter input PROTECT_RE",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "MSDP peering with customer network routers presents additional risks to the DISN Core, whether from a rogue or misconfigured MSDP-enabled router. To guard against an attack from malicious MSDP traffic, the receive path or interface filter for all MSDP-enabled RP routers must be configured to only accept MSDP packets from known MSDP peers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000890",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-270548r1064922_rule",
+  "full_rule_id": "SV-270548r1064922_rule",
+  "rule_id": "SV-270548",
+  "rule_revision": "1064922",
+  "group_id": "V-270548",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "Oracle Database must be protected from unauthorized access by developers on shared production/development host systems.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Applications employ the concept of least privilege for specific duties and information systems (including specific functions, ports, protocols, and services). The concept of least privilege is also applied to information system processes, ensuring that the processes operate at privilege levels no higher than necessary to accomplish required organizational missions and/or functions. Organizations consider the creation of additional processes, roles, and information system accounts as necessary to achieve least privilege. Organizations also apply least privilege concepts to the design, development, implementation, and operations of information systems.\n\nDevelopers granted elevated database and/or operating system privileges on systems that support both development and production databases can affect the operation and/or security of the production database system. Operating system and database privileges assigned to developers on shared development and production systems must be restricted.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Identify whether any hosts contain both development and production databases. If no hosts contain both production and development databases, this is Not Applicable.\n\nFor any host containing both a development and a production database, determine if developers have been granted elevated privileges on the production database or on the OS. If they have, ask for documentation that shows these accounts have formal approval and risk acceptance. If this documentation does not exist, this is a finding.\n\nIf developer accounts exist with the right to create and maintain tables (or other database objects) in production tablespaces, this is a finding.\n\nTo check the number of instances on the host machine where applicable, check the /etc/oratab. The /etc/oratab file is updated by the Oracle Installer when the database is installed when the root.sh file is executed. Each line in the represents an ORACLE_SID:ORACLE_HOME:Y or N. The ORACLE_SID and ORACLE_HOME are self-explanatory. The Y or N signals the DBSTART program to automatically start or not start that specific instance when the machine is restarted. Check with the system owner and application development team to find what each entry represents. If a system is deemed to be a production system, review the system for development users.",
+  "fix": "Restrict developer privileges to production objects to only objects and data where those privileges are required and authorized. Document the approval and risk acceptance.\n\nConsider using separate accounts for a person's developer duties and production duties. At a minimum, use separate roles for developer privileges and production privileges.\n\nIf developers need the ability to create and maintain tables (or other database objects) as part of their development activities, provide dedicated tablespaces, and revoke any rights that allowed them to use production tablespaces for this purpose.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Applications employ the concept of least privilege for specific duties and information systems (including specific functions, ports, protocols, and services). The concept of least privilege is also applied to information system processes, ensuring that the processes operate at privilege levels no higher than necessary to accomplish required organizational missions and/or functions. Organizations consider the creation of additional processes, roles, and information system accounts as necessary to achieve least privilege. Organizations also apply least privilege concepts to the design, development, implementation, and operations of information systems.\n\nDevelopers granted elevated database and/or operating system privileges on systems that support both development and production databases can affect the operation and/or security of the production database system. Operating system and database privileges assigned to developers on shared development and production systems must be restricted.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "O19C-00-012200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01",
+      "name": "Oracle Database 19c Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-database-19c-security-technical-implementation-guide-v1r5-16586f01"
+  ]
+}

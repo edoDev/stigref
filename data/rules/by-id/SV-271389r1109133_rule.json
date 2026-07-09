@@ -1,0 +1,53 @@
+{
+  "id": "SV-271389r1109133_rule",
+  "full_rule_id": "SV-271389r1109133_rule",
+  "rule_id": "SV-271389",
+  "rule_revision": "1109133",
+  "group_id": "V-271389",
+  "group_title": "SRG-APP-000516-DB-000363",
+  "title": "SQL Server must configure Customer Feedback and Error Reporting.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By default, Microsoft SQL Server enables participation in the customer experience improvement program (CEIP). This program collects information about how its customers are using the product. Specifically, SQL Server collects information about the installation experience, feature usage, and performance. This information helps Microsoft improve the product to better meet customer needs.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the values for CustomerFeedback and EnableErrorReporting.\n\nOption 1:\nLaunch \"Registry Editor\" \n \nNavigate to:\nHKEY_LOCAL_MACHINE\\Software\\Microsoft\\Microsoft SQL Server\\[InstanceId]\\CPE \nReview the following values: CustomerFeedback, EnableErrorReporting \n \nNavigate to HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Microsoft SQL Server\\160 \nReview the following values: CustomerFeedback, EnableErrorReporting \n \nOption 2:\nRun the PowerShell commands:\n\nGet-ItemProperty -Path \"HKLM:\\Software\\Microsoft\\Microsoft SQL Server\\<SqlInstanceId>\\CPE\"\nGet-ItemProperty -Path \"HKLM:\\ Software\\Microsoft\\Microsoft SQL Server\\160\"\n\nReview the following values: CustomerFeedback, EnableErrorReporting\n\nIf this is a classified system, and any of the above values are not \"0\", this is a finding. \n \nIf this is an unclassified system, review the server documentation to determine whether CEIP participation is authorized. \n \nIf CEIP participation is not authorized, and any of the above values are \"1\", this is a finding.",
+  "fix": "To disable participation in the CEIP program, change the value of the following registry keys to \"0\". \n \nTo enable participation in the CEIP program, change the value of the following registry keys to \"1\". \n \nHKEY_LOCAL_MACHINE\\Software\\Microsoft\\Microsoft SQL Server\\[InstanceId]\\CPE\\CustomerFeedback \nHKEY_LOCAL_MACHINE\\Software\\Microsoft\\Microsoft SQL Server\\[InstanceId]\\CPE\\EnableErrorReporting \nHKEY_LOCAL_MACHINE\\Software\\Microsoft\\Microsoft SQL Server\\160\\CustomerFeedback \nHKEY_LOCAL_MACHINE\\Software\\Microsoft\\Microsoft SQL Server\\160\\EnableErrorReporting\n\nOr in PowerShell, run:\n\nSet-ItemProperty -Path \"HKLM:\\Software\\Microsoft\\Microsoft SQL Server\\[InstanceId]\\CPE\" -Name CustomerFeedback -Value 0\nSet-ItemProperty -Path \"HKLM:\\Software\\Microsoft\\Microsoft SQL Server\\[InstanceId]\\CPE\" -Name EnableErrorReporting -Value 0\nSet-ItemProperty -Path \"HKLM:\\Software\\Microsoft\\Microsoft SQL Server\\160\" -Name CustomerFeedback -Value 0\nSet-ItemProperty -Path \"HKLM:\\Software\\Microsoft\\Microsoft SQL Server\\160\" -Name EnableErrorReporting -Value 0",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By default, Microsoft SQL Server enables participation in the customer experience improvement program (CEIP). This program collects information about how its customers are using the product. Specifically, SQL Server collects information about the installation experience, feature usage, and performance. This information helps Microsoft improve the product to better meet customer needs.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLI-22-016000",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b",
+      "name": "Microsoft SQL Server 2022 Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b"
+  ]
+}

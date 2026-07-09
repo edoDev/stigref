@@ -1,0 +1,53 @@
+{
+  "id": "SV-221217r961101_rule",
+  "full_rule_id": "SV-221217r961101_rule",
+  "rule_id": "SV-221217",
+  "rule_revision": "961101",
+  "group_id": "V-221217",
+  "group_title": "SRG-APP-000213",
+  "title": "Exchange Internet-facing Send connectors must specify a Smart Host.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When identifying a \"Smart Host\" for the email environment, a logical Send connector is the preferred method.\n\nA Smart Host acts as an Internet-facing concentrator for other email servers. Appropriate hardening can be applied to the Smart Host, rather than at multiple locations throughout the enterprise.\n\nFailure to identify a Smart Host could default to each email server performing its own lookups (potentially through protective firewalls). Exchange servers should not be Internet facing and should therefore not perform any Smart Host functions. When the Exchange servers are Internet facing, they must be configured to identify the Internet-facing server that is performing the Smart Host function.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Email Domain Security Plan (EDSP).\n\nDetermine the Internet-facing connectors.\n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-SendConnector | Select Name, Identity, SmartHosts, DNSRoutingEnabled\n\nFor each send connector, if the value of \"SmartHosts\" does not return the Smart Host IP Address and the value for \"DNSRoutingEnabled\" is not set to \"False\", this is a finding.",
+  "fix": "Open the Exchange Management Shell and enter the following command:\n\nSet-SendConnector <'IdentityName'> -SmartHosts <'IP Address of Smart Host'> -DNSRoutingEnabled $false   \n\nNote: The <IdentityName> value must be in single quotes.\n\nRepeat the procedures for each send connector.",
+  "ccis": [
+    "CCI-001178"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When identifying a \"Smart Host\" for the email environment, a logical Send connector is the preferred method.\n\nA Smart Host acts as an Internet-facing concentrator for other email servers. Appropriate hardening can be applied to the Smart Host, rather than at multiple locations throughout the enterprise.\n\nFailure to identify a Smart Host could default to each email server performing its own lookups (potentially through protective firewalls). Exchange servers should not be Internet facing and should therefore not perform any Smart Host functions. When the Exchange servers are Internet facing, they must be configured to identify the Internet-facing server that is performing the Smart Host function.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX16-ED-000160",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2016-edge-transport-server-security-technical-implementation-v2r6-7bfc98a9",
+      "name": "Microsoft Exchange 2016 Edge Transport Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2016-edge-transport-server-security-technical-implementation-v2r6-7bfc98a9"
+  ]
+}

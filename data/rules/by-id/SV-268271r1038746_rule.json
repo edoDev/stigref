@@ -1,0 +1,53 @@
+{
+  "id": "SV-268271r1038746_rule",
+  "full_rule_id": "SV-268271r1038746_rule",
+  "rule_id": "SV-268271",
+  "rule_revision": "1038746",
+  "group_id": "V-268271",
+  "group_title": "SRG-APP-000412-NDM-000331",
+  "title": "The HYCU virtual appliance must be configured to implement cryptographic mechanisms using a FIPS 140-2-approved algorithm to protect the confidentiality of remote maintenance sessions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data (including administrator passwords) at risk of compromise and potentially allowing hijacking of maintenance sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "When FIPS mode is enabled, the HYCU application will use FIPS-compliant behavior. Validation of FIPS status can be done using the following commands:\n'cat /proc/sys/crypto/fips_enabled' \n\nIf command output does not show \"1\", this is a finding.\n\n'fips-mode-setup --check'\n\nIf command output does not show \"FIPS mode is enabled\", this is a finding.\n\n'update-crypto-policies --show'\n\nIf command output does not show \"FIPS\", this is a finding.",
+  "fix": "Stop the HYCU web server: \nsudo systemctl stop grizzly.service\n\nEnable FIPS-compliant mode: \nsudo /opt/grizzly/bin/enable_fips.sh\n\nReboot the HYCU virtual appliance:\nshutdown -r now",
+  "ccis": [
+    "CCI-003123"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data (including administrator passwords) at risk of compromise and potentially allowing hijacking of maintenance sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HYCU-ND-000640",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hycu-protege-security-technical-implementation-guide-v1r2-57a24ef6",
+      "name": "HYCU Protege Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hycu-protege-security-technical-implementation-guide-v1r2-57a24ef6"
+  ]
+}

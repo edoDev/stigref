@@ -1,0 +1,53 @@
+{
+  "id": "SV-259123r960792_rule",
+  "full_rule_id": "SV-259123r960792_rule",
+  "rule_id": "SV-259123",
+  "rule_revision": "960792",
+  "group_id": "V-259123",
+  "group_title": "SRG-APP-000033-AS-000024",
+  "title": "The vCenter UI service DefaultServlet must be set to \"readonly\" for \"PUT\" and \"DELETE\" commands.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The default servlet (or DefaultServlet) is a special servlet provided with Tomcat that is called when no other suitable page is found in a particular folder. The DefaultServlet serves static resources as well as directory listings. The DefaultServlet is configured by default with the \"readonly\" parameter set to \"true\" where HTTP commands such as \"PUT\" and \"DELETE\" are rejected.\n\nChanging this to \"false\" allows clients to delete or modify static resources on the server and to upload new resources. DefaultServlet \"readonly\" must be set to \"true\", either literally or by absence (default).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --xpath \"//*[contains(text(), 'DefaultServlet')]/parent::*\" /usr/lib/vmware-vsphere-ui/server/conf/web.xml\n\nExample output:\n\n<servlet>\n      <description>File servlet</description>\n      <servlet-name>FileServlet</servlet-name>\n      <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>\n</servlet>\n\nIf the \"readOnly\" param-value for the \"DefaultServlet\" servlet class is set to \"false\", this is a finding.\n\nIf the \"readOnly\" param-value does not exist, this is not a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-vsphere-ui/server/conf/web.xml\n\nNavigate to the /<web-apps>/<servlet>/<servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>/ node and remove the following node:\n\n<init-param>\n      <param-name>readonly</param-name>\n      <param-value>false</param-value>\n</init-param>\n\nRestart the service with the following command:\n\n# vmon-cli --restart vsphere-ui",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The default servlet (or DefaultServlet) is a special servlet provided with Tomcat that is called when no other suitable page is found in a particular folder. The DefaultServlet serves static resources as well as directory listings. The DefaultServlet is configured by default with the \"readonly\" parameter set to \"true\" where HTTP commands such as \"PUT\" and \"DELETE\" are rejected.\n\nChanging this to \"false\" allows clients to delete or modify static resources on the server and to upload new resources. DefaultServlet \"readonly\" must be set to \"true\", either literally or by absence (default).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCUI-80-000130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-user-interface-ui-security-technical-implem-v2r1-f07232d5",
+      "name": "VMware vSphere 8.0 vCenter Appliance User Interface (UI) Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-user-interface-ui-security-technical-implem-v2r1-f07232d5"
+  ]
+}

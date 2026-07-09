@@ -1,0 +1,53 @@
+{
+  "id": "SV-253108r991589_rule",
+  "full_rule_id": "SV-253108r991589_rule",
+  "rule_id": "SV-253108",
+  "rule_revision": "991589",
+  "group_id": "V-253108",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The TOSS SSH public host key files must have mode 0644 or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If a public host key file is modified by an unauthorized user, the SSH service may be compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SSH public host key files have mode \"0644\" or less permissive with the following command:\n\n$ sudo ls -l /etc/ssh/*.pub\n\n-rw-r--r-- 1 root root 618 Nov 28 06:43 ssh_host_dsa_key.pub\n-rw-r--r-- 1 root root 347 Nov 28 06:43 ssh_host_key.pub\n-rw-r--r-- 1 root root 238 Nov 28 06:43 ssh_host_rsa_key.pub\n\nIf any key.pub file has a mode more permissive than \"0644\", this is a finding.\n\nNote: SSH public key files may be found in other directories on the system depending on the installation.",
+  "fix": "Change the mode of public host key files under \"/etc/ssh\" to \"0644\" with the following command:\n\n$ sudo chmod 0644 /etc/ssh/*key.pub\n\nThe SSH daemon must be restarted for the changes to take effect. To restart the SSH daemon, run the following command:\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If a public host key file is modified by an unauthorized user, the SSH service may be compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-040670",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

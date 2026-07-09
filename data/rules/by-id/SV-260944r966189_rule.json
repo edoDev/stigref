@@ -1,0 +1,53 @@
+{
+  "id": "SV-260944r966189_rule",
+  "full_rule_id": "SV-260944r966189_rule",
+  "rule_id": "SV-260944",
+  "rule_revision": "966189",
+  "group_id": "V-260944",
+  "group_title": "SRG-APP-000454-CTR-001110",
+  "title": "Older Universal Control Plane (MKE) and Docker Trusted Registry (DTR) images must be removed from all cluster nodes upon upgrading.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>When upgrading either the UCP or DTR components of MKE, the newer images are pulled (or unpacked if offline) onto engine nodes in a cluster. Once the upgrade is complete, one must manually remove all old image version from the cluster nodes to meet the requirements of this control.\n\nWhen upgrading the Docker Engine - Enterprise component of MKE, the old package version is automatically replaced.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify all outdated MKE and DTR container images have been removed from all nodes in the cluster.\n\nVia CLI: As an MKE admin, execute the following command using a client bundle:\n\ndocker images --filter reference='mirantis/[ucp]*'\ndocker images --filter reference='registry.mirantis.com/msr/[msr]*'\n\nVerify there are no tags listed older than the currently installed versions of MKE and DTR.\n\nIf any of the tags listed are older than the currently installed versions of MKE and DTR, then this is a finding. If no tags are listed, this is not a finding.",
+  "fix": "Remove all outdated MKE and DTR container images from all nodes in the cluster:\n\nVia CLI: As an MKE admin, execute the following commands using a client bundle:\n\ndocker rmi -f $(docker images --filter reference='mirantis/ucp*:[outdated_tags]' -q)\ndocker rmi -f $(docker images --filter reference='registry.mirantis.com/msr/[msr]*:[outdated_tags]' -q)",
+  "ccis": [
+    "CCI-002617"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "When upgrading either the UCP or DTR components of MKE, the newer images are pulled (or unpacked if offline) onto engine nodes in a cluster. Once the upgrade is complete, one must manually remove all old image version from the cluster nodes to meet the requirements of this control.\n\nWhen upgrading the Docker Engine - Enterprise component of MKE, the old package version is automatically replaced.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-001600",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-216348r959010_rule",
+  "full_rule_id": "SV-216348r959010_rule",
+  "rule_id": "SV-216348",
+  "rule_revision": "959010",
+  "group_id": "V-216348",
+  "group_title": "SRG-OS-000480",
+  "title": "Access to a domain console via telnet must be restricted to the local host.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Telnet is an insecure protocol.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This action applies only to the control domain. \n\nDetermine the domain that you are currently securing.\n\n# virtinfo \nDomain role: LDoms control I/O service root\nThe current domain is the control domain, which is also an I/O domain, the service domain, and a root I/O domain.\n\nIf the current domain is not the control domain, this check does not apply.\n\nDetermine if vnsd is in use.\n\n# svcs vntsd\nSTATE          STIME    FMRI\nonline         Oct_08   svc:/ldoms/vntsd:default\n\nIf the state is not \"online\", this is not applicable.\n\nDetermine if a role has been created for domain console access.\n\n# cat /etc/user_attr | grep solaris.vntsd.consoles\nrolename::::type=role;auths=solaris.vntsd.consoles;profiles=All;roleauth=role\n\nIf a role for \"vntsd.consoles\" is not established, this is a finding.",
+  "fix": "The root role is required. This action applies only to the control domain. \n\nDetermine the domain that you are currently securing.\n\n# virtinfo \nDomain role: LDoms control I/O service root\nThe current domain is the control domain, which is also an I/O domain, the service domain, and a root I/O domain.\n\nIf the current domain is not the control domain, this action does not apply.\n\nCreate a password-controlled role that has the solaris.vntsd.consoles authorization, which permits access to all domain consoles.\n\n# roleadd -A solaris.vntsd.consoles [role-name]\n# passwd [role-name]\n\nAssign the new role to a user.\n# usermod -R [role-name] [username]",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Telnet is an insecure protocol.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040315",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff",
+      "name": "Solaris 11 SPARC Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-sparc-security-technical-implementation-guide-v3r5-06874eff"
+  ]
+}

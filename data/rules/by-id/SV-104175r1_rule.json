@@ -1,0 +1,53 @@
+{
+  "id": "SV-104175r1_rule",
+  "full_rule_id": "SV-104175r1_rule",
+  "rule_id": "SV-104175",
+  "rule_revision": "1",
+  "group_id": "V-94221",
+  "group_title": "SRG-NET-000062-ALG-000150",
+  "title": "Symantec ProxySG providing forward proxy intermediary services for TLS must be configured to comply with the required TLS settings in NIST SP 800-52.",
+  "severity": "high",
+  "description": "<VulnDiscussion>SP 800-52 provides guidance on using the most secure version and configuration of the TLS/SSL protocol. Using older unauthorized versions or incorrectly configuring protocol negotiation makes the gateway vulnerable to known and unknown attacks that exploit vulnerabilities in this protocol.\n\nThis requirement applies to TLS gateways (also known as SSL gateways) and is not applicable to VPN devices. Application protocols such as HTTPS and DNSSEC use TLS as the underlying security protocol and thus are in scope for this requirement. NIST SP 800-52 provides guidance.\n\nNIST SP 800-52 sets TLS version 1.1 as a minimum version; therefore, all versions of SSL are not allowed (including for client negotiation) either on DoD-only or public-facing servers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that TLS forward proxy intermediary services are configured to comply with NIST 800-52 TLS settings.\n\n1. Log on to the Web Management Console.\n2. Click Configuration >> Visual Policy Manager. \n3. Click \"Launch\". While in the Visual Policy Manager, for each SSL Access Layer that is configured, Verify there is a rule with an action set to \"Deny\" that also has \"Source\" and \"Destination\" fields that contain restricted SSL/TLS protocols and ciphers.\n\nIf Symantec ProxySG providing forward proxy intermediary services for TLS is not configured to comply with the required TLS settings in NIST SP 800-52, this is a finding.",
+  "fix": "Configure TLS forward proxy intermediary services to comply with NIST SP 800-52 TLS settings.\n\n1. Log on to the Web Management Console. \n2. Click Configuration >> Visual Policy Manager. \n3. Click \"Launch\". While in the Visual Policy Manager, click Policy >> Add SSL Access Layer.\n4. Right-click the \"Source\" field of the existing rule and select \"Set\". Click \"New\" and select \"Combined Source Object\".\n5. Click \"New\" and select \"Client Negotiated Cipher\". Select all ciphers that should be permitted and click \"OK\".\n6. Click the upper \"Add\" button and click the \"Negate\" checkbox.\n7. Click \"New\" and select \"Client Negotiated SSL Version\". Select all SSL versions that should be permitted and click \"OK\".\n8. Click the upper \"Add\" button.\n9. Click \"OK\" and then \"OK\" again.\n10. Repeat steps 4 to 9 for the \"Destination\" field, using the \"Server Negotiated Cipher\" and \"Server Negotiated SSL Version\" objects.\n11. Right-click the \"Action\" field of the rule, click \"Set\", and select \"Deny\".\n12. Click File >> Install Policy on SG Appliance.",
+  "ccis": [
+    "CCI-000068"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "SP 800-52 provides guidance on using the most secure version and configuration of the TLS/SSL protocol. Using older unauthorized versions or incorrectly configuring protocol negotiation makes the gateway vulnerable to known and unknown attacks that exploit vulnerabilities in this protocol.\n\nThis requirement applies to TLS gateways (also known as SSL gateways) and is not applicable to VPN devices. Application protocols such as HTTPS and DNSSEC use TLS as the underlying security protocol and thus are in scope for this requirement. NIST SP 800-52 provides guidance.\n\nNIST SP 800-52 sets TLS version 1.1 as a minimum version; therefore, all versions of SSL are not allowed (including for client negotiation) either on DoD-only or public-facing servers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SYMP-AG-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "symantec-proxysg-alg-security-technical-implementation-guide-v1r3-1340f85b",
+      "name": "Symantec ProxySG ALG Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "symantec-proxysg-alg-security-technical-implementation-guide-v1r3-1340f85b"
+  ]
+}

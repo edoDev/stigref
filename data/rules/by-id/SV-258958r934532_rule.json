@@ -1,0 +1,53 @@
+{
+  "id": "SV-258958r934532_rule",
+  "full_rule_id": "SV-258958r934532_rule",
+  "rule_id": "SV-258958",
+  "rule_revision": "934532",
+  "group_id": "V-258958",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter server configuration must be backed up on a regular basis.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>vCenter server is the control plane for the vSphere infrastructure and all the workloads it hosts. As such, vCenter is usually a highly critical system in its own right. Backups of vCenter can now be made at a data and configuration level versus traditional storage/image-based backups. This reduces recovery time by letting the system administrator (SA) spin up a new vCenter while simultaneously importing the backed-up data.\n\nFor sites that implement the Native Key Provider (NKP), introduced in 7.0 Update 2, regular vCenter backups are critical. In a recovery scenario where the virtual machine files are intact but vCenter was lost, the encrypted virtual machines will not be able to boot as their private keys were stored in vCenter after it was last backed up. When using the NKP, vCenter becomes critical to the virtual machine workloads and ceases to be just the control plane.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Option 1:\n\nIf vCenter is backed up in a traditional manner, at the storage array level, interview the SA to determine configuration and schedule.\n\nOption 2:\n\nFor vCenter native backup functionality, open the Virtual Appliance Management Interface (VAMI) by navigating to https://<vCenter server>:5480.\n\nLog in with local operating system administrative credentials or with a Single Sign-On (SSO) account that is a member of the \"SystemConfiguration.BashShellAdministrator\" group.\n\nSelect \"Backup\" on the left navigation pane.\n\nOn the resulting pane on the right, verify the \"Status\" is \"Enabled\".\n\nClick \"Status\" to expand the backup details.\n\nIf vCenter server backups are not configured and there is no other vCenter backup system, this is a finding.\n\nIf the backup configuration is not set to a proper, reachable location or if the schedule is anything less frequent than \"Daily\", this is a finding.",
+  "fix": "Option 1:\n\nImplement and document a VMware-supported storage/image-based backup schedule.\n\nOption 2:\n\nTo configure vCenter native backup functionality, open the VAMI by navigating to https://<vCenter server>:5480.\n\nLog in with local operating system administrative credentials or with an SSO account that is a member of the \"SystemConfiguration.BashShellAdministrator\" group.\n\nSelect \"Backup\" on the left navigation pane.\n\nOn the resulting pane on the right, click \"Configure\" (or \"Edit\" for an existing configuration).\n\nEnter site-specific information for the backup job.\n\nEnsure \"Schedule\" is set to \"Daily\". Limiting the number of retained backups is recommended but not required.\n\nClick \"Create\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "vCenter server is the control plane for the vSphere infrastructure and all the workloads it hosts. As such, vCenter is usually a highly critical system in its own right. Backups of vCenter can now be made at a data and configuration level versus traditional storage/image-based backups. This reduces recovery time by letting the system administrator (SA) spin up a new vCenter while simultaneously importing the backed-up data.\n\nFor sites that implement the Native Key Provider (NKP), introduced in 7.0 Update 2, regular vCenter backups are critical. In a recovery scenario where the virtual machine files are intact but vCenter was lost, the encrypted virtual machines will not be able to boot as their private keys were stored in vCenter after it was last backed up. When using the NKP, vCenter becomes critical to the virtual machine workloads and ceases to be just the control plane.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000292",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

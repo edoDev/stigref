@@ -1,0 +1,53 @@
+{
+  "id": "SV-250985r1028212_rule",
+  "full_rule_id": "SV-250985r1028212_rule",
+  "rule_id": "SV-250985",
+  "rule_revision": "1028212",
+  "group_id": "V-250985",
+  "group_title": "SRG-APP-000038-NDM-000213",
+  "title": "Sentry must enforce approved authorizations for controlling the flow of management information within the network device based on information flow control policies.",
+  "severity": "low",
+  "description": "<VulnDiscussion>A mechanism to detect and prevent unauthorized communication flow must be configured or provided as part of the system design. If management information flow is not enforced based on approved authorizations, the network device may become compromised. Information flow control regulates where management information is allowed to travel within a network device. The flow of all management information must be monitored and controlled so it does not introduce any unacceptable risk to the network device or data. \n\nApplication-specific examples of enforcement occur in systems that employ rule sets or establish configuration settings that restrict information system services or message-filtering capability based on message content (e.g., implementing key word searches or using document characteristics).\n\nApplications providing information flow control must be able to enforce approved authorizations for controlling the flow of management information within the system in accordance with applicable policy.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review Sentry configuration to determine if it enforces approved authorizations for controlling the flow of management information within the network.\n\nSentry receives a request from MobileIron Core and enforces verification before handling the request to validate that it is from a trusted MobileIron Core.\n\nTherefore, if the deployment uses MobileIron Core, to verify that Sentry trusts MobileIron Core in the deployment:\n\n1. Run the following command in Sentry CLI:\nshow sentry EMM-source-verify \n\nIf this is set to \"false\", this is a finding.\n\n2. Run the following command in Sentry CLI:\nshow sentry emm-ips \n\nIf the Core IP is not specified, this is a finding.\n\n3. Verify Sentry has an ACL for Core in Sentry System Manager.\n\nThen:\n1. In the Standalone Sentry System Manager, go to Security >> Access Control Lists.\n2. Verify that an ACL is created for Core. If it is not, this is a finding.\n3. Determine if Sentry is configured with specified backend services such as Exchange Active Sync or App Tunnels.\n\nIf the backend service is not specified, this is a finding. \n\nRefer to section \"Configuring Standalone Sentry for ActiveSync\" and \"Configuring Standalone Sentry for AppTunnel\" in \"Sentry 9.8 Guide for MobileIron Core\" to ensure these services are configured in Sentry settings in Core where applicable.",
+  "fix": "Configure Sentry to enforce approved authorizations for controlling the flow of management information within the network device. \n\nSentry receives a request from MobileIron Core and enforces verification before handling the request to validate that it is from a trusted MobileIron Core.\n\nTherefore, if the deployment uses MobileIron Core, to ensure that Sentry trusts MobileIron Core in the deployment, run the following commands in Sentry CLI:\n\n1. sentry emm-source-verify true\n\n2. sentry emm-ips <subnet_list>>\n\n3. This can further be mitigated by creating ACLs for Sentry System Manager.\n\nThen:\n1. In the Standalone Sentry System Manager, go to Security >> Access Control Lists.\n2. Click \"Add\".\n3. In the \"Name\" field, enter a name to identify the ACL.\n4. In the \"Description\" field, enter text to clarify the purpose of the ACL.\n5. Click \"Save\".\n6. Select the new ACL that was created and click it, which should open a Modify ACL dialog box.\n7. Click \"Add\" to add an access control entry (ACE) to the ACL.\nEach ACE consists of a combination of the network hosts and services that were configured for use in ACLs.\n8. Use the following guidelines to complete the form:\nSource Network \nDestination Network\nService\nAction - Select Permit or Deny from the dropdown list.\nConnections Per Minute\n9. Click \"Save\".\n10. Configure Sentry with specified backend services such as Exchange Active Sync or App Tunnels. Refer to section \"Configuring Standalone Sentry for ActiveSync\" and \"Configuring Standalone Sentry for AppTunnel\" in \"Sentry 9.8 Guide for MobileIron Core\" to ensure these services are configured in Sentry settings in Core where applicable.",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A mechanism to detect and prevent unauthorized communication flow must be configured or provided as part of the system design. If management information flow is not enforced based on approved authorizations, the network device may become compromised. Information flow control regulates where management information is allowed to travel within a network device. The flow of all management information must be monitored and controlled so it does not introduce any unacceptable risk to the network device or data. \n\nApplication-specific examples of enforcement occur in systems that employ rule sets or establish configuration settings that restrict information system services or message-filtering capability based on message content (e.g., implementing key word searches or using document characteristics).\n\nApplications providing information flow control must be able to enforce approved authorizations for controlling the flow of management information within the system in accordance with applicable policy.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MOIS-ND-000130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ivanti-sentry-9-x-ndm-security-technical-implementation-guide-v3r1-f489acc9",
+      "name": "Ivanti Sentry 9.x NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ivanti-sentry-9-x-ndm-security-technical-implementation-guide-v3r1-f489acc9"
+  ]
+}

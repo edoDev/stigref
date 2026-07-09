@@ -1,0 +1,54 @@
+{
+  "id": "SV-271305r1109239_rule",
+  "full_rule_id": "SV-271305r1109239_rule",
+  "rule_id": "SV-271305",
+  "rule_revision": "1109239",
+  "group_id": "V-271305",
+  "group_title": "SRG-APP-000148-DB-000103",
+  "title": "SQL Server must uniquely identify and authenticate users (or processes acting on behalf of organizational users).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To ensure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system. \n \nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses, except the following: \n \n(i) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and  \n(ii) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals using shared accounts for detailed accountability of individual activity.\n\nSatisfies: SRG-APP-000148-DB-000103, SRG-APP-000180-DB-000115</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Obtain the list of authorized SQL Server accounts in the system documentation. \n\nDetermine if any accounts are shared. A shared account is defined as a username and password that are used by multiple individuals to log in to SQL Server. Active Directory groups are not shared accounts as the group itself does not have a password. \n\nRun the following query to return all server-level principals:\n\nSELECT name\nFROM sys.server_principals\nWHERE type in ('U','S','E')\nAND name NOT LIKE '%$'\n\nIf any of the returned accounts are shared, determine if individuals are first individually authenticated. \n\nIf individuals are not individually authenticated before using the shared account (e.g., by the operating system or possibly by an application making calls to the database), this is a finding. \n\nThe key is individual accountability. If this can be traced, this is not a finding. \n\nIf accounts are shared, determine if they are directly accessible to end users. If so, this is a finding. \n\nReview contents of audit logs and data tables to confirm that the identity of the individual user performing the action is captured. \n\nIf shared identifiers are found and not accompanied by individual identifiers, this is a finding.\n\nExecute the following query:\n\nSELECT name\nFROM sys.server_principals\nWHERE type in ('U','S','E')\nAND name LIKE '%$'\n\nIf users are returned, determine whether each user is a computer account.\n\nLaunch PowerShell.\n\nExecute the following code:\n\nNote: <name> represents the username portion of the user. For example, if the user is \"CONTOSO\\user1$\", the username is \"user1\".\n\n([ADSISearcher]\"(&(ObjectCategory=Computer)(Name=<name>))\").FindAll()\n\nIf no account information is returned, this is not a finding.\n\nIf account information is returned, this is a finding.",
+  "fix": "Remove all shared accounts and computer accounts.\n\nTo remove users, run the following command for each user:\n\nDROP USER [ IF EXISTS ] <user_name>;",
+  "ccis": [
+    "CCI-000764",
+    "CCI-000804"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To ensure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system. \n \nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses, except the following: \n \n(i) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and  \n(ii) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals using shared accounts for detailed accountability of individual activity.\n\nSatisfies: SRG-APP-000148-DB-000103, SRG-APP-000180-DB-000115",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLI-22-007800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b",
+      "name": "Microsoft SQL Server 2022 Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b"
+  ]
+}

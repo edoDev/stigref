@@ -1,0 +1,54 @@
+{
+  "id": "SV-274881r1099904_rule",
+  "full_rule_id": "SV-274881r1099904_rule",
+  "rule_id": "SV-274881",
+  "rule_revision": "1099904",
+  "group_id": "V-274881",
+  "group_title": "SRG-OS-000373-GPOS-00156",
+  "title": "The macOS system must require users to reauthenticate for privilege escalation when using the \"sudo\" command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The file /etc/sudoers must include a timestamp_timout of 0.\n\nWithout reauthentication, users may access resources or perform tasks for which they do not have authorization. When operating systems provide the capability to escalate a functional capability or change user authenticators, it is critical the user reauthenticate.\n\nSatisfies: SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system requires reauthentication when using the \"sudo\" command to elevate privileges with the following command:\n\n/usr/bin/sudo /usr/bin/sudo -V | /usr/bin/grep -c \"Authentication timestamp timeout: 0.0 minutes\"\n\nIf the result is not \"1\", this is a finding.",
+  "fix": "Configure the macOS system to require reauthentication when using \"sudo\" with the following command:\n\n/usr/bin/find /etc/sudoers* -type f -exec sed -i '' '/timestamp_timeout/d' '{}' \\;\n/bin/echo \"Defaults timestamp_timeout=0\" >> /etc/sudoers.d/mscp",
+  "ccis": [
+    "CCI-002038",
+    "CCI-004895"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The file /etc/sudoers must include a timestamp_timout of 0.\n\nWithout reauthentication, users may access resources or perform tasks for which they do not have authorization. When operating systems provide the capability to escalate a functional capability or change user authenticators, it is critical the user reauthenticate.\n\nSatisfies: SRG-OS-000373-GPOS-00156,SRG-OS-000373-GPOS-00157",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-15-004022",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66",
+      "name": "Apple macOS 15 (Sequoia) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66"
+  ]
+}

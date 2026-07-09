@@ -1,0 +1,53 @@
+{
+  "id": "SV-217068r992004_rule",
+  "full_rule_id": "SV-217068r992004_rule",
+  "rule_id": "SV-217068",
+  "rule_revision": "992004",
+  "group_id": "V-217068",
+  "group_title": "SRG-NET-000512-RTR-000006",
+  "title": "The Juniper PE router must be configured to have each Virtual Routing and Forwarding (VRF) instance with the appropriate Route Target (RT).",
+  "severity": "high",
+  "description": "<VulnDiscussion>The primary security model for an MPLS L3VPN as well as a VRF-lite infrastructure is traffic separation. Each interface can only be associated to one VRF, which is the fundamental framework for traffic separation. Forwarding decisions are made based on the routing table belonging to the VRF. Control of what routes are imported into or exported from a VRF is based on the RT. It is critical that traffic does not leak from one COI tenant or L3VPN to another; hence, it is imperative that the correct RT is configured for each VRF.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the design plan for MPLS/L3VPN and VRF-lite to determine what RTs have been assigned for each VRF.\n\nReview the router configuration and verify that the correct RT is configured for each VRF. In the example below, route target 33:33 has been configured for customer 1.\n\nrouting-instances {\n    L3VPN_CUST1 {\n        description \"Between PE1 & PE2\";\n        instance-type vrf;\n        interface ge-0/1/0.0;\n        route-distinguisher 33:33;\n        vrf-target target:33:33;\n        vrf-table-label;\n        protocols {\n            ospf {\n                area 0.0.0.1 {\n                    interface ge-0/1/0.0;\n                }\n            }\n        }\n    }\n\nIf there are VRFs configured with the wrong RT, this is a finding.",
+  "fix": "Configure the router to have each VRF instance defined with the correct RT.\n\n[edit]\nset routing-instances L3VPN_CUST1 vrf-target target:33:33",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The primary security model for an MPLS L3VPN as well as a VRF-lite infrastructure is traffic separation. Each interface can only be associated to one VRF, which is the fundamental framework for traffic separation. Forwarding decisions are made based on the routing table belonging to the VRF. Control of what routes are imported into or exported from a VRF is based on the RT. It is critical that traffic does not leak from one COI tenant or L3VPN to another; hence, it is imperative that the correct RT is configured for each VRF.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000620",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

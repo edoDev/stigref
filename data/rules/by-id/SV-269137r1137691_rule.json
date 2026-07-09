@@ -1,0 +1,53 @@
+{
+  "id": "SV-269137r1137691_rule",
+  "full_rule_id": "SV-269137r1137691_rule",
+  "rule_id": "SV-269137",
+  "rule_revision": "1137691",
+  "group_id": "V-269137",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "AlmaLinux OS 9 must require a boot loader password.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Password protection on the boot loader configuration ensures users with physical access cannot trivially alter important bootloader settings. These include which kernel to use, and whether to enter single-user mode.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the boot loader superuser password is required using the following command:\n\n$ grep password /etc/grub2.cfg \n\npassword_pbkdf2  superman   ${GRUB2_PASSWORD}  \n\nVerify the boot loader superuser password has been set and the password is encrypted using the following command:\n\n$ cat /boot/grub2/user.cfg\n\nGRUB2_PASSWORD=grub.pbkdf2.sha512.10000.5766DCE424DCD4F0A2F5AC774C044BE8B904BC\nF0022B671CD5E522A3568C599F327EBA3F3F5AB30D69A9B9A4FD172B12435BC10BE0A9B40669FB\nA5C5ECBE8D1B.EAC815AE6F8A3F79F800D2EC7F454933BC3D63282532AAB1C487CA25331DD359F\n5BF61166EDB53FB33977E982A9F20327D988DA15CBF7E4238357E65C5AEAF3C\n\nIf a \"GRUB2_PASSWORD\" is not set, this is a finding.",
+  "fix": "Configure AlmaLinux OS 9 to require a grub bootloader password for the grub superuser account.\n\nGenerate an encrypted grub2 password for the grub superuser account with the following command:\n\n$ grub2-setpassword\nEnter password:\nConfirm password:",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Password protection on the boot loader configuration ensures users with physical access cannot trivially alter important bootloader settings. These include which kernel to use, and whether to enter single-user mode.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-006290",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

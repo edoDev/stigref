@@ -1,0 +1,53 @@
+{
+  "id": "SV-223839r1137691_rule",
+  "full_rule_id": "SV-223839r1137691_rule",
+  "rule_id": "SV-223839",
+  "rule_revision": "1137691",
+  "group_id": "V-223839",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS BPX resource(s) must be protected in accordance with security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nRL FACILITY * AUTHUSER\n\nIf the RACF rules for the BPX.** resource specify a default access of NONE, this is not a finding.\n\nIf there are no RACF user access to the BPX.** resource, this is not a finding.\n\nIf there is no RACF rule for BPX.SAFFASTPATH defined, this is not a finding.\n\nIf the RACF rules for each of the BPX resources listed in the z/OS UNIX System Services Planning, Establishing UNIX security, restrict access to appropriate system tasks or systems programming personnel, this is not a finding.",
+  "fix": "There are a number of resources available under z/OS UNIX that must be secured in order to preserve system integrity while allowing effective application and user access. All of these resources might not be used in every configuration, but several of them have critical impacts.\n\nThe default access for each of these resources must be no access. A generic resource (e.g., BPX.**) must also be set to a default access of none to cover future additions. Because they convey especially powerful privileges, the settings for BPX.DAEMON, BPX.SAFFASTPATH, BPX.SERVER, and BPX.SUPERUSER require special attention.\n\nAccess to BPX.DAEMON must be restricted to the z/OS UNIX kernel userid, z/OS UNIX daemons (e.g., inetd, syslogd, ftpd), and other system software daemons (e.g., web servers).\n\nAs noted above, the BPX.SAFFASTPATH definition can cause successful security checks not to be audited. Because auditing of all accesses is required for some system files, BPX.SAFFASTPATH must not be used. \n\nAccess to BPX.SERVER must be restricted to system software processes that act as servers under z/OS UNIX (e.g., web servers).\n\nAccess to BPX.SUPERUSER must be restricted to Security Administrators and individual systems programming personnel. It is not appropriate for all systems programming personnel, only for those with responsibilities for components or products that use z/OS UNIX and that require superuser capability for maintenance.\n\n-The RACF rules for the BPX.** resource specify a default access of NONE.\n-There are no RACF user access to the BPX.** resource.\n-There is no RACF rule for BPX.SAFFASTPATH defined.\n-The RACF rules for each of the BPX resources specify a UACC value of NONE.\n-The RACF rules for each of the BPX resources restrict access to appropriate system tasks or systems programming personnel as specified.\n\nThe following list of sample commands is provided to implement this requirement:\n\nrdef facility bpx.** UACC(none) owner(admin) audit(all(read)) - data('see zuss0021') \nrdef facility bpx.daemon UACC(none) owner(admin) - \naudit(all(read)) data('see zuss0021') \npe bpx.daemon cl(facility id(<authorized_users>) \nrdef facility bpx.debug UACC(none) owner(admin) - \naudit(all(read)) data('see zuss0021') \npe bpx.debug cl(facility id(<authorized_users>) \nrdef facility bpx.fileattr.apf UACC(none) owner(admin) - \naudit(all(read)) data('see zuss0021') \npe bpx.fileattr.apf cl(facility id(<authorized_users>) \nrdef facility bpx.fileattr.progctl UACC(none) owner(admin) - \naudit(all(read)) data('see zuss0021') \npe bpx.fileattr.progctl cl(facility id(<authorized_users>) \nrdef facility bpx.jobname UACC(none) owner(admin) - \naudit(all(read)) data('see zuss0021') \npe bpx.jobname cl(facility id(<authorized_users>) \nrdef facility bpx.server UACC(none) owner(admin) - \naudit(all(read)) data('see zuss0021') \npe bpx.server cl(facility id(<authorized_users>) \nrdef facility bpx.smf UACC(none) owner(admin) - \naudit(all(read)) data('see zuss0021') \npe bpx.smf cl(facility id(<authorized_users>) \nrdef facility bpx.stor.swap UACC(none) owner(admin) -\naudit(all(read)) data('see zuss0021') \npe bpx.stor.swap cl(facility id(<authorized_users>) \nrdef facility bpx.superuser UACC(none) owner(admin) -\naudit(all(read)) data('see zuss0021') \npe bpx.superuser cl(facility id(<authorized_users>) \nrdef facility bpx.wlmserver UACC(none) owner(admin) -\naudit(all(read)) data('see zuss0021') \npe bpx.wlmserver cl(facility id(<authorized_users>)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-US-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-214695r856579_rule",
+  "full_rule_id": "SV-214695r856579_rule",
+  "rule_id": "SV-214695",
+  "rule_revision": "856579",
+  "group_id": "V-214695",
+  "group_title": "SRG-NET-000369",
+  "title": "The Juniper SRX Services Gateway VPN must disable split-tunneling for remote clients VPNs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Split tunneling would in effect allow unauthorized external connections, making the system more vulnerable to attack and to exfiltration of organizational information.\n\nA VPN hardware or software client with split tunneling enabled provides an unsecured backdoor to the enclave from the Internet. With split tunneling enabled, a remote client has access to the Internet while at the same time has established a secured path to the enclave via an IPsec tunnel. A remote client connected to the Internet that has been compromised by an attacker in the Internet, provides an attack base to the enclave’s private network via the IPsec tunnel. Hence, it is imperative that the VPN gateway enforces a no split-tunneling policy to all remote clients.\n\nTraffic to the protected resource will go through the specified dynamic VPN tunnel and will therefore be protected by the Juniper SRX firewall’s security policies.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify split-tunneling is disabled.\n\n[edit]\nshow security dynamic-vpn access-profile <dynamic-vpn-access-profile>\n\nIf split-tunneling is not disabled, this is a finding.",
+  "fix": "Configure the VPN tunnel to control what is sent out in clear text. The “remote-protected-resources” command defines what is routed through the tunnel. The “remote-exceptions” command defines what traffic is sent out in clear text. The following is an example.\n\n[edit]\nset security dynamic-vpn access-profile <dynamic-vpn-access-profile>\nset security dynamic-vpn clients all ipsec-vpn <ipsec-vpn-name>\nset security dynamic-vpn clients all remote-protected-resources <IP-address/mask>\nset security dynamic-vpn clients all remote-exceptions 0.0.0.0/0",
+  "ccis": [
+    "CCI-002397"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Split tunneling would in effect allow unauthorized external connections, making the system more vulnerable to attack and to exfiltration of organizational information.\n\nA VPN hardware or software client with split tunneling enabled provides an unsecured backdoor to the enclave from the Internet. With split tunneling enabled, a remote client has access to the Internet while at the same time has established a secured path to the enclave via an IPsec tunnel. A remote client connected to the Internet that has been compromised by an attacker in the Internet, provides an attack base to the enclave’s private network via the IPsec tunnel. Hence, it is imperative that the VPN gateway enforces a no split-tunneling policy to all remote clients.\n\nTraffic to the protected resource will go through the specified dynamic VPN tunnel and will therefore be protected by the Juniper SRX firewall’s security policies.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-VN-000028",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0",
+      "name": "Juniper SRX Services Gateway VPN Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0"
+  ]
+}

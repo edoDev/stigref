@@ -1,0 +1,53 @@
+{
+  "id": "SV-255860r960963_rule",
+  "full_rule_id": "SV-255860r960963_rule",
+  "rule_id": "SV-255860",
+  "rule_revision": "960963",
+  "group_id": "V-255860",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "The WebSphere Application Server must be run as a non-admin user.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Running WebSphere as an admin user gives attackers immediate admin privileges in the event the WebSphere processes are compromised.\n \nBest practice is to operate the WebSphere server with an account that has limited OS privileges.\n\nTo configure system startup: https://www.ibm.com/support/knowledgecenter/en/SSAW57_8.5.5/com.ibm.websphere.nd.multiplatform.doc/ae/trun_processrestart.html</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Interview systems manager.\n\nIdentify the OS user ID that the WAS server runs as.\n\nUsing relevant OS commands review OS processes and search for WAS processes (running as Java).\n\nEnsure they are running under the assigned non-administrative user id.\n\nFor UNIX: \"ps -ef|grep -i websphere\"\n\nFor Windows: \"wmic path win32_process where \"caption = 'java.exe'\" get CommandLine\n\nIf the WebSphere processes are running as the root or administrator user, this is a finding.",
+  "fix": "Ensure that WAS processes are started via the specified non-privileged OS user ID when running commands such as startManager, startNode, and startServer.\n\nIf startManager and startNode are in the system startup scripts, ensure that they are not started as the root user or admin user for Windows systems. \n\nFor example, in the UNIX system, the inittab entry may look like: \"was:235:respawn:/usr/WebSphere/AppServer/bin/rc.was >/dev/console 2>&1\".\n\nEnsure the user is not a root user and is instead a regular OS user.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Running WebSphere as an admin user gives attackers immediate admin privileges in the event the WebSphere processes are compromised.\n \nBest practice is to operate the WebSphere server with an account that has limited OS privileges.\n\nTo configure system startup: https://www.ibm.com/support/knowledgecenter/en/SSAW57_8.5.5/com.ibm.websphere.nd.multiplatform.doc/ae/trun_processrestart.html",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WBSP-AS-000960",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-websphere-traditional-v9-x-security-technical-implementation-guide-v2r1-faccf8bd",
+      "name": "IBM WebSphere Traditional V9.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ibm-websphere-traditional-v9-x-security-technical-implementation-guide-v2r1-faccf8bd"
+  ]
+}

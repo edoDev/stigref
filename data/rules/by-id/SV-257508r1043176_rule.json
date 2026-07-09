@@ -1,0 +1,53 @@
+{
+  "id": "SV-257508r1043176_rule",
+  "full_rule_id": "SV-257508r1043176_rule",
+  "rule_id": "SV-257508",
+  "rule_revision": "1043176",
+  "group_id": "V-257508",
+  "group_title": "SRG-APP-000023-CTR-000055",
+  "title": "The kubeadmin account must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Using a centralized user management solution for account management functions enhances security, simplifies administration, improves user experience, facilitates compliance, and provides scalability and integration capabilities. It is a foundational element of effective identity and access management practices.\n\nOpenShift supports several different types of identity providers. To add users and grant access to OpenShift, an identity provider needs to be configured. Some of the identity provider types, such as HTPassword, only provide simple user management and are not intended for production. Other types are public services, like GitHub. These provider types may not be appropriate as they are managed by public service providers and therefore are unable to enforce the organizations account management requirements.\n\nAfter a new install, the default authentication uses kubeadmin as the default cluster-admin account. This default account must be disabled and another user account must be given cluster-admin rights.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the kubeadmin account is disabled by executing the following:\n\noc get secrets kubeadmin -n kube-system\n\nIf the command returns an error, the secret was not found, and this is not a finding.\n\n(Example output:\nError from server (NotFound): secrets \"kubeadmin\" not found)\n\nIf the command returns a listing that includes the kubeadmin secret, its type, the data count, and age, this is a finding.\n\n(Example Output for not a finding: \nNAME        TYPE     DATA   AGE\nkubeadmin   Opaque   1      6h3m)",
+  "fix": "If an alternative IDP is already configured and an administrative user exists with the role of cluster-admin, disable the kubeadmin account by running the following command as a cluster administrator:\n\noc delete secrets kubeadmin -n kube-system",
+  "ccis": [
+    "CCI-000015"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using a centralized user management solution for account management functions enhances security, simplifies administration, improves user experience, facilitates compliance, and provides scalability and integration capabilities. It is a foundational element of effective identity and access management practices.\n\nOpenShift supports several different types of identity providers. To add users and grant access to OpenShift, an identity provider needs to be configured. Some of the identity provider types, such as HTPassword, only provide simple user management and are not intended for production. Other types are public services, like GitHub. These provider types may not be appropriate as they are managed by public service providers and therefore are unable to enforce the organizations account management requirements.\n\nAfter a new install, the default authentication uses kubeadmin as the default cluster-admin account. This default account must be disabled and another user account must be given cluster-admin rights.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-OS-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2",
+      "name": "Red Hat OpenShift Container Platform 4.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2"
+  ]
+}

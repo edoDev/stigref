@@ -1,0 +1,53 @@
+{
+  "id": "SV-258978r934592_rule",
+  "full_rule_id": "SV-258978r934592_rule",
+  "rule_id": "SV-258978",
+  "rule_revision": "934592",
+  "group_id": "V-258978",
+  "group_title": "SRG-APP-000142-AS-000014",
+  "title": "The vCenter STS service must be configured to use a specified IP address and port.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The server must be configured to listen on a specified IP address and port. Without specifying an IP address and port for server to use, the server will listen on all IP addresses available.\n\nAccessing the hosted application through an IP address normally used for nonapplication functions opens the possibility of user access to resources, utilities, files, ports, and protocols that are protected on the desired application IP address.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --xpath '//Connector[not(@port = \"${bio-ssl-clientauth.https.port}\") and (@port = \"0\" or not(@address))]' /usr/lib/vmware-sso/vmware-sts/conf/server.xml\n\nExpected result:\n\nXPath set is empty\n\nIf any connectors are returned, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-sso/vmware-sts/conf/server.xml\n\nThe STS service has 2 connectors with the below pairs of ports and addresses.\n\nNavigate to the target <Connector> node and configure the port and address as follows.\n\nport=\"${bio-custom.http.port}\"\naddress=\"localhost\"\n\nport=\"${bio-ssl-localhost.https.port}\"\naddress=\"localhost\"\n\nRestart the service with the following command:\n\n# vmon-cli --restart sts\n\nNote: The connector with port=\"${bio-ssl-clientauth.https.port}\" should not have address set.",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The server must be configured to listen on a specified IP address and port. Without specifying an IP address and port for server to use, the server will listen on all IP addresses available.\n\nAccessing the hosted application through an IP address normally used for nonapplication functions opens the possibility of user access to resources, utilities, files, ports, and protocols that are protected on the desired application IP address.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCST-80-000037",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-secure-token-service-sts-security-technical-v1r1-bc1350e6",
+      "name": "VMware vSphere 8.0 vCenter Appliance Secure Token Service (STS) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-secure-token-service-sts-security-technical-v1r1-bc1350e6"
+  ]
+}

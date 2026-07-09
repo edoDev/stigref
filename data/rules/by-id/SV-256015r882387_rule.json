@@ -1,0 +1,53 @@
+{
+  "id": "SV-256015r882387_rule",
+  "full_rule_id": "SV-256015r882387_rule",
+  "rule_id": "SV-256015",
+  "rule_revision": "882387",
+  "group_id": "V-256015",
+  "group_title": "SRG-NET-000202-RTR-000001",
+  "title": "The Arista perimeter router must be configured to deny network traffic by default and allow network traffic by exception.",
+  "severity": "high",
+  "description": "<VulnDiscussion>A deny-all, permit-by-exception network communications traffic policy ensures that only connections that are essential and approved are allowed.\n\nThis requirement applies to both inbound and outbound network communications traffic. All inbound and outbound traffic must be denied by default. Firewalls and perimeter routers should only allow traffic through that is explicitly permitted. The initial defense for the internal network is to block any traffic at the perimeter that is attempting to make a connection to a host residing on the internal network. In addition, allowing unknown or undesirable outbound traffic by the firewall or router will establish a state that will permit the return of this undesirable traffic inbound.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nReview the Arista router configuration to verify the access control list (ACL) or filter is configured to allow specific ports and protocols and deny all other traffic.\n\nThe filter must be configured inbound on all external interfaces.\n\nStep 1: Verify the ACL is configured to allow traffic per the requirement and deny all by default. Execute the command \"sh ip access-list\".\n\nip access-list INBOUND\n   10 permit tcp 10.10.10.0/24 host 10.20.10.1 eq ssh telnet\n   20 permit tcp 10.10.10.0/24 any eq www https\n   30 permit udp 10.20.20.0/24 any eq bootps snmp\n\nStep 2: Verify the ACL is applied inbound on all external interfaces. Execute the command \"sh run int Eth YY\".\n\ninterface ethernet 13\n  ip access-group INBOUND in\n\nIf the ACL or filter is not configured to allow specific ports and protocols and deny all other traffic, this is a finding.\n\nIf the filter is not configured inbound on all external interfaces, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure the Arista perimeter router to deny network traffic by default and allow network traffic by exception.\n\nStep 1: Configure an ACL inbound to allow traffic per the requirement and deny all by default.\n\nip access-list INBOUND\n   10 permit tcp 10.10.10.0/24 host 10.20.10.1 eq ssh telnet\n   20 permit tcp 10.10.10.0/24 any eq www https\n   30 permit udp 10.20.20.0/24 any eq bootps snmp\n\nStep 2: Apply the ACL inbound on all external interfaces.\n\nrouter(config)#interface ethernet 13\nrouter(config-if-Et13)#ip access-group INBOUND in",
+  "ccis": [
+    "CCI-001109"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A deny-all, permit-by-exception network communications traffic policy ensures that only connections that are essential and approved are allowed.\n\nThis requirement applies to both inbound and outbound network communications traffic. All inbound and outbound traffic must be denied by default. Firewalls and perimeter routers should only allow traffic through that is explicitly permitted. The initial defense for the internal network is to block any traffic at the perimeter that is attempting to make a connection to a host residing on the internal network. In addition, allowing unknown or undesirable outbound traffic by the firewall or router will establish a state that will permit the return of this undesirable traffic inbound.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000330",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

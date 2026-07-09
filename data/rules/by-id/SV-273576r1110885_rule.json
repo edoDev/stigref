@@ -1,0 +1,53 @@
+{
+  "id": "SV-273576r1110885_rule",
+  "full_rule_id": "SV-273576r1110885_rule",
+  "rule_id": "SV-273576",
+  "rule_revision": "1110885",
+  "group_id": "V-273576",
+  "group_title": "SRG-NET-000018-RTR-000008",
+  "title": "The RUCKUS ICX Multicast Source Discovery Protocol router must be configured to filter source-active multicast advertisements to external MSDP peers to avoid global visibility of local-only multicast sources and groups.",
+  "severity": "low",
+  "description": "<VulnDiscussion>To avoid global visibility of local information, there are a number of source-group (S, G) states in a PIM-SM domain that must not be leaked to another domain, such as multicast sources with private address, administratively scoped multicast addresses, and the auto-RP groups (224.0.1.39 and 224.0.1.40).\n\nAllowing a multicast distribution tree, local to the core, to extend beyond its boundary could enable local multicast traffic to leak into other autonomous systems and customer networks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check for SA filter on MSDP peer:\n\nICX#  show msdp peer x.x.x.x | include Output \n\n        Output SA Filter:Applicable\n        Output (S,G) route-map:out_MSDP_SA_filter\n        Output RP route-map:None\n\nIf any configured MSDP peer is not configured to filter outbound advertisements to avoid local-only multicast sources and groups, this is a finding.",
+  "fix": "Create access list to filter source-active multicast advertisements for any undesirable multicast groups and sources:\n\nip access-list extended out_MSDP_SA_filter\n sequence 10 deny ip 10.0.0.0/8 any\n sequence 20 permit ip any any\n\nroute-map out_MSDP_SA_filter permit 10\n match ip address out_MSDP_SA_filter\n\nrouter msdp\n msdp-peer x.x.x.x\n sa-filter originate route-map out_MSDP_SA_filter\n!",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To avoid global visibility of local information, there are a number of source-group (S, G) states in a PIM-SM domain that must not be leaked to another domain, such as multicast sources with private address, administratively scoped multicast addresses, and the auto-RP groups (224.0.1.39 and 224.0.1.40).\n\nAllowing a multicast distribution tree, local to the core, to extend beyond its boundary could enable local multicast traffic to leak into other autonomous systems and customer networks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

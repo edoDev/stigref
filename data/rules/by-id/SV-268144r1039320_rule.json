@@ -1,0 +1,56 @@
+{
+  "id": "SV-268144r1039320_rule",
+  "full_rule_id": "SV-268144r1039320_rule",
+  "rule_id": "SV-268144",
+  "rule_revision": "1039320",
+  "group_id": "V-268144",
+  "group_title": "SRG-OS-000185-GPOS-00079",
+  "title": "NixOS must protect the confidentiality and integrity of all information at rest.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Information at rest refers to the state of information when it is located on a secondary storage device (e.g., disk drive and tape drive, when used for backups) within an operating system.\n\nThis requirement addresses protection of user-generated data, as well as operating system-specific configuration data. Organizations may choose to employ different mechanisms to achieve confidentiality and integrity protections, as appropriate, in accordance with the security category and/or classification of the information.\n\nSatisfies: SRG-OS-000185-GPOS-00079, SRG-OS-000404-GPOS-00183, SRG-OS-000405-GPOS-00184, SRG-OS-000780-GPOS-00240</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS prevents unauthorized disclosure or modification of all information requiring at-rest protection by using disk encryption. \n\nVerify all system partitions are encrypted with the following command:\n\n$ sudo blkid\n\n/dev/sda1: LABEL=\"nixos\" UUID=\"67b7d7fe-de60-6fd0-befb-e6748cf97743\" TYPE=\"crypto_LUKS\"\n\nEvery persistent disk partition present must be of type \"crypto_LUKS\". If any partitions other than the boot partition or pseudo file systems (such as /proc or /sys) are not type \"crypto_LUKS\", ask the administrator to indicate how the partitions are encrypted. If there is no evidence that these partitions are encrypted, this is a finding.",
+  "fix": "Configure NixOS to prevent unauthorized modification of all information at rest by using disk encryption. \n\nEncrypting a partition in an already installed system is more difficult, because existing partitions will need to be resized and changed. To encrypt an entire partition, dedicate a partition for encryption in the partition layout.\n\nRefer to the NixOS manual Section 8.1 \"LUKS-Encrypted File Systems\" for further details.\n\nNixOS Wiki: https://nixos.wiki/wiki/Full_Disk_Encryption",
+  "ccis": [
+    "CCI-001199",
+    "CCI-002475",
+    "CCI-002476",
+    "CCI-004910"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information at rest refers to the state of information when it is located on a secondary storage device (e.g., disk drive and tape drive, when used for backups) within an operating system.\n\nThis requirement addresses protection of user-generated data, as well as operating system-specific configuration data. Organizations may choose to employ different mechanisms to achieve confidentiality and integrity protections, as appropriate, in accordance with the security category and/or classification of the information.\n\nSatisfies: SRG-OS-000185-GPOS-00079, SRG-OS-000404-GPOS-00183, SRG-OS-000405-GPOS-00184, SRG-OS-000780-GPOS-00240",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-001010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

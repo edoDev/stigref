@@ -1,0 +1,53 @@
+{
+  "id": "SV-254015r844078_rule",
+  "full_rule_id": "SV-254015r844078_rule",
+  "rule_id": "SV-254015",
+  "rule_revision": "844078",
+  "group_id": "V-254015",
+  "group_title": "SRG-NET-000205-RTR-000006",
+  "title": "The Juniper BGP router must be configured to reject outbound route advertisements for any prefixes belonging to the IP core.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a nonoptimized path.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the BGP router configuration to verify that there is a filter defined to block route advertisements for prefixes that belong to the IP core. \n\nVerify an appropriate prefix-list containing the IP core prefixes is referenced in a policy-statement. For example:\n[edit policy-options]\nprefix-list ip-core-ipv4 {\n    192.0.2.0/24;\n}\nprefix-list ip-core-ipv6 {\n    2001:db8:2::/64;\n}\npolicy-statement advertise-bgp-prefix {\n    term exclude-ipv4-core {\n        from {\n            prefix-list ip-core-ipv4;\n        }\n        then reject;\n    }\n    term exclude-ipv6-core {\n        from {\n            prefix-list ip-core-ipv6;\n        }\n        then reject;\n    }\n    term default {\n        then accept;\n    }\n}\n\nThe prefix filter must be referenced outbound on the appropriate BGP neighbor statements. For example:\n[edit protocols]\nbgp {\n    group eBGP {\n        type external;\n        export advertise-bgp-prefix;\n        neighbor 192.0.2.11 {\n            export advertise-bgp-prefix;\n        }\n    }\n    export advertise-bgp-prefix;\n}\n\nNote: Juniper routers support global, group, and neighbor export statements with the more specific definition taking precedence. Ensure more specific export policies (e.g., neighbor and group) do not reverse higher level export statements.\n\nIf the router is not configured to reject outbound route advertisements that belong to the IP core, this is a finding.",
+  "fix": "Configure all eBGP routers to filter outbound route advertisements belonging to the IP core.\n\nFor example:\nset policy-options prefix-list ip-core-ipv4 192.0.2.0/24\nset policy-options prefix-list ip-core-ipv6 2001:db8:2::/64\nset policy-options policy-statement advertise-bgp-prefix term exclude-ipv4-core from prefix-list ip-core-ipv4\nset policy-options policy-statement advertise-bgp-prefix term exclude-ipv4-core then reject\nset policy-options policy-statement advertise-bgp-prefix term exclude-ipv6-core from prefix-list ip-core-ipv6\nset policy-options policy-statement advertise-bgp-prefix term exclude-ipv6-core then reject\nset policy-options policy-statement advertise-bgp-prefix term default then accept\n\nset protocols bgp group eBGP type external\nset protocols bgp group eBGP export advertise-bgp-prefix\nset protocols bgp group eBGP neighbor 192.0.2.11 export advertise-bgp-prefix\nset protocols bgp export advertise-bgp-prefix",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Outbound route advertisements belonging to the core can result in traffic either looping or being black holed, or at a minimum, using a nonoptimized path.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000430",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

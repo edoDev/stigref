@@ -1,0 +1,53 @@
+{
+  "id": "SV-228356r879533_rule",
+  "full_rule_id": "SV-228356r879533_rule",
+  "rule_id": "SV-228356",
+  "rule_revision": "879533",
+  "group_id": "V-228356",
+  "group_title": "SRG-APP-000038",
+  "title": "Exchange auto-forwarding email to remote domains must be disabled or restricted.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Attackers can use automated messages to determine whether a user account is active, in the office, traveling, and so on. An attacker might use this information to conduct future attacks. Verify Automatic Forwards to remote domains are disabled, except for enterprise mail that must be restricted to forward only to .mil and .gov. domains.\n\nBefore enabling this setting, configure a remote domain.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: Requirement is not applicable on classified or completely closed networks.\n\nNon-Enterprise Mail Check Content: \n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-RemoteDomain | Select Identity, AutoForwardEnabled\n\nIf the value of AutoForwardEnabled is not set to \"False\", this is a finding.\n\nEnterprise Mail Check Content:\n\nIf the value of \"AutoForwardEnabled\" is set to \"True\", this is not a finding.\n\nand \n\nIn the Exchange Management Shell, enter the following command:\n\nGet-RemoteDomain\n\nIf the value of \"RemoteDomain\" is not set to \".mil\" and/or \".gov\" domain(s), this is a finding.",
+  "fix": "Non-Enterprise Mail Fix Text:\n\nOpen the Exchange Management Shell and enter the following command:\n\nSet-RemoteDomain -Identity <'IdentityName'> -AutoForwardEnabled $false \n\nNote: The <IdentityName> value must be in single quotes.\n\nEnterprise Mail Fix Text:\n\nNew-RemoteDomain -Name <NewRemoteDomainName> -DomainName <SMTP Address>\n\nNote: <NewRemoteDomainName> must either be a .mil or .gov domain.\n\nSet-RemoteDomain -Identity <'RemoteDomainIdentity'> -AutoForwardEnabled $true\n\nNote: The <RemoteDomainIdentity> value must be in single quotes.",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Attackers can use automated messages to determine whether a user account is active, in the office, traveling, and so on. An attacker might use this information to conduct future attacks. Verify Automatic Forwards to remote domains are disabled, except for enterprise mail that must be restricted to forward only to .mil and .gov. domains.\n\nBefore enabling this setting, configure a remote domain.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX16-MB-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5",
+      "name": "Microsoft Exchange 2016 Mailbox Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2016-mailbox-server-security-technical-implementation-guide-v2r6-b6cb8da5"
+  ]
+}

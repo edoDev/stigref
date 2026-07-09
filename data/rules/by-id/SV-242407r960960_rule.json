@@ -1,0 +1,53 @@
+{
+  "id": "SV-242407r960960_rule",
+  "full_rule_id": "SV-242407r960960_rule",
+  "rule_id": "SV-242407",
+  "rule_revision": "960960",
+  "group_id": "V-242407",
+  "group_title": "SRG-APP-000133-CTR-000305",
+  "title": "The Kubernetes KubeletConfiguration files must have file permissions set to 644 or more restrictive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The kubelet configuration file contains the runtime configuration of the kubelet service. If an attacker can gain access to this file, changes can be made to open vulnerabilities and bypass user authorizations inherit within Kubernetes with RBAC implemented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "On the Kubernetes Control Plane and Worker nodes, run the command:\nps -ef | grep kubelet\n\nCheck the config file (path identified by: --config):\n\nChange to the directory identified by --config (example /etc/sysconfig/) and run the command:\nls -l kubelet\n\nEach KubeletConfiguration file must have permissions of \"644\" or more restrictive.\n\nIf any KubeletConfiguration file is less restrictive than \"644\", this is a finding.",
+  "fix": "On the Kubernetes Control Plane and Worker nodes, run the command:\nps -ef | grep kubelet\n\nCheck the config file (path identified by: --config):\n\nChange to the directory identified by --config (example /etc/sysconfig/) and run the command:\nchmod 644 kubelet\n\nTo verify the change took place, run the command:\nls -l kubelet\n\nThe kubelet file should now have the permissions of \"644\".",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The kubelet configuration file contains the runtime configuration of the kubelet service. If an attacker can gain access to this file, changes can be made to open vulnerabilities and bypass user authorizations inherit within Kubernetes with RBAC implemented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-000890",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

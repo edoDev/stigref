@@ -1,0 +1,53 @@
+{
+  "id": "SV-248710r958828_rule",
+  "full_rule_id": "SV-248710r958828_rule",
+  "rule_id": "SV-248710",
+  "rule_revision": "958828",
+  "group_id": "V-248710",
+  "group_title": "SRG-OS-000383-GPOS-00166",
+  "title": "OL 8 must prohibit the use of cached authentications after one day.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If cached authentication information is out of date, the validity of the authentication information may be questionable. \n \nOL 8 includes multiple options for configuring authentication, but this requirement will focus on the System Security Services Daemon (SSSD). By default, SSSD does not cache credentials.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the SSSD prohibits the use of cached authentications after one day.\n \nNote: If smart card authentication is not being used on the system, this item is not applicable.\n \nCheck that SSSD allows cached authentications with the following command: \n \n     $ sudo grep -ir cache_credentials /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf\n     cache_credentials = true \n \nIf \"cache_credentials\" is set to \"false\" or is missing from the configuration file, this is not a finding and no further checks are required.\n \nIf \"cache_credentials\" is set to \"true\", check that SSSD prohibits the use of cached authentications after one day with the following command:\n \n     $ sudo grep -ir offline_credentials_expiration /etc/sssd/sssd.conf /etc/sssd/conf.d/*.conf\n     offline_credentials_expiration = 1 \n \nIf \"offline_credentials_expiration\" is not set to a value of \"1\", this is a finding.",
+  "fix": "Configure the SSSD to prohibit the use of cached authentications after one day. \n \nAdd or change the following line in \"/etc/sssd/sssd.conf\" just below the line \"[pam]\". \n \n     offline_credentials_expiration = 1",
+  "ccis": [
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If cached authentication information is out of date, the validity of the authentication information may be questionable. \n \nOL 8 includes multiple options for configuring authentication, but this requirement will focus on the System Security Services Daemon (SSSD). By default, SSSD does not cache credentials.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL08-00-020290",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96",
+      "name": "Oracle Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-8-security-technical-implementation-guide-v2r8-b90a2d96"
+  ]
+}

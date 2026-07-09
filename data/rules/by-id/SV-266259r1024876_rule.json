@@ -1,0 +1,53 @@
+{
+  "id": "SV-266259r1024876_rule",
+  "full_rule_id": "SV-266259r1024876_rule",
+  "rule_id": "SV-266259",
+  "rule_revision": "1024876",
+  "group_id": "V-266259",
+  "group_title": "SRG-NET-000364-FW-000042",
+  "title": "The F5 BIG-IP appliance must be configured to restrict itself from accepting outbound packets that contain an illegitimate address in the source address field via an egress filter or by enabling Unicast Reverse Path Forwarding (uRPF).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A compromised host in an enclave can be used by a malicious platform to launch cyber attacks on third parties. This is a common practice in \"botnets\", which are a collection of compromised computers using malware to attack other computers or networks. Distributed denial-of-service (DDoS) attacks frequently leverage IP source address spoofing to send packets to multiple hosts that in turn will then send return traffic to the hosts with the IP addresses that were forged. This can generate significant amounts of traffic. Therefore, protection measures to counteract IP source address spoofing must be taken. When uRPF is enabled in strict mode, the packet must be received on the interface that the device would use to forward the return packet; thereby mitigating IP source address spoofing.\n\nF5 BIG-IP AFM Source checking: When source checking is enabled, the BIG-IP system verifies that the return path for an initial packet is through the same VLAN from which the packet originated. Note that the system only enables source checking if the global setting Auto Last Hop is disabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the BIG-IP GUI:\n1. Network.\n2. VLANs.\n3. VLAN List.\n4. <Name> of internal VLAN.\n5. Verify that \"Source Check\" is enabled.\n6. Verify that Auto Last Hop is set to \"Disabled\".\n\nFrom the BIG-IP Console, type the following command(s):\n\ntmsh list net vlan <Name> auto-lasthop\n\ntmsh list net vlan <Name> source-checking\n\nIf the BIG-IP appliance is not configured to disable Auto Last Hop, this is a finding.",
+  "fix": "From the BIG-IP GUI:\n1. Network.\n2. VLANs.\n3. VLAN List.\n4. <Name> of internal VLAN.\n5. Check the box next to \"Source Check\".\n6. Set Auto Last Hop to \"Disabled\".\n\nFrom the BIG-IP Console, type the following command(s):\n\ntmsh modify net vlan <Name> auto-lasthop disabled\ntmsh list net vlan <Name> source-checking enabled\ntmsh save sys config",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A compromised host in an enclave can be used by a malicious platform to launch cyber attacks on third parties. This is a common practice in \"botnets\", which are a collection of compromised computers using malware to attack other computers or networks. Distributed denial-of-service (DDoS) attacks frequently leverage IP source address spoofing to send packets to multiple hosts that in turn will then send return traffic to the hosts with the IP addresses that were forged. This can generate significant amounts of traffic. Therefore, protection measures to counteract IP source address spoofing must be taken. When uRPF is enabled in strict mode, the packet must be received on the interface that the device would use to forward the return packet; thereby mitigating IP source address spoofing.\n\nF5 BIG-IP AFM Source checking: When source checking is enabled, the BIG-IP system verifies that the return path for an initial packet is through the same VLAN from which the packet originated. Note that the system only enables source checking if the global setting Auto Last Hop is disabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "F5BI-FW-300015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-big-ip-tmos-firewall-security-technical-implementation-guide-v1r1-97266c8c",
+      "name": "F5 BIG-IP TMOS Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-big-ip-tmos-firewall-security-technical-implementation-guide-v1r1-97266c8c"
+  ]
+}

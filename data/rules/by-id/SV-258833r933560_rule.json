@@ -1,0 +1,53 @@
+{
+  "id": "SV-258833r933560_rule",
+  "full_rule_id": "SV-258833r933560_rule",
+  "rule_id": "SV-258833",
+  "rule_revision": "933560",
+  "group_id": "V-258833",
+  "group_title": "SRG-OS-000239-GPOS-00089",
+  "title": "The Photon operating system must audit all account modifications.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to modify an existing account. Auditing account modification actions provides logging that can be used for forensic purposes. \n\nTo address access requirements, many operating systems can be integrated with enterprise-level authentication/access/auditing mechanisms that meet or exceed access control policy requirements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command to verify an audit rule exists to audit account modifications:\n\n# auditctl -l | grep -E \"(usermod|groupmod)\"\n\nExample result:\n\n-w /usr/sbin/usermod -p x -k usermod\n-w /usr/sbin/groupmod -p x -k groupmod\n\nIf either \"usermod\" or \"groupmod\" are not listed with a permissions filter of at least \"x\", this is a finding.\n\nNote: This check depends on the \"auditd\" service to be in a running state for accurate results. The \"auditd\" service is enabled in control PHTN-40-000016.",
+  "fix": "Navigate to and open:\n\n/etc/audit/rules.d/audit.STIG.rules\n\nAdd or update the following lines:\n\n-w /usr/sbin/usermod -p x -k usermod\n-w /usr/sbin/groupmod -p x -k groupmod\n\nAt the command line, run the following command to load the new audit rules:\n\n# /sbin/augenrules --load\n\nNote: An \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.\n\nNote: An older \"audit.STIG.rules\" may exist and may reference older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.",
+  "ccis": [
+    "CCI-001403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to modify an existing account. Auditing account modification actions provides logging that can be used for forensic purposes. \n\nTo address access requirements, many operating systems can be integrated with enterprise-level authentication/access/auditing mechanisms that meet or exceed access control policy requirements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000076",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

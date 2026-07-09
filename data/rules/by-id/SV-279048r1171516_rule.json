@@ -1,0 +1,53 @@
+{
+  "id": "SV-279048r1171516_rule",
+  "full_rule_id": "SV-279048r1171516_rule",
+  "rule_id": "SV-279048",
+  "rule_revision": "1171516",
+  "group_id": "V-279048",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "ColdFusion must have Tomcat configured with deployXML disabled.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The deployXML setting in Tomcat controls whether the server will automatically deploy and process context.xml files found within web application directories. When enabled, this feature allows web applications to define their own context-level configurations, which may override secure global settings or introduce insecure configurations without administrator knowledge or oversight.\n\nAllowing applications to self-deploy XML configuration files increases the risk of misconfiguration, privilege escalation, or malicious reconfiguration. Disabling deployXML enforces centralized control over context configurations, reduces the risk of insecure deployments, and aligns with the principle of least functionality.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "DeployXML Configuration in server.xml.\n\n1. Locate the server.xml file. For each ColdFusion instance, navigate to: \n<ColdFusion_Installation_Directory>\\cfusion\\runtime\\conf\\server.xml\n\n2. Review the server.xml configuration by opening the server.xml file in a text editor.\n\n3. Search for all <Host> elements.\n\n4. Check the deployXML attribute. Inspect each <Host> element for the deployXML setting.\n\nIf any <Host> element has \"deployXML=\"true\"\", this is a finding.",
+  "fix": "Disable deployXML in server.xml.\n\n1. Locate the server.xml file. For each ColdFusion instance, navigate to: \n<ColdFusion_Installation_Directory>\\cfusion\\runtime\\conf\\server.xml\n\n2. Before making any changes, create a backup copy of the file.\n\nWindows Example:\ncopy server.xml server.xml.bak\n\nLinux Example:\ncp server.xml server.xml.bak\n\n3. Edit the configuration by opening server.xml in a text editor with administrative privileges.\n\n4. Locate all <Host> elements with:\ndeployXML=\"true\"\n\n5. Change all attributes to:\ndeployXML=\"false\"\n\n6. Restart ColdFusion to apply the configuration changes.\n\n7. Confirm that ColdFusion services started successfully.\n\n8. Reopen server.xml to confirm that deployXML=\"false\" is set for all <Host> elements.",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The deployXML setting in Tomcat controls whether the server will automatically deploy and process context.xml files found within web application directories. When enabled, this feature allows web applications to define their own context-level configurations, which may override secure global settings or introduce insecure configurations without administrator knowledge or oversight.\n\nAllowing applications to self-deploy XML configuration files increases the risk of misconfiguration, privilege escalation, or malicious reconfiguration. Disabling deployXML enforces centralized control over context configurations, reduces the risk of insecure deployments, and aligns with the principle of least functionality.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APAS-CF-000255",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878",
+      "name": "Adobe ColdFusion Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "adobe-coldfusion-security-technical-implementation-guide-v1r1-4987d878"
+  ]
+}

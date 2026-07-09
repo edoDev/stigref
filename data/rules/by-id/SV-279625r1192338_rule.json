@@ -1,0 +1,53 @@
+{
+  "id": "SV-279625r1192338_rule",
+  "full_rule_id": "SV-279625r1192338_rule",
+  "rule_id": "SV-279625",
+  "rule_revision": "1192338",
+  "group_id": "V-279625",
+  "group_title": "SRG-OS-000142-GPOS-00071",
+  "title": "Nutanix OS must manage excess capacity, bandwidth, or other redundancy to limit the effects of information flooding types of denial-of-service (DoS) attacks.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity. \n\nManaging excess capacity ensures that sufficient capacity is available to counter flooding attacks. Employing increased capacity and service redundancy may reduce the susceptibility to some DoS attacks. Managing excess capacity may include, for example, establishing selected usage priorities, quotas, or partitioning.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Nutanix OS is configured to use syncookies. \n\n1. For AOS, Prism Central, and Files, verify the saved value of TCP syncookies using the following command.\n\n$ sudo grep -i net.ipv4.tcp_syncookies /etc/sysctl.conf /etc/sysctl.d/* | grep -v '#' \n/etc/sysctl.d/99-salt.conf:net.ipv4.tcp_syncookies = 1\n\n2. Verify AHV is configured to use syncookies using the following command.\n\n$ sysctl net.ipv4.tcp_syncookies \nnet.ipv4.tcp_syncookies = 1 \n\n$ sudo grep -i net.ipv4.tcp_syncookies /etc/sysctl.conf /etc/sysctl.d/* | grep -v '#' \n\nIf the value of syncookies is not set to \"1\", this is a finding.",
+  "fix": "Set the value of syncookies to 1.\n\n1. For AOS, run the following command.\n\n$ sudo salt-call state.sls security/CVM/iptables/init\n\n2. For Prism Central, run the following command.\n\n$ sudo salt-call state.sls security/PCVM/iptables/init\n\n3. For Files, run the following command.\n\n$ sudo salt-call state.sls security/AFS/iptables/init\n\n4. For AHV, configure Nutanix AHV to use TCP syncookies using the following command.\n\n$ sudo sysctl -w net.ipv4.tcp_syncookies=1 \n\nIf \"1\" is not the system's default value, add or update the following line in \"/etc/sysctl.conf\": \n\nnet.ipv4.tcp_syncookies = 1",
+  "ccis": [
+    "CCI-001095"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity. \n\nManaging excess capacity ensures that sufficient capacity is available to counter flooding attacks. Employing increased capacity and service redundancy may reduce the susceptibility to some DoS attacks. Managing excess capacity may include, for example, establishing selected usage priorities, quotas, or partitioning.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000198",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

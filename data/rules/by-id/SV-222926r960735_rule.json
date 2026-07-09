@@ -1,0 +1,53 @@
+{
+  "id": "SV-222926r960735_rule",
+  "full_rule_id": "SV-222926r960735_rule",
+  "rule_id": "SV-222926",
+  "rule_revision": "960735",
+  "group_id": "V-222926",
+  "group_title": "SRG-APP-000001-AS-000001",
+  "title": "The number of allowed simultaneous sessions to the manager application must be limited.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The manager application provides configuration access to the Tomcat server. Access to the manager application must be limited and that includes the number of sessions allowed to access the management application. A balance must be struck between the number of simultaneous connections allowed to the management application and the number of authorized admins requiring access at any given time.\n\nDetermine the number of authorized admins requiring simultaneous access and increase the number of allowed simultaneous sessions by a small percentage in order to help prevent potential lockouts.\n\nDocument that value in the System Security Plan (SSP).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the manager application is not in use or has been deleted from the system, this is not a finding.\n\nFrom the Tomcat server as an elevated user run the following command:\n\nsudo grep -i maxactivesessions $CATALINA_BASE/webapps/manager/ META-INF/context.xml\n\nIf the maxActiveSesions setting is not configured according to the number of connections defined in the SSP, this is a finding.",
+  "fix": "Determine the number of authorized admins requiring simultaneous access and increase the number of allowed simultaneous sessions by a small percentage in order to address potential lockout scenarios. Document that value in the System Security Plan.\n\nReview the maxActiveSessions setting in the $CATALINA_BASE/webapps/manager/ META-INF/context.xml configuration file.\n\nConfigure maxActiveSessions setting according to admin access requirements defined in the SSP.\n\nEXAMPLE:\n<Manager … maxActiveSessions=\"10\" />",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The manager application provides configuration access to the Tomcat server. Access to the manager application must be limited and that includes the number of sessions allowed to access the management application. A balance must be struck between the number of simultaneous connections allowed to the management application and the number of authorized admins requiring access at any given time.\n\nDetermine the number of authorized admins requiring simultaneous access and increase the number of allowed simultaneous sessions by a small percentage in order to help prevent potential lockouts.\n\nDocument that value in the System Security Plan (SSP).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

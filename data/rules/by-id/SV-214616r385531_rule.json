@@ -1,0 +1,53 @@
+{
+  "id": "SV-214616r385531_rule",
+  "full_rule_id": "SV-214616r385531_rule",
+  "rule_id": "SV-214616",
+  "rule_revision": "385531",
+  "group_id": "V-214616",
+  "group_title": "SRG-NET-000192-IDPS-00140",
+  "title": "The Juniper Networks SRX Series Gateway IDPS must block outbound traffic containing known and unknown DoS attacks by ensuring that anomaly-based attack objects are applied to outbound communications traffic.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The IDPS must include protection against DoS attacks that originate from inside the enclave which can affect either internal or external systems. These attacks may use legitimate or rogue endpoints from inside the enclave. \n\nTo perform anomaly-based attacks on the Juniper SRX IDPS device, create an anomaly-based attack object.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From operational mode, enter the following command to verify that the anomaly-based attack object was created. \n\nshow idp security policies\n\nIf anomaly-based attack objects are not created, bound to a zone, and active, this is a finding.",
+  "fix": "Create a protocol anomaly-based attack object:\n\nSpecify a name for the attack.\n[edit]\nsecurity idp custom-attack anomaly1\n\nSpecify common properties for the attack.\n[edit security idp custom-attack anomaly1]\nset severity info\nset time-binding scope peer count 2\n\nSpecify the attack type and test condition.\n[edit] \nsecurity idp custom-attack anomaly1\nset attack-type anomaly test OPTIONS_UNSUPPORTED\n\nSpecify other properties for the anomaly attack.\n[edit]\nsecurity idp custom-attack anomaly1\nset attack-type anomaly service TCP\nu set attack-type anomaly direction any\nattack-type anomaly shellcode spark",
+  "ccis": [
+    "CCI-001095"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The IDPS must include protection against DoS attacks that originate from inside the enclave which can affect either internal or external systems. These attacks may use legitimate or rogue endpoints from inside the enclave. \n\nTo perform anomaly-based attacks on the Juniper SRX IDPS device, create an anomaly-based attack object.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-IP-000007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-idps-security-technical-implementation-guide-v2r1-7cfae184",
+      "name": "Juniper SRX Services Gateway IDPS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-idps-security-technical-implementation-guide-v2r1-7cfae184"
+  ]
+}

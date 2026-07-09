@@ -1,0 +1,53 @@
+{
+  "id": "SV-224769r1013821_rule",
+  "full_rule_id": "SV-224769r1013821_rule",
+  "rule_id": "SV-224769",
+  "rule_revision": "1013821",
+  "group_id": "V-224769",
+  "group_title": "SRG-APP-000391",
+  "title": "The ISEC7 SPHERE must accept Personal Identity Verification (PIV) credentials.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.\n\nDOD has mandated the use of the CAC to support identity management and personal authentication for systems covered under HSPD 12, as well as a primary component of layered protection for national security systems.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log in to the ISEC7 SPHERE Console.\n\nNavigate to Administration >> Configuration >> Settings.\n\nVerify the CAC login box has been checked.\n\nOn the ISEC7 SPHERE server, browse to the install directory.\nDefault is %Install Drive%/Program Files/ISEC7 SPHERE\nSelect the conf folder.\nOpen config.properties and confirm the following lines exist:\n\n    cacUserUIDRegex=^CN=[^0-9]*\\\\.([0-9]+),\n    cacUserUIDProperty=UserPrincipalName\n\nBrowse to %Install Drive%/Program Files >> ISEC7 SPHERE >> Tomcat >> conf\nConfirm the server.xml file has clientAuth=\"required\" under the Connection.\n\nIf the required commands do not exist in config.properties or if clientAuth does not =\"required\" in the server.xml file, this is a finding.",
+  "fix": "Log in to the ISEC7 SPHERE Console.\nNavigate to Administration >> Configuration >> LDAP.\nCheck \"Also enable user certificate logins. e.g. from smart cards (CAC)\".\nCheck \"Only allow certificates with extended key usage for smartcard logon (1.3.6.1.4.1.311.20.2.2)\".\n\nBrowse to %Install Drive%/Program Files >> ISEC7 SPHERE >> Tomcat >> conf.\nOpen the server.xml file and add clientAuth=\"required\" under the Connection.",
+  "ccis": [
+    "CCI-001953"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.\n\nDOD has mandated the use of the CAC to support identity management and personal authentication for systems covered under HSPD 12, as well as a primary component of layered protection for national security systems.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ISEC-06-001730",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "isec7-sphere-security-technical-implementation-guide-v3r1-80d81f67",
+      "name": "ISEC7 Sphere Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "isec7-sphere-security-technical-implementation-guide-v3r1-80d81f67"
+  ]
+}

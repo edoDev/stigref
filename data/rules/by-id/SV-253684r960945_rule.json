@@ -1,0 +1,53 @@
+{
+  "id": "SV-253684r960945_rule",
+  "full_rule_id": "SV-253684r960945_rule",
+  "rule_id": "SV-253684",
+  "rule_revision": "960945",
+  "group_id": "V-253684",
+  "group_title": "SRG-APP-000123-DB-000204",
+  "title": "MariaDB must protect its audit features from unauthorized removal.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting audit data also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit data.\n\nApplications providing tools to interface with audit data will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys to make access decisions regarding the deletion of audit tools.\n\nAudit tools include, but are not limited to, vendor-provided and open-source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the MariaDB Enterprise Audit plugin is logging to a file or syslog. \n\nMariaDB> SHOW GLOBAL VARIABLES LIKE 'server_audit_output_type';\n \nIf FILE, find the location of the audit log:\n \nMariaDB> SHOW GLOBAL VARIABLES LIKE 'server_audit_file_path';\n\nIf FILE, check the permission of the file: \n\n$ sudo ls -al /path/to/audit.log\n\nConsult the organization's security guide on acceptable permissions and ownership of logs with respect to who can modify them. Verify the log files have the set configurations. \n \nIf the permissions are not set to the organization's standards, this is a finding.\n  \nIf the MariaDB server is configured to use syslog for logging, consult the organization's syslog setting for permissions and ownership of logs with respect to who can modify them.",
+  "fix": "If the audit.log file permissions do not comply with organization's standards, change the permissions. Example: \n\n$ chown user:group /path/to/audit.log\n$ chmod 660 /path/to/audit.log\n\nIf the MariaDB server is configured to use syslog for logging, consult the organization's syslog setting for permissions and ownership of logs with respect to who can modify them.",
+  "ccis": [
+    "CCI-001495"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting audit data also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit data.\n\nApplications providing tools to interface with audit data will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys to make access decisions regarding the deletion of audit tools.\n\nAudit tools include, but are not limited to, vendor-provided and open-source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-002500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

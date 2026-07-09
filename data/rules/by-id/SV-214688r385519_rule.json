@@ -1,0 +1,53 @@
+{
+  "id": "SV-214688r385519_rule",
+  "full_rule_id": "SV-214688r385519_rule",
+  "rule_id": "SV-214688",
+  "rule_revision": "385519",
+  "group_id": "V-214688",
+  "group_title": "SRG-NET-000169",
+  "title": "The Juniper SRX Services Gateway VPN must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Lack of authentication and identification enables non-organizational users to gain access to the network or possibly a network element that provides opportunity for intruders to compromise resources within the network infrastructure. \n\nThis requirement only applies to components where this is specific to the function of the device or has the concept of a non-organizational user.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that groups are not used for authentication.\n\n[edit]\nshow security access profile <dynamic-profile-name>\n\nIf LDAP is not configured as the first authentication-order, this is a finding.",
+  "fix": "Configure the LDAP access profile. The LDAP server must use DoD PKI for authentication of users.\n\n[edit]\nset access profile <VPN-LDAP-PROFILE-NAME> authentication-order ldap\nset access profile <VPN-LDAP-PROFILE-NAME> address-assignment pool dyn-vpn-pool\nset access profile <VPN-LDAP-PROFILE-NAME> ldap-options base-distinguished-name CN=Users, DC=firewall, DC=com (Location from where LDAP will start searching for users)\n\nset access profile <VPN-LDAP-PROFILE-NAME> ldap-options search search-filter sAMAccountName= \nset access profile <VPN-LDAP-PROFILE-NAME> ldap-options search admin-search distinguished-name CN=Administrator, CN=Users, DC=firewall, DC=com (User who is authorized to search the ldap tree)\nset access profile <VPN-LDAP-PROFILE-NAME> ldap-options search admin-search password <Administrator Password>\nset access profile <VPN-LDAP-PROFILE-NAME> ldap-server <AD Server IP address> port 389/636 \nset access firewall-authentication pass-through default-profile <VPN-LDAP-PROFILE-NAME>\nset access firewall-authentication web-authentication default-profile <VPN-LDAP-PROFILE-NAME>\n\nNote: To find the user or administrator base DN, use any LDAP browser. On an Internet search engine, search for ldp.exe, which is a very basic LDAP browser.\n\nWhen using LDAP groups to authenticate a user, or a user belonging to a group in the active directory, include the following statement:\n\nset access profile <VPN-LDAP-PROFILE-NAME> session-options client-group <group-name>\n\nNote: Without the above statement, users are not searched based on the group name or group string.\n\nThe IP address pool configuration is as follows (the user will be assigned the IP from this pool):\n\nset access address-assignment pool dyn-vpn-pool family inet network <IP Network for Dynamic-VPN User> (e.g.. 192.168.100.0/24)\nset access address-assignment pool dyn-vpn-pool family inet range dyn-vpn-pool-range low <Starting IP address for Dynamic-VPN User> (e.g.. 192.168.100.1)\nset access address-assignment pool dyn-vpn-pool family inet range dyn-vpn-pool-range high <ending IP address for Dynamic-VPN User> (e.g.. 192.168.100.100)\n\nNote: The IP network used for dynamic VPN users should be different from the IP network of the external interface used in the IKE configuration.\n\nThe access profile is linked to the xauth of the gateway for dynamic VPN.\n\nset security ike gateway <VPN-GATEWAY> xauth access-profile <VPN-LDAP-PROFILE-NAME> \n\nUnder security >> dynamic-vpn, add all the users that are going to use the dynamic VPN. The command is as follows:\n\nset security dynamic-vpn clients all user\n\nNote: Users who are going to use dynamic VPN. This will be the AD user logon name for each user.",
+  "ccis": [
+    "CCI-000804"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Lack of authentication and identification enables non-organizational users to gain access to the network or possibly a network element that provides opportunity for intruders to compromise resources within the network infrastructure. \n\nThis requirement only applies to components where this is specific to the function of the device or has the concept of a non-organizational user.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-VN-000021",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0",
+      "name": "Juniper SRX Services Gateway VPN Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0"
+  ]
+}

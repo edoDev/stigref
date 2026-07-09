@@ -1,0 +1,53 @@
+{
+  "id": "SV-214229r960735_rule",
+  "full_rule_id": "SV-214229r960735_rule",
+  "rule_id": "SV-214229",
+  "rule_revision": "960735",
+  "group_id": "V-214229",
+  "group_title": "SRG-APP-000001-WSR-000002",
+  "title": "The Apache web server must perform server-side session management.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Session management is the practice of protecting the bulk of the user authorization and identity information. This data can be stored on the client system or on the server.\n\nWhen the session information is stored on the client, the session ID, along with the user authorization and identity information, is sent along with each client request and is stored in a cookie, embedded in the uniform resource locator (URL), or placed in a hidden field on the displayed form. Each of these offers advantages and disadvantages. The biggest disadvantage to all three is the possibility of the hijacking of a session along with all of the user's credentials.\n\nWhen the user authorization and identity information is stored on the server in a protected and encrypted database, the communication between the client and Apache web server will only send the session identifier, and the server can then retrieve user credentials for the session when needed. If, during transmission, the session were to be hijacked, the user's credentials would not be compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Issue the following command:\nhttpd -M |grep -E 'session_module|usertrack'\n\nExpected output:\nusertrack_module (shared)\nsession_module (shared)\n\nIf results do not return both \"usertrack_module (shared)\" and \"session_module (shared)\", this is a finding.\n\nAlternatively, determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file:\n\n# apachectl -V | egrep -i 'httpd_root|server_config_file'\n-D HTTPD_ROOT=\"/etc/httpd\"\n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\"\n\nNote: The apachectl front end is the preferred method for locating the Apache httpd file. For some Linux distributions, \"apache2ctl -V\" or  \"httpd -V\" can also be used.  \n\nSearch for the \"session_module\" and \"usertrack_module\" directives:\n\n# cat /<path_to_file>/httpd.conf | grep -i \"session_module\"\n# cat /<path_to_file>/httpd.conf | grep -i \"usertrack_module\"\nIf \"session_module\" and \"usertrack_module\" are not enabled or do not exist, this is a finding.",
+  "fix": "If the modules are not installed, install any missing packages.\n\nAdd the following lines to the \"httpd.conf\" file:\n\nLoadModule usertrack_module modules/mod_usertrack.so\n\nLoadModule session_module modules/mod_session.so\n\nAdditional documentation can be found at:\n\nhttps://httpd.apache.org/docs/2.4/mod/mod_usertrack.html\n\nhttps://httpd.apache.org/docs/2.4/mod/mod_session.html\n\nRestart Apache: apachectl restart",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Session management is the practice of protecting the bulk of the user authorization and identity information. This data can be stored on the client system or on the server.\n\nWhen the session information is stored on the client, the session ID, along with the user authorization and identity information, is sent along with each client request and is stored in a cookie, embedded in the uniform resource locator (URL), or placed in a hidden field on the displayed form. Each of these offers advantages and disadvantages. The biggest disadvantage to all three is the possibility of the hijacking of a session along with all of the user's credentials.\n\nWhen the user authorization and identity information is stored on the server in a protected and encrypted database, the communication between the client and Apache web server will only send the session identifier, and the server can then retrieve user credentials for the session when needed. If, during transmission, the session were to be hijacked, the user's credentials would not be compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U1-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738",
+      "name": "Apache Server 2.4 UNIX Server Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-254018r997528_rule",
+  "full_rule_id": "SV-254018r997528_rule",
+  "rule_id": "SV-254018",
+  "rule_revision": "997528",
+  "group_id": "V-254018",
+  "group_title": "SRG-NET-000205-RTR-000009",
+  "title": "The Juniper out-of-band management (OOBM) gateway must be configured to transport management traffic to the Network Operations Center (NOC) via dedicated circuit, MPLS/VPN service, or IPsec tunnel.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Using dedicated paths, the OOBM backbone connects the OOBM gateway routers located at the edge of the managed network and at the NOC. Dedicated links can be deployed using provisioned circuits or MPLS layer 2 and layer 3 VPN services or implementing a secured path with gateway-to-gateway IPsec tunnels. The tunnel mode ensures that the management traffic will be logically separated from any other traffic traversing the same path.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the network topology diagram to determine connectivity between the managed network and the NOC.\n\nReview the OOBM gateway router configuration to validate the path and interface that the management traffic traverses. MPLS-based VPN (L2 or L3) must have a working provider MPLS network including routing (for reachability) and Label Switched Paths (LSP). Additionally, the PE router will maintain separation for each CE router in individual routing instances. If using a dedicated circuit, verify the interface transporting NOC traffic is properly connected.\n\nCE routers will not peer with PE routers when using L2 VPN. Verify the CE router peers with the appropriate CE router, generally with an IGP (e.g., OSPF), and not the PE router.\n[edit interfaces]\n<exterior interface> {\n    unit <number> {\n        family inet {\n            address <IPv4 address>/<mask>;\n        }\n    }    \n}\nlo0 {\n    unit 0 {\n        family inet {\n            address <IPv4 address>/32;\n        }\n    }\n}\n[edit protocols ospf]\narea <number> {\n    interface lo0.0;\n    interface <exterior interface>.<number>;\n}\n\nCE routers will peer with PE routers, generally with eBGP, when using L3 VPN. Verify the CE router advertises the appropriate interior networks to the PE.\n[edit interfaces]\n<exterior interface>:0 {\n    unit <number> {\n        family inet {\n            address <IPv4 address>/<mask>;\n        }\n    }\n}\nlo0 {\n    family inet {\n        address <IPv4 address>/<mask>;\n    }\n}\n[edit routing-options]\nrouter-id <ID>;\nautonomous-system <AS #>;\n[edit protocols bgp]\ngroup PE1 {\n    type external;\n    export <policy name>;\n    peer-as <peer AS #>;\n    neighbor <neighbor address>; << Reachable from the exterior interface\n}\n[edit policy-options policy-statement <statement name>]\nterm 1 {\n    from {\n        protocol <protocol>; << Include the appropriate protocol (e.g., 'direct' for directly connected routes)\n        route-filter <subnet>/<mask> <match condition>; << Include only interior routes that must be advertised to the L3 VPN\n    }\n    then accept;\n}\n\nNote: The policy-statement is applied as an export filter, using a route-filter to limit the exported routes. For example, assume 192.0.2.0/24 is the advertised route, and that it is directly connected. Using \"protocol direct\" will export all directly-connected routes, but no routes learned via an IGP (e.g., OSPF). Using \"route-filter 192.0.2.0/24 orlonger then accept\" will accept that /24 (or longer mask) and deny all others. Verify the match condition is appropriate for the desired advertisement.\n\nIf management traffic is not transported between the managed network and the NOC via dedicated circuit, MPLS/VPN service, or IPsec tunnel, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nCE peering to CE (L2 VPN):\nset interfaces <exterior interface> unit <number> family inet address <IPv4 address>/<mask>\nset interfaces lo0 unit 0 family inet address <IPv4 address>/32\nset protocols ospf area <number> interface lo0.0\nset protocols ospf area <number> interface <exterior interface>\n\nCE peering to PE (L3 VPN):\nset system host-name ce1\nset interfaces <exterior interface>:<number> description \"Link from CE1 to PE1 for L3vpn\"\nset interfaces <exterior interface>:<number> unit <number> family inet address <IPv4 address>/<mask>\nset interfaces lo0 unit 0 family inet address <IPv4 address>/32\nset routing-options router-id <ID>\nset routing-options autonomous-system <AS #>\nset protocols bgp group <name> type external\nset protocols bgp group <name> export <policy name>\nset protocols bgp group <name> peer-as <Peer AS #>\nset protocols bgp group <name> neighbor <neighbor address>\nset policy-options policy-statement <policy name> term 1 from protocol <protocol>\nset policy-options policy-statement <policy name> term 1 from route-filter <subnet> <match criterion>\nset policy-options policy-statement <policy name> term 1 then accept\n\nEnsure that a dedicated circuit, MPLS/VPN service, or IPsec tunnel is deployed to transport management traffic between the managed network and the NOC.",
+  "ccis": [
+    "CCI-001097",
+    "CCI-004891"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using dedicated paths, the OOBM backbone connects the OOBM gateway routers located at the edge of the managed network and at the NOC. Dedicated links can be deployed using provisioned circuits or MPLS layer 2 and layer 3 VPN services or implementing a secured path with gateway-to-gateway IPsec tunnels. The tunnel mode ensures that the management traffic will be logically separated from any other traffic traversing the same path.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000460",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

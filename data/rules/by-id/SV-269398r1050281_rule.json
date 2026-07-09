@@ -1,0 +1,53 @@
+{
+  "id": "SV-269398r1050281_rule",
+  "full_rule_id": "SV-269398r1050281_rule",
+  "rule_id": "SV-269398",
+  "rule_revision": "1050281",
+  "group_id": "V-269398",
+  "group_title": "SRG-OS-000073-GPOS-00041",
+  "title": "AlmaLinux OS 9 PAM must be configured to use a sufficient number of password hashing rounds.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Passwords must be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.\n\nUsing more hashing rounds makes password cracking attacks more difficult.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the number of rounds for the password hashing algorithm is configured with the following command:\n\n$ grep rounds /etc/pam.d/password-auth /etc/pam.d/system-auth \n\n/etc/pam.d/password-auth:password    sufficient       pam_unix.so sha512 shadow rounds=100000  use_authtok\n/etc/pam.d/system-auth:password    sufficient       pam_unix.so sha512 shadow rounds=100000  use_authtok\n\nIf a matching line is not returned in both files, or \"rounds\" is less than \"100000\", this a finding.\n\nAdd/modify the appropriate sections of the \"/etc/pam.d/password-auth\" file to match the following lines, ensuring that the \"preauth\" line is listed before pam_unix.so",
+  "fix": "Configure AlmaLinux OS 9 to use at least 100000 hashing rounds for hashing passwords.\n\nAdd or modify the following line in \"/etc/pam.d/password-auth\" and \"/etc/pam.d/system-auth\" and set \"rounds\" to \"100000\" or higher:\n\npassword sufficient pam_unix.so sha512 rounds=100000",
+  "ccis": [
+    "CCI-004062"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Passwords must be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.\n\nUsing more hashing rounds makes password cracking attacks more difficult.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-037200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

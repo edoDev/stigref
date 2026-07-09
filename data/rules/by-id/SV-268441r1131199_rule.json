@@ -1,0 +1,53 @@
+{
+  "id": "SV-268441r1131199_rule",
+  "full_rule_id": "SV-268441r1131199_rule",
+  "rule_id": "SV-268441",
+  "rule_revision": "1131199",
+  "group_id": "V-268441",
+  "group_title": "SRG-OS-000029-GPOS-00010",
+  "title": "The macOS system must enforce screen saver timeout.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The screen saver timeout must be set to 900 seconds or a shorter length of time.\n\nThis rule ensures that a full session lock is triggered within no more than 900 seconds of inactivity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the macOS system is configured to initiate the screen saver timeout after 15 minutes of inactivity with the following command:\n\n/usr/bin/osascript -l JavaScript << EOS\nfunction run() {\nlet timeout = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.screensaver')\\\n.objectForKey('idleTime'))\nif ( timeout <= 900 ) {\nreturn(\"true\")\n} else {\nreturn(\"false\")\n}\n}\nEOS\n\nIf the result is not \"true\", this is a finding.",
+  "fix": "Configure the macOS system to initiate the screen saver after 15 minutes of inactivity by installing the \"com.apple.screensaver\" configuration profile.",
+  "ccis": [
+    "CCI-000057"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The screen saver timeout must be set to 900 seconds or a shorter length of time.\n\nThis rule ensures that a full session lock is triggered within no more than 900 seconds of inactivity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APPL-15-000070",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66",
+      "name": "Apple macOS 15 (Sequoia) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "apple-macos-15-sequoia-security-technical-implementation-guide-v1r7-d43dce66"
+  ]
+}

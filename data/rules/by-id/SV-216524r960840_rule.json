@@ -1,0 +1,53 @@
+{
+  "id": "SV-216524r960840_rule",
+  "full_rule_id": "SV-216524r960840_rule",
+  "rule_id": "SV-216524",
+  "rule_revision": "960840",
+  "group_id": "V-216524",
+  "group_title": "SRG-APP-000065-NDM-000214",
+  "title": "The Cisco router must be configured to enforce the limit of three consecutive invalid logon attempts after which time lock out the user account from accessing the device for 15 minutes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The Cisco router is not compliant with this requirement. However, the risk associated with this requirement can be fully mitigated if the router is configured to utilize an authentication server to authenticate and authorize users for administrative access.\n\nReview the router configuration to verify that the device is configured to use an authentication server as primary source for authentication as shown in the following example:\n\nradius-server host 10.1.3.16 auth-port 1645 acct-port 1646\n key xxxxxxxxxx\n…\n…\n…\naaa authentication login LOGIN_AUTHENTICATION group radius local\nline console\n login authentication LOGIN_AUTHENTICATION\n!\nline default \n login authentication LOGIN_AUTHENTICATION\n transport input ssh\n\nIf the router is not configured to use an authentication server to authenticate and authorize users for administrative access, this is a finding.",
+  "fix": "Step 1: Configure the router to use an authentication server as shown in the following example:\n\nRP/0/0/CPU0:R3(config)#radius-server host 10.1.3.16 key xxxxxxxx\n\nStep 2: Configure the authentication order to use the authentication server as primary source for authentication as shown in the following example:\n\nRP/0/0/CPU0:R3(config)#aaa authentication login LOGIN_AUTHENTICATION  group radius local\n\nStep 3: Configure all network connections associated with a device management to use an authentication server for the purpose of login authentication as shown in the following example:\n\nRP/0/0/CPU0:R3(config)#line default\nRP/0/0/CPU0:R3(config-line)#login authentication LOGIN_AUTHENTICATION\nRP/0/0/CPU0:R3(config-line)#exit\nRP/0/0/CPU0:R3(config)#line console \nRP/0/0/CPU0:R3(config-line)#login authentication LOGIN_AUTHENTICATION",
+  "ccis": [
+    "CCI-000044"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-ND-000150",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xr-router-ndm-security-technical-implementation-guide-v3r6-41edbc45",
+      "name": "Cisco IOS XR Router NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xr-router-ndm-security-technical-implementation-guide-v3r6-41edbc45"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-216544r1137887_rule",
+  "full_rule_id": "SV-216544r1137887_rule",
+  "rule_id": "SV-216544",
+  "rule_revision": "1137887",
+  "group_id": "V-216544",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "The Cisco router must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of user accounts and authentication increases the administrative access to the router. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Cisco router configuration to verify that the device is configured to use at least two authentication servers as primary source for authentication as shown in the following example:\n\nradius-server host 10.1.3.16 auth-port 1645 acct-port 1646\n key xxxxxxxxxx\nradius-server host 10.1.3.17 auth-port 1645 acct-port 1646\n key xxxxxxxxxx…\n…\n…\naaa authentication login LOGIN_AUTHENTICATION group radius local\nline console\n login authentication LOGIN_AUTHENTICATION\n!\nline default \n login authentication LOGIN_AUTHENTICATION\n transport input ssh\n\nIf the Cisco router is not configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access, this is a finding.",
+  "fix": "Step 1: Configure the router to use at least two authentication servers as shown in the following example:\n\nRP/0/0/CPU0:R3(config)#radius-server host 10.1.3.16 key xxxxxxxx\nRP/0/0/CPU0:R3(config)#radius-server host 10.1.3.17 key xxxxxxxx\n\nStep 2: Configure the authentication order to use the authentication servers as primary source for authentication as shown in the following example:\n\nRP/0/0/CPU0:R3(config)#aaa authentication login LOGIN_AUTHENTICATION  group radius local\n\nStep 3: Configure all network connections associated with a device management to use the authentication servers for the purpose of login authentication as shown in the following example:\n\nRP/0/0/CPU0:R3(config)#line default\nRP/0/0/CPU0:R3(config-line)#login authentication LOGIN_AUTHENTICATION\nRP/0/0/CPU0:R3(config-line)#exit\nRP/0/0/CPU0:R3(config)#line console \nRP/0/0/CPU0:R3(config-line)#login authentication LOGIN_AUTHENTICATION",
+  "ccis": [
+    "CCI-000370"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of user accounts and authentication increases the administrative access to the router. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-ND-001370",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xr-router-ndm-security-technical-implementation-guide-v3r6-41edbc45",
+      "name": "Cisco IOS XR Router NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xr-router-ndm-security-technical-implementation-guide-v3r6-41edbc45"
+  ]
+}

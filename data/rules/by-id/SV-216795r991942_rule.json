@@ -1,0 +1,53 @@
+{
+  "id": "SV-216795r991942_rule",
+  "full_rule_id": "SV-216795r991942_rule",
+  "rule_id": "SV-216795",
+  "rule_revision": "991942",
+  "group_id": "V-216795",
+  "group_title": "SRG-NET-000512-RTR-000008",
+  "title": "The Cisco PE router providing MPLS Virtual Private Wire Service (VPWS) must be configured to have the appropriate pseudowire ID for each attachment circuit.",
+  "severity": "high",
+  "description": "<VulnDiscussion>VPWS is an L2VPN technology that provides a virtual circuit (aka pseudowire) between two PE routers to forward Layer 2 frames between two customer-edge routers or switches through an MPLS-enabled IP core. The ingress PE router (virtual circuit head-end) encapsulates Ethernet frames inside MPLS packets using label stacking and forwards them across the MPLS network to the egress PE router (virtual circuit tail-end). During a virtual circuit setup, the PE routers exchange label bindings for the specified pseudowire ID. The pseudowire ID specifies a pseudowire associated with an ingress and egress PE router and the customer-facing attachment circuits. \n\nTo guarantee that all frames are forwarded onto the correct pseudowire and to the correct customer and attachment circuits, it is imperative that the correct pseudowire ID is configured for each attachment circuit.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the correct pseudowire ID has been configured for the appropriate attachment circuit. In the example below GigabitEthernet0/0/0/1 is the CE-facing interface that is configured for VPWS.\n\nl2vpn\n pw-class ETHOM\n  encapsulation mpls\n  !\n !\n xconnect group COI1\n  p2p COI1-S1-S2\n   interface GigabitEthernet0/0/0/1\n   neighbor ipv4 10.1.12.4 pw-id 55\n    pw-class ETHOM\n   !\n  !\n !\n!\n\nIf the correct pseudowire ID has not been configured on both routers, this is a finding.",
+  "fix": "Assign globally unique pseudowire IDs for each virtual circuit and configure the attachment circuits with the appropriate pseudowire ID.\n\nRP/0/0/CPU0:R3(config)#l2vpn\nRP/0/0/CPU0:R3(config-l2vpn)#xconnect group COI1 \nRP/0/0/CPU0:R3(config-l2vpn-xc)#p2p COI1-S1-S2\nRP/0/0/CPU0:R3(config-l2vpn-xc-p2p)#interface g0/0/0/1\nRP/0/0/CPU0:R3(config-l2vpn-xc-p2p)#neighbor 10.1.12.4 pw-id 55",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "VPWS is an L2VPN technology that provides a virtual circuit (aka pseudowire) between two PE routers to forward Layer 2 frames between two customer-edge routers or switches through an MPLS-enabled IP core. The ingress PE router (virtual circuit head-end) encapsulates Ethernet frames inside MPLS packets using label stacking and forwards them across the MPLS network to the egress PE router (virtual circuit tail-end). During a virtual circuit setup, the PE routers exchange label bindings for the specified pseudowire ID. The pseudowire ID specifies a pseudowire associated with an ingress and egress PE router and the customer-facing attachment circuits. \n\nTo guarantee that all frames are forwarded onto the correct pseudowire and to the correct customer and attachment circuits, it is imperative that the correct pseudowire ID is configured for each attachment circuit.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000670",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f",
+      "name": "Cisco IOS XR Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f"
+  ]
+}

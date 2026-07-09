@@ -1,0 +1,53 @@
+{
+  "id": "SV-239867r891331_rule",
+  "full_rule_id": "SV-239867r891331_rule",
+  "rule_id": "SV-239867",
+  "rule_revision": "891331",
+  "group_id": "V-239867",
+  "group_title": "SRG-NET-000364-FW-000035",
+  "title": "The Cisco ASA perimeter firewall must be configured to block all outbound management traffic.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The management network must still have its own subnet in order to enforce control and access boundaries provided by Layer 3 network nodes such as routers and firewalls. Management traffic between the managed network elements and the management network is routed via the same links and nodes as that used for production or operational traffic. \n\nSafeguards must be implemented to ensure that the management traffic does not leak past the managed network's premise equipment. If a firewall is located behind the premise router, all management traffic must be blocked at that point, with the exception of management traffic destined to premise equipment.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the ASA configuration to determine if it blocks outbound management traffic.\n\nStep 1: Verify that an ingress ACL has been applied to all internal interfaces as shown in the example below.\n\n interface GigabitEthernet0/0\n nameif INSIDE\n security-level 100\n ip address x.1.11.1 255.255.255.0\n…\n…\n…\naccess-group INSIDE_IN in interface INSIDE\n\nStep 2: Verify that the ingress ACL blocks outbound management traffic as shown in the example below.\n\naccess-list INSIDE_IN extended deny udp any any eq snmp \naccess-list INSIDE_IN extended deny udp any any eq snmptrap\naccess-list INSIDE_IN extended deny udp any any eq ntp \naccess-list INSIDE_IN extended deny udp any any eq syslog\naccess-list INSIDE_IN extended deny tcp any any eq 22 \naccess-list INSIDE_IN extended deny tcp any any eq tacacs\naccess-list INSIDE_IN extended permit ip any any \n\nNote: An exception is to allow management traffic destined to perimeter devices. In those cases, configure permit statements for that traffic before the deny statements in the example above.\n\nIf the ASA is not configured to block outbound management traffic, this is a finding.",
+  "fix": "Step 1: Configure the ingress ACL similar to the example below.\n\nASA(config)# access-list INSIDE_IN extended deny udp any any eq snmp \nASA(config)# access-list INSIDE_IN extended deny udp any any eq snmptrap\nASA(config)# access-list INSIDE_IN extended deny udp any any eq ntp \nASA(config)# access-list INSIDE_IN extended deny udp any any eq syslog\nASA(config)# access-list INSIDE_IN extended deny tcp any any eq 22 \nASA(config)# access-list INSIDE_IN extended deny tcp any any eq tacacs\nASA(config)# access-list INSIDE_IN extended permit ip any any \n\nStep 2: Apply the ACL inbound on the internal interfaces as shown in the example below.\n\nASA(config)# access-group INSIDE_IN out interface INSIDE \nASA(config)# end",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The management network must still have its own subnet in order to enforce control and access boundaries provided by Layer 3 network nodes such as routers and firewalls. Management traffic between the managed network elements and the management network is routed via the same links and nodes as that used for production or operational traffic. \n\nSafeguards must be implemented to ensure that the management traffic does not leak past the managed network's premise equipment. If a firewall is located behind the premise router, all management traffic must be blocked at that point, with the exception of management traffic destined to premise equipment.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-FW-000250",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-firewall-security-technical-implementation-guide-v2r1-a0d2d852",
+      "name": "Cisco ASA Firewall Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-firewall-security-technical-implementation-guide-v2r1-a0d2d852"
+  ]
+}

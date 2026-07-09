@@ -1,0 +1,53 @@
+{
+  "id": "SV-269347r1050229_rule",
+  "full_rule_id": "SV-269347r1050229_rule",
+  "rule_id": "SV-269347",
+  "rule_revision": "1050229",
+  "group_id": "V-269347",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "AlmaLinux OS 9 must disable the Transparent Inter Process Communication (TIPC) kernel module.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.\n\nFailing to disconnect unused protocols can result in a system compromise.\n\nThe TIPC is a protocol that is specially designed for intra-cluster communication. It can be configured to transmit messages either on UDP or directly across Ethernet. Message delivery is sequence guaranteed, loss free and flow controlled. Disabling TIPC protects the system against exploitation of any flaws in its implementation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that AlmaLinux OS 9 disables the ability to load the TIPC kernel module with the following command:\n\n$ grep -r tipc /etc/modprobe.conf /etc/modprobe.d/* \n\n/etc/modprobe.d/tipc.conf:install tipc /bin/false\n/etc/modprobe.d/tipc.conf:blacklist tipc\n\nIf the command does not return any output, or the line is commented out, and use of TIPC is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "To configure the system to prevent the TIPC kernel module from being loaded, run the following command:\n\n$ cat << EOF | tee /etc/modprobe.d/tipc.conf \ninstall tipc /bin/false\nblacklist tipc\nEOF",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.\n\nFailing to disconnect unused protocols can result in a system compromise.\n\nThe TIPC is a protocol that is specially designed for intra-cluster communication. It can be configured to transmit messages either on UDP or directly across Ethernet. Message delivery is sequence guaranteed, loss free and flow controlled. Disabling TIPC protects the system against exploitation of any flaws in its implementation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-030270",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

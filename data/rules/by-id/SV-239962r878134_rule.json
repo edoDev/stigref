@@ -1,0 +1,53 @@
+{
+  "id": "SV-239962r878134_rule",
+  "full_rule_id": "SV-239962r878134_rule",
+  "rule_id": "SV-239962",
+  "rule_revision": "878134",
+  "group_id": "V-239962",
+  "group_title": "SRG-NET-000565-VPN-002400",
+  "title": "The Cisco ASA VPN gateway must use cryptographic algorithms approved by NSA to protect NSS when transporting classified traffic across an unclassified network.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The VPN gateway must implement cryptographic modules adhering to the higher standards approved by the Federal Government since this provides assurance they have been tested and validated.\n\nNIST cryptographic algorithms are approved by NSA to protect NSS. Based on an analysis of the impact of quantum computing, cryptographic algorithms specified by CNSSP-15 and approved for use in products in the CSfC program have been changed to more stringent protocols and configured with increased bit sizes and other secure characteristics to protect against quantum computing threats. The Commercial National Security Algorithm Suite (CNSA Suite) replaces Suite B.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the VPN gateway is configured to use cryptography that is compliant with CSNA/CNSSP when transporting classified traffic across an unclassified network.\n\nStep 1: Verify CSNA/CNSSP-15 parameters have been configured for IKE Phase 1 as shown in the example below.\n \ncrypto ikev2 policy 2\n encryption aes-256\n integrity null\n group 19\n prf sha384\n\nStep 2: Determine the crypto map for IKE Phase 2 used in compliance with CSNA/CNSSP-15.\n\ncrypto map CSNA_MAP 10 set ikev2 ipsec-proposal aes-256\n\nStep 3: Verify the proposal specifies AES 256 parameters.\n\ncrypto ipsec ikev2 ipsec-proposal AES-256\n protocol esp encryption aes-256\n\nIf the VPN gateway is not configured to use cryptography that is compliant with CSNA/CNSSP-15 parameters when transporting classified traffic across an unclassified network, this is a finding.",
+  "fix": "Configure the VPN gateway to use cryptography that is compliant with CSNA/CNSSP-15 parameters when transporting classified traffic across an unclassified network as shown in the example below.\n\nStep 1: Configure the IKE Phase 1.\n\nASA2(config)# crypto ikev2 policy 2\nASA2(config-ikev2-policy)# encryption aes-256\nASA2(config-ikev2-policy)# integrity null\nASA2(config-ikev2-policy)# group 20\nASA2(config-ikev2-policy)# prf sha384\nASA2(config-ikev2-policy)# exit\n\nStep 2: Configure the IPsec proposal for AES 256 and apply to a crypto map as shown in the example below.\n\nASA2(config-ipsec-proposal)# protocol esp encryption aes-256\nASA2(config-ipsec-proposal)# exit\nASA2(config)# crypto map CSNA_MAP 10 set ikev2 ipsec-proposal AES-256\nASA2(config)# end",
+  "ccis": [
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The VPN gateway must implement cryptographic modules adhering to the higher standards approved by the Federal Government since this provides assurance they have been tested and validated.\n\nNIST cryptographic algorithms are approved by NSA to protect NSS. Based on an analysis of the impact of quantum computing, cryptographic algorithms specified by CNSSP-15 and approved for use in products in the CSfC program have been changed to more stringent protocols and configured with increased bit sizes and other secure characteristics to protect against quantum computing threats. The Commercial National Security Algorithm Suite (CNSA Suite) replaces Suite B.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000340",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

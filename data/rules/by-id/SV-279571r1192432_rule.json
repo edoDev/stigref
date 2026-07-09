@@ -1,0 +1,53 @@
+{
+  "id": "SV-279571r1192432_rule",
+  "full_rule_id": "SV-279571r1192432_rule",
+  "rule_id": "SV-279571",
+  "rule_revision": "1192432",
+  "group_id": "V-279571",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "Nutanix AHV must disable the chrony daemon from acting like a server.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.\n\nOperating systems can provide a wide variety of functions and services. Some of the functions and services provided may not be necessary to support essential organizational operations (e.g., key missions, functions).\n\nExamples of nonessential capabilities include, but are not limited to, games, software packages, tools, and demonstration software, not related to requirements or providing a wide array of functionality not required for every mission, but which cannot be disabled.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For AOS, Prism Central, or Files, this is not a finding.\n\n1. Verify Nutanix AHV disables the chrony daemon from acting as a server using the following command.\n\n$ sudo grep -w 'port' /etc/chrony.conf\nport 0\n\nIf the \"port\" option is not set to \"0\", is commented out, or missing, this is a finding.\n\n2. Verify the OS disables the ability to use the cramfs kernel module. Check if the cramfs kernel module is disabled using the following command.\n\n$ sudo grep -r cramfs /etc/modprobe.d/* | grep \"blacklist\"\nblacklist cramfs\n\nIf the command does not return any output or the output is not \"blacklist cramfs\", and using the cramfs kernel module is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "Configure the operating system to disable the chrony daemon from acting as a server by adding or modifying the following line in the \"/etc/chrony.conf\" file:\n\nport 0",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is detrimental for operating systems to provide, or install by default, functionality exceeding requirements or mission objectives. These unnecessary capabilities or services are often overlooked and therefore may remain unsecured. They increase the risk to the platform by providing additional attack vectors.\n\nOperating systems can provide a wide variety of functions and services. Some of the functions and services provided may not be necessary to support essential organizational operations (e.g., key missions, functions).\n\nExamples of nonessential capabilities include, but are not limited to, games, software packages, tools, and demonstration software, not related to requirements or providing a wide array of functionality not required for every mission, but which cannot be disabled.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000102",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-219956r958754_rule",
+  "full_rule_id": "SV-219956r958754_rule",
+  "rule_id": "SV-219956",
+  "rule_revision": "958754",
+  "group_id": "V-219956",
+  "group_title": "SRG-OS-000342-GPOS-00133",
+  "title": "AIX must be configured so that the audit system takes appropriate action when the audit storage volume is full.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Taking appropriate action in case of a filled audit storage volume will minimize the possibility of losing audit records.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the action the operating system takes if the disk the audit records are written to becomes full.\n\nVerify that the file \"/etc/security/audit/config\" includes the required settings with the following command:\n\n# cat /etc/security/audit/config\n\nbin:\ntrail = /audit/trail\nbin1 = /audit/bin1\nbin2 = /audit/bin2\nbinsize = 25000\ncmds = /etc/security/audit/bincmds\nfreespace = 65536\nbackuppath = /audit\nbackupsize = 0\nbincompact = off\n\nIf any of the configurations listed above is missing or not set to the listed value or greater, this is a finding.",
+  "fix": "Edit the /etc/security/audit/config file and add/modify the following values:\n\nNote: The values for \"binsize\" and \"freespace\" are the minimum required values. These values can be increased to meet organizationally defined values that exceed the listed values.\n\nbin:\ntrail = /audit/trail\nbin1 = /audit/bin1\nbin2 = /audit/bin2\nbinsize = 25000\ncmds = /etc/security/audit/bincmds\nfreespace = 65536\nbackuppath = /audit\nbackupsize = 0\nbincompact = off\n\nRestart the audit process:\n# /usr/sbin/audit shutdown\n# /usr/sbin/audit start",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Taking appropriate action in case of a filled audit storage volume will minimize the possibility of losing audit records.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002017",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

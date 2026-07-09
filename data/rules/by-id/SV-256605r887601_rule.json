@@ -1,0 +1,53 @@
+{
+  "id": "SV-256605r887601_rule",
+  "full_rule_id": "SV-256605r887601_rule",
+  "rule_id": "SV-256605",
+  "rule_revision": "887601",
+  "group_id": "V-256605",
+  "group_title": "SRG-APP-000233-DB-000124",
+  "title": "VMware Postgres must not allow schema access to unauthorized accounts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Database management systems typically separate security functionality from nonsecurity functionality via separate databases or schemas. Database objects or code implementing security functionality should not be commingled with objects or code implementing application logic. When security and nonsecurity functionality are commingled, users who have access to nonsecurity functionality may be able to access security functionality.\n\nVMware Postgres contains a number of system configuration schemas for which access must be strictly limited. By default, the \"pg_catalog\" and \"information_schema\" objects are configured to only be accessible in a read-only manner publicly and otherwise only accessible by the Postgres user. This configuration must be verified and maintained.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"\\dp .*.;\" |grep -E \"information_schema|pg_catalog\"|awk -F '|' '{print $4}'|awk -F '/' '{print $1}'|grep -v \"=r\" | grep -v \"^[[:space:]]*$\" | grep -v \"postgres\"\n\nIf any lines are returned, this is a finding.",
+  "fix": "At the command prompt, run the following command:\n\n# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"REVOKE ALL PRIVILEGES ON <name> FROM <user>;\"\n\nReplace <name> and <user> with the Access Privilege name and account, respectively, discovered during the check.",
+  "ccis": [
+    "CCI-001084"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Database management systems typically separate security functionality from nonsecurity functionality via separate databases or schemas. Database objects or code implementing security functionality should not be commingled with objects or code implementing application logic. When security and nonsecurity functionality are commingled, users who have access to nonsecurity functionality may be able to access security functionality.\n\nVMware Postgres contains a number of system configuration schemas for which access must be strictly limited. By default, the \"pg_catalog\" and \"information_schema\" objects are configured to only be accessible in a read-only manner publicly and otherwise only accessible by the Postgres user. This configuration must be verified and maintained.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-70-000015",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497",
+      "name": "VMware vSphere 7.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r2-f27a3497"
+  ]
+}

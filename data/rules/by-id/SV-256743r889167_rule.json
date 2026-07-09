@@ -1,0 +1,53 @@
+{
+  "id": "SV-256743r889167_rule",
+  "full_rule_id": "SV-256743r889167_rule",
+  "rule_id": "SV-256743",
+  "rule_revision": "889167",
+  "group_id": "V-256743",
+  "group_title": "SRG-APP-000358-WSR-000063",
+  "title": "Envoy (rhttpproxy) log files must be shipped via syslog to a central log server.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Envoy produces several logs that must be offloaded from the originating system. This information can then be used for diagnostic purposes, forensics purposes, or other purposes relevant to ensuring the availability and integrity of the hosted application. \n \nEnvoy (rhttpproxy) rsyslog configuration is included in the \"VMware-visl-integration\" package and unpacked to \"/etc/vmware-syslog/vmware-services-rhttpproxy.conf\". Ensuring the package hashes are as expected also ensures the shipped rsyslog configuration is present and unmodified.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# rpm -V VMware-visl-integration|grep vmware-services-rhttpproxy.conf|grep \"^..5......\" \n \nIf the command returns any output, this is a finding.",
+  "fix": "Navigate to and open: \n \n/etc/vmware-syslog/vmware-services-rhttpproxy.conf \n \nCreate the file if it does not exist. \n \nSet the contents of the file as follows: \n \n#rhttpproxy log \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/rhttpproxy/rhttpproxy.log\" \n      Tag=\"rhttpproxy-main\" \n      Severity=\"info\" \n      Facility=\"local0\")",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Envoy produces several logs that must be offloaded from the originating system. This information can then be used for diagnostic purposes, forensics purposes, or other purposes relevant to ensuring the availability and integrity of the hosted application. \n \nEnvoy (rhttpproxy) rsyslog configuration is included in the \"VMware-visl-integration\" package and unpacked to \"/etc/vmware-syslog/vmware-services-rhttpproxy.conf\". Ensuring the package hashes are as expected also ensures the shipped rsyslog configuration is present and unmodified.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCRP-70-000007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-rhttpproxy-security-technical-implementatio-v1r1-c23c2049",
+      "name": "VMware vSphere 7.0 vCenter Appliance RhttpProxy Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-rhttpproxy-security-technical-implementatio-v1r1-c23c2049"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "SV-269802r1052489_rule",
+  "full_rule_id": "SV-269802r1052489_rule",
+  "rule_id": "SV-269802",
+  "rule_revision": "1052489",
+  "group_id": "V-269802",
+  "group_title": "SRG-APP-000516-NDM-000344",
+  "title": "The Dell OS10 Switch must obtain its public key certificates from an appropriate certificate policy through an approved service provider.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>For user certificates, each organization obtains certificates from an approved, shared service provider, as required by OMB policy. For federal agencies operating a legacy public key infrastructure cross-certified with the Federal Bridge Certification Authority at medium assurance or higher, this certification authority (CA) will suffice.\n\nSatisfies: SRG-APP-000516-NDM-000344, SRG-APP-000910-NDM-000300\n</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the OS10 Switch obtains public key certificates from an appropriate certificate policy through an approved service provider.\n\nVerify the configured CA certificates with the following commands:\n\nOS10# show crypto ca-certs\n --------------------------------------\n|    Locally installed certificates    |\n --------------------------------------\nDOD_PKE.crt\nOS10#\nOS10# show crypto ca-certs DOD_PKE.crt\nCertificate:\n    Data:\n        Version: 3 (0x2)\n        Serial Number: 1 (0x1)\n...\n\nIf the OS10 Switch does not obtain its public key certificates from an appropriate certificate policy through an approved service provider, this is a finding.",
+  "fix": "Configure the OS10 Switch to obtain its public key certificates from an appropriate certificate policy through an approved service provider.\n\nInstall CA certificates using the crypto ca-cert install command as shown in the example below.\n\nOS10# crypto ca-cert install\nCertificate base file name : DOD_PKE\nPaste certificate below.\nInclude the -----BEGIN CERTIFICATE----- and -----END CERTIFICATE----- headers.\nEnter a blank line to abort this command.\nCertificate:\n-----BEGIN CERTIFICATE-----\nMIID...\n...\n...=\n-----END CERTIFICATE-----\n\nInstall as trusted-host certificate? [yes/no]:n\nProcessing file ...\nInstalled Root CA certificate\n  CommonName = ...\n  IssuerName = ...\nOS10#",
+  "ccis": [
+    "CCI-000366",
+    "CCI-001159",
+    "CCI-004909"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "For user certificates, each organization obtains certificates from an approved, shared service provider, as required by OMB policy. For federal agencies operating a legacy public key infrastructure cross-certified with the Federal Bridge Certification Authority at medium assurance or higher, this certification authority (CA) will suffice.\n\nSatisfies: SRG-APP-000516-NDM-000344, SRG-APP-000910-NDM-000300",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000960",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-254065r997538_rule",
+  "full_rule_id": "SV-254065r997538_rule",
+  "rule_id": "SV-254065",
+  "rule_revision": "997538",
+  "group_id": "V-254065",
+  "group_title": "SRG-NET-000512-RTR-000006",
+  "title": "The Juniper PE router must be configured to have each Virtual Routing and Forwarding (VRF) instance with the appropriate Route Target (RT).",
+  "severity": "high",
+  "description": "<VulnDiscussion>The primary security model for an MPLS L3VPN as well as a VRF-lite infrastructure is traffic separation. Each interface can only be associated to one VRF, which is the fundamental framework for traffic separation. Forwarding decisions are made based on the routing table belonging to the VRF. Control of what routes are imported into or exported from a VRF is based on the RT. It is critical that traffic does not leak from one COI tenant or L3VPN to another; hence, it is imperative that the correct RT is configured for each VRF.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the correct RT is configured for each VRF.\n\nReview the design plan for MPLS/L3VPN and VRF-lite to determine what RTs have been assigned for each VRF.\n\nReview the route-distinguisher and vrf-target statements under each configured VRF and verify that the correct RTs have been defined for each VRF. Assuming the assigned RT for \"customer 1\" is \"cust1:33:33\", verify vrf-target matches.\n\n[edit routing-instances]\n<instance name> {\n    description \"To customer 1\";\n    instance-type vrf;\n    interface <ce-facing interface>.<logical unit>;\n    route-distinguisher 33:33; << Must match the design plan for \"customer 1\".\n    vrf-target cust1:33:33; << Must match the design plan for \"customer 1\".\n    vrf-table-label;\n    protocols {\n        ospf {\n            area <number> {\n                interface <ce-facing interface>.<logical unit>;\n            }\n        }\n    }\n}\n\nNote: In L3 VPN, the CE router forms an adjacency with the PE router (OSPF in the example).\n\nIf there are VRFs configured with the wrong RT, this is a finding.",
+  "fix": "Configure all J-PE routers to have the correct VRF defined with the appropriate RT.\n\nset routing-instances <name> description <\"appropriate description\">\nset routing-instances <name> instance-type vrf\nset routing-instances <name> interface <ce-facing interface>.<logical unit>\nset routing-instances <name> route-distinguisher 33:33 << Must match the design plan for \"customer 1\".\nset routing-instances <name> vrf-target cust1:33:33 << Must match the design plan for \"customer 1\".\nset routing-instances <name> vrf-table-label\nset routing-instances <name> protocols ospf area <number> interface <ce-facing interface>.<logical unit>",
+  "ccis": [
+    "CCI-000366",
+    "CCI-004891"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The primary security model for an MPLS L3VPN as well as a VRF-lite infrastructure is traffic separation. Each interface can only be associated to one VRF, which is the fundamental framework for traffic separation. Forwarding decisions are made based on the routing table belonging to the VRF. Control of what routes are imported into or exported from a VRF is based on the RT. It is critical that traffic does not leak from one COI tenant or L3VPN to another; hence, it is imperative that the correct RT is configured for each VRF.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000930",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "SV-261334r996467_rule",
+  "full_rule_id": "SV-261334r996467_rule",
+  "rule_id": "SV-261334",
+  "rule_revision": "996467",
+  "group_id": "V-261334",
+  "group_title": "SRG-OS-000033-GPOS-00014",
+  "title": "SLEM 5 must implement DOD-approved encryption to protect the confidentiality of SSH remote connections.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session.\n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nEncryption provides a means to secure the remote connection to prevent unauthorized access to the data traversing the remote access connection (e.g., RDP), thereby providing a degree of confidentiality. The encryption strength of a mechanism is selected based on the security categorization of the information.\n\nThe system will attempt to use the first cipher presented by the client that matches the server list. Listing the values \"strongest to weakest\" is a method to ensure the use of the strongest cipher available to secure the SSH connection.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SLEM 5 implements DOD-approved encryption to protect the confidentiality of SSH remote connections with the following command:\n\n     > sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*ciphers'\n     /etc/ssh/sshd_config:Ciphers aes256-ctr,aes192-ctr,aes128-ctr\n\nIf any ciphers other than \"aes256-ctr\", \"aes192-ctr\", or \"aes128-ctr\" are listed, the order differs from the example above, the line is commented out, or the \"Ciphers\" keyword is missing, or conflicting results are returned, this is a finding.",
+  "fix": "Configure the SSH server to only implement FIPS 140-2/140-3 approved ciphers.\n  \nAdd or modify the following line in the \"/etc/ssh/sshd_config\" file:\n\nCiphers aes256-ctr,aes192-ctr,aes128-ctr\n\nRestart the SSH daemon:\n\n     > sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000068",
+    "CCI-000877",
+    "CCI-001453",
+    "CCI-002890"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session.\n\nRemote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.\n\nEncryption provides a means to secure the remote connection to prevent unauthorized access to the data traversing the remote access connection (e.g., RDP), thereby providing a degree of confidentiality. The encryption strength of a mechanism is selected based on the security categorization of the information.\n\nThe system will attempt to use the first cipher presented by the client that matches the server list. Listing the values \"strongest to weakest\" is a method to ensure the use of the strongest cipher available to secure the SSH connection.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-255045",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

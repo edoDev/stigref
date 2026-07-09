@@ -1,0 +1,53 @@
+{
+  "id": "SV-217096r819169_rule",
+  "full_rule_id": "SV-217096r819169_rule",
+  "rule_id": "SV-217096",
+  "rule_revision": "819169",
+  "group_id": "V-217096",
+  "group_title": "SRG-NET-000018-RTR-000008",
+  "title": "The Juniper Multicast Source Discovery Protocol (MSDP) router must be configured to filter source-active multicast advertisements to external MSDP peers to avoid global visibility of local-only multicast sources and groups.",
+  "severity": "low",
+  "description": "<VulnDiscussion>To avoid global visibility of local information, there are a number of source-group (S, G) states in a PIM-SM domain that must not be leaked to another domain, such as multicast sources with private address, administratively scoped multicast addresses, and the auto-RP groups (224.0.1.39 and 224.0.1.40).\n\nAllowing a multicast distribution tree, local to the core, to extend beyond its boundary could enable local multicast traffic to leak into other autonomous systems and customer networks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if there is export policy to block local source-active multicast advertisements.\n\nVerify that the router is configured with an export policy to filter multicast source-active advertisements.\n\npolicy-options {\n   …\n    …\n    …\n    }\n    policy-statement SA_EXPORT {\n        term INTERNAL_GROUP {\n            from {\n                route-filter 239.0.0.0/8 orlonger;\n            }\n            then reject;\n        }\n        term INTERNAL_ADDR {\n            from {\n                source-address-filter 10.0.0.0/8 orlonger;\n            }\n            then reject;\n        }\n        term ACCEPT_OTHERS {\n            then accept;\n        }\n    }\n\nVerify that an export source-active filter has been applied to MSDP.\n\nprotocols {\n    …\n    …\n    …\n    }\n    msdp {\n       export SA_EXPORT;\n\nIf the router is not configured with an export policy to block local source-active multicast advertisements, this is a finding.",
+  "fix": "Configure the router with an export policy avoid global visibility of local multicast (S, G) states. The example below will avoid exporting multicast active sources belonging to the private network.\n\n[edit policy-options]\nset policy-statement SA_EXPORT term INTERNAL_GROUP from route-filter 239.0.0.0/8 orlonger\nset policy-statement SA_EXPORT term INTERNAL_GROUP then reject\nset policy-statement SA_EXPORT term INTERNAL_ADDR from source-address-filter 10.0.0.0/8 orlonger\nset policy-statement SA_EXPORT term INTERNAL_ADDR then reject\nset policy-statement SA_EXPORT term ACCEPT_OTHERS then accept\n\n[edit protocols msdp]\nset export SA_EXPORT",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To avoid global visibility of local information, there are a number of source-group (S, G) states in a PIM-SM domain that must not be leaked to another domain, such as multicast sources with private address, administratively scoped multicast addresses, and the auto-RP groups (224.0.1.39 and 224.0.1.40).\n\nAllowing a multicast distribution tree, local to the core, to extend beyond its boundary could enable local multicast traffic to leak into other autonomous systems and customer networks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000920",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-223002r961863_rule",
+  "full_rule_id": "SV-223002r961863_rule",
+  "rule_id": "SV-223002",
+  "rule_revision": "961863",
+  "group_id": "V-223002",
+  "group_title": "SRG-APP-000516-AS-000237",
+  "title": "STRICT_SERVLET_COMPLIANCE must be set to true.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Strict Servlet Compliance forces Tomcat to adhere to standards specifications including but not limited to RFC2109. RFC2109 sets the standard for HTTP session management. This setting affects several settings which primarily pertain to cookie headers, cookie values, and sessions. Cookies will be parsed for strict adherence to specifications.\n\nNote that changing a number of these default settings may break some systems, as some browsers are unable to correctly handle the cookie headers that result from a strict adherence to the specifications.\n\nThis one setting changes the default values for the following settings:\n\norg.apache.catalina.core.\nApplicationContext.GET_RESOURCE_REQUIRE_SLASH\norg.apache.catalina.core.\nApplicationDispatcher.WRAP_SAME_OBJECT\norg.apache.catalina.core.\nStandardHostValve.ACCESS_SESSION\norg.apache.catalina.session.\nStandardSession.ACTIVITY_CHECK\norg.apache.catalina.session.\nStandardSession.LAST_ACCESS_AT_START\norg.apache.tomcat.util.http.\nServerCookie.ALWAYS_ADD_EXPIRES\norg.apache.tomcat.util.http.\nServerCookie.FWD_SLASH_IS_SEPARATOR\norg.apache.tomcat.util.http.\nServerCookie.PRESERVE_COOKIE_HEADER\norg.apache.tomcat.util.http.\nServerCookie.STRICT_NAMING\nThe resourceOnlyServlets attribute of any Context element.\nThe tldValidation attribute of any Context element.\nThe useRelativeRedirects attribute of any Context element.\nThe xmlNamespaceAware attribute of any Context element.\nThe xmlValidation attribute of any Context element.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the system has an ISSM risk acceptance for operational issues that arise due to this setting, this is not a finding.\n\nFrom the Tomcat server as a privileged user, run the following command:\n\nsudo grep -i  strict_servlet /etc/systemd/system/tomcat.service \n\nIf there are no results, or if the \n-Dorg.apache.catalina.STRICT_SERVLET_COMPLIANCE is not set to true, this is a finding.",
+  "fix": "From the Tomcat server as a privileged user:\n\nEdit the /etc/systemd/system/tomcat.service file and either add or edit the org.apache.catalina.STRICT_SERVLET_COMPLIANCE setting.\n\nSet the org.apache.catalina.STRICT_SERVLET_COMPLIANCE=true \n\nEXAMPLE:\n\nCATALINA_OPTS='-Dorg.apache.catalina.STRICT_SERVLET_COMPLIANCE=true'\n\nRestart the Tomcat server:\nsudo systemctl restart tomcat\nsudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Strict Servlet Compliance forces Tomcat to adhere to standards specifications including but not limited to RFC2109. RFC2109 sets the standard for HTTP session management. This setting affects several settings which primarily pertain to cookie headers, cookie values, and sessions. Cookies will be parsed for strict adherence to specifications.\n\nNote that changing a number of these default settings may break some systems, as some browsers are unable to correctly handle the cookie headers that result from a strict adherence to the specifications.\n\nThis one setting changes the default values for the following settings:\n\norg.apache.catalina.core.\nApplicationContext.GET_RESOURCE_REQUIRE_SLASH\norg.apache.catalina.core.\nApplicationDispatcher.WRAP_SAME_OBJECT\norg.apache.catalina.core.\nStandardHostValve.ACCESS_SESSION\norg.apache.catalina.session.\nStandardSession.ACTIVITY_CHECK\norg.apache.catalina.session.\nStandardSession.LAST_ACCESS_AT_START\norg.apache.tomcat.util.http.\nServerCookie.ALWAYS_ADD_EXPIRES\norg.apache.tomcat.util.http.\nServerCookie.FWD_SLASH_IS_SEPARATOR\norg.apache.tomcat.util.http.\nServerCookie.PRESERVE_COOKIE_HEADER\norg.apache.tomcat.util.http.\nServerCookie.STRICT_NAMING\nThe resourceOnlyServlets attribute of any Context element.\nThe tldValidation attribute of any Context element.\nThe useRelativeRedirects attribute of any Context element.\nThe xmlNamespaceAware attribute of any Context element.\nThe xmlValidation attribute of any Context element.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-001660",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

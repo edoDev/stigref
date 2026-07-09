@@ -1,0 +1,53 @@
+{
+  "id": "SV-276248r1150096_rule",
+  "full_rule_id": "SV-276248r1150096_rule",
+  "rule_id": "SV-276248",
+  "rule_revision": "1150096",
+  "group_id": "V-276248",
+  "group_title": "SRG-APP-000177-DB-000069",
+  "title": "Azure SQL Managed Instance must map the PKI-authenticated identity to an associated user account.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The DOD standard for authentication is DOD-approved PKI certificates. Once a PKI certificate has been validated, it must be mapped to an Azure SQL Managed Instance database user account or login for the authenticated identity to be meaningful to Azure SQL Managed Instance and useful for authorization decisions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if Azure SQL Managed Instance is configured to use Microsoft Entra ID authentication only. \n \nTo verify Azure Active Directory is configured as the authentication type, use the following PowerShell commands:\n\nGet-AzSqlInstance -Name '<Azure SQL Managed Instance Name>' | Get-AzSqlInstanceActiveDirectoryOnlyAuthentication \n \nIf AzureADOnlyAuthentication returns \"True\", this is not a finding. \n\nIf AzureADOnlyAuthentication returns \"False\" and the need for mixed mode authentication has not been documented and approved, this is a finding.",
+  "fix": "To set the Entra ID Administrator, use the following PowerShell command: \n  \nGet-AzSqlInstance -Name '<Azure SQL Managed Instance Name>' | Set-AzSqlInstanceActiveDirectoryAdministrator -DisplayName '<Entra Admin User/Group Name>'\n \nTo enable Entra ID only authentication, use the following PowerShell command: \n\nGet-AzSqlInstance -Name '<Azure SQL Managed Instance Name>' | Enable-AzSqlInstanceActiveDirectoryOnlyAuthentication \n \nReference: https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-aad-configure?view=azuresql-mi&amp;tabs=azure-powershell",
+  "ccis": [
+    "CCI-000187"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DOD standard for authentication is DOD-approved PKI certificates. Once a PKI certificate has been validated, it must be mapped to an Azure SQL Managed Instance database user account or login for the authenticated identity to be meaningful to Azure SQL Managed Instance and useful for authorization decisions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MSQL-00-008500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb",
+      "name": "Microsoft Azure SQL Managed Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb"
+  ]
+}

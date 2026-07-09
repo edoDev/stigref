@@ -1,0 +1,53 @@
+{
+  "id": "SV-253103r991589_rule",
+  "full_rule_id": "SV-253103r991589_rule",
+  "rule_id": "SV-253103",
+  "rule_revision": "991589",
+  "group_id": "V-253103",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The graphical display manager must not be installed on TOSS unless approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Internet services that are not required for system or application processes must not be active to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the system is configured to boot to the command line:\n\n$ systemctl get-default\nmulti-user.target\n\nIf the system default target is not set to \"multi-user.target\" and the Information System Security Officer (ISSO) lacks a documented requirement for a graphical user interface, this is a finding.\n\nVerify that a graphical user interface is not installed:\n\n$ rpm -qa | grep xorg | grep server\n\nAsk the System Administrator if use of a graphical user interface is an operational requirement.\n\nIf the use of a graphical user interface on the system is not documented with the ISSO, this is a finding.",
+  "fix": "Document the requirement for a graphical user interface with the ISSO or reinstall the operating system without the graphical user interface. If reinstallation is not feasible, then continue with the following procedure:\n\nOpen an SSH session and enter the following commands:\n\n$ sudo systemctl set-default multi-user.target\n\n$ sudo yum remove xorg-x11-server-Xorg xorg-x11-server-common xorg-x11-server-utils xorg-x11-server-Xwayland\n\nA reboot is required for the changes to take effect.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Internet services that are not required for system or application processes must not be active to decrease the attack surface of the system. Graphical display managers have a long history of security vulnerabilities and must not be used, unless approved and documented.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TOSS-04-040610",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994",
+      "name": "Tri-Lab Operating System Stack (TOSS) 4 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "tri-lab-operating-system-stack-toss-4-security-technical-implementation-guide-v2r5-2b5f6994"
+  ]
+}

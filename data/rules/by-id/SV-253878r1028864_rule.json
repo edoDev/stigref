@@ -1,0 +1,53 @@
+{
+  "id": "SV-253878r1028864_rule",
+  "full_rule_id": "SV-253878r1028864_rule",
+  "rule_id": "SV-253878",
+  "rule_revision": "1028864",
+  "group_id": "V-253878",
+  "group_title": "SRG-APP-000001-NDM-000200",
+  "title": "The Juniper EX switch must be configured to limit the number of concurrent management sessions to 10 or an organization-defined value.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Device management includes the ability to control the number of administrators and management sessions that manage a device. Limiting the number of allowed administrators and sessions per administrator based on account type, role, or access type is helpful in limiting risks related to denial-of-service (DoS) attacks.\n\nThis requirement addresses concurrent sessions for administrative accounts and does not address concurrent sessions by a single administrator via multiple administrative accounts. The maximum number of concurrent sessions must be defined based upon mission needs and the operational environment for each system. At a minimum, limits must be set for SSH, HTTPS, account of last resort, and root account sessions.\n\nJuniper switches apply session limits per access method (e.g., web management, SSH), which means the limit is applicable to local, remote, and root account sessions. \n\nUnconfigured management access methods are disabled. For instance, if there is no [edit system services ssh] stanza, that service is unavailable and a connection-limit should not be configured because that will enable the service.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If, based on operational needs, an organization defined number other than 1 is used, document the value in the SSP. View the SSH service configuration using the \"show configuration system services ssh\" command.\n\nSSH example.\nuser@host> show configuration system services ssh\n\nconnection-limit 1;\nrate-limit 1\n\nIf the device does not limit the number of concurrent management sessions to 1 or an organization-defined number, this is a finding.",
+  "fix": "Enter the CLI configuration mode and enter the following commands to set the connection-limit to 1 or an organization defined number. If, based on operational needs, an organization defined number other than 1 is used, document the value in the SSP.\n\nSSH example limiting connections to 1:\nuser@host> configure\nuser@host# set system services ssh connection-limit 1\nuser@host# commit",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Device management includes the ability to control the number of administrators and management sessions that manage a device. Limiting the number of allowed administrators and sessions per administrator based on account type, role, or access type is helpful in limiting risks related to denial-of-service (DoS) attacks.\n\nThis requirement addresses concurrent sessions for administrative accounts and does not address concurrent sessions by a single administrator via multiple administrative accounts. The maximum number of concurrent sessions must be defined based upon mission needs and the operational environment for each system. At a minimum, limits must be set for SSH, HTTPS, account of last resort, and root account sessions.\n\nJuniper switches apply session limits per access method (e.g., web management, SSH), which means the limit is applicable to local, remote, and root account sessions. \n\nUnconfigured management access methods are disabled. For instance, if there is no [edit system services ssh] stanza, that service is unavailable and a connection-limit should not be configured because that will enable the service.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-NM-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685",
+      "name": "Juniper EX Series Switches Network Device Management Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-network-device-management-security-technical-implemen-v2r4-e5228685"
+  ]
+}

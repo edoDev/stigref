@@ -1,0 +1,53 @@
+{
+  "id": "SV-256964r961632_rule",
+  "full_rule_id": "SV-256964r961632_rule",
+  "rule_id": "SV-256964",
+  "rule_revision": "961632",
+  "group_id": "V-256964",
+  "group_title": "SRG-APP-000439-WSR-000156",
+  "title": "Automation Controller NGINX web servers must maintain the confidentiality of controlled information during transmission through the use of an approved TLS version.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Transport Layer Security (TLS) is a required transmission protocol for a web server hosting controlled information. The use of TLS provides confidentiality of data in transit between the web server and client. FIPS 140-2 approved TLS versions must be enabled and non-FIPS-approved SSL versions must be disabled.\n\nNIST SP 800-52 defines the approved TLS versions for government applications.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As a System Administrator, for each Automation Controller NGINX web server, a TLS Configuration Check validates the TLS version used by the server:\n\nNGINXCONF=`nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}' `\nsudo grep ssl_protocols ${NGINXCONF} | grep -E 'ssl_protocols\\s+TLSv1.2;' || echo \"FAILED\"\n\nIf \"FAILED\" is displayed, this is a finding.",
+  "fix": "As a System Administrator for each Automation Controller Web Server, reconfigure the TLS versions or ciphers used in Automation Controller's web server:\n\nNGINXCONF=`nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}' `\nsudo -e ${NGINXCONF}\n\nReplace the line beginning with \"ssl_protocols\" to match (note the leading spaces):\n\"        ssl_protocols TLSv1.2;\"\n\nIf the \"ssl_protocols\" variable does not exist, add it after the line beginning with \"ssl_ciphers\".\n\nSave the file and exit the text editor. To apply these changes to the running service immediately, restart the NGINX service with the following command:\n\nsudo systemctl restart nginx",
+  "ccis": [
+    "CCI-002418"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Transport Layer Security (TLS) is a required transmission protocol for a web server hosting controlled information. The use of TLS provides confidentiality of data in transit between the web server and client. FIPS 140-2 approved TLS versions must be enabled and non-FIPS-approved SSL versions must be disabled.\n\nNIST SP 800-52 defines the approved TLS versions for government applications.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APWS-AT-000900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65",
+      "name": "Red Hat Ansible Automation Controller Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65"
+  ]
+}

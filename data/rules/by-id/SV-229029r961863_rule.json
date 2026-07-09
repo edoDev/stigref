@@ -1,0 +1,54 @@
+{
+  "id": "SV-229029r961863_rule",
+  "full_rule_id": "SV-229029r961863_rule",
+  "rule_id": "SV-229029",
+  "rule_revision": "961863",
+  "group_id": "V-229029",
+  "group_title": "SRG-APP-000516-NDM-000317",
+  "title": "The Juniper SRX Services Gateway must reveal log messages or management console alerts only to the ISSO, ISSM, and SA roles).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state. Additionally, sensitive account information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nAlthough, based on policy, administrator accounts must be created on the AAA server, thus this requirement addresses the creation of unauthorized accounts on the Juniper SRX itself. This does not negate the need to address this requirement on the AAA server and the event monitoring server (e.g., Syslog, Security Information and Event Management [SIEM], or SNMP servers).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Obtain a list of authorized user names that are authorized to view the audit log and console notification messages. Verify classes are created that separate administrator roles based on authorization. View user classes and class members by typing the following commands.\n\n[edit]\nshow system login\n\nView class assignment for all users and template users configured on the Juniper SRX. Users with login classes audit-admin, security-admin, and system-admin have permission to view error message in logs and/or notifications. \n\nIf classes or users that are not authorized to have access to the logs (e.g., crypto-admin) have permissions to view or access error message in logs and/or notifications, this is a finding.",
+  "fix": "Configure login classes and permissions and assign only authorized users to each class.\n\n[edit]\nshow system login\n\nIf any classes  are mapped to the audit-admin, security-admin, or system-admin login templates, delete the command from the class by typing delete in front of the command or retyping the command with the permission removed from the list.\n\nExample configuration:\nset system login class audit-admin allow-commands \"(show log *)|(clear log *)|(monitor\nlog *)\"\nset system login class audit-admin allow-configuration \"(system syslog)\"\nset system login class emergency permissions all\nset system login class emergency login-alarms\nset system login class security-admin login-alarms\nset system login class system-admin login-alarms",
+  "ccis": [
+    "CCI-000366",
+    "CCI-000416"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state. Additionally, sensitive account information must not be revealed through error messages to unauthorized personnel or their designated representatives.\n\nAlthough, based on policy, administrator accounts must be created on the AAA server, thus this requirement addresses the creation of unauthorized accounts on the Juniper SRX itself. This does not negate the need to address this requirement on the AAA server and the event monitoring server (e.g., Syslog, Security Information and Event Management [SIEM], or SNMP servers).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000165",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

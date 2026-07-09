@@ -1,0 +1,53 @@
+{
+  "id": "SV-258965r934553_rule",
+  "full_rule_id": "SV-258965r934553_rule",
+  "rule_id": "SV-258965",
+  "rule_revision": "934553",
+  "group_id": "V-258965",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must remove unauthorized port mirroring sessions on distributed switches.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The vSphere Distributed Virtual Switch can enable port mirroring sessions allowing traffic to be mirrored from one source to a destination. If port mirroring is configured unknowingly this could allow an attacker to observe network traffic of virtual machines.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If distributed switches are not used, this is not applicable.\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Configure >> Settings >> Port Mirroring.\n\nReview any configured \"Port Mirroring\" sessions.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-VDSwitch | select Name,@{N=\"Port Mirroring Sessions\";E={$_.ExtensionData.Config.VspanSession.Name}}\n\nIf there are any unauthorized port mirroring sessions configured, this is a finding.",
+  "fix": "From the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Configure >> Settings >> Port Mirroring.\n\nSelect the unauthorized \"Port Mirroring\" session and click \"Remove\". Click \"OK\".",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The vSphere Distributed Virtual Switch can enable port mirroring sessions allowing traffic to be mirrored from one source to a destination. If port mirroring is configured unknowingly this could allow an attacker to observe network traffic of virtual machines.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

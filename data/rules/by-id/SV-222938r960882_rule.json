@@ -1,0 +1,57 @@
+{
+  "id": "SV-222938r960882_rule",
+  "full_rule_id": "SV-222938r960882_rule",
+  "rule_id": "SV-222938",
+  "rule_revision": "960882",
+  "group_id": "V-222938",
+  "group_title": "SRG-APP-000090-AS-000051",
+  "title": "AccessLogValve must be configured per each virtual host.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Application servers utilize role-based access controls in order to specify the individuals who are allowed to configure application component loggable events. The application server must be configured to select which personnel are assigned the role of selecting which loggable events are to be logged.\n\nSatisfies: SRG-APP-000090-AS-000051, SRG-APP-000095-AS-000056, SRG-APP-000100-AS-000063, SRG-APP-000101-AS-000072, SRG-APP-000503-AS-000228, SRG-APP-000505-AS-000230, SRG-APP-000506-AS-000231</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As an elevated user on the Tomcat server:\n\nEdit the $CATALINA_BASE/conf/server.xml file.\n\nReview for all <Host> elements.\n\nIf a <Valve className=\"org.apache.catalina.valves.AccessLogValve\" .../> element is not nested within each <Host> element, this is a finding.\n\nEXAMPLE:\n<Host name=\"localhost\" appBase=\"webapps\"\n unpackWARs=\"true\" autoDeploy=\"false\">\n...\n<Valve className=\"org.apache.catalina.valves.AccessLogValve\" directory=\"logs\"\n prefix=\"localhost_access_log\" suffix=\".txt\"\n pattern=\"%h %l %t %u &quot;%r&quot; %s %b\" />\n ...\n</Host>",
+  "fix": "As a privileged user on the Tomcat server:\n\nEdit the $CATALINA_BASE/conf/server.xml file.\n\nCreate a <Valve> element that is nested beneath the <Host> element containing an AccessLogValve.\n\nEXAMPLE:\n<Host name=\"localhost\" appBase=\"webapps\"\n unpackWARs=\"true\" autoDeploy=\"false\">\n...\n<Valve className=\"org.apache.catalina.valves.AccessLogValve\" directory=\"logs\"\n prefix=\"localhost_access_log\" suffix=\".txt\"\n pattern=\"%h %l %t %u &quot;%r&quot; %s %b\" />\n ...\n</Host>\n\nRestart the Tomcat server:\nsudo systemctl restart tomcat\nsudo systemctl daemon-reload",
+  "ccis": [
+    "CCI-000130",
+    "CCI-000135",
+    "CCI-000171",
+    "CCI-000172",
+    "CCI-001487"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Application servers utilize role-based access controls in order to specify the individuals who are allowed to configure application component loggable events. The application server must be configured to select which personnel are assigned the role of selecting which loggable events are to be logged.\n\nSatisfies: SRG-APP-000090-AS-000051, SRG-APP-000095-AS-000056, SRG-APP-000100-AS-000063, SRG-APP-000101-AS-000072, SRG-APP-000503-AS-000228, SRG-APP-000505-AS-000230, SRG-APP-000506-AS-000231",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

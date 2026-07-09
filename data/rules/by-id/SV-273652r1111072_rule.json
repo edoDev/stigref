@@ -1,0 +1,53 @@
+{
+  "id": "SV-273652r1111072_rule",
+  "full_rule_id": "SV-273652r1111072_rule",
+  "rule_id": "SV-273652",
+  "rule_revision": "1111072",
+  "group_id": "V-273652",
+  "group_title": "SRG-NET-000364-RTR-000202",
+  "title": "The RUCKUS ICX perimeter router must be configured to drop IPv6 packets containing a hop-by-hop and destination options header with invalid or undefined option type values.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>These options are intended for the destination options header only. The optional and extensible natures of the IPv6 extension headers require higher scrutiny because many implementations do not always drop packets with headers that cannot be recognized. This could cause a denial of service on the target device. In addition, the type, length, value (TLV) formatting provides the ability for headers to be very large.\n\nSatisfies: SRG-NET-000364-RTR-000202, SRG-NET-000364-RTR-000203, SRG-NET-000364-RTR-000204, SRG-NET-000364-RTR-000205, SRG-NET-000364-RTR-000206</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the perimeter router configuration to determine whether an ACL is configured to drop IPv6 packets containing hop-by-hop or destination options extension headers.  \n\n1. Review the perimeter router configuration to determine whether an ACL is configured to drop IPv6 packets containing hop-by-hop or destination options extension headers.  \nipv6 access-list BLOCK_OPTIONS\n sequence 10 deny 0 any any log\n sequence 20 deny 60 any any log\n sequence 30 permit ipv6 any any\n!\n\n2. Verify the ACL has been applied to external interfaces.  \ninterface ethernet x/x/x\n  ipv6 address x::x/x\n  ipv6 access-group BLOCK_OPTIONS in logging enable \n\nIf the perimeter router is not configured to drop IPv6 packets with hop-by-hop or destination options extension headers, this is a finding.",
+  "fix": "Configure the router to drop IPv6 packets containing a hop-by-hop header with option type values of 0x04 (Tunnel Encapsulation Limit), 0xC9 (Home Address Destination), or 0xC3 (NSAP Address).\n\n1. Create an ACL to drop IPv6 packets with hop-by-hop or Destination Options extension headers.\nICX(config)#ipv6 access BLOCK_OPTIONS\nICX(config-ipv6acl-BLOCK_OPTIONS)#deny 0 any any log\nICX(config-ipv6acl-BLOCK_OPTIONS)#deny 60 any any log\nICX(config-ipv6acl-BLOCK_OPTIONS)#permit ipv6 any any\n\n2. Apply the ACL to external interfaces of the perimeter router.  \nICX(config)#interface ethernet x/x/x\nICX(config-if-e1000-x/x/x)#ipv6 access-group BLOCK_OPTIONS in logging enable",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "These options are intended for the destination options header only. The optional and extensible natures of the IPv6 extension headers require higher scrutiny because many implementations do not always drop packets with headers that cannot be recognized. This could cause a denial of service on the target device. In addition, the type, length, value (TLV) formatting provides the ability for headers to be very large.\n\nSatisfies: SRG-NET-000364-RTR-000202, SRG-NET-000364-RTR-000203, SRG-NET-000364-RTR-000204, SRG-NET-000364-RTR-000205, SRG-NET-000364-RTR-000206",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000850",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

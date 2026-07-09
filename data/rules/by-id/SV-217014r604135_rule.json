@@ -1,0 +1,53 @@
+{
+  "id": "SV-217014r604135_rule",
+  "full_rule_id": "SV-217014r604135_rule",
+  "rule_id": "SV-217014",
+  "rule_revision": "604135",
+  "group_id": "V-217014",
+  "group_title": "SRG-NET-000168-RTR-000077",
+  "title": "The Juniper router must be configured to use encryption for routing protocol authentication.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack.\n\nThis requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and multicast-related protocols.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration. For every routing protocol that affects the routing or forwarding tables, verify that neighbor router authentication is encrypting the authentication key as shown in the examples below.\n\nOSPF Example:\n\nprotocols {\n    …\n    …\n    …\n    ospf {\n        area 0.0.0.0 {\n            interface ge-0/0/0 {\n                authentication {\n                    md5 1 key \"$8$NHVb2mPQ3nCYg/t\"; ## SECRET-DATA\n                }\n            }\n            interface ge-0/1/0 {\n                authentication {\n                    md5 1 key \"$8$Lgb7NbHkPTQnVwF/\"; ## SECRET-DATA\n                }\n            }\n            interface lo0.0;\n            interface ge-0/2/0 {\n                authentication {\n                    md5 1 key \"$8$7DdVY.mTF39s26A\"; ## SECRET-DATA\n                }\n            }\n        }\n    }\n}\n\nIS-IS Example:\n\nsecurity {\n    …\n    …\n    …\n    }\n    authentication-key-chains {\n        key-chain ISIS_KEY {\n            key 1 {\n                secret \"$8$W8oXxdji.f5F-VQn\"; ## SECRET-DATA\n                start-time \"2018-5-1.12:00:00 +0000\";\n                algorithm hmac-sha-1;\n                options isis-enhanced;\n            }\n            key 2 {\n                secret \"$8$Q4953nCrlMLX-9A7V\"; ## SECRET-DATA\n                start-time \"2018-9-1.12:00:00 +0000\";\n                algorithm hmac-sha-1;\n                options isis-enhanced;\n            }\n            key 3 {\n                secret \"$8$UeiHmpu1Ehr.PSe\"; ## SECRET-DATA\n                start-time \"2019-1-1.12:00:00 +0000\";\n                algorithm hmac-sha-1;\n                options isis-enhanced;\n            }\n        }\n    }\n}\n\nprotocols {\n    …\n    …\n    …\n    isis {\n        level 1 authentication-key-chain ISIS_KEY;\n        level 2 authentication-key-chain ISIS_KEY;\n        interface ge-0/0/0 {\n            level 1 hello-authentication-key-chain ISIS_KEY;\n            level 2 hello-authentication-key-chain ISIS_KEY;\n        }\n        interface lo0.0;\n    }\n\nBGP Example:\n\nsecurity {\n    …\n    …\n    …\n    }\n    authentication-key-chains {\n        key-chain BGP_KEY {\n            key 1 {\n                secret \"$8$PTQnhclvMX3687\"; ## SECRET-DATA\n                start-time \"2018-5-1.12:00:00 +0000\";\n            }\n            key 2 {\n                secret \"$8$iq.5OBESyKfTlM\"; ## SECRET-DATA\n                start-time \"2018-9-1.12:00:00 +0000\";\n            }\n            key 3 {\n                secret \"$8$ZADjqAtOIRSk.hr\"; ## SECRET-DATA\n                start-time \"2019-1-1.12:00:00 +0000\";\n            }\n        }\n\nprotocols {\n    bgp {\n        group AS_2 {\n            type external;\n            peer-as 2;\n            neighbor 11.1.25.2 {\n                authentication-algorithm md5;\n                authentication-key-chain BGP_KEY;\n            }\n            neighbor 11.1.1.1 {\n                authentication-algorithm hmac-sha-1-96;\n                authentication-key-chain BGP_KEY;\n            }\n        }\n    }\n   \nIf the routing protocol is not encrypting the authentication key, this is a finding.",
+  "fix": "Configure all routing protocol authentications to encrypt the authentication key.\n\nOSPF Example:\n\n[edit protocols ospf area 0.0.0.0]\nset interface ge-0/0/0 authentication md5 1 key xxxxxxxxxxxx\nset interface ge-0/1/0 authentication md5 1 key xxxxxxxxxxxx\nset interface ge-0/2/0 authentication md5 1 key xxxxxxxxxxxx\n\nIS-IS Example:\n\n[edit security authentication-key-chains]\nset key-chain ISIS_KEY key 1 options isis-enhanced\nset key-chain ISIS_KEY key 2 options isis-enhanced\nset key-chain ISIS_KEY key 3 options isis-enhanced\nset key-chain ISIS_KEY key 1 start-time 2018-05-01.12:00 algorithm hmac-sha-1 secret xxxxxxxxxxxxx\nset key-chain ISIS_KEY key 2 start-time 2018-09-01.12:00 algorithm hmac-sha-1 secret xxxxxxxxxxxxx\nset key-chain ISIS_KEY key 3 start-time 2019-01-01.12:00 algorithm hmac-sha-1 secret xxxxxxxxxxxxx\n\n[edit protocols]\nset isis level 1 authentication-key-chain ISIS_KEY\nset isis interface ge-0/0/0 level 1 hello-authentication-key-chain ISIS_KEY\nset isis interface ge-0/0/0 level 2 hello-authentication-key-chain ISIS_KEY\n\nBGP Example:\n\n[edit security authentication-key-chains]\nset key-chain BGP_KEY key 1 start-time 2018-05-01.12:00 secret xxxxxxxxxxxxx\nset key-chain BGP_KEY key 2 start-time 2018-09-01.12:00 secret xxxxxxxxxxxxx\nset key-chain BGP_KEY key 3 start-time 2019-01-01.12:00 secret xxxxxxxxxxxxx\n\n[edit protocols bgp group AS_5]\nset neighbor 11.1.25.5 authentication-algorithm hmac-sha-1-96\nset neighbor 11.1.25.5 authentication-key-chain BGP_KEY\nset neighbor 11.1.1.1 authentication-algorithm hmac-sha-1-96\nset neighbor 11.1.1.1 authentication-key-chain BGP_KEY",
+  "ccis": [
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A rogue router could send a fictitious routing update to convince a site's perimeter router to send traffic to an incorrect or even a rogue destination. This diverted traffic could be analyzed to learn confidential information about the site's network or used to disrupt the network's ability to communicate with other networks. This is known as a \"traffic attraction attack\" and is prevented by configuring neighbor router authentication for routing updates. However, using clear-text authentication provides little benefit since an attacker can intercept traffic and view the authentication key. This would allow the attacker to use the authentication key in an attack.\n\nThis requirement applies to all IPv4 and IPv6 protocols that are used to exchange routing or packet forwarding information; this includes all Interior Gateway Protocols (such as OSPF, EIGRP, and IS-IS) and Exterior Gateway Protocols (such as BGP), MPLS-related protocols (such as LDP), and multicast-related protocols.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

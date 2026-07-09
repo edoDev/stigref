@@ -1,0 +1,53 @@
+{
+  "id": "SV-258805r933476_rule",
+  "full_rule_id": "SV-258805r933476_rule",
+  "rule_id": "SV-258805",
+  "rule_revision": "933476",
+  "group_id": "V-258805",
+  "group_title": "SRG-OS-000032-GPOS-00013",
+  "title": "The Photon operating system must monitor remote access logins.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk and make remote user access management difficult at best. Remote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. Automated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If another package is used to offload logs, such as syslog-ng, and is properly configured, this is not applicable.\n\nAt the command line, run the following command to verify rsyslog is configured to log authentication requests:\n\n# grep -E \"(^auth.*|^authpriv.*|^daemon.*)\" /etc/rsyslog.conf\n\nExample result:\n\nauth.*;authpriv.*;daemon.* /var/log/audit/sshinfo.log\n\nIf \"auth.*\", \"authpriv.*\", and \"daemon.*\" are not configured to be logged, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/rsyslog.conf\n\nAdd or update the following line:\n\nauth.*;authpriv.*;daemon.* /var/log/audit/sshinfo.log\n\nNote: The path can be substituted for another suitable log destination dedicated to authentication logs.\n\nAt the command line, run the following command:\n\n# systemctl restart rsyslog.service",
+  "ccis": [
+    "CCI-000067"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk and make remote user access management difficult at best. Remote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. Automated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000012",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

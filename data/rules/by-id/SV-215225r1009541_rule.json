@@ -1,0 +1,54 @@
+{
+  "id": "SV-215225r1009541_rule",
+  "full_rule_id": "SV-215225r1009541_rule",
+  "rule_id": "SV-215225",
+  "rule_revision": "1009541",
+  "group_id": "V-215225",
+  "group_title": "SRG-OS-000078-GPOS-00046",
+  "title": "AIX must use Loadable Password Algorithm  (LPA) password hashing algorithm.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The default legacy password hashing algorithm, crypt(), uses only the first 8 characters from the password string, meaning the user's password is truncated to eight characters. If the password is shorter than 8 characters, it is padded with zero bits on the right.\n\nThe crypt() is a modified DES algorithm that is vulnerable to brute force password guessing attacks and also to cracking the DES-hashing algorithm by using techniques such as pre-computation. \n\nWith the Loadable Password Algorithm (LPA) framework release, AIX implemented a set of LPAs using MD5, SHA2, and Blowfish algorithms. These IBM proprietary password algorithms support a password longer than 8 characters and Unicode characters in passwords.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the command prompt, run the following command to check system wide password algorithm:\n\n# lssec -f /etc/security/login.cfg -s usw -a pwd_algorithm\nusw pwd_algorithm=ssha512\n\nIf the \"pwd_algorithm\" is not set to \"ssha512\", or \"ssha256\", this is a finding.",
+  "fix": "From the command prompt, run the following command to set system wide password algorithm to \"ssha512\" so that it supports passwords longer than 8-character:\n# chsec -f /etc/security/login.cfg -s usw -a pwd_algorithm=ssha512\n\nFor each users who have hashed passwords in \"/etc/security/passwd\" file that does not start with \"{ssha512}\", run passwd commands to reset the users' passwords so that they have to change their passwords in the next login:\n# passwd [user_name]",
+  "ccis": [
+    "CCI-004066",
+    "CCI-000205"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The default legacy password hashing algorithm, crypt(), uses only the first 8 characters from the password string, meaning the user's password is truncated to eight characters. If the password is shorter than 8 characters, it is padded with zero bits on the right.\n\nThe crypt() is a modified DES algorithm that is vulnerable to brute force password guessing attacks and also to cracking the DES-hashing algorithm by using techniques such as pre-computation. \n\nWith the Loadable Password Algorithm (LPA) framework release, AIX implemented a set of LPAs using MD5, SHA2, and Blowfish algorithms. These IBM proprietary password algorithms support a password longer than 8 characters and Unicode characters in passwords.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001128",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

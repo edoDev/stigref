@@ -1,0 +1,53 @@
+{
+  "id": "SV-215239r958420_rule",
+  "full_rule_id": "SV-215239r958420_rule",
+  "rule_id": "SV-215239",
+  "rule_revision": "958420",
+  "group_id": "V-215239",
+  "group_title": "SRG-OS-000041-GPOS-00019",
+  "title": "AIX must produce audit records containing information to establish the outcome of the events.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without information about the outcome of events, security personnel cannot make an accurate assessment as to whether an attack was successful or if changes were made to the security state of the system.\n\nEvent outcomes can include indicators of event success or failure and event-specific results (e.g., the security state of the information system after the event occurred). As such, they also provide a means to measure the impact of an event and help authorized personnel to determine the appropriate response.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the audit event \"status\" is displayed:\n\nThe log file can be set by the \"trail\" variable in /etc/security/audit/config.\n\n# grep trail /etc/security/audit/config\n        trail = /audit/trail\n\nNote: The default log file is /audit/trail.\n\nUse the following command to display the audit events:\n\n# /usr/sbin/auditpr -i <audit log file> -helRtcp \n\nevent           login    status      time                     command           \n              process  \n--------------- -------- ----------- ------------------------ ------------------\n------------- -------- \nPROC_Delete     root     OK          Wed Oct 31 23:01:37 2018 audit             \n              9437656  \nFILE_Close      root     OK          Wed Oct 31 23:01:37 2018 auditbin          \n              12255562 \nFILE_Open       root     OK          Wed Oct 31 23:01:37 2018 auditbin          \n              12255562 \nFILE_Read       root     OK          Wed Oct 31 23:01:37 2018 auditbin          \n              12255562 \nFILE_Close      root     OK          Wed Oct 31 23:01:37 2018 auditbin          \n              12255562 \nPROC_Create     root     OK          Wed Oct 31 23:01:44 2018 ksh               \n              12976466 \nFILE_Close      root     OK          Wed Oct 31 23:01:44 2018 ksh               \n              9437658  \nFILE_Open       root     OK          Wed Oct 31 23:01:44 2018 ksh               \n              9437658  \nFILE_Read       root     OK          Wed Oct 31 23:01:44 2018 ksh               \n              9437658  \nFILE_Close      root     OK          Wed Oct 31 23:01:44 2018 ksh               \n              9437658  \nPROC_Execute    root     OK          Wed Oct 31 23:01:44 2018 ls                \n              9437658  \nFILE_Open       root     OK          Wed Oct 31 23:01:44 2018 ls                \n              9437658  \n\nIf audit status is not displayed, this is a finding.\n\nMore information on the command options used above:\n            -e the audit event.\n            -l the login name of the user.\n            -R the audit status.\n            -t the time the record was written.\n            -c the command name.\n            -p the process ID.",
+  "fix": "Reset the audit system with the following command:\n# /usr/sbin/audit shutdown\n\nStart the audit system with the following command:\n# /usr/sbin/audit start",
+  "ccis": [
+    "CCI-000134"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without information about the outcome of events, security personnel cannot make an accurate assessment as to whether an attack was successful or if changes were made to the security state of the system.\n\nEvent outcomes can include indicators of event success or failure and event-specific results (e.g., the security state of the information system after the event occurred). As such, they also provide a means to measure the impact of an event and help authorized personnel to determine the appropriate response.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002005",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

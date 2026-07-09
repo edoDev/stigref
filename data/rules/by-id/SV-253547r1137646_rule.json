@@ -1,0 +1,53 @@
+{
+  "id": "SV-253547r1137646_rule",
+  "full_rule_id": "SV-253547r1137646_rule",
+  "rule_id": "SV-253547",
+  "rule_revision": "1137646",
+  "group_id": "V-253547",
+  "group_title": "SRG-APP-000431-CTR-001065",
+  "title": "Prisma Cloud Compute must run within a defined/separate namespace (e.g., Twistlock).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Namespaces are a key boundary for network policies, orchestrator access control restrictions, and other important security controls. Prisma Cloud Compute containers running within a separate and exclusive namespace will inherit the namespace's security features. Separating workloads into namespaces can help contain attacks and limit the impact of mistakes or destructive actions by authorized users.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Inspect the Kubernetes namespace in which Prisma Cloud Compute is deployed:\n\n$ kubectl get pods -n twistlock\nNAME                                                           READY   STATUS    RESTARTS   AGE\ntwistlock-console-855744b66b-xs9cm     1/1       Running          0           4d6h\ntwistlock-defender-ds-99zj7                       1/1       Running          0           58d\ntwistlock-defender-ds-drsh8                      1/1       Running          0           58d\n\nInspect the list of pods.\n\nIf a non-Prisma Cloud Compute (does not start with \"twistlock\") pod is running in the same namespace, this is a finding.",
+  "fix": "Deploy the Prisma Cloud Compute Console and Defender containers within a distinct namespace.",
+  "ccis": [
+    "CCI-002530"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Namespaces are a key boundary for network policies, orchestrator access control restrictions, and other important security controls. Prisma Cloud Compute containers running within a separate and exclusive namespace will inherit the namespace's security features. Separating workloads into namespaces can help contain attacks and limit the impact of mistakes or destructive actions by authorized users.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-PC-001380",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "palo-alto-networks-prisma-cloud-compute-security-technical-implementation-guide-v2r3-04e223d6",
+      "name": "Palo Alto Networks Prisma Cloud Compute Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "palo-alto-networks-prisma-cloud-compute-security-technical-implementation-guide-v2r3-04e223d6"
+  ]
+}

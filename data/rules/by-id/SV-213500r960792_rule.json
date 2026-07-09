@@ -1,0 +1,53 @@
+{
+  "id": "SV-213500r960792_rule",
+  "full_rule_id": "SV-213500r960792_rule",
+  "rule_id": "SV-213500",
+  "rule_revision": "960792",
+  "group_id": "V-213500",
+  "group_title": "SRG-APP-000033-AS-000024",
+  "title": "Silent Authentication must be removed from the Default Application Security Realm.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Silent Authentication is a configuration setting that allows local OS users access to the JBoss server and a wide range of operations without specifically authenticating on an individual user basis.  By default $localuser is a Superuser. This introduces an integrity and availability vulnerability and violates best practice requirements regarding accountability.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Log on to the OS of the JBoss server with OS permissions that allow access to JBoss.\nUsing the relevant OS commands and syntax, cd to the <JBOSS_HOME>/bin/ folder.\nRun the jboss-cli script.\nConnect to the server and authenticate.\n\nVerify that Silent Authentication has been removed from the default Application security realm.\nRun the following command.\n\nFor standalone servers, run the following command:\n\"ls /core-service=management/security-realm=ApplicationRealm/authentication\"\n\nFor managed domain installations, run the following command:\n\"ls /host=HOST_NAME/core-service=management/security-realm=ApplicationRealm/authentication\"\n\nIf \"local\" is returned, this is a finding.",
+  "fix": "Log on to the OS of the JBoss server with OS permissions that allow access to JBoss.\nUsing the relevant OS commands and syntax, cd to the <JBOSS_HOME>/bin/ folder. \nRun the jboss-cli script.\nConnect to the server and authenticate.\n\nRemove the local element from the Application Realm.\nFor standalone servers, run the following command:\n/core-service=management/security-realm=\nApplicationRealm/authentication=local:remove\n\nFor managed domain installations, run the following command:\n/host=HOST_NAME/core-service=management/security-realm=\nApplicationRealm/authentication=local:remove",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Silent Authentication is a configuration setting that allows local OS users access to the JBoss server and a wide range of operations without specifically authenticating on an individual user basis.  By default $localuser is a Superuser. This introduces an integrity and availability vulnerability and violates best practice requirements regarding accountability.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JBOS-AS-000045",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9",
+      "name": "JBoss Enterprise Application Platform 6.3 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "jboss-enterprise-application-platform-6-3-security-technical-implementation-guid-v2r6-54baf4f9"
+  ]
+}

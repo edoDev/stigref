@@ -1,0 +1,53 @@
+{
+  "id": "SV-269266r1050148_rule",
+  "full_rule_id": "SV-269266r1050148_rule",
+  "rule_id": "SV-269266",
+  "rule_revision": "1050148",
+  "group_id": "V-269266",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "AlmaLinux OS 9 SSH public host key files must have mode 0644 or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If a public host key file is modified by an unauthorized user, the SSH service may be compromised.\n\nWhilst public keys are publicly readable, they should not be writeable by nonowners.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SSH public host key files have a mode of \"0644\" or less permissive with the following command:\n\nNote: SSH public key files may be found in other directories on the system depending on the installation.\n\n$ stat -c \"%#a %n\" /etc/ssh/ssh_host*key.pub\n\n0644 /etc/ssh/ssh_host_ecdsa_key.pub\n0644 /etc/ssh/ssh_host_rsa_key.pub\n\nIf any public key has a mode more permissive than \"0644\", this is a finding.",
+  "fix": "Change the mode of public host key files under \"/etc/ssh\" to \"0644\" with the following command:\n\n$ chmod 0644 /etc/ssh/*key.pub\n\nRestart the SSH daemon for the changes to take effect:\n\n$ systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If a public host key file is modified by an unauthorized user, the SSH service may be compromised.\n\nWhilst public keys are publicly readable, they should not be writeable by nonowners.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-021030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

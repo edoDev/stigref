@@ -1,0 +1,55 @@
+{
+  "id": "SV-256784r889351_rule",
+  "full_rule_id": "SV-256784r889351_rule",
+  "rule_id": "SV-256784",
+  "rule_revision": "889351",
+  "group_id": "V-256784",
+  "group_title": "SRG-APP-000118-WSR-000068",
+  "title": "vSphere UI log files must only be accessible by privileged users.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Log data is essential in the investigation of events. If log data were to become compromised, competent forensic analysis and discovery of the true source of potentially malicious system activity would be difficult, if not impossible, to achieve. \n \nIn addition, access to log records provides information an attacker could use to their advantage since each event record might contain communication ports, protocols, services, trust relationships, usernames, etc. The vSphere UI restricts all access to log files by default, but this configuration must be verified.\n\nSatisfies: SRG-APP-000118-WSR-000068, SRG-APP-000119-WSR-000069, SRG-APP-000120-WSR-000070</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# find /var/log/vmware/vsphere-ui/ -xdev -type f -a '(' -perm -o+w -o -not -user vsphere-ui -o -not -group users -a -not -group root ')' -exec ls -ld {} \\; \n \nIf any files are returned, this is a finding.",
+  "fix": "At the command prompt, run the following commands: \n \n# chmod 644 /storage/log/vmware/vsphere-ui/logs/<file> \n# chown vsphere-ui:users /storage/log/vmware/vsphere-ui/logs/<file> \n \nNote: Substitute <file> with the listed file.",
+  "ccis": [
+    "CCI-000162",
+    "CCI-000163",
+    "CCI-000164"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Log data is essential in the investigation of events. If log data were to become compromised, competent forensic analysis and discovery of the true source of potentially malicious system activity would be difficult, if not impossible, to achieve. \n \nIn addition, access to log records provides information an attacker could use to their advantage since each event record might contain communication ports, protocols, services, trust relationships, usernames, etc. The vSphere UI restricts all access to log files by default, but this configuration must be verified.\n\nSatisfies: SRG-APP-000118-WSR-000068, SRG-APP-000119-WSR-000069, SRG-APP-000120-WSR-000070",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCUI-70-000007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c",
+      "name": "VMware vSphere 7.0 vCenter Appliance UI Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c"
+  ]
+}

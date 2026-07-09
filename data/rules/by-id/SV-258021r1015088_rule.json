@@ -1,0 +1,55 @@
+{
+  "id": "SV-258021r1015088_rule",
+  "full_rule_id": "SV-258021r1015088_rule",
+  "rule_id": "SV-258021",
+  "rule_revision": "1015088",
+  "group_id": "V-258021",
+  "group_title": "SRG-OS-000028-GPOS-00009",
+  "title": "RHEL 9 must enable a user session lock until that user re-establishes access using established identification and authentication procedures for graphical user sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.\n\nThe session lock is implemented at the point where session activity can be determined.\n\nRegardless of where the session lock is determined and implemented, once invoked, the session lock must remain in place until the user reauthenticates. No other activity aside from reauthentication must unlock the system.\n\nSatisfies: SRG-OS-000028-GPOS-00009, SRG-OS-000030-GPOS-00011</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 9 enables a user's session lock until that user re-establishes access using established identification and authentication procedures with the following command:\n\nNote: This requirement assumes the use of the RHEL 9 default graphical user interface, the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.\n\n$ gsettings get org.gnome.desktop.screensaver lock-enabled\n\ntrue\n\nIf the setting is \"false\", this is a finding.",
+  "fix": "Configure RHEL 9 to enable a user's session lock until that user re-establishes access using established identification and authentication procedures.\n\nCreate a database to contain the system-wide screensaver settings (if it does not already exist) with the following example:\n\n$ sudo vi /etc/dconf/db/local.d/00-screensaver\n\nEdit the \"[org/gnome/desktop/screensaver]\" section of the database file and add or update the following lines:\n\n# Set this to true to lock the screen when the screensaver activates\nlock-enabled=true\n\nUpdate the system databases:\n\n$ sudo dconf update",
+  "ccis": [
+    "CCI-000056",
+    "CCI-000057",
+    "CCI-000058"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A session lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not want to log out because of the temporary nature of the absence.\n\nThe session lock is implemented at the point where session activity can be determined.\n\nRegardless of where the session lock is determined and implemented, once invoked, the session lock must remain in place until the user reauthenticates. No other activity aside from reauthentication must unlock the system.\n\nSatisfies: SRG-OS-000028-GPOS-00009, SRG-OS-000030-GPOS-00011",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-271055",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

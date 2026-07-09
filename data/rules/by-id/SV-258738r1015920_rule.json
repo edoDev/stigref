@@ -1,0 +1,54 @@
+{
+  "id": "SV-258738r1015920_rule",
+  "full_rule_id": "SV-258738r1015920_rule",
+  "rule_id": "SV-258738",
+  "rule_revision": "1015920",
+  "group_id": "V-258738",
+  "group_title": "SRG-OS-000107-VMM-000530",
+  "title": "The ESXi host Secure Shell (SSH) daemon must ignore .rhosts files.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>SSH trust relationships mean a compromise on one host can allow an attacker to move trivially to other hosts. SSH can emulate the behavior of the obsolete \"rsh\" command in allowing users to enable insecure access to their accounts via \".rhosts\" files.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an ESXi shell, run the following command:\n\n# esxcli system ssh server config list -k ignorerhosts\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\n$esxcli = Get-EsxCli -v2\n$esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'ignorerhosts'}\n\nExample result:\n\nignorerhosts yes\n\nIf \"ignorerhosts\" is not configured to \"yes\", this is a finding.",
+  "fix": "From an ESXi shell, run the following command:\n\n# esxcli system ssh server config set -k ignorerhosts -v yes\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following commands:\n\n$esxcli = Get-EsxCli -v2\n$arguments = $esxcli.system.ssh.server.config.set.CreateArgs()\n$arguments.keyword = 'ignorerhosts'\n$arguments.value = 'yes'\n$esxcli.system.ssh.server.config.set.Invoke($arguments)",
+  "ccis": [
+    "CCI-000765",
+    "CCI-000767"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "SSH trust relationships mean a compromise on one host can allow an attacker to move trivially to other hosts. SSH can emulate the behavior of the obsolete \"rsh\" command in allowing users to enable insecure access to their accounts via \".rhosts\" files.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000052",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v2r3-8fcaad5d",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v2r3-8fcaad5d"
+  ]
+}

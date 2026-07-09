@@ -1,0 +1,54 @@
+{
+  "id": "SV-271496r1091200_rule",
+  "full_rule_id": "SV-271496r1091200_rule",
+  "rule_id": "SV-271496",
+  "rule_revision": "1091200",
+  "group_id": "V-271496",
+  "group_title": "SRG-OS-000363-GPOS-00150",
+  "title": "OL 9 must have the Advanced Intrusion Detection Environment (AIDE) package installed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without verification of the security functions, security functions may not operate correctly, and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.\n\nSatisfies: SRG-OS-000363-GPOS-00150, SRG-OS-000445-GPOS-00199</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 has the package installed with the following command:\n\n$ dnf list --installed aide\nInstalled Packages\naide.x86_64                                         0.16-100.el9                                          @ol9_appstream\n\nIf AIDE is not installed, ask the system administrator (SA) how file integrity checks are performed on the system. \n\nIf there is no application installed to perform integrity checks, this is a finding.\n\nIf AIDE is installed, check if it has been initialized with the following command:\n\n$ sudo /usr/sbin/aide --check\n\nIf the output is \"Couldn't open file /var/lib/aide/aide.db.gz for reading\", this is a finding.",
+  "fix": "Install AIDE, initialize it, and perform a manual check.\n\nInstall AIDE:\n\n$ sudo dnf install -y aide\n\nInitialize AIDE:\n     \n$ sudo /usr/sbin/aide --init\n\nExample output:\n\nStart timestamp: 2023-06-05 10:09:04 -0600 (AIDE 0.16)\nAIDE initialized database at /var/lib/aide/aide.db.new.gz\n\nNumber of entries:      86833\n\n---------------------------------------------------\nThe attributes of the (uncompressed) database(s):\n---------------------------------------------------\n\n/var/lib/aide/aide.db.new.gz\n  MD5      : coZUtPHhoFoeD7+k54fUvQ==\n  SHA1     : DVpOEMWJwo0uPgrKZAygIUgSxeM=\n  SHA256   : EQiZH0XNEk001tcDmJa+5STFEjDb4MPE\n             TGdBJ/uvZKc=\n  SHA512   : 86KUqw++PZhoPK0SZvT3zuFq9yu9nnPP\n             toei0nENVELJ1LPurjoMlRig6q69VR8l\n             +44EwO9eYyy9nnbzQsfG1g==\n\nEnd timestamp: 2023-06-05 10:09:57 -0600 (run time: 0m 53s)\n\nThe new database will need to be renamed to be read by AIDE:\n\n$ sudo mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz\n\nPerform a manual check:\n\n$ sudo /usr/sbin/aide --check\n\nExample output:\n\n2023-06-05 10:16:08 -0600 (AIDE 0.16)\nAIDE found NO differences between database and filesystem. Looks okay!!",
+  "ccis": [
+    "CCI-001744",
+    "CCI-002696"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without verification of the security functions, security functions may not operate correctly, and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.\n\nSatisfies: SRG-OS-000363-GPOS-00150, SRG-OS-000445-GPOS-00199",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-000300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

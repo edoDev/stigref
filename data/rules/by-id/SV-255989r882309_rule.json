@@ -1,0 +1,53 @@
+{
+  "id": "SV-255989r882309_rule",
+  "full_rule_id": "SV-255989r882309_rule",
+  "rule_id": "SV-255989",
+  "rule_revision": "882309",
+  "group_id": "V-255989",
+  "group_title": "SRG-NET-000018-RTR-000003",
+  "title": "The Arista BGP router must be configured to reject inbound route advertisements for any prefixes belonging to the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Accepting route advertisements belonging to the local AS can result in traffic looping or being black holed, or at a minimum using a non-optimized path.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router configuration to verify that it will reject routes belonging to the local AS.\n\nThe prefix filter must be referenced inbound on the appropriate BGP neighbor statements.\n\nStep 1: Review the prefix lists configured on the router to filter the local AS prefix (10.12.0.0/16). To verify IP prefix lists are configured, execute the command \"show ip prefix-list\".\n\nrouter#sh ip prefix-list\nrouter#ip prefix-list LOCAL_SCOPE_BOUNDARY\n   seq 10 deny 10.12.0.0/16\n   seq  100 permit  0.0.0.0/0 le32\n\nStep 2: Review the BGP configuration to verify the prefix filter is applied inbound to the BGP neighbor. To verify the BGP config and verify the prefix is applied, execute the command \"show run | section router bgp\".\n\nrouter bgp 65000\n  router-id 10.11.11.11\n  address-family ipv4\n    no neighbor 10.11.12.2 prefix-list out     \n    neighbor 10.12.0.0 prefix-list LOCAL_SCOPE_BOUNDARY in\n\nIf the Arista router is not configured to reject inbound route advertisements belonging to the local AS, this is a finding.",
+  "fix": "Configure Arista eBGP routers to reject inbound route advertisements for prefixes that are not allocated to that specific customer.\n\nStep 1: Configure the prefix-list to reject inbound route advertisements belonging to the local AS.\n\nrouter(config)#ip prefix-list LOCAL_SCOPE_BOUNDARY\nrouter(config-ip-pfx)#seq 10 deny 10.12.0.0/16\nrouter(config-ip-pfx)#seq 100 permit 0.0.0.0/0 le32\n \nStep 2: Configure a route-map to match the prefix-list.\n\nrouter(config)#route-map LOCAL_AS deny\nrouter(config-route-map-LOCAL_AS)#match IP address prefix-list LOCAL_SCOPE_BOUNDARY\nrouter(config-route-map-LOCAL_AS)#exit\n\nStep 3: Configure the route-map to be applied inbound to the appropriate BGP neighbor.\n\nrouter(config)#router bgp 65000\nrouter(config-router-bgp)#neighbor 10.12.0.0 prefix-list LOCAL_SCOPE_BOUNDARY in",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Accepting route advertisements belonging to the local AS can result in traffic looping or being black holed, or at a minimum using a non-optimized path.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

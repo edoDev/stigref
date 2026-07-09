@@ -1,0 +1,53 @@
+{
+  "id": "SV-257997r1069370_rule",
+  "full_rule_id": "SV-257997r1069370_rule",
+  "rule_id": "SV-257997",
+  "rule_revision": "1069370",
+  "group_id": "V-257997",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "RHEL 9 SSH server configuration file must be group-owned by root.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Service configuration files enable or disable features of their respective services, which if configured incorrectly, can lead to insecure and vulnerable configurations. Therefore, service configuration files must be owned by the correct group to prevent unauthorized changes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the group ownership of the \"/etc/ssh/sshd_config\" file and the contents of \"/etc/ssh/sshd_config.d\" with the following command:\n\n$ sudo find /etc/ssh/sshd_config /etc/ssh/sshd_config.d -exec stat -c \"%G %n\" {} \\;\n\nroot /etc/ssh/sshd_config\nroot /etc/ssh/sshd_config.d\nroot /etc/ssh/sshd_config.d/50-cloud-init.conf\nroot /etc/ssh/sshd_config.d/50-redhat.conf\n\nIf the \"/etc/ssh/sshd_config\" file or \"/etc/ssh/sshd_config.d\" or any files in the sshd_config.d directory do not have a group owner of \"root\", this is a finding.",
+  "fix": "Configure the \"/etc/ssh/sshd_config\" file and the contents of \"/etc/ssh/sshd_config.d\" to be group-owned by root with the following command:\n\n$ sudo chgrp root /etc/ssh/sshd_config /etc/ssh/sshd_config.d",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Service configuration files enable or disable features of their respective services, which if configured incorrectly, can lead to insecure and vulnerable configurations. Therefore, service configuration files must be owned by the correct group to prevent unauthorized changes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-255105",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

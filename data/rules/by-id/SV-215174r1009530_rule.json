@@ -1,0 +1,54 @@
+{
+  "id": "SV-215174r1009530_rule",
+  "full_rule_id": "SV-215174r1009530_rule",
+  "rule_id": "SV-215174",
+  "rule_revision": "1009530",
+  "group_id": "V-215174",
+  "group_title": "SRG-OS-000073-GPOS-00041",
+  "title": "If AIX is using LDAP for authentication or account information, the /etc/ldap.conf file (or equivalent) must not contain passwords.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Examine the LDAP configuration file \"/etc/security/ldap/ldap.cfg\" for possible clear-text password for \"bindpwd\".\n\nFrom the command prompt, run the following command:\n# grep ^bindpwd: /etc/security/ldap/ldap.cfg\n\nThe above command should yield the following output:\nbindpwd:{DESv2}57AEE2BCED 764373462FC7B62736D9A\n\nIf the returned entry has an unencrypted password (the output line does not start with \"bindpwd:{DES\"), this is a finding. \n\nExamine the LDAP configuration file \"/etc/security/ldap/ldap.cfg\" for using stashed password for SSL key database (KDB).\n\nCheck for \"ldapsslkeypwd\" in LDAP config file using the follow command: \n# grep '^ldapsslkeypwd' /etc/security/ldap/ldap.cfg \n\nIf the command returned a line, this is a finding.",
+  "fix": "To remove the clear-text password for \"bindpwd\", do the following two steps:\nEdit \"/etc/security/ldap/ldap.cfg\" to remove the \"bindpwd\" line and save the change; \n\nRe-config the LDAP client using the \"mksecldap\" command:\n# mksecldap -c -h <LDAP_HOST:LDAP_PORT> -A <auth_type> -D <Default_Entry> -d <BASE_DN> -a <BIND_USER> -p <BIND_PASSWORD> -k <KDB_FILE> -w <KDB_PASSWORD>\n\nNote: Depending on which version of GSKit is installed on AIX, the GSK commands that are used to manage the Key Database (KDB) have different names. The possible GSK commands are: \"gsk8capicmd\" (used below), \"gsk8capicmd_64\" and \"gsk7cmd\".\n\nTo use the stashed password for SSL key database (KDB), do the following two steps:\nEdit \"/etc/security/ldap/ldap.cfg\" to remove the \"ldapsslkeypwd\" line and save the change;\n\nRun the \"gsk8capicmd\" to create a stashed password file for the SSL KDB:\n# gsk8capicmd -keydb -stashpw -db <KDB_FILE> -pw <KDB_PASSWORD>",
+  "ccis": [
+    "CCI-004062",
+    "CCI-000196"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001007",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

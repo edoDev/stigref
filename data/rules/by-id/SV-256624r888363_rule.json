@@ -1,0 +1,53 @@
+{
+  "id": "SV-256624r888363_rule",
+  "full_rule_id": "SV-256624r888363_rule",
+  "rule_id": "SV-256624",
+  "rule_revision": "888363",
+  "group_id": "V-256624",
+  "group_title": "SRG-APP-000141-WSR-000085",
+  "title": "Performance Charts must not have the Web Distributed Authoring (WebDAV) servlet installed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>WebDAV is an extension to the HTTP protocol that, when developed, was meant to allow users to create, change, and move documents on a server, typically a web server or web share. WebDAV is not widely used and has serious security concerns because it may allow clients to modify unauthorized files on the web server and must therefore be disabled.\n\nTomcat uses the \"org.apache.catalina.servlets.WebdavServlet\" servlet to provide WebDAV services. Because the WebDAV service has been found to have an excessive number of vulnerabilities, this servlet must not be installed. Performance Charts does not configure WebDAV by default.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n\n# grep -n 'webdav' /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml\n\nIf the command produces any output, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-perfcharts/tc-instance/conf/web.xml\n\nFind the <servlet-name>webdav</servlet-name> node and remove the entire parent <servlet> block.\n\nRestart the service with the following command:\n\n# vmon-cli --restart perfcharts",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "WebDAV is an extension to the HTTP protocol that, when developed, was meant to allow users to create, change, and move documents on a server, typically a web server or web share. WebDAV is not widely used and has serious security concerns because it may allow clients to modify unauthorized files on the web server and must therefore be disabled.\n\nTomcat uses the \"org.apache.catalina.servlets.WebdavServlet\" servlet to provide WebDAV services. Because the WebDAV service has been found to have an excessive number of vulnerabilities, this servlet must not be installed. Performance Charts does not configure WebDAV by default.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPF-70-000014",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-1202da0d",
+      "name": "VMware vSphere 7.0 vCenter Appliance Perfcharts Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-perfcharts-security-technical-implementatio-v1r1-1202da0d"
+  ]
+}

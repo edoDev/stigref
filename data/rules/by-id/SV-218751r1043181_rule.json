@@ -1,0 +1,53 @@
+{
+  "id": "SV-218751r1043181_rule",
+  "full_rule_id": "SV-218751r1043181_rule",
+  "rule_id": "SV-218751",
+  "rule_revision": "1043181",
+  "group_id": "V-218751",
+  "group_title": "SRG-APP-000224-WSR-000136",
+  "title": "The IIS 10.0 website must generate unique session identifiers that cannot be reliably reproduced.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Communication between a client and the web server is done using the HTTP protocol, but HTTP is a stateless protocol. To maintain a connection or session, a web server will generate a session identifier (ID) for each client session when the session is initiated. The session ID allows the web server to track a user session and, in many cases, the user, if the user previously logged into a hosted application.\n\nBy being able to guess session IDs, an attacker can easily perform a man-in-the-middle attack. To truly generate random session identifiers that cannot be reproduced, the web server session ID generator, when used twice with the same input criteria, must generate an unrelated random ID.\n\nThe session ID generator must be a FIPS 140-2-approved generator.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If ASP.NET is not installed, this is Not Applicable.\n\nFollow the procedures below for each site hosted on the IIS 10.0 web server:\n\nOpen the IIS 10.0 Manager.\n\nClick the site name.\n\nUnder the \"ASP.NET\" section, select \"Session State\".\n\nUnder \"Session State\" Mode Settings, verify the \"In Process\" mode is selected.\n\nIf the \"In Process\" mode is selected, this is not a finding.\n\nAlternative method:\n\nClick the site name.\n\nSelect \"Configuration Editor\" under the \"Management\" section.\n\nFrom the \"Section:\" drop-down list at the top of the configuration editor, locate \"system.web/sessionState\".\n\nVerify the \"mode\" reflects \"InProc\".\n\nIf the \"mode\" is not set to \"InProc\", this is a finding.\n\nIf the system being reviewed is part of a Web Farm, interview the System Administrator to ensure Session State Tracking is enabled via a SQL server, or other means. If Session State Tracking is enabled on the Web Farm, this is not a finding.",
+  "fix": "Follow the procedures below for each site hosted on the IIS 10.0 web server:\n\nOpen the IIS 10.0 Manager.\n\nClick the site name.\n\nUnder the ASP.NET section, select \"Session State\".\n\nUnder \"Session State\" Mode Settings, select the \"In Process\" mode.",
+  "ccis": [
+    "CCI-001188"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Communication between a client and the web server is done using the HTTP protocol, but HTTP is a stateless protocol. To maintain a connection or session, a web server will generate a session identifier (ID) for each client session when the session is initiated. The session ID allows the web server to track a user session and, in many cases, the user, if the user previously logged into a hosted application.\n\nBy being able to guess session IDs, an attacker can easily perform a man-in-the-middle attack. To truly generate random session identifiers that cannot be reproduced, the web server session ID generator, when used twice with the same input criteria, must generate an unrelated random ID.\n\nThe session ID generator must be a FIPS 140-2-approved generator.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IIST-SI-000223",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-iis-10-0-site-security-technical-implementation-guide-v2r15-f7e4aa41",
+      "name": "Microsoft IIS 10.0 Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "15"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-iis-10-0-site-security-technical-implementation-guide-v2r15-f7e4aa41"
+  ]
+}

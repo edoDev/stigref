@@ -1,0 +1,54 @@
+{
+  "id": "SV-223619r1137691_rule",
+  "full_rule_id": "SV-223619r1137691_rule",
+  "rule_id": "SV-223619",
+  "rule_revision": "1137691",
+  "group_id": "V-223619",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS UNIX resources must be protected in accordance with security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nACF\nSET RESOURCE(SUR)\nSET VERBOSE\nLIST LIKE(BPX-)\n\nIf the ACF2 rules for all BPX.SRV.user TYPE(SUR) resources specify a default access of NONE, this is not a finding.\n\nIf the ACF2 rules for all BPX.SRV.user TYPE(SUR) resources restrict access to system software processes (e.g., web servers) that act as servers under z/OS UNIX, this is not a finding.\n\nIf the ACF2 rules for all BPX.SRV.user SURROGAT resources restrict access to authorized users identified in the  Site Security Plan, this is not a finding.",
+  "fix": "Configure BPX. SRV.userid resources to be properly protected and access restricted to appropriate system tasks or systems programming personnel.\n\nSURROGAT class BPX resources are used in conjunction with server applications that are performing tasks on behalf of client users that may not supply an authenticator to the server. This can be the case when clients are otherwise validated or when the requested service is performed from userids representing groups.\n\nThe default access for each BPX.SRV.userid resource must be no access. Access can be permitted only to system software processes that act as servers under OS/390 UNIX (e.g., web servers) and users whose access an approval are identified in the Site Security Plan.\n\nExample:\nSET R(SUR)\n$KEY(BPX) TYPE(SUR) \nSRV.INTERNAL UID(FJB****STC******IMWEBSRV) SERVICE(READ) LOG\nSRV.PRIVATE UID(FJB****STC******IMWEBSRV) SERVICE(READ) LOG \nSRV.PUBLIC UID(FJB****STC******IMWEBSRV) SERVICE(READ) LOG \nSRV.WEBADM UID(FJB****STC******IMWEBSRV) SERVICE(READ) LOG \n- UID(*) PREVENT",
+  "ccis": [
+    "CCI-000213",
+    "CCI-002233"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ACF2-US-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad",
+      "name": "IBM z/OS ACF2 Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-acf2-security-technical-implementation-guide-v9r8-0c1bfdad"
+  ]
+}

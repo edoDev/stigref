@@ -1,0 +1,53 @@
+{
+  "id": "SV-216812r1117237_rule",
+  "full_rule_id": "SV-216812r1117237_rule",
+  "rule_id": "SV-216812",
+  "rule_revision": "1117237",
+  "group_id": "V-216812",
+  "group_title": "SRG-NET-000019-RTR-000014",
+  "title": "The Cisco multicast Rendezvous Point (RP) router must be configured to filter Protocol Independent Multicast (PIM) Join messages received from the Designated Router (DR) for any undesirable multicast groups.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the RP router is configured to filter PIM join messages for any undesirable multicast groups. In the example below, groups from 239.8.0.0/16 are no allowed.\n\nipv4 access-list FILTER_PIM_JOINS\n 10 deny ipv4 239.8.0.0 0.0.255.255 any\n 20 permit ipv4 any any\n…\n…\n…\nrouter pim\n address-family ipv4\n  allow-rp group-list FILTER_PIM_JOINS\n\nIf the RP is not configured to filter join messages received from the DR for any undesirable multicast groups, this is a finding.",
+  "fix": "Configure the RP to filter PIM join messages for any undesirable multicast groups as shown in the example below.\n\nRP/0/0/CPU0:R2(config)#ipv4 access-list FILTER_PIM_JOINS\nRP/0/0/CPU0:R2(config-ipv4-acl)#deny 239.8.0.0 0.0.255.255\nRP/0/0/CPU0:R2(config-ipv4-acl)#permit any\nRP/0/0/CPU0:R2(config-ipv4-acl)#exit\nRP/0/0/CPU0:R2(config)#router pim\nRP/0/0/CPU0:R2(config-pim)#address-family ipv4\nRP/0/0/CPU0:R2(config-pim-default-ipv4)#allow-rp group-list FILTER_PIM_JOINS \nRP/0/0/CPU0:R2(config-pim-default-ipv4)#end",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. An attacker can flood a network segment with multicast packets, over-using the available bandwidth and thereby creating a denial-of-service (DoS) condition. Hence, it is imperative that join messages are only accepted for authorized multicast groups.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000840",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f",
+      "name": "Cisco IOS XR Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f"
+  ]
+}

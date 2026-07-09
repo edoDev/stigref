@@ -1,0 +1,53 @@
+{
+  "id": "SV-256061r945860_rule",
+  "full_rule_id": "SV-256061r945860_rule",
+  "rule_id": "SV-256061",
+  "rule_revision": "945860",
+  "group_id": "V-256061",
+  "group_title": "SRG-NET-000205-RTR-000016",
+  "title": "The PE router must be configured to ignore or block all packets with any IP options.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Packets with IP options are not fast routered and therefore must be punted to the router processor. Hackers who initiate denial-of-service (DoS) attacks on routers commonly send large streams of packets with IP options. Dropping the packets with IP options reduces the load of IP options packets on the router. The end result is a reduction in the effects of the DoS attack on the router and on downstream routers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the PE router is configured to block all packets with any IP options with the following command:\n\nrouter#show run | section IP_Option_ACL\nIP Access List IP_Option_ACL\n        10 deny ip any any ip-length gt 5\n        20 deny any log\n!\ninterface Ethernet25\n   description STIG_IP_Option_ACL\n   ip access-group IP_Option_ACL in\n!\n\nIf the perimeter router is not configured to block packets with IP options, this is a finding.",
+  "fix": "Configure the PE router to block packets with IP options with the following commands:\n\nrouter#config\nrouter(config)# ip access-list IP_Option_ACL\n   10 deny ip any any ip-length gt 5 \n!\nrouter(config)#interface Ethernet25\n ip access-group IP_Option_ACL in\n!",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Packets with IP options are not fast routered and therefore must be punted to the router processor. Hackers who initiate denial-of-service (DoS) attacks on routers commonly send large streams of packets with IP options. Dropping the packets with IP options reduces the load of IP options packets on the router. The end result is a reduction in the effects of the DoS attack on the router and on downstream routers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000840",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

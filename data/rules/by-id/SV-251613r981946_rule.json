@@ -1,0 +1,53 @@
+{
+  "id": "SV-251613r981946_rule",
+  "full_rule_id": "SV-251613r981946_rule",
+  "rule_id": "SV-251613",
+  "rule_revision": "981946",
+  "group_id": "V-251613",
+  "group_title": "SRG-APP-000164-DB-000401",
+  "title": "DBMS authentication using passwords must be avoided.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Passwords that are easy to guess open a vulnerability allowing an unauthorized user to potentially gain access to the DBMS. IDMS uses the External Security Manager (ESM) to enforce complexity and lifetime standards.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Examine load module RHDCSRTT by executing CA IDMS utility IDMSSRTD, or by issuing command \"DCMT DISPLAY SRTT\" while signed onto the CV, and reviewing the output.\n\nNote: This requires PTFs SO07995 and SO09476.\n\nFind the entry for RESTYPE=SGON. If no SGON entry exists, this is a finding. If found, verify that the entry has SECBY=EXTERNAL. If it does not, this is a finding.\n\nVerify that the ESM entry for the externally secured \"SGON\" resource is correctly configured for the external resource class and the external name of the \"SGON\" SRTT entry.\n\nFor local batch jobs that access database files, if there is no ESM security defined for the users submitting the jobs or securing the database datasets, this is a finding.",
+  "fix": "The SRTT module must be coded to secure the system. When using an ESM, this could be done in the following manner:\n\n               #SECRTT TYPE=ENTRY,                                   X\n                          RESTYPE=SGON,                                   X\n                          SECBY=EXTERNAL ,                               X\n                         EXTNAME=(RESTYPE,RESNAME),        X\n                         EXTCLS='CA@IDMS'\n\nEXTCLS maps the CA IDMS resource type to the resource class defined in the ESM. The EXTNAME defines the format of the resource name defined to the ESM.\n\nAfter making the above changes, assemble and link RHDCSRTT to create a new SRTT. To implement the new SRTT, either recycle any CVs that use the SRTT or issue these commands:\n\n   DCMT VARY NUCLEUS MODULE RHDCSRTT NEW COPY \n   DCMT VARY NUCLEUS RELOAD\n\nEnsure the ESM has a corresponding entry to give access to the desired users. For instance, in Top Secret:\nTSS PER(user_id) CA@IDMS(SGON.the_extname)\n\nIn ACF2:\n$KEY(SGON.the_extname) TYPE(CA@IDMS) \n UID(user_id) ALLOW\n\nAfter making the above changes, assemble and link RHDCSRTT to create a new SRTT. To implement the new SRTT, either recycle any CVs that use the SRTT or issue these commands:\n\nDCMT VARY NUCLEUS MODULE RHDCSRTT NEW COPY \nDCMT VARY NUCLEUS RELOAD",
+  "ccis": [
+    "CCI-000192"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Passwords that are easy to guess open a vulnerability allowing an unauthorized user to potentially gain access to the DBMS. IDMS uses the External Security Manager (ESM) to enforce complexity and lifetime standards.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDMS-DB-000330",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ca-idms-security-technical-implementation-guide-v2r1-d3b5ec3b",
+      "name": "CA IDMS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ca-idms-security-technical-implementation-guide-v2r1-d3b5ec3b"
+  ]
+}

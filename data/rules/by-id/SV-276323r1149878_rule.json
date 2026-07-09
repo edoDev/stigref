@@ -1,0 +1,53 @@
+{
+  "id": "SV-276323r1149878_rule",
+  "full_rule_id": "SV-276323r1149878_rule",
+  "rule_id": "SV-276323",
+  "rule_revision": "1149878",
+  "group_id": "V-276323",
+  "group_title": "SRG-APP-000178-DB-000083",
+  "title": "When using command-line tools with Azure SQL Server Managed Instance, such as SQLCMD, in a mixed-mode authentication environment, users must use a logon method that does not expose the password.",
+  "severity": "high",
+  "description": "<VulnDiscussion>To prevent the compromise of authentication information, such as passwords and PINs, during the authentication process, the feedback from the information system must not provide any information that would allow an unauthorized user to compromise the authentication mechanism.\n \nObfuscation of user-provided information typed into the system is a method used in addressing this risk.\n \nFor example, displaying asterisks when a user types in a password or PIN, is an example of obscuring feedback of authentication information.\n \nThis requirement is applicable when mixed-mode authentication is enabled. When this is the case, password-authenticated accounts can be created in, and authenticated by, Azure SQL Managed Instance. Other STIG requirements prohibit the use of mixed-mode authentication except when justified and approved. This deals with the exceptions.\n \nSQLCMD and other command-line tools are part of Azure SQL Managed Instance. These tools can accept a plain-text password but do offer alternative techniques. Since the typical user of these tools is a database administrator, the consequences of password compromise are particularly serious. Therefore, the use of plain-text passwords must be prohibited, as a matter of practice and procedure.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Run this PowerShell command to determine whether Microsoft Entra-only authentication is enabled:\n\nGet-AzSqlInstanceActiveDirectoryOnlyAuthentication -InstanceName <myinstance> -ResourceGroupName <myresource> \n \nIf \"AzureADOnlyAuthentication\" value is \"True\", this is not a finding.\n \nFor SQLCMD, which cannot be configured not to accept a plain-text password, and any other essential tool with the same limitation, verify the system documentation explains the need for the tool, who uses it, and any relevant mitigations; and that AO approval has been obtained; if not, this is a finding.\n \nRequest evidence that all users of the tool are trained in the importance of not using the plain-text password option and in how to keep the password hidden; and that they adhere to this practice; if not, this is a finding.",
+  "fix": "Where possible, enable Microsoft Entra-only authentication.\n\nRefer to: https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-azure-ad-only-authentication-tutorial?view=azuresql&amp;tabs=azure-powershell\n \nIf mixed-mode authentication is necessary, then for SQLCMD, which cannot be configured not to accept a plain-text password when mixed-mode authentication is enabled, and any other essential tool with the same limitation, complete the following:\n\n1. Document the need for it, who uses it, and any relevant mitigations, and obtain AO approval.\n2. Train all users of the tool in the importance of not using the plain-text password option and in how to keep the password hidden.",
+  "ccis": [
+    "CCI-000206"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To prevent the compromise of authentication information, such as passwords and PINs, during the authentication process, the feedback from the information system must not provide any information that would allow an unauthorized user to compromise the authentication mechanism.\n \nObfuscation of user-provided information typed into the system is a method used in addressing this risk.\n \nFor example, displaying asterisks when a user types in a password or PIN, is an example of obscuring feedback of authentication information.\n \nThis requirement is applicable when mixed-mode authentication is enabled. When this is the case, password-authenticated accounts can be created in, and authenticated by, Azure SQL Managed Instance. Other STIG requirements prohibit the use of mixed-mode authentication except when justified and approved. This deals with the exceptions.\n \nSQLCMD and other command-line tools are part of Azure SQL Managed Instance. These tools can accept a plain-text password but do offer alternative techniques. Since the typical user of these tools is a database administrator, the consequences of password compromise are particularly serious. Therefore, the use of plain-text passwords must be prohibited, as a matter of practice and procedure.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MSQL-D0-018100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb",
+      "name": "Microsoft Azure SQL Managed Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-276264r1149701_rule",
+  "full_rule_id": "SV-276264r1149701_rule",
+  "rule_id": "SV-276264",
+  "rule_revision": "1149701",
+  "group_id": "V-276264",
+  "group_title": "SRG-APP-000508-DB-000358",
+  "title": "Azure SQL Managed Instance must generate audit records for all direct access to the database(s).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In this context, direct access is any query, command, or call to Azure SQL Managed Instance that comes from any source other than the application(s) it supports. For example, the command line or a database management utility program. The intent is to capture all activity from administrative and nonstandard sources.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine whether any Server Audits are configured to filter records. From SQL Server Management Studio execute the following query: \n   \nSELECT name AS AuditName, predicate AS AuditFilter  \nFROM sys.server_audits  \nWHERE predicate IS NOT NULL \n \nIf any audits are returned, review the associated filters. If any direct access to the database(s) is being excluded, this is a finding.",
+  "fix": "Check the system documentation for required Azure SQL Managed Instance Audits. Remove any Audit filters that exclude or reduce required auditing. Update filters to ensure direct access is not excluded.",
+  "ccis": [
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In this context, direct access is any query, command, or call to Azure SQL Managed Instance that comes from any source other than the application(s) it supports. For example, the command line or a database management utility program. The intent is to capture all activity from administrative and nonstandard sources.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MSQL-00-015500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb",
+      "name": "Microsoft Azure SQL Managed Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb"
+  ]
+}

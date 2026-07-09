@@ -1,0 +1,53 @@
+{
+  "id": "SV-257888r1134910_rule",
+  "full_rule_id": "SV-257888r1134910_rule",
+  "rule_id": "SV-257888",
+  "rule_revision": "1134910",
+  "group_id": "V-257888",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "RHEL 9 permissions of cron configuration files and directories must not be modified from the operating system defaults.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the permissions of cron configuration files or directories are modified from the operating system defaults, it may be possible for individuals to insert unauthorized cron jobs that perform unauthorized actions, including potentially escalating privileges.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Run the following command to verify that the owner, group, and mode of cron configuration files and directories match the operating system defaults:\n\n$ rpm --verify cronie crontabs | awk '! ($2 == \"c\" && $1 ~ /^.\\..\\.\\.\\.\\..\\./) {print $0}'\n\nIf the command returns any output, this is a finding.\n\nIf there are findings, run the following command to determine what the permissions are:\n\n$ ls -ld /etc/cron*\ndrwxr-xr-x. 2 root root  21 Oct  3  2024 /etc/cron.d\ndrwxr-xr-x. 2 root root   6 May  1 09:03 /etc/cron.daily\n-rw-r--r--. 1 root root   0 Oct  3  2024 /etc/cron.deny\ndrwxr-xr-x. 2 root root  22 Mar  5 12:49 /etc/cron.hourly\ndrwxr-xr-x. 2 root root   6 Mar 23  2022 /etc/cron.monthly\n-rw-r--r--. 1 root root 451 Mar 23  2022 /etc/crontab\ndrwxr-xr-x. 2 root root   6 Mar 23  2022 /etc/cron.weekly",
+  "fix": "Run the following commands to restore the permissions of cron configuration files and directories to the operating system defaults:\n\n$ sudo dnf reinstall cronie crontabs\n$ rpm --setugids cronie crontabs\n$ rpm --setperms cronie crontabs",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the permissions of cron configuration files or directories are modified from the operating system defaults, it may be possible for individuals to insert unauthorized cron jobs that perform unauthorized actions, including potentially escalating privileges.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-232040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

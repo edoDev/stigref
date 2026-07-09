@@ -1,0 +1,53 @@
+{
+  "id": "SV-273995r1119973_rule",
+  "full_rule_id": "SV-273995r1119973_rule",
+  "rule_id": "SV-273995",
+  "rule_revision": "1119973",
+  "group_id": "V-273995",
+  "group_title": "SRG-OS-000366-GPOS-00153",
+  "title": "Amazon Linux 2023 must ensure cryptographic verification of vendor software packages.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Cryptographic verification of vendor software packages ensures that all software packages are obtained from a valid source and protects against spoofing that could lead to installation of malware on the system. Amazon Linux cryptographically signs all software packages, which includes updates, with a GPG key to Verify they are valid.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 package-signing keys are installed on the system and verify their fingerprints match vendor values.\n\nNote: For Amazon Linux 2023 software packages, AWS uses GPG keys defined in key file \"/etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023\" by default.\n\nList Amazon Linux GPG keys installed on the system:\n\n$ sudo rpm -q gpg-pubkey --qf \"%{NAME}-%{VERSION}-%{RELEASE} %{SUMMARY}\\n\"\ngpg-pubkey-d832c631-6515c85e Amazon Linux <amazon-linux@amazon.com> public key\n\nIf there is no Amazon Linux GPG key installed, this is a finding.\n\nExtract the fingerprint from the key with this command:\n\n$ sudo gpg -q --keyid-format short --with-fingerprint /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023\npub  rsa4096/D832C631 2022-12-08 [SC]\n     Key fingerprint = B21C 50FA 44A9 9720 EAA7 2F7F E951 904A D832 C631\nuid           Amazon Linux <amazon-linux@amazon.com>\n\nCompare the Key fingerprint with the key fingerprint from Amazon Documentation and instructions at https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/verify-keys.html\n\nIf key fingerprints do not match, or the key file is missing, this is a finding.",
+  "fix": "Configure Amazon Linux 2023 to have the public key for verifying RPM packages to be installed with the \"system-release\" package. \n\nInstall the system-release installation with the following command:\n$ sudo dnf install -y system-release\n\nEnsure cryptographic verification of software packages is enabled by editing /etc/dnf/dnf.conf and under '[main]' in the configuration file add: \n\ngpgcheck=1",
+  "ccis": [
+    "CCI-003992"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Cryptographic verification of vendor software packages ensures that all software packages are obtained from a valid source and protects against spoofing that could lead to installation of malware on the system. Amazon Linux cryptographically signs all software packages, which includes updates, with a GPG key to Verify they are valid.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

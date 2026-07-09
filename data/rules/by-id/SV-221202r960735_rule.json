@@ -1,0 +1,53 @@
+{
+  "id": "SV-221202r960735_rule",
+  "full_rule_id": "SV-221202r960735_rule",
+  "rule_id": "SV-221202",
+  "rule_revision": "960735",
+  "group_id": "V-221202",
+  "group_title": "SRG-APP-000001",
+  "title": "Exchange must limit the Receive connector timeout.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Email system availability depends in part on best practices strategies for setting tuning. This configuration controls the number of idle minutes before the connection is dropped. It works in conjunction with the Maximum Inbound Connections Count setting.  \n\nConnections, once established, may incur delays in message transfer. If the timeout period is too long, there is risk that connections may be maintained for unnecessarily long time periods, preventing new connections from being established.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Email Domain Security Plan (EDSP), or Organizations applicable documentation.\n\nDetermine the connection Timeout value.  \n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-ReceiveConnector | Select Name, Identity, ConnectionTimeout\n\nFor each Receive connector, if the value of \"ConnectionTimeout\" is not set to \"00:05:00\", this is a finding.\n\nor\n\nIf \"ConnectionTimeout\" is set to another value other than \"00:05:00\" and has signoff and risk acceptance in the EDSP, this is not a finding.",
+  "fix": "Update the EDSP, or the applicable documentation.\n\nOpen the Exchange Management Shell and enter the following command:\n\nSet-ReceiveConnector -Identity <'IdentityName'> -ConnectionTimeout 00:05:00 \n\nNote: The <IdentityName> value must be in single quotes.\n\nor \n\nThe value as identified by the EDSP that has obtained a signoff with risk acceptance.\n\nRepeat the procedures for each Receive connector.",
+  "ccis": [
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Email system availability depends in part on best practices strategies for setting tuning. This configuration controls the number of idle minutes before the connection is dropped. It works in conjunction with the Maximum Inbound Connections Count setting.  \n\nConnections, once established, may incur delays in message transfer. If the timeout period is too long, there is risk that connections may be maintained for unnecessarily long time periods, preventing new connections from being established.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX16-ED-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2016-edge-transport-server-security-technical-implementation-v2r6-7bfc98a9",
+      "name": "Microsoft Exchange 2016 Edge Transport Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2016-edge-transport-server-security-technical-implementation-v2r6-7bfc98a9"
+  ]
+}

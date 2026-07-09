@@ -1,0 +1,53 @@
+{
+  "id": "SV-269965r1052281_rule",
+  "full_rule_id": "SV-269965r1052281_rule",
+  "rule_id": "SV-269965",
+  "rule_revision": "1052281",
+  "group_id": "V-269965",
+  "group_title": "SRG-NET-000512-L2S-000004",
+  "title": "The Dell OS10 Switch must enable Far-End Failure Detection (FEFD) to protect against one-way connections.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In topologies where fiber-optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability. UDLD is a Layer 2 protocol that can detect these physical misconfigurations by verifying that traffic is flowing bidirectionally between neighbors. Ports with UDLD enabled periodically transmit packets to neighbor devices. If the packets are not echoed back within a specific time frame, the link is flagged as unidirectional and the interface is shut down.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Dell OS10 provides a proprietary protocol, FEFD, to protect against one-way connections.\n\nVerify that FEFD is configured on the appropriate ethernet interfaces by reviewing the FEFD status to verify the desired interfaces are in mode Normal or Aggressive.\n\nOS10# show fefd\nFEFD is globally 'OFF', interval is 15 seconds.\nINTERFACE      MODE          INTERVAL      STATE\n============================================================\neth1/1/1       NA            NA            Idle (Not running)\neth1/1/2       NA            NA            Idle (Not running)\neth1/1/3       NA            NA            Idle (Not running)\neth1/1/4       NA            NA            Idle (Not running)\neth1/1/5       NA            NA            Idle (Not running)\neth1/1/6       Normal        15            Unknown\neth1/1/7       Aggressive    15            Unknown\neth1/1/8       NA            NA            Idle (Not running)\n…\n\nIf FEFD is not configured on the appropriate interfaces, this is a finding.",
+  "fix": "Configure the OS10 switch to enable FEFD on appropriate interfaces connected to other OS10 peers.\n\nOS10(config)# interface ethernet 1/1/6\nOS10(conf-if-eth1/1/6)# fefd mode normal",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In topologies where fiber-optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability. UDLD is a Layer 2 protocol that can detect these physical misconfigurations by verifying that traffic is flowing bidirectionally between neighbors. Ports with UDLD enabled periodically transmit packets to neighbor devices. If the packets are not echoed back within a specific time frame, the link is flagged as unidirectional and the interface is shut down.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-L2S-000190",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff",
+      "name": "Dell OS10 Switch Layer 2 Switch Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-layer-2-switch-security-technical-implementation-guide-v1r1-891c54ff"
+  ]
+}

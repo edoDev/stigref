@@ -1,0 +1,53 @@
+{
+  "id": "SV-273614r1110925_rule",
+  "full_rule_id": "SV-273614r1110925_rule",
+  "rule_id": "SV-273614",
+  "rule_revision": "1110925",
+  "group_id": "V-273614",
+  "group_title": "SRG-NET-000205-RTR-000010",
+  "title": "The RUCKUS ICX out-of-band management (OOBM) gateway router must be configured to forward only authorized management traffic to the Network Operations Center (NOC).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The OOBM network is an IP network used exclusively for the transport of operations, administration, maintenance, and provisioning (OAM&P) data from the network being managed to the operations support system (OSS) components located at the NOC. Its design provides connectivity to each managed network device, enabling network management traffic to flow between the managed network elements and the NOC. This allows the use of paths separate from those used by the managed network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the network topology diagram to determine connectivity between the managed network and the NOC. Review the OOBM gateway router configuration to validate the path the management traffic traverses. Verify only management traffic is forwarded through the OOBM interface or IPsec tunnel.\n\nIf an OOBM link is used, verify the only authorized management traffic is transported to the NOC by reviewing the outbound ACL applied to the OOBM interface as shown in the example below:\n\n1. Note the outbound ACL applied to the OOBM interface.\n\ninterface ethernet 1/1/1\n port-name OOBM-to-NOC\n ip access-group MGMT_TRAFFIC_ACL out logging enable\n!\n\n2. Review the outbound ACL and verify only management traffic is forwarded to the NOC.\n\nip access-list extended MGMT_TRAFFIC_ACL\n sequence 10 permit tcp x.1.34.0 0.0.0.255 10.22.2.0 0.0.0.255 eq radius\n sequence 20 permit tcp x.1.34.0 0.0.0.255 10.22.2.0 0.0.0.255 eq ssh\n sequence 30 permit udp x.1.34.0 0.0.0.255 10.22.2.0 0.0.0.255 eq snmp\n sequence 40 permit udp x.1.34.0 0.0.0.255 10.22.2.0 0.0.0.255 eq shell\n sequence 50 permit icmp x.1.34.0 0.0.0.255 10.22.2.0 0.0.0.255\n sequence 60 deny ip any any log\n!\n\nIf traffic other than authorized management traffic is permitted through the OOBM interface, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure filters based on port, source IP address, and destination IP address to permit only authorized management traffic into IPsec tunnels or the OOBM interface used for forwarding management data.\n\n1. Configure ACLs.\nICX(config)#ip access-list ext MGMT_TRAFFIC_ACL\nICX(config-ext-ipacl-MGMT_TRAFFIC_ACL)#permit tcp x.1.34.0/24 10.22.2.0/24 eq radius\nICX(config-ext-ipacl-MGMT_TRAFFIC_ACL)#permit tcp x.1.34.0/24 10.22.2.0/24 eq ssh\nICX(config-ext-ipacl-MGMT_TRAFFIC_ACL)#permit udp x.1.34.0/24 10.22.2.0/24 eq snmp\nICX(config-ext-ipacl-MGMT_TRAFFIC_ACL)#permit udp x.1.34.0/24 10.22.2.0/24 eq snmp-t\nICX(config-ext-ipacl-MGMT_TRAFFIC_ACL)#permit udp x.1.34.0/24 10.22.2.0/24 eq syslog\nICX(config-ext-ipacl-MGMT_TRAFFIC_ACL)#permit icmp x.1.34.0/24 10.22.2.0/24\nICX(config-ext-ipacl-MGMT_TRAFFIC_ACL)#deny ip any any log\n\n2. Apply the ACL to the appropriate interface(s).\nICX(config)#interface ethernet 1/1/1\nICX(config-if-e10000-1/1/1)#ip access-group MGMT_TRAFFIC_ACL out logging enable",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The OOBM network is an IP network used exclusively for the transport of operations, administration, maintenance, and provisioning (OAM&P) data from the network being managed to the operations support system (OSS) components located at the NOC. Its design provides connectivity to each managed network device, enabling network management traffic to flow between the managed network elements and the NOC. This allows the use of paths separate from those used by the managed network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000470",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-269770r1051695_rule",
+  "full_rule_id": "SV-269770r1051695_rule",
+  "rule_id": "SV-269770",
+  "rule_revision": "1051695",
+  "group_id": "V-269770",
+  "group_title": "SRG-APP-000038-NDM-000213",
+  "title": "The Dell OS10 Switch must enforce approved authorizations for controlling the flow of management information within the network device based on information flow control policies.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A mechanism to detect and prevent unauthorized communication flow must be configured or provided as part of the system design. If management information flow is not enforced based on approved authorizations, the network device may become compromised. Information flow control regulates where management information is allowed to travel within a network device. The flow of all management information must be monitored and controlled so it does not introduce any unacceptable risk to the network device or data. \n\nApplication-specific examples of enforcement occur in systems that employ rule sets or establish configuration settings that restrict information system services or message-filtering capability based on message content (e.g., implementing key word searches or using document characteristics).\n\nApplications providing information flow control must be able to enforce approved authorizations for controlling the flow of management information within the system in accordance with applicable policy.\n\nSatisfies: SRG-APP-000038-NDM-000213, SRG-APP-000880-NDM-000290</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the OS10 Switch configuration to verify that administrative access to the switch is allowed only from hosts residing in the management network.\n\nStep 1: Examine the interface configuration for the control plane ACLs applied to the traffic destined to the router control plane from the OOBM port or front panel data ports:\n\n!\ncontrol-plane\n ip access-group MGMT_TRAFFIC_FROM_OOBM mgmt in\n ip access-group MGMT_TRAFFIC_FROM_DATA data in\n\nStep 2: Review the control plane ACLs to verify traffic is limited appropriately.\n\nFor example, to restrict the management traffic access to a switch at address 192.168.105.17 to only a subset of the 192.168.105.0 subnet, check for an ACL list such as the following:\n!\nip access-list MGMT_TRAFFIC_FROM_OOBM\n seq 10 permit ip 192.168.105.0/28 192.168.105.17/32\n seq 20 deny ip any 192.168.105.17/32 log\n\nLikewise, to restrict the management traffic arriving to a switch address 10.20.30.1 on the front panel data ports: \n\n!\nip access-list MGMT_TRAFFIC_FROM_DATA\n seq 10 permit ip 10.20.30.0/24 10.20.31.1/32\n seq 20 deny ip any 10.20.31.1 log\n \nIf the OS10 Switch is not configured to enforce approved authorizations for controlling the flow of management information within the device based on control policies, this is a finding.",
+  "fix": "Configure the OS10 Switch to restrict management access to specific IP addresses as shown in the example below.\n\nStep 1: Configure inbound ACLs to restrict which packets should be allowed to reach to the control plane from the OOBM port and from the front panel data ports:\n\nOS10(config)# ip access-list MGMT_TRAFFIC_FROM_OOBM\nOS10(config-ipv4-acl)# seq 10 permit ip 192.168.105.0/28 192.168.105.17/32\nOS10(config-ipv4-acl)# seq 20 deny ip any 192.168.105.17/32 log\n\nOS10(config)# ip access-list MGMT_TRAFFIC_FROM_DATA\nOS10(config-ipv4-acl)# seq 10 permit ip 10.20.30.0/24 10.20.31.1/32\nOS10(config-ipv4-acl)# seq 20 deny ip any 10.20.31.1 log\n\nStep 2: Apply the ACLs to the ingress of the control-plane:\n\nOS10(config)# control-plane\nOS10(config-control-plane)# ip access-group MGMT_TRAFFIC_FROM_OOBM mgmt in\nOS10(config-control-plane)# ip access-group MGMT_TRAFFIC_FROM_DATA data in",
+  "ccis": [
+    "CCI-001368",
+    "CCI-004192"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A mechanism to detect and prevent unauthorized communication flow must be configured or provided as part of the system design. If management information flow is not enforced based on approved authorizations, the network device may become compromised. Information flow control regulates where management information is allowed to travel within a network device. The flow of all management information must be monitored and controlled so it does not introduce any unacceptable risk to the network device or data. \n\nApplication-specific examples of enforcement occur in systems that employ rule sets or establish configuration settings that restrict information system services or message-filtering capability based on message content (e.g., implementing key word searches or using document characteristics).\n\nApplications providing information flow control must be able to enforce approved authorizations for controlling the flow of management information within the system in accordance with applicable policy.\n\nSatisfies: SRG-APP-000038-NDM-000213, SRG-APP-000880-NDM-000290",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

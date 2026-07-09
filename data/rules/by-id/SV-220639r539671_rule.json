@@ -1,0 +1,53 @@
+{
+  "id": "SV-220639r539671_rule",
+  "full_rule_id": "SV-220639r539671_rule",
+  "rule_id": "SV-220639",
+  "rule_revision": "539671",
+  "group_id": "V-220639",
+  "group_title": "SRG-NET-000512-L2S-000004",
+  "title": "The Cisco switch must enable Unidirectional Link Detection (UDLD) to protect against one-way connections.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>In topologies where fiber optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability.\n\nUDLD is a Layer 2 protocol that can detect these physical misconfigurations by verifying that traffic is flowing bidirectionally between neighbors. Ports with UDLD enabled periodically transmit packets to neighbor devices. If the packets are not echoed back within a specific time frame, the link is flagged as unidirectional and the interface is shut down.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If any of the switch ports have fiber optic interconnections with neighbors, review the switch configuration to verify that UDLD is enabled globally or on a per-interface basis as shown in the examples below:\n\nhostname SW2\n…\n…\n…\nudld enable\n\nor\n\ninterface GigabitEthernet0/1\n udld port\n\nNote: An alternative implementation when UDLD is not supported by connected device is to deploy a single member Link Aggregation Group (LAG) via IEEE 802.3ad Link Aggregation Control Protocol (LACP).\n\nIf the switch has fiber optic interconnections with neighbors and UDLD is not enabled, this is a finding.",
+  "fix": "Configure the switch to enable UDLD to protect against one-way connections:\n\nSW2(config)#udld enable\n\nor\n\nSW2(config)#int g0/1\nSW2(config-if)#udld port",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "In topologies where fiber optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability.\n\nUDLD is a Layer 2 protocol that can detect these physical misconfigurations by verifying that traffic is flowing bidirectionally between neighbors. Ports with UDLD enabled periodically transmit packets to neighbor devices. If the packets are not echoed back within a specific time frame, the link is flagged as unidirectional and the interface is shut down.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-L2-000190",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-switch-l2s-security-technical-implementation-guide-v3r1-94337307",
+      "name": "Cisco IOS Switch L2S Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-switch-l2s-security-technical-implementation-guide-v3r1-94337307"
+  ]
+}

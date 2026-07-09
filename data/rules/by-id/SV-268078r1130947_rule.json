@@ -1,0 +1,56 @@
+{
+  "id": "SV-268078r1130947_rule",
+  "full_rule_id": "SV-268078r1130947_rule",
+  "rule_id": "SV-268078",
+  "rule_revision": "1130947",
+  "group_id": "V-268078",
+  "group_title": "SRG-OS-000298-GPOS-00116",
+  "title": "NixOS must enable the built-in firewall.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without the ability to immediately disconnect or disable remote access, an attack or other compromise taking place would not be immediately stopped.\n\nOperating system remote access functionality must have the capability to immediately disconnect current users remotely accessing the information system and/or disable further remote access. The speed of disconnect or disablement varies based on the criticality of mission's functions and the need to eliminate immediate or future remote access to organizational information systems.\n\nThe remote access functionality (e.g., RDP) may implement features such as automatic disconnect (or user-initiated disconnect) in case of adverse information based on an indicator of compromise or attack.\n\nSatisfies: SRG-OS-000298-GPOS-00116, SRG-OS-000096-GPOS-00050, SRG-OS-000297-GPOS-00115, SRG-OS-000480-GPOS-00232</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify NixOS has the network firewall enabled with the following command:\n\n$ sudo iptables -L | grep nixos-fw-log-refuse\n\nnixos-fw-log-refuse  all  --  anywhere             anywhere\n\nVerify the firewall panic tools are present:\n$ which firewall-panic\n/run/current-system/sw/bin/firewall-panic\n\n$ which firewall-panic-off\n/run/current-system/sw/bin/firewall-panic-off\n\nIf the \"nixos-fw-log-refuse  all  --  anywhere  anywhere\" firewall rule is not present and the firewall panic commands are not found, this is a finding.",
+  "fix": "Update the NixOS config, typically stored either in /etc/nixos/configuration.nix or /etc/nixos/flake.nix, to enforce firewall rules by adding the following configuration settings:\n\n networking.firewall.enable = true;\n\nRebuild and switch to the new NixOS configuration:\n$ sudo nixos-rebuild switch",
+  "ccis": [
+    "CCI-002322",
+    "CCI-000382",
+    "CCI-002314",
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without the ability to immediately disconnect or disable remote access, an attack or other compromise taking place would not be immediately stopped.\n\nOperating system remote access functionality must have the capability to immediately disconnect current users remotely accessing the information system and/or disable further remote access. The speed of disconnect or disablement varies based on the criticality of mission's functions and the need to eliminate immediate or future remote access to organizational information systems.\n\nThe remote access functionality (e.g., RDP) may implement features such as automatic disconnect (or user-initiated disconnect) in case of adverse information based on an indicator of compromise or attack.\n\nSatisfies: SRG-OS-000298-GPOS-00116, SRG-OS-000096-GPOS-00050, SRG-OS-000297-GPOS-00115, SRG-OS-000480-GPOS-00232",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ANIX-00-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "anduril-nixos-security-technical-implementation-guide-v1r2-56965844",
+      "name": "Anduril NixOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "anduril-nixos-security-technical-implementation-guide-v1r2-56965844"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-281289r1166819_rule",
+  "full_rule_id": "SV-281289r1166819_rule",
+  "rule_id": "SV-281289",
+  "rule_revision": "1166819",
+  "group_id": "V-281289",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "RHEL 10 must disable Bluetooth.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>This requirement applies to wireless peripheral technologies (e.g., wireless mice, keyboards, displays, etc.) used with RHEL 10 systems. Wireless peripherals (e.g., Wi-Fi/Bluetooth/IR keyboards, mice and pointing devices, and near field communications [NFC]) present a unique challenge by creating an open, unsecured port on a computer. \n\nWireless peripherals must meet DOD requirements for wireless data transmission and be approved for use by the authorizing official. Even though some wireless peripherals, such as mice and pointing devices, do not ordinarily carry information that must be protected, modification of communications with these wireless peripherals may be used to compromise the RHEL 10 operating system.\n\nSatisfies: SRG-OS-000095-GPOS-00049, SRG-OS-000300-GPOS-00118</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 disables the ability to load the Bluetooth kernel module with the following command:\n\n$ sudo grep -rs bluetooth /etc/modprobe.conf /etc/modprobe.d/*\n/etc/modprobe.d/bluetooth.conf:install bluetooth /bin/false\n/etc/modprobe.d/bluetooth.conf:blacklist bluetooth\n\nIf the command does not return any output, or the lines are commented out, and use of Bluetooth is not documented with the information system security officer as an operational requirement, this is a finding.",
+  "fix": "Configure RHEL 10 to disable the Bluetooth adapter when not in use.\n\nAdd the following lines to the file \"/etc/modprobe.d/bluetooth.conf\" (or create \"bluetooth.conf\" if it does not exist):\n\n$ sudo vi /etc/modprobe.d/bluetooth.conf\n\ninstall bluetooth /bin/false\nblacklist bluetooth\n\nReboot the system for the settings to take effect.",
+  "ccis": [
+    "CCI-000381",
+    "CCI-001443"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This requirement applies to wireless peripheral technologies (e.g., wireless mice, keyboards, displays, etc.) used with RHEL 10 systems. Wireless peripherals (e.g., Wi-Fi/Bluetooth/IR keyboards, mice and pointing devices, and near field communications [NFC]) present a unique challenge by creating an open, unsecured port on a computer. \n\nWireless peripherals must meet DOD requirements for wireless data transmission and be approved for use by the authorizing official. Even though some wireless peripherals, such as mice and pointing devices, do not ordinarily carry information that must be protected, modification of communications with these wireless peripherals may be used to compromise the RHEL 10 operating system.\n\nSatisfies: SRG-OS-000095-GPOS-00049, SRG-OS-000300-GPOS-00118",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-700860",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

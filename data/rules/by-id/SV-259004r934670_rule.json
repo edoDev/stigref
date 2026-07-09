@@ -1,0 +1,53 @@
+{
+  "id": "SV-259004r934670_rule",
+  "full_rule_id": "SV-259004r934670_rule",
+  "rule_id": "SV-259004",
+  "rule_revision": "934670",
+  "group_id": "V-259004",
+  "group_title": "SRG-APP-000033-AS-000024",
+  "title": "The vCenter ESX Agent Manager service cookies must have secure flag set.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The secure flag is an option that can be set by the application server when sending a new cookie to the user within an HTTP Response. The purpose of the secure flag is to prevent cookies from being observed by unauthorized parties due to the transmission of a cookie in clear text.\n\nBy setting the secure flag, the browser will prevent the transmission of a cookie over an unencrypted channel.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/session-config/cookie-config/secure' -\n\nExpected result:\n\n<secure>true</secure>\n\nIf the output of the command does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml\n\nNavigate to the <session-config> node and configure the <secure> setting as follows:\n\n<session-config>\n  <session-timeout>30</session-timeout>\n  <cookie-config>\n      <http-only>true</http-only>\n      <secure>true</secure>\n  </cookie-config>\n</session-config>\n\nRestart the service with the following command:\n\n# vmon-cli --restart eam",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The secure flag is an option that can be set by the application server when sending a new cookie to the user within an HTTP Response. The purpose of the secure flag is to prevent cookies from being observed by unauthorized parties due to the transmission of a cookie in clear text.\n\nBy setting the secure flag, the browser will prevent the transmission of a cookie over an unencrypted channel.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCEM-80-000005",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-esx-agent-manager-eam-security-technical-im-v1r1-c5747352",
+      "name": "VMware vSphere 8.0 vCenter Appliance ESX Agent Manager (EAM) Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-esx-agent-manager-eam-security-technical-im-v1r1-c5747352"
+  ]
+}

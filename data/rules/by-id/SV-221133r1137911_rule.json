@@ -1,0 +1,53 @@
+{
+  "id": "SV-221133r1137911_rule",
+  "full_rule_id": "SV-221133r1137911_rule",
+  "rule_id": "SV-221133",
+  "rule_revision": "1137911",
+  "group_id": "V-221133",
+  "group_title": "SRG-NET-000019-RTR-000004",
+  "title": "The Cisco multicast switch must be configured to bind a Protocol Independent Multicast (PIM) neighbor filter to interfaces that have PIM enabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>PIM is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. PIM traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, unauthorized switches can join the PIM domain, discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Step 1: Verify all interfaces enabled for PIM have a neighbor policy bound to the interface as shown in the example below:\n\ninterface Ethernet2/1\n no switchport\n ip address 10.1.12.1/24\n ip pim sparse-mode\n ip pim neighbor-policy prefix-list PIM_NEIGHBOR\n no shutdown\n\nStep 2: Review the configured prefix list for filtering PIM neighbors as shown in the example below:\n\nip prefix-list PIM_NEIGHBOR seq 5 permit 10.1.12.2/32\nip prefix-list PIM_NEIGHBOR seq 10 deny 0.0.0.0/0 le 32\n\nIf PIM neighbor ACLs are not bound to all interfaces that have PIM enabled, this is a finding.",
+  "fix": "Configure neighbor prefix lists to only accept PIM control plane traffic from documented PIM neighbors. \n\nStep 1: Configure prefix list for each PIM neighbor.\n\nSW1(config)# ip prefix-list PIM_NEIGHBOR seq 5 permit 10.1.12.2/32\nSW1(config)# ip prefix-list PIM_NEIGHBOR deny 0.0.0.0/0 le 32\n\nStep 2: Apply a prefix to all interfaces enabled for PIM.\n\nSW1(config)# int e2/1\nSW1(config-if)# ip pim neighbor-policy prefix-list PIM_NEIGHBOR \nSW1(config-if)# end",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "PIM is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. PIM traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, unauthorized switches can join the PIM domain, discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651",
+      "name": "Cisco NX OS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "cisco-nx-os-switch-rtr-security-technical-implementation-guide-v3r4-47a19651"
+  ]
+}

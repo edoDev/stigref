@@ -1,0 +1,65 @@
+{
+  "id": "SV-259107r960891_rule",
+  "full_rule_id": "SV-259107r960891_rule",
+  "rule_id": "SV-259107",
+  "rule_revision": "960891",
+  "group_id": "V-259107",
+  "group_title": "SRG-APP-000095-AS-000056",
+  "title": "The vCenter UI service must produce log records containing sufficient information regarding event details.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote access can be exploited by an attacker to compromise the server. By recording all remote access activities, it will be possible to determine the attacker's location, intent, and degree of success.\n\nTomcat can be configured with an \"AccessLogValve\", a component that can be inserted into the request processing pipeline to provide robust access logging. The \"AccessLogValve\" creates log files in the same format as those created by standard web servers. When \"AccessLogValve\" is properly configured, log files will contain all the forensic information necessary in the case of a security incident.\n\nSatisfies: SRG-APP-000095-AS-000056, SRG-APP-000016-AS-000013, SRG-APP-000080-AS-000045, SRG-APP-000089-AS-000050, SRG-APP-000090-AS-000051, SRG-APP-000091-AS-000052, SRG-APP-000096-AS-000059, SRG-APP-000097-AS-000060, SRG-APP-000098-AS-000061, SRG-APP-000099-AS-000062, SRG-APP-000100-AS-000063, SRG-APP-000343-AS-000030, SRG-APP-000375-AS-000211, SRG-APP-000495-AS-000220, SRG-APP-000499-AS-000224, SRG-APP-000503-AS-000228</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --xpath '/Server/Service/Engine/Host/Valve[@className=\"org.apache.catalina.valves.AccessLogValve\"]/@pattern' /usr/lib/vmware-vsphere-ui/server/conf/server.xml\n\nExample result:\n\npattern=\"%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b %{#hashedClientId#}s %{#hashedRequestId#}r %I %D\"\n\nRequired elements:\n\n%h %{X-Forwarded-For}i %l %t %u &quot;%r&quot; %s %b\n\nIf the log pattern does not contain the required elements in any order, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-vsphere-ui/server/conf/server.xml\n\nInside the <Host> node, find the \"AccessLogValve\" <Valve> node and replace the \"pattern\" element as follows:\n\npattern=\"%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b %{#hashedClientId#}s %{#hashedRequestId#}r %I %D\"\n\nRestart the service with the following command:\n\n# vmon-cli --restart vsphere-ui",
+  "ccis": [
+    "CCI-000067",
+    "CCI-000130",
+    "CCI-000131",
+    "CCI-000132",
+    "CCI-000133",
+    "CCI-000134",
+    "CCI-000166",
+    "CCI-000169",
+    "CCI-000171",
+    "CCI-000172",
+    "CCI-001487",
+    "CCI-001889",
+    "CCI-002234"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote access can be exploited by an attacker to compromise the server. By recording all remote access activities, it will be possible to determine the attacker's location, intent, and degree of success.\n\nTomcat can be configured with an \"AccessLogValve\", a component that can be inserted into the request processing pipeline to provide robust access logging. The \"AccessLogValve\" creates log files in the same format as those created by standard web servers. When \"AccessLogValve\" is properly configured, log files will contain all the forensic information necessary in the case of a security incident.\n\nSatisfies: SRG-APP-000095-AS-000056, SRG-APP-000016-AS-000013, SRG-APP-000080-AS-000045, SRG-APP-000089-AS-000050, SRG-APP-000090-AS-000051, SRG-APP-000091-AS-000052, SRG-APP-000096-AS-000059, SRG-APP-000097-AS-000060, SRG-APP-000098-AS-000061, SRG-APP-000099-AS-000062, SRG-APP-000100-AS-000063, SRG-APP-000343-AS-000030, SRG-APP-000375-AS-000211, SRG-APP-000495-AS-000220, SRG-APP-000499-AS-000224, SRG-APP-000503-AS-000228",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCUI-80-000014",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-user-interface-ui-security-technical-implem-v2r1-f07232d5",
+      "name": "VMware vSphere 8.0 vCenter Appliance User Interface (UI) Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-user-interface-ui-security-technical-implem-v2r1-f07232d5"
+  ]
+}

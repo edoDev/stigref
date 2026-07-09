@@ -1,0 +1,53 @@
+{
+  "id": "SV-279399r1179524_rule",
+  "full_rule_id": "SV-279399r1179524_rule",
+  "rule_id": "SV-279399",
+  "rule_revision": "1179524",
+  "group_id": "V-279399",
+  "group_title": "SRG-APP-000815-DB-000160",
+  "title": "MongoDB must require users to be individually authenticated before granting access to the shared accounts or resources.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Individual authentication prior to shared group authentication mitigates the risk of using group accounts or authenticators.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the MongoDB configuration file (default location /etc/mongod.conf) for a section named \"security\". \n \nIf this section does not contain the subkey of \"authorization\" with a value of \"enabled\" as shown below, this is a finding.\n\nsecurity:\n    authorization: enabled",
+  "fix": "Enable authorization for MongoDB Enterprise.\n\nRead the directions in the MongoDB documentation here: \nhttps://www.mongodb.com/docs/v8.0/tutorial/configure-scram-client-authentication/\n\nCreate the user administrator.\n\nEdit the MongoDB database configuration file (default location /etc/mongod.conf) to contain the following setting in the security section:\n\nsecurity:\n    authorization: enabled\n\nStop/start (restart) the mongod or mongos instance using this configuration.\n\nLog on to MongoDB as an authorized user created by the user administrator and run the following command to verify the output is \"true\":\n\ndb.getSiblingDB(\"admin\").runCommand({getCmdLineOpts: 1}).parsed.security.authorization\n\nThe output of this command must be \"true\".",
+  "ccis": [
+    "CCI-004045"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Individual authentication prior to shared group authentication mitigates the risk of using group accounts or authenticators.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MD8X-00-012800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mongodb-enterprise-advanced-8-x-security-technical-implementation-guide-v1r1-76f1e3ed",
+      "name": "MongoDB Enterprise Advanced 8.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mongodb-enterprise-advanced-8-x-security-technical-implementation-guide-v1r1-76f1e3ed"
+  ]
+}

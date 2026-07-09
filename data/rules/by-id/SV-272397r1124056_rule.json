@@ -1,0 +1,53 @@
+{
+  "id": "SV-272397r1124056_rule",
+  "full_rule_id": "SV-272397r1124056_rule",
+  "rule_id": "SV-272397",
+  "rule_revision": "1124056",
+  "group_id": "V-272397",
+  "group_title": "SRG-APP-000516-DNS-000102",
+  "title": "On a BIND 9.x server, all root name servers listed in the local root zone file hosted on a BIND 9.x authoritative name server must be empty or removed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A potential vulnerability of DNS is that an attacker can poison a name server's cache by sending queries that will cause the server to obtain host-to-IP address mappings from bogus name servers that respond with incorrect information. The DNS architecture needs to maintain one name server whose zone records are correct and the cache is not poisoned. In this effort, the authoritative name server may not forward queries; one of the ways to prevent this is to delete the root hints file.\n\nWhen authoritative servers are sent queries for zones that they are not authoritative for and they are configured as a noncaching server (as recommended), they can either be configured to return a referral to the root servers or to refuse to answer the query. The requirement is to configure authoritative servers to refuse to answer queries for any zones for which they are not authoritative. This is more efficient for the server and allows it to spend more of its resources for its intended purpose of answering authoritatively for its zone.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If this server is a caching name server, this is not applicable.\n\nVerify there is not a local root zone on the name server.\n\nInspect the \"named.conf\" file for the following:\n\nzone \".\" IN {\ntype hint;\nfile \"<file_name>\"\n};\n\nIf the file name identified is not empty or does exist, this is a finding.",
+  "fix": "Remove the local root zone file from the name server.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A potential vulnerability of DNS is that an attacker can poison a name server's cache by sending queries that will cause the server to obtain host-to-IP address mappings from bogus name servers that respond with incorrect information. The DNS architecture needs to maintain one name server whose zone records are correct and the cache is not poisoned. In this effort, the authoritative name server may not forward queries; one of the ways to prevent this is to delete the root hints file.\n\nWhen authoritative servers are sent queries for zones that they are not authoritative for and they are configured as a noncaching server (as recommended), they can either be configured to return a referral to the root servers or to refuse to answer the query. The requirement is to configure authoritative servers to refuse to answer queries for any zones for which they are not authoritative. This is more efficient for the server and allows it to spend more of its resources for its intended purpose of answering authoritatively for its zone.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BIND-9X-001410",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460",
+      "name": "BIND 9.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460"
+  ]
+}

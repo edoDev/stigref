@@ -1,0 +1,53 @@
+{
+  "id": "SV-269853r1137897_rule",
+  "full_rule_id": "SV-269853r1137897_rule",
+  "rule_id": "SV-269853",
+  "rule_revision": "1137897",
+  "group_id": "V-269853",
+  "group_title": "SRG-NET-000018-RTR-000005",
+  "title": "The Dell OS10 BGP router must be configured to reject outbound route advertisements for any prefixes that do not belong to any customers or the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the router configuration to verify that there is a filter defined to only advertise routes for prefixes that belong to any customers or the local AS.\n\nThe prefix filter must be referenced outbound on the appropriate BGP neighbor statements.\n\nStep 1: Verify prefix lists have been configured for each customer containing prefixes that belong to that customer.\n\nOS10# show running-configuration prefix-list\n!\n...\nip prefix-list PREFIX_FILTER_A seq 5 permit 50.10.10.0/24 le 32\nip prefix-list PREFIX_FILTER_A seq 10 permit 60.10.10.0/24 le 32\nip prefix-list PREFIX_FILTER_A seq 15 deny 0.0.0.0/0 ge 8\n...\n\nStep 2: Verify the route map applied to the external neighbors references the configured prefix list shown above.\n\nOS10# show running-configuration route-map\n!\nroute-map PREFIX_FILTER_A_MAP permit 50\n match ip address prefix-list PREFIX_FILTER_A\n\nStep 3: Verify the route map applied to the external neighbors references the appropriate route maps shown above.\n \n!\nrouter bgp 10\n !\n neighbor 50.1.1.1\n  !\n  address-family ipv4 unicast\n   route-map PREFIX_FILTER_A_MAP out\n\nIf the router is not configured to reject outbound route advertisements that belong to any customers or the local AS, this is a finding.",
+  "fix": "Configure all eBGP routers to filter outbound route advertisements for prefixes that are not allocated to or belong to any customer or the local AS.\n\nStep 1: Configure a prefix list for each customer containing prefixes belonging to each.\n\nOS10(config)# ip prefix-list PREFIX_FILTER_A seq 5 permit 50.10.10.0/24 le 32\nOS10(config)# ip prefix-list PREFIX_FILTER_A seq 10 permit 60.10.10.0/24 le 32\nOS10(config)# ip prefix-list PREFIX_FILTER_A seq 15 deny 0.0.0.0/0 ge 8\n\nStep 2: Configure the route map referencing the configured prefix list.\n\nOS10(config)# route-map PREFIX_FILTER_A_MAP 50\nOS10(config-route-map)# match ip address prefix-list PREFIX_FILTER_A\nOS10(config-route-map)# exit\n\nStep 3: Apply the route-map outbound to each external BGP neighbor.\n\nOS10(config)# router bgp 10\nOS10(config-router-bgp-10)# neighbor 50.1.1.1\nOS10(config-router-neighbor)# address-family ipv4 unicast\nOS10(config-router-bgp-neighbor-af)# route-map PREFIX_FILTER_A_MAP out\nOS10(config-router-bgp-neighbor-af)# exit\nOS10(config-router-neighbor)# exit\nOS10(config-router-bgp-10)# exit",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

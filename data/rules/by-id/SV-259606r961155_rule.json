@@ -1,0 +1,53 @@
+{
+  "id": "SV-259606r961155_rule",
+  "full_rule_id": "SV-259606r961155_rule",
+  "rule_id": "SV-259606",
+  "rule_revision": "961155",
+  "group_id": "V-259606",
+  "group_title": "SRG-APP-000247",
+  "title": "The Exchange internet receive connector connections count must be set to default.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Email system availability depends in part on best practice strategies for setting tuning configurations. This configuration controls the maximum number of simultaneous inbound connections allowed to the SMTP server. \n\nBy default, the number of simultaneous inbound connections is 5000. If a limit is set too low, the connections pool may be filled. If attackers perceive the limit is too low, they could deny service to the Simple Mail Transfer Protocol (SMTP) server by using a connection count that exceeds the limit set. By setting the default configuration to 5000, attackers would need many more connections to cause denial of service.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Email Domain Security Plan (EDSP).\n\nDetermine the Maximum Inbound connections value. \n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-ReceiveConnector | Select-Object -Property Name, Identity, MaxInboundConnection\n\nIdentify internet-facing connectors.\n\nFor each receive connector, if the value of \"MaxInboundConnection\" is not set to \"5000\", this is a finding.\n\nor\n\nIf \"MaxInboundConnection\" is set to a value other than \"5000\" or is set to unlimited and has signoff and risk acceptance in the EDSP, this is not a finding.",
+  "fix": "Update the EDSP to reflect the Maximum Inbound connections value.\n\nOpen the Exchange Management Shell and enter the following command:\n\nSet-ReceiveConnector -Identity <'IdentityName'> -MaxInboundConnection 5000\n\nNote: The <IdentityName> value must be in quotes.\n\nor\n\nThe value as identified by the EDSP that has obtained a signoff with risk acceptance.\n\nRepeat the procedure for each receive connector.",
+  "ccis": [
+    "CCI-001095"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Email system availability depends in part on best practice strategies for setting tuning configurations. This configuration controls the maximum number of simultaneous inbound connections allowed to the SMTP server. \n\nBy default, the number of simultaneous inbound connections is 5000. If a limit is set too low, the connections pool may be filled. If attackers perceive the limit is too low, they could deny service to the Simple Mail Transfer Protocol (SMTP) server by using a connection count that exceeds the limit set. By setting the default configuration to 5000, attackers would need many more connections to cause denial of service.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-ED-000119",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac",
+      "name": "Microsoft Exchange 2019 Edge Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac"
+  ]
+}

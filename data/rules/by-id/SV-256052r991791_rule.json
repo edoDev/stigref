@@ -1,0 +1,53 @@
+{
+  "id": "SV-256052r991791_rule",
+  "full_rule_id": "SV-256052r991791_rule",
+  "rule_id": "SV-256052",
+  "rule_revision": "991791",
+  "group_id": "V-256052",
+  "group_title": "SRG-NET-000512-RTR-000005",
+  "title": "The PE router must be configured to have each Virtual Routing and Forwarding (VRF) instance bound to the appropriate physical or logical interfaces to maintain traffic separation between all MPLS L3VPNs.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The primary security model for an MPLS L3VPN infrastructure is traffic separation. The service provider must guarantee the customer that traffic from one VPN does not leak into another VPN or into the core, and that core traffic must not leak into any VPN. Hence, it is imperative that each CE-facing interface can only be associated to one VRF—that alone is the fundamental framework for traffic separation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the design plan for deploying L3VPN and VRF-lite. \n\nReview all CE-facing interfaces and verify the proper VRF is defined.\n\nTo verify the interfaces toward CE facing with proper VRF defined, execute the command \"sh run int ethernet YY\".\n\nvrf instance PROD\nvrf instance DEVP\n\nip routing vrf PROD\nip routing vrf DEVP\n\ninterface Ethernet3\n   no routerport\n   vrf PROD\n   ip address 10.1.99.11/24\n\ninterface Ethernet4\n   no routerport\n   vrf DEVP\n   ip address 10.11.5.11/24\n\nIf any VRFs are not bound to the appropriate physical or logical interface, this is a finding.",
+  "fix": "Configure the Arista PE router to have each VRF bound to the appropriate physical or logical interfaces to maintain traffic separation between all MPLS L3VPNs.\n\nConfigure the VRF on the CE facing interfaces.\n\nPE11(config)#vrf instance PROD\nPE11(config)#vrf instance DEVP\n!\nPE11(config)#ip routing vrf PROD\nPE11(config)#ip routing vrf DEVP\n!\nPE11(config)#interface Ethernet3\nPE11(config-if-Et3)#no routerport\nPE11(config-if-Et3)#vrf PROD\nPE11(config-if-Et3)#ip address 10.1.99.11/24\n!\nPE11(config)#interface Ethernet4\nPE11(config-if-Et3)#no routerport\nPE11(config-if-Et3)#vrf DEVP\nPE11(config-if-Et3)#ip address 10.11.5.11/24",
+  "ccis": [
+    "CCI-004931"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The primary security model for an MPLS L3VPN infrastructure is traffic separation. The service provider must guarantee the customer that traffic from one VPN does not leak into another VPN or into the core, and that core traffic must not leak into any VPN. Hence, it is imperative that each CE-facing interface can only be associated to one VRF—that alone is the fundamental framework for traffic separation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000730",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-217308r960783_rule",
+  "full_rule_id": "SV-217308r960783_rule",
+  "rule_id": "SV-217308",
+  "rule_revision": "960783",
+  "group_id": "V-217308",
+  "group_title": "SRG-APP-000028-NDM-000210",
+  "title": "The Juniper router must be configured to automatically audit account disabling actions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Account management, as a whole, ensures access to the network device is being controlled in a secure manner by granting access to only authorized personnel. Auditing account disabling actions will support account management procedures. When device management accounts are disabled, user or service accessibility may be affected. Auditing also ensures authorized active accounts remain enabled and available for use when required.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the router configuration to determine if it audits the disabling of accounts. This requirement can be met by ensuring that configuration changes are logged as shown in the following example: \n\nsystem {\n    syslog {\n        file LOG_FILE {\n            change-log info;\n        }\n    }\n}\n\nNote: The parameter “any” can be in place of “change-log” as this will log everything. Also, a syslog server can be configured in addition to or in lieu of logging to a file as shown in the example below.\n\nsystem {\n   syslog {\n        host 10.1.58.2 {\n            any info;\n        }\n        file LOG_FILE {\n            change-log info;\n        }\n        console {\n            any error;\n        }\n    }\n}\n\nIf the disabling of accounts is not audited, this is a finding.\n\nNote: Accounts can be disabled by changing the assigned class to unauthorized (no permissions).",
+  "fix": "Configure the router to audit the disabling of accounts. This requirement can be met by ensuring that configuration changes are logged as shown in the following example: \n\n[edit system]\nset syslog file LOG_FILE change-log info\n\nNote: The parameter “any” can be in place of “change-log” as this will log everything. Also, a syslog server can be configured in addition to or in lieu of logging to a file as shown in the example below.\n\nset syslog host 10.1.58.2 any info",
+  "ccis": [
+    "CCI-001404"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Account management, as a whole, ensures access to the network device is being controlled in a secure manner by granting access to only authorized personnel. Auditing account disabling actions will support account management procedures. When device management accounts are disabled, user or service accessibility may be affected. Auditing also ensures authorized active accounts remain enabled and available for use when required.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-ND-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-ndm-security-technical-implementation-guide-v3r2-b0e284b4",
+      "name": "Juniper Router NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-ndm-security-technical-implementation-guide-v3r2-b0e284b4"
+  ]
+}

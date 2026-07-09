@@ -1,0 +1,53 @@
+{
+  "id": "SV-230534r1017296_rule",
+  "full_rule_id": "SV-230534r1017296_rule",
+  "rule_id": "SV-230534",
+  "rule_revision": "1017296",
+  "group_id": "V-230534",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The root account must be the only account having unrestricted access to the RHEL 8 system.",
+  "severity": "high",
+  "description": "<VulnDiscussion>If an account other than root also has a User Identifier (UID) of \"0\", it has root authority, giving that account unrestricted access to the entire operating system. Multiple accounts with a UID of \"0\" afford an opportunity for potential intruders to guess a password for a privileged account.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check the system for duplicate UID \"0\" assignments with the following command:\n\n$ sudo awk -F: '$3 == 0 {print $1}' /etc/passwd\n\nIf any accounts other than root have a UID of \"0\", this is a finding.",
+  "fix": "Change the UID of any account on the system, other than root, that has a UID of \"0\". \n\nIf the account is associated with system commands or applications, the UID should be changed to one greater than \"0\" but less than \"1000\". Otherwise, assign a UID of greater than \"1000\" that has not already been assigned.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If an account other than root also has a User Identifier (UID) of \"0\", it has root authority, giving that account unrestricted access to the entire operating system. Multiple accounts with a UID of \"0\" afford an opportunity for potential intruders to guess a password for a privileged account.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-040200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

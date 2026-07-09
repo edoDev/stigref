@@ -1,0 +1,53 @@
+{
+  "id": "SV-255999r882339_rule",
+  "full_rule_id": "SV-255999r882339_rule",
+  "rule_id": "SV-255999",
+  "rule_revision": "882339",
+  "group_id": "V-255999",
+  "group_title": "SRG-NET-000019-RTR-000004",
+  "title": "The Arista multicast router must be configured to bind a Protocol Independent Multicast (PIM) neighbor filter to interfaces that have PIM enabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>PIM is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. PIM traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, unauthorized routers can join the PIM domain, discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone.\n\nReview the Arista router multicast topology diagram and determine if router interfaces are enabled for IPv4 or IPv6 multicast routing.\n\nIf the router is enabled for multicast routing, verify all interfaces enabled for PIM have a neighbor filter bound to the interface. The neighbor filter must only accept PIM control plane traffic from the documented PIM neighbors.\n\nStep 1: Verify the ACL is configured that will specify the authorized PIM neighbors. To verify IP access lists are configured, execute the command \"show ip access-lists\".\n\nip access-list standard filter_1\n  permit 10.13.24.9/24\n  exit\n\nStep 2: Verify the PIM neighbor-filter is configured on PIM-enabled interfaces. To verify interfaces are configured, execute the command \"show run int YY\".\n\ninterface vlan 4\n  pim ipv4 sparse-mode\n  pim ipv4 neighbor-filter filter_1\n  exit\n\nIf PIM neighbor filters are not bound to all interfaces that have PIM enabled, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure neighbor filters to only accept PIM control plane traffic from documented PIM neighbors. Bind neighbor filters to all PIM-enabled interfaces.\n\nStep 1: Configure an ACL that will specify the authorized PIM neighbors.\n\nrouter(config)#ip access-list standard filter_1\nrouter(config-std-acl-filter_1)#permit 10.13.24.9/24\nrouter(config-std-acl-filter_1)#exit\n\nStep 2: Configure a PIM neighbor-filter command and apply it on all PIM-enabled interfaces that are referencing the PIM neighbor ACL.\n\nrouter(config)#interface vlan 4\nrouter(config-if-Vl4)#pim ipv4 neighbor-filter filter_1\nrouter(config-if-Vl4)#exit",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "PIM is a routing protocol used to build multicast distribution trees for forwarding multicast traffic across the network infrastructure. PIM traffic must be limited to only known PIM neighbors by configuring and binding a PIM neighbor filter to those interfaces that have PIM enabled. If a PIM neighbor filter is not applied to those interfaces that have PIM enabled, unauthorized routers can join the PIM domain, discover and use the rendezvous points, and also advertise their rendezvous points into the domain. This can result in a denial of service by traffic flooding or result in the unauthorized transfer of data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

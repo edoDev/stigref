@@ -1,0 +1,53 @@
+{
+  "id": "SV-235026r991589_rule",
+  "full_rule_id": "SV-235026r991589_rule",
+  "rule_id": "SV-235026",
+  "rule_revision": "991589",
+  "group_id": "V-235026",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The SUSE operating system must not be performing Internet Protocol version 6 (IPv6) packet forwarding by default unless the system is a router.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Routing protocol daemons are typically used on routers to exchange network topology information with other routers. If this software is used when not required, system network information may be unnecessarily transmitted across the network.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SUSE operating system is not performing IPv6 packet forwarding by default, unless the system is a router.\n\nCheck to see if IPv6 forwarding is disabled by default using the following command:\n\n> sudo sysctl net.ipv6.conf.default.forwarding\nnet.ipv6.conf.default.forwarding = 0\n\nIf the network parameter \"ipv6.conf.default.forwarding\" is not equal to \"0\" or nothing is returned, this is a finding.",
+  "fix": "Configure the SUSE operating system to not performing IPv6 packet forwarding by default by running the following command as an administrator:\n\n> sudo sysctl -w net.ipv6.conf.default.forwarding=0\n\nIf \"0\" is not the system's default value, add or update the following line in \"/etc/sysctl.d/99-stig.conf\":\n\n> sudo sh -c 'echo \"net.ipv6.conf.default.forwarding=0\" >> /etc/sysctl.d/99-stig.conf'\n\n> sudo sysctl --system",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Routing protocol daemons are typically used on routers to exchange network topology information with other routers. If this software is used when not required, system network information may be unnecessarily transmitted across the network.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLES-15-040382",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77",
+      "name": "SUSE Linux Enterprise Server 15 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-server-15-security-technical-implementation-guide-v2r7-3faa1a77"
+  ]
+}

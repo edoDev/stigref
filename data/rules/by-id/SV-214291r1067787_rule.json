@@ -1,0 +1,54 @@
+{
+  "id": "SV-214291r1067787_rule",
+  "full_rule_id": "SV-214291r1067787_rule",
+  "rule_id": "SV-214291",
+  "rule_revision": "1067787",
+  "group_id": "V-214291",
+  "group_title": "SRG-APP-000246-WSR-000149",
+  "title": "The Apache web server must be tuned to handle the operational requirements of the hosted application.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A denial of service (DoS) can occur when the Apache web server is so overwhelmed that it can no longer respond to additional requests. A web server not properly tuned may become overwhelmed and cause a DoS condition even with expected traffic from users. To avoid a DoS, the Apache web server must be tuned to handle the expected traffic for the hosted applications.\n\nSatisfies: SRG-APP-000246-WSR-000149, SRG-APP-000435-WSR-000148</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file:\n\n# apachectl -V | egrep -i 'httpd_root|server_config_file'\n-D HTTPD_ROOT=\"/etc/httpd\"\n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\"\n\nNote: The apachectl front end is the preferred method for locating the Apache httpd file. For some Linux distributions, \"apache2ctl -V\" or  \"httpd -V\" can also be used. \n\nVerify the \"Timeout\" directive is specified to have a value of \"60\" seconds or less.\n\n# cat /<path_to_file>/httpd.conf | grep -i \"Timeout\"\n\nIf the \"Timeout\" directive is not configured or is set for more than \"60\" seconds, this is a finding.",
+  "fix": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file: \n \n# apachectl -V | egrep -i 'httpd_root|server_config_file' \n-D HTTPD_ROOT=\"/etc/httpd\" \n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\" \n \nAdd or modify the \"Timeout\" directive in the Apache configuration to have a value of \"60\" seconds or less. \n \n\"Timeout 60\"",
+  "ccis": [
+    "CCI-001094",
+    "CCI-002415"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A denial of service (DoS) can occur when the Apache web server is so overwhelmed that it can no longer respond to additional requests. A web server not properly tuned may become overwhelmed and cause a DoS condition even with expected traffic from users. To avoid a DoS, the Apache web server must be tuned to handle the expected traffic for the hosted applications.\n\nSatisfies: SRG-APP-000246-WSR-000149, SRG-APP-000435-WSR-000148",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U2-000590",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66",
+      "name": "Apache Server 2.4 UNIX Site Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-site-security-technical-implementation-guide-v2r6-7bab4f66"
+  ]
+}

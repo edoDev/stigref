@@ -1,0 +1,53 @@
+{
+  "id": "SV-216999r855842_rule",
+  "full_rule_id": "SV-216999r855842_rule",
+  "rule_id": "SV-216999",
+  "rule_revision": "855842",
+  "group_id": "V-216999",
+  "group_title": "SRG-NET-000362-RTR-000124",
+  "title": "The Cisco BGP router must be configured to enable the Generalized TTL Security Mechanism (GTSM).",
+  "severity": "low",
+  "description": "<VulnDiscussion>As described in RFC 3682, GTSM is designed to protect a router's IP-based control plane from denial of service (DoS) attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all Exterior Border Gateway Protocol-speaking routers. \n\nGTSM is based on the fact that the vast majority of control plane peering is established between adjacent routers; that is, the Exterior Border Gateway Protocol peers are either between connecting interfaces or between loopback interfaces. Since TTL spoofing is considered nearly impossible, a mechanism based on an expected TTL value provides a simple and reasonably robust defense from infrastructure attacks based on forged control plane traffic.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the BGP configuration to verify that TTL security has been configured for each external neighbor as shown in the example below:\n\nrouter bgp xx\n no synchronization\n bgp log-neighbor-changes\n neighbor x.1.1.9 remote-as yy\n neighbor x.1.1.9 password xxxxxxxx\n neighbor x.1.1.9 ttl-security hops 1\n neighbor x.2.1.7 remote-as zz\n neighbor x.2.1.7 password xxxxxxxx\n neighbor x.2.1.7 ttl-security hops 1\n\nIf the router is not configured to use GTSM for all Exterior Border Gateway Protocol peering sessions, this is a finding.",
+  "fix": "Configure TTL security on all external BGP neighbors as shown in the example below:\n\nR1(config)#router bgp xx\nR1(config-router)#neighbor x.1.1.9 ttl-security hops 1\nR1(config-router)#neighbor x.2.1.7 ttl-security hops 1",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "As described in RFC 3682, GTSM is designed to protect a router's IP-based control plane from denial of service (DoS) attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all Exterior Border Gateway Protocol-speaking routers. \n\nGTSM is based on the fact that the vast majority of control plane peering is established between adjacent routers; that is, the Exterior Border Gateway Protocol peers are either between connecting interfaces or between loopback interfaces. Since TTL spoofing is considered nearly impossible, a mechanism based on an expected TTL value provides a simple and reasonably robust defense from infrastructure attacks based on forged control plane traffic.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000470",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b",
+      "name": "Cisco IOS XE Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b"
+  ]
+}

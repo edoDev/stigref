@@ -1,0 +1,53 @@
+{
+  "id": "SV-233615r961044_rule",
+  "full_rule_id": "SV-233615r961044_rule",
+  "rule_id": "SV-233615",
+  "rule_revision": "961044",
+  "group_id": "V-233615",
+  "group_title": "SRG-APP-000177-DB-000069",
+  "title": "PostgreSQL must map the PKI-authenticated identity to an associated user account.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The DoD standard for authentication is DoD-approved PKI certificates. Once a PKI certificate has been validated, it must be mapped to PostgreSQL user account for the authenticated identity to be meaningful to PostgreSQL and useful for authorization decisions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "The Common Name (cn) attribute of the certificate will be compared to the requested database user name and, if they match, the login will be allowed. \n\nTo check the cn of the certificate, using openssl, do the following:\n\n$ openssl x509 -noout -subject -in client_cert\n\nIf the cn does not match the users listed in PostgreSQL and no user mapping is used, this is a finding.\n\nUser name mapping can be used to allow cn to be different from the database user name. If User Name Maps are used, run the following as the database administrator (shown here as \"postgres\"), to get a list of maps used for authentication:\n\n$ sudo su - postgres\n$ grep \"map\" ${PGDATA?}/pg_hba.conf\n\nWith the names of the maps used, check those maps against the user name mappings in pg_ident.conf:\n\n$ sudo su - postgres\n$ cat ${PGDATA?}/pg_ident.conf\n\nIf user accounts are not being mapped to authenticated identities, this is a finding.\n\nIf the cn and the username mapping do not match, this is a finding.",
+  "fix": "Configure PostgreSQL to map authenticated identities directly to PostgreSQL user accounts.\n\nFor information on configuring PostgreSQL to use SSL, see supplementary content APPENDIX-G.",
+  "ccis": [
+    "CCI-000187"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The DoD standard for authentication is DoD-approved PKI certificates. Once a PKI certificate has been validated, it must be mapped to PostgreSQL user account for the authenticated identity to be meaningful to PostgreSQL and useful for authorization decisions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CD12-00-011800",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c",
+      "name": "Crunchy Data PostgreSQL Security Technical Implementation Guide",
+      "version": "3",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "crunchy-data-postgresql-security-technical-implementation-guide-v3r1-5a8ba06c"
+  ]
+}

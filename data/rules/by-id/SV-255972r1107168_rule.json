@@ -1,0 +1,53 @@
+{
+  "id": "SV-255972r1107168_rule",
+  "full_rule_id": "SV-255972r1107168_rule",
+  "rule_id": "SV-255972",
+  "rule_revision": "1107168",
+  "group_id": "V-255972",
+  "group_title": "SRG-NET-000362-L2S-000023",
+  "title": "The Arista MLS switch must have STP Loop Guard enabled on all nondesignated STP switch ports.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Spanning Tree Protocol (STP) loop guard feature provides additional protection against STP loops. An STP loop is created when an STP blocking port in a redundant topology erroneously transitions to the forwarding state. In its operation, STP relies on continuous reception and transmission of BPDUs based on the port role. The designated port transmits BPDUs, and the nondesignated port receives BPDUs. When one of the ports in a physically redundant topology no longer receives BPDUs, the STP conceives that the topology is loop free. Eventually, the blocking port from the alternate or backup port becomes a designated port and moves to a forwarding state. This situation creates a loop. The loop guard feature makes additional checks. If BPDUs are not received on a nondesignated port and loop guard is enabled, that port is moved into the STP loop-inconsistent blocking state. In topologies where fiber optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista MLS switch configuration to verify that STP Loop Guard is enabled. It can be enabled globally or applied to an interface.\n\nNote: Arista uses STP Loop guard to protect against one-way connections.\n\nswitch# sh run | sec spanning-tree\nspanning-tree guard loop default\n\nOr,\n\ninterface Ethernet6\n    spanning-tree guard loop\n\nIf STP Loop Guard is not configured globally or on nondesignated STP ports, this is a finding.",
+  "fix": "Configure the Arista MLS switch for STP Loop Guard globally with the following command:\n\nswitch(config)#spanning-tree guard loop default\nswitch(config)#\n\nAlternatively, configure Loop Guard on each interface:\n\nswitch(config-if-Eth6)# spanning-tree guard loop",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Spanning Tree Protocol (STP) loop guard feature provides additional protection against STP loops. An STP loop is created when an STP blocking port in a redundant topology erroneously transitions to the forwarding state. In its operation, STP relies on continuous reception and transmission of BPDUs based on the port role. The designated port transmits BPDUs, and the nondesignated port receives BPDUs. When one of the ports in a physically redundant topology no longer receives BPDUs, the STP conceives that the topology is loop free. Eventually, the blocking port from the alternate or backup port becomes a designated port and moves to a forwarding state. This situation creates a loop. The loop guard feature makes additional checks. If BPDUs are not received on a nondesignated port and loop guard is enabled, that port is moved into the STP loop-inconsistent blocking state. In topologies where fiber optic interconnections are used, physical misconnections can occur that allow a link to appear to be up when there is a mismatched set of transmit/receive pairs. When such a physical misconfiguration occurs, protocols such as STP can cause network instability.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-L2-000070",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-l2s-security-technical-implementation-guide-v2r3-9875898d",
+      "name": "Arista MLS EOS 4.X L2S Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-l2s-security-technical-implementation-guide-v2r3-9875898d"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-102383r1_rule",
+  "full_rule_id": "SV-102383r1_rule",
+  "rule_id": "SV-102383",
+  "rule_revision": "1",
+  "group_id": "V-92295",
+  "group_title": "SRG-APP-000125-NDM-000241",
+  "title": "The SEL-2740S must be configured to send log data to a Syslog server or collected by another parent OTSDN Controller.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protection of log data includes assuring log data is not accidentally lost or deleted. Regularly backing up audit records to a different system or onto separate media than the system being audited helps to assure, in the event of a catastrophic system failure, the audit records will be retained.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Ensure SEL-2740S Syslog servers are configured by doing the following:\n1. Log in with Permission Level 3 rights into parent OTSDN Controller.\n2. Go to the \"Configuration Objects\" page.\n3. Check Syslog Server IP addresses are in the settings fields for the switch node in log services.\n4. Check Syslog flows exist and are accurate for the SEL-2740S DUT and additional neighbor devices' flows exist and are correct.\n\nIf the SEL-2740S is not configured with Syslog server entries to ensure auditability, this is a finding.",
+  "fix": "To collect logs using the OTSDN controller, do the following:\n1. Go to the \"Log Settings\" page.\n2. Select the Primary entry in the Logging table.\n3. Click the \"Add\" icon (A) in the \"Log Services\" pane.\n4. Select Syslog Server (B) from the menu to display a new Syslog Server Log Service box.\n5. Click the \"Syslog Server\" box to display a blue border around the box.\n6. Enter Settings (1) through (4) in the appropriate boxes.\n7. Click \"Submit\".\n\nUse the OTSDN Controller to Syslog the events to a central Security Information and Event Manager (SIEM).\nOption 2\nTo configure the SEL-2740S to send logs to a syslog server:\n1. Go to the configuration object setting page.\n2. Select syslog under the log services for the desired switch.\n3. Enter the settings desired for the syslog server IP address and severity level to send to this destination.\n4. Repeat for amount of desired log servers as the SEL-2740S supports up to three destinations.\n\nTo create the flow rule(s) for Syslog traffic:\n1. Log in to OTSDN Controller with Permission Level 3.\n2. Identify or create the Configuration Port to use for the path to Syslog Server.\n3. Identify or create the Configuration Link to use for the path to Syslog Server.\n\nCreate the Flow Rule for the SEL-2740S' Syslog traffic:\n1. Click \"Flow Entries\" in Navigation Menu.\n2. Click \"Add Flow\" button.\n3. Enter General setting values for \"Switch\" Enable.  Optional enter General settings for \"Table ID\", \"Priority\", \"Idle Timeout\", and \"Hard Timeout\".\n4. For Syslog traffic, enter appropriate \"Match Field\" values for \"ARP Opcode\" (Request or Reply), \"ARP Source\", \"ARP Target\", \"Communication Service Type (CST) Match\", \"Ethernet Destination\", \"Ethernet Source\", \"Ethernet Type\", \"InPort\", \"IP Proto\", \"IPv4 Destination\", \"IPv4 Source\", \"TCP Destination\", \"TCP Source\", \"UDP Destination\", \"UDP Source\", \"VLAN Priority\", and/or \"VLAN Virtually ID\".\n5. Enter appropriate Write-Actions for \"Pop VLAN ID\", \"Push VLAN ID\", \"Set VLAN ID\", \"Set VLAN Priority\", \"Set Queue\", \"Group by Alias or Value\", and/or \"Output by Alias or \"Value\".\n6. Click \"Submit\".",
+  "ccis": [
+    "CCI-001348"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protection of log data includes assuring log data is not accidentally lost or deleted. Regularly backing up audit records to a different system or onto separate media than the system being audited helps to assure, in the event of a catastrophic system failure, the audit records will be retained.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SELS-ND-000430",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "sel-2740s-ndm-security-technical-implementation-guide-v1r1-230e4d80",
+      "name": "SEL-2740S NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "sel-2740s-ndm-security-technical-implementation-guide-v1r1-230e4d80"
+  ]
+}

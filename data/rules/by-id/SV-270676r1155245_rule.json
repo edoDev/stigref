@@ -1,0 +1,53 @@
+{
+  "id": "SV-270676r1155245_rule",
+  "full_rule_id": "SV-270676r1155245_rule",
+  "rule_id": "SV-270676",
+  "rule_revision": "1155245",
+  "group_id": "V-270676",
+  "group_title": "SRG-OS-000254-GPOS-00095",
+  "title": "Ubuntu 24.04 LTS must initiate session audits at system startup.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If auditing is enabled late in the startup process, the actions of some startup processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu 24.04 LTS enables auditing at system startup in GRUB. \n\nCheck the main GRUB defaults to ensure that auditing is enabled:\n$ sudo grep -ir GRUB_CMDLINE_LINUX /etc/default/grub\n/etc/default/grub:GRUB_CMDLINE_LINUX_DEFAULT=\"audit=1\"\n/etc/default/grub:GRUB_CMDLINE_LINUX=\"audit=1\"\n \nIf any linux lines do not contain \"audit=1\", this is a finding.\n\nCheck the generated GRUB configuration to ensure that the setting is propagated to the bootloader:\n$ sudo grep \"^\\s*linux\" /boot/grub/grub.cfg \nlinux   /vmlinuz-6.8.0-31-generic root=UUID=c92a542f-aee4-4af9-94b2-203624ccb8e3 ro audit=1 quiet splash $vt_handoff\nlinux   /vmlinuz-6.8.0-31-generic root=UUID=c92a542f-aee4-4af9-94b2-203624ccb8e3 ro recovery nomodeset dis_ucode_ldr audit=1\n \nIf any linux lines do not contain \"audit=1\", this is a finding.\n\nNote: Output details may vary by system.",
+  "fix": "Configure Ubuntu 24.04 LTS to produce audit records at system startup.  \n \nEdit the \"/etc/default/grub\" file and add \"audit=1\" to the \"GRUB_CMDLINE_LINUX\" option and to the \"GRUB_CMDLINE_LINUX_DEFAULT\" option. \n\nGRUB_CMDLINE_LINUX_DEFAULT=\"audit=1\"\nGRUB_CMDLINE_LINUX=\"audit=1\"\n \nTo update the grub config file, run: \n \n$ sudo update-grub",
+  "ccis": [
+    "CCI-001464"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If auditing is enabled late in the startup process, the actions of some startup processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-24-102010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0",
+      "name": "Canonical Ubuntu 24.04 LTS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-24-04-lts-security-technical-implementation-guide-v1r5-27189fe0"
+  ]
+}

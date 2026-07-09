@@ -1,0 +1,53 @@
+{
+  "id": "SV-217030r604135_rule",
+  "full_rule_id": "SV-217030r604135_rule",
+  "rule_id": "SV-217030",
+  "rule_revision": "604135",
+  "group_id": "V-217030",
+  "group_title": "SRG-NET-000019-RTR-000002",
+  "title": "The Juniper perimeter router must be configured to enforce approved authorizations for controlling the flow of information between interconnected networks in accordance with applicable policy.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information flow control regulates authorized information to travel within a network and between interconnected networks. Controlling the flow of network traffic is critical so it does not introduce any unacceptable risk to the network infrastructure or data. An example of a flow control restriction is blocking outside traffic claiming to be from within the organization. For most routers, internal information flow control is a product of system design.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to verify that filters are configured to allow or deny traffic for specific source and destination addresses as well as ports and protocols. In the example below, the router is peering BGP with DISN. ICMP echo and echo-reply packets are allowed for troubleshooting connectivity. WWW traffic is permitted inbound to the NIPRnet host-facing web server (x.12.1.22).\n\nStep 1: Verify that external interface has an inbound filter configured as shown in the example below:\n\ninterfaces {\n    ge-0/0/0 {\n        unit 0 {\n            family inet {\n                filter {\n                    input FILTER_INBOUND_TRAFFIC;\n                }\n                address x.1.12.2/30;\n            }\n        }\n    }\n\n\nStep 2: Verify that the inbound filter allows only traffic that is to be permitted into the network as shown in the example below:\n\nfirewall {\n    family inet {\n        filter FILTER_INBOUND_TRAFFIC {\n            term TCP_ESTABLISHED {\n                from {\n                    tcp-established;\n                }\n                then accept;\n            }\n            term ALLOW_BGP {\n                from {\n                    source-address {\n                        x.1.12.1/32;\n                    }\n                    protocol tcp;\n                    destination-port bgp;\n                }\n                then accept;\n            }\n            term ALLOW_PING {\n                from {\n                    protocol icmp;\n                    icmp-type [ echo-reply echo-request ];\n                }\n                then accept;\n            }\n            term ALLOW_WWW {\n                from {\n                    destination-address {\n                       x.12.1.22/32;\n                    }\n                    protocol tcp;\n                    destination-port http;\n                }\n                then accept;\n            }\n            term DENY_ALL_OTHER {\n                then {\n                    syslog;\n                    reject;\n                }\n            }\n        }\n    }\n}\n\nIf the router is not configured to enforce approved authorizations for controlling the flow of information within the network based on organization-defined information flow control policies, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\n[edit firewall family inet]\nset filter FILTER_INBOUND_TRAFFIC term TCP_ESTABLISHED from tcp-established\nset filter FILTER_INBOUND_TRAFFIC term TCP_ESTABLISHED then accept\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_BGP from source-address x.1.12.1/32\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_BGP from protocol tcp\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_BGP from destination-port bgp\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_BGP then accept\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_PING from protocol icmp\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_PING from icmp-type echo-reply\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_PING from icmp-type echo-request\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_PING then accept\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_WWW from destination-address x.12.1.22/32\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_WWW from protocol tcp\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_WWW from destination-port http\nset filter FILTER_INBOUND_TRAFFIC term ALLOW_WWW then accept\nset filter FILTER_INBOUND_TRAFFIC term DENY_ALL_OTHER then syslog\nset filter FILTER_INBOUND_TRAFFIC term DENY_ALL_OTHER then reject\n\nStep 2: Apply the filter inbound on all applicable interfaces.\n\n[edit interfaces ge-0/0/0 unit 0 family inet]\nset filter input FILTER_INBOUND_TRAFFIC",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information flow control regulates authorized information to travel within a network and between interconnected networks. Controlling the flow of network traffic is critical so it does not introduce any unacceptable risk to the network infrastructure or data. An example of a flow control restriction is blocking outside traffic claiming to be from within the organization. For most routers, internal information flow control is a product of system design.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUNI-RT-000250",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6",
+      "name": "Juniper Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-router-rtr-security-technical-implementation-guide-v3r2-df0ceff6"
+  ]
+}

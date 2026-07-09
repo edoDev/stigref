@@ -1,0 +1,53 @@
+{
+  "id": "SV-253977r843964_rule",
+  "full_rule_id": "SV-253977r843964_rule",
+  "rule_id": "SV-253977",
+  "rule_revision": "843964",
+  "group_id": "V-253977",
+  "group_title": "SRG-NET-000018-RTR-000005",
+  "title": "The Juniper BGP router must be configured to reject outbound route advertisements for any prefixes that do not belong to any customers or the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Advertisement of routes by an AS for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview the BGP router configuration to verify there is a filter defined to only advertise routes for prefixes belonging to any customer or the local AS.\n\nExample route-filter-list of customer addresses with corresponding policy-statement referencing the list:\n[edit policy-options]\nroute-filter-list customer1-routes {\n    <customer route 1/mask> exact;\n    <customer route 2/mask> exact;\n}\nroute-filter-list customer1-routes-ipv6 {\n    <customer route 1/prefix> exact;\n    <customer route 2/prefix> exact;\n}\n<additional route-filter-lists for other customers>\npolicy-statement bgp-advertise-cust-routes {\n    term 1 {\n        from {\n            route-filter-list customer1-routes;\n            route-filter-list customer1-routes-ipv6;\n        }\n        then accept;\n    }\n    <additional terms for other customers>\n    term default {\n        then reject;\n    }\n}\nNote: The example shows using route-filter-lists to ease management. The policy-statement also supports the route directly in the match condition. For example, \"route-filter <customer route 1/mask> exact\" (in place of route-filter-list customer-routes).\n\nThe prefix filter must be referenced outbound on the appropriate BGP neighbor statements.\n\nVerify the eBGP export statement prevents Junos from exporting routes from the route table into BGP. Junos accepts export statements at three hierarchy levels: Global protocol, group, and neighbor (peer). Global is the most general, followed by group, and neighbor is the most restrictive. Junos applies only the most restrictive policy so if a policy is configured at the protocol, group, and neighbor level, only the neighbor policy is applied.\n[edit protocols bgp]\ngroup eBGP {\n    <other group configuration>\n    export bgp-advertise-cust-routes;\n    neighbor <address> {\n        <other neighbor configuration>\n        export bgp-advertise-cust-routes;\n    }\n}\nexport bgp-advertise-cust-routes;\n<other BGP configuration>\n\nIf the router is not configured to reject outbound route advertisements that do not belong to any customers or the local AS, this is a finding.",
+  "fix": "Configure all eBGP routers to filter outbound route advertisements for prefixes that are not allocated to or belong to any customer or the local AS.\n\nset policy-options route-filter-list customer1-routes <customer route 1/mask> exact\nset policy-options route-filter-list customer1-routes <customer route 2/mask> exact\nset policy-options route-filter-list customer1-routes-ipv6 <customer route 1/prefix> exact\nset policy-options route-filter-list customer1-routes-ipv6 <customer route 2/prefix> exact\n<additional route-filter-list for other customers>\n\nset policy-options policy-statement bgp-advertise-cust-routes term 1 from route-filter-list customer1-routes\nset policy-options policy-statement bgp-advertise-cust-routes term 1 from route-filter-list customer1-routes-ipv6\nset policy-options policy-statement bgp-advertise-cust-routes term 1 then accept\n<additional terms for other customers>\nset policy-options policy-statement bgp-advertise-cust-routes term default then reject\n\nset protocols bgp group eBGP export bgp-advertise-cust-routes\nset protocols bgp group eBGP neighbor <address> export bgp-advertise-cust-routes\nset protocols bgp export bgp-advertise-cust-routes",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Advertisement of routes by an AS for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute IGP routes into BGP, thereby leaking internal routes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

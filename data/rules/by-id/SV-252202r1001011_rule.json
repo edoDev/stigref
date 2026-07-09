@@ -1,0 +1,55 @@
+{
+  "id": "SV-252202r1001011_rule",
+  "full_rule_id": "SV-252202r1001011_rule",
+  "rule_id": "SV-252202",
+  "rule_revision": "1001011",
+  "group_id": "V-252202",
+  "group_title": "SRG-APP-000373-NDM-000298",
+  "title": "The HPE Nimble must be configured to synchronize internal information system clocks using an authoritative time source.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The loss of connectivity to a particular authoritative time source will result in the loss of time synchronization (free-run mode) and increasingly inaccurate time stamps on audit events and other functions. \n\nMultiple time sources provide redundancy by including a secondary source. Time synchronization is usually a hierarchy; clients synchronize time to a local source while that source synchronizes its time to a more accurate source. The network device must utilize an authoritative time server and/or be configured to use redundant authoritative time sources. This requirement is related to the comparison done in CCI-001891.\n\nDOD-approved solutions consist of a combination of a primary and secondary time source using a combination or multiple instances of the following: a time server designated for the appropriate DOD network (NIPRNet/SIPRNet); United States Naval Observatory (USNO) time servers; and/or the Global Positioning System (GPS). The secondary time source must be located in a different geographic region than the primary time source.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To Determine if the HPE Nimble Array is configured to synchronize internal information system clocks with the primary NTP server:\n \nArrayA:/# ntpq\nntpq> sysinfo\nassocid=0 status=0615 leap_none, sync_ntp, 1 event, clock_sync,\nsystem peer: cxo-nmbldc-01.nimblestorage.com:123\nsystem peer mode: client\nleap indicator: 00\nstratum: 4\nlog2 precision: -24\nroot delay: 37.321\nroot dispersion: 265.639\nreference ID: 10.157.24.95\nreference time: e509b178.9f897118 Thu, Oct 7 2021 11:48:40.623\nsystem jitter: 0.000000\nclock jitter: 0.673\nclock wander: 0.003\nbroadcast delay: -50.000\nsymm. auth. delay: 0.000\n\nIf the HPE Storage Array is not configured to synchronize internal information system clocks with the primary and secondary time sources located in different geographic regions using redundant authoritative time sources, this is a finding.",
+  "fix": "Configure the HPE Nimble Array to synchronize internal information system clocks with the primary time source:\n \nArrayA:/# group --edit --ntpserver <ip_address_of_ntp_server>\n  \nThere would be a finding here given we only support primary ntp source.",
+  "ccis": [
+    "CCI-000366",
+    "CCI-004928",
+    "CCI-004922"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The loss of connectivity to a particular authoritative time source will result in the loss of time synchronization (free-run mode) and increasingly inaccurate time stamps on audit events and other functions. \n\nMultiple time sources provide redundancy by including a secondary source. Time synchronization is usually a hierarchy; clients synchronize time to a local source while that source synchronizes its time to a more accurate source. The network device must utilize an authoritative time server and/or be configured to use redundant authoritative time sources. This requirement is related to the comparison done in CCI-001891.\n\nDOD-approved solutions consist of a combination of a primary and secondary time source using a combination or multiple instances of the following: a time server designated for the appropriate DOD network (NIPRNet/SIPRNet); United States Naval Observatory (USNO) time servers; and/or the Global Positioning System (GPS). The secondary time source must be located in a different geographic region than the primary time source.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HPEN-NM-000271",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-nimble-storage-array-ndm-security-technical-implementation-guide-v2r1-05cc6e03",
+      "name": "HPE Nimble Storage Array NDM Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-nimble-storage-array-ndm-security-technical-implementation-guide-v2r1-05cc6e03"
+  ]
+}

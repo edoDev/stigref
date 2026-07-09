@@ -1,0 +1,53 @@
+{
+  "id": "SV-279613r1192499_rule",
+  "full_rule_id": "SV-279613r1192499_rule",
+  "rule_id": "SV-279613",
+  "rule_revision": "1192499",
+  "group_id": "V-279613",
+  "group_title": "SRG-OS-000120-GPOS-00061",
+  "title": "Nutanix OS must configure pam_uni.so module to use SHA-512 for authentication to a cryptographic module.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.\n\nOperating systems using encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules. \n\nFIPS 140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DOD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general purpose computing system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify pam_uni.so module is configured to use SHA-512 using the following command.\n\n$ sudo grep password /etc/pam.d/password-auth | grep pam_unix\npassword    sufficient    pam_unix.so sha512 shadow try_first_pass use_authtok\n\nIf \"sha512\" is missing or commented out, this is a finding.",
+  "fix": "1. For AOS, disable inactive user accounts after the password expires using the following command.\n\n$ sudo salt-call state.sls security/CVM/pamCVM\n\n2. For Prism Central, disable inactive user accounts after the password expires using the following command.\n\n$ sudo salt-call state.sls security/PCVM/pamPCVM\n\n3. For Files, disable inactive user accounts after the password expires using the following command.\n\n$ sudo salt-call state.sls security/AFS/pamAFS\n\n4. Configure AHV to disable inactive user accounts after the password expires using the following command.\n\n$ sudo salt-call state.sls security/KVM/pamKVM",
+  "ccis": [
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.\n\nOperating systems using encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules. \n\nFIPS 140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DOD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general purpose computing system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

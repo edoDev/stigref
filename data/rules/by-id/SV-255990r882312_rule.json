@@ -1,0 +1,53 @@
+{
+  "id": "SV-255990r882312_rule",
+  "full_rule_id": "SV-255990r882312_rule",
+  "rule_id": "SV-255990",
+  "rule_revision": "882312",
+  "group_id": "V-255990",
+  "group_title": "SRG-NET-000018-RTR-000004",
+  "title": "The Arista BGP router must be configured to reject inbound route advertisements from a customer edge (CE) router for prefixes that are not allocated to that customer.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>As a best practice, a service provider should only accept customer prefixes that have been assigned to that customer and any peering autonomous systems. A multi-homed customer with BGP speaking routers connected to the internet or other external networks could be breached and used to launch a prefix de-aggregation attack. Without ingress route filtering of customers, the effectiveness of such an attack could impact the entire IP core and its customers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router configuration to verify filters are defined to only accept routes for prefixes that belong to specific customers. \n\nThe prefix filter must be referenced inbound on the appropriate BGP neighbor statement.\n\nStep 1: Verify the Arista router is configured with ip access-list BGP_Enclave_Gateway_Filter_IN. To verify IP access lists are configured, execute the command \"show ip access-lists\".\n\nip access-list BGP_Enclave_Gateway_Filter_IN\n 10 permit ip 172.16.50.0/30 any \n 20 permit ip 10.1.1.0/24 any \n 30 permit  ip 12.15.4.9/32 any\n 40 deny ip any any log\n\nStep 2: Review the route-map and verify it matches the ACL. To verify route maps are configured, execute the command \"show route-map\".\n\nroute-map FILTER_INBOUND permit 10\n   match ip address access-list BGP_Enclave_Gateway_Filter_IN\n\nStep 3: Review the BGP configuration to verify the filter is applied inbound to the appropriate BGP neighbor. To verify the BGP config and verify the route map is applied, execute the command \"show run | section router bgp\".\n\nrouter bgp 65001     \n neighbor 100.2.1.1 route-map FILTER_INBOUND in\n\nIf the Arista router is not configured to reject inbound route advertisements from each CE router for prefixes that are not allocated to that customer, this is a finding.\n\nNote: Routes to PE-CE links within a VPN are needed for troubleshooting end-to-end connectivity across the MPLS/IP backbone. Hence, these prefixes are an exception to this requirement.",
+  "fix": "Step 1: Configure Arista eBGP routers to reject inbound route advertisements from a CE router for prefixes that are not allocated to that specific customer.\n\nLEAF-1A(config)#ip access-list BGP_Enclave_Gateway_Filter_IN\nLEAF-1A(config-acl-BGP_Enclave_Gateway_Filter_IN)# 10 permit ip 172.16.50.0/30 any \nLEAF-1A(config-acl-BGP_Enclave_Gateway_Filter_IN)# 20 permit ip 10.1.1.0/24 any  \nLEAF-1A(config-acl-BGP_Enclave_Gateway_Filter_IN)# 30 permit  ip 12.15.4.9/32 any\nLEAF-1A(config-acl-BGP_Enclave_Gateway_Filter_IN)# 40 deny ip any any log\n\nStep 2: Configure a route-map to match the ACL.\n\nLEAF-1A(config-ip-pfx)#route-map FILTER_INBOUND permit 10\nLEAF-1A(config-route-map-FILTER_INBOUND)#match ip address access-list BGP_Enclave_Gateway_Filter_IN\n\nStep 3: Configure the route-map to be applied inbound to the appropriate CE customer neighbor.\n\nLEAF-1A(config)#router bgp 65001     \nLEAF-1A(config-router-bgp)#neighbor 100.2.1.1 route-map FILTER_INBOUND in",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "As a best practice, a service provider should only accept customer prefixes that have been assigned to that customer and any peering autonomous systems. A multi-homed customer with BGP speaking routers connected to the internet or other external networks could be breached and used to launch a prefix de-aggregation attack. Without ingress route filtering of customers, the effectiveness of such an attack could impact the entire IP core and its customers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

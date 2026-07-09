@@ -1,0 +1,53 @@
+{
+  "id": "SV-215230r991589_rule",
+  "full_rule_id": "SV-215230r991589_rule",
+  "rule_id": "SV-215230",
+  "rule_revision": "991589",
+  "group_id": "V-215230",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The password hashes stored on AIX system must have been generated using a FIPS 140-2 approved cryptographic hashing algorithm.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Systems must employ cryptographic hashes for passwords using the SHA-2 family of algorithms or FIPS 140-2 approved successors. The use of unapproved algorithms may result in weak password hashes that are more vulnerable to compromise.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the system wide password algorithm is set to {ssha256} or {ssha512} by running the following command:\n\n# lssec -f /etc/security/login.cfg -s usw -a pwd_algorithm\nusw pwd_algorithm=ssha512\n\nIf the \"pwd_algorithm\" is not set to \"ssha256\" or \"ssha512\", this is a finding.\n\nVerify no password hashes in /etc/passwd by running the following command: \n\n# cat /etc/passwd | cut -f2,2 -d\":\" \n!\n!\n!\n!\n*\n*\n*\n*\n\nIf there are password hashes present, this is a finding. \n\nVerify all password hashes in \"/etc/security/passwd\" begin with {ssha256} or {ssha512} by running commands: \n \n# cat /etc/security/passwd | grep password \n        password = {ssha512}06$e58YOawe/7UhChqh$hZEWlP4040jarX1NeOujmcxd.7qerUvjW9lM9djJsDITtdjFvVpLX.r04xieOWrbH0qb0SJJ98a0tmgZBzPP..\n        password = {ssha512}06$Y6ztvMxKGdITxPex$B81/GDTEPt0xwp.BX1VhY9mAPaWHXdNoLI9D0T6dBExgo6r87X0etnfjxWODT73.udrbAY.F4HzaBR68lN5/..\n        password = {ssha512}06$iIXQQqs.mdGpC9Wu$cXSajikWYKAUacbF50FNlFgYYSgTklGf4uhXb1J/GyBGF5j5aWa4YG5Ah2uaAHv/Jmbmx.7yBm8iXz9Pz1LM..\n        password = {ssha512}06$3Sw24rPVdqDFFCIl$d1dZs7GYmTXnD9i270SxozIBxN0pqq/bNn0YbyKeDq0o6Y.j9qfkeH373DwkHBWgrifNcgj/K0pVyzjMg6QN..\n\nIf any password hashes are present not beginning with {ssha256} or {ssha512}, this is a finding.",
+  "fix": "Set the system wide password algorithm to \"ssha256\" or \"ssha512\" by running the following command:\n\n# chsec -f /etc/security/login.cfg -s usw -a pwd_algorithm=ssha512\n\nChange the passwords for all accounts using non-compliant password hashes by running the following command: \n\n$ passwd [user_name]",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Systems must employ cryptographic hashes for passwords using the SHA-2 family of algorithms or FIPS 140-2 approved successors. The use of unapproved algorithms may result in weak password hashes that are more vulnerable to compromise.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001134",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

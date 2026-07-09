@@ -1,0 +1,54 @@
+{
+  "id": "SV-256775r889295_rule",
+  "full_rule_id": "SV-256775r889295_rule",
+  "rule_id": "SV-256775",
+  "rule_revision": "889295",
+  "group_id": "V-256775",
+  "group_title": "SRG-APP-000125-WSR-000071",
+  "title": "Security Token Service log data and records must be backed up onto a different system or media.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protection of Security Token Service log data includes ensuring log data is not accidentally lost or deleted. Backing up Security Token Service log records to an unrelated system or onto separate media than the system the web server is running on helps to ensure that, in the event of a catastrophic system failure, the log records will be retained.\n\nSatisfies: SRG-APP-000125-WSR-000071, SRG-APP-000358-WSR-000163</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# rpm -V VMware-visl-integration|grep vmware-services-sso-services.conf|grep \"^..5......\" \n \nIf the command returns any output, this is a finding.",
+  "fix": "Navigate to and open: \n \n/etc/vmware-syslog/vmware-services-sso-services.conf \n \nCreate the file if it does not exist. \n \nSet the contents of the file as follows: \n \n#vmidentity logs \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/activedirectoryservice.log\" \n      Tag=\"activedirectoryservice\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      startmsg.regex=\"^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}T[[:digit:]]{1,2}:[[:digit:]]{1,2}:[[:digit:]]{1,2}.[[:digit:]]{0,3}Z\" \n      Facility=\"local0\") \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/lookupsvc-init.log\" \n      Tag=\"ssolookupsvc-init\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      startmsg.regex=\"^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}T[[:digit:]]{1,2}:[[:digit:]]{1,2}:[[:digit:]]{1,2}.[[:digit:]]{0,3}Z\" \n      Facility=\"local0\") \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/openidconnect.log\" \n      Tag=\"openidconnect\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      startmsg.regex=\"^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}T[[:digit:]]{1,2}:[[:digit:]]{1,2}:[[:digit:]]{1,2}.[[:digit:]]{0,3}Z\" \n      Facility=\"local0\") \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/ssoAdminServer.log\" \n      Tag=\"ssoadminserver\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      startmsg.regex=\"^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}T[[:digit:]]{1,2}:[[:digit:]]{1,2}:[[:digit:]]{1,2}.[[:digit:]]{0,3}Z\" \n      Facility=\"local0\") \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/svcaccountmgmt.log\" \n      Tag=\"svcaccountmgmt\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      startmsg.regex=\"^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}T[[:digit:]]{1,2}:[[:digit:]]{1,2}:[[:digit:]]{1,2}.[[:digit:]]{0,3}Z\" \n      Facility=\"local0\") \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/tokenservice.log\" \n      Tag=\"tokenservice\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      startmsg.regex=\"^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}T[[:digit:]]{1,2}:[[:digit:]]{1,2}:[[:digit:]]{1,2}.[[:digit:]]{0,3}Z\" \n      Facility=\"local0\") \n#sts health log \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/sts-health-status.log.*\" \n      Tag=\"sts-health-status\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      startmsg.regex=\"^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2} [[:digit:]]{1,2}:[[:digit:]]{1,2}:[[:digit:]]{1,2},[[:digit:]]{0,4}\" \n      Facility=\"local0\") \n#sts runtime log \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/sts-runtime.log.*\" \n      Tag=\"sts-runtime\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      Facility=\"local0\") \n#gclogFile.0.current log \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/gclogFile.*.current\" \n      Tag=\"gclog\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      startmsg.regex=\"^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}T[[:digit:]]{1,2}:[[:digit:]]{1,2}:[[:digit:]]{1,2}.[[:digit:]]{0,3}+[[:digit:]]{0,4}\" \n      Facility=\"local0\") \n#tomcat log \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/sso/tomcat/localhost_access.log\" \n      Tag=\"sso-tomcat\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      Facility=\"local0\") \n#vmdir log \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/vmdir/*.log\" \n      Tag=\"vmdir\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      Facility=\"local0\") \n#vmafd log \ninput(type=\"imfile\" \n      File=\"/var/log/vmware/vmafd/*.log\" \n      Tag=\"vmafd\" \n      PersistStateInterval=\"200\" \n      Severity=\"info\" \n      Facility=\"local0\")",
+  "ccis": [
+    "CCI-001348",
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protection of Security Token Service log data includes ensuring log data is not accidentally lost or deleted. Backing up Security Token Service log records to an unrelated system or onto separate media than the system the web server is running on helps to ensure that, in the event of a catastrophic system failure, the log records will be retained.\n\nSatisfies: SRG-APP-000125-WSR-000071, SRG-APP-000358-WSR-000163",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCST-70-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-sts-security-technical-implementation-guide-v1r2-ef860c6a",
+      "name": "VMware vSphere 7.0 vCenter Appliance STS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-sts-security-technical-implementation-guide-v1r2-ef860c6a"
+  ]
+}

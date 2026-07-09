@@ -1,0 +1,53 @@
+{
+  "id": "SV-260940r966177_rule",
+  "full_rule_id": "SV-260940r966177_rule",
+  "rule_id": "SV-260940",
+  "rule_revision": "966177",
+  "group_id": "V-260940",
+  "group_title": "SRG-APP-000342-CTR-000775",
+  "title": "Use of privileged Linux containers must be limited to system containers.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Using the --privileged flag gives all Linux Kernel Capabilities to the container, thus overwriting the --cap-add and --cap-drop flags. The --privileged flag gives all capabilities to the container, and it also lifts all the limitations enforced by the device cgroup controller. Any container that requires this privilege must be documented and approved.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "When using Kubernetes orchestration, this check is Not Applicable. \n\nWhen using Swarm orchestration, execute the following command as a trusted user on the host operating system via CLI:\n\ndocker ps --quiet --all | grep -iv \"MKE\\|kube\\|dtr\" | awk '{print $1}' | xargs docker inspect --format '{{ .Id }}: Privileged={{ .HostConfig.Privileged }}'\n\nVerify in the output that no containers are running with the --privileged flag. If there are, this is a finding.",
+  "fix": "When using Kubernetes orchestration, this check is Not Applicable. \n\nReview and remove nonsystem containers previously created by these users that allowed privileged execution using:\n\ndocker container rm [container]",
+  "ccis": [
+    "CCI-002233"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using the --privileged flag gives all Linux Kernel Capabilities to the container, thus overwriting the --cap-add and --cap-drop flags. The --privileged flag gives all capabilities to the container, and it also lifts all the limitations enforced by the device cgroup controller. Any container that requires this privilege must be documented and approved.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-001220",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-256474r959010_rule",
+  "full_rule_id": "SV-256474r959010_rule",
+  "rule_id": "SV-256474",
+  "rule_revision": "959010",
+  "group_id": "V-256474",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "Log size must be configured properly on the virtual machine (VM).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The ESXi hypervisor maintains logs for each individual VM by default. These logs contain information including but not limited to power events, system failure information, tools status and activity, time sync, virtual hardware changes, vMotion migrations, and machine clones.\n\nBy default, the size of these logs is unlimited, and they are only rotated on vMotion or power events. This can cause storage issues at scale for VMs that do not vMotion or power cycle often.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, select the Virtual Machine, right-click, and go to Edit Settings >> VM Options tab >> Advanced >> Configuration Parameters >> Edit Configuration.\n\nFind the \"log.rotateSize\" value and verify it is set to \"2048000\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:\n\nGet-VM \"VM Name\" | Get-AdvancedSetting -Name log.rotateSize\n\nIf the virtual machine advanced setting \"log.rotateSize\" does not exist or is not set to \"2048000\", this is a finding.",
+  "fix": "From the vSphere Client, select the Virtual Machine, right-click, and go to Edit Settings >> VM Options tab >> Advanced >> Configuration Parameters >> Edit Configuration.\n\nFind the \"log.rotateSize\" value and set it to \"2048000\".\n\nNote: The VM must be powered off to modify the advanced settings through the vSphere Client. It is recommended to configure these settings with PowerCLI as this can be done while the VM is powered on. In this case, the modified settings will not take effect until a cold boot of the VM.\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the provided commands as shown below.\n\nIf the setting does not exist, run:\n\nGet-VM \"VM Name\" | New-AdvancedSetting -Name log.rotateSize -Value 2048000\n\nIf the setting exists, run:\n\nGet-VM \"VM Name\" | Get-AdvancedSetting -Name log.rotateSize | Set-AdvancedSetting -Value 2048000",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The ESXi hypervisor maintains logs for each individual VM by default. These logs contain information including but not limited to power events, system failure information, tools status and activity, time sync, virtual hardware changes, vMotion migrations, and machine clones.\n\nBy default, the size of these logs is unlimited, and they are only rotated on vMotion or power events. This can cause storage issues at scale for VMs that do not vMotion or power cycle often.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VMCH-70-000026",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-virtual-machine-security-technical-implementation-guide-v1r4-b00f70ea",
+      "name": "VMware vSphere 7.0 Virtual Machine Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-virtual-machine-security-technical-implementation-guide-v1r4-b00f70ea"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-258798r933455_rule",
+  "full_rule_id": "SV-258798r933455_rule",
+  "rule_id": "SV-258798",
+  "rule_revision": "933455",
+  "group_id": "V-258798",
+  "group_title": "SRG-OS-000480-VMM-002000",
+  "title": "The ESXi host must enforce the exclusive running of executables from approved VIBs.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The \"execInstalledOnly\" advanced ESXi boot option, when set to TRUE, guarantees that the VMkernel executes only those binaries that have been packaged as part of a signed VIB. While this option is effective on its own, it can be further enhanced by telling the Secure Boot to check with the TPM to make sure that the boot process does not proceed unless this setting is enabled. This further protects against malicious offline changes to ESXi configuration to disable the \"execInstalledOnly\" option.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the ESXi host does not have a compatible TPM, this finding is downgraded to a CAT III.\n\nFrom the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nSelect the \"VMkernel.Boot.execInstalledOnly\" value and verify that it is \"true\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-AdvancedSetting -Name VMkernel.Boot.execInstalledOnly\n\nIf the \"VMkernel.Boot.execInstalledOnly\" setting is not \"true\", this is a finding.",
+  "fix": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Advanced System Settings.\n\nClick \"Edit\". Select the \"VMkernel.Boot.execInstalledOnly\" value and configure it to \"true\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-AdvancedSetting -Name VMkernel.Boot.execInstalledOnly | Set-AdvancedSetting -Value True",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The \"execInstalledOnly\" advanced ESXi boot option, when set to TRUE, guarantees that the VMkernel executes only those binaries that have been packaged as part of a signed VIB. While this option is effective on its own, it can be further enhanced by telling the Secure Boot to check with the TPM to make sure that the boot process does not proceed unless this setting is enabled. This further protects against malicious offline changes to ESXi configuration to disable the \"execInstalledOnly\" option.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000244",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v1r1-ce61ed99"
+  ]
+}

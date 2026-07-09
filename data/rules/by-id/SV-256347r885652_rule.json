@@ -1,0 +1,53 @@
+{
+  "id": "SV-256347r885652_rule",
+  "full_rule_id": "SV-256347r885652_rule",
+  "rule_id": "SV-256347",
+  "rule_revision": "885652",
+  "group_id": "V-256347",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must disable the distributed virtual switch health check.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Network health check is disabled by default. Once enabled, the health check packets contain information on host#, vds#, and port#, which an attacker would find useful. It is recommended that network health check be used for troubleshooting and turned off when troubleshooting is finished.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If distributed switches are not used, this is not applicable.\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Configure >> Settings >> Health Check.\n\nView the health check pane and verify the \"VLAN and MTU\" and \"Teaming and failover\" checks are \"Disabled\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\n$vds = Get-VDSwitch\n$vds.ExtensionData.Config.HealthCheckConfig\n\nIf the health check feature is enabled on distributed switches and is not on temporarily for troubleshooting purposes, this is a finding.",
+  "fix": "From the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Configure >> Settings >> Health Check.\n\nClick \"Edit\".\n\nDisable the \"VLAN and MTU\" and \"Teaming and failover\" checks.\n\nClick \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-View -ViewType DistributedVirtualSwitch | ?{($_.config.HealthCheckConfig | ?{$_.enable -notmatch \"False\"})}| %{$_.UpdateDVSHealthCheckConfig(@((New-Object Vmware.Vim.VMwareDVSVlanMtuHealthCheckConfig -property @{enable=0}),(New-Object Vmware.Vim.VMwareDVSTeamingHealthCheckConfig -property @{enable=0})))}",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Network health check is disabled by default. Once enabled, the health check packets contain information on host#, vds#, and port#, which an attacker would find useful. It is recommended that network health check be used for troubleshooting and turned off when troubleshooting is finished.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-70-000267",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8",
+      "name": "VMware vSphere 7.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-security-technical-implementation-guide-v1r3-5c1a5fe8"
+  ]
+}

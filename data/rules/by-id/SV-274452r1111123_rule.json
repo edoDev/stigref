@@ -1,0 +1,53 @@
+{
+  "id": "SV-274452r1111123_rule",
+  "full_rule_id": "SV-274452r1111123_rule",
+  "rule_id": "SV-274452",
+  "rule_revision": "1111123",
+  "group_id": "V-274452",
+  "group_title": "SRG-APP-000141-DB-000093",
+  "title": "The SQL Server User Options feature must be disabled unless specifically required and approved.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>SQL Server is capable of providing a wide range of features and services. Some of the features and services, provided by default, may not be necessary, and enabling them could adversely affect system security.\n\nThe \"user options\" option specifies global defaults for all users. A list of default query processing options is established for the duration of a user's work session. The \"user options\" option enables changing the default values of the SET options (if the server's default settings are not appropriate).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To determine if \"User Options\" option is enabled, execute the following query:\nEXEC SP_CONFIGURE 'show advanced options', '1'; \nRECONFIGURE WITH OVERRIDE; \nEXEC SP_CONFIGURE 'user options'; \n\nIf the value of \"config_value\" is \"0\", this is not a finding. \n\nIf the value of \"config_value\" is \"1\", review the system documentation to determine whether the use of \"user options\" is required and authorized. If it is not authorized, this is a finding.",
+  "fix": "Disable use of or remove any external application executable object definitions that are not authorized. To disable the use of the \"User Options\" option, from the query prompt:\nsp_configure 'show advanced options', 1;  \nGO  \nRECONFIGURE;  \nGO  \nsp_configure 'user options', 0;  \nGO  \nRECONFIGURE;  \nGO",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "SQL Server is capable of providing a wide range of features and services. Some of the features and services, provided by default, may not be necessary, and enabling them could adversely affect system security.\n\nThe \"user options\" option specifies global defaults for all users. A list of default query processing options is established for the duration of a user's work session. The \"user options\" option enables changing the default values of the SET options (if the server's default settings are not appropriate).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLI-22-017100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b",
+      "name": "Microsoft SQL Server 2022 Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-instance-security-technical-implementation-guide-v1r4-3a7b045b"
+  ]
+}

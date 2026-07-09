@@ -1,0 +1,53 @@
+{
+  "id": "SV-223854r991589_rule",
+  "full_rule_id": "SV-223854r991589_rule",
+  "rule_id": "SV-223854",
+  "rule_revision": "991589",
+  "group_id": "V-223854",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "IBM z/OS UNIX HFS MapName files security parameters must be properly specified.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Removal of unneeded or non-secure functions, ports, protocols, and services mitigate the risk of unauthorized connection of devices, unauthorized transfer of information, or other exploitation of these resources.\n\nThe organization must perform a periodic scan/review of the application (as required by CCI-000384) and disable functions, ports, protocols, and services deemed to be unneeded or non-secure.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer to the logical parmlib data sets, example: SYS1.PARMLIB(BPXPRMxx), for the following FILESYSTYPE entry:\n\nFILESYSTYPE TYPE(AUTOMNT) ENTRYPOINT(BPXTAMD)\n\nIf the above entry is not found or is commented out in the BPXPRMxx member(s), this is Not Applicable.\n\nFrom the ISPF Command Shell enter:\nOMVS\ncd /etc\ncat auto.master\nperform a contents list for the file identified \nExample:\ncat u.map\nNote: The /etc/auto.master HFS file (and the use of Automount) is optional. If the file does not exist, this is not applicable.\n\nNote: The setuid parameter and the security parameter have a significant security impact. For this reason these parameters must be explicitly specified and not allowed to default.\n\nIf each MapName file specifies the \"setuid No\" and \"security Yes\" statements for each automounted directory, this is not a finding.\n\nIf there is any deviation from the required values, this is a finding.",
+  "fix": "Review the settings in /etc/auto.master and /etc/mapname for z/OS UNIX security parameters and configure the values to conform to the specifications below.\n\nThe /etc/auto.master HFS file (and the use of Automount) is optional. \n\nThe setuid parameter and the security parameter have a significant security impact. For this reason these parameters must be explicitly specified and not be allowed to default.\n\nEach MapName file will specify the \"setuid NO\" and \"security YES statements for each automounted directory.\n\nIf there is a deviation from the required values, documentation must exist for the deviation.\n\nSecurity NO disables security checking for file access. Security NO is only allowed on test and development domains.\n\nSetuid YES allows a user to run under a different UID/GID identity. Justification documentation is required to validate the use of setuid YES.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Removal of unneeded or non-secure functions, ports, protocols, and services mitigate the risk of unauthorized connection of devices, unauthorized transfer of information, or other exploitation of these resources.\n\nThe organization must perform a periodic scan/review of the application (as required by CCI-000384) and disable functions, ports, protocols, and services deemed to be unneeded or non-secure.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-US-000170",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

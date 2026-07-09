@@ -1,0 +1,53 @@
+{
+  "id": "SV-269306r1050188_rule",
+  "full_rule_id": "SV-269306r1050188_rule",
+  "rule_id": "SV-269306",
+  "rule_revision": "1050188",
+  "group_id": "V-269306",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "AlmaLinux OS 9 must disable virtual system calls.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>System calls are special routines in the Linux kernel, which userspace applications ask to do privileged tasks. Invoking a system call is an expensive operation because the processor must interrupt the currently executing task and switch context to kernel mode, and then switch back to userspace after the system call completes. Virtual system calls map a page into userspace that contains some variables and the implementation of some system calls. This allows the system calls to be executed in userspace to alleviate the context switching expense.\n\nVirtual system calls provide an opportunity of attack for a user who has control of the return instruction pointer. Disabling virtual system calls help to prevent return oriented programming (ROP) attacks via buffer overflows and overruns. </VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the current GRUB 2 configuration disables virtual system calls with the following command:\n\n$ grubby --info=ALL | grep args | grep -v 'vsyscall=none'\n\nIf any output is returned, this is a finding.\n\nCheck that virtual system calls are disabled by default to persist in kernel updates with the following command: \n\n$ grep vsyscall /etc/default/grub\n\nGRUB_CMDLINE_LINUX=\"vsyscall=none\"\n\nIf \"vsyscall\" is not set to \"none\", is missing or commented out, and is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "Document the use of virtual system calls with the ISSO as an operational requirement, or disable them with the following command:\n\n$ grubby --update-kernel=ALL --args=\"vsyscall=none\"\n\nAdd or modify the following line in \"/etc/default/grub\" to ensure the configuration survives kernel updates:\n\nGRUB_CMDLINE_LINUX=\"vsyscall=none\"",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "System calls are special routines in the Linux kernel, which userspace applications ask to do privileged tasks. Invoking a system call is an expensive operation because the processor must interrupt the currently executing task and switch context to kernel mode, and then switch back to userspace after the system call completes. Virtual system calls map a page into userspace that contains some variables and the implementation of some system calls. This allows the system calls to be executed in userspace to alleviate the context switching expense.\n\nVirtual system calls provide an opportunity of attack for a user who has control of the return instruction pointer. Disabling virtual system calls help to prevent return oriented programming (ROP) attacks via buffer overflows and overruns.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-025650",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

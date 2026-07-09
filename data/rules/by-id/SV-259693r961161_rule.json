@@ -1,0 +1,53 @@
+{
+  "id": "SV-259693r961161_rule",
+  "full_rule_id": "SV-259693r961161_rule",
+  "rule_id": "SV-259693",
+  "rule_revision": "961161",
+  "group_id": "V-259693",
+  "group_title": "SRG-APP-000261",
+  "title": "The Exchange Global Recipient Count Limit must be set.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Email system availability depends in part on best practice strategies for setting tuning configurations. The Global Recipient Count Limit field is used to control the maximum number of recipients that can be specified in a single message sent from this server. Its primary purpose is to minimize the chance of an internal sender spamming other recipients, since spam messages often have a large number of recipients. Spam prevention can originate from both outside and inside organizations. While inbound spam is evaluated as it arrives, controls such as this one help prevent spam that might originate inside the organization.\n\nThe Recipient Count Limit is global to the Exchange implementation. Lower-level refinements are possible; however, in this configuration strategy, setting the value once at the global level facilitates a more available system by eliminating potential conflicts among multiple settings. A value of less than or equal to \"5000\" is probably larger than is needed for most organizations but is small enough to minimize usefulness to spammers and is easily handled by Exchange. An unexpanded distribution is handled as one recipient. Specifying \"unlimited\" may result in abuse.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Email Domain Security Plan (EDSP).\n\nDetermine the global maximum message recipient count.\n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-TransportConfig | Select-Object -Property Name, Identity, MaxRecipientEnvelopeLimit\n\nIf the value of \"MaxRecipientEnvelopeLimit\" is not set to \"5000\", this is a finding.\n\nor\n\nIf \"MaxRecipientEnvelopeLimit\" is set to an alternate value and has signoff and risk acceptance in the EDSP, this is not a finding.",
+  "fix": "Update the EDSP to specify the global maximum message recipient count.\n\nSet-TransportConfig -MaxRecipientEnvelopeLimit 5000\n\nor\n\nEnter the value as identified by the EDSP that has obtained a signoff with risk acceptance.\n\nRestart the Microsoft Exchange Information Store service.",
+  "ccis": [
+    "CCI-001308"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Email system availability depends in part on best practice strategies for setting tuning configurations. The Global Recipient Count Limit field is used to control the maximum number of recipients that can be specified in a single message sent from this server. Its primary purpose is to minimize the chance of an internal sender spamming other recipients, since spam messages often have a large number of recipients. Spam prevention can originate from both outside and inside organizations. While inbound spam is evaluated as it arrives, controls such as this one help prevent spam that might originate inside the organization.\n\nThe Recipient Count Limit is global to the Exchange implementation. Lower-level refinements are possible; however, in this configuration strategy, setting the value once at the global level facilitates a more available system by eliminating potential conflicts among multiple settings. A value of less than or equal to \"5000\" is probably larger than is needed for most organizations but is small enough to minimize usefulness to spammers and is easily handled by Exchange. An unexpanded distribution is handled as one recipient. Specifying \"unlimited\" may result in abuse.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-MB-000142",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-mailbox-server-security-technical-implementation-guide-v2r3-ea0ba475",
+      "name": "Microsoft Exchange 2019 Mailbox Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-mailbox-server-security-technical-implementation-guide-v2r3-ea0ba475"
+  ]
+}

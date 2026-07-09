@@ -1,0 +1,53 @@
+{
+  "id": "SV-216529r1043177_rule",
+  "full_rule_id": "SV-216529r1043177_rule",
+  "rule_id": "SV-216529",
+  "rule_revision": "1043177",
+  "group_id": "V-216529",
+  "group_title": "SRG-APP-000142-NDM-000245",
+  "title": "The Cisco router must be configured to be configured to prohibit the use of all unnecessary and nonsecure functions and services.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Network devices are capable of providing a wide variety of functions and services. Some of the functions and services provided by default may not be necessary to support essential organizational operations. Additionally, it is sometimes convenient to provide multiple services from a single component (e.g., email and web services); however, doing so increases risk over limiting the services provided by any one component. \n\nTo support the requirements and principles of least functionality, the network device must support the organizational requirements providing only essential capabilities and limiting the use of ports, protocols, and/or services to only those required, authorized, and approved. Some network devices have capabilities enabled by default; if these capabilities are not necessary, they must be disabled. If a particular capability is used, then it must be documented and approved.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the router does not have any unnecessary or nonsecure ports, protocols, and services enabled. For example, the following commands should not be in the configuration:\n\nservice ipv4 tcp-small-servers max-servers 10\nservice ipv4 udp-small-servers max-servers 10\nhttp client vrf xxxxx\ntelnet vrf default ipv4 server max-servers 1\nservice call-home\n\nNote: Certain legacy devices may require 'service call-home' be enabled to support Smart Licensing as they do not support the newer smart transport configuration. Those devices do not incur a finding for having call-home enabled for Smart Licensing.\n\nIf any unnecessary or nonsecure ports, protocols, or services are enabled, this is a finding.",
+  "fix": "Disable the following services if enabled as shown in the example below.\n\nRP/0/0/CPU0:R3(config)#no service ipv4 tcp-small-servers\nRP/0/0/CPU0:R3(config)#no service ipv4 udp-small-servers\nRP/0/0/CPU0:R3(config)#no http client vrf xxxxx\nRP/0/0/CPU0:R3(config)#no telnet ipv4 server\nRP/0/0/CPU0:R3(config)#no service call-home",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Network devices are capable of providing a wide variety of functions and services. Some of the functions and services provided by default may not be necessary to support essential organizational operations. Additionally, it is sometimes convenient to provide multiple services from a single component (e.g., email and web services); however, doing so increases risk over limiting the services provided by any one component. \n\nTo support the requirements and principles of least functionality, the network device must support the organizational requirements providing only essential capabilities and limiting the use of ports, protocols, and/or services to only those required, authorized, and approved. Some network devices have capabilities enabled by default; if these capabilities are not necessary, they must be disabled. If a particular capability is used, then it must be documented and approved.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-ND-000470",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xr-router-ndm-security-technical-implementation-guide-v3r6-41edbc45",
+      "name": "Cisco IOS XR Router NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xr-router-ndm-security-technical-implementation-guide-v3r6-41edbc45"
+  ]
+}

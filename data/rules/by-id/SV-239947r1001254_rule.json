@@ -1,0 +1,53 @@
+{
+  "id": "SV-239947r1001254_rule",
+  "full_rule_id": "SV-239947r1001254_rule",
+  "rule_id": "SV-239947",
+  "rule_revision": "1001254",
+  "group_id": "V-239947",
+  "group_title": "SRG-NET-000336-VPN-001280",
+  "title": "The Cisco ASA must be configured to queue log records locally in the event that the central audit server is down or not reachable.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the system were to continue processing after audit failure, actions can be taken on the system that cannot be tracked and recorded for later forensic analysis.\n\nBecause of the importance of ensuring mission/business continuity, organizations may determine that the nature of the audit failure is not so severe that it warrants a complete shutdown of the application supporting the core organizational missions/business operations. In those instances, partial application shutdowns or operating in a degraded mode with reduced capability may be viable alternatives.\n\nThis requirement only applies to components where this is specific to the function of the device (e.g., IDPS sensor logs, firewall logs). This does not apply to audit logs generated on behalf of the device itself (management).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the ASA is configured to send syslog messages to a TCP-based syslog server, and if the syslog server is down new connections are blocked. To continue to allow new connections and queue log records verify that the logging permit-hostdown and the queue size has been increased (default is 512).\n\nlogging enable\n…\n…\n…\nlogging queue 8192\nlogging host NDM_INTERFACE 10.1.22.2 6/1514\nlogging permit-hostdown\n\nIf the ASA is not configured to queue log records locally in the event that the central audit server is down or not reachable, this is a finding.",
+  "fix": "To continue to allow new connections and queue log records in the event the syslog server is not reachable, configure logging permit-hostdown and increase the queue size.\n\nASA(config)# logging permit-hostdown \nASA(config)# logging queue 8192",
+  "ccis": [
+    "CCI-001861"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the system were to continue processing after audit failure, actions can be taken on the system that cannot be tracked and recorded for later forensic analysis.\n\nBecause of the importance of ensuring mission/business continuity, organizations may determine that the nature of the audit failure is not so severe that it warrants a complete shutdown of the application supporting the core organizational missions/business operations. In those instances, partial application shutdowns or operating in a degraded mode with reduced capability may be viable alternatives.\n\nThis requirement only applies to components where this is specific to the function of the device (e.g., IDPS sensor logs, firewall logs). This does not apply to audit logs generated on behalf of the device itself (management).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CASA-VN-000080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747",
+      "name": "Cisco ASA VPN Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-asa-vpn-security-technical-implementation-guide-v2r2-77e78747"
+  ]
+}

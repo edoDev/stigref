@@ -1,0 +1,53 @@
+{
+  "id": "SV-255259r961038_rule",
+  "full_rule_id": "SV-255259r961038_rule",
+  "rule_id": "SV-255259",
+  "rule_revision": "961038",
+  "group_id": "V-255259",
+  "group_title": "SRG-APP-000175-WSR-000095",
+  "title": "The SSMC web server must perform RFC 5280-compliant certification path validation.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A certificate's certification path is the path from the end entity certificate to a trusted root certification authority (CA). Certification path validation is necessary for a relying party to make an informed decision regarding acceptance of an end entity certificate. Certification path validation includes checks such as certificate issuer trust, time validity and revocation status for each certificate in the certification path. Revocation status information for CA and subject certificates in a certification path is commonly provided via certificate revocation lists (CRLs) or online certificate status protocol (OCSP) responses.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To verify SSMC always validates PKI certificates of all remote hosts that it connects to, in accordance with RFC 5280, do the following:\n\n1. Log on to ssmc appliance as ssmcadmin and escape to general bash shell.\n\n2. Execute the following command:\n$ grep ^ssmc.tls.trustManager.enabled /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties\n\nssmc.tls.trustManager.enabled=true\n\nIf the command output does not show the property ssmc.tls.trustManager.enabled as set to \"true\", this is a finding.",
+  "fix": "Configure SSMC to always validate PKI certificates in accordance with RFC 5280 for all connections to remote hosts (as a client) by doing the following:\n\n1. Log on to ssmc appliance as ssmcadmin and escape to general bash shell.\n\n2. Edit (using vi editor) file /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties and set the property:\nssmc.tls.trustManager.enabled=true\n\n3. Save the file and exit.\n\n4. Type \"config_appliance\" to return to TUI. Restart (stop and start) SSMC services using TUI menu option 2.",
+  "ccis": [
+    "CCI-000185"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A certificate's certification path is the path from the end entity certificate to a trusted root certification authority (CA). Certification path validation is necessary for a relying party to make an informed decision regarding acceptance of an end entity certificate. Certification path validation includes checks such as certificate issuer trust, time validity and revocation status for each certificate in the certification path. Revocation status information for CA and subject certificates in a certification path is commonly provided via certificate revocation lists (CRLs) or online certificate status protocol (OCSP) responses.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SSMC-WS-010100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0",
+      "name": "HPE 3PAR SSMC Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0"
+  ]
+}

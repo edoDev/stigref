@@ -1,0 +1,54 @@
+{
+  "id": "SV-251763r919237_rule",
+  "full_rule_id": "SV-251763r919237_rule",
+  "rule_id": "SV-251763",
+  "rule_revision": "919237",
+  "group_id": "V-251763",
+  "group_title": "SRG-NET-000089-FW-000019",
+  "title": "Each NSX-T Edge Node configured to host a Tier-1 Gateway Firewall must be configured to use the TLS or LI-TLS protocols to configure and secure traffic log records.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical that when the network element is at risk of failing to process traffic logs as required, it takes action to mitigate the failure, secure collected log data, and  restrict access to authorized personnel. Methods of protection may include encryption or logical separation.\n\nIn accordance with DOD policy, the traffic log must be sent to a central audit server. \n\nThis does not apply to traffic logs generated on behalf of the device itself (management). Some devices store traffic logs separately from the system logs.\n\nSatisfies: SRG-NET-000089-FW-000019, SRG-NET-000098-FW-000021</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an NSX-T Edge Node shell hosting the Tier-1 Gateway, run the following command(s):\n\n> get logging-servers\n\nIf any configured logging-servers are not configured with protocol of \"li-tls\" or \"tls\" and level of \"info\", this is a finding.\n\nIf no logging-servers are configured, this is a finding.\n\nNote: This check must be run from each NSX-T Edge Node hosting the Tier-1 Gateway, as they are configured individually.",
+  "fix": "(Optional) From an NSX-T Edge Gateway shell, run the following command(s) to clear any existing incorrect logging-servers:\n\n> clear logging-servers\n\nFrom an NSX-T Edge Node shell, run the following command(s) to configure a tls syslog server:\n\n> set logging-server <server-ip or server-name> proto tls level info serverca ca.pem clientca ca.pem certificate cert.pem key key.pem\n\nFrom an NSX-T Edge Node shell, run the following command(s) to configure a li-tls syslog server:\n\n> set logging-server <server-ip or server-name> proto li-tls level info serverca root-ca.crt\n\nNote: If using the protocols TLS or LI-TLS to configure a secure connection to a log server, the server and client certificates must be stored in /var/vmware/nsx/file-store/ on each NSX-T Edge Gateway appliance.",
+  "ccis": [
+    "CCI-000140",
+    "CCI-000162"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical that when the network element is at risk of failing to process traffic logs as required, it takes action to mitigate the failure, secure collected log data, and  restrict access to authorized personnel. Methods of protection may include encryption or logical separation.\n\nIn accordance with DOD policy, the traffic log must be sent to a central audit server. \n\nThis does not apply to traffic logs generated on behalf of the device itself (management). Some devices store traffic logs separately from the system logs.\n\nSatisfies: SRG-NET-000089-FW-000019, SRG-NET-000098-FW-000021",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "T1FW-3X-000011",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-t-tier-1-gateway-firewall-security-technical-implementation-guide-v1r3-10d08a79",
+      "name": "VMware NSX-T Tier 1 Gateway Firewall Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-t-tier-1-gateway-firewall-security-technical-implementation-guide-v1r3-10d08a79"
+  ]
+}

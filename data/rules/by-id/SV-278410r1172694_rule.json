@@ -1,0 +1,55 @@
+{
+  "id": "SV-278410r1172694_rule",
+  "full_rule_id": "SV-278410r1172694_rule",
+  "rule_id": "SV-278410",
+  "rule_revision": "1172694",
+  "group_id": "V-278410",
+  "group_title": "SRG-APP-000965",
+  "title": "NGINX must generate, manage, and protect from disclosure and misuse the cryptographic keys that protect access tokens.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Identity assertions and access tokens are typically digitally signed. The private keys used to sign these assertions and tokens are protected commensurate with the impact of the system and information resources that can be accessed.\n\nSatisfies: SRG-APP-000965, SRG-APP-000970</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check SSL/TLS certificate and private key file permissions:\n\n# ls -la /home/ubuntu/nginx.com.crt\n# ls -la /home/ubuntu/nginx.com.key\n\nVerify:\n- Certificate file permissions are 644 or more restrictive.\n- Private key file permissions are 600 or more restrictive.\n- Files are owned by nginx user or root.\n- Files are not world-readable or group-writable.\n\nIf these permissions are not set, this is a finding.\n\nVerify certificate validity and strength:\n\n# openssl x509 -in /home/ubuntu/nginx.com.crt -text -noout\n\nVerify:\n- Certificate is not expired.\n- Uses RSA key length of 2048 bits minimum or ECDSA P-256 minimum.\n- Signature algorithm is SHA-256 or stronger (not SHA-1 or MD5).\n- Certificate chain is complete and valid.\n\nIf these values are not met, this is a finding.\n\nVerify private key strength and protection:\n\n# openssl rsa -in /home/ubuntu/nginx.com.key -text -noout -check\n\nVerify:\n- Key length is 2048 bits minimum.\n- Key is not encrypted with weak algorithms.\n- Key passes integrity check.\n\nIf these key values are not set, this is a finding.",
+  "fix": "Set proper file permissions for SSL certificate and private key:\n\n# chmod 644 /home/ubuntu/nginx.com.crt\n# chmod 600 /home/ubuntu/nginx.com.key\n# chown nginx:nginx /home/ubuntu/nginx.com.crt\n# chown nginx:nginx /home/ubuntu/nginx.com.key\n\nMove certificates to secure location:\n\n# mkdir -p /etc/nginx/ssl\n# mv /home/ubuntu/dev.sports.com.* /etc/nginx/ssl/\n# chmod 700 /etc/nginx/ssl\n\nUpdate NGINX configuration to use secure certificate location:\n\nserver {\n    listen 443 ssl;\n    ssl_certificate     /etc/nginx/ssl/nginx.com.crt;\n    ssl_certificate_key /etc/nginx/ssl/nginx.com.key;\n    ssl_session_cache shared:SSL:10m;\n    ssl_dhparam /etc/nginx/ssl/dhparam.pem;\n}\n\nGenerate strong DH parameters if not present:\n\n# openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048\n# chmod 644 /etc/nginx/ssl/dhparam.pem",
+  "ccis": [
+    "CCI-005156",
+    "CCI-000366",
+    "CCI-005157"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Identity assertions and access tokens are typically digitally signed. The private keys used to sign these assertions and tokens are protected commensurate with the impact of the system and information resources that can be accessed.\n\nSatisfies: SRG-APP-000965, SRG-APP-000970",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NGNX-APP-003220",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55",
+      "name": "F5 NGINX Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "f5-nginx-security-technical-implementation-guide-v1r1-0dbe5d55"
+  ]
+}

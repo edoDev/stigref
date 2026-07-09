@@ -1,0 +1,53 @@
+{
+  "id": "SV-220456r622190_rule",
+  "full_rule_id": "SV-220456r622190_rule",
+  "rule_id": "SV-220456",
+  "rule_revision": "622190",
+  "group_id": "V-220456",
+  "group_title": "SRG-NET-000205-RTR-000008",
+  "title": "The Cisco PE switch must be configured with Unicast Reverse Path Forwarding (uRPF) loose mode enabled on all CE-facing interfaces.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The uRPF feature is a defense against spoofing and denial-of-service (DoS) attacks by verifying if the source address of any ingress packet is reachable. To mitigate attacks that rely on forged source addresses, all provider edge switches must enable uRPF loose mode to guarantee that all packets received from a CE switch contain source addresses that are in the route table.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to determine if uRPF loose mode is enabled on all CE-facing interfaces.\n\ninterface GigabitEthernet0/2\n no switchport\n ip address x.1.12.2 255.255.255.252\n ip access-group BLOCK_TO_CORE in\n ip verify unicast source reachable-via any\n\nIf uRPF loose mode is not enabled on all CE-facing interfaces, this is a finding.",
+  "fix": "Configure uRPF loose mode on all CE-facing interfaces as shown in the example below:\n\nSW2(config)#int SW1(config)#int g0/2\nSW2(config-if)#ip verify unicast source reachable-via any\nSW2(config-if)#end",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The uRPF feature is a defense against spoofing and denial-of-service (DoS) attacks by verifying if the source address of any ingress packet is reachable. To mitigate attacks that rely on forged source addresses, all provider edge switches must enable uRPF loose mode to guarantee that all packets received from a CE switch contain source addresses that are in the route table.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000740",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-switch-rtr-security-technical-implementation-guide-v3r3-92115109",
+      "name": "Cisco IOS Switch RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-switch-rtr-security-technical-implementation-guide-v3r3-92115109"
+  ]
+}

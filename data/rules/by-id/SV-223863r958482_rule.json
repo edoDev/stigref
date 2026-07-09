@@ -1,0 +1,53 @@
+{
+  "id": "SV-223863r958482_rule",
+  "full_rule_id": "SV-223863r958482_rule",
+  "rule_id": "SV-223863",
+  "rule_revision": "958482",
+  "group_id": "V-223863",
+  "group_title": "SRG-OS-000104-GPOS-00051",
+  "title": "IBM z/OS attributes of UNIX user accounts used for account modeling must be defined in accordance with security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following: \n\n1) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n2) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If this is a Classified system, and there is an account used for modeling, this is a finding.\n\nFrom a command input screen enter:\nRLIST FACILITY (BPX.UNIQUE.USER) ALL\nExamine APPLICATION DATA for userid\n\nEnter:\nList User (<userid>)\n\nNote: This check applies to any user id used to model OMVS access on the mainframe. This includes the OMVS default user and BPX.UNIQUE.USER. If the OMVS default user or BPX.UNIQUE.USER is not defined in the FACILITY report, this is Not Applicable.\n\nIf user account used for OMVS account modeling is defined as follows, this is not a finding:\n\nA non-writable HOME directory:\nShell program specified as \"/bin/echo\" or \"/bin/false\"\n\nNote: The shell program must have one of the specified values. The HOME directory must have a value (i.e., not be allowed to default).",
+  "fix": "Use of the OMVS default UID will not be allowed on any Classified system. This is not an issue when using BPX.UNIQUE.USER.\n\nDefine user id used for OMVS account modeling with a non-0 UID, a nonwritable home directory, such as \"\\\" root, and a nonexecutable, but existing, binary file, \"/bin/false\" or \"/bin/echo.\"",
+  "ccis": [
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.\n\nOrganizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and processes acting on behalf of users) must be uniquely identified and authenticated to all accesses, except for the following: \n\n1) Accesses explicitly identified and documented by the organization. Organizations document specific user actions that can be performed on the information system without identification or authentication; and\n\n2) Accesses that occur through authorized use of group authenticators without individual authentication. Organizations may require unique identification of individuals in group accounts (e.g., shared privilege accounts) or for detailed accountability of individual activity.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-US-000260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

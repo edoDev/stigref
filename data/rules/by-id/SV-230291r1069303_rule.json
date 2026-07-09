@@ -1,0 +1,53 @@
+{
+  "id": "SV-230291r1069303_rule",
+  "full_rule_id": "SV-230291r1069303_rule",
+  "rule_id": "SV-230291",
+  "rule_revision": "1069303",
+  "group_id": "V-230291",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The RHEL 8 SSH daemon must not allow Kerberos authentication, except to fulfill documented and validated mission requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Configuring these settings for the SSH daemon provides additional assurance that remote logon via SSH will not use unused methods of authentication, even in the event of misconfiguration elsewhere.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the SSH daemon does not allow Kerberos authentication with the following command:\n\n$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*kerberosauthentication'\n\n/etc/ssh/sshd_config:KerberosAuthentication no\n\nIf the value is returned as \"yes\", the returned line is commented out, no output is returned, or has not been documented with the information system security officer (ISSO), this is a finding.\n\nIf conflicting results are returned, this is a finding.",
+  "fix": "Configure the SSH daemon to not allow Kerberos authentication.\n\nAdd the following line in \"/etc/ssh/sshd_config\", or uncomment the line and set the value to \"no\":\n\nKerberosAuthentication no\n\nThe SSH daemon must be restarted for the changes to take effect. To restart the SSH daemon, run the following command:\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Configuring these settings for the SSH daemon provides additional assurance that remote logon via SSH will not use unused methods of authentication, even in the event of misconfiguration elsewhere.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-08-010521",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f",
+      "name": "Red Hat Enterprise Linux 8 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "7"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-8-security-technical-implementation-guide-v2r7-0291e26f"
+  ]
+}

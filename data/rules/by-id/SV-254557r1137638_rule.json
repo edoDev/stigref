@@ -1,0 +1,53 @@
+{
+  "id": "SV-254557r1137638_rule",
+  "full_rule_id": "SV-254557r1137638_rule",
+  "rule_id": "SV-254557",
+  "rule_revision": "1137638",
+  "group_id": "V-254557",
+  "group_title": "SRG-APP-000033-CTR-000090",
+  "title": "The Kubernetes Kubelet must have anonymous authentication disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>RKE2 registry is used to store images and is the keeper of truth for trusted images within the platform. To guarantee the images' integrity, access to the registry must be limited to those individuals who need to perform tasks to the images such as the update, creation, or deletion. Without this control access, images can be deleted that are in use by RKE2 causing a denial of service (DoS), and images can be modified or introduced without going through the testing and validation process allowing for the intentional or unintentional introduction of containers with flaws and vulnerabilities.\n\nBy allowing anonymous connections, the controls put in place to secure the Kubelet can be bypassed. Setting anonymous authentication to \"false\" also disables unauthenticated requests from kubelets.\n\nWhile there are instances where anonymous connections may be needed (e.g., health checks) and Role-Based Access Controls (RBAC) are in place to limit the anonymous access, this access must be disabled and only enabled when necessary.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Ensure anonymous-auth is set correctly so anonymous requests will be rejected.\n\nRun this command on each node:\n/bin/ps -ef | grep kubelet | grep -v grep\n\nIf --anonymous-auth is set to \"true\" or is not configured, this is a finding.",
+  "fix": "Edit the Kubernetes Kubelet file etc/rancher/rke2/config.yaml on the RKE2 Control Plane and set the following:\n--anonymous-auth=false\n\nOnce configuration file is updated, restart the RKE2 Agent. Run the command:\nsystemctl restart rke2-server",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "RKE2 registry is used to store images and is the keeper of truth for trusted images within the platform. To guarantee the images' integrity, access to the registry must be limited to those individuals who need to perform tasks to the images such as the update, creation, or deletion. Without this control access, images can be deleted that are in use by RKE2 causing a denial of service (DoS), and images can be modified or introduced without going through the testing and validation process allowing for the intentional or unintentional introduction of containers with flaws and vulnerabilities.\n\nBy allowing anonymous connections, the controls put in place to secure the Kubelet can be bypassed. Setting anonymous authentication to \"false\" also disables unauthenticated requests from kubelets.\n\nWhile there are instances where anonymous connections may be needed (e.g., health checks) and Role-Based Access Controls (RBAC) are in place to limit the anonymous access, this access must be disabled and only enabled when necessary.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-R2-000110",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268",
+      "name": "Rancher Government Solutions RKE2 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268"
+  ]
+}

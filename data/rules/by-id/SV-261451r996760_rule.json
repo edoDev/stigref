@@ -1,0 +1,63 @@
+{
+  "id": "SV-261451r996760_rule",
+  "full_rule_id": "SV-261451r996760_rule",
+  "rule_id": "SV-261451",
+  "rule_revision": "996760",
+  "group_id": "V-261451",
+  "group_title": "SRG-OS-000004-GPOS-00004",
+  "title": "SLEM 5 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Once an attacker establishes initial access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to simply create a new account. Auditing account creation mitigates this risk.\n\nTo address access requirements, SLEM 5 may be integrated with enterprise-level authentication/access/auditing mechanisms that meet or exceed access control policy requirements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 generates an audit record when all modifications occur to the \"/etc/passwd\" file with the following command:\n\n     > sudo auditctl -l | grep -w '/etc/passwd'\n     -w /etc/passwd -p wa -k account_mod\n\nIf the command does not return a line that matches the example or the line is commented out, this is a finding.\n\nNotes: The \"-k\" allows for specifying an arbitrary identifier. The string following \"-k\" does not need to match the example output above.",
+  "fix": "Configure SLEM 5 to generate an audit record when all modifications to the \"/etc/passwd\" file occur.\n\nAdd or modify the following line in the \"/etc/audit/rules.d/audit.rules\" file:\n\n-w /etc/passwd -p wa -k account_mod\n\nTo reload the rules file, restart the audit daemon:\n\n     > sudo systemctl restart auditd.service\n\nor issue the following command:\n\n     > sudo augenrules --load",
+  "ccis": [
+    "CCI-000018",
+    "CCI-001403",
+    "CCI-001404",
+    "CCI-001405",
+    "CCI-001683",
+    "CCI-001684",
+    "CCI-001685",
+    "CCI-001686",
+    "CCI-002130",
+    "CCI-002132",
+    "CCI-000172"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Once an attacker establishes initial access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to simply create a new account. Auditing account creation mitigates this risk.\n\nTo address access requirements, SLEM 5 may be integrated with enterprise-level authentication/access/auditing mechanisms that meet or exceed access control policy requirements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-654140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

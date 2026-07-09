@@ -1,0 +1,55 @@
+{
+  "id": "SV-258837r933572_rule",
+  "full_rule_id": "SV-258837r933572_rule",
+  "rule_id": "SV-258837",
+  "rule_revision": "933572",
+  "group_id": "V-258837",
+  "group_title": "SRG-OS-000256-GPOS-00097",
+  "title": "The Photon operating system must protect audit tools from unauthorized access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information.\n\nOperating systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys in order to make access decisions regarding the access to audit tools.\n\nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000256-GPOS-00097, SRG-OS-000257-GPOS-00098, SRG-OS-000258-GPOS-00099</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command to verify permissions on audit tools:\n\n# stat -c \"%n is owned by %U and group owned by %G and permissions are %a\" /usr/sbin/audispd /usr/sbin/auditctl /usr/sbin/auditd /usr/sbin/aureport /usr/sbin/ausearch /usr/sbin/autrace /usr/sbin/augenrules\n\nExpected result:\n\n/usr/sbin/audispd is owned by root and group owned by root and permissions are 750\n/usr/sbin/auditctl is owned by root and group owned by root and permissions are 755\n/usr/sbin/auditd is owned by root and group owned by root and permissions are 755\n/usr/sbin/aureport is owned by root and group owned by root and permissions are 755\n/usr/sbin/ausearch is owned by root and group owned by root and permissions are 755\n/usr/sbin/autrace is owned by root and group owned by root and permissions are 755\n/usr/sbin/augenrules is owned by root and group owned by root and permissions are 750\n\nIf any file is not owned by root or group owned by root or permissions are more permissive than listed above, this is a finding.",
+  "fix": "At the command line, run the following commands for each file returned:\n\n# chown root:root <file>\n# chmod 750 <file>\n\nNote: Update permissions to match the target file as listed in the check text.",
+  "ccis": [
+    "CCI-001493",
+    "CCI-001494",
+    "CCI-001495"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit information.\n\nOperating systems providing tools to interface with audit information will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys in order to make access decisions regarding the access to audit tools.\n\nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-OS-000256-GPOS-00097, SRG-OS-000257-GPOS-00098, SRG-OS-000258-GPOS-00099",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-40-000082",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88",
+      "name": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-photon-os-4-0-security-technical-implementa-v1r1-110a3a88"
+  ]
+}

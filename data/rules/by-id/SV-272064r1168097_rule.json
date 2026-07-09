@@ -1,0 +1,53 @@
+{
+  "id": "SV-272064r1168097_rule",
+  "full_rule_id": "SV-272064r1168097_rule",
+  "rule_id": "SV-272064",
+  "rule_revision": "1168097",
+  "group_id": "V-272064",
+  "group_title": "SRG-NET-000018-RTR-000006",
+  "title": "The BGP Cisco ACI must be configured to reject route advertisements from BGP peers that do not list their autonomous system (AS) number as the first AS in the AS_PATH attribute.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Verifying the path a route has traversed will ensure the IP core is not used as a transit network for unauthorized or possibly even internet traffic. All autonomous system boundary routers (ASBRs) must ensure updates received from eBGP peers list their AS number as the first AS in the AS_PATH attribute.\n\nAn alternative to route maps is to use subnets under the External EPG with the correct route Controls assigned as discussed in vendor documentation (Reference the L3 out white paper). </VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "By default, Cisco ACI enforces the first AS in the AS_PATH attribute for all route advertisements. Review the configuration to verify the default BGP configuration on the ACI fabric.\n\n1. Navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> Route Map for import and export route control.\n2. Apply that route MAP to the external EPG in the following location: Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> External EPGs >> Policy >> General >> Route Control Profile. \n\nIf the device is not configured to reject updates from peers that do not list their AS number as the first AS in the AS_PATH attribute, this is a finding.",
+  "fix": "Configure the device to deny updates received from eBGP peers that do not list their AS number as the first AS in the AS_PATH attribute.\n\n1. Navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> Route Map for import and export route control. \n2. Apply that route MAP to the external EPG in the following location: Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> External EPGs >> Policy >> General >> Route Control Profile. \n\nNote: An alternative to route maps is to use subnets under the External EPG with the correct route Controls assigned discussed in vendor documentation (Reference the L3 out white paper).",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Verifying the path a route has traversed will ensure the IP core is not used as a transit network for unauthorized or possibly even internet traffic. All autonomous system boundary routers (ASBRs) must ensure updates received from eBGP peers list their AS number as the first AS in the AS_PATH attribute.\n\nAn alternative to route maps is to use subnets under the External EPG with the correct route Controls assigned as discussed in vendor documentation (Reference the L3 out white paper).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CACI-RT-000004",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251",
+      "name": "Cisco ACI Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251"
+  ]
+}

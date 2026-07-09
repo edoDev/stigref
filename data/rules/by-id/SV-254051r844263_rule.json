@@ -1,0 +1,53 @@
+{
+  "id": "SV-254051r844263_rule",
+  "full_rule_id": "SV-254051r844263_rule",
+  "rule_id": "SV-254051",
+  "rule_revision": "844263",
+  "group_id": "V-254051",
+  "group_title": "SRG-NET-000364-RTR-000115",
+  "title": "The Juniper multicast Designated Router (DR) must be configured to filter the IGMP and MLD Report messages to allow hosts to join a multicast group only from sources that have been approved by the organization.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone downloading a file here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of the DR to verify that it is filtering IGMP or MLD report messages, allowing hosts to only join multicast groups from sources that have been approved.\n\nNote: This requirement is only applicable to Source Specific Multicast (SSM) implementation.\n\n[edit policy-options]\npolicy-statement <name> {\n    term unauth-sources {\n        from {\n            source-address-filter <IPv4 address>/<mask> orlonger;\n        }\n        then reject;\n    }\n    term allow-others {\n        then accept;\n    }\n}\npolicy-statement <name IPv6> {\n    term unauth-sources {\n        from {\n            source-address-filter <IPv6 address>/<prefix> orlonger;\n        }\n        then reject;\n    }\n    term allow-others {\n        then accept;\n    }\n}\n\n[edit protocols]\nigmp {\n    interface <name>/<logical unit> {\n        group-policy <policy name>;\n    }\n}\nmld {\n    interface <name>/<logical unit> {\n        group-policy <policy name IPv6>;\n    }\n}\n\nIf the DR is not filtering IGMP or MLD report messages, this is a finding.",
+  "fix": "Configure the DR to filter the IGMP and MLD report messages to allow hosts to join only those multicast groups from sources that have been approved.\n\nset policy-options policy-statement <name> term unauth-sources from source-address-filter <IPv4 address>/<mask> orlonger\nset policy-options policy-statement <name> term unauth-sources then reject\nset policy-options policy-statement <name> term accept-others then accept\n\nset policy-options policy-statement <name IPv6> term unauth-sources from source-address-filter <IPv6 address>/<prefix> orlonger\nset policy-options policy-statement <name IPv6> term unauth-sources then reject\nset policy-options policy-statement <name IPv6> term accept-others then accept\n\nset protocols igmp interface <name>.<logical unit> group-policy <policy name>\nset protocols mld interface <name>.<logical unit> group-policy <policy name IPv6>",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone downloading a file here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUEX-RT-000790",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b",
+      "name": "Juniper EX Series Switches Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "juniper-ex-series-switches-router-security-technical-implementation-guide-v2r1-2cd2283b"
+  ]
+}

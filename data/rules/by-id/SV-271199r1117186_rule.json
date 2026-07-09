@@ -1,0 +1,53 @@
+{
+  "id": "SV-271199r1117186_rule",
+  "full_rule_id": "SV-271199r1117186_rule",
+  "rule_id": "SV-271199",
+  "rule_revision": "1117186",
+  "group_id": "V-271199",
+  "group_title": "SRG-APP-000416-DB-000380",
+  "title": "SQL Server must use NSA-approved cryptography to protect classified information in accordance with the data owner’s requirements.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Use of weak or untested encryption algorithms undermines the purposes of using encryption to protect data. The application must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated.\n\nIt is the responsibility of the data owner to assess the cryptography requirements in light of applicable federal laws, Executive Orders, directives, policies, regulations, and standards.\n\nNSA-approved cryptography for classified networks is hardware based. This requirement addresses the compatibility of a DBMS with the encryption devices.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Detailed information on the NIST Cryptographic Module Validation Program (CMVP) is available at the following website: http://csrc.nist.gov/groups/STM/cmvp/index.html.\n\nReview system documentation to determine whether cryptography for classified or sensitive information is required by the information owner.\n\nIf the system documentation does not specify the type of information hosted on SQL Server as classified, sensitive, and/or unclassified, this is a finding.\n\nIf neither classified nor sensitive information exists within SQL Server databases or configuration, this is not a finding.\n\nVerify that Windows is configured to require the use of FIPS-compliant algorithms.\n\n1. Click \"Start\".\n2. Type \"Local Security Policy\".\n3. Press \"Enter\". \n4. Expand \"Local Policies\". \n5. Select \"Security Options\".\n6. Locate \"System Cryptography:  Use FIPS compliant algorithms for encryption, hashing, and signing\". \n\nIf the Security Setting for this option is \"Disabled\", this is a finding.\n\nNote: The list of acceptable algorithms is \"AES 256\" and \"Triple DES\".\n\nIf cryptography is being used by SQL Server, verify that the cryptography is NIST FIPS 140-2 or 140-3 certified by running the following SQL query:\n\nSELECT DISTINCT name, algorithm_desc\nFROM sys.symmetric_keys\nWHERE key_algorithm NOT IN ('D3','A3')\nORDER BY name\n\nIf any items listed show an uncertified NIST FIPS 140-2 algorithm type, this is a finding.",
+  "fix": "Configure cryptographic functions to use NSA-approved cryptography compliant algorithms.\n\nUse DOD code-signing certificates to create asymmetric keys stored in the database used to encrypt sensitive data stored in the database.\n\nRun the following SQL script to create a certificate:\n\nUSE \nCREATE CERTIFICATE \n ENCRYPTION BY PASSWORD = <'password'>\n FROM FILE = <'path/file_name'>\n WITH SUBJECT = 'name of person creating key',\n EXPIRY_DATE = '<'expiration date: yyyymmdd'>'\n\nRun the following SQL script to create a symmetric key and assign an existing certificate:\n\nUSE \nCREATE SYMMETRIC KEY <'key name'>\n WITH ALGORITHM = AES_256 \n ENCRYPTION BY CERTIFICATE\n\nFor Transparent Data Encryption (TDE):\n\nUSE master;\nCREATE MASTER KEY ENCRYPTION BY PASSWORD = '';\nCREATE CERTIFICATE  . . .;\nUSE ;\nCREATE DATABASE ENCRYPTION KEY\nWITH ALGORITHM = AES_256\nENCRYPTION BY SERVER CERTIFICATE ;\nALTER DATABASE \nSET ENCRYPTION ON;",
+  "ccis": [
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of weak or untested encryption algorithms undermines the purposes of using encryption to protect data. The application must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated.\n\nIt is the responsibility of the data owner to assess the cryptography requirements in light of applicable federal laws, Executive Orders, directives, policies, regulations, and standards.\n\nNSA-approved cryptography for classified networks is hardware based. This requirement addresses the compatibility of a DBMS with the encryption devices.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLD-22-003200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-database-security-technical-implementation-guide-v1r3-2690c9ef",
+      "name": "Microsoft SQL Server 2022 Database Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-database-security-technical-implementation-guide-v1r3-2690c9ef"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-261391r996598_rule",
+  "full_rule_id": "SV-261391r996598_rule",
+  "rule_id": "SV-261391",
+  "rule_revision": "996598",
+  "group_id": "V-261391",
+  "group_title": "SRG-OS-000073-GPOS-00041",
+  "title": "SLEM 5 must employ FIPS 140-2/140-3-approved cryptographic hashing algorithms for system authentication.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The system must use a strong hashing algorithm to store the password. The system must use a sufficient number of hashing rounds to ensure the required level of entropy.\n\nPasswords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 shadow password suite is configured to encrypt interactive user passwords using FIPS 140-2/140-3-approved cryptographic hash with the following command:\n\n     > sudo cut -d: -f2 /etc/shadow\n     $6$kcOnRq/5$NUEYPuyL.wghQwWssXRcLRFiiru7f5JPV6GaJhNC2aK5F3PZpE/BCCtwrxRc/AInKMNX3CdMw11m9STiql12f/\n\nPassword hashes \"!\" or \"*\" indicate inactive accounts not available for logon and are not evaluated.\n\nIf any interactive user password hash does not begin with \"$6\", this is a finding.",
+  "fix": "Configure SLEM 5 to encrypt all stored passwords with FIPS 140-2/140-3-approved cryptographic hash.\n\nAdd or modify the following line in the \"/etc/login.defs\" file:\n\nENCRYPT_METHOD SHA512\n\nLock all interactive user accounts not using SHA512 hashing until the passwords can be regenerated.",
+  "ccis": [
+    "CCI-000196",
+    "CCI-000803"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The system must use a strong hashing algorithm to store the password. The system must use a sufficient number of hashing rounds to ensure the required level of entropy.\n\nPasswords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-611080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

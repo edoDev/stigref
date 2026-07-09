@@ -1,0 +1,54 @@
+{
+  "id": "SV-281359r1167227_rule",
+  "full_rule_id": "SV-281359r1167227_rule",
+  "rule_id": "SV-281359",
+  "rule_revision": "1167227",
+  "group_id": "V-281359",
+  "group_title": "SRG-OS-000420-GPOS-00186",
+  "title": "RHEL 10 must prevent Internet Protocol version 6 (IPv6) Internet Control Message Protocol (ICMP) redirect messages from being accepted.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>ICMP redirect messages are used by routers to inform hosts that a more direct route exists for a particular destination. These messages modify the host's route table and are unauthenticated. An illicit ICMP redirect message could result in a man-in-the-middle attack.\n\nSatisfies: SRG-OS-000420-GPOS-00186, SRG-OS-000142-GPOS-00090</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: If IPv6 is disabled on the system, this requirement is not applicable.\n\nVerify RHEL 10 prevents IPv6 ICMP redirect messages from being accepted.\n\nCheck the value of the \"net.ipv6.conf.default.accept_redirects\" variables with the following command:\n\n$ sudo sysctl net.ipv6.conf.default.accept_redirects\nnet.ipv6.conf.default.accept_redirects = 0\n\nIf \"net.ipv6.conf.default.accept_redirects\" is not set to \"0\" or is missing, this is a finding.",
+  "fix": "Configure RHEL 10 to prevent IPv6 ICMP redirect messages from being accepted.\n\nCreate a configuration file if it does not already exist:\n\n$ sudo vi /etc/sysctl.d/ipv6_accept_redirects.conf\n\nAdd the following line to the file:\n\nnet.ipv6.conf.default.accept_redirects = 0\n\nReload settings from all system configuration files with the following command:\n\n$ sudo sysctl --system",
+  "ccis": [
+    "CCI-002385",
+    "CCI-001114"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "ICMP redirect messages are used by routers to inform hosts that a more direct route exists for a particular destination. These messages modify the host's route table and are unauthenticated. An illicit ICMP redirect message could result in a man-in-the-middle attack.\n\nSatisfies: SRG-OS-000420-GPOS-00186, SRG-OS-000142-GPOS-00090",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-800270",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

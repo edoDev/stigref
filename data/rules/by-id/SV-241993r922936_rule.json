@@ -1,0 +1,53 @@
+{
+  "id": "SV-241993r922936_rule",
+  "full_rule_id": "SV-241993r922936_rule",
+  "rule_id": "SV-241993",
+  "rule_revision": "922936",
+  "group_id": "V-241993",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "Windows Defender Firewall with Advanced Security must allow outbound connections, unless a rule explicitly blocks the connection when connected to a domain.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A firewall provides a line of defense against attack. To be effective, it must be enabled and properly configured. Outbound connections are allowed in the domain, unless a rule explicitly blocks the connection. This allows normal outbound communication, which could be restricted as necessary with additional rules.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the system is not a member of a domain, the Domain Profile requirements can be marked NA.\n\nIf the system is a member of a domain and the firewall's Domain Profile is not enabled (see V-17415), this requirement is also a finding.\n\nIf the following policy-based registry value exists and is not configured as specified, this is a finding.\n\nRegistry Hive:  HKEY_LOCAL_MACHINE\nRegistry Path:  \\SOFTWARE\\Policies\\Microsoft\\WindowsFirewall\\DomainProfile\\\n\nValue Name:  DefaultOutboundAction\n\nType:  REG_DWORD\nValue:  0x00000000 (0)\n\nIf the policy-based registry value does not exist, verify the following registry value. If it is not configured as specified, this is a finding.\n\nRegistry Hive:  HKEY_LOCAL_MACHINE\nRegistry Path:  \\SYSTEM\\CurrentControlSet\\Services\\SharedAccess\\Parameters\\FirewallPolicy\\DomainProfile\\\n\nValue Name:  DefaultOutboundAction\n\nType:  REG_DWORD\nValue:  0x00000000 (0)",
+  "fix": "The preferred method of configuring the firewall settings is with a policy, particularly in a domain environment.\n\nConfigure the policy value for Computer Configuration >> Windows Settings >> Security Settings >> Windows Defender Firewall with Advanced Security >> Windows Defender Firewall with Advanced Security >> Windows Defender Firewall Properties (this link will be in the right pane) >> Domain Profile tab >> State, \"Outbound connections\" to \"Allow (default)\".\n\nIn addition to using policies, systems may also be configured using the firewall GUI or Netsh commands. These methods may be more appropriate for standalone systems.\n\nThe configuration settings in the GUI are the same as those specified in the policy above. Microsoft Defender Firewall Properties will be a link in the center pane after opening Microsoft Defender Firewall with Advanced Security.\n\nThe following Netsh commands may also be used to configure this setting:\n\n\"Netsh advfirewall set domainprofile firewallpolicy blockinbound,allowoutbound\".\nor\n\"Netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound\".\n\nBoth inbound and outbound parameters must be specified to execute this command.",
+  "ccis": [
+    "CCI-001094"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A firewall provides a line of defense against attack. To be effective, it must be enabled and properly configured. Outbound connections are allowed in the domain, unless a rule explicitly blocks the connection. This allows normal outbound communication, which could be restricted as necessary with additional rules.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WNFWA-000005",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-defender-firewall-with-advanced-security-security-technical-im-v2r2-39815600",
+      "name": "Microsoft Windows Defender Firewall with Advanced Security Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-defender-firewall-with-advanced-security-security-technical-im-v2r2-39815600"
+  ]
+}

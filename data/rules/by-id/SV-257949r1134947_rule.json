@@ -1,0 +1,53 @@
+{
+  "id": "SV-257949r1134947_rule",
+  "full_rule_id": "SV-257949r1134947_rule",
+  "rule_id": "SV-257949",
+  "rule_revision": "1134947",
+  "group_id": "V-257949",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "RHEL 9 must configure a DNS processing mode in Network Manager.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To ensure that DNS resolver settings are respected, a DNS mode in Network Manager must be configured. The following are common DNS values in NetworkManager.conf [main]:\n\n- default: NetworkManager will update /etc/resolv.conf to reflect the nameservers provided by currently active connections.\n- none: NetworkManager will not modify /etc/resolv.conf. Used when DNS is managed manually or by another service.\n- systemd-resolved: Uses systemd-resolved to manage DNS.\n- dnsmasq: Enables the internal dnsmasq plugin.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that RHEL 9 has a DNS mode configured in Network Manager.\n\n$ NetworkManager --print-config\n[main]\ndns=none\n\nIf the dns key under main does not exist or is not set to \"default\", \"none\", or \"systemd-resolved\", this is a finding.\n\nNote: If RHEL 9 is configured to use a DNS resolver other than Network Manager, the configuration must be documented and approved by the information system security officer (ISSO).",
+  "fix": "Configure NetworkManager in RHEL 9 to use a DNS mode.\n\nIn \"/etc/NetworkManager/NetworkManager.conf\", add the following line in the \"[main]\" section:\n\ndns = <dns processing mode>\n\nWhere <dns processing mode> is default, none, or systemd-resolved.\n\nNetworkManager must be reloaded for the change to take effect.\n\n$ sudo systemctl reload NetworkManager",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To ensure that DNS resolver settings are respected, a DNS mode in Network Manager must be configured. The following are common DNS values in NetworkManager.conf [main]:\n\n- default: NetworkManager will update /etc/resolv.conf to reflect the nameservers provided by currently active connections.\n- none: NetworkManager will not modify /etc/resolv.conf. Used when DNS is managed manually or by another service.\n- systemd-resolved: Uses systemd-resolved to manage DNS.\n- dnsmasq: Enables the internal dnsmasq plugin.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-09-252040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573",
+      "name": "Red Hat Enterprise Linux 9 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-9-security-technical-implementation-guide-v2r8-df10b573"
+  ]
+}

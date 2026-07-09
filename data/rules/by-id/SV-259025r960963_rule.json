@@ -1,0 +1,53 @@
+{
+  "id": "SV-259025r960963_rule",
+  "full_rule_id": "SV-259025r960963_rule",
+  "rule_id": "SV-259025",
+  "rule_revision": "960963",
+  "group_id": "V-259025",
+  "group_title": "SRG-APP-000141-AS-000095",
+  "title": "The vCenter ESX Agent Manager service directory listings parameter must be disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Enumeration techniques, such as URL parameter manipulation, rely on being able to obtain information about the web server's directory structure by locating directories without default pages. In this scenario, the web server will display to the user a listing of the files in the directory being accessed. Ensuring that directory listing is disabled is one approach to mitigating the vulnerability.\n\nIn Tomcat, directory listing is disabled by default but can be enabled via the \"listings\" parameter. Ensure this node is not present to have the default effect.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '//param-name[text()=\"listings\"]/parent::init-param' -\n\nExample result:\n\nXPath set is empty\n\nIf the \"listings\" parameter is specified and is not \"false\", this is a finding.\n\nIf the \"listings\" parameter does not exist, this is not a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml\n\nFind and remove the entire block returned in the check.\n\nExample:\n\n<init-param>\n      <param-name>listings</param-name>\n      <param-value>true</param-value>\n</init-param>\n\nRestart the service with the following command:\n\n# vmon-cli --restart eam",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enumeration techniques, such as URL parameter manipulation, rely on being able to obtain information about the web server's directory structure by locating directories without default pages. In this scenario, the web server will display to the user a listing of the files in the directory being accessed. Ensuring that directory listing is disabled is one approach to mitigating the vulnerability.\n\nIn Tomcat, directory listing is disabled by default but can be enabled via the \"listings\" parameter. Ensure this node is not present to have the default effect.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCEM-80-000137",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-esx-agent-manager-eam-security-technical-im-v2r2-ad1a649e",
+      "name": "VMware vSphere 8.0 vCenter Appliance ESX Agent Manager (EAM) Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-esx-agent-manager-eam-security-technical-im-v2r2-ad1a649e"
+  ]
+}

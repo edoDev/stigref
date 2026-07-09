@@ -1,0 +1,53 @@
+{
+  "id": "SV-216129r959010_rule",
+  "full_rule_id": "SV-216129r959010_rule",
+  "rule_id": "SV-216129",
+  "rule_revision": "959010",
+  "group_id": "V-216129",
+  "group_title": "SRG-OS-000480",
+  "title": "The operating system must prevent remote devices that have established a non-remote connection with the system from communicating outside of the communication path with resources in external networks.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>This control enhancement is implemented within the remote device (e.g., notebook/laptop computer) via configuration settings not configurable by the user of the device. An example of a non-remote communications path from a remote device is a virtual private network. When a non-remote connection is established using a virtual private network, the configuration settings prevent split-tunneling. Split-tunneling might otherwise be used by remote users to communicate with the information system as an extension of the system and to communicate with local resources, such as a printer or file server. The remote device, when connected by a non-remote connection, becomes an extension of the information system allowing dual communications paths, such as split-tunneling, in effect allowing unauthorized external connections into the system. This is a split-tunneling requirement that can be controlled via the operating system by disabling interfaces.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if the \"RestrictOutbound\" profile is configured properly:\n\n# profiles -p RestrictOutbound info\n\nIf the output is not:\nname=RestrictOutbound\ndesc=Restrict Outbound Connections\nlimitpriv=zone,!net_access\n\nthis is a finding.\n\n\nFor users who are not allowed external network access, determine if a user is configured with the \"RestrictOutbound\" profile.\n\n# profiles -l [username]\n\nIf the output does not include:\n\n[username]:\nRestrictOutbound\n\nthis is a finding.",
+  "fix": "The root Role is required.\n\nRemove net_access privilege from users who may be accessing the systems externally.\n\n1. Create an RBAC Profile with net_access restriction\n\n# profiles -p RestrictOutbound\nprofiles:RestrictOutbound> set desc=\"Restrict Outbound Connections\"\nprofiles:RestrictOutbound> set limitpriv=zone,!net_access\nprofiles:RestrictOutbound> exit\n\n\n2. Assign the RBAC Profile to a user\n\n# usermod -P +RestrictOutbound [username]\n\nThis prevents the user from initiating any outbound network connections.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "This control enhancement is implemented within the remote device (e.g., notebook/laptop computer) via configuration settings not configurable by the user of the device. An example of a non-remote communications path from a remote device is a virtual private network. When a non-remote connection is established using a virtual private network, the configuration settings prevent split-tunneling. Split-tunneling might otherwise be used by remote users to communicate with the information system as an extension of the system and to communicate with local resources, such as a printer or file server. The remote device, when connected by a non-remote connection, becomes an extension of the information system allowing dual communications paths, such as split-tunneling, in effect allowing unauthorized external connections into the system. This is a split-tunneling requirement that can be controlled via the operating system by disabling interfaces.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-040490",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

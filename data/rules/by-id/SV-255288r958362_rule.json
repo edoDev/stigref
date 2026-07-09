@@ -1,0 +1,55 @@
+{
+  "id": "SV-255288r958362_rule",
+  "full_rule_id": "SV-255288r958362_rule",
+  "rule_id": "SV-255288",
+  "rule_revision": "958362",
+  "group_id": "V-255288",
+  "group_title": "SRG-OS-000001-GPOS-00001",
+  "title": "The HPE 3PAR OS must provide automated mechanisms for supporting account management functions via AD.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Enterprise environments make account management challenging and complex. A manual process for account management functions adds the risk of a potential oversight or other errors.\n\nA comprehensive account management process that includes automation helps to ensure accounts designated as requiring attention are consistently and promptly addressed. Examples include, but are not limited to, using automation to take action on multiple accounts designated as inactive, suspended or terminated, or by disabling accounts located in noncentralized account stores such as multiple servers. This requirement applies to all account types, including individual/user, shared, group, system, guest/anonymous, emergency, developer/manufacturer/vendor, temporary, and service.\n\nThe automated mechanisms may reside within the operating system itself or may be offered by other infrastructure providing automated account management capabilities. Automated mechanisms may be composed of differing technologies that, when placed together, contain an overall automated mechanism supporting an organization's automated account management requirements.\n\nAccount management functions include: Assigning group or role membership; identifying account type; specifying user access authorizations (i.e., privileges); account removal, update, or termination; and administrative alerts. The use of automated mechanisms can include, for example: Using email or text messaging to automatically notify account managers when users are terminated or transferred; using the information system to monitor account usage; and using automated telephonic notification to report atypical system account usage.\n\nThe HPE 3PAR OS supports external account management via communication with LDAP-enabled technologies (OpenLDAP and Active Directory). Configuration is required to establish the external management relationship. Internally defined roles (SUPER, SERVICE, EDIT, BROWSE) are mapped to centrally defined user groups. Administrators attempting to log in are checked first against local accounts (for emergency purposes). If no local account exists, the central account management system is checked. Users that are successfully authenticated, are then checked for membership in the mapped groups to establish their authorization to access the system, if any, and at what role level.\n\nSatisfies: SRG-OS-000001-GPOS-00001, SRG-OS-000042-GPOS-00021, SRG-OS-000104-GPOS-00051</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check with the Information Owner to verify if Active Directory will be used for Centralized Account Management.\n\nIf Active Directory will not be used, this requirement is not applicable.\n\nDetermine if the system is configured for Active Directory (AD). \n\nEnter the command:\ncli% showauthparam\n\nIf the result returns an error, or these fields of the output are not configured, this is a finding.\nldap-server              <ip address of AD server> \nldap-server-hn      <host name of AD server>\n\nIf the resulting Parameters include: group parameters\ngroups-dn\ngroup-obj\ngroup-name-attr\nthis requirement is not applicable.\n\nNext, verify that the AD authentication is operational by entering the command\ncli%  checkpassword  <username>\nEnter the password for <username>\n\nIf the username and password used in checkpassword are known to be valid AD credentials, and the following text is NOT displayed at the end of the resulting output, this is a finding:\n\nuser <username>   is authenticated and authorized\n\nNote: checkpassword will fail even if AD is properly configured, if the username and password are not entered correctly.",
+  "fix": "Use this series of commands to configure AD:\n\ncli% setauthparam -f ldap-type MSAD\ncli%  setauthparam -f ldap-server        <AD server IP address>\ncli% setauthparam -f binding            simple\ncli% setauthparam -f ldap-StartTLS      require\ncli% setauthparam -f kerberos-realm    <kerberos realm, such as  WIN2K12FOREST.THISDOMAIN.COM>\ncli% setauthparam -f ldap-server-hn     <fully qualified domain name of AD server, such as adserver.thisdomain.com>\ncli% setauthparam -f accounts-dn        CN=Users,DC=win2k12forest,DC=thisdomain,DC=com\ncli% setauthparam -f user-dn-base       CN=Users,DC=win2k12forest,DC=thisdomain,DC=com\ncli% setauthparam -f user-attr          WIN2K12FOREST\\\\\ncli% setauthparam -f account-obj        user\ncli% setauthparam -f account-name-attr  sAMAccountName\ncli% setauthparam -f memberof-attr      memberOf\ncli% setauthparam -f browse-map         \"CN=<customer-assigned name of browse role>,CN=Users,DC=win2k12forest,DC=thisdomain,DC=com\"\ncli% setauthparam -f edit-map           \"CN=<customer-assigned name of edit role>,CN=Users,DC=win2k12forest,DC=thisdomain,DC=com\"\ncli% setauthparam -f service-map        \"CN=<customer-assigned name of service role>,CN=Users,DC=win2k12forest,DC=thisdomain,DC=com\"\ncli% setauthparam -f super-map          \"CN=<customer-assigned name of super role>,CN=Users,DC=win2k12forest,DC=thisdomain,DC=com\"",
+  "ccis": [
+    "CCI-000015",
+    "CCI-000135",
+    "CCI-000764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enterprise environments make account management challenging and complex. A manual process for account management functions adds the risk of a potential oversight or other errors.\n\nA comprehensive account management process that includes automation helps to ensure accounts designated as requiring attention are consistently and promptly addressed. Examples include, but are not limited to, using automation to take action on multiple accounts designated as inactive, suspended or terminated, or by disabling accounts located in noncentralized account stores such as multiple servers. This requirement applies to all account types, including individual/user, shared, group, system, guest/anonymous, emergency, developer/manufacturer/vendor, temporary, and service.\n\nThe automated mechanisms may reside within the operating system itself or may be offered by other infrastructure providing automated account management capabilities. Automated mechanisms may be composed of differing technologies that, when placed together, contain an overall automated mechanism supporting an organization's automated account management requirements.\n\nAccount management functions include: Assigning group or role membership; identifying account type; specifying user access authorizations (i.e., privileges); account removal, update, or termination; and administrative alerts. The use of automated mechanisms can include, for example: Using email or text messaging to automatically notify account managers when users are terminated or transferred; using the information system to monitor account usage; and using automated telephonic notification to report atypical system account usage.\n\nThe HPE 3PAR OS supports external account management via communication with LDAP-enabled technologies (OpenLDAP and Active Directory). Configuration is required to establish the external management relationship. Internally defined roles (SUPER, SERVICE, EDIT, BROWSE) are mapped to centrally defined user groups. Administrators attempting to log in are checked first against local accounts (for emergency purposes). If no local account exists, the central account management system is checked. Users that are successfully authenticated, are then checked for membership in the mapped groups to establish their authorization to access the system, if any, and at what role level.\n\nSatisfies: SRG-OS-000001-GPOS-00001, SRG-OS-000042-GPOS-00021, SRG-OS-000104-GPOS-00051",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HP3P-33-101500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-storeserv-3-3-x-security-technical-implementation-guide-v2r1-7f70e64e",
+      "name": "HPE 3PAR StoreServ 3.3.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-storeserv-3-3-x-security-technical-implementation-guide-v2r1-7f70e64e"
+  ]
+}

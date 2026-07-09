@@ -1,0 +1,56 @@
+{
+  "id": "SV-266983r1040715_rule",
+  "full_rule_id": "SV-266983r1040715_rule",
+  "rule_id": "SV-266983",
+  "rule_revision": "1040715",
+  "group_id": "V-266983",
+  "group_title": "SRG-NET-000063-VPN-000220",
+  "title": "AOS, when used as a VPN Gateway, must be configured to use IPsec with SHA-2 at 384 bits or greater for hashing to protect the integrity of remote access sessions.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without strong cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nSHA-1 is considered a compromised hashing standard and is being phased out of use by industry and government standards. DOD systems must not be configured to use SHA-1 for integrity of remote access sessions. \n\nThe remote access VPN provides access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network.\n\nSatisfies: SRG-NET-000063-VPN-000220, SRG-NET-000074-VPN-000250, SRG-NET-000168-VPN-000600, SRG-NET-000230-VPN-000780</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify the AOS configuration with the following command:\nshow crypto-local ipsec-map\n\nNote the IKEv2 Policy number for each configured map.\n\n2. For each configured policy number, run the following command:\nshow crypto isakmp policy <IKEv2 Policy #>\n\nIf each configured IKEv2 policy hash algorithm is not configured with SHA-2 at 384 bit, this is a finding.",
+  "fix": "Configure AOS with the following commands:\nconfigure terminal\ncrypto isakmp policy <priority>\nhash sha2-384-192\nexit\nwrite memory",
+  "ccis": [
+    "CCI-001453",
+    "CCI-000068",
+    "CCI-000803",
+    "CCI-001184"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without strong cryptographic integrity protections, information can be altered by unauthorized users without detection.\n\nSHA-1 is considered a compromised hashing standard and is being phased out of use by industry and government standards. DOD systems must not be configured to use SHA-1 for integrity of remote access sessions. \n\nThe remote access VPN provides access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network.\n\nSatisfies: SRG-NET-000063-VPN-000220, SRG-NET-000074-VPN-000250, SRG-NET-000168-VPN-000600, SRG-NET-000230-VPN-000780",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARBA-VN-000220",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a",
+      "name": "HPE Aruba Networking AOS VPN Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-aruba-networking-aos-vpn-security-technical-implementation-guide-v1r1-cdacc64a"
+  ]
+}

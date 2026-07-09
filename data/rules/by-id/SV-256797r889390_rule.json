@@ -1,0 +1,53 @@
+{
+  "id": "SV-256797r889390_rule",
+  "full_rule_id": "SV-256797r889390_rule",
+  "rule_id": "SV-256797",
+  "rule_revision": "889390",
+  "group_id": "V-256797",
+  "group_title": "SRG-APP-000246-WSR-000149",
+  "title": "vSphere UI must limit the number of allowed connections.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Limiting the number of established connections is a basic denial-of-service protection and a best practice. Servers where the limit is too high or unlimited can run out of system resources and negatively affect system availability.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command: \n \n# xmllint --xpath '/Server/Service/Connector[@port=\"${http.port}\"]/@acceptCount' /usr/lib/vmware-vsphere-ui/server/conf/server.xml \n \nExpected result: \n \nacceptCount=\"300\" \n \nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open: \n \n/usr/lib/vmware-vsphere-ui/server/conf/server.xml \n \nNavigate to the <Connector> configured with port=\"${http.port}\". \n \nAdd or change the following value: \n \nacceptCount=\"300\" \n \nRestart the service with the following command: \n \n# vmon-cli --restart vsphere-ui",
+  "ccis": [
+    "CCI-001094"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Limiting the number of established connections is a basic denial-of-service protection and a best practice. Servers where the limit is too high or unlimited can run out of system resources and negatively affect system availability.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCUI-70-000020",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c",
+      "name": "VMware vSphere 7.0 vCenter Appliance UI Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-ui-security-technical-implementation-guide-v1r2-e2c1055c"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-80623r1_rule",
+  "full_rule_id": "SV-80623r1_rule",
+  "rule_id": "SV-80623",
+  "rule_revision": "1",
+  "group_id": "V-66133",
+  "group_title": "SRG-NET-000191-RTR-000081",
+  "title": "The HP FlexFabric Switch must ensure all Exterior Border Gateway Protocol (eBGP) HP FlexFabric Switches are configured to use Generalized TTL Security Mechanism (GTSM).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>As described in RFC 3682, GTSM is designed to protect a router's IP-based control plane from DoS attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all eBGP speaking routers. GTSM is based on the fact that the vast majority of control plane peering is established between adjacent routers; that is, the eBGP peers are either between connecting interfaces or between loopback interfaces. Since TTL spoofing is considered nearly impossible, a mechanism based on an expected TTL value provides a simple and reasonably robust defense from infrastructure attacks based on forged control plane traffic.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the HP FlexFabric Switch configuration.\n\nIf the HP FlexFabric Switch  is not configured to use GTSM for all eBGP peering sessions, this is a finding.\n\n[HP] display current-configuration\n#\nbgp 2000\n graceful-restart\n peer 10.10.10.1 as-number 2000\n peer 10.10.10.1 ttl-security hops 254\n peer 201.6.1.193 as-number 1473\n peer 201.6.1.193 route-update-interval 0\n peer 201.6.1.193 password cipher $c$3$6jyBDW1nVs/F0410R54zhmhD1HYhs5I=\n peer 2115:B:1::C1 as-number 1473\n peer 2115:B:1::C1 route-update-interval 0",
+  "fix": "Configure all eBGP peering sessions to use GTSM.\n\n[HP] bgp 2000\n[HP-bgp] peer 192.178.19.1 as-number 2100\n[HP-bgp] peer 192.178.19.1 ttl-security hops 254",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "As described in RFC 3682, GTSM is designed to protect a router's IP-based control plane from DoS attacks. Many attacks focused on CPU load and line-card overload can be prevented by implementing GTSM on all eBGP speaking routers. GTSM is based on the fact that the vast majority of control plane peering is established between adjacent routers; that is, the eBGP peers are either between connecting interfaces or between loopback interfaces. Since TTL spoofing is considered nearly impossible, a mechanism based on an expected TTL value provides a simple and reasonably robust defense from infrastructure attacks based on forged control plane traffic.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-RT-000023",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225",
+      "name": "HP FlexFabric Switch RTR Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225"
+  ]
+}

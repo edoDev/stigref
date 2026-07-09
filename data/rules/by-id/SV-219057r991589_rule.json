@@ -1,0 +1,54 @@
+{
+  "id": "SV-219057r991589_rule",
+  "full_rule_id": "SV-219057r991589_rule",
+  "rule_id": "SV-219057",
+  "rule_revision": "991589",
+  "group_id": "V-219057",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "AIX must employ a deny-all, allow-by-exception firewall policy for allowing connections to other systems.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failure to restrict network connectivity only to authorized systems permits inbound connections from malicious systems. It also permits outbound connections that may facilitate exfiltration of DoD data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the command prompt, run the following commands to check if the \"all traffic\" filter rules, the predefined rule with Rule-ID 0, are defined to deny all packages:\n\n# lsfilt -v4 -n0\n# lsfilt -v6 -n0 \n\nRule 0:\nRule action         : deny\nSource Address      : 0.0.0.0\nSource Mask         : 0.0.0.0\nDestination Address : 0.0.0.0\nDestination Mask    : 0.0.0.0\nSource Routing      : yes\nProtocol            : all\nSource Port         : any 0\nDestination Port    : any 0\nScope               : both\nDirection           : both\nLogging control     : no\nFragment control    : all packets\nTunnel ID number    : 0\nInterface           : all\nAuto-Generated      : no\nExpiration Time     : 0\nDescription         : Default Rule\n\nRule 0:\nRule action         : deny\nSource Address      : ::\nSource Mask         : 0\nDestination Address : ::\nDestination Mask    : 0\nSource Routing      : yes\nProtocol            : all\nSource Port         : any 0\nDestination Port    : any 0\nScope               : both\nDirection           : both\nLogging control     : no\nFragment control    : all packets\nTunnel ID number    : 0\nInterface           : all\nAuto-Generated      : no\nExpiration Time     : 0\nDescription         : Default Rule\n\nIf any of the \"all traffic\" rules has \"Rule action : permit\", this is a finding.",
+  "fix": "From the command prompt, run the following commands to create and activate \"ipsec_v4\" and \"ipsec_v6\" devices:\n# mkdev -l ipsec -t 4\n# mkdev -l ipsec -t 6\n\nFrom the command prompt, run the following commands to change the \"all traffic\" rules to block all packages:\n# chfilt -a D -v 4 -n 0\n# chfilt -a D -v 6 -n 0\n\nAssume that the local host has IP address 10.10.10.10 and the remote host has IP address 11.11.11.11, run the following command to generate a user-defined filter rule that allow all IPv4 traffic between these 2 hosts:\n# genfilt -w B -v 4 -s 10.10.10.10 -p 0 -P 0 -o any -O any -m 255.255.255.255 -M 255.255.255.255 -i all -g Y -d 11.11.11.11 -c all -a P\n\nFrom the command prompt, run the following command to activate all the filter rules in the rule database:\n# mkfilt -u",
+  "ccis": [
+    "CCI-000366",
+    "CCI-002080"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to restrict network connectivity only to authorized systems permits inbound connections from malicious systems. It also permits outbound connections that may facilitate exfiltration of DoD data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003143",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

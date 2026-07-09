@@ -1,0 +1,53 @@
+{
+  "id": "SV-215313r991589_rule",
+  "full_rule_id": "SV-215313r991589_rule",
+  "rule_id": "SV-215313",
+  "rule_revision": "991589",
+  "group_id": "V-215313",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The AIX syslog daemon must not accept remote messages unless it is a syslog server documented using site-defined procedures.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Unintentionally running a syslog server accepting remote messages puts the system at increased risk. Malicious syslog messages sent to the server could exploit vulnerabilities in the server software itself, could introduce misleading information in to the system's logs, or could fill the system's storage leading to a Denial of Service.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify \"syslogd\" is running with the \"-R\" option using command: \n# ps -ef | grep syslogd | grep -v grep \n\nThe above command should yield the following output:\n    root  4063356  3342368   0   Sep 11      -  0:01 /usr/sbin/syslogd -R\n\nIf the \"-R\" option is not present with the syslogd process, this is a finding.",
+  "fix": "Change the \"syslogd\" arguments in the src subsystem control and restart the \"syslogd\" daemon using the following commands:\n# chssys -s syslogd -a '-R' \n# stopsrc -s syslogd \n# startsrc -s syslogd",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Unintentionally running a syslog server accepting remote messages puts the system at increased risk. Malicious syslog messages sent to the server could exploit vulnerabilities in the server software itself, could introduce misleading information in to the system's logs, or could fill the system's storage leading to a Denial of Service.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-002132",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

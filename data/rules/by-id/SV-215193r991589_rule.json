@@ -1,0 +1,53 @@
+{
+  "id": "SV-215193r991589_rule",
+  "full_rule_id": "SV-215193r991589_rule",
+  "rule_id": "SV-215193",
+  "rule_revision": "991589",
+  "group_id": "V-215193",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The AIX root account must not have world-writable directories in its executable search path.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the root search path contains a world-writable directory, malicious software could be placed in the path by intruders and/or malicious users and inadvertently run by root with all of root's privileges.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check for world-writable permissions on all directories in the root user's executable search path:\n\n# ls -ld `echo $PATH | sed \"s/:/ /g\"` \ndrwxr-xr-x   33 root     system         8192 Nov 29 14:45 /etc\ndrwxr-xr-x    3 bin      bin             256 Aug 11 2017  /sbin\ndrwxr-xr-x    4 bin      bin           45056 Oct 31 12:59 /usr/bin\ndrwxr-xr-x    1 bin      bin             16 Aug 11 2017  /usr/bin/X11\ndrwxr-xr-x    2 bin      bin            4096 Aug 11 2017  /usr/java7_64/bin\ndrwxr-xr-x    4 bin      bin            4096 Feb 17 2017  /usr/java7_64/jre/bin\ndrwxr-xr-x    8 bin      bin           49152 Oct 31 12:59 /usr/sbin\ndrwxrwxr-x    2 bin      bin            4096 Aug 11 2017  /usr/ucb\n\nIf any of the directories in the \"PATH\" variable are world-writable, this is a finding.",
+  "fix": "For each world-writable path in root's executable search path, perform one of the following. \n\nRemove the world-writable permission on the directory. \n\nRun command: \n# chmod o-w <path> \n\n-OR-\nRemove the world-writable directory from the executable search path. Identify and edit the initialization file referencing the world-writable directory and remove it from the PATH variable.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the root search path contains a world-writable directory, malicious software could be placed in the path by intruders and/or malicious users and inadvertently run by root with all of root's privileges.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001034",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

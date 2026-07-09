@@ -1,0 +1,53 @@
+{
+  "id": "SV-256036r882450_rule",
+  "full_rule_id": "SV-256036r882450_rule",
+  "rule_id": "SV-256036",
+  "rule_revision": "882450",
+  "group_id": "V-256036",
+  "group_title": "SRG-NET-000362-RTR-000118",
+  "title": "The Arista BGP router must be configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer.",
+  "severity": "low",
+  "description": "<VulnDiscussion>The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone. \n\nReview the Arista router configuration to verify there is a filter to reject inbound route advertisements that are greater than /24 or the least significant prefixes issued to the customer, whichever is larger.\n\nStep 1: To verify there is a filter to reject inbound route advertisements that are greater than /24 or the least significant prefixes issued to the customer, whichever is larger, execute the command \"sh ip prefix-list\".\n\nip prefix-list ADVERTISE_ROUTES deny 0.0.0.0/0 ge 25\nip prefix-list ADVERTISE_ROUTES permit 0.0.0.0/0 le 32\n\nStep 2: Verify the prefix-list is applied in BGP process. Execute the command \"sh run section router bgp\".\n\nrouter bgp 65000\n neighbor 10.1.12.2 prefix-list ADVERTISE_ROUTES in\n\nIf the Arista router is not configured to limit the prefix size on any inbound route advertisement to /24 or the least significant prefixes issued to the customer, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone. \n\nEnsure all eBGP Arista routers are configured to limit the prefix size on any route advertisement to /24 or the least significant prefixes issued to the customer.\n\nStep 1: Configure the prefix-list.\n\nip prefix-list ADVERTISE_ROUTES deny 0.0.0.0/0 ge 25\nip prefix-list ADVERTISE_ROUTES permit 0.0.0.0/0 le 32\n\nStep 2: Apply the prefix-list in the BGP process inbound.\n\nLEAF-1A(config)#router bgp 65000\nLEAF-1A(config)# neighbor 10.1.12.2 prefix-list ADVERTISE_ROUTES in",
+  "ccis": [
+    "CCI-002385"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The effects of prefix de-aggregation can degrade router performance due to the size of routing tables and also result in black-holing legitimate traffic. Initiated by an attacker or a misconfigured router, prefix de-aggregation occurs when the announcement of a large prefix is fragmented into a collection of smaller prefix announcements.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000570",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

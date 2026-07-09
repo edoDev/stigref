@@ -1,0 +1,55 @@
+{
+  "id": "SV-229023r1015760_rule",
+  "full_rule_id": "SV-229023r1015760_rule",
+  "rule_id": "SV-229023",
+  "rule_revision": "1015760",
+  "group_id": "V-229023",
+  "group_title": "SRG-APP-000516-NDM-000317",
+  "title": "In the event that communications with the events server is lost, the Juniper SRX Services Gateway must continue to queue log records locally.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is critical that when the network device is at risk of failing to process logs as required, it take action to mitigate the failure. Log processing failures include: software/hardware errors; failures in the log capturing mechanisms; and audit storage capacity being reached or exceeded. Responses to log failure depend upon the nature of the failure mode. \n\nSince availability is an overriding concern given the role of the Juniper SRX in the enterprise, the system must not be configured to shut down in the event of a log processing failure. The system will be configured to log events to local files, which will provide a log backup. If communication with the Syslog server is lost or the server fails, the network device must continue to queue log records locally. Upon restoration of the connection to the centralized collection server, action should be taken to synchronize the local log data with the collection server.\n\nA best practice is to add log-prefixes to the log file names to help in researching the events and filters to prevent log overload. Another best practice is to add a match condition to limit the recorded events to those containing the regular expression (REGEX). Thus, the Juniper SRX will inherently and continuously capture events to local files to guard against the loss of connectivity to the primary and secondary events server.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify logging has been enabled and configured to capture to local log files in case connection with the primary and secondary log servers is lost.\n\n[edit] \nshow system syslog\n\nIf local log files are not configured to capture events, this is a finding.",
+  "fix": "The following example commands configure local backup files to capture DOD-defined auditable events. \n\n[edit]\nset system syslog file messages any info\nset system syslog file messages authorization none\nset system syslog file messages interactive-commands none \nset system syslog file messages daemon none \nset system syslog file User-Auth authorization any\nset system syslog file interactive-commands interactive-commands any\nset system syslog file processes daemon any\nset system syslog file account-actions change-log any any\nset file account-actions match \"system login user\"\nset system syslog console any any",
+  "ccis": [
+    "CCI-000366",
+    "CCI-000015",
+    "CCI-001686"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is critical that when the network device is at risk of failing to process logs as required, it take action to mitigate the failure. Log processing failures include: software/hardware errors; failures in the log capturing mechanisms; and audit storage capacity being reached or exceeded. Responses to log failure depend upon the nature of the failure mode. \n\nSince availability is an overriding concern given the role of the Juniper SRX in the enterprise, the system must not be configured to shut down in the event of a log processing failure. The system will be configured to log events to local files, which will provide a log backup. If communication with the Syslog server is lost or the server fails, the network device must continue to queue log records locally. Upon restoration of the connection to the centralized collection server, action should be taken to synchronize the local log data with the collection server.\n\nA best practice is to add log-prefixes to the log file names to help in researching the events and filters to prevent log overload. Another best practice is to add a match condition to limit the recorded events to those containing the regular expression (REGEX). Thus, the Juniper SRX will inherently and continuously capture events to local files to guard against the loss of connectivity to the primary and secondary events server.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000061",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

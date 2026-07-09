@@ -1,0 +1,53 @@
+{
+  "id": "SV-215232r991589_rule",
+  "full_rule_id": "SV-215232r991589_rule",
+  "rule_id": "SV-215232",
+  "rule_revision": "991589",
+  "group_id": "V-215232",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "AIX must require passwords to contain no more than three consecutive repeating characters.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Check system default for \"maxrepeats\" attribute:\n# lssec -f /etc/security/user -s default -a maxrepeats\ndefault maxrepeats=3\n\nIf the default \"maxrepeats\" is greater than \"3\", or its value is not set, or its value is set to \"0\", this is a finding.\n\nCheck the \"maxrepeats\" setting for all users using:\n# lsuser -a maxrepeats ALL\n\nThe above command should yield the following output:\nroot maxrepeats=3\ndaemon maxrepeats=3\nbin maxrepeats=3\nsys maxrepeats=3\n\nIf the \"maxrepeats\" setting for any user is greater than \"3\", or its value is set to \"0\", this is a finding.",
+  "fix": "Use the \"chsec\" command to set \"maxrepeats\" to \"3\" for the default stanza:\n# chsec -f /etc/security/user -s default -a maxrepeats=3 \n\nUse the \"chsec\" command to set \"maxrepeats\" to \"3\" for all the users who have \"maxrepeats\" values that are greater than \"3\", or its value is set to \"0\":\n# chuser maxrepeats=3 [user_name]",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Passwords with excessive repeating characters may be more vulnerable to password-guessing attacks.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001136",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

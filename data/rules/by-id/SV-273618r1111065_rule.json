@@ -1,0 +1,53 @@
+{
+  "id": "SV-273618r1111065_rule",
+  "full_rule_id": "SV-273618r1111065_rule",
+  "rule_id": "SV-273618",
+  "rule_revision": "1111065",
+  "group_id": "V-273618",
+  "group_title": "SRG-NET-000205-RTR-000014",
+  "title": "The RUCKUS ICX perimeter router must be configured to restrict it from accepting outbound IP packets that contain an illegitimate address in the source address field via egress filter or by enabling Unicast Reverse Path Forwarding (uRPF).",
+  "severity": "high",
+  "description": "<VulnDiscussion>A compromised host in an enclave can be used by a malicious platform to launch cyberattacks on third parties. This is a common practice in \"botnets\", which are a collection of compromised computers using malware to attack other computers or networks. Distributed denial-of-service (DDoS) attacks frequently leverage IP source address spoofing to send packets to multiple hosts that in turn will then send return traffic to the hosts with the IP addresses that were forged. This can generate significant amounts of traffic. Therefore, protection measures to counteract IP source address spoofing must be taken. When uRPF is enabled in strict mode, the packet must be received on the interface that the device would use to forward the return packet; thereby mitigating IP source address spoofing.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nReview the router configuration to verify uRPF or an egress ACL has been configured on all internal interfaces to restrict the router from accepting outbound IP packets that contain an illegitimate address in the source address field.\n\nuRPF example:\n\nreverse-path-check\n!\ninterface ethernet 1/1/1\n port-name downstream_link_to_LAN\n ip address 10.1.25.5 255.255.255.0\n rpf-mode loose\n\nEgress ACL example:\n\ninterface ethernet 1/2/2\n port-name downstream_link_to_LAN\n ip address 10.1.25.5 255.255.255.0\n ip access-group EGRESS_FILTER in logging enable\n!\n…\n…\n…\nip access-list extended EGRESS_FILTER\n sequence 10 permit udp 10.1.15.0 0.0.0.255 any eq dns\n sequence 20 permit tcp 10.1.15.0 0.0.0.255 any eq ftp\n sequence 30 permit tcp 10.1.15.0 0.0.0.255 any eq ftp-data\n sequence 40 permit tcp 10.1.15.0 0.0.0.255 any eq http\n sequence 50 permit tcp 10.1.15.0 0.0.0.255 any eq ssl\n sequence 60 permit icmp 10.1.15.0 0.0.0.255 any\n sequence 70 permit icmp 10.1.15.0 0.0.0.255 any echo\n sequence 80 deny ip any any\n!\n\nIf uRPF or an egress ACL to restrict the router from accepting outbound IP packets that contain an illegitimate address in the source address field has not been configured on all internal interfaces in an enclave, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone.\n\nConfigure the router to ensure an egress ACL or uRPF is configured on internal interfaces to restrict the router from accepting any outbound IP packet that contains an illegitimate address in the source field.\n\nuRPF:\n\nICX(config)#reverse-path-check\nICX(config)#interface ethernet 1/2/2\nICX(config-if-e10000-1/2/2)#rpf-mode loose\n\nACL:\n\nICX(config)#ip access ext EGRESS_FILTER\nICX(config-ext-ipacl-EGRESS_FILTER)#permit udp 10.1.15.0/24 any eq dns\nICX(config-ext-ipacl-EGRESS_FILTER)#permit tcp 10.1.15.0/24 any eq ftp\nICX(config-ext-ipacl-EGRESS_FILTER)#permit tcp 10.1.15.0/24 any eq ftp-data\nICX(config-ext-ipacl-EGRESS_FILTER)#permit tcp 10.1.15.0/24 any eq http\nICX(config-ext-ipacl-EGRESS_FILTER)#permit tcp 10.1.15.0/24 any eq http\nICX(config-ext-ipacl-EGRESS_FILTER)#permit tcp 10.1.15.0/24 any eq ssl\nICX(config-ext-ipacl-EGRESS_FILTER)#permit icmp 10.1.15.0/24 any\nICX(config-ext-ipacl-EGRESS_FILTER)#permit icmp 10.1.15.0/24 any echo\nICX(config-ext-ipacl-EGRESS_FILTER)#deny ip any any\nICX(config)#interface ethernet 1/2/2\nICX(config-if-e10000-1/2/2)#port-name downstream_link_to_LAN\nICX(config-if-e10000-1/2/2)#ip addr 10.1.25.5/24\nICX(config-if-e10000-1/2/2)#ip access-group EGRESS_FILTER in logging enable",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A compromised host in an enclave can be used by a malicious platform to launch cyberattacks on third parties. This is a common practice in \"botnets\", which are a collection of compromised computers using malware to attack other computers or networks. Distributed denial-of-service (DDoS) attacks frequently leverage IP source address spoofing to send packets to multiple hosts that in turn will then send return traffic to the hosts with the IP addresses that were forged. This can generate significant amounts of traffic. Therefore, protection measures to counteract IP source address spoofing must be taken. When uRPF is enabled in strict mode, the packet must be received on the interface that the device would use to forward the return packet; thereby mitigating IP source address spoofing.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000510",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-271715r1091857_rule",
+  "full_rule_id": "SV-271715r1091857_rule",
+  "rule_id": "SV-271715",
+  "rule_revision": "1091857",
+  "group_id": "V-271715",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 SSH daemon must display the date and time of the last successful account logon upon an SSH logon.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Providing users feedback on when account accesses last occurred facilitates user recognition and reporting of unauthorized account use.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 SSH daemon provides users with feedback on when account accesses last occurred with the following command:\n\n$ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\\r' | tr '\\n' ' ' | xargs sudo grep -iH '^\\s*printlastlog'\nPrintLastLog yes\n\nIf the \"PrintLastLog\" keyword is set to \"no\", the returned line is commented out, or no output is returned, this is a finding.",
+  "fix": "Configure the SSH daemon to provide users with feedback on when account accesses last occurred.\n\nAdd the following line to \"/etc/ssh/sshd_config\" or to a file in \"/etc/ssh/sshd_config.d\" or uncomment the line and set the value to \"yes\":\n\nPrintLastLog yes\n\nThe SSH service must be restarted for changes to take effect:\n\n$ sudo systemctl restart sshd.service",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Providing users feedback on when account accesses last occurred facilitates user recognition and reporting of unauthorized account use.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002352",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

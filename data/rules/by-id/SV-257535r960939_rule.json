@@ -1,0 +1,55 @@
+{
+  "id": "SV-257535r960939_rule",
+  "full_rule_id": "SV-257535r960939_rule",
+  "rule_id": "SV-257535",
+  "rule_revision": "960939",
+  "group_id": "V-257535",
+  "group_title": "SRG-APP-000121-CTR-000255",
+  "title": "OpenShift must protect audit tools from unauthorized access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Protecting audit data also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit data.\n\nApplications providing tools to interface with audit data will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys in order to make access decisions regarding the access to audit tools.\n\nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-APP-000121-CTR-000255, SRG-APP-000122-CTR-000260, SRG-APP-000123-CTR-000265</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "List the users and groups who have permission to view the cluster logging configuration by executing the following two commands:\n\noc policy who-can view ClusterLogging -n openshift-logging\n\noc policy who-can view ClusterLoggingForwarder -n openshift-logging\n\nReview the list of users and groups who have view access to the cluster logging resources. If any user or group listed must not have access to view the cluster logging resources, this is a finding.",
+  "fix": "Remove view permissions from any unauthorized user or group by performing one or more of the following commands.\n\nRemove role from user by executing the following:\n\noc adm policy remove-role-from-user <ROLE> <USER> -n openshift-logging\n\nRemove role from group by executing the following:\n\noc adm policy remove-role-from-group <ROLE> <GROUP> -n openshift-logging\n\nRemove cluster role from user by executing the following:\noc adm policy remove-cluster-role-from-user <CLUSTER_ROLE> <USER> -n openshift-logging\n\nRemove cluster role from group by executing the following:\n\noc adm policy remove-cluster-role-from-group <CLUSTER_ROLE> <GROUP> -n openshift-logging\n\nNote: ROLE/CLUSTER_ROLE is the role granting user view permission to resources in openshift-logging namespace.",
+  "ccis": [
+    "CCI-001493",
+    "CCI-001494",
+    "CCI-001495"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Protecting audit data also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operation on audit data.\n\nApplications providing tools to interface with audit data will leverage user permissions and roles identifying the user accessing the tools and the corresponding rights the user enjoys in order to make access decisions regarding the access to audit tools.\n\nAudit tools include, but are not limited to, vendor-provided and open source audit tools needed to successfully view and manipulate audit information system activity and records. Audit tools include custom queries and report generators.\n\nSatisfies: SRG-APP-000121-CTR-000255, SRG-APP-000122-CTR-000260, SRG-APP-000123-CTR-000265",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-OS-000330",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2",
+      "name": "Red Hat OpenShift Container Platform 4.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-openshift-container-platform-4-x-security-technical-implementation-guide-v2r5-43d0e3f2"
+  ]
+}

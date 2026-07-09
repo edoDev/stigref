@@ -1,0 +1,53 @@
+{
+  "id": "SV-234218r1137890_rule",
+  "full_rule_id": "SV-234218r1137890_rule",
+  "rule_id": "SV-234218",
+  "rule_revision": "1137890",
+  "group_id": "V-234218",
+  "group_title": "SRG-APP-000516-NDM-000350",
+  "title": "The FortiGate device must be configured to send log data to a central log server for the purpose of forwarding alerts to the administrators and the ISSO.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The aggregation of log data kept on a syslog server can be used to detect attacks and trigger an alert to the appropriate security personnel. The stored log data can be used to detect weaknesses in security that enable the network IA team to find and address these weaknesses before breaches can occur. Reviewing these logs, whether before or after a security breach, is important in showing whether someone is an internal employee or an outside threat.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that FortiGate is configured to send logs to a central log server.  \n\nLog in via the FortiGate GUI with super-admin privileges. \n\n1. Navigate to Log and Report.\n2. Navigate to Log Settings.\n3. Locate the Remote Logging and Archiving section.\n4. Verify FortiGate is configured to log to a FortiAnalyzer or a syslog server.\n\nor\n\nOpen a CLI console via SSH or from the \"CLI Console\" button in the GUI.\n\nRun the following commands and verify that at least one of the settings reflects \"set status enable\" in the output:\n# show full-configuration | grep -A1 'log fortianalyzer'\n# show full-configuration | grep -A1 'log syslogd.* setting'\n\nThe CLI output will indicate \"set status enable\" if configured.\n\nIf the FortiGate is not logging to a central log server, this is a finding.",
+  "fix": "Log in via the GUI with super-admin privileges.\n\n1. Click Log and Report.\n2. Click Log Settings.\n3. Locate the Remote Logging and Archiving section.\n4. Configure FortiGate to log to a FortiAnalyzer or syslog server.\n- Enable logging to FortiAnalyzer and provide the IP address. Additional FortiAnalyzer logging destinations can be configured in the CLI.\n- Enable the \"Send logs to syslog\" toggle and provide the IP address. Additional syslog logging destinations can be configured in the CLI.\n5. Apply changes.\n\nor\n\n1. Open a CLI console via SSH or from the \"CLI Console\" button in the GUI.\n2. Configure a FortiAnalyzer or syslog server with the following commands:\n\nFortiAnalyzer Logging:\nconfig log fortianalyzer setting\n   set status enable\n   set server {IP Address}\n   set upload-option realtime\nend\n\nsyslog Logging:\nconfig log syslogd setting\n   set status enable\n   set server {IP Address}\n   set mode reliable\nend",
+  "ccis": [
+    "CCI-002605"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The aggregation of log data kept on a syslog server can be used to detect attacks and trigger an alert to the appropriate security personnel. The stored log data can be used to detect weaknesses in security that enable the network IA team to find and address these weaknesses before breaches can occur. Reviewing these logs, whether before or after a security breach, is important in showing whether someone is an internal employee or an outside threat.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "FGFW-ND-000295",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "fortinet-fortigate-firewall-ndm-security-technical-implementation-guide-v1r5-bef88ab8",
+      "name": "Fortinet FortiGate Firewall NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "fortinet-fortigate-firewall-ndm-security-technical-implementation-guide-v1r5-bef88ab8"
+  ]
+}

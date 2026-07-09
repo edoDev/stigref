@@ -1,0 +1,55 @@
+{
+  "id": "SV-265327r994204_rule",
+  "full_rule_id": "SV-265327r994204_rule",
+  "rule_id": "SV-265327",
+  "rule_revision": "994204",
+  "group_id": "V-265327",
+  "group_title": "SRG-APP-000190-NDM-000267",
+  "title": "The NSX Manager must terminate all network connections associated with a session after five minutes of inactivity.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take immediate control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element.\n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at the operating system level, or deallocating networking assignments at the application level if multiple application sessions are using a single, operating system-level network connection. This does not mean that the device terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.\n\nSatisfies: SRG-APP-000190-NDM-000267, SRG-APP-000186-NDM-000266, SRG-APP-000400-NDM-000313</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From an NSX Manager shell, run the following command:\n\n> get service http | find Session\n\nExpected result:\nSession timeout: 300\n\nIf the session timeout is not configured to 300 or less, this is a finding.\n\nFrom an NSX Manager shell, run the following command:\n\n> get cli-timeout\n\nExpected result:\n300 seconds\n\nIf the CLI timeout is not configured to 300 or less, this is a finding.",
+  "fix": "From an NSX Manager shell, run the following commands:\n\n> set service http session-timeout 300\n> set cli-timeout 300",
+  "ccis": [
+    "CCI-001133",
+    "CCI-000879",
+    "CCI-002007"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take immediate control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element.\n\nTerminating network connections associated with communications sessions includes, for example, de-allocating associated TCP/IP address/port pairs at the operating system level, or deallocating networking assignments at the application level if multiple application sessions are using a single, operating system-level network connection. This does not mean that the device terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.\n\nSatisfies: SRG-APP-000190-NDM-000267, SRG-APP-000186-NDM-000266, SRG-APP-000400-NDM-000313",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NMGR-4X-000052",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-4-x-manager-ndm-security-technical-implementation-guide-v1r2-ead63637",
+      "name": "VMware NSX 4.x Manager NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-4-x-manager-ndm-security-technical-implementation-guide-v1r2-ead63637"
+  ]
+}

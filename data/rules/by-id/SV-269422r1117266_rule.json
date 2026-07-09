@@ -1,0 +1,53 @@
+{
+  "id": "SV-269422r1117266_rule",
+  "full_rule_id": "SV-269422r1117266_rule",
+  "rule_id": "SV-269422",
+  "rule_revision": "1117266",
+  "group_id": "V-269422",
+  "group_title": "SRG-OS-000132-GPOS-00067",
+  "title": "AlmaLinux OS 9 must disable access to network bpf system call from nonprivileged processes.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Loading and accessing the packet filters programs and maps using the bpf() system call has the potential of revealing sensitive information about the kernel state.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify AlmaLinux OS 9 prevents privilege escalation thru the kernel by disabling access to the bpf system call with the following commands:\n\n$ sysctl kernel.unprivileged_bpf_disabled\n\nkernel.unprivileged_bpf_disabled = 1\n\nIf the returned line does not have a value of \"1\", or a line is not returned, this is a finding.\n\nCheck that the configuration files are present to enable this kernel parameter.\n\n$ /usr/lib/systemd/systemd-sysctl --cat-config | egrep -v '^(#|;)' | grep -F kernel.unprivileged_bpf_disabled | tail -1\n\nkernel.unprivileged_bpf_disabled = 1\n\nIf \"kernel.unprivileged_bpf_disabled\" is not set to \"1\", or nothing is returned, this is a finding.",
+  "fix": "Configure AlmaLinux OS 9 to prevent privilege escalation through the kernel by disabling access to the bpf syscall with the following command:\n\n$ echo \"kernel.unprivileged_bpf_disabled = 1\" > /etc/sysctl.d/60-bpf.conf\n\nLoad settings from all system configuration files with the following command:\n\n$ sysctl --system",
+  "ccis": [
+    "CCI-001082"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Loading and accessing the packet filters programs and maps using the bpf() system call has the potential of revealing sensitive information about the kernel state.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-040720",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-223928r1137691_rule",
+  "full_rule_id": "SV-223928r1137691_rule",
+  "rule_id": "SV-223928",
+  "rule_revision": "1137691",
+  "group_id": "V-223928",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "Data set masking characters allowing access to all data sets must be properly restricted in the CA-TSS security database.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer the accesses to the TSS masking character (*, *., and/or **) for data sets. \n\nIf the following guidance is true, this is not a finding.\n\nIf the TSS data set access authorizations restrict READ access to auditors, this is not a finding.\n\nIf the TSS data set access authorizations restrict READ and/or greater access to DASD administrators, Trusted Started Tasks, emergency users, and DASD batch users, this is not a finding.\n\nIf CA VTAPE is installed on the systems and the TSS data set access authorizations restrict READ access to CA VTAPE STCs and/or batch users, this is not a finding.\n\nIf the TSS data set access authorizations specify that all (i.e., failures and successes) EXECUTE and/or greater accesses are logged, this is not a finding.",
+  "fix": "Review access authorization to the TSS mask character (*, *., and/or **) for data sets. Evaluate the impact of correcting the deficiency. Develop a plan of action and implement the changes required to restrict access to the data set mask permissions.\n\nThe installing Systems Programmer will identify and document the product data sets and categorize them according to who will have WRITE and/or greater access and, if required, that all WRITE and/or greater accesses are logged. The programmer will identify if any additional groups have WRITE and/or greater access for specific data sets, and once documented, will work with the ISSO to confirm that they are properly restricted to the ACP (Access Control Program) active on the system.\n\n(Note: The data sets and/or data set prefixes identified below are examples of a possible installation. The actual data sets and/or prefixes are determined when the product is actually installed on a system through the product's installation guide and can be site specific.)\n\nAuditors may require READ access to all data sets.\nDASD administrators, Trusted Started Tasks, emergency users, and DASD batch users that require READ and/or greater access to perform maintenance to all data sets.\nIf CA VTAPE is installed on the system, READ access can be given to the CA VTAPE STCs and/or batch users.\nAll accesses authorizations will be logged. The exception is the logging requirement is not required for Trusted Started Tasks.\n\nThe following commands are provided as a sample for implementing data set controls:\n\nTSS ADDTO(msca) DATASET(*.)\nTSS PERMIT(smplsmpl) DATASET(*.) ACCESS(READ) ACTION(AUDIT)\nTSS PERMIT(CA VTape STC) DATASET(*.) ACCESS(READ) ACTION(AUDIT)\nTSS PERMIT(dasbsmpl) DATASET(*.) ACCESS(ALL) ACTION(AUDIT)\nTSS PERMIT(dasdsmpl) DATASET(*.) ACCESS(ALL) ACTION(AUDIT)\nTSS PERMIT(emersmpl) DATASET(*.) ACCESS(ALL) ACTION(AUDIT)\nTSS PERMIT(tstcsmpl) DATASET(*.) ACCESS(ALL)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-ES-000550",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

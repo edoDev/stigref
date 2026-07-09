@@ -1,0 +1,55 @@
+{
+  "id": "SV-258921r934421_rule",
+  "full_rule_id": "SV-258921r934421_rule",
+  "rule_id": "SV-258921",
+  "rule_revision": "934421",
+  "group_id": "V-258921",
+  "group_title": "SRG-APP-000211",
+  "title": "The vCenter Server user roles must be verified.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Users and service accounts must only be assigned privileges they require. Least privilege requires that these privileges must only be assigned if needed to reduce risk of confidentiality, availability, or integrity loss.\n\nSatisfies: SRG-APP-000211, SRG-APP-000233, SRG-APP-000380</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the vSphere Client, go to Administration >> Access Control >> Roles.\n\nView each role and verify the users and/or groups assigned to it by clicking on \"Usage\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\nGet-VIPermission | Sort Role | Select Role,Principal,Entity,Propagate,IsGroup | FT -Auto\n\nApplication service account and user required privileges should be documented.\n\nIf any user or service account has more privileges than required, this is a finding.",
+  "fix": "To update a user's or group's permissions to an existing role with reduced permissions, do the following:\n\nFrom the vSphere Client, go to Administration >> Access Control >> Global Permissions.\n\nSelect the user or group, click the pencil button, change the assigned role, and click \"OK\".\n\nNote: If permissions are assigned on a specific object, the role must be updated where it is assigned (for example, at the cluster level).\n\nTo create a new role with reduced permissions, do the following:\n\nFrom the vSphere Client, go to Administration >> Access Control >> Roles.\n\nClick the green plus sign and enter a name for the role and select only the specific permissions required.\n\nUsers can then be assigned to the newly created role.",
+  "ccis": [
+    "CCI-001082",
+    "CCI-001084",
+    "CCI-001813"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Users and service accounts must only be assigned privileges they require. Least privilege requires that these privileges must only be assigned if needed to reduce risk of confidentiality, availability, or integrity loss.\n\nSatisfies: SRG-APP-000211, SRG-APP-000233, SRG-APP-000380",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000095",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v1r1-cb991a0c"
+  ]
+}

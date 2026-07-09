@@ -1,0 +1,53 @@
+{
+  "id": "SV-261291r1184385_rule",
+  "full_rule_id": "SV-261291r1184385_rule",
+  "rule_id": "SV-261291",
+  "rule_revision": "1184385",
+  "group_id": "V-261291",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "All SLEM 5 local interactive user home directories must have mode 750 or less permissive.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Excessive permissions on local interactive user home directories may allow unauthorized access to user files by other users.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Note: This may miss interactive users that have been assigned a privileged User Identifier (UID). Evidence of interactive use may be obtained from a number of log files containing system logon information.\n\nVerify the assigned home directory of all SLEM 5 local interactive users has a mode of \"750\" or less permissive with the following command:\n\n     > ls -ld $(awk -F: '($3>=1000)&&($7 !~ /nologin/){print $6}' /etc/passwd)\n     -rwxr-x--- 1 dosuser users 18 Mar 5 17:6 /home/dosuser\n\nIf home directories referenced in \"/etc/passwd\" do not have a mode of \"750\" or less permissive, this is a finding.",
+  "fix": "Change the mode of SLEM 5 local interactive user's home directories to \"750\". To change the mode of a local interactive user's home directory, use the following command:\n\nNote: The example will be for the user \"dosuser\".\n\n     > sudo chmod 750 /home/dosuser",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Excessive permissions on local interactive user home directories may allow unauthorized access to user files by other users.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-232030",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

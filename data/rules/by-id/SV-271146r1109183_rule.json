@@ -1,0 +1,53 @@
+{
+  "id": "SV-271146r1109183_rule",
+  "full_rule_id": "SV-271146r1109183_rule",
+  "rule_id": "SV-271146",
+  "rule_revision": "1109183",
+  "group_id": "V-271146",
+  "group_title": "SRG-APP-000133-DB-000200",
+  "title": "Database objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers, links to software external to SQL Server, etc.) must be owned by database/DBMS principals authorized for ownership.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who uses the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.\n\nConversely, if critical tables or other objects in SQL Server rely on unauthorized owner accounts, these objects may be lost when an account is removed.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review system documentation to identify SQL Server accounts authorized to own database objects. \n\nIf the SQL Server database ownership list does not exist or needs to be updated, this is a finding. \n\nUse the following query to make this determination: \n\n;with objects_cte as\n(SELECT o.name, o.type_desc,\n   CASE\n    WHEN o.principal_id is null then s.principal_id\n     ELSE o.principal_id\n    END as principal_id\n FROM sys.objects o\n INNER JOIN sys.schemas s\n ON o.schema_id = s.schema_id\n WHERE o.is_ms_shipped = 0\n)\nSELECT cte.name, cte.type_desc, dp.name as ObjectOwner \nFROM objects_cte cte\nINNER JOIN sys.database_principals dp\nON cte.principal_id = dp.principal_id\nORDER BY dp.name, cte.name\n\nIf any of the listed owners are not authorized, this is a finding.",
+  "fix": "Document and obtain approval for any account(s) authorized for object ownership. If necessary, use the ALTER AUTHORIZATION command to change object ownership to an authorized account. \n\nExample provided below. \n\nALTER AUTHORIZATION ON OBJECT::test.table TO AuthorizedUser;\n\nhttps://docs.microsoft.com/en-us/sql/t-sql/statements/alter-authorization-transact-sql",
+  "ccis": [
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who uses the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.\n\nConversely, if critical tables or other objects in SQL Server rely on unauthorized owner accounts, these objects may be lost when an account is removed.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLD-22-001300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-database-security-technical-implementation-guide-v1r3-2690c9ef",
+      "name": "Microsoft SQL Server 2022 Database Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-database-security-technical-implementation-guide-v1r3-2690c9ef"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-273820r1110843_rule",
+  "full_rule_id": "SV-273820r1110843_rule",
+  "rule_id": "SV-273820",
+  "rule_revision": "1110843",
+  "group_id": "V-273820",
+  "group_title": "SRG-APP-000357-NDM-000293",
+  "title": "The RUCKUS ICX device must allocate audit record storage capacity in accordance with organization-defined audit record storage requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To ensure network devices have a sufficient storage capacity in which to write the audit logs, they must be able to allocate audit record storage capacity. The task of allocating audit record storage capacity is usually performed during initial device setup if it is modifiable. \n\nThe value for the organization-defined audit record storage requirement will depend on the amount of storage available on the network device, the anticipated volume of logs, the frequency of transfer from the network device to centralized log servers, and other factors.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the log size complies with organization-defined audit record storage:\n\nICX# show logging\nSyslog logging: enabled ( 0 messages dropped, 0 flushes, 7 overruns)\n    Buffer logging: level ACDMEINW, 4000 messages logged\n    level code: A=alert C=critical D=debugging M=emergency E=error\nI=informational N=notification W=warning\nStatic Log Buffer:\nMay 01 19:30:50:I:System: Stack unit 1 POE   PS 1, Internal Power supply   with 370000 mwatts capacity is up\nMay 01 19:30:55:I:System: Stack unit 1 Fan 1 (Rear Side Right), ok\nMay 01 19:30:55:I:System: Stack unit 1 Fan 2 (Rear Side Left), ok\nDynamic Log Buffer (4000 lines):\nJul 31 14:24:54:I:CLI CMD: \"show logging\" by local user from ssh\n\nIf the size of the Dynamic Log Buffer does not meet organization-defined audit record storage requirements, this is a finding.",
+  "fix": "Configure logging:\n\nICX(config)#logging buffered 4000\n\nNote: Reload may be required to put new log size into effect.",
+  "ccis": [
+    "CCI-001849"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To ensure network devices have a sufficient storage capacity in which to write the audit logs, they must be able to allocate audit record storage capacity. The task of allocating audit record storage capacity is usually performed during initial device setup if it is modifiable. \n\nThe value for the organization-defined audit record storage requirement will depend on the amount of storage available on the network device, the anticipated volume of logs, the frequency of transfer from the network device to centralized log servers, and other factors.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-NDM-000650",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1",
+      "name": "RUCKUS ICX NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-ndm-security-technical-implementation-guide-v1r1-c81674b1"
+  ]
+}

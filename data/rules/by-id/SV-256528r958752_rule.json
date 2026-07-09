@@ -1,0 +1,53 @@
+{
+  "id": "SV-256528r958752_rule",
+  "full_rule_id": "SV-256528r958752_rule",
+  "rule_id": "SV-256528",
+  "rule_revision": "958752",
+  "group_id": "V-256528",
+  "group_title": "SRG-OS-000341-GPOS-00132",
+  "title": "The Photon operating system must configure auditd to keep logging in the event max log file size is reached.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Audit logs are most useful when accessible by date, rather than size. This can be accomplished through a combination of an audit log rotation cron job, setting a reasonable number of logs to keep, and configuring auditd to not rotate the logs on its own. This ensures audit logs are accessible to the information system security officer (ISSO) in the event of a central log processing failure.\n\nIf another solution is not used to rotate auditd logs, auditd can be configured to rotate logs.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command line, run the following command:\n\n# grep \"^max_log_file_action\" /etc/audit/auditd.conf\n\nExample result:\n\nmax_log_file_action = IGNORE\n\nIf logs are rotated outside of auditd with a tool such as logrotated, and this setting is not set to \"IGNORE\", this is a finding.\n\nIf logs are NOT rotated outside of auditd, and this setting is not set to \"ROTATE\", this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/audit/auditd.conf\n\nAdd or change the \"max_log_file_action\" line as follows:\n\nmax_log_file_action = IGNORE\n\nNote: This can also be set to \"ROTATE\" if another tool is not used to rotate auditd logs.\n\nAt the command line, run the following commands:\n\n# killproc auditd -TERM\n# systemctl start auditd",
+  "ccis": [
+    "CCI-001849"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Audit logs are most useful when accessible by date, rather than size. This can be accomplished through a combination of an audit log rotation cron job, setting a reasonable number of logs to keep, and configuring auditd to not rotate the logs on its own. This ensures audit logs are accessible to the information system security officer (ISSO) in the event of a central log processing failure.\n\nIf another solution is not used to rotate auditd logs, auditd can be configured to rotate logs.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "PHTN-30-000056",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28",
+      "name": "VMware vSphere 7.0 vCenter Appliance Photon OS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-photon-os-security-technical-implementation-v1r4-b7a4cb28"
+  ]
+}

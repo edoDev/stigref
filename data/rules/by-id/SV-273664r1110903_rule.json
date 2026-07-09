@@ -1,0 +1,53 @@
+{
+  "id": "SV-273664r1110903_rule",
+  "full_rule_id": "SV-273664r1110903_rule",
+  "rule_id": "SV-273664",
+  "rule_revision": "1110903",
+  "group_id": "V-273664",
+  "group_title": "SRG-NET-000512-RTR-000011",
+  "title": "The RUCKUS ICX Multicast Source Discovery Protocol (MSDP) Router must be configured to use its loopback address when originating MSDP traffic.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Using a loopback address as the source address offers a multitude of uses for security, access, management, and scalability of MSDP routers. It is easier to construct appropriate ingress filters for router management plane traffic destined to the network management subnet since the source addresses will be from the range used for loopback interfaces instead of a larger range of addresses used for physical interfaces. Log information recorded by authentication and syslog servers will record the router's loopback address instead of the numerous physical interface addresses.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review configuration to verify that MSDP uses a loopback address as its source.  \n\ninterface loopback 1\n ip address x.x.x.x 255.255.255.255\n!\nrouter msdp\n msdp-peer x.x.x.x connect-source loopback 1\n!\n\nIf the MSDP router does not use its loopback address as the source address for MSDP traffic, this is a finding.",
+  "fix": "Configure the router's loopback address to be used as the source address when originating traffic.\n\n1. Create loopback interface.  \nICX(config)#interface loop 1\nICX(config-lbif-1)#ip addr x.x.x.x/32\n\n2. Set the loopback interface as source for MSDP peers. \nICX(config)#router msdp\nICX(config-msdp-router)#l msdp-peer x.x.x.x connect-source loop 1",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Using a loopback address as the source address offers a multitude of uses for security, access, management, and scalability of MSDP routers. It is easier to construct appropriate ingress filters for router management plane traffic destined to the network management subnet since the source addresses will be from the range used for loopback interfaces instead of a larger range of addresses used for physical interfaces. Log information recorded by authentication and syslog servers will record the router's loopback address instead of the numerous physical interface addresses.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-001010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "SV-281205r1166567_rule",
+  "full_rule_id": "SV-281205r1166567_rule",
+  "rule_id": "SV-281205",
+  "rule_revision": "1166567",
+  "group_id": "V-281205",
+  "group_title": "SRG-OS-000373-GPOS-00156",
+  "title": "RHEL 10 must restrict the use of the \"su\" command.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The \"su\" program allows commands to be run with a substitute user and group ID. It is commonly used to run commands as the root user. Limiting access to such commands is considered a good security practice.\n\nSatisfies: SRG-OS-000373-GPOS-00156, SRG-OS-000312-GPOS-00123</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 requires users to be members of the \"wheel\" group to run \"su\".\n\nVerify the configuration with the following command:\n\n$ sudo grep pam_wheel /etc/pam.d/su\nauth             required        pam_wheel.so use_uid\n\nIf a line for \"pam_wheel.so\" does not exist or is commented out, this is a finding.",
+  "fix": "Configure RHEL 10 to require users to be in the \"wheel\" group to run the \"su\" command.\n\nEdit the configuration file:\n\n$ sudo vi /etc/pam.d/su\n\nAdd the following lines:\n\nauth    required    pam_wheel.so use_uid\n$ sed '/^[[:space:]]*#[[:space:]]*auth[[:space:]]\\+required[[:space:]]\\+pam_wheel\\.so[[:space:]]\\+use_uid$/s/^[[:space:]]*#//' -i /etc/pam.d/su\n\nIf necessary, create a \"wheel\" group and add administrative users to the group.",
+  "ccis": [
+    "CCI-002038",
+    "CCI-002165"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The \"su\" program allows commands to be run with a substitute user and group ID. It is commonly used to run commands as the root user. Limiting access to such commands is considered a good security practice.\n\nSatisfies: SRG-OS-000373-GPOS-00156, SRG-OS-000312-GPOS-00123",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-600500",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

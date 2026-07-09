@@ -1,0 +1,53 @@
+{
+  "id": "SV-272422r1137672_rule",
+  "full_rule_id": "SV-272422r1137672_rule",
+  "rule_id": "SV-272422",
+  "rule_revision": "1137672",
+  "group_id": "V-272422",
+  "group_title": "SRG-APP-000243-DNS-000034",
+  "title": "A BIND 9.x server implementation must be running in a chroot(ed) directory structure.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>With any network service, there is the potential that an attacker can exploit a vulnerability within the program that allows the attacker to gain control of the process and even run system commands with that control. One possible defense against this attack is to limit the software to particular quarantined areas of the file system, memory, or both. This effectively restricts the service so that it will not have access to the full file system. If such a defense were in place, even if an attacker gained control of the process, the attacker would be unable to reach other commands or files on the system. This approach often is referred to as a padded cell, jail, or sandbox. All of these terms allude to the fact that the software is contained in an area where it cannot harm itself or others. A more technical term is a chroot(ed) directory structure.\n\nBIND must be configured to run in a padded cell or chroot(ed) directory structure.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the directory structure where the primary BIND 9.x server configuration files are stored is running in a chroot(ed) environment or a containerized environment: \n\n# ps -ef | grep named\n\nnamed 3015 1 0 12:59 ? 00:00:00 /usr/sbin/named -u named -t /var/named/chroot\n\nIf the output does not contain \"-t <chroot_path>\" and the named process is not running in a container, this is a finding.",
+  "fix": "Configure the BIND 9.x server to operate in a chroot(ed) directory structure.",
+  "ccis": [
+    "CCI-001090"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "With any network service, there is the potential that an attacker can exploit a vulnerability within the program that allows the attacker to gain control of the process and even run system commands with that control. One possible defense against this attack is to limit the software to particular quarantined areas of the file system, memory, or both. This effectively restricts the service so that it will not have access to the full file system. If such a defense were in place, even if an attacker gained control of the process, the attacker would be unable to reach other commands or files on the system. This approach often is referred to as a padded cell, jail, or sandbox. All of these terms allude to the fact that the software is contained in an area where it cannot harm itself or others. A more technical term is a chroot(ed) directory structure.\n\nBIND must be configured to run in a padded cell or chroot(ed) directory structure.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BIND-9X-001720",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460",
+      "name": "BIND 9.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460"
+  ]
+}

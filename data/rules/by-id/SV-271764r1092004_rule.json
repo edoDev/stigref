@@ -1,0 +1,53 @@
+{
+  "id": "SV-271764r1092004_rule",
+  "full_rule_id": "SV-271764r1092004_rule",
+  "rule_id": "SV-271764",
+  "rule_revision": "1092004",
+  "group_id": "V-271764",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "OL 9 Trivial File Transfer Protocol (TFTP) daemon must be configured to operate in secure mode if the TFTP server is required.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Restricting TFTP to a specific directory prevents remote users from copying, transferring, or overwriting system files. Using the \"-s\" option causes the TFTP service to only serve files from the given directory.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that OL 9 TFTP daemon is configured to operate in secure mode.\n\nCheck if a TFTP server is installed with the following command:\n\n$ sudo dnf list --installed tftp-server\nInstalled Packages\ntftp-server.x86_64                                       5.2-38.el9                                       @ol9_appstream\n\nNote: If a TFTP server is not installed, this requirement is Not Applicable.\n\nIf a TFTP server is installed, check for the server arguments with the following command: \n\n$ systemctl cat tftp | grep ExecStart\nExecStart=/usr/sbin/in.tftpd -s /var/lib/tftpboot\n\nIf the \"ExecStart\" line does not have a \"-s\" option, and a subdirectory is not assigned, this is a finding.",
+  "fix": "Configure the TFTP daemon to operate in secure mode.\n\nFind the path for the systemd service.\n\n$ sudo systemctl show tftp | grep FragmentPath=\nFragmentPath=/etc/systemd/system/tftp.service\n\nEdit the ExecStart line on that file to add the -s option with a subdirectory.\n\nExecStart=/usr/sbin/in.tftpd -s /var/lib/tftpboot",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Restricting TFTP to a specific directory prevents remote users from copying, transferring, or overwriting system files. Using the \"-s\" option causes the TFTP service to only serve files from the given directory.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002426",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

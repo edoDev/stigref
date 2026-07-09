@@ -1,0 +1,53 @@
+{
+  "id": "SV-281046r1165493_rule",
+  "full_rule_id": "SV-281046r1165493_rule",
+  "rule_id": "SV-281046",
+  "rule_revision": "1165493",
+  "group_id": "V-281046",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "RHEL 10 must be configured so that all system device files are correctly labeled to prevent unauthorized modification.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If an unauthorized or modified device is allowed to exist on the system, the system may perform unintended or unauthorized operations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 is configured so that all system device files are correctly labeled to prevent unauthorized modification.\n\nList all device files on the system that are incorrectly labeled with the following commands:\n\nNote: Device files are normally found under \"/dev\", but applications may place device files in other directories and may necessitate a search of the entire system.\n\n$ sudo find /dev -context *:device_t:* \\( -type c -o -type b \\) -printf \"%p %Z\\n\"\n\n$ sudo find /dev -context *:unlabeled_t:* \\( -type c -o -type b \\) -printf \"%p %Z\\n\"\n\nNote: There are device files, such as \"/dev/vmci\", that are used when the operating system is a host virtual machine. They will not be owned by a user on the system and require the \"device_t\" label to operate. These device files are not a finding.\n\nIf there is output from either of these commands, other than already noted, this is a finding.",
+  "fix": "Configure RHEL 10 so that all system device files are correctly labeled to prevent unauthorized modification.\n\nRestore the SELinux policy for the affected device file from the system policy database using the following command:\n\n$ sudo restorecon -v <device_path>\n\nSubstitute \"<device_path>\" with the path to the affected device file (from the output of the previous commands). An example device file path would be \"/dev/ttyUSB0\". \n\nIf the output of the above command does not indicate that the device was relabeled to a more specific SELinux type label, the SELinux policy of the system must be updated with more specific policy for the device class specified. \n\nIf a package was used to install support for a device class, that package could be reinstalled using the following command:\n\n$ sudo dnf reinstall <package_name>\n\nIf a package was not used to install the SELinux policy for a given device class, it must be generated manually and provide specific type labels.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If an unauthorized or modified device is allowed to exist on the system, the system may perform unintended or unauthorized operations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-400145",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-261466r996805_rule",
+  "full_rule_id": "SV-261466r996805_rule",
+  "rule_id": "SV-261466",
+  "rule_revision": "996805",
+  "group_id": "V-261466",
+  "group_title": "SRG-OS-000062-GPOS-00031",
+  "title": "Successful/unsuccessful uses of \"setfiles\" in SLEM 5 must generate an audit record.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Reconstruction of harmful events or forensic analysis is not possible if audit records do not contain enough information.\n\nAt a minimum, the organization must audit the full-text recording of privileged commands. The organization must maintain audit trails in sufficient detail to reconstruct events to determine the cause and impact of compromise. The \"setfiles\" command is primarily used to initialize the security context fields (extended attributes) on one or more filesystems (or parts of them). Usually it is initially run as part of the SELinux installation process (a step commonly known as labeling).\n\nWhen a user logs on, the AUID is set to the UID of the account that is being authenticated. Daemons are not user sessions and have the loginuid set to \"-1\". The AUID representation is an unsigned 32-bit integer, which equals \"4294967295\". The audit system interprets \"-1\", \"4294967295\", and \"unset\" in the same way.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify SLEM 5 generates an audit record for all uses of the \"setfiles\" command with the following command:\n\n     > sudo grep -w \"setfiles\" /etc/audit/audit.rules\n     -a always,exit -F path=/usr/sbin/setfiles -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update\n\nIf the command does not return a line, or the line is commented out, this is a finding.\n\nNote: The \"key=\" value is arbitrary and can be different from the example output above.",
+  "fix": "Configure the audit system to generate an audit event for any successful/unsuccessful uses of the \"setfiles\" command.\n\nAdd or modify the following lines in the \"/etc/audit/rules.d/audit.rules\" file:\n\n-a always,exit -F path=/usr/sbin/setfiles -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update\n\nTo reload the rules file, restart the audit daemon:\n\n     > sudo systemctl restart auditd.service\n\nor issue the following command:\n\n     > sudo augenrules --load",
+  "ccis": [
+    "CCI-000169"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Reconstruction of harmful events or forensic analysis is not possible if audit records do not contain enough information.\n\nAt a minimum, the organization must audit the full-text recording of privileged commands. The organization must maintain audit trails in sufficient detail to reconstruct events to determine the cause and impact of compromise. The \"setfiles\" command is primarily used to initialize the security context fields (extended attributes) on one or more filesystems (or parts of them). Usually it is initially run as part of the SELinux installation process (a step commonly known as labeling).\n\nWhen a user logs on, the AUID is set to the UID of the account that is being authenticated. Daemons are not user sessions and have the loginuid set to \"-1\". The AUID representation is an unsigned 32-bit integer, which equals \"4294967295\". The audit system interprets \"-1\", \"4294967295\", and \"unset\" in the same way.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SLEM-05-654215",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212",
+      "name": "SUSE Linux Enterprise Micro (SLEM) 5 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "suse-linux-enterprise-micro-slem-5-security-technical-implementation-guide-v1r4-ba04e212"
+  ]
+}

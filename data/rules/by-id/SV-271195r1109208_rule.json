@@ -1,0 +1,53 @@
+{
+  "id": "SV-271195r1109208_rule",
+  "full_rule_id": "SV-271195r1109208_rule",
+  "rule_id": "SV-271195",
+  "rule_revision": "1109208",
+  "group_id": "V-271195",
+  "group_title": "SRG-APP-000380-DB-000360",
+  "title": "SQL Server must enforce access restrictions associated with changes to the configuration of the database(s).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Failure to provide logical access restrictions associated with changes to configuration may have significant effects on the overall security of the system. \n\nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system can potentially have significant effects on the overall security of the system. \n\nAccordingly, only qualified and authorized individuals should be allowed to obtain access to system components for the purposes of initiating changes, including upgrades and modifications.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Execute the following query to obtain a listing of user databases whose owner is a member of a fixed server role:\n\n SELECT \n              D.name AS database_name, SUSER_SNAME(D.owner_sid) AS owner_name,\n              FRM.is_fixed_role_member\nFROM sys.databases D\nOUTER APPLY (\n              SELECT MAX(fixed_role_member) AS is_fixed_role_member\n              FROM (\n                            SELECT IS_SRVROLEMEMBER(R.name, SUSER_SNAME(D.owner_sid)) AS fixed_role_member\n                            FROM sys.server_principals R\n                            WHERE is_fixed_role = 1\n              ) A\n) FRM\nWHERE D.database_id > 4\n              AND (FRM.is_fixed_role_member = 1 \n                            OR FRM.is_fixed_role_member IS NULL)\nORDER BY database_name \n\nIf no databases are returned, this is not a finding. \n\nFor each database/login returned, review the Server Role memberships:\n1. In SQL Server Management Studio, expand \"Logins\".\n2. Double-click the name of the login.\n3. Click the \"Server Roles\" tab.\n\nIf any server roles are selected, but not documented and authorized, this is a finding.",
+  "fix": "Remove unauthorized users from roles:\n\nALTER ROLE DROP MEMBER user;\n\nhttps://learn.microsoft.com/en-us/sql/t-sql/statements/alter-role-transact-sql?\n\nSet the owner of the database to an authorized login:\n\nALTER AUTHORIZATION ON database::DatabaseName TO login;\n\nhttps://learn.microsoft.com/en-us/sql/t-sql/statements/alter-authorization-transact-sql?",
+  "ccis": [
+    "CCI-001813"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Failure to provide logical access restrictions associated with changes to configuration may have significant effects on the overall security of the system. \n\nWhen dealing with access restrictions pertaining to change control, it should be noted that any changes to the hardware, software, and/or firmware components of the information system can potentially have significant effects on the overall security of the system. \n\nAccordingly, only qualified and authorized individuals should be allowed to obtain access to system components for the purposes of initiating changes, including upgrades and modifications.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SQLD-22-003100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-sql-server-2022-database-security-technical-implementation-guide-v1r3-2690c9ef",
+      "name": "Microsoft SQL Server 2022 Database Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-sql-server-2022-database-security-technical-implementation-guide-v1r3-2690c9ef"
+  ]
+}

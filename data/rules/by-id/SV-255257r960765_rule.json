@@ -1,0 +1,55 @@
+{
+  "id": "SV-255257r960765_rule",
+  "full_rule_id": "SV-255257r960765_rule",
+  "rule_id": "SV-255257",
+  "rule_revision": "960765",
+  "group_id": "V-255257",
+  "group_title": "SRG-APP-000016-WSR-000005",
+  "title": "SSMC web server must generate information to be used by external applications or entities to monitor and control remote access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Remote access to the web server is any access that communicates through an external, non-organization-controlled network. Remote access can be used to access hosted applications or to perform management functions. \n\nBy providing remote access information to an external monitoring system, the organization can monitor for cyber attacks and monitor compliance with remote access policies. The organization can also look at data organization wide and determine an attack or anomaly is occurring on the organization which might not be noticed if the data were kept local to the web server.\n\nExamples of external applications used to monitor or control access would be audit log monitoring systems, dynamic firewalls, or infrastructure monitoring systems.\n\nSatisfies: SRG-APP-000016-WSR-000005, SRG-APP-000358-WSR-000163, SRG-APP-000358-WSR-000063, SRG-APP-000125-WSR-000071</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SSMC monitors remote access by enabling exports to a remote syslog server with the following command: \n\n$ sudo /ssmc/bin/config_security.sh -o remote_syslog_appliance -a status | sed 1q\n\nRemote syslog service status is OK\n\nIf the output does not read \"Remote syslog service status is OK\", this is a finding.",
+  "fix": "Configure SSMC to be monitored for remote access by enabling exports to a remote syslog server:\n\n1. Configure rsyslog parameters in /ssmc/conf/security_config.properties like below (use vi editor):\n\nssmc.rsyslog.server.host=<rsyslog_server>\nssmc.rsyslog.server.port=<rsyslog_port>\nssmc.rsyslog.server.protocol=tcp\nssmc.rsyslog.server.tls-enabled=1\nssmc.rsyslog.cert.caroot=<ca_root_cert_pem>\nssmc.rsyslog.cert.clientcert=<ssmc_client_cert_pem>\nssmc.rsyslog.cert.clientkey=<ssmc_client_key_pem>\nssmc.rsyslog.server.authMode=<x509/name | x509/certvalid>\nssmc.rsyslog.server.permittedPeers=<cn_of_rsyslog_server>\nssmc.rsyslog.server.device=<ens160|ens192|eth0|eth1>\nssmc.rsyslog.queue.maxdiskspace=6\nssmc.rsyslog.smtp.alert=true\nssmc.rsyslog.smtp.server=<smtp_server_ip>\nssmc.rsyslog.smtp.port=<smtp_port>\nssmc.rsyslog.smtp.recipient=[\"id1@domain\",\"id2@domain\"]\nssmc.rsyslog.smtp.notify-interval=300\nssmc.rsyslog.smtp.mailFrom=id@domain\n\n2. Execute \"sudo /ssmc/bin/config_security.sh -o remote_syslog_appliance -a set -f\" to commit the configuration and enable the service.",
+  "ccis": [
+    "CCI-000067",
+    "CCI-001348",
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Remote access to the web server is any access that communicates through an external, non-organization-controlled network. Remote access can be used to access hosted applications or to perform management functions. \n\nBy providing remote access information to an external monitoring system, the organization can monitor for cyber attacks and monitor compliance with remote access policies. The organization can also look at data organization wide and determine an attack or anomaly is occurring on the organization which might not be noticed if the data were kept local to the web server.\n\nExamples of external applications used to monitor or control access would be audit log monitoring systems, dynamic firewalls, or infrastructure monitoring systems.\n\nSatisfies: SRG-APP-000016-WSR-000005, SRG-APP-000358-WSR-000163, SRG-APP-000358-WSR-000063, SRG-APP-000125-WSR-000071",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SSMC-WS-010080",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0",
+      "name": "HPE 3PAR SSMC Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-ssmc-web-server-security-technical-implementation-guide-v2r1-ccb74eb0"
+  ]
+}

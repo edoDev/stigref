@@ -1,0 +1,53 @@
+{
+  "id": "SV-264364r984437_rule",
+  "full_rule_id": "SV-264364r984437_rule",
+  "rule_id": "SV-264364",
+  "rule_revision": "984437",
+  "group_id": "V-264364",
+  "group_title": "SRG-APP-000251",
+  "title": "The web server must interpret and normalize ambiguous HTTP requests or terminate the TCP connection.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Request smuggling attacks involve placing both the Content-Length header and the Transfer-Encoding header into a single HTTP/1 request and manipulating it so that web servers (i.e., back-end, front-end, load balancers) process the request differently. There are a number of variants of this type of attack with different names. However, all variants are addressed by configuring the front-end server to exclusively use HTTP/2 when communicating with other web servers. Specific instances of this vulnerability can be resolved by reconfiguring the front-end server to normalize ambiguous requests before routing them onward.  However, if the request cannot be made unambiguous or normalized, configure both the front-end and back-end servers to reject the message and close the connection.\n\nIt is important to not assume requests do not have a body. For all web servers, examine requests that report message body length as zero in the HTTP header and drop the request.\n\nFor load balancing or reverse proxying implementation:\n-The front-end web server must interpret and forward HTTP requests, such that the back-end server receives a consistent interpretation of the request, or terminate the TCP connection.\n-The back-end web server must drop ambiguous requests that cannot be normalized and terminate the TCP connection.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the web server normalizes ambiguous requests or terminates the TCP connection. \n\nIf the web server does not drop ambiguous requests that cannot be normalized and terminate the TCP connection, this is a finding.",
+  "fix": "Configure the web server to interpret HTTP headers so they are normalized and unambiguous. The web server must validate requests that report message body as \"zero\" in the HTTP header.\n\nConfigure the web server to drop ambiguous requests that cannot be normalized and terminate the TCP connection.",
+  "ccis": [
+    "CCI-001310"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Request smuggling attacks involve placing both the Content-Length header and the Transfer-Encoding header into a single HTTP/1 request and manipulating it so that web servers (i.e., back-end, front-end, load balancers) process the request differently. There are a number of variants of this type of attack with different names. However, all variants are addressed by configuring the front-end server to exclusively use HTTP/2 when communicating with other web servers. Specific instances of this vulnerability can be resolved by reconfiguring the front-end server to normalize ambiguous requests before routing them onward.  However, if the request cannot be made unambiguous or normalized, configure both the front-end and back-end servers to reject the message and close the connection.\n\nIt is important to not assume requests do not have a body. For all web servers, examine requests that report message body length as zero in the HTTP header and drop the request.\n\nFor load balancing or reverse proxying implementation:\n-The front-end web server must interpret and forward HTTP requests, such that the back-end server receives a consistent interpretation of the request, or terminate the TCP connection.\n-The back-end web server must drop ambiguous requests that cannot be normalized and terminate the TCP connection.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SRG-APP-000251-WSR-000194",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "web-server-security-requirements-guide-v4r4-73fa7c39",
+      "name": "Web Server Security Requirements Guide",
+      "version": "4",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "web-server-security-requirements-guide-v4r4-73fa7c39"
+  ]
+}

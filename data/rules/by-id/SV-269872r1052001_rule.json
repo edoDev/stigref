@@ -1,0 +1,53 @@
+{
+  "id": "SV-269872r1052001_rule",
+  "full_rule_id": "SV-269872r1052001_rule",
+  "rule_id": "SV-269872",
+  "rule_revision": "1052001",
+  "group_id": "V-269872",
+  "group_title": "SRG-NET-000205-RTR-000001",
+  "title": "The Dell OS10 Router must be configured to restrict traffic destined to itself.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The route processor handles traffic destined to the router—the key component used to build forwarding paths and is also instrumental with all network management functions. Hence, any disruption or denial-of-service (DoS) attack to the route processor can result in mission critical network outages.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the access control list (ACL) or filter for the router receive path and verify that it will only process specific management plane and control plane traffic from specific sources.\n\nStep 1: Examine the interface configuration for the control plane ACLs applied to the traffic destined to the router control plane from the OOBM management port or front panel data ports.\n\n!\ncontrol-plane\n ip access-group MGMT_TRAFFIC_FROM_OOBM mgmt in\n ip access-group MGMT_TRAFFIC_FROM_DATA data in\n\nStep 2: Review the control plane ACLs verify traffic is limited appropriately.\n\n!\nip access-list MGMT_TRAFFIC_FROM_OOBM\n seq 10 permit ...\n seq 20 permit ...\n seq 30 deny ... log\n seq 40 deny ... log\n\n!\nip access-list MGMT_TRAFFIC_FROM_DATA\n seq 10 permit ...\n seq 20 permit ...\n seq 30 deny ... log\n seq 40 deny ... log\n\nIf the router is not configured with a receive-path filter to restrict traffic destined to itself, this is a finding.",
+  "fix": "Configure the router with receive path filters to restrict traffic destined to the router.\n\nStep 1: Configure inbound ACLs to restrict which packets should be allowed to reach to the control plane from the OOBM management port and from the front panel data ports. \n\nOS10(config)# ip access-list MGMT_TRAFFIC_FROM_OOBM\nOS10(config-ipv4-acl)# permit ...\nOS10(config-ipv4-acl)# permit ...\nOS10(config-ipv4-acl)# deny ... log\nOS10(config-ipv4-acl)# deny ... log\n\nOS10(config)# ip access-list MGMT_TRAFFIC_FROM_DATA\nOS10(config-ipv4-acl)# permit ...\nOS10(config-ipv4-acl)# permit ...\nOS10(config-ipv4-acl)# deny ... log\nOS10(config-ipv4-acl)# deny ... log\n\nStep 2: Apply the ACLs to the ingress of the control-plane.\n\nOS10(config)# control-plane\nOS10(config-control-plane)# ip access-group MGMT_TRAFFIC_FROM_OOBM mgmt in\nOS10(config-control-plane)# ip access-group MGMT_TRAFFIC_FROM_DATA data in",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The route processor handles traffic destined to the router—the key component used to build forwarding paths and is also instrumental with all network management functions. Hence, any disruption or denial-of-service (DoS) attack to the route processor can result in mission critical network outages.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-RTR-000380",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a",
+      "name": "Dell OS10 Switch Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-router-security-technical-implementation-guide-v1r2-83d1819a"
+  ]
+}

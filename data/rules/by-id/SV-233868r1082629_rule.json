@@ -1,0 +1,53 @@
+{
+  "id": "SV-233868r1082629_rule",
+  "full_rule_id": "SV-233868r1082629_rule",
+  "rule_id": "SV-233868",
+  "rule_revision": "1082629",
+  "group_id": "V-233868",
+  "group_title": "SRG-APP-000516-DNS-000091",
+  "title": "For zones split between the external and internal sides of a network, the resource records (RRs) for the external hosts must be separate from the RRs for the internal hosts.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Authoritative name servers for an enterprise may be configured to receive requests from both external and internal clients. \n\nExternal clients need to receive RRs that pertain only to public services (public web server, mail server, etc.) \n\nInternal clients need to receive RRs pertaining to public services as well as internal hosts. \n\nOrganizations using dedicated internal systems and separate dedicated external systems are inherently more secure than using a single system accessed by both internal and external clients.\n\nDNS Views allow a single name server to provide different response data based on a client match list or Access Control List.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "DNS Views allow a single zone to have two different data sets, with the response based on a client match list.\n\n1. When DNS Views are used, the top-level configuration of DNS >> Data Management >> Zones tab will display available views.\n2. Select the desired view using the check box and click \"Edit\".\n3. Review the \"Match Clients\" configuration.\n4. Verify the \"Match Clients\" configuration properly separates the internal and external DNS views.\n \nIf DNS Views are used and the client match list is validated, this is not a finding.",
+  "fix": "1. Navigate to Data Management >> DNS >> Zones and review each zone. \n2. Remove any RRs listed in the internal DNS service member configuration (DNS view) that resolve for external hosts.\n3. Remove any RRs listed in the external DNS service member configuration (DNS view) that resolve to internal hosts.\n4. For hosts intended to be accessed by both internal and external clients, configure unique IP addresses in each of the internal and external DNS service members, respective to their location.\n5. The perimeter firewall, or other routing device, must be configured to perform Network Address Translation to the true IP address of the destination.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Authoritative name servers for an enterprise may be configured to receive requests from both external and internal clients. \n\nExternal clients need to receive RRs that pertain only to public services (public web server, mail server, etc.) \n\nInternal clients need to receive RRs pertaining to public services as well as internal hosts. \n\nOrganizations using dedicated internal systems and separate dedicated external systems are inherently more secure than using a single system accessed by both internal and external clients.\n\nDNS Views allow a single name server to provide different response data based on a client match list or Access Control List.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDNS-8X-400010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46",
+      "name": "Infoblox 8.x DNS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "infoblox-8-x-dns-security-technical-implementation-guide-v1r2-72e3ad46"
+  ]
+}

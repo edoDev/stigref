@@ -1,0 +1,54 @@
+{
+  "id": "SV-214696r1015749_rule",
+  "full_rule_id": "SV-214696r1015749_rule",
+  "rule_id": "SV-214696",
+  "rule_revision": "1015749",
+  "group_id": "V-214696",
+  "group_title": "SRG-NET-000147",
+  "title": "The Juniper SRX Services Gateway VPN must use anti-replay mechanisms for security associations.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Anti-replay is an IPsec security mechanism at a packet level which helps to avoid unwanted users from intercepting and modifying an ESP packet.\n\nThe SRX adds a sequence number to the ESP encapsulation which is verified by the VPN peer so packets are received within a correct sequence. This will cause issues if packets are not received in the order in which they were sent out.\n\nBy default the SRX has a replay window of 64 or 32, depending on the platform. The SRX drops packets received out of order that are not received within this window. However, this default may be overridden by setting the option no-anti-replay as follows: set security vpn name ike no-anti-replay.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify anti-replay service is enabled.\n\n[edit]\nshow security ipsec security-associations index 16384 detail\n\nIf anti-replay service is not enabled, this is a finding.",
+  "fix": "Remove the no-anti-replay Internet Key Exchange (IKE) option from the VPN configuration. By default the SRX has a replay window of 64 or 32, depending on the platform. \n\nExample: \n[edit]\ndelete security vpn name ike no-anti-replay",
+  "ccis": [
+    "CCI-001941",
+    "CCI-001942"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Anti-replay is an IPsec security mechanism at a packet level which helps to avoid unwanted users from intercepting and modifying an ESP packet.\n\nThe SRX adds a sequence number to the ESP encapsulation which is verified by the VPN peer so packets are received within a correct sequence. This will cause issues if packets are not received in the order in which they were sent out.\n\nBy default the SRX has a replay window of 64 or 32, depending on the platform. The SRX drops packets received out of order that are not received within this window. However, this default may be overridden by setting the option no-anti-replay as follows: set security vpn name ike no-anti-replay.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-VN-000031",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0",
+      "name": "Juniper SRX Services Gateway VPN Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-vpn-security-technical-implementation-guide-v3r2-42f281d0"
+  ]
+}

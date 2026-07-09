@@ -1,0 +1,55 @@
+{
+  "id": "SV-254570r1137645_rule",
+  "full_rule_id": "SV-254570r1137645_rule",
+  "rule_id": "SV-254570",
+  "rule_revision": "1137645",
+  "group_id": "V-254570",
+  "group_title": "SRG-APP-000243-CTR-000600",
+  "title": "Rancher RKE2 runtime must maintain separate execution domains for each container by assigning each container a separate address space to prevent unauthorized and unintended information transfer via shared system resources.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Separating user functionality from management functionality is a requirement for all the components within the Kubernetes Control Plane. Without the separation, users may have access to management functions that can degrade the Kubernetes architecture and the services being offered, and can offer a method to bypass testing and validation of functions before introduced into a production environment.\n\nSatisfies: SRG-APP-000243-CTR-000600, SRG-APP-000431-CTR-001065, SRG-APP-000211-CTR-000530, SRG-APP-000243-CTR-000595</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "System namespaces are reserved and isolated.\n\nTo view the available namespaces, run the command:\nkubectl get namespaces\n\nThe namespaces to be validated include:\ndefault\nkube-public\nkube-system\nkube-node-lease\n\nFor the default namespace, execute the commands:\nkubectl config set-context --current --namespace=default\nkubectl get all\n\nFor the kube-public namespace, execute the commands:\nkubectl config set-context --current --namespace=kube-public\nkubectl get all\n\nFor the kube-node-lease namespace, execute the commands:\nkubectl config set-context --current --namespace=kube-node-lease\nkubectl get all\n\nThe only return values are the Kubernetes service objects (e.g., service/kubernetes).\n\nFor the kube-system namespace, execute the commands:\nkubectl config set-context --current --namespace=kube-system\nkubectl get all\n\nThe values returned include the following resources:\n- ETCD\n- Helm\n- Kubernetes API Server\n- Kubernetes Controller Manager\n- Kubernetes Proxy\n- Kubernetes Scheduler\n- Kubernetes Networking Components\n- Ingress Controller Components\n- Metrics Server\n\nIf a return value from the \"kubectl get all\" command is not the Kubernetes service, one from the above lists, or a service otherwise approved by your Information Systems Security Officer (ISSO), this is a finding.",
+  "fix": "System namespaces are reserved and isolated.\n\nA resource cannot move to a new namespace; the resource must be deleted and recreated in the new namespace.\n\nkubectl delete <resource_type> <resource_name>\nkubectl create -f <resource.yaml> --namespace=<user_created_namespace>",
+  "ccis": [
+    "CCI-001082",
+    "CCI-001090",
+    "CCI-002530"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Separating user functionality from management functionality is a requirement for all the components within the Kubernetes Control Plane. Without the separation, users may have access to management functions that can degrade the Kubernetes architecture and the services being offered, and can offer a method to bypass testing and validation of functions before introduced into a production environment.\n\nSatisfies: SRG-APP-000243-CTR-000600, SRG-APP-000431-CTR-001065, SRG-APP-000211-CTR-000530, SRG-APP-000243-CTR-000595",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-R2-000970",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268",
+      "name": "Rancher Government Solutions RKE2 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268"
+  ]
+}

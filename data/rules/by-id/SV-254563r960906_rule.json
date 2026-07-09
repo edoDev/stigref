@@ -1,0 +1,53 @@
+{
+  "id": "SV-254563r960906_rule",
+  "full_rule_id": "SV-254563r960906_rule",
+  "rule_id": "SV-254563",
+  "rule_revision": "960906",
+  "group_id": "V-254563",
+  "group_title": "SRG-APP-000100-CTR-000200",
+  "title": "All audit records must identify any containers associated with the event within Rancher RKE2.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Ensure that the --audit-log-maxage argument is set to 30 or as appropriate.\n\nRetaining logs for at least 30 days ensures that you can go back in time and investigate or correlate any events. Set your audit log retention period to 30 days or as per your business requirements.\nResult: Pass</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Ensure audit-log-maxage is set correctly.\n\nRun the below command on the RKE2 Control Plane:\n/bin/ps -ef | grep kube-apiserver | grep -v grep\n\nIf --audit-log-maxage argument is not set to at least 30 or is not configured, this is a finding. \n(By default, RKE2 sets the --audit-log-maxage argument parameter to 30.)",
+  "fix": "Edit the RKE2 Configuration File /etc/rancher/rke2/config.yaml on the RKE2 Control Plane and set the following \"kube-apiserver-arg\" argument:\n\n- audit-log-maxage=30\n\nOnce the configuration file is updated, restart the RKE2 Server. Run the command:\nsystemctl restart rke2-server",
+  "ccis": [
+    "CCI-001487"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Ensure that the --audit-log-maxage argument is set to 30 or as appropriate.\n\nRetaining logs for at least 30 days ensures that you can go back in time and investigate or correlate any events. Set your audit log retention period to 30 days or as per your business requirements.\nResult: Pass",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-R2-000320",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268",
+      "name": "Rancher Government Solutions RKE2 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268"
+  ]
+}

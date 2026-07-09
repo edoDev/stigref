@@ -1,0 +1,54 @@
+{
+  "id": "SV-274003r1119997_rule",
+  "full_rule_id": "SV-274003r1119997_rule",
+  "rule_id": "SV-274003",
+  "rule_revision": "1119997",
+  "group_id": "V-274003",
+  "group_title": "SRG-OS-000132-GPOS-00067",
+  "title": "Amazon Linux 2023 must restrict exposed kernel pointer addresses access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Exposing kernel pointers (through procfs or \"seq_printf()\") exposes kernel writeable structures, which may contain functions pointers. If a write vulnerability occurs in the kernel, allowing write access to any of this structure, the kernel can be compromised. This option disallows any program without the CAP_SYSLOG capability to get the addresses of kernel pointers by replacing them with \"0\".\n\nSatisfies: SRG-OS-000132-GPOS-00067, SRG-OS-000433-GPOS-00192</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Amazon Linux 2023 restricts exposed kernel pointer addresses access by validating the runtime status of the Amazon Linux 2023 kernel.kptr_restrict kernel parameter with the following command:\n\n$ sudo sysctl kernel.kptr_restrict \nkernel.kptr_restrict = 1\n\nIf \"kernel.kptr_restrict\" is not set to \"1\" or is missing, this is a finding.",
+  "fix": "Configure Amazon Linux 2023 to restrict exposed kernel pointer addresses access. \n\nAdd or edit the following line in a system configuration file in the \"/etc/sysctl.d/\" directory:\n\nkernel.kptr_restrict = 1\n\nReload settings from all system configuration files with the following command:\n\n$ sudo sysctl --system",
+  "ccis": [
+    "CCI-001082",
+    "CCI-002824"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Exposing kernel pointers (through procfs or \"seq_printf()\") exposes kernel writeable structures, which may contain functions pointers. If a write vulnerability occurs in the kernel, allowing write access to any of this structure, the kernel can be compromised. This option disallows any program without the CAP_SYSLOG capability to get the addresses of kernel pointers by replacing them with \"0\".\n\nSatisfies: SRG-OS-000132-GPOS-00067, SRG-OS-000433-GPOS-00192",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AZLX-23-000210",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c",
+      "name": "Amazon Linux 2023 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "amazon-linux-2023-security-technical-implementation-guide-v1r3-5a9f509c"
+  ]
+}

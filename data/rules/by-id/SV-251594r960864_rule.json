@@ -1,0 +1,53 @@
+{
+  "id": "SV-251594r960864_rule",
+  "full_rule_id": "SV-251594r960864_rule",
+  "rule_id": "SV-251594",
+  "rule_revision": "960864",
+  "group_id": "V-251594",
+  "group_title": "SRG-APP-000080-DB-000063",
+  "title": "IDMS must protect against the use of default userids.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Default sign-ons can be used by individuals to perform adverse actions anonymously.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Examine load module \"RHDCSRTT\" by executing CA IDMS utility \"IDMSSRTD\", or by issuing command \"DCMT DISPLAY SRTT\" while signed onto the CV, and reviewing the output. \n\nNote: This requires PTFs SO07995 and SO09476. \n\nIf the TYPE=INITIAL #SECRTT has DFLTSGN=YES specified, this is a finding.\n\nIf DFLTUID is defined, this is a finding.",
+  "fix": "Set DFLTSGN=NO and remove the DFLTUID from the #SECRTT INITIAL macro that is input to the RHDCSRTT module, then reassemble and relink RHDCSRTT.\n\nAfter making the above changes, assemble and link RHDCSRTT to create a new SRTT. To implement the new SRTT, either recycle any CVs that use the SRTT or issue these commands:       \n \nDCMT VARY NUCLEUS MODULE RHDCSRTT NEW COPY \nDCMT VARY NUCLEUS RELOAD",
+  "ccis": [
+    "CCI-000166"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Default sign-ons can be used by individuals to perform adverse actions anonymously.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IDMS-DB-000140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ca-idms-security-technical-implementation-guide-v2r1-d3b5ec3b",
+      "name": "CA IDMS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ca-idms-security-technical-implementation-guide-v2r1-d3b5ec3b"
+  ]
+}

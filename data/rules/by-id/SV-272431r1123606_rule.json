@@ -1,0 +1,53 @@
+{
+  "id": "SV-272431r1123606_rule",
+  "full_rule_id": "SV-272431r1123606_rule",
+  "rule_id": "SV-272431",
+  "rule_revision": "1123606",
+  "group_id": "V-272431",
+  "group_title": "SRG-APP-000125-DNS-000012",
+  "title": "The BIND 9.x server implementation must be configured with a channel to send audit records to a local file.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>DNS software administrators require DNS transaction logs for a wide variety of reasons including troubleshooting, intrusion detection, and forensics. Ensuring that the DNS transaction logs are recorded on the local system will provide the capability needed to support these actions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that the BIND 9.x server is configured to send audit logs to a local log file.\n\nNote: syslog and local file channel must be defined for every defined category.\n\nInspect the \"named.conf\" file for the following:\n\nlogging {\nchannel local_file_channel {\nfile \"path_name\" versions 3;\nprint-time yes;\nprint-severity yes;\nprint-category yes;\n};\n\ncategory category_name { local_file_channel; };\n\nIf a logging channel is not defined for a local file, this is a finding.\n\nIf a category is not defined to send messages to the local file channel, this is a finding.",
+  "fix": "Edit the \"named.conf\" file and add the following:\n\nlogging {\nchannel local_file_channel {\nfile \"path_name\" versions 3;\nprint-time yes;\nprint-severity yes;\nprint-category yes;\n};\ncategory category_name { local_file_channel; };\n};\n\nRestart the BIND 9.x process.",
+  "ccis": [
+    "CCI-001348"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "DNS software administrators require DNS transaction logs for a wide variety of reasons including troubleshooting, intrusion detection, and forensics. Ensuring that the DNS transaction logs are recorded on the local system will provide the capability needed to support these actions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "BIND-9X-001900",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460",
+      "name": "BIND 9.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "bind-9-x-security-technical-implementation-guide-v3r2-ba02d460"
+  ]
+}

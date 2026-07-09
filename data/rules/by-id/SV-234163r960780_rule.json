@@ -1,0 +1,53 @@
+{
+  "id": "SV-234163r960780_rule",
+  "full_rule_id": "SV-234163r960780_rule",
+  "rule_id": "SV-234163",
+  "rule_revision": "960780",
+  "group_id": "V-234163",
+  "group_title": "SRG-APP-000027-NDM-000209",
+  "title": "The FortiGate device must automatically audit account modification.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Since the accounts in the network device are privileged or system-level accounts, account management is vital to the security of the network device. Account management by a designated authority ensures access to the network device is being controlled in a secure manner by granting access to only authorized personnel with the appropriate and necessary privileges. Auditing account modification, along with an automatic notification to appropriate individuals, will provide the necessary reconciliation that account management procedures are being followed. If modifications to management accounts are not audited, reconciliation of account management procedures cannot be tracked.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the System category of Event Logging is enabled, then account modification is audited. To check that Event and System Logging are enabled, log in to the FortiGate GUI with Super-Admin privilege.\n\n1. Click Log and Report.\n2. Click Log Settings.\n3. Scroll down to Log Settings.\n4. Verify Event Logging is set to \"All\" (for most verbose logging) or \"Customize\", and include at least the System activity event.\n\nIf Event Logging is not set to \"All\" or \"Customize\" with System enabled, then account modification is not audited, and this is a finding.\n\nor\n\n1. Open a CLI console, via SSH or available from the GUI.\n2. Run the following command:\n\n     # show full-configuration log eventfilter | grep -i 'event\\|system\\|user'\nThe output should be:   \n     set event enable\n     set system enable\n     set user enable\n\nIf event, system, and user parameters are set to disable, then account modification is not audited, and this is a finding.",
+  "fix": "This fix can be performed on the FortiGate GUI or on the CLI. \nLog in to the FortiGate GUI with Super-Admin privilege.\n\n1. Click Log and Report.\n2. Click Log Settings.\n3. Scroll down to Log Settings.\n4. For Event Logging options, click \"All\" (for most verbose logging, or \"Customize\" and include at least the System activity event.\n5. Click Apply.\n\nor\n\n1. Open a CLI console, via SSH or available from the GUI.\n2. Run the following command:\n     # config log eventfilter\n     #    set event enable\n     #    set system enable\n     #    set user enable\n     # end",
+  "ccis": [
+    "CCI-001403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Since the accounts in the network device are privileged or system-level accounts, account management is vital to the security of the network device. Account management by a designated authority ensures access to the network device is being controlled in a secure manner by granting access to only authorized personnel with the appropriate and necessary privileges. Auditing account modification, along with an automatic notification to appropriate individuals, will provide the necessary reconciliation that account management procedures are being followed. If modifications to management accounts are not audited, reconciliation of account management procedures cannot be tracked.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "FGFW-ND-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "fortinet-fortigate-firewall-ndm-security-technical-implementation-guide-v1r5-bef88ab8",
+      "name": "Fortinet FortiGate Firewall NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "fortinet-fortigate-firewall-ndm-security-technical-implementation-guide-v1r5-bef88ab8"
+  ]
+}

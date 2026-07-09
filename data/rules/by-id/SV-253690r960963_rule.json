@@ -1,0 +1,53 @@
+{
+  "id": "SV-253690r960963_rule",
+  "full_rule_id": "SV-253690r960963_rule",
+  "rule_id": "SV-253690",
+  "rule_revision": "960963",
+  "group_id": "V-253690",
+  "group_title": "SRG-APP-000141-DB-000090",
+  "title": "Default demonstration and sample databases, database objects, and applications must be removed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).\n\nIt is detrimental for software products to provide, or install by default, functionality exceeding requirements or mission objectives. Examples include, but are not limited to, installing advertising software, demonstrations, or browser plugins not related to requirements or providing a wide array of functionality, not required for every mission, that cannot be disabled.\n\nDBMSs must adhere to the principles of least functionality by providing only essential capabilities.\n\nDemonstration and sample database objects and applications present publicly known attack points for malicious users. These demonstration and sample objects are meant to provide simple examples of coding-specific functions and are not developed to prevent vulnerabilities from being introduced to the DBMS and host system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As the database administrator, show all databases by running the following SQL:\n\nMariaDB> SHOW DATABASES;\n\nDetermine if the test database still exists. If it does, this is a finding.",
+  "fix": "If a test database is found, this is a sign that the mysql_secure_installation script was not ran when the database software was installed. It is recommended to do so. This script will prompt the user to set the MariaDB root user's password, remove all anonymous users, disallow the root user from logging in remotely to the database, remove the test database and access to it, and then reload the privilege tables.\n \n$ mariadb-secure-installation\n \nreply Y to setting a root password if one is not already set.\n \nreply Y to Remove anonymous users\n\nreply Y to disallow root login remotely\n \nreply Y to Remove test database and access to it\n \nreply Y to Reload privilege tables now (this ensures that all changes made so far will take effect immediately)\n \nNote: For this request only the \"reply Y to Remove\" test database and access to it is necessary, but \"Y\" to all the questions is recommended.\n\nAlternatively, simply dropping the test database will remedy the finding. \n\nMariaDB> DROP DATABASE test;",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).\n\nIt is detrimental for software products to provide, or install by default, functionality exceeding requirements or mission objectives. Examples include, but are not limited to, installing advertising software, demonstrations, or browser plugins not related to requirements or providing a wide array of functionality, not required for every mission, that cannot be disabled.\n\nDBMSs must adhere to the principles of least functionality by providing only essential capabilities.\n\nDemonstration and sample database objects and applications present publicly known attack points for malicious users. These demonstration and sample objects are meant to provide simple examples of coding-specific functions and are not developed to prevent vulnerabilities from being introduced to the DBMS and host system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MADB-10-003100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422",
+      "name": "MariaDB Enterprise 10.x Security Technical Implementation Guide",
+      "version": "2",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "mariadb-enterprise-10-x-security-technical-implementation-guide-v2r5-2e651422"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "SV-256963r1016551_rule",
+  "full_rule_id": "SV-256963r1016551_rule",
+  "rule_id": "SV-256963",
+  "rule_revision": "1016551",
+  "group_id": "V-256963",
+  "group_title": "SRG-APP-000439-WSR-000151",
+  "title": "The Automation Controller NGINX web server must employ cryptographic mechanisms (TLS/DTLS/SSL) to prevent the unauthorized disclosure of information during transmission.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Preventing the disclosure of transmitted information requires that the Automation Controller web server take measures to employ some form of cryptographic mechanism in order to protect the information during transmission. This is usually achieved through the use of Transport Layer Security (TLS).\n\nTransmission of data can take place between the web server and a large number of devices/applications external to the web server. Examples are a web client used by a user, a backend database, an audit server, or other web servers in a web cluster.\n\nIf data is transmitted unencrypted, the data then becomes vulnerable to disclosure. The disclosure may reveal user identifier/password combinations, website code revealing business logic, or other user personal information.\n\nSatisfies: SRG-APP-000439-WSR-000151, SRG-APP-000439-WSR-000152, SRG-APP-000442-WSR-000182, SRG-APP-000429-WSR-000113</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "As a System Administrator for each Automation Controller NGINX web server host, enumerate all available server connections:\n\nNGINXCONF=$(nginx -V 2>&1 | tr ' ' '\\n' | sed -ne '/conf-path/{s/.*conf-path=\\(.*\\)/\\1/;p}')\ngrep '\\s*listen'\nNGINXCONF | grep -v ssl\n\nEnsure each available server connection that does not use SSL upgrades this connection to use SSL via an allowed method:\n\n- is redirected to an SSL server connection, e.g., \"return 301 https://$host:443$request_uri\";\n- is rewritten to an SSL server URL, e.g., \"rewrite ^ https://$host$request_uri? permanent;\";\n- is dropped silently;\n- or used other organizationally approved connection handling.\n\nExamine the NGINX configuration, for example:\n\nvi $NGINXCONF\n\nIf any available server connection is not handled or upgraded to SSL via an organizationally approved method, this is a finding.\nvi $NGINXCONF\n\nIf any available server connection is not handled or upgraded to SSL via an organizationally approved method, this is a finding.",
+  "fix": "As a System Administrator for each Automation Controller NGINX web server host, for each available server connection that is not handled or upgraded to SSL via an organizationally approved method, perform one of the following actions:\n\nRemove the available server connections.\nOR\nUpgrade the connection via redirect to an SSL server connection.\nOR\nRewrite the connection URL to an HTTPS server connection.\nOR\nOther organizationally defined handling method.\n\nReload the NGINX server configuration by executing the following:\npkill -HUP nginx\n\n(Alternatively, reinstall Automation Controller for each web server host.)",
+  "ccis": [
+    "CCI-002418",
+    "CCI-002422",
+    "CCI-002476"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Preventing the disclosure of transmitted information requires that the Automation Controller web server take measures to employ some form of cryptographic mechanism in order to protect the information during transmission. This is usually achieved through the use of Transport Layer Security (TLS).\n\nTransmission of data can take place between the web server and a large number of devices/applications external to the web server. Examples are a web client used by a user, a backend database, an audit server, or other web servers in a web cluster.\n\nIf data is transmitted unencrypted, the data then becomes vulnerable to disclosure. The disclosure may reveal user identifier/password combinations, website code revealing business logic, or other user personal information.\n\nSatisfies: SRG-APP-000439-WSR-000151, SRG-APP-000439-WSR-000152, SRG-APP-000442-WSR-000182, SRG-APP-000429-WSR-000113",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "APWS-AT-000850",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65",
+      "name": "Red Hat Ansible Automation Controller Web Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-ansible-automation-controller-web-server-security-technical-implementati-v2r3-cf88df65"
+  ]
+}

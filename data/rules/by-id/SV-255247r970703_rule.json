@@ -1,0 +1,54 @@
+{
+  "id": "SV-255247r970703_rule",
+  "full_rule_id": "SV-255247r970703_rule",
+  "rule_id": "SV-255247",
+  "rule_revision": "970703",
+  "group_id": "V-255247",
+  "group_title": "SRG-OS-000163-GPOS-00072",
+  "title": "SSMC must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, deallocating associated TCP/IP address/port pairs at the operating system level, and deallocating networking assignments at the application level if multiple application sessions are using a single operating system-level network connection. This does not mean that the operating system terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.\n\nSatisfies: SRG-OS-000163-GPOS-00072, SRG-OS-000279-GPOS-00109</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that SSMC web server is configured to close inactive sessions after 10 minutes by doing the following:\n\n1. Log on to the SSMC appliance as ssmcadmin. Press \"X\" to escape to general bash shell.\n\n2. Execute the command:\n\n$ grep ^server.session.timeout /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties\n\nserver.session.timeout=10\n\nIf the value is not set to 10 minutes, this is a finding.",
+  "fix": "Configure SSMC web server to close inactive sessions after 10 minutes by doing the following:\n\n1. Log on to the SSMC appliance as ssmcadmin. Press \"X\" to escape to general bash shell.\n\n2. Use vi to edit /opt/hpe/ssmc/ssmcbase/resources/ssmc.properties file.\n\n3. Uncomment and update server.session.timeout property to 10 minutes (default is 15). Save and exit.\n\n4. Type \"config_appliance\" to return to TUI. Restart (stop and start) SSMC services using TUI menu option 2.",
+  "ccis": [
+    "CCI-001133",
+    "CCI-002361"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element. \n\nTerminating network connections associated with communications sessions includes, for example, deallocating associated TCP/IP address/port pairs at the operating system level, and deallocating networking assignments at the application level if multiple application sessions are using a single operating system-level network connection. This does not mean that the operating system terminates all sessions or network access; it only ends the inactive session and releases the resources associated with that session.\n\nSatisfies: SRG-OS-000163-GPOS-00072, SRG-OS-000279-GPOS-00109",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SSMC-OS-020010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hpe-3par-ssmc-operating-system-security-technical-implementation-guide-v2r1-bbe7b6c0",
+      "name": "HPE 3PAR SSMC Operating System Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "hpe-3par-ssmc-operating-system-security-technical-implementation-guide-v2r1-bbe7b6c0"
+  ]
+}

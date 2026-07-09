@@ -1,0 +1,53 @@
+{
+  "id": "SV-272062r1168387_rule",
+  "full_rule_id": "SV-272062r1168387_rule",
+  "rule_id": "SV-272062",
+  "rule_revision": "1168387",
+  "group_id": "V-272062",
+  "group_title": "SRG-NET-000018-RTR-000003",
+  "title": "The BGP Cisco ACI must be configured to reject inbound route advertisements for any prefixes belonging to the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Accepting route advertisements belonging to the local AS can result in traffic looping or being black holed, or at a minimum using a nonoptimized path.\n\nFor Cisco APIC, the default setting is to prevent route loops from occurring. Sites are required to use different AS numbers when configuring. To prevent such a situation from occurring, sites must not enable the \"BGP Autonomous System override\" feature to override the default setting, and must not enable the \"Disable Peer AS Check\".\n\nAn alternative to route maps is to use subnets under the External EPG with the correct route Controls assigned discussed in vendor documentation (Reference the L3 out white paper). </VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the switch configuration to verify it will reject routes belonging to the local AS.\n\n1. Verify a prefix list has been configured containing prefixes belonging to the local AS. Navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> Route Map for import and export route control. \n2. Review the route-map to the inbound BGP policy. Navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> External EPGs >> Policy >> General >> Route Control Profile. \n\nIf the switch is not configured to reject inbound route advertisements belonging to the local AS, this is a finding.",
+  "fix": "Configure the router to reject inbound route advertisements for any prefixes belonging to the local AS. From the relevant BGP peer configuration, create a route-map to filter local AS prefixes. Apply the route-map to the inbound BGP policy. Within the inbound policy, add a prefix filter rule that explicitly rejects any routes with a prefix matching the local AS number. \n\n1. Navigate to Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> Route Map for import and export route control.\n2. Apply that route MAP to the external EPG in the following location: Tenants >> {{your_Tenant}} >> Networking >> L3Outs >> {{your_L3Outs}} >> External EPGs >> Policy >> General >> Route Control Profile. \n\nNote: An alternative to route maps is to use subnets under the External EPG with the correct route controls assigned as discussed in vendor documentation (Reference the L3 out white paper).",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Accepting route advertisements belonging to the local AS can result in traffic looping or being black holed, or at a minimum using a nonoptimized path.\n\nFor Cisco APIC, the default setting is to prevent route loops from occurring. Sites are required to use different AS numbers when configuring. To prevent such a situation from occurring, sites must not enable the \"BGP Autonomous System override\" feature to override the default setting, and must not enable the \"Disable Peer AS Check\".\n\nAn alternative to route maps is to use subnets under the External EPG with the correct route Controls assigned discussed in vendor documentation (Reference the L3 out white paper).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CACI-RT-000002",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251",
+      "name": "Cisco ACI Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-aci-router-security-technical-implementation-guide-v1r2-c5653251"
+  ]
+}

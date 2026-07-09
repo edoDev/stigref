@@ -1,0 +1,53 @@
+{
+  "id": "SV-214537r1018647_rule",
+  "full_rule_id": "SV-214537r1018647_rule",
+  "rule_id": "SV-214537",
+  "rule_revision": "1018647",
+  "group_id": "V-214537",
+  "group_title": "SRG-NET-000390-ALG-000139",
+  "title": "The Juniper SRX Services Gateway Firewall must continuously monitor all inbound communications traffic for unusual/unauthorized activities or conditions.",
+  "severity": "high",
+  "description": "<VulnDiscussion>If inbound communications traffic is not continuously monitored, hostile activity may not be detected and prevented. Output from application and traffic monitoring serves as input to continuous monitoring and incident response programs.\n\nThe Juniper SRX is a highly scalable system which, by default, provides stateful or stateless continuous monitoring when placed in the architecture at either the perimeter or internal boundaries. \n\nUnusual/unauthorized activities or conditions may include unusual use of unusual protocols or ports and attempted communications from trusted zones to external addresses. \n\nInterfaces with identical security requirements can be grouped together into a single security zone. By default, once a security policy is applied to a zone, the Juniper SRX continuously monitors the associated zone for unusual/unauthorized activities or conditions based on the firewall filter or screen associated with that zone.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For each inbound zone, verify a firewall screen or security policy is configured.\n\n[edit]\nshow security zone\nshow security policies\n\nIf communications traffic for each inbound zone is not configured with a firewall screen and/or security policy, this is a finding.",
+  "fix": "Configure a security policy or screen to each inbound zone to implement continuous monitoring. The following commands configure a security zone called “untrust” that can be used to apply security policy for inbound interfaces that are connected to untrusted networks. This example assumes that interfaces ge-0/0/1 and ge-0/0/2 are connected to untrusted and trusted network segments.\n\nApply policy or screen to a zone example:\n\nset security zones security-zone untrust interfaces ge-0/0/1.0\nset security zones security-zone trust interfaces ge-0/0/2.0\nset security zones security-zone untrust screen untrust-screen\nset security policies from-zone untrust to-zone trust policy default-deny match destination-address any\nset security policies from-zone untrust to-zone trust policy default-deny then deny",
+  "ccis": [
+    "CCI-002661"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If inbound communications traffic is not continuously monitored, hostile activity may not be detected and prevented. Output from application and traffic monitoring serves as input to continuous monitoring and incident response programs.\n\nThe Juniper SRX is a highly scalable system which, by default, provides stateful or stateless continuous monitoring when placed in the architecture at either the perimeter or internal boundaries. \n\nUnusual/unauthorized activities or conditions may include unusual use of unusual protocols or ports and attempted communications from trusted zones to external addresses. \n\nInterfaces with identical security requirements can be grouped together into a single security zone. By default, once a security policy is applied to a zone, the Juniper SRX continuously monitors the associated zone for unusual/unauthorized activities or conditions based on the firewall filter or screen associated with that zone.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-AG-000144",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-alg-security-technical-implementation-guide-v3r3-f37abb9f",
+      "name": "Juniper SRX Services Gateway ALG Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-alg-security-technical-implementation-guide-v3r3-f37abb9f"
+  ]
+}

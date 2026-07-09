@@ -1,0 +1,58 @@
+{
+  "id": "SV-258737r1015919_rule",
+  "full_rule_id": "SV-258737r1015919_rule",
+  "rule_id": "SV-258737",
+  "rule_revision": "1015919",
+  "group_id": "V-258737",
+  "group_title": "SRG-OS-000104-VMM-000500",
+  "title": "The ESXi host must uniquely identify and must authenticate organizational users by using Active Directory.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Join ESXi hosts to an Active Directory domain to eliminate the need to create and maintain multiple local user accounts. Using Active Directory for user authentication simplifies the ESXi host configuration, ensures password complexity and reuse policies are enforced, and reduces the risk of security breaches and unauthorized access.\n\nNote: If the Active Directory group \"ESX Admins\" (default) exists, all users and groups assigned as members to this group will have full administrative access to all ESXi hosts in the domain.\n\nSatisfies: SRG-OS-000104-VMM-000500, SRG-OS-000109-VMM-000550, SRG-OS-000112-VMM-000560, SRG-OS-000113-VMM-000570, SRG-OS-000123-VMM-000620</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "For systems that do not use Active Directory and have no local user accounts other than root and/or service accounts, this is not applicable.\n\nFrom the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Authentication Services.\n\nVerify the \"Directory Services Type\" is set to \"Active Directory\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-VMHostAuthentication\n\nFor systems that do not use Active Directory and do have local user accounts, other than root and/or service accounts, this is a finding.\n\nIf the \"Directory Services Type\" is not set to \"Active Directory\", this is a finding.",
+  "fix": "From the vSphere Client, go to Hosts and Clusters.\n\nSelect the ESXi Host >> Configure >> System >> Authentication Services.\n\nClick \"Join Domain...\" and enter the AD domain to join.\n\nSelect the \"Using credentials\" radio button and enter the credentials of an account with permissions to join machines to AD (use UPN naming \"user@domain\"). Click \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the ESXi host, run the following command:\n\nGet-VMHost | Get-VMHostAuthentication | Set-VMHostAuthentication -JoinDomain -Domain \"domain name\" -User \"username\" -Password \"password\"\n\nIf any local user accounts are present besides root and service accounts, delete them by going to Host UI >> Manage >> Security & Users >> Users.",
+  "ccis": [
+    "CCI-000764",
+    "CCI-004045",
+    "CCI-001682",
+    "CCI-001941",
+    "CCI-000770",
+    "CCI-001942"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Join ESXi hosts to an Active Directory domain to eliminate the need to create and maintain multiple local user accounts. Using Active Directory for user authentication simplifies the ESXi host configuration, ensures password complexity and reuse policies are enforced, and reduces the risk of security breaches and unauthorized access.\n\nNote: If the Active Directory group \"ESX Admins\" (default) exists, all users and groups assigned as members to this group will have full administrative access to all ESXi hosts in the domain.\n\nSatisfies: SRG-OS-000104-VMM-000500, SRG-OS-000109-VMM-000550, SRG-OS-000112-VMM-000560, SRG-OS-000113-VMM-000570, SRG-OS-000123-VMM-000620",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ESXI-80-000049",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v2r3-8fcaad5d",
+      "name": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-esxi-security-technical-implementation-guide-v2r3-8fcaad5d"
+  ]
+}

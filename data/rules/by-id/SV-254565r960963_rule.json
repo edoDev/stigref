@@ -1,0 +1,54 @@
+{
+  "id": "SV-254565r960963_rule",
+  "full_rule_id": "SV-254565r960963_rule",
+  "rule_id": "SV-254565",
+  "rule_revision": "960963",
+  "group_id": "V-254565",
+  "group_title": "SRG-APP-000141-CTR-000315",
+  "title": "Rancher RKE2 must be configured with only essential configurations.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>It is important to disable any unnecessary components to reduce any potential attack surfaces. \n\nRKE2 allows disabling the following components:\n- rke2-canal\n- rke2-coredns\n- rke2-ingress-nginx\n- rke2-kube-proxy\n- rke2-metrics-server\n\nIf utilizing any of these components presents a security risk, or if any of the components are not required then they can be disabled by using the \"disable\" flag.\n\nIf any of the components are not required, they can be disabled by using the \"disable\" flag.\n\nSatisfies: SRG-APP-000141-CTR-000315, SRG-APP-000384-CTR-000915</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Ensure the RKE2 Server configuration file on all RKE2 Server hosts contains a \"disable\" flag only if there are default RKE2 components that need to be disabled. \n\nIf there are no default components that need to be disabled, this is not a finding.\n\nRun this command on the RKE2 Control Plane:\ncat /etc/rancher/rke2/config.yaml\n\nRKE2 allows disabling the following components. If any of the components are not required, they can be disabled:\n- rke2-canal\n- rke2-coredns\n- rke2-ingress-nginx\n- rke2-kube-proxy\n- rke2-metrics-server\n\nIf services not in use are enabled, this is a finding.",
+  "fix": "Disable unnecessary RKE2 components.\n\nEdit the RKE2 Server configuration file on all RKE2 Server hosts, located at /etc/rancher/rke2/config.yaml, so that it contains a \"disable\" flag if any default RKE2 components are unnecessary. \n\nExample:\ndisable: rke2-canal\ndisable: rke2-coredns\ndisable: rke2-ingress-nginx\ndisable: rke2-kube-proxy\ndisable: rke2-metrics-server\n\nOnce the configuration file is updated, restart the RKE2 Server. Run the command:\nsystemctl restart rke2-server",
+  "ccis": [
+    "CCI-000381",
+    "CCI-001764"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "It is important to disable any unnecessary components to reduce any potential attack surfaces. \n\nRKE2 allows disabling the following components:\n- rke2-canal\n- rke2-coredns\n- rke2-ingress-nginx\n- rke2-kube-proxy\n- rke2-metrics-server\n\nIf utilizing any of these components presents a security risk, or if any of the components are not required then they can be disabled by using the \"disable\" flag.\n\nIf any of the components are not required, they can be disabled by using the \"disable\" flag.\n\nSatisfies: SRG-APP-000141-CTR-000315, SRG-APP-000384-CTR-000915",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-R2-000550",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268",
+      "name": "Rancher Government Solutions RKE2 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "rancher-government-solutions-rke2-security-technical-implementation-guide-v2r6-4496e268"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-223823r1137691_rule",
+  "full_rule_id": "SV-223823r1137691_rule",
+  "rule_id": "SV-223823",
+  "rule_revision": "1137691",
+  "group_id": "V-223823",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS TCP/IP resources must be properly protected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nRLIST SERVAUTH * ALL \n\nIf the following guidance is true, this is not a finding.\n\nThe EZA, EZB, and IST resources and/or generic equivalent are defined to the SERVAUTH resource class with a UACC(NONE).\n\nNo access is given to the EZA, EZB, and IST high level resources of the SERVAUTH resource class.\n\nIf the product CSSMTP is on the system, no access is given to EZB.CSSMTP of the SERVAUTH resource class.\n\nIf the product CSSMTP is on the system, EZB.CSSMTP.sysname.writername.JESnode will be specified and made available to the CSSMTP started task and authenticated users that require access to use CSSMTP for email services.\n\nAuthenticated users that require access will be permitted access to the second level of the resources in the SERVAUTH resource class. Examples are the network (NETACCESS), port (PORTACCESS), stack (STACKACCESS), and FTP resources in the SERVAUTH resource class.\n\nThe EZB.STACKACCESS. resource access authorizations restrict access to those started tasks with valid requirements and users with valid FTP access requirements.\n\nThe EZB.FTP.*.*.ACCESS.HFS) resource access authorizations restrict access to FTP users with specific written documentation showing a valid requirement exists to access OMVS files and Directories.\n\nThe EZB.INITSTACK.sysname.tcpname resource access authorizations restrict access before policies have been installed, to users authorized by the system security plan requiring access to the TCP/IP stack.",
+  "fix": "Develop a plan of action to implement the required changes. Ensure the following items are in effect for TCP/IP resources.\n\n(Note: The resource class, resources, and/or resource prefixes identified below are examples of a possible installation. The actual resource class, resources, and/or resource prefixes are determined when the product is actually installed on a system through the product's installation guide and can be site specific.)\n\nEnsure that the EZA, EZB, and IST resources and/or generic equivalent are defined to the SERVAUTH resource class with a UACC(NONE).\n\nNo access is given to the EZA, EZB, and IST resources of the SERVAUTH resource class.\n\nIf the product CSSMTP is on the system, no access is given to EZB.CSSMTP of the SERVAUTH resource class. EZB.CSSMTP.sysname.writername.JESnode will be specified and made available to the CSSMTP started task and authenticated users that require access to use CSSMTP for e-mail services.\n\nOnly authenticated users that require access are permitted access to the second level of the resources in the SERVAUTH resource class. Examples are the network (NETACCESS), port (PORTACCESS), stack (STACKACCESS), and FTP resources in the SERVAUTH resource class.\n\nThe EZB.STACKACCESS. resource access authorizations restrict access to those started tasks with valid requirements and users with valid FTP access requirements.\n\nThe EZB.FTP.*.*.ACCESS.HFS) resource access authorizations restrict access to FTP users with specific written documentation showing a valid requirement exists to access OMVS files and Directories.\n\nThe EZB.INITSTACK.sysname.tcpname resource access authorizations restrict access to TCP/IP stack before policies have been installed to users authorized by the system security plan.\n\nThe following commands are provided as a sample for implementing resource controls:\n\nRDEF SERVAUTH EZB.** UACC(NONE) OWNER(ADMIN) AUDIT(FAILURE(READ))\nRDEF SERVAUTH EZB.CSSMTP.** UACC(NONE) OWNER(ADMIN) AUDIT(FAILURE(READ))\nRDEF SERVAUTH EZB.CSSMTP.sysname.writername.JESnode UACC(NONE) OWNER(ADMIN) AUDIT(FAILURE(READ))\nRDEF SERVAUTH EZB.FTP.** UACC(NONE) OWNER(ADMIN) AUDIT(FAILURE(READ))\nRDEF SERVAUTH EZB.NETACCESS.** UACC(NONE) OWNER(ADMIN) AUDIT(FAILURE(READ))\nRDEF SERVAUTH EZB.PORTACCESS.** UACC(NONE) OWNER(ADMIN) AUDIT(FAILURE(READ))\nRDEF SERVAUTH EZB.STACKACCESS.** UACC(NONE) OWNER(ADMIN) AUDIT(FAILURE(READ))\nRDEF SERVAUTH EZB.INITSTACK.**  UACC(NONE) OWNER(ADMIN) AUDIT(FAILURE(READ))\n\nPE EZB.CSSMTP.sysname.writername.JESnode CL(SERVAUTH) ID(authusers) ACC(READ)\nPE EZB.FTP.** CL(SERVAUTH) ID(authusers) ACC(READ)\nPE EZB.FTP.sysname.ftpstc.ACCESS.HFS CL(SERVAUTH) ID(ftpprofile) ACC(READ)\nPE EZB.NETACCESS.** CL(SERVAUTH) ID(authusers) ACC(READ)\nPE EZB.PORTACCESS.** CL(SERVAUTH) ID(authusers) ACC(READ)\nPE EZB.STACKACCESS.** CL(SERVAUTH) ID(authusers) ACC(READ)\nPE EZB.STACKACCESS.sysname.TCPIP CL(SERVAUTH) ID(ftpprofile) ACC(READ)\n\nPE EZB.INITSTACK.** CL (SERVAUTH) ID(authusers)  ACC(READ)\n\nThe following notes apply to these controls:\n\n- EZB.STACKACCESS.sysname.TCPIP access READ should be limited to only those started tasks that require access to the TCPIP Stack as well as any users approved for FTP Access (inbound and/or outbound). FTP users should not have access to the EZB.FTP.sysname.ftpstc.ACCESS.HFS resource unless specific written justification documenting valid requirement for those FTP users to access USS files and directories via FTP. \n\n- To be effective in restricting access, the network (EZB.NETACCESS) resource control requires configuration of the NETACCESS statement in the PROFILE.TCPIP file.\n\n- To be effective in restricting access, the port (EZB.PORTACCESS) resource control requires configuration of a PORT or PORTRANGE statement in the PROFILE.TCPIP file. These port definitions within PROFILE.TCPIP must be defined to include SAF keyword and a valid name. \n\nA list of possible SERVAUTH resources defined to the first two nodes is shown here: (Note that additional resources may be developed with each new release of TCPIP.)\n\nEZA.DCAS.\nEZB.BINDDVIPARANGE.\nEZB.CIMPROV.\nEZB.FRCAACCESS.\nEZB.FTP.\nEZB.INITSTACK.\nEZB.IOCTL.\nEZB.IPSECCMD.\nEZB.MODDVIPA.\nEZB.NETACCESS.\nEZB.NETMGMT.\nEZB.NETSTAT.\nEZB.NSS.\nEZB.NSSCERT.\nEZB.OSM.\nEZB.PAGENT.\nEZB.PORTACCESS.\nEZB.RPCBIND.\nEZB.SOCKOPT.\nEZB.SNMPAGENT.\nEZB.STACKACCESS.\nEZB.TN3270.\nIST.NETMGMT.",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-TC-000040",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

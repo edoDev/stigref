@@ -1,0 +1,54 @@
+{
+  "id": "SV-281308r1167074_rule",
+  "full_rule_id": "SV-281308r1167074_rule",
+  "rule_id": "SV-281308",
+  "rule_revision": "1167074",
+  "group_id": "V-281308",
+  "group_title": "SRG-OS-000132-GPOS-00067",
+  "title": "RHEL 10 must restrict exposed kernel pointer address access.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Exposing kernel pointers (through procfs or \"seq_printf()\") exposes kernel writable structures, which may contain functions pointers. If a write vulnerability occurs in the kernel, allowing write access to any of this structure, the kernel can be compromised. This option disallows any program without the CAP_SYSLOG capability to get the addresses of kernel pointers by replacing them with \"0\".\n\nSatisfies: SRG-OS-000132-GPOS-00067, SRG-OS-000433-GPOS-00192</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify RHEL 10 is configured to restrict exposed kernel pointer address access.\n\nVerify the runtime status of the \"kernel.kptr_restrict\" kernel parameter with the following command:\n\n$ sudo sysctl kernel.kptr_restrict \nkernel.kptr_restrict = 1\n\nIf \"kernel.kptr_restrict\" is not set to \"1\" or is missing, this is a finding.",
+  "fix": "Configure RHEL 10 to restrict exposed kernel pointer address access.\n\nCreate a drop-in if it does not already exist:\n\n$ sudo vi /etc/sysctl.d/99-kernel_kptr_restrict.conf\n\nAdd the following to the file:\n\nkernel.kptr_restrict = 1\n\nReload settings from all system configuration files with the following command:\n\n$ sudo sysctl --system",
+  "ccis": [
+    "CCI-001082",
+    "CCI-002824"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Exposing kernel pointers (through procfs or \"seq_printf()\") exposes kernel writable structures, which may contain functions pointers. If a write vulnerability occurs in the kernel, allowing write access to any of this structure, the kernel can be compromised. This option disallows any program without the CAP_SYSLOG capability to get the addresses of kernel pointers by replacing them with \"0\".\n\nSatisfies: SRG-OS-000132-GPOS-00067, SRG-OS-000433-GPOS-00192",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RHEL-10-701060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0",
+      "name": "Red Hat Enterprise Linux 10 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "red-hat-enterprise-linux-10-security-technical-implementation-guide-v1r1-13ec47b0"
+  ]
+}

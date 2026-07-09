@@ -1,0 +1,53 @@
+{
+  "id": "SV-258967r961863_rule",
+  "full_rule_id": "SV-258967r961863_rule",
+  "rule_id": "SV-258967",
+  "rule_revision": "961863",
+  "group_id": "V-258967",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must reset port configuration when virtual machines are disconnected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Port-level configuration overrides are disabled by default. Once enabled, this allows for different security settings to be set from what is established at the Port Group level. If overrides are not monitored, anyone who gains access to a VM with a less secure VDS configuration could exploit that broader access.\n\nIf any unknown or unauthorized per-port overrides exist and are not discarded when a virtual machine is disconnected from that port then a future virtual machine connected to that port may receive a less secure port.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If distributed switches are not used, this is not applicable.\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Select a distributed port group >> Configure >> Settings >> Properties.\n\nReview the \"Configure reset at disconnect\" setting.\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\n(Get-VDPortgroup).ExtensionData.Config.Policy.PortConfigResetAtDisconnect\n\nIf there are any distributed port groups with \"Configure reset at disconnect\" configured to \"disabled\" or \"False\", this is a finding.",
+  "fix": "From the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Select a distributed port group >> Configure >> Settings >> Properties.\n\nClick \"Edit\".\n\nSelect advanced and update \"Configure reset at disconnect\" to be enabled and click \"OK\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following command:\n\n$pgs = Get-VDPortgroup | Get-View\nForEach($pg in $pgs){\n$spec = New-Object VMware.Vim.DVPortgroupConfigSpec\n$spec.configversion = $pg.Config.ConfigVersion\n$spec.Policy = New-Object VMware.Vim.VMwareDVSPortgroupPolicy\n$spec.Policy.PortConfigResetAtDisconnect = $True\n$pg.ReconfigureDVPortgroup_Task($spec)\n}",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Port-level configuration overrides are disabled by default. Once enabled, this allows for different security settings to be set from what is established at the Port Group level. If overrides are not monitored, anyone who gains access to a VM with a less secure VDS configuration could exploit that broader access.\n\nIf any unknown or unauthorized per-port overrides exist and are not discarded when a virtual machine is disconnected from that port then a future virtual machine connected to that port may receive a less secure port.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000302",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3"
+  ]
+}

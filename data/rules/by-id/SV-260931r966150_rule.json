@@ -1,0 +1,53 @@
+{
+  "id": "SV-260931r966150_rule",
+  "full_rule_id": "SV-260931r966150_rule",
+  "rule_id": "SV-260931",
+  "rule_revision": "966150",
+  "group_id": "V-260931",
+  "group_title": "SRG-APP-000158-CTR-000390",
+  "title": "IPSec network encryption must be configured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>IPsec encrypts the data traffic between nodes in a Kubernetes cluster, ensuring that the information exchanged is confidential and protected from unauthorized access. This is particularly important when sensitive or confidential data is transmitted over the network. IPsec not only provides encryption but also ensures the integrity of the transmitted data. Through the use of cryptographic mechanisms, IPsec can detect and prevent tampering or modification of data during transit.\n\nIn a Kubernetes cluster managed by MKE, nodes communicate with each other for various purposes, such as pod networking, service discovery, and cluster coordination. IPsec helps secure these communications, reducing the risk of man-in-the-middle attacks and unauthorized interception.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify IPSec network encryption. \n\nFor Swarm orchestration log in to the MKE web UI and navigate to Swarm >> Networks.\n\nIf the \"scope\" is not local and the \"driver\" is not overlay, this is a finding.\n \nKubernetes orchestration:\nNote: The path may need to be edited.\n\ncat /etc/mke/config.toml | grep secure_overlay\n \nIf the \"secure_overlay\" settings is not set to \"true\", this is a finding.",
+  "fix": "To configure IPSec network encryption in Swarm orchestration, create an overlay network with --opt encrypted flag. \n\nExample:\ndocker network create --opt encrypted --driver overlay my-network\n\nTo configure IPSec network encryption in Kubernetes orchestration, modify an existing MKE configuration.\n\nWorking as an MKE admin, use the config-toml API from within the directory of your client certificate bundle to export the current MKE settings to a TOML file (mke-config.toml).\n\n1. Define the following environment variables:\n\nexport MKE_USERNAME=<mke-username>\nexport MKE_PASSWORD=<mke-password>\nexport MKE_HOST=<mke-fqdm-or-ip-address>\n\n2. Obtain and define an AUTHTOKEN environment variable by executing the following:\n\nAUTHTOKEN=$(curl --silent --insecure --data '{\"username\":\"'$MKE_USERNAME'\",\"password\":\"'$MKE_PASSWORD'\"}' https://$MKE_HOST/auth/login | jq --raw-output .auth_token)\n\n3. Download the current MKE configuration file by executing the following:\n\ncurl --silent --insecure -X GET \"https://$MKE_HOST/api/MKE/config-toml\" -H \"accept: application/toml\" -H \"Authorization: Bearer $AUTHTOKEN\" > mke-config.toml\n\n4. Modify \"secure_overlay\" settings to \"true\".\n\n5. Upload the newly edited MKE configuration file by executing the following:\n\ncurl --silent --insecure -X PUT -H \"accept: application/toml\" -H \"Authorization: Bearer $AUTHTOKEN\" --upload-file 'mke-config.toml' https://$MKE_HOST/api/MKE/config-toml\n\nNote: Users may need to reacquire AUTHTOKEN, if significant time has passed since it was first attained.",
+  "ccis": [
+    "CCI-000778"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "IPsec encrypts the data traffic between nodes in a Kubernetes cluster, ensuring that the information exchanged is confidential and protected from unauthorized access. This is particularly important when sensitive or confidential data is transmitted over the network. IPsec not only provides encryption but also ensures the integrity of the transmitted data. Through the use of cryptographic mechanisms, IPsec can detect and prevent tampering or modification of data during transit.\n\nIn a Kubernetes cluster managed by MKE, nodes communicate with each other for various purposes, such as pod networking, service discovery, and cluster coordination. IPsec helps secure these communications, reducing the risk of man-in-the-middle attacks and unauthorized interception.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-MK-000770",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb",
+      "name": "Mirantis Kubernetes Engine Security Technical Implementation Guide",
+      "version": "2",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mirantis-kubernetes-engine-security-technical-implementation-guide-v2r1-12f081bb"
+  ]
+}

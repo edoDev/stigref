@@ -1,0 +1,53 @@
+{
+  "id": "SV-279686r1192615_rule",
+  "full_rule_id": "SV-279686r1192615_rule",
+  "rule_id": "SV-279686",
+  "rule_revision": "1192615",
+  "group_id": "V-279686",
+  "group_title": "SRG-OS-000073-GPOS-00041",
+  "title": "Nutanix AHV must store only encrypted representations of passwords.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "1. Verify Nutanix AHV is configured to store encrypted representation of passwords and that the encryption meets required standards using the following command.\n\n$ sudo grep password /etc/pam.d/system-auth /etc/pam.d/password-auth\n/etc/pam.d/system-auth-ac:password sufficient pam_unix.so sha512 shadow try_first_pass use_authtok\n/etc/pam.d/password-auth:password sufficient pam_unix.so sha512 shadow try_first_pass use_authtok\n\nOutput should match the example; if it does not this is a finding.\n\n$ sudo grep -i encrypt /etc/login.defs\nENCRYPT_METHOD SHA512\n\nIf the \"/etc/login.defs\" file does not contain the required output, this is a finding.\n\n2. Run the command:\n\n$ sudo grep -i sha512 /etc/libuser.conf\ncrypt_style = sha512\n\nIf the \"/etc/libuser.conf\" file does not contain the required output, this is a finding.",
+  "fix": "Configure the high-strength password requirements using the following command.\n\n$ ncli cluster edit-hypervisor-security-params enable-high-strength-password=true",
+  "ccis": [
+    "CCI-004062"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NXAC-OS-000273",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588",
+      "name": "Nutanix Acropolis GPOS Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "nutanix-acropolis-gpos-security-technical-implementation-guide-v1r1-672f7588"
+  ]
+}

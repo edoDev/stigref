@@ -1,0 +1,53 @@
+{
+  "id": "SV-273605r1110875_rule",
+  "full_rule_id": "SV-273605r1110875_rule",
+  "rule_id": "SV-273605",
+  "rule_revision": "1110875",
+  "group_id": "V-273605",
+  "group_title": "SRG-NET-000205-RTR-000001",
+  "title": "The RUCKUS ICX router must be configured to restrict traffic destined to itself.",
+  "severity": "high",
+  "description": "<VulnDiscussion>The route processor handles traffic destined to the router, the key component used to build forwarding paths, and is instrumental with all network management functions. Hence, any disruption or denial-of-service (DoS) attack to the route processor can result in mission critical network outages.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the external and internal Access Control Lists (ACLs) to verify the router is configured to only allow specific management and control plane traffic from specific sources destined to itself (addresses and protocols may vary).\n\n1. Review the access lists.\nip access-list extended EXT-ACL\n sequence 10 permit tcp host x.11.1.1 eq bgp host x.11.1.2\n sequence 20 permit tcp host x.11.1.1 host x.11.1.2 eq bgp\n sequence 30 permit icmp host x.11.1.1 host x.11.1.2 echo\n sequence 40 permit icmp host x.11.1.1 host x.11.1.2 echo-reply\n sequence 50 deny ip host x.11.1.1 host x.11.1.2 log\npermit …\n…\n…\n…\ndeny ip any any log\n!\n\nip access-list extended INT-ACL\n sequence 10 permit icmp any any\n sequence 20 permit ospf host 10.1.12.1 host 10.1.12.2\n sequence 30 permit tcp 10.2.1.0 0.0.0.255 host 10.1.12.2 eq ssh\n sequence 40 permit tcp 10.2.1.0 0.0.0.255 host 10.1.12.2 eq radius\n sequence 50 permit udp 10.2.1.0 0.0.0.255 host 10.1.12.2 eq snmp\n sequence 60 permit udp 10.2.1.0 0.0.0.255 host 10.1.12.2 eq ntp\n sequence 70 deny ip any host 10.1.12.2 log\npermit …\n…\n…\n…\ndeny ip any any log\n!\n\n2. Verify ACLs are applied to desired interfaces.\ninterface ethernet x/x/x\n  ip address x.11.1.2/31 \n  ip access-group EXT-ACL in logging enable\n!\ninterface ethernet x/x/x\nip address 10.1.12.2 255.255.255.0\nip access-group INT-ACL in logging enable\n\nIf the router is not configured to restrict traffic destined to itself, this is a finding.",
+  "fix": "Configure all routers with receive path filters to restrict traffic destined to the router.\n\n1. Create ACLs for external and internal interfaces in accordance with site security policy (addresses and protocols may vary).\nICX(config)#ip access-list ext EXT-ACL\nICX(config-ext-ipacl-EXT-ACL)#permit tcp host x.11.1.1 eq bgp host x.11.1.2\nICX(config-ext-ipacl-EXT-ACL)#permit tcp host x.11.1.1 host x.11.1.2 eq bgp\nICX(config-ext-ipacl-EXT-ACL)#permit icmp host x.11.1.1 host x.11.1.2 echo\nICX(config-ext-ipacl-EXT-ACL)#permit icmp host x.11.1.1 host x.11.1.2 echo-reply\nICX(config-ext-ipacl-EXT-ACL)#deny ip host x.11.1.1 host x.11.1.2 log\nICX(config-ext-ipacl-EXT-ACL)#exit\n\nICX(config)#ip access-list ext INT-ACL\nICX(config-ext-ipacl-INT-ACL)#permit icmp any any\nICX(config-ext-ipacl-INT-ACL)#permit ospf host 10.1.12.1 host 10.1.12.2\nICX(config-ext-ipacl-INT-ACL)#permit tcp 10.2.1.0/24 host 10.1.12.2 eq 22\nICX(config-ext-ipacl-INT-ACL)#permit tcp 10.2.1.0/24 host 10.1.12.2 eq radius\nICX(config-ext-ipacl-INT-ACL)#permit udp 10.2.1.0/24 host 10.1.12.2 eq snmp\nICX(config-ext-ipacl-INT-ACL)#permit udp 10.2.1.0/24 host 10.1.12.2 eq ntp\nICX(config-ext-ipacl-INT-ACL)#deny ip any host 10.1.12.2 log\n\n2. Apply ACLs to appropriate interfaces.\nICX(config)# interface ethernet x/x/x\nICX(config-if-e1000-x/x/x)#ip access-group EXT-ACL in logging enable\nICX(config-if-e1000-x/x/x)# interface ethernet y/y/y\nICX(config-if-e1000-y/y/y)#ip access-group INT-ACL in logging enable",
+  "ccis": [
+    "CCI-001097"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The route processor handles traffic destined to the router, the key component used to build forwarding paths, and is instrumental with all network management functions. Hence, any disruption or denial-of-service (DoS) attack to the route processor can result in mission critical network outages.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000380",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

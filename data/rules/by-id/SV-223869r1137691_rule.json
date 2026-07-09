@@ -1,0 +1,54 @@
+{
+  "id": "SV-223869r1137691_rule",
+  "full_rule_id": "SV-223869r1137691_rule",
+  "rule_id": "SV-223869",
+  "rule_revision": "1137691",
+  "group_id": "V-223869",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS System datasets used to support the VTAM network must be properly secured.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000259-GPOS-00100</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine data set names containing all VTAM start options, configuration lists, network resource definitions, commands, procedures, exit routines, all SMP/E TLIBs, and all SMP/E DLIBs used for installation and in development/production VTAM environments.\n\nIf RACF data set rules for all VTAM system data sets restrict access to only network systems programming staff, this is not a finding.\n\nIf RACF data set rules for all VTAM system data sets all READ access to auditors only, this is not a finding.",
+  "fix": "Configure RACF data set rules for all VTAM system data sets restrict access to only network systems programming staff. These data sets include libraries containing VTAM load modules and exit routines, and VTAM start options and definition statements.\n\nAuditors may have READ access as documented by and approved by the ISSM.\n\nThe following sample RACF commands show proper definitions/permissions for VTAM datasets:\n\nAD 'SYS1.VTAM*.**' UACC(NONE) OWNER(SYS1) - \nAUDIT(SUCCESS(UPDATE) FAILURES(READ)) - \nDATA('IBM VTAM DS PROFILE: REF SRR PDI ZVTM0018') \nPE 'SYS1.VTAM.**' ID(<syspsmpl>) ACC(A) \n\nAD 'SYS1.VTAMLIB.**' UACC(NONE) OWNER(SYS1) - \nAUDIT(SUCCESS(UPDATE) FAILURES(READ)) - \nDATA('IBM VTAM APF DS PROFILE: REF SRR PDI ZVTM0018') \nPE 'SYS1.VTAMLIB.**' ID(<syspsmpl>) ACC(A) \n\nAD 'SYS1.VTAM.SISTCLIB.**' UACC(NONE) OWNER(SYS1) -\nAUDIT(SUCCESS(UPDATE) FAILURES(READ)) - \nDATA('IBM VTAM APF DS PROFILE: REF SRR PDI ZVTM0018') \nPE 'SYS1.VTAM.SISTCLIB.**' ID(<syspsmpl>) ACC(A) \n\nAD 'SYS3.VTAM.**' UACC(NONE) OWNER(SYS3) - \nAUDIT(SUCCESS(UPDATE) FAILURES(READ)) - \nDATA('VTAM CUSTOMIZED DS: REF SRR PDI ZVTM0018') \nPE 'SYS3.VTAM.**' ID(<syspsmpl>) ACC(A) \n\nAD 'SYS3.VTAMLIB.**' UACC(NONE) OWNER(SYS3) - \nAUDIT(SUCCESS(UPDATE) FAILURES(READ)) - \nDATA('IBM VTAM APF DS PROFILE: REF SRR PDI ZVTM0018')\nPE 'SYS3.VTAMLIB.**' ID(<syspsmpl>) ACC(A) \n\nSETR GENERIC(DATASET) REFRESH",
+  "ccis": [
+    "CCI-000213",
+    "CCI-001499"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nSatisfies: SRG-OS-000080-GPOS-00048, SRG-OS-000259-GPOS-00100",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-VT-000010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-242442r1188293_rule",
+  "full_rule_id": "SV-242442r1188293_rule",
+  "rule_id": "SV-242442",
+  "rule_revision": "1188293",
+  "group_id": "V-242442",
+  "group_title": "SRG-APP-000454-CTR-001110",
+  "title": "Kubernetes must remove old components after updated versions have been installed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Previous versions of Kubernetes components that are not removed after updates have been installed may be exploited by adversaries by allowing the vulnerabilities to still exist within the cluster. It is important for Kubernetes to remove old pods when newer pods are created using new images to always be at the desired security state.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "To view all pods and the images used to create the pods, from the Control Plane, run the following command:\nkubectl get pods --all-namespaces -o jsonpath=\"{..image}\" | \\\ntr -s '[[:space:]]' '\\n' | \\\nsort | \\\nuniq -c\n\nReview the images used for pods running within Kubernetes.\n\nIf there are multiple versions of the same image, this is a finding.",
+  "fix": "Remove any old pods that are using older images. On the Control Plane, run the command:\nkubectl delete pod podname\n(Note: \"podname\" is the name of the pod to delete.)",
+  "ccis": [
+    "CCI-002617"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Previous versions of Kubernetes components that are not removed after updates have been installed may be exploited by adversaries by allowing the vulnerabilities to still exist within the cluster. It is important for Kubernetes to remove old pods when newer pods are created using new images to always be at the desired security state.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CNTR-K8-002700",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd",
+      "name": "Kubernetes Security Technical Implementation Guide",
+      "version": "2",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "kubernetes-security-technical-implementation-guide-v2r6-b5aed4bd"
+  ]
+}

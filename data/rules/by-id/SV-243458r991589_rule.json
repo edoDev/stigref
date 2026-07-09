@@ -1,0 +1,55 @@
+{
+  "id": "SV-243458r991589_rule",
+  "full_rule_id": "SV-243458r991589_rule",
+  "rule_id": "SV-243458",
+  "rule_revision": "991589",
+  "group_id": "V-243458",
+  "group_title": "SRG-OS-000480-GPOS-00227",
+  "title": "The Windows PAW must use a trusted channel for all connections between a PAW and IT resources managed from the PAW.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Note: The Common Criteria Security Functional Requirement (SFR) FTP_ITC.1.1(1) defines \"trusted channel\" as \"a channel that uses IPsec, SSH, TLS, or TLS/HTTPS to provide a trusted communications channel between itself and authorized IT entity that is logically distinct from other communication channels and provides assured identification of its end points and protection of the channel data from modification or disclosure.\" The trusted channel uses IPsec, TLS, DTLS, or HTTPS as the protocol that preserves the confidentiality and integrity of PAW communications.\n\nThe confidentiality and integrity of the communications between the PAW and high-value IT resources being managed from the PAW must be protected due to the highly sensitive nature of the administrative functions being performed. A trusted channel provides the requisite assured identification of its end points and protection of the channel data from modification or disclosure.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "On the PAW workstation, verify IPsec, SSH, TLS, or TLS/HTTPS is configured for all connections between the PAW and managed IT resources on the intranet.\n\nVerify the following registry setting:\nRegistry Hive: HKEY_LOCAL_MACHINE\nRegistry Path: \\SYSTEM\\CurrentControlSet\\Control\\Lsa\\FIPSAlgorithmPolicy\\\n\nValue Name: Enabled\n\nValue Type: REG_DWORD\nValue: 1\n\nWarning: Clients with this setting enabled will not be able to communicate via digitally encrypted or signed protocols with servers that do not support these algorithms. Both the browser and web server must be configured to use TLS; otherwise, the browser will not be able to connect to a secure site.\n\nIf on the PAW workstation the registry value for HKEY_LOCAL_MACHINE does not exist or is not configured as specified, this is a finding.",
+  "fix": "Configure the PAWs to use IPsec, SSH, TLS, or TLS/HTTPS for all connections between the PAW and managed IT resources on the intranet.\n\nConfigure the policy value for Computer Configuration >> Windows Settings >> Security Settings >> Local Policies >> Security Options >> \"System cryptography: Use FIPS compliant algorithms for encryption, hashing, and signing\" to \"Enabled\".",
+  "ccis": [
+    "CCI-000366",
+    "CCI-001135",
+    "CCI-002426"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Note: The Common Criteria Security Functional Requirement (SFR) FTP_ITC.1.1(1) defines \"trusted channel\" as \"a channel that uses IPsec, SSH, TLS, or TLS/HTTPS to provide a trusted communications channel between itself and authorized IT entity that is logically distinct from other communication channels and provides assured identification of its end points and protection of the channel data from modification or disclosure.\" The trusted channel uses IPsec, TLS, DTLS, or HTTPS as the protocol that preserves the confidentiality and integrity of PAW communications.\n\nThe confidentiality and integrity of the communications between the PAW and high-value IT resources being managed from the PAW must be protected due to the highly sensitive nature of the administrative functions being performed. A trusted channel provides the requisite assured identification of its end points and protection of the channel data from modification or disclosure.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WPAW-00-001700",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-paw-security-technical-implementation-guide-v3r3-7eba0f8d",
+      "name": "Microsoft Windows PAW Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-paw-security-technical-implementation-guide-v3r3-7eba0f8d"
+  ]
+}

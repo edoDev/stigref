@@ -1,0 +1,53 @@
+{
+  "id": "SV-223989r1137691_rule",
+  "full_rule_id": "SV-223989r1137691_rule",
+  "rule_id": "SV-223989",
+  "rule_revision": "1137691",
+  "group_id": "V-223989",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS JES2 output devices must be controlled in accordance with the proper security requirements.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Refer the JES2PARM member of SYS1.PARMLIB\nReview the WRITER resource in the JESINPUT resource class:\n\nNOTE: If the WRITER resource is not defined within the JES2 parameters, the resource in the JESINPUT resource class does not have to be owned.\n\nFrom the ISPF Command Shell enter:\nTSS WHOOWNS JESINPUT(WRITER)\n\nIf the WRITER resource is owned by generic and/or fully qualified entries in the JESINPUT resource class, this is not a finding.",
+  "fix": "Ensure the following items are in effect:\n\n-The JES2. resource is owned in the WRITER resource class.\n\nFor Example:\nThe following command may be used to establish default protection for resources defined to the WRITER resource class:\nTSS ADDTO(deptacid) WRITER(JES2.)\n\n-The ownership of all WRITER resources is appropriate.\n\nGrant read access to authorized users for each of the following WRITER resource class output destinations:\n\nJES2.LOCAL.devicename\nJES2.LOCAL.OFF*.JT\nJES2.LOCAL.OFF*.ST\nJES2.LOCAL.PRT*\nJES2.LOCAL.PUN*\nJES2.NJE.nodename\nJES2.RJE.devicename\n\nThe following is an example of granting operators with a profile ACID of jesopracid permission to off load SYSOUT data sets into any SPOOL off load processor after obtaining permission from the ISSO:\n\nTSS PERMIT(jesopracid) WRITER(JES2.LOCAL.OFF*.ST) -\nACCESS(READ) ACTION(AUDIT)\n\nThe resource definition should be generic if all of the resources of the same type have identical access controls (e.g., if all off load transmitters are equivalent).",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoD-approved PKIs, all DoD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access. Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.\n\nAccess control policies include: identity-based policies, role-based policies, and attribute-based policies. Access enforcement mechanisms include: access control lists, access control matrices, and cryptography. These policies and mechanisms must be employed by the application to control access between users (or processes acting on behalf of users) and objects (e.g., devices, files, records, processes, programs, and domains) in the information system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TSS0-JS-000050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4",
+      "name": "IBM z/OS TSS Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-tss-security-technical-implementation-guide-v9r8-5ca24ac4"
+  ]
+}

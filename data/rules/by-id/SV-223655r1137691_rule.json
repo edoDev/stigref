@@ -1,0 +1,53 @@
+{
+  "id": "SV-223655r1137691_rule",
+  "full_rule_id": "SV-223655r1137691_rule",
+  "rule_id": "SV-223655",
+  "rule_revision": "1137691",
+  "group_id": "V-223655",
+  "group_title": "SRG-OS-000080-GPOS-00048",
+  "title": "IBM z/OS system commands must be properly protected.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>z/OS system commands provide a method of controlling the operating environment. Failure to properly control access to z/OS system commands could result in unauthorized personnel issuing sensitive system commands. This exposure may threaten the integrity and availability of the operating system environment, and compromise the confidentiality of customer data.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the ISPF Command Shell enter:\nRList OPERCMDS *\n\nIf the MVS.** resource is defined to the OPERCMDS class with an access of NONE and all (i.e., failures and successes) access logged, this is not a finding.\n\nIf the access to z/OS system commands defined in the table entitled MVS commands, RACF access authorities, and resource names, in the IBM z/OS MVS System Commands manual, is restricted to the appropriate personnel (e.g., operations staff, systems programming personnel, general users) as determined in the Documented site Security Plan, this is not a finding.\n\nNote: Display commands and others as deemed by the site IAW site security plan may be allowed for all users with no logging. The (MVS.SEND) Command will not be a finding if used by all.\n\nIf all access (i.e., failures and successes) to specific z/OS system commands is logged as indicated in the table entitled MVS commands, RACF access authorities, and resource names, in the z/OS MVS System Commands, this is not a finding.",
+  "fix": "z/OS system commands provide control over z/OS functions and can compromise security if misused. These commands are subject to various types of potential abuse. For this reason, it is necessary to place restrictions on the z/OS system commands that can be entered by particular operators.\n\nSome commands are particularly dangerous and should only be used when all less drastic options have been exhausted. Misuse of these commands can create a situation in which the only recovery is an IPL.\n\nApply the following recommendations when implementing security:\n\nThe MVS.** resource is defined to the OPERCMDS class with an access of NONE and all (i.e., failures and successes) access logged.\n\nAccess to z/OS system commands defined in the entitled MVS commands, RACF access authorities, and resource names, in the IBM z/OS MVS System Commands manual is restricted to the appropriate personnel (e.g., operations staff, systems programming personnel, general users).\n\nThe (MVS.SEND) Command will not be a finding if used by all.\n\nDisplay commands and others as deemed by the site IAW site security plan may be allowed for all users with no logging. The (MVS.SEND) Command will not be a finding if used by all.\n\nAll elevated access (i.e., failures and successes) to specific z/OS system commands is logged.\n\nA sample set of commands to define and permit access to system command resources is shown here:\n\nRDEF OPERCMDS MVS.** UACC(NONE) OWNER(<syspsmpl>) AUDIT(ALL(READ)) DATA(\"set up deny-by-default profile')\n\nThen, in accordance with the referenced table, use the following template to define profiles for each command:\n\nRDEF OPERCMDS <system command profile> UACC(NONE) OWNER(<syspsmpl>) AUDIT(ALL(READ))\n\nPERMIT <system command profile> CLASS(OPERCMDS) ID(<groupname>) ACCESS(<accesslevel>)",
+  "ccis": [
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "z/OS system commands provide a method of controlling the operating environment. Failure to properly control access to z/OS system commands could result in unauthorized personnel issuing sensitive system commands. This exposure may threaten the integrity and availability of the operating system environment, and compromise the confidentiality of customer data.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RACF-ES-000070",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8",
+      "name": "IBM z/OS RACF Security Technical Implementation Guide",
+      "version": "9",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "ibm-z-os-racf-security-technical-implementation-guide-v9r8-87f171e8"
+  ]
+}

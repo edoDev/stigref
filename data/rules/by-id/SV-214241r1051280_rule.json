@@ -1,0 +1,53 @@
+{
+  "id": "SV-214241r1051280_rule",
+  "full_rule_id": "SV-214241r1051280_rule",
+  "rule_id": "SV-214241",
+  "rule_revision": "1051280",
+  "group_id": "V-214241",
+  "group_title": "SRG-APP-000141-WSR-000076",
+  "title": "The Apache web server must not be a proxy server.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A web server should be primarily a web server or a proxy server but not both, for the same reasons that other multiuse servers are not recommended. Scanning for web servers that will also proxy requests into an otherwise protected network is a very common attack, making the attack anonymous.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If the server has been approved to be a proxy server, this requirement is Not Applicable.\n\nDetermine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file:\n\n# apachectl -V | egrep -i 'httpd_root|server_config_file'\n-D HTTPD_ROOT=\"/etc/httpd\"\n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\"\n\nNote: The apachectl front end is the preferred method for locating the Apache httpd file. For some Linux distributions, \"apache2ctl -V\" or \"httpd -V\" can also be used. \n\nSearch for the directive \"ProxyRequests\" in the \"httpd.conf\" file. \n\nIf the ProxyRequests directive is set to \"On\", this is a finding.",
+  "fix": "Determine the location of the \"HTTPD_ROOT\" directory and the \"httpd.conf\" file:\n\n# apachectl -V | egrep -i 'httpd_root|server_config_file'\n-D HTTPD_ROOT=\"/etc/httpd\"\n-D SERVER_CONFIG_FILE=\"conf/httpd.conf\"\n\nEdit the file and comment out the ProxyRequests directive in the httpd.conf file.\n\nRestart Apache: apachectl restart",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A web server should be primarily a web server or a proxy server but not both, for the same reasons that other multiuse servers are not recommended. Scanning for web servers that will also proxy requests into an otherwise protected network is a very common attack, making the attack anonymous.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AS24-U1-000260",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738",
+      "name": "Apache Server 2.4 UNIX Server Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "apache-server-2-4-unix-server-security-technical-implementation-guide-v3r2-9e42b738"
+  ]
+}

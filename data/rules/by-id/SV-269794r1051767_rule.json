@@ -1,0 +1,53 @@
+{
+  "id": "SV-269794r1051767_rule",
+  "full_rule_id": "SV-269794r1051767_rule",
+  "rule_id": "SV-269794",
+  "rule_revision": "1051767",
+  "group_id": "V-269794",
+  "group_title": "SRG-APP-000395-NDM-000347",
+  "title": "The Dell OS10 Switch must authenticate Network Time Protocol (NTP) sources using authentication that is cryptographically based.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If NTP is not authenticated, an attacker can introduce a rogue NTP server. This rogue server can then be used to send incorrect time information to network devices, which will make log timestamps inaccurate and affect scheduled actions. NTP authentication is used to prevent this tampering by authenticating the time source.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the OS10 Switch configuration to determine if the network device authenticates NTP endpoints before establishing a local, remote, or network connection using authentication that is cryptographically based.\n\nReview the configuration to verify that NTP authentication is configured when communicating with the NTP servers with the following commands:\n\nOS10# show running-configuration ntp\n!\nntp authenticate\nntp authentication-key 345 sha2-256 9 ****\nntp server 192.0.2.1 key 345 prefer\nntp server 192.0.2.5 key 345\nntp trusted-key 345\n\nIf the OS10 Switch not authenticate NTP sources using authentication that is cryptographically based, this is a finding.",
+  "fix": "Configure the OS10 Switch to authenticate NTP sources using authentication that is cryptographically based:\n\nOS10(config)# ntp authenticate\nOS10(config)# ntp trusted-key 345\nOS10(config)# ntp authentication-key 345 sha2-256 0 <key>\nOS10(config)# ntp server 192.0.2.1 key 345 preferred\nOS10(config)# ntp server 192.0.2.5 key 345",
+  "ccis": [
+    "CCI-001967"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If NTP is not authenticated, an attacker can introduce a rogue NTP server. This rogue server can then be used to send incorrect time information to network devices, which will make log timestamps inaccurate and affect scheduled actions. NTP authentication is used to prevent this tampering by authenticating the time source.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OS10-NDM-000750",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726",
+      "name": "Dell OS10 Switch NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "dell-os10-switch-ndm-security-technical-implementation-guide-v1r1-aa8c8726"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-215394r958480_rule",
+  "full_rule_id": "SV-215394r958480_rule",
+  "rule_id": "SV-215394",
+  "rule_revision": "958480",
+  "group_id": "V-215394",
+  "group_title": "SRG-OS-000096-GPOS-00050",
+  "title": "The Reliable Datagram Sockets (RDS) protocol must be disabled on AIX.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The Reliable Datagram Sockets (RDS) protocol is a relatively new protocol developed by Oracle for communication between the nodes of a cluster. Binding this protocol to the network stack increases the attack surface of the host. Unprivileged local processes may be able to cause the system to dynamically load a protocol handler by opening a socket using the protocol.\n\nAIX has RDS protocol installed as part of the 'bos.net.tcp.client' fileset. The RDS protocol in primarily used for communication on INFI-Band interfaces. The protocol is manually loaded with the bypassctrl command.\n\nTo prevent possible attacks this protocol must be disabled unless required.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Determine if RDS is currently loaded:\n# genkex | grep rds \n\nIf there is any output from the command, this is a finding.",
+  "fix": "Configure the system to not automatically load the RDS protocol handler. \n\nCheck startup scripts for \"bypasscrtl load rds\" and comment out the \"bypassctrl\" commands.\n\nUnload the driver from the kernel: \n# bypassctrl unload rds",
+  "ccis": [
+    "CCI-000382"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The Reliable Datagram Sockets (RDS) protocol is a relatively new protocol developed by Oracle for communication between the nodes of a cluster. Binding this protocol to the network stack increases the attack surface of the host. Unprivileged local processes may be able to cause the system to dynamically load a protocol handler by opening a socket using the protocol.\n\nAIX has RDS protocol installed as part of the 'bos.net.tcp.client' fileset. The RDS protocol in primarily used for communication on INFI-Band interfaces. The protocol is manually loaded with the bypassctrl command.\n\nTo prevent possible attacks this protocol must be disabled unless required.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-003089",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-273587r1111281_rule",
+  "full_rule_id": "SV-273587r1111281_rule",
+  "rule_id": "SV-273587",
+  "rule_revision": "1111281",
+  "group_id": "V-273587",
+  "group_title": "SRG-NET-000019-RTR-000010",
+  "title": "The RUCKUS ICX perimeter router must be configured to not redistribute static routes to an alternate gateway service provider into BGP or an IGP peering with the NIPRNet or to other autonomous systems.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If the static routes to the alternate gateway are being redistributed into an Exterior Gateway Protocol or Interior Gateway Protocol to a NIPRNet gateway, this could make traffic on NIPRNet flow to that particular router and not to the Internet Access Pointerface routers. This could not only wreak havoc with traffic flows on NIPRNet, but it could overwhelm the connection from the router to the NIPRNet gateway(s) and also cause traffic destined for outside of NIPRNet to bypass the defenses of the Internet Access Points.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone. \n\nReview ICX router configuration for statements redistributing static routes into IGP or BGP:\nrouter bgp\n local-as 1001\n neighbor x.4.4.4 remote-as 1000\n redistribute static\n!\nrouter ospf\n redistribute static\n!\n\nIf static routes with the alternate gateway service provider as the next hop exist and static routes are redistributed into an IGP or BGP (without a route-map filter), this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN Backbone. \n\nCreate a prefix list to be used by route map to prevent static routes pointing to the alternate gateway service provider from being redistributed:\nip prefix-list ISP_PREFIX permit 10.12.1.0/24\n\nroute-map FILTER_ISP_STATIC deny 10\n match ip address prefix-list ISP_PREFIX\nroute-map FILTER_ISP_STATIC permit 20\n!\n\nrouter ospf\n redistribute static route-map FILTER_ISP_STATIC\n!",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the static routes to the alternate gateway are being redistributed into an Exterior Gateway Protocol or Interior Gateway Protocol to a NIPRNet gateway, this could make traffic on NIPRNet flow to that particular router and not to the Internet Access Pointerface routers. This could not only wreak havoc with traffic flows on NIPRNet, but it could overwhelm the connection from the router to the NIPRNet gateway(s) and also cause traffic destined for outside of NIPRNet to bypass the defenses of the Internet Access Points.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "RCKS-RTR-000190",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c",
+      "name": "RUCKUS ICX Router Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "ruckus-icx-router-security-technical-implementation-guide-v1r1-5a04424c"
+  ]
+}

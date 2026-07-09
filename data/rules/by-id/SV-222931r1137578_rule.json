@@ -1,0 +1,54 @@
+{
+  "id": "SV-222931r1137578_rule",
+  "full_rule_id": "SV-222931r1137578_rule",
+  "rule_id": "SV-222931",
+  "rule_revision": "1137578",
+  "group_id": "V-222931",
+  "group_title": "SRG-APP-000033-AS-000024",
+  "title": "Default password for keystore must be changed.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Tomcat currently operates only on JKS, PKCS11, or PKCS12 format keystores. The JKS format is Java's standard \"Java KeyStore\" format, and is the format created by the keytool command-line utility which is included in the JDK. The PKCS12 format is an internet standard, and is managed using OpenSSL or Microsoft's Key-Manager. This requirement only applies to JKS keystores. When a new JKS keystore is created, if a password is not specified during creation the default password used by Tomcat is \"changeit\" (all lower case). If the default password is not changed, the keystore is at risk of compromise.\n\nSatisfies: SRG-APP-000033-AS-000023, SRG-APP-000176-AS-000125</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the Tomcat server console, run the following command to check the keystore:\n\nsudo keytool -list -v \n\nWhen prompted for the keystore password type \"changeit\" sans quotes.\n\nIf the contents of the keystore are displayed, this is a finding.",
+  "fix": "From the Tomcat server as a privileged user, run the following command:\n\nsudo keytool -storepasswd \n\nWhen prompted for the keystore password, select a strong password, minimum 10 characters, mixed case alpha-numeric.\n\nDocument the password and store in a secured location that is only accessible to authorized personnel.",
+  "ccis": [
+    "CCI-000186",
+    "CCI-000213"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Tomcat currently operates only on JKS, PKCS11, or PKCS12 format keystores. The JKS format is Java's standard \"Java KeyStore\" format, and is the format created by the keytool command-line utility which is included in the JDK. The PKCS12 format is an internet standard, and is managed using OpenSSL or Microsoft's Key-Manager. This requirement only applies to JKS keystores. When a new JKS keystore is created, if a password is not specified during creation the default password used by Tomcat is \"changeit\" (all lower case). If the default password is not changed, the keystore is at risk of compromise.\n\nSatisfies: SRG-APP-000033-AS-000023, SRG-APP-000176-AS-000125",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "TCAT-AS-000060",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274",
+      "name": "Apache Tomcat Application Server 9 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "apache-tomcat-application-server-9-security-technical-implementation-guide-v3r4-509cc274"
+  ]
+}

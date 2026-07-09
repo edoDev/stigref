@@ -1,0 +1,53 @@
+{
+  "id": "SV-256028r882426_rule",
+  "full_rule_id": "SV-256028r882426_rule",
+  "rule_id": "SV-256028",
+  "rule_revision": "882426",
+  "group_id": "V-256028",
+  "group_title": "SRG-NET-000343-RTR-000001",
+  "title": "The PE router providing MPLS Layer 2 Virtual Private Network (L2VPN) services must be configured to authenticate targeted Label Distribution Protocol (LDP) sessions used to exchange virtual circuit (VC) information using a FIPS-approved message authentication code algorithm.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>LDP provides the signaling required for setting up and tearing down pseudowires (virtual circuits used to transport Layer 2 frames) across an MPLS IP core network. Using a targeted LDP session, each PE router advertises a virtual circuit label mapping that is used as part of the label stack imposed on the frames by the ingress PE router during packet forwarding. Authentication provides protection against spoofed TCP segments that can be introduced into the LDP sessions.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Arista router configuration to determine if LDP messages are being authenticated for the targeted LDP sessions.\n\nStep 1: Verify the Arista router configuration to verify LDP is configured globally and router-id is set.\n\nmpls ldp\n  router-id [x.x.x.x | interface] LoopbackY\n  no shutdown\n\nStep 2: Verify the Arista router configuration to ensure the password is configured for LDP neighbor.\n\nmpls ldp\n  password [type] [password]\n\nStep 3: Enable the mpls globally or per interface.\n\nFor Global:\n\nmpls ip\n\nFor interfaces:\n\ninterface Ethernet 1\n mpls ip\n\nIf authentication is not being used for the LDP sessions using a FIPS-approved message authentication code algorithm, this is a finding.",
+  "fix": "Implement authentication for all targeted LDP sessions using a FIPS-approved message authentication code algorithm.\n\nStep 1: Configure the mpls LDP on the Arista MLS.\n\nPE11(config)#mpls ldp\nPE11(config-mpls-ldp)#router-id interface Loopback0\nPE11(config-mpls-ldp)#no shutdown\n\nStep 2: Enable the authentication for LDP neighbors.\n\nPE11(config-mpls-ldp)#password 0 xxxxx",
+  "ccis": [
+    "CCI-001958"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "LDP provides the signaling required for setting up and tearing down pseudowires (virtual circuits used to transport Layer 2 frames) across an MPLS IP core network. Using a targeted LDP session, each PE router advertises a virtual circuit label mapping that is used as part of the label stack imposed on the frames by the ingress PE router during packet forwarding. Authentication provides protection against spoofed TCP segments that can be introduced into the LDP sessions.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000480",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

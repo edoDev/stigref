@@ -1,0 +1,54 @@
+{
+  "id": "SV-250350r961812_rule",
+  "full_rule_id": "SV-250350r961812_rule",
+  "rule_id": "SV-250350",
+  "rule_revision": "961812",
+  "group_id": "V-250350",
+  "group_title": "SRG-APP-000499-AS-000224",
+  "title": "The WebSphere Liberty Server must generate log records for authentication and authorization events.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Enabling authentication (SECURITY_AUTHN) and authorization (SECURITY_AUTHZ) event handlers configures the server to record security authorization and authentication events. By logging these events, the logs can be analyzed to identify activity that could be related to security events and to aid post mortem forensic analysis.\n\nSatisfies: SRG-APP-000499-AS-000224, SRG-APP-000495-AS-000220, SRG-APP-000503-AS-000228, SRG-APP-000504-AS-000229, SRG-APP-000505-AS-000230, SRG-APP-000506-AS-000231, SRG-APP-000509-AS-000234, SRG-APP-000092-AS-000053</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the ${server.config.dir}/server.xml file, verify the audit-1.0 feature is enabled. Also verify the auditFile Handler is configured to log AUTHN and AUTHZ events. \n\nIf the audit1.0 feature is not enabled, this is a finding.\n\nIf the SECURITY_AUTHN and SECURITY_AUTHZ event handlers are not configured, this is a finding. \n\n<featureManager>\n<feature>audit-1.0</feature>\n</featureManager>\n\n    <auditFileHandler>\n        <events name=\"AllAuthn\" eventName=\"SECURITY_AUTHN\" />\n<events name=\"AllAuthz\" eventName=\"SECURITY_AUTHZ\" />\n    </auditFileHandler>",
+  "fix": "Modify the ${server.config.dir}/server.xml file and configure the audit-1.0 feature.\n\n<featureManager>\n<feature>audit-1.0</feature>\n</featureManager>\n\nConfigure the auditFileHandler setting to record SECURITY_AUTHN and SECURITY_AUTHZ events. \n\n<auditFileHandler>\n      <events name=\"AllAuthn\" eventName=\"SECURITY_AUTHN\"/>\n<events name=\"AllAuthz\" eventName=\"SECURITY_AUTHZ\" />\n    </auditFileHandler>    \n\nReview audit logs located under the ${server.config.dir}/logs directory and ensure AUTHN and AUTHZ events are logged.",
+  "ccis": [
+    "CCI-000172",
+    "CCI-001464"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Enabling authentication (SECURITY_AUTHN) and authorization (SECURITY_AUTHZ) event handlers configures the server to record security authorization and authentication events. By logging these events, the logs can be analyzed to identify activity that could be related to security events and to aid post mortem forensic analysis.\n\nSatisfies: SRG-APP-000499-AS-000224, SRG-APP-000495-AS-000220, SRG-APP-000503-AS-000228, SRG-APP-000504-AS-000229, SRG-APP-000505-AS-000230, SRG-APP-000506-AS-000231, SRG-APP-000509-AS-000234, SRG-APP-000092-AS-000053",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "IBMW-LS-001190",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6",
+      "name": "IBM WebSphere Liberty Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "4"
+    }
+  ],
+  "stig_ids": [
+    "ibm-websphere-liberty-server-security-technical-implementation-guide-v2r4-42ac79f6"
+  ]
+}

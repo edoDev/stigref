@@ -1,0 +1,55 @@
+{
+  "id": "SV-229025r1015761_rule",
+  "full_rule_id": "SV-229025r1015761_rule",
+  "rule_id": "SV-229025",
+  "rule_revision": "1015761",
+  "group_id": "V-229025",
+  "group_title": "SRG-APP-000516-NDM-000317",
+  "title": "The Juniper SRX Services Gateway must be configured to use a centralized authentication server to authenticate privileged users for remote and nonlocal access for device management.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is a particularly important protection against the insider threat. Audit records for administrator accounts access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.\n\nThe Juniper SRX supports three methods of user authentication: local password authentication, Remote Authentication Dial-In User Service (RADIUS), and Terminal Access Controller Access Control System Plus (TACACS+). RADIUS and TACACS+ are remote access methods used for management of the Juniper SRX. The local password method will be configured for use only for the account of last resort; however, it will not be used for remote and nonlocal access or this will result in a CAT 1 finding (CCI-000765).\n\nThis requirement references identification and authentication and does not prevent the configuration of privileges using the remote template account (CCI-000213).</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify the Juniper SRX is configured to forward logon requests to a RADIUS or TACACS+. \n\nFrom the CLI operational mode enter: \nshow system radius-server \nor \nshow system tacplus-server\n\nIf the Juniper SRX is not configured to use at least one RADIUS or TACACS+ server, this is a finding.",
+  "fix": "Configure the Juniper SRX to forward logon requests to a RADIUS or TACACS+. Remove local users configured on the device (CCI-000213) so the AAA server cannot default to using a local account. \n\n[edit]\nset system tacplus-server address <server ipaddress> port 1812 secret <shared secret> \n\nor \n\n[edit]\nset system radius-server address <server ipaddress> port 1812 secret <shared secret> \n\nNote: DOD policy is that redundant AAA servers are required to mitigate the risk of a failure of the primary AAA device.",
+  "ccis": [
+    "CCI-000366",
+    "CCI-000015",
+    "CCI-002132"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is a particularly important protection against the insider threat. Audit records for administrator accounts access to the organization's network devices can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each network device.\n\nThe Juniper SRX supports three methods of user authentication: local password authentication, Remote Authentication Dial-In User Service (RADIUS), and Terminal Access Controller Access Control System Plus (TACACS+). RADIUS and TACACS+ are remote access methods used for management of the Juniper SRX. The local password method will be configured for use only for the account of last resort; however, it will not be used for remote and nonlocal access or this will result in a CAT 1 finding (CCI-000765).\n\nThis requirement references identification and authentication and does not prevent the configuration of privileges using the remote template account (CCI-000213).",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "JUSX-DM-000097",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033",
+      "name": "Juniper SRX Services Gateway NDM Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "juniper-srx-services-gateway-ndm-security-technical-implementation-guide-v3r3-b6fc6033"
+  ]
+}

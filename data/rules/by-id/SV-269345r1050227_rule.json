@@ -1,0 +1,53 @@
+{
+  "id": "SV-269345r1050227_rule",
+  "full_rule_id": "SV-269345r1050227_rule",
+  "rule_id": "SV-269345",
+  "rule_revision": "1050227",
+  "group_id": "V-269345",
+  "group_title": "SRG-OS-000095-GPOS-00049",
+  "title": "AlmaLinux OS 9 must disable the Stream Control Transmission Protocol (SCTP) kernel module.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>The SCTP is a transport layer protocol, designed to support the idea of message-oriented communication, with several streams of messages within one connection. \n\nDisabling SCTP protects the system against exploitation of any flaws in its implementation.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify that AlmaLinux OS 9 disables the ability to load the SCTP kernel module with the following command:\n\n$ grep -r sctp /etc/modprobe.conf /etc/modprobe.d/* \n\n/etc/modprobe.d/sctp.conf:install sctp /bin/false\n/etc/modprobe.d/sctp.conf:blacklist sctp\n\nIf the command does not return any output, or the line is commented out, and use of SCTP is not documented with the information system security officer (ISSO) as an operational requirement, this is a finding.",
+  "fix": "To configure the system to prevent the SCTP kernel module from being loaded, run the following command:\n\n$ cat << EOF | tee /etc/modprobe.d/sctp.conf \ninstall sctp /bin/false\nblacklist sctp\nEOF",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The SCTP is a transport layer protocol, designed to support the idea of message-oriented communication, with several streams of messages within one connection. \n\nDisabling SCTP protects the system against exploitation of any flaws in its implementation.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ALMA-09-030050",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850",
+      "name": "Cloud Linux AlmaLinux OS 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "6"
+    }
+  ],
+  "stig_ids": [
+    "cloud-linux-almalinux-os-9-security-technical-implementation-guide-v1r6-7864f850"
+  ]
+}

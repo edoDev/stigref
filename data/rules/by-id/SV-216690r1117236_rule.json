@@ -1,0 +1,53 @@
+{
+  "id": "SV-216690r1117236_rule",
+  "full_rule_id": "SV-216690r1117236_rule",
+  "rule_id": "SV-216690",
+  "rule_revision": "1117236",
+  "group_id": "V-216690",
+  "group_title": "SRG-NET-000018-RTR-000005",
+  "title": "The Cisco BGP router must be configured to reject outbound route advertisements for any prefixes that do not belong to any customers or the local autonomous system (AS).",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute Interior Gateway Protocol (IGP) routes into BGP, thereby leaking internal routes.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN Backbone.\n\nStep 1: Verify that a prefix list has been configured containing prefixes belonging to customers as well as the local AS as shown in the example below.\n\nip prefix-list CE_PREFIX_ADVERTISEMENTS seq 5 permit x.13.1.0/24 le 32\nip prefix-list CE_PREFIX_ADVERTISEMENTS seq 10 permit x.13.2.0/24 le 32\nip prefix-list CE_PREFIX_ADVERTISEMENTS seq 15 permit x.13.3.0/24 le 32\nip prefix-list CE_PREFIX_ADVERTISEMENTS seq 20 permit x.13.4.0/24 le 32\n…\n…\n…\nip prefix-list CE_PREFIX_ADVERTISEMENTS seq 80 deny 0.0.0.0/0 ge 8\n\nStep 2: Verify that the prefix lists has been applied to all CE peers as shown in the example below.\n\nrouter bgp 64512\n no synchronization\n bgp log-neighbor-changes\n neighbor x.12.4.14 remote-as 64514\n neighbor x.12.4.14 prefix-list CE_PREFIX_ADVERTISEMENTS out\n neighbor x.12.4.16 remote-as 64516\n neighbor x.12.4.16 prefix-list CE_PREFIX_ADVERTISEMENTS out\n\nNote: This check is NA for JRSS systems.\n\nIf the router is not configured to reject outbound route advertisements that do not belong to any customers or the local AS, this is a finding.",
+  "fix": "Step 1: Configure a prefix list for containing all customer and local AS prefixes as shown in the example below:\n\nR1(config)#ip prefix-list CE_PREFIX_ADVERTISEMENTS permit x.13.1.0/24 le 32\nR1(config)#ip prefix-list CE_PREFIX_ADVERTISEMENTS permit x.13.2.0/24 le 32\nR1(config)#ip prefix-list CE_PREFIX_ADVERTISEMENTS permit x.13.3.0/24 le 32\nR1(config)#ip prefix-list CE_PREFIX_ADVERTISEMENTS permit x.13.4.0/24 le 32\n…\n…\n…\nR1(config)#ip prefix-list CE_PREFIX_ADVERTISEMENTS deny 0.0.0.0/0 ge 8\n\nStep 2: Apply the prefix list filter outbound to each CE neighbor as shown in the example.\n\nR1(config)#router bgp 64512\nR1(config-router)#neighbor x.12.4.14 prefix-list CE_PREFIX_ADVERTISEMENTS out\nR1(config-router)#neighbor x.12.4.16 prefix-list CE_PREFIX_ADVERTISEMENTS out",
+  "ccis": [
+    "CCI-001368"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Advertisement of routes by an autonomous system for networks that do not belong to any of its customers pulls traffic away from the authorized network. This causes a denial of service (DoS) on the network that allocated the block of addresses and may cause a DoS on the network that is inadvertently advertising it as the originator. It is also possible that a misconfigured or compromised router within the GIG IP core could redistribute Interior Gateway Protocol (IGP) routes into BGP, thereby leaking internal routes.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000520",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b",
+      "name": "Cisco IOS XE Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xe-router-rtr-security-technical-implementation-guide-v3r5-97839f1b"
+  ]
+}

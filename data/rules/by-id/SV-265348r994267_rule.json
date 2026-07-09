@@ -1,0 +1,54 @@
+{
+  "id": "SV-265348r994267_rule",
+  "full_rule_id": "SV-265348r994267_rule",
+  "rule_id": "SV-265348",
+  "rule_revision": "994267",
+  "group_id": "V-265348",
+  "group_title": "SRG-APP-000515-NDM-000325",
+  "title": "The NSX Manager must be configured to send logs to a central log server.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOff-loading is a common process in information systems with limited audit storage capacity.\n\nSatisfies: SRG-APP-000515-NDM-000325, SRG-APP-000357-NDM-000293, SRG-APP-000516-NDM-000350</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "From the NSX Manager web interface, go to System >> Fabric >> Profiles >> Node Profiles.\n\nClick \"All NSX Nodes\" and verify the Syslog servers listed.\n\nor\n\nFrom an NSX Manager shell, run the following command:\n\n> get logging-servers\n\nNote: This command must be run from each NSX Manager as they are configured individually.\n\nIf no logging severs are configured or unauthorized logging servers are configured, this is a finding.\n\nIf the log level is not set to INFO, this is a finding.",
+  "fix": "To configure a profile to apply syslog servers to all NSX Manager nodes, do the following:\n\nFrom the NSX Manager web interface, go to System >> Fabric >> Profiles >> Node Profiles.\n\nClick \"All NSX Nodes\" and then under \"Syslog Servers\" click \"Add\".\n\nEnter the syslog server details and choose \"Information\" for the log level and click \"Add\".\n\nor\n\n(Optional) From an NSX Manager shell, run the following command to clear any existing incorrect logging-servers:\n\n> clear logging-servers\n\nFrom an NSX Manager shell, run the following command to configure a udp/tcp syslog server:\n\n> set logging-server <server-ip or server-name> proto <tcp or udp> level info\n\nFrom an NSX Manager shell, run the following command to configure a TLS syslog server:\n\n> set logging-server <server-ip or server-name> proto tls level info serverca ca.pem clientca ca.pem certificate cert.pem key key.pem\n\nFrom an NSX Manager shell, run the following command to configure an LI-TLS syslog server:\n\n> set logging-server <server-ip or server-name> proto li-tls level info serverca root-ca.crt\n\nNote: If using the protocols TLS or LI-TLS to configure a secure connection to a log server, the server and client certificates must be stored in /image/vmware/nsx/file-store on each NSX-T Manager appliance.",
+  "ccis": [
+    "CCI-001851",
+    "CCI-001849"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOff-loading is a common process in information systems with limited audit storage capacity.\n\nSatisfies: SRG-APP-000515-NDM-000325, SRG-APP-000357-NDM-000293, SRG-APP-000516-NDM-000350",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "NMGR-4X-000087",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-nsx-4-x-manager-ndm-security-technical-implementation-guide-v1r2-ead63637",
+      "name": "VMware NSX 4.x Manager NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-nsx-4-x-manager-ndm-security-technical-implementation-guide-v1r2-ead63637"
+  ]
+}

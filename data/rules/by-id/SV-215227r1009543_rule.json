@@ -1,0 +1,54 @@
+{
+  "id": "SV-215227r1009543_rule",
+  "full_rule_id": "SV-215227r1009543_rule",
+  "rule_id": "SV-215227",
+  "rule_revision": "1009543",
+  "group_id": "V-215227",
+  "group_title": "SRG-OS-000266-GPOS-00101",
+  "title": "AIX must enforce password complexity by requiring that at least one special character be used.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity or strength is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.\n\nPassword complexity is one factor in determining how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.\n\nSpecial characters are those characters that are not alphanumeric. Examples include: ~ ! @ # $ % ^ *.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Run the following command to check the system default value for \"minspecialchar\" attribute:\n# lssec -f /etc/security/user -s default -a minspecialchar\n\nThe above command should yield the following output:\ndefault minspecialchar=1\n\nIf the default value is \"0\", or the default value is empty, this is a finding.\n\nFrom the command prompt, run the following command to check \"minspecialchar\" attribute value for all accounts:\n# lsuser -a minspecialchar ALL\n\nThe above command should yield the following output:\nroot minspecialchar=1\nuser1 minspecialchar=1\nuser2 minspecialchar=2\nuser3 minspecialchar=1\n\nIf any account has \"minspecialchar=0\", or the \"minspecialchar\" value is not set, this is a finding.",
+  "fix": "From the command prompt, run the following command to set \"minspecialchar=1\" for the default stanza in \"/etc/security/user\":\n# chsec -f /etc/security/user -s default -a minspecialchar=1\n\nRun the following command to re-check \"minspecialchar\" values for all users:\n# lsuser -a minspecialchar ALL\n\nFor each user who has \"minspecialchar=0\", set its \"minspecialchar\" to \"1\" by running the following command from command prompt:\n# chsec -f /etc/security/user -s [user_name] -a minspecialchar=1",
+  "ccis": [
+    "CCI-004066",
+    "CCI-001619"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity or strength is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.\n\nPassword complexity is one factor in determining how long it takes to crack a password. The more complex the password, the greater the number of possible combinations that need to be tested before the password is compromised.\n\nSpecial characters are those characters that are not alphanumeric. Examples include: ~ ! @ # $ % ^ *.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "AIX7-00-001130",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0",
+      "name": "IBM AIX 7.x Security Technical Implementation Guide",
+      "version": "3",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "ibm-aix-7-x-security-technical-implementation-guide-v3r2-48e931a0"
+  ]
+}

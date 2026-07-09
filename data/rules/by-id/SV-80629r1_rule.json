@@ -1,0 +1,53 @@
+{
+  "id": "SV-80629r1_rule",
+  "full_rule_id": "SV-80629r1_rule",
+  "rule_id": "SV-80629",
+  "rule_revision": "1",
+  "group_id": "V-66139",
+  "group_title": "SRG-NET-000019-RTR-000005",
+  "title": "The HP FlexFabric Switch must establish boundaries for IPv6 Admin-Local, IPv6 Site-Local, IPv6 Organization-Local scope, and IPv4 Local-Scope multicast traffic.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the multicast topology diagram to determine if there are any documented Admin-Local (FFx4::/16), Site-Local (FFx5::/16), or Organization-Local (FFx8::/16) multicast boundaries for IPv6 traffic or any Local-Scope (239.255.0.0/16) boundaries for IPv4 traffic.\n\nVerify the appropriate boundaries are configured on the applicable multicast-enabled interfaces.\n\nIf appropriate multicast scope boundaries have not been configured, this is a finding.\n\n[HP] display current-configuration interface GigabitEthernet 0/2\ninterface GigabitEthernet0/2\n port link-mode route\n description OVERSUBSCRIBE\n ip address 201.6.36.1 255.255.255.0\n multicast boundary 239.255.0.0 16\n ipv6 multicast boundary scope 4\n ipv6 multicast boundary scope 5\n ipv6 multicast boundary scope 8\n ipv6 address 2115:C:24::1/120",
+  "fix": "Configure the appropriate boundaries to contain packets addressed within the administratively scoped zone. Defined multicast addresses are FFx4::/16, FFx5::/16, FFx8::/16, and 239.255.0.0/16.\n\nEnable ip multicast globally\n[HP] ipv6 multicast routing\n\nSpecify the IPv6 multicast boundary on multicast enabled interface\n\n[HP] interface gig 0/2\n[HP-GigabitEthernet0/2] ipv6 multicast boundary scope 4\n[HP-GigabitEthernet0/2] ipv6 multicast boundary scope 5\n[HP-GigabitEthernet0/2] ipv6 multicast boundary scope 8\n\nspecify the IPv4 multicast boundary on multicast enabled interfaces\n\n[HP-GigabitEthernet0/2] multicast boundary 239.255.0.0 16",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If multicast traffic is forwarded beyond the intended boundary, it is possible that it can be intercepted by unauthorized or unintended personnel.\n\nAdministrative scoped multicast addresses are locally assigned and are to be used exclusively by the enterprise network or enclave. Administrative scoped multicast traffic must not cross the enclave perimeter in either direction. Restricting multicast traffic makes it more difficult for a malicious user to access sensitive traffic.\n\nAdmin-Local scope is encouraged for any multicast traffic within a network intended for network management, as well as for control plane traffic that must reach beyond link-local destinations.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "HFFS-RT-000026",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225",
+      "name": "HP FlexFabric Switch RTR Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "hp-flexfabric-switch-rtr-security-technical-implementation-guide-v1r2-ed4cb225"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "SV-259600r961155_rule",
+  "full_rule_id": "SV-259600r961155_rule",
+  "rule_id": "SV-259600",
+  "rule_revision": "961155",
+  "group_id": "V-259600",
+  "group_title": "SRG-APP-000247",
+  "title": "Exchange receive connectors must control the number of recipients per message.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Email system availability depends in part on best practice strategies for setting tuning configurations. \n\nThis configuration controls the maximum number of recipients who will receive a copy of a message at one time. This tunable value is related to throughput capacity and can enable the ability to optimize message delivery. \n\nNote: There are two types of default receive connecters:\n\n\"Client Servername\" accepts SMTP connections from all non-MAPI clients, such as POP and IMAP. As POP and IMAP are not authorized for use in DOD, these should not be present. Their default value for MaxRecipientsPerMessage is 200. IMAP Secure is not restricted and may be configured.\n\n\"Default Servername\" accepts connections from other mailbox servers and any Edge Transport servers. Their default value for MaxRecipientsPerMessage is 5000.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the Email Domain Security Plan (EDSP).\n\nDetermine the Maximum Recipients per Message value.\n\nOpen the Exchange Management Shell and enter the following command:\n\nGet-ReceiveConnector | Select-Object -Property Name, Identity, MaxRecipientsPerMessage\n\nFor each receive connector, if the value of \"MaxRecipientsPerMessage\" is not set to \"5000\", this is a finding.\n\nor\n\nIf the value of \"MaxRecipientsPerMessage\" is set to a value other than \"5000\" and has signoff and risk acceptance in the EDSP, this is not a finding.",
+  "fix": "Update the EDSP to reflect the Maximum Recipients per Message value.\n\nOpen the Exchange Management Shell and enter the following command:\n\nSet-ReceiveConnector -Identity <'IdentityName'> -MaxRecipientsPerMessage 5000 \n\nNote: The <IdentityName> value must be in quotes.\n\nor \n\nThe value as identified by the EDSP that has obtained a signoff with risk acceptance.\n\nRepeat the procedure for each receive connector.",
+  "ccis": [
+    "CCI-001095"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Email system availability depends in part on best practice strategies for setting tuning configurations. \n\nThis configuration controls the maximum number of recipients who will receive a copy of a message at one time. This tunable value is related to throughput capacity and can enable the ability to optimize message delivery. \n\nNote: There are two types of default receive connecters:\n\n\"Client Servername\" accepts SMTP connections from all non-MAPI clients, such as POP and IMAP. As POP and IMAP are not authorized for use in DOD, these should not be present. Their default value for MaxRecipientsPerMessage is 200. IMAP Secure is not restricted and may be configured.\n\n\"Default Servername\" accepts connections from other mailbox servers and any Edge Transport servers. Their default value for MaxRecipientsPerMessage is 5000.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "EX19-ED-000113",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac",
+      "name": "Microsoft Exchange 2019 Edge Server Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-exchange-2019-edge-server-security-technical-implementation-guide-v2r2-6dc82aac"
+  ]
+}

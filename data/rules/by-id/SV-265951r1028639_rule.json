@@ -1,0 +1,53 @@
+{
+  "id": "SV-265951r1028639_rule",
+  "full_rule_id": "SV-265951r1028639_rule",
+  "rule_id": "SV-265951",
+  "rule_revision": "1028639",
+  "group_id": "V-265951",
+  "group_title": "SRG-APP-000454-DB-000389",
+  "title": "When updates are applied to MongoDB software, any software components that have been replaced or made unnecessary must be removed.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Previous versions of DBMS components that are not removed from the information system after updates have been installed may be exploited by adversaries.\n\nSome DBMSs' installation tools may remove older versions of software automatically from the information system. In other cases, manual review and removal will be required. In planning installations and upgrades, organizations must include steps (automated, manual, or both) to identify and remove the outdated modules.\n\nA transition period may be necessary when both the old and the new software are required. This should be taken into account in the planning.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Run the following command and observe the output. This command will determine if MongoDB has been installed with a package Manager (RedHat) and display what version is currently installed:\n\n> rpm -q mongodb-enterprise-server.x86_64\nmongodb-enterprise-server-7.0.8-1.el8.x86_64\n\nThe output of the command above indicates that MongoDB Enterprise Server has been installed with a package manager. \n\nIn the preceding output is an example showing that MongoDB Enterprise Server Version 7.0.8 is installed. The specific version will be dependent on the actual version installed. Upgrading MongoDB with the same package manager used for installation will overwrite or remove files as part of the upgrade process.\n\nIf MongoDB was installed with a Package Manager (YUM/RPM for RedHat) then this is not a finding.\n\nRun the following command and observe the output.\n\n> rpm -q mongodb-enterprise-server.x86_64\npackage mongodb-enterprise-server.x86_64 is not installed\n\nThe output of the command above indicates that MongoDB has not been installed via a package manager or may not have been installed at all.\n\nIf MongoDB has not been installed with a Package Manger (YUM/RPM for RedHat), this is a finding.",
+  "fix": "It is recommended to use the official installation packages provided by MongoDB. In the event the software was installed manually and permissions need to be restricted, consider a clean reinstallation. \n\nReview this organizational or site-specific document to determine how and where MongoDB is to be installed on the system. Using this documentation, verify that MongoDB has been installed on the system prior to upgrading.\n\nTo verify the version of MongoDB Enterprise Server, run the following command in the directory where the MongoDB executable binary has been placed according to the organizational or site-specific documentation.\n\n> cd <mongod binary directory>\n> ./mongod --version\n\nThe output will show the version and architecture of the MongoDB Server binary similar to the following:\n\nmongod --version\ndb version v7.0.8\nBuild Info: {\n    \"version\": \"7.0.8\",\n    \"gitVersion\": \"c5d33e55ba38d98e2f48765ec4e55338d67a4a64\",\n    \"openSSLVersion\": \"OpenSSL 1.1.1k  FIPS 25 Mar 2021\",\n    \"modules\": [\n        \"enterprise\"\n    ],\n    \"allocator\": \"tcmalloc\",\n    \"environment\": {\n        \"distmod\": \"rhel80\",\n        \"distarch\": \"x86_64\",\n        \"target_arch\": \"x86_64\"\n    }\n}\n\nVerify that the version desired (what the upgraded version should be) matches what is shown in the output.\n\nIf the version is not what is expected, then remove the mongod binary from the system to prevent it from being used and consult the organizational or site-specific documents for further guidance.\n\nRun the following commands as an operating system administrator to remove the MongoDB Enterprise Server binary from the system:\n\n> cd <mongod binary directory>\n> rm ./mongod",
+  "ccis": [
+    "CCI-002617"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Previous versions of DBMS components that are not removed from the information system after updates have been installed may be exploited by adversaries.\n\nSome DBMSs' installation tools may remove older versions of software automatically from the information system. In other cases, manual review and removal will be required. In planning installations and upgrades, organizations must include steps (automated, manual, or both) to identify and remove the outdated modules.\n\nA transition period may be necessary when both the old and the new software are required. This should be taken into account in the planning.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MD7X-00-009100",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "mongodb-enterprise-advanced-7-x-security-technical-implementation-guide-v1r1-f117b5bb",
+      "name": "MongoDB Enterprise Advanced 7.x Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "mongodb-enterprise-advanced-7-x-security-technical-implementation-guide-v1r1-f117b5bb"
+  ]
+}

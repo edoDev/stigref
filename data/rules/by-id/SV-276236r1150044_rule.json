@@ -1,0 +1,53 @@
+{
+  "id": "SV-276236r1150044_rule",
+  "full_rule_id": "SV-276236r1150044_rule",
+  "rule_id": "SV-276236",
+  "rule_revision": "1150044",
+  "group_id": "V-276236",
+  "group_title": "SRG-APP-000416-DB-000380",
+  "title": "Azure SQL Managed Instance must use NSA-approved cryptography to protect classified information in accordance with the data owners' requirements.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The application must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated. It is the responsibility of the data owner to assess the cryptography requirements in light of applicable federal laws, Executive Orders, directives, policies, regulations, and standards.\n\nNSA-approved cryptography for classified networks is hardware based. This requirement addresses the compatibility of Azure SQL Managed Instance with the encryption devices.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Use the TSQL query below to determine database encryption state: \n \nSELECT   DB_NAME(database_id) AS DatabaseName,   encryption_state_desc AS EncryptionState,   key_algorithm+CAST(key_length AS nvarchar(128)) AS EncryptionAlgorithm,   encryptor_type  FROM sys.dm_database_encryption_keys  \n\nValidate that for each database the [EncryptionState] is \"ENCRYPTED\" and the [EncryptionAlgorithm] returns one of the following values: [AES128], [AES192], or [AES256]. \n\nIf any other value is returned for either the \"EncryptionState\" or \"EncryptionAlgorithm\", this is a finding.",
+  "fix": "Create a compliant key/certificate and enable encryption on the database. \n\nRefer to: https://learn.microsoft.com/en-us/azure/azure-sql/database/transparent-data-encryption-byok-configure?view=azuresql&amp;tabs=azure-powershell\n \nThen execute the following command: \nALTER DATABASE [Database Name Between Brackets] SET ENCRYPTION ON;",
+  "ccis": [
+    "CCI-002450"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The application must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated. It is the responsibility of the data owner to assess the cryptography requirements in light of applicable federal laws, Executive Orders, directives, policies, regulations, and standards.\n\nNSA-approved cryptography for classified networks is hardware based. This requirement addresses the compatibility of Azure SQL Managed Instance with the encryption devices.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "MSQL-00-003200",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb",
+      "name": "Microsoft Azure SQL Managed Instance Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-azure-sql-managed-instance-security-technical-implementation-guide-v1r1-f916cddb"
+  ]
+}

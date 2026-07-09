@@ -1,0 +1,55 @@
+{
+  "id": "SV-271924r1168362_rule",
+  "full_rule_id": "SV-271924r1168362_rule",
+  "rule_id": "SV-271924",
+  "rule_revision": "1168362",
+  "group_id": "V-271924",
+  "group_title": "SRG-APP-000516-NDM-000336",
+  "title": "The Cisco APIC must be configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access.",
+  "severity": "high",
+  "description": "<VulnDiscussion>Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's Cisco ACIs can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each Cisco ACI.\n\nAPIC policies manage the authentication, authorization, and accounting (AAA) functions of the Cisco ACI fabric. The combination of user privileges, roles, and domains with access rights inheritance enables administrators to configure AAA functions at the managed object level in a granular fashion. Creating a user and assigning a role to that user does not enable access rights. It is necessary to also assign the user to one or more security domains. By default, the ACI fabric includes two special pre-created domains:\n- \"All\" allows access to the entire MIT.\n- \"Infra\" allows access to fabric infrastructure objects/subtrees, such as fabric access policies.\n\nSatisfies: SRG-APP-000149-NDM-000247, SRG-APP-000001-NDM-000200</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the AAA configuration:\n1. In the GUI, on the menu bar, choose Admin >> AAA.\n2. In the Navigation pane, click \"Authentication\".\n3. Review the configuration for the configured AAA providers.\n4. Review the configuration of the Login Domain(s) used by the site.\n\nIf the Cisco ACI is not configured to use at least two authentication servers for the purpose of authenticating users prior to granting administrative access, this is a finding.",
+  "fix": "In the APIC, configure redundant RADIUS providers.\n1. On the menu bar, choose Admin >> AAA.\n2. In the Navigation pane, choose \"Authentication\".\n3. In the Work pane, choose \"Providers\",  and then click Actions >> Create Provider.\n4. In the Create Provider screen, enter the Hostname/IP Address, Description, and choose a RADIUS or TACACS+ as the realm from the drop-down list. Provide the configuration details.\n5. Repeat the above steps for at least one other AAA server.\n\nCreate the login domain for RADIUS:\n1. In the Navigation pane, choose AAA Authentication >> Login Domains.\n2. In the Work pane, choose Actions >> Create Login Domain.\n3. Specify the login domain name, description, realm, and provider group as appropriate.\n\nNote: The above configuration is an example using the RADIUS protocol; however, DOD sites may configure the options for RADIUS or TACACS+.",
+  "ccis": [
+    "CCI-000370",
+    "CCI-000765",
+    "CCI-000054"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Centralized management of authentication settings increases the security of remote and nonlocal access methods. This control is particularly important protection against the insider threat. With robust centralized management, audit records for administrator account access to the organization's Cisco ACIs can be more readily analyzed for trends and anomalies. The alternative method of defining administrator accounts on each device exposes the device configuration to remote access authentication attacks and system administrators with multiple authenticators for each Cisco ACI.\n\nAPIC policies manage the authentication, authorization, and accounting (AAA) functions of the Cisco ACI fabric. The combination of user privileges, roles, and domains with access rights inheritance enables administrators to configure AAA functions at the managed object level in a granular fashion. Creating a user and assigning a role to that user does not enable access rights. It is necessary to also assign the user to one or more security domains. By default, the ACI fabric includes two special pre-created domains:\n- \"All\" allows access to the entire MIT.\n- \"Infra\" allows access to fabric infrastructure objects/subtrees, such as fabric access policies.\n\nSatisfies: SRG-APP-000149-NDM-000247, SRG-APP-000001-NDM-000200",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CACI-ND-000009",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-aci-ndm-security-technical-implementation-guide-v1r2-c8f2daa4",
+      "name": "Cisco ACI NDM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "cisco-aci-ndm-security-technical-implementation-guide-v1r2-c8f2daa4"
+  ]
+}

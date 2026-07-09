@@ -1,0 +1,53 @@
+{
+  "id": "SV-259185r935459_rule",
+  "full_rule_id": "SV-259185r935459_rule",
+  "rule_id": "SV-259185",
+  "rule_revision": "935459",
+  "group_id": "V-259185",
+  "group_title": "SRG-APP-000515-DB-000318",
+  "title": "The vCenter PostgreSQL service must off-load audit data to a separate log management facility.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOff-loading is a common process in information systems with limited audit storage capacity.\n\nThe database management system (DBMS) may write audit records to database tables, to files in the file system, to other kinds of local repository, or directly to a centralized log management system. Whatever the method used, it must be compatible with off-loading the records to the centralized system.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "By default there is a vmware-services-vmware-vpostgres.conf rsyslog and vmware-services-vmware-postgres-archiver.conf configuration file that includes the service logs when syslog is configured on vCenter but it must be verified.\n\nAt the command prompt, run the following command:\n\n# cat /etc/vmware-syslog/vmware-services-vmware-vpostgres.conf\n\nExpected result:\n\n# vmware-vpostgres first logs stdout, before loading configuration\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/serverlog.stdout\"\n      Tag=\"vpostgres-first\"\n      Severity=\"info\"\n      Facility=\"local0\")\n# vmware-vpostgres first logs stderr, before loading configuration\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/serverlog.stderr\"\n      Tag=\"vpostgres-first\"\n      Severity=\"info\"\n      Facility=\"local0\")\n# vmware-vpostgres logs\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/postgresql-*.log\"\n      Tag=\"vpostgres\"\n      Severity=\"info\"\n      Facility=\"local0\")\n\nIf the output does not match the expected result, this is a finding.\n\nAt the command prompt, run the following command:\n\n# cat /etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf\n\nExpected result:\n\n# vmware-postgres-archiver stdout log\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/pg_archiver.log.stdout\"\n      Tag=\"postgres-archiver\"\n      Severity=\"info\"\n      Facility=\"local0\")\n# vmware-postgres-archiver stderr log\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/pg_archiver.log.stderr\"\n      Tag=\"postgres-archiver\"\n      Severity=\"info\"\n      Facility=\"local0\")\n\nIf the output does not match the expected result, this is a finding.",
+  "fix": "Navigate to and open:\n\n/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf\n\nCreate the file if it does not exist.\n\nSet the contents of the file as follows:\n\n# vmware-vpostgres first logs stdout, before loading configuration\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/serverlog.stdout\"\n      Tag=\"vpostgres-first\"\n      Severity=\"info\"\n      Facility=\"local0\")\n# vmware-vpostgres first logs stderr, before loading configuration\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/serverlog.stderr\"\n      Tag=\"vpostgres-first\"\n      Severity=\"info\"\n      Facility=\"local0\")\n# vmware-vpostgres logs\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/postgresql-*.log\"\n      Tag=\"vpostgres\"\n      Severity=\"info\"\n      Facility=\"local0\")\n\nNavigate to and open:\n\n/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf\n\nCreate the file if it does not exist.\n\nSet the contents of the file as follows:\n\n# vmware-postgres-archiver stdout log\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/pg_archiver.log.stdout\"\n      Tag=\"postgres-archiver\"\n      Severity=\"info\"\n      Facility=\"local0\")\n# vmware-postgres-archiver stderr log\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vpostgres/pg_archiver.log.stderr\"\n      Tag=\"postgres-archiver\"\n      Severity=\"info\"\n      Facility=\"local0\")",
+  "ccis": [
+    "CCI-001851"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Information stored in one location is vulnerable to accidental or incidental deletion or alteration.\n\nOff-loading is a common process in information systems with limited audit storage capacity.\n\nThe database management system (DBMS) may write audit records to database tables, to files in the file system, to other kinds of local repository, or directly to a centralized log management system. Whatever the method used, it must be compatible with off-loading the records to the centralized system.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCPG-80-000122",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r1-e6e7fe9a",
+      "name": "VMware vSphere 8.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
+      "version": "1",
+      "release": "1"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-appliance-postgresql-security-technical-implementatio-v1r1-e6e7fe9a"
+  ]
+}

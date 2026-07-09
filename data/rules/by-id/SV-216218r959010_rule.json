@@ -1,0 +1,53 @@
+{
+  "id": "SV-216218r959010_rule",
+  "full_rule_id": "SV-216218r959010_rule",
+  "rule_id": "SV-216218",
+  "rule_revision": "959010",
+  "group_id": "V-216218",
+  "group_title": "SRG-OS-000480",
+  "title": "The system must require authentication before allowing modification of the boot devices or menus. Secure the GRUB Menu (Intel).",
+  "severity": "low",
+  "description": "<VulnDiscussion>The flexibility that GRUB provides creates a security risk if its configuration is modified by an unauthorized user. The failsafe menu entry needs to be secured in the same environments that require securing the systems firmware to avoid unauthorized removable media boots.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This check applies to X86 systems only.\n\nThis check applies to the global zone only. Determine the zone that you are currently securing.\n\n# zonename\n\nIf the command output is \"global\", this check applies.\n\n# grep source /rpool/boot/grub/grub.cfg\nsource $prefix/custom.cfg\n\nIf the output does not contain \"source $prefix/custom.cfg\" on a line of its own, this is a finding.\n\n# grep superusers /rpool/boot/grub/custom.cfg.\n# grep password_pbkdf2 /rpool/boot/grub/custom.cfg\n\nIf no superuser name and password are defined, this is a finding.",
+  "fix": "The root role is required.\n\nThis action applies to the global zone only. Determine the zone that you are currently securing.\n\n# zonename\n\nIf the command output is \"global\", this action applies.\n\nUpdate GRUB to use a custom configuration file.\n\n# pfedit /rpool/boot/grub/grub.cfg\nInsert the line:\nsource $prefix/custom.cfg\n\nCreate a password hash.\n\n# /usr/lib/grub2/bios/bin/grub-mkpasswd-pbkdf2\nEnter password: \nReenter password: \nYour PBKDF2 is .......\nCopy the long password hash in its entirety.\n\n# pfedit /rpool/boot/grub/custom.cfg\nInsert the lines:\nset superusers=\"[username]\"\npassword_pbkdf2 [username] [password hash]\n\nRestart the system.",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "The flexibility that GRUB provides creates a security risk if its configuration is modified by an unauthorized user. The failsafe menu entry needs to be secured in the same environments that require securing the systems firmware to avoid unauthorized removable media boots.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "SOL-11.1-080140",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c",
+      "name": "Solaris 11 X86 Security Technical Implementation Guide",
+      "version": "3",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "solaris-11-x86-security-technical-implementation-guide-v3r5-99f42f8c"
+  ]
+}

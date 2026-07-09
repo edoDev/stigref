@@ -1,0 +1,54 @@
+{
+  "id": "SV-260540r986276_rule",
+  "full_rule_id": "SV-260540r986276_rule",
+  "rule_id": "SV-260540",
+  "rule_revision": "986276",
+  "group_id": "V-260540",
+  "group_title": "SRG-OS-000378-GPOS-00163",
+  "title": "Ubuntu 22.04 LTS must disable automatic mounting of Universal Serial Bus (USB) mass storage driver.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>Without authenticating devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity. \n \nPeripherals include, but are not limited to, such devices as flash drives, external storage, and printers.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Verify Ubuntu 22.04 LTS disables ability to load the USB storage kernel module by using the following command: \n \n     $ grep usb-storage /etc/modprobe.d/* | grep \"/bin/false\" \n     /etc/modprobe.d/stig.conf:install usb-storage /bin/false \n \nIf the command does not return any output, or the line is commented out, this is a finding. \n \nVerify Ubuntu 22.04 LTS disables the ability to use USB mass storage device. \n \n     $ grep usb-storage /etc/modprobe.d/* | grep -i \"blacklist\" \n     /etc/modprobe.d/stig.conf:blacklist usb-storage \n \nIf the command does not return any output, or the line is commented out, this is a finding.",
+  "fix": "Configure Ubuntu 22.04 LTS to disable using the USB storage kernel module.  \n \nCreate and/or append a custom file under \"/etc/modprobe.d/\" to contain the following: \n \n     $ sudo su -c \"echo install usb-storage /bin/false >> /etc/modprobe.d/stig.conf\" \n \nConfigure Ubuntu 22.04 LTS to disable the ability to use USB mass storage devices. \n \n     $ sudo su -c \"echo blacklist usb-storage >> /etc/modprobe.d/stig.conf\"",
+  "ccis": [
+    "CCI-001958",
+    "CCI-003959"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Without authenticating devices, unidentified or unknown devices may be introduced, thereby facilitating malicious activity. \n \nPeripherals include, but are not limited to, such devices as flash drives, external storage, and printers.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "UBTU-22-291010",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553",
+      "name": "Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "canonical-ubuntu-22-04-lts-security-technical-implementation-guide-v2r8-c2905553"
+  ]
+}

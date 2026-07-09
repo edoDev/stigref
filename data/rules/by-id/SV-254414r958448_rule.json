@@ -1,0 +1,53 @@
+{
+  "id": "SV-254414r958448_rule",
+  "full_rule_id": "SV-254414r958448_rule",
+  "rule_id": "SV-254414",
+  "rule_revision": "958448",
+  "group_id": "V-254414",
+  "group_title": "SRG-OS-000066-GPOS-00034",
+  "title": "Windows Server 2022 PKI certificates associated with user accounts must be issued by a DoD PKI or an approved External Certificate Authority (ECA).",
+  "severity": "high",
+  "description": "<VulnDiscussion>A PKI implementation depends on the practices established by the Certificate Authority (CA) to ensure the implementation is secure. Without proper practices, the certificates issued by a CA have limited value in authentication functions.\n\nSatisfies: SRG-OS-000066-GPOS-00034, SRG-OS-000403-GPOS-00182</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This applies to domain controllers. It is NA for other systems.\n\nReview user account mappings to PKI certificates.\n\nOpen \"Windows PowerShell\".\n\nEnter \"Get-ADUser -Filter * | FT Name, UserPrincipalName, Enabled\".\n\nExclude disabled accounts (e.g., DefaultAccount, Guest) and the krbtgt account.\n\nIf the User Principal Name (UPN) is not in the format of an individual's identifier for the certificate type and for the appropriate domain suffix, this is a finding.\n\nFor standard NIPRNet certificates, the individual's identifier is in the format of an Electronic Data Interchange - Personnel Identifier (EDI-PI).\n\nAlt Tokens and other certificates may use a different UPN format than the EDI-PI which vary by organization. Verified these with the organization.\n\nNIPRNet Example:\n\nName - User Principal Name\nUser1 - 1234567890@mil\n\nSee PKE documentation for other network domain suffixes.\n\nIf the mappings are to certificates issued by a CA authorized by the Component's CIO, this is a CAT II finding.",
+  "fix": "Map user accounts to PKI certificates using the appropriate User Principal Name (UPN) for the network. See PKE documentation for details.",
+  "ccis": [
+    "CCI-000185"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A PKI implementation depends on the practices established by the Certificate Authority (CA) to ensure the implementation is secure. Without proper practices, the certificates issued by a CA have limited value in authentication functions.\n\nSatisfies: SRG-OS-000066-GPOS-00034, SRG-OS-000403-GPOS-00182",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "WN22-DC-000300",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "microsoft-windows-server-2022-security-technical-implementation-guide-v2r8-8691a8f2",
+      "name": "Microsoft Windows Server 2022 Security Technical Implementation Guide",
+      "version": "2",
+      "release": "8"
+    }
+  ],
+  "stig_ids": [
+    "microsoft-windows-server-2022-security-technical-implementation-guide-v2r8-8691a8f2"
+  ]
+}

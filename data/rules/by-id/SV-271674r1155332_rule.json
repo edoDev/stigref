@@ -1,0 +1,54 @@
+{
+  "id": "SV-271674r1155332_rule",
+  "full_rule_id": "SV-271674r1155332_rule",
+  "rule_id": "SV-271674",
+  "rule_revision": "1155332",
+  "group_id": "V-271674",
+  "group_title": "SRG-OS-000029-GPOS-00010",
+  "title": "OL 9 must automatically lock graphical user sessions after 15 minutes of inactivity.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not logout because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, the GNOME desktop can be configured to identify when a user's session has idled and take action to initiate a session lock.\n\nSatisfies: SRG-OS-000029-GPOS-00010, SRG-OS-000031-GPOS-00012</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement assumes the use of the OL 9 default graphical user interface—the GNOME desktop environment. If the system does not have any graphical user interface installed, this requirement is Not Applicable.\n\nVerify OL 9 initiates a session lock after a 10-minute period of inactivity for graphical user interfaces with the following command:\n\n$ gsettings get org.gnome.desktop.session idle-delay\nuint32 600\n\nIf \"idle-delay\" is set to \"0\" or a value greater than \"600\", this is a finding.",
+  "fix": "Configure OL 9 to initiate a screensaver after a 10-minute period of inactivity for graphical user interfaces.\n\nCreate a database to contain the systemwide screensaver settings (if it does not already exist) with the following command:\n\n$ sudo touch /etc/dconf/db/local.d/00-screensaver\n\nEdit /etc/dconf/db/local.d/00-screensaver and add or update the following lines:\n\n[org/gnome/desktop/session]\n# Set the lock time out to 600 seconds before the session is considered idle\nidle-delay=uint32 600\n\nUpdate the system databases:\n\n$ sudo dconf update",
+  "ccis": [
+    "CCI-000057",
+    "CCI-000060"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system but does not logout because of the temporary nature of the absence. Rather than relying on the user to manually lock their operating system session prior to vacating the vicinity, the GNOME desktop can be configured to identify when a user's session has idled and take action to initiate a session lock.\n\nSatisfies: SRG-OS-000029-GPOS-00010, SRG-OS-000031-GPOS-00012",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "OL09-00-002104",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28",
+      "name": "Oracle Linux 9 Security Technical Implementation Guide",
+      "version": "1",
+      "release": "5"
+    }
+  ],
+  "stig_ids": [
+    "oracle-linux-9-security-technical-implementation-guide-v1r5-668bbb28"
+  ]
+}

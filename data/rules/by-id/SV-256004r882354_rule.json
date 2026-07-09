@@ -1,0 +1,53 @@
+{
+  "id": "SV-256004r882354_rule",
+  "full_rule_id": "SV-256004r882354_rule",
+  "rule_id": "SV-256004",
+  "rule_revision": "882354",
+  "group_id": "V-256004",
+  "group_title": "SRG-NET-000019-RTR-000010",
+  "title": "The Arista perimeter router must be configured to not redistribute static routes to an alternate gateway service provider into BGP or an IGP peering with the NIPRNet or to other autonomous systems.",
+  "severity": "low",
+  "description": "<VulnDiscussion>If the static routes to the alternate gateway are being redistributed into an Exterior Gateway Protocol or Interior Gateway Protocol to a NIPRNet gateway, this could make traffic on NIPRNet flow to that particular router and not to the internet Access Point routers. This could not only wreak havoc with traffic flows on NIPRNet, but it could overwhelm the connection from the router to the NIPRNet gateway(s) and also cause traffic destined for outside of NIPRNet to bypass the defenses of the internet Access Points.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "This requirement is not applicable for the DODIN backbone. \n\nReview the Arista router configuration of the router connecting to the alternate gateway and verify that redistribution of static routes to the alternate gateway is not occurring. \n\nVerify the BGP and IGP configurations and remove the redistribute static statement if it is configured.\n\nBGP Example:\n\nTo verify the BGP configuration, execute the commands \"show bgp configuration active\" and \"show run section router bgp\".\n\nrouter bgp 1500\n no redistribute static \n\nOSPF Example:\n\nTo verify the OSPF configuration, execute the command \"show run section router ospf\".\n\nrouter ospf 1\n no redistribute static \n\nRIP Example:\n\nTo verify the RIP configuration, execute the command \"show run section router rip\".\n\nrouter rip\nno redistribute static\n\nIf the static routes to the alternate gateway are being redistributed into BGP or any IGP peering with a NIPRNet gateway or another autonomous system, this is a finding.",
+  "fix": "This requirement is not applicable for the DODIN backbone.\n\nConfigure the router so static routes are not redistributed to an alternate gateway into either an Exterior Gateway Protocol or Interior Gateway Protocol to the NIPRNet or to other autonomous systems.\n\nReview the BGP and IGP configurations and remove the redistribute static statement if it is configured.\n\nBGP Example:\n\nrouter bgp 1500\n no redistribute static \n\nOSPF Example:\n\nrouter ospf 1500\n no redistribute static \n\nRIP Example:\n\nrouter rip\n no redistribute static",
+  "ccis": [
+    "CCI-001414"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the static routes to the alternate gateway are being redistributed into an Exterior Gateway Protocol or Interior Gateway Protocol to a NIPRNet gateway, this could make traffic on NIPRNet flow to that particular router and not to the internet Access Point routers. This could not only wreak havoc with traffic flows on NIPRNet, but it could overwhelm the connection from the router to the NIPRNet gateway(s) and also cause traffic destined for outside of NIPRNet to bypass the defenses of the internet Access Points.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "ARST-RT-000180",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839",
+      "name": "Arista MLS EOS 4.X Router Security Technical Implementation Guide",
+      "version": "2",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "arista-mls-eos-4-x-router-security-technical-implementation-guide-v2r2-8a740839"
+  ]
+}

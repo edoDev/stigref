@@ -1,0 +1,53 @@
+{
+  "id": "SV-258936r961863_rule",
+  "full_rule_id": "SV-258936r961863_rule",
+  "rule_id": "SV-258936",
+  "rule_revision": "961863",
+  "group_id": "V-258936",
+  "group_title": "SRG-APP-000516",
+  "title": "The vCenter Server must set the distributed port group Media Access Control (MAC) Address Change policy to \"Reject\".",
+  "severity": "medium",
+  "description": "<VulnDiscussion>If the virtual machine operating system changes the MAC address, it can send frames with an impersonated source MAC address at any time. This allows it to stage malicious attacks on the devices in a network by impersonating a network adaptor authorized by the receiving network.\n\nThis will prevent virtual machines from changing their effective MAC address and will affect applications that require this functionality. This will also affect how a layer 2 bridge will operate and will affect applications that require a specific MAC address for licensing.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "If distributed switches are not used, this is not applicable.\n\nFrom the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Select a port group >> Configure >> Settings >> Policies.\n\nVerify \"MAC Address Changes\" is set to \"Reject\".\n\nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\nGet-VDSwitch | Get-VDSecurityPolicy\nGet-VDPortgroup | ?{$_.IsUplink -eq $false} | Get-VDSecurityPolicy\n\nIf the \"MAC Address Changes\" policy is set to accept, this is a finding.",
+  "fix": "From the vSphere Client, go to \"Networking\".\n\nSelect a distributed switch >> Select a port group >> Configure >> Settings >> Policies.\n\nClick \"Edit\".\n\nClick the \"Security\" tab.\n\nSet \"MAC Address Changes\" to \"Reject\".\n\nClick \"OK\".\n \nor\n\nFrom a PowerCLI command prompt while connected to the vCenter server, run the following commands:\n\nGet-VDSwitch | Get-VDSecurityPolicy | Set-VDSecurityPolicy -MacChanges $false\nGet-VDPortgroup | ?{$_.IsUplink -eq $false} | Get-VDSecurityPolicy | Set-VDSecurityPolicy -MacChanges $false",
+  "ccis": [
+    "CCI-000366"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "If the virtual machine operating system changes the MAC address, it can send frames with an impersonated source MAC address at any time. This allows it to stage malicious attacks on the devices in a network by impersonating a network adaptor authorized by the receiving network.\n\nThis will prevent virtual machines from changing their effective MAC address and will affect applications that require this functionality. This will also affect how a layer 2 bridge will operate and will affect applications that require a specific MAC address for licensing.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCSA-80-000269",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3",
+      "name": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": "2",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-8-0-vcenter-security-technical-implementation-guide-v2r3-bfda54d3"
+  ]
+}

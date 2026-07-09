@@ -1,0 +1,53 @@
+{
+  "id": "SV-256684r888608_rule",
+  "full_rule_id": "SV-256684r888608_rule",
+  "rule_id": "SV-256684",
+  "rule_revision": "888608",
+  "group_id": "V-256684",
+  "group_title": "SRG-APP-000141-WSR-000081",
+  "title": "ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIMEs) that invoke operating system shell programs disabled.",
+  "severity": "medium",
+  "description": "<VulnDiscussion>MIME mappings tell ESX Agent Manager what type of program various file types and extensions are and what external utilities or programs are needed to execute the file type. By ensuring various shell script MIME types are not included in \"web.xml\", the server is protected against malicious users tricking the server into executing shell command files.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "At the command prompt, run the following command:\n\n# grep -En '(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)' /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml\n\nIf the command produces any output, this is a finding.",
+  "fix": "Navigate to and open:\n\n/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml\n\nRemove all of the following nodes lines:\n\n<mime-type>application/x-csh</mime-type>\n<mime-type>application/x-shar</mime-type>\n<mime-type>application/x-sh</mime-type>\n<mime-type>application/x-ksh</mime-type>\n\nRestart the service with the following command:\n\n# vmon-cli --restart eam\n\nNote: Delete the entire mime-mapping node for the target mime-type.\n\nExample:\n\n<mime-mapping>\n    <extension>sh</extension>\n    <mime-type>application/x-sh</mime-type>\n</mime-mapping>",
+  "ccis": [
+    "CCI-000381"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "MIME mappings tell ESX Agent Manager what type of program various file types and extensions are and what external utilities or programs are needed to execute the file type. By ensuring various shell script MIME types are not included in \"web.xml\", the server is protected against malicious users tricking the server into executing shell command files.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "VCEM-70-000012",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "vmware-vsphere-7-0-vcenter-appliance-eam-security-technical-implementation-guide-v1r2-b15827fc",
+      "name": "VMware vSphere 7.0 vCenter Appliance EAM Security Technical Implementation Guide",
+      "version": "1",
+      "release": "2"
+    }
+  ],
+  "stig_ids": [
+    "vmware-vsphere-7-0-vcenter-appliance-eam-security-technical-implementation-guide-v1r2-b15827fc"
+  ]
+}

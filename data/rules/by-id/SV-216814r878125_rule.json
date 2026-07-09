@@ -1,0 +1,53 @@
+{
+  "id": "SV-216814r878125_rule",
+  "full_rule_id": "SV-216814r878125_rule",
+  "rule_id": "SV-216814",
+  "rule_revision": "878125",
+  "group_id": "V-216814",
+  "group_title": "SRG-NET-000364-RTR-000114",
+  "title": "The Cisco multicast Designated Router (DR) must be configured to filter the Internet Group Management Protocol (IGMP) and Multicast Listener Discovery (MLD) Report messages to allow hosts to join only multicast groups that have been approved by the organization.",
+  "severity": "low",
+  "description": "<VulnDiscussion>Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.</VulnDiscussion><FalsePositives></FalsePositives><FalseNegatives></FalseNegatives><Documentable>false</Documentable><Mitigations></Mitigations><SeverityOverrideGuidance></SeverityOverrideGuidance><PotentialImpacts></PotentialImpacts><ThirdPartyTools></ThirdPartyTools><MitigationControl></MitigationControl><Responsibility></Responsibility><IAControls></IAControls>",
+  "check": "Review the configuration of the DR to verify that it is filtering IGMP or MLD Membership Report messages, allowing hosts to join only those groups that have been approved.\n\nStep 1: Verify that all host facing interfaces are configured to filter IGMP Membership Report messages (IGMP joins) as shown in the example below.\n\nrouter igmp\n interface GigabitEthernet0/0/1/0\n  access-group IGMP_JOIN_FILTER\n !\n interface GigabitEthernet0/0/1/1\n  access-group IGMP_JOIN_FILTER\n !\n\nStep 2: Verify that the ACL denies unauthorized groups or permits only authorized groups. The example below denies all groups from 239.8.0.0/16 range.\n\nipv4 access-list IGMP_JOIN_FILTER\n 10 deny ipv4 239.8.0.0 0.0.255.255 any\n 20 permit ipv4 any any\n!\n\nNote: This requirement is only applicable to Source Specific Multicast (SSM) implementation. This requirement is not applicable to Any Source Multicast (ASM) since the filtering is being performed by the Rendezvous Point router.\n\nIf the DR is not filtering IGMP or MLD Membership Report messages, this is a finding.",
+  "fix": "Configure the DR to filter the IGMP or MLD Membership Report messages to allow hosts to join only those multicast groups that have been approved.\n\nStep 1: Configure the ACL to filter IGMP Membership Report messages as shown in the example.\n\nRP/0/0/CPU0:R5(config)#ipv4 access-list IGMP_JOIN_FILTER\nRP/0/0/CPU0:R5(config-ipv4-acl)#deny 239.8.0.0 0.0.255.255\nRP/0/0/CPU0:R5(config-ipv4-acl)#exit\n\nStep 2: Apply the filter to all host facing interfaces.\n\nRP/0/0/CPU0:R5(config)#router igmp \nRP/0/0/CPU0:R5(config-igmp)#interface g0/0/1/0 \nRP/0/0/CPU0:R5(config-igmp-default-if)#access-group IGMP_JOIN_FILTER\nRP/0/0/CPU0:R5(config-igmp-default-if)#exit\nRP/0/0/CPU0:R5(config-igmp)#interface g0/0/1/1\nRP/0/0/CPU0:R5(config-igmp-default-if)#end",
+  "ccis": [
+    "CCI-002403"
+  ],
+  "cves": [],
+  "metadata": {
+    "VulnDiscussion": "Real-time multicast traffic can entail multiple large flows of data. Large unicast flows tend to be fairly isolated (i.e., someone doing a file download here or there), whereas multicast can have broader impact on bandwidth consumption, resulting in extreme network congestion. Hence, it is imperative that there is multicast admission control to restrict which multicast groups hosts are allowed to join via IGMP or MLD.",
+    "FalsePositives": "",
+    "FalseNegatives": "",
+    "Documentable": "false",
+    "Mitigations": "",
+    "SeverityOverrideGuidance": "",
+    "PotentialImpacts": "",
+    "ThirdPartyTools": "",
+    "MitigationControl": "",
+    "Responsibility": "",
+    "IAControls": "",
+    "version": "CISC-RT-000860",
+    "mac_profiles": [
+      "MAC-1_Classified",
+      "MAC-1_Public",
+      "MAC-1_Sensitive",
+      "MAC-2_Classified",
+      "MAC-2_Public",
+      "MAC-2_Sensitive",
+      "MAC-3_Classified",
+      "MAC-3_Public",
+      "MAC-3_Sensitive"
+    ]
+  },
+  "stigs": [
+    {
+      "id": "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f",
+      "name": "Cisco IOS XR Router RTR Security Technical Implementation Guide",
+      "version": "3",
+      "release": "3"
+    }
+  ],
+  "stig_ids": [
+    "cisco-ios-xr-router-rtr-security-technical-implementation-guide-v3r3-0825105f"
+  ]
+}
