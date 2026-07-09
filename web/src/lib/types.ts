@@ -213,6 +213,33 @@ export interface RuleDetail {
     confidence?: string;
     reasons?: string[];
   };
+  packageEnrichment?: {
+    ckl?: {
+      sourceCkl?: string;
+      status?: string;
+      gpoRefs?: string[];
+      intuneRefs?: string[];
+      outsideGpoScope?: boolean;
+      outsideIntuneScope?: boolean;
+      siteSpecific?: boolean;
+      comments?: string;
+    } | null;
+    deviation?: {
+      vulnNum?: string;
+      category?: string;
+      notNativeToIntune?: boolean;
+      falsePositiveScap?: boolean;
+      explanation?: string;
+      cspRegistryPath?: string;
+      sheet?: string;
+    } | null;
+    settingsCatalogProfiles?: Array<{
+      name?: string;
+      path?: string;
+      settingCount?: number;
+    }>;
+  };
+  enrichmentTags?: string[];
 }
 
 export interface IntuneProductIndex {

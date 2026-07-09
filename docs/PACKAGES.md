@@ -25,14 +25,16 @@ During each quarterly `stigref_build`:
 
 **Raw packages are not committed** (large, redistributable from cyber.mil). Only derived indexes/tags are published.
 
-## Enrichment value (future)
+## Deep enrichment (implemented)
 
-| Source | Future use |
-|--------|------------|
-| GPO `gpreport.xml` / checklist CKL | Map STIG rule IDs → GPO settings (stronger than heuristics) |
-| Intune Settings Catalog JSON | Real Graph setting definitions → better OMA-URI / Settings Catalog names |
-| `Intune STIG Deviations and Unsupported Settings.xlsx` | Explicit “not supported in Intune” rule flags |
-| ADMX templates | Chrome/Edge/Office ADMX-backed map expansion |
+| Source | What we extract | Where it appears |
+|--------|-----------------|------------------|
+| GPO package `Support Files/Checklist Files/*.ckl` | Per-rule GPO/Intune comments, outside-scope, site-specific | Rule page **DISA package mapping** |
+| Intune `…Deviations and Unsupported Settings….xlsx` | Not native to Intune, SCAP false positives, CSP registry paths | Same panel + tags |
+| Settings Catalog JSON | Graph `settingDefinitionId` inventory (+ OMA-URI hints) | `packages/index.json` + related profiles on rules |
+| GPO `ADMX Templates/**/*.admx` | ADMX file inventory | `packages/index.json` |
+
+**Stats example (April 2026 build):** ~1,500 rules with CKL mapping, ~76 with deviation rows, ~2,100 Settings Catalog definition IDs across 20 profiles, 25 ADMX files.
 
 ## SHB note
 

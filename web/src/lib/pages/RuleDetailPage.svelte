@@ -106,6 +106,73 @@
       </div>
     </div>
 
+    {#if rule.packageEnrichment && (rule.packageEnrichment.ckl || rule.packageEnrichment.deviation)}
+      <div class="card stack">
+        <h2 class="h">DISA package mapping</h2>
+        {#if rule.packageEnrichment.ckl}
+          {@const ckl = rule.packageEnrichment.ckl}
+          <div>
+            <strong>Checklist (GPO package)</strong>
+            {#if ckl.outsideGpoScope}
+              <span class="badge">outside GPO scope</span>
+            {/if}
+            {#if ckl.siteSpecific}
+              <span class="badge">site-specific</span>
+            {/if}
+            {#if ckl.gpoRefs?.length}
+              <p style="margin:0.25rem 0 0">
+                <span class="muted">GPO:</span>
+                {ckl.gpoRefs.join(" · ")}
+              </p>
+            {/if}
+            {#if ckl.intuneRefs?.length}
+              <p style="margin:0.25rem 0 0">
+                <span class="muted">Intune:</span>
+                {ckl.intuneRefs.join(" · ")}
+              </p>
+            {/if}
+            {#if ckl.comments && !ckl.gpoRefs?.length && !ckl.intuneRefs?.length}
+              <pre class="block" style="margin-top:0.35rem">{ckl.comments}</pre>
+            {/if}
+            {#if ckl.sourceCkl}
+              <p class="muted small" style="margin:0.25rem 0 0">Source: {ckl.sourceCkl}</p>
+            {/if}
+          </div>
+        {/if}
+        {#if rule.packageEnrichment.deviation}
+          {@const d = rule.packageEnrichment.deviation}
+          <div>
+            <strong>Intune deviations workbook</strong>
+            {#if d.notNativeToIntune}
+              <span class="badge kev">not native to Intune</span>
+            {/if}
+            {#if d.falsePositiveScap}
+              <span class="badge">SCAP false positive note</span>
+            {/if}
+            {#if d.explanation}
+              <p style="margin:0.35rem 0 0">{d.explanation}</p>
+            {/if}
+            {#if d.cspRegistryPath}
+              <p class="mono small" style="margin:0.25rem 0 0">{d.cspRegistryPath}</p>
+            {/if}
+            {#if d.sheet}
+              <p class="muted small" style="margin:0.25rem 0 0">Sheet: {d.sheet}</p>
+            {/if}
+          </div>
+        {/if}
+        {#if rule.packageEnrichment.settingsCatalogProfiles?.length}
+          <div>
+            <strong>Related Settings Catalog profiles</strong>
+            <ul class="plain">
+              {#each rule.packageEnrichment.settingsCatalogProfiles as p}
+                <li>{p.name} ({p.settingCount ?? "?"} settings)</li>
+              {/each}
+            </ul>
+          </div>
+        {/if}
+      </div>
+    {/if}
+
     {#if rule.threat && (rule.threat.cves?.length || rule.threat.status === "mapped")}
       <div class="card stack">
         <div class="section-title" style="margin-top:0">

@@ -17,6 +17,7 @@ from stigref_build.disa_packages import (
     build_package_bundle,
     rule_manual_hint,
 )
+from stigref_build.package_enrich import attach_package_enrichment
 from stigref_build.intune_suggest import attach_intune_to_stigs, load_csp_catalog
 from stigref_build.tags import build_quick_links, enrich_stig, load_curated
 from stigref_build.threat_enrich import (
@@ -233,6 +234,11 @@ def write_data_tree(
     for rule in rules_by_id.values():
         rule["checkAutomation"] = rule_manual_hint(rule)
 
+    # Deep package enrichment: CKL maps, deviations, Settings Catalog, ADMX
+    package_enrichment_index = attach_package_enrichment(
+        rules_by_id, repo_root / "raw"
+    )
+
     # Threat intel: CVE display + CISA KEV join + full KEV catalog for /kev
     kev_cache = repo_root / "raw" / "intel" / "kev.json"
     # First pass without rule links; second normalize after threat attach
@@ -394,6 +400,8 @@ def write_data_tree(
             "intune": rule.get("intune"),
             "threat": rule.get("threat"),
             "checkAutomation": rule.get("checkAutomation"),
+            "packageEnrichment": rule.get("packageEnrichment"),
+            "enrichmentTags": rule.get("enrichmentTags"),
         }
         _write_json(out / "rules" / "by-id" / f"{path_id}.json", detail)
 
@@ -419,6 +427,7 @@ def write_data_tree(
             }
             if package_bundle.get("intune")
             else None,
+            "enrichment": package_enrichment_index,
             "stats": {
                 "stigsWithGpo": sum(1 for s in stig_index if s.get("hasGpoPackage")),
                 "stigsWithIntune": sum(1 for s in stig_index if s.get("hasIntunePackage")),
@@ -426,6 +435,7 @@ def write_data_tree(
                 "stigsManualOrPlatform": sum(
                     1 for s in stig_index if s.get("manualOrPlatformNative")
                 ),
+                **(package_enrichment_index.get("stats") or {}),
             },
             "shbNote": (
                 "shb-related tags mark STIGs commonly stacked in DoD Secure Host Baseline "
