@@ -60,22 +60,26 @@
             · {stig.vendor}
           {/if}
         </p>
-        {#if stig.tags?.length}
-          <div class="row" style="margin-top:0.35rem">
-            {#each stig.roles || [] as r}
-              <span class="badge">{r}</span>
-            {/each}
-            {#if stig.tags.includes("intune-companion")}
-              <span class="badge">intune companion</span>
-            {/if}
-            {#if stig.tags.includes("gpo-companion")}
-              <span class="badge">gpo companion</span>
-            {/if}
-            {#if stig.tags.includes("intune")}
-              <span class="badge">intune</span>
-            {/if}
-          </div>
-        {/if}
+        <div class="row" style="margin-top:0.35rem">
+          {#each stig.roles || [] as r}
+            <span class="badge">{r}</span>
+          {/each}
+          {#if stig.automation?.hasGpoPackage}
+            <span class="badge accent">DISA GPO package</span>
+          {/if}
+          {#if stig.automation?.hasIntunePackage}
+            <span class="badge accent">DISA Intune package</span>
+          {/if}
+          {#if stig.automation?.shbRelated}
+            <span class="badge">SHB-related</span>
+          {/if}
+          {#if stig.automation?.manualOrPlatformNative}
+            <span class="badge">Manual / platform-native</span>
+          {/if}
+          {#if stig.tags?.includes("intune")}
+            <span class="badge">intune STIG</span>
+          {/if}
+        </div>
       </div>
       <div class="row">
         <button
@@ -94,6 +98,53 @@
         <CopyButton text={stigCitation(stig)} label="Copy citation" class="primary" />
       </div>
     </div>
+
+    {#if stig.automation}
+      <div class="card stack">
+        <h2 style="margin:0;font-size:1rem">Automation &amp; packages</h2>
+        {#if stig.automation.hasGpoPackage}
+          <p style="margin:0">
+            <strong>DISA GPO package:</strong>
+            {(stig.automation.gpoProducts || []).join("; ") || "yes"}
+          </p>
+        {:else}
+          <p class="muted" style="margin:0">
+            No matching product found in the quarterly DISA STIG GPO package (or package not present
+            under <span class="mono">raw/</span>).
+          </p>
+        {/if}
+        {#if stig.automation.hasIntunePackage}
+          <p style="margin:0">
+            <strong>DISA Intune package profiles:</strong>
+            {(stig.automation.intuneProfiles || [])
+              .slice(0, 6)
+              .map((p) => p.name)
+              .join("; ") || "yes"}
+          </p>
+        {:else}
+          <p class="muted" style="margin:0">
+            No matching DISA Intune policy JSON for this STIG in the quarterly Intune package.
+          </p>
+        {/if}
+        {#if stig.automation.shbRelated}
+          <p style="margin:0">
+            <strong>SHB-related:</strong> commonly included in DoD Secure Host Baseline–style Windows
+            host stacks (Win10/11 + browser + Defender + firewall + Office/Reader). Not an official SHB
+            matrix.
+          </p>
+        {/if}
+        {#if stig.automation.manualOrPlatformNative}
+          <p style="margin:0">
+            <strong>Manual / platform-native:</strong> no DISA GPO/Intune host package matched —
+            {#if stig.automation.platformKind}
+              classified as <span class="mono">{stig.automation.platformKind}</span>.
+            {:else}
+              often appliance/app-specific or checklist-manual.
+            {/if}
+          </p>
+        {/if}
+      </div>
+    {/if}
 
     {#if stig.quicklink_id}
       <div class="card muted" id="coverage">

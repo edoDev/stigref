@@ -68,6 +68,14 @@
             · {rule.group_title}
           {/if}
         </p>
+        {#if rule.checkAutomation?.checkStyle && rule.checkAutomation.checkStyle !== "unspecified"}
+          <div class="row" style="margin-top:0.25rem">
+            <span class="badge">{rule.checkAutomation.checkStyle}</span>
+            {#if rule.checkAutomation.confidence}
+              <span class="muted small">{rule.checkAutomation.confidence} confidence</span>
+            {/if}
+          </div>
+        {/if}
       </div>
       <div class="row pack">
         <button

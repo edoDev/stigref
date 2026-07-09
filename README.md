@@ -2,7 +2,7 @@
 
 **Fast, static STIG & control reference.** Search DISA STIGs/SRGs and related NIST controls in the browser. No account, no backend, no assessment workflow.
 
-> Status: **Live** — KEV browser, product hubs, bookmarks, Intune packs, shareable search.  
+> Status: **Live** — GPO/Intune package tags, SHB annotations, KEV browser, product hubs.  
 > Site: https://edodev.github.io/stigref/
 
 ## Why this exists

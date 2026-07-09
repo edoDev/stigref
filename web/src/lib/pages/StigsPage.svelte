@@ -14,6 +14,7 @@
   let vendor = $state("");
   let role = $state("");
   let special = $state(""); // tag id from filterHints.special
+  let autoFilter = $state(""); // gpo | intune | manual | shb | none
 
   onMount(async () => {
     state = "loading";
@@ -37,6 +38,11 @@
         const tag = catalog?.filterHints?.special?.find((x) => x.id === special)?.tag;
         if (tag && !(s.tags || []).includes(tag)) return false;
       }
+      if (autoFilter === "gpo" && !s.hasGpoPackage) return false;
+      if (autoFilter === "intune" && !s.hasIntunePackage) return false;
+      if (autoFilter === "manual" && !s.manualOrPlatformNative) return false;
+      if (autoFilter === "shb" && !s.shbRelated) return false;
+      if (autoFilter === "none" && (s.hasGpoPackage || s.hasIntunePackage)) return false;
       if (!q) return true;
       return (
         s.name.toLowerCase().includes(q) ||
@@ -52,6 +58,7 @@
     vendor = "";
     role = "";
     special = "";
+    autoFilter = "";
     filter = "";
   }
 
@@ -96,6 +103,17 @@
         {/each}
       </select>
     </label>
+    <label class="field">
+      <span class="muted">Automation</span>
+      <select bind:value={autoFilter}>
+        <option value="">Any</option>
+        <option value="gpo">Has DISA GPO package</option>
+        <option value="intune">Has DISA Intune package</option>
+        <option value="none">No DISA GPO/Intune package</option>
+        <option value="manual">Manual / platform-native</option>
+        <option value="shb">SHB-related host stack</option>
+      </select>
+    </label>
     <button type="button" onclick={clearFilters}>Clear</button>
   </div>
 
@@ -115,17 +133,31 @@
     </button>
     <button
       type="button"
-      class:active={special === "intune-companion"}
-      onclick={() => (special = special === "intune-companion" ? "" : "intune-companion")}
+      class:active={autoFilter === "gpo"}
+      onclick={() => (autoFilter = autoFilter === "gpo" ? "" : "gpo")}
     >
-      Intune companion
+      GPO package
     </button>
     <button
       type="button"
-      class:active={special === "gpo-companion"}
-      onclick={() => (special = special === "gpo-companion" ? "" : "gpo-companion")}
+      class:active={autoFilter === "intune"}
+      onclick={() => (autoFilter = autoFilter === "intune" ? "" : "intune")}
     >
-      GPO companion
+      Intune package
+    </button>
+    <button
+      type="button"
+      class:active={autoFilter === "manual"}
+      onclick={() => (autoFilter = autoFilter === "manual" ? "" : "manual")}
+    >
+      Manual / platform
+    </button>
+    <button
+      type="button"
+      class:active={autoFilter === "shb"}
+      onclick={() => (autoFilter = autoFilter === "shb" ? "" : "shb")}
+    >
+      SHB-related
     </button>
     <button type="button" class:active={vendor === "Microsoft"} onclick={() => (vendor = vendor === "Microsoft" ? "" : "Microsoft")}>
       Microsoft
@@ -152,11 +184,17 @@
               {#each (s.roles || []).slice(0, 2) as r}
                 <span class="badge">{r}</span>
               {/each}
-              {#if s.tags?.includes("intune-companion")}
-                <span class="badge accent">intune</span>
+              {#if s.hasGpoPackage}
+                <span class="badge accent">GPO pkg</span>
               {/if}
-              {#if s.tags?.includes("gpo-companion")}
-                <span class="badge accent">gpo</span>
+              {#if s.hasIntunePackage}
+                <span class="badge accent">Intune pkg</span>
+              {/if}
+              {#if s.shbRelated}
+                <span class="badge">SHB</span>
+              {/if}
+              {#if s.manualOrPlatformNative}
+                <span class="badge">manual/platform</span>
               {/if}
             </div>
             <div class="title">{s.name}</div>

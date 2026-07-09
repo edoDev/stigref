@@ -12,6 +12,11 @@ from typing import Any
 
 from stigref_build import __version__
 from stigref_build.ids import rule_path_id
+from stigref_build.disa_packages import (
+    annotate_stig,
+    build_package_bundle,
+    rule_manual_hint,
+)
 from stigref_build.intune_suggest import attach_intune_to_stigs, load_csp_catalog
 from stigref_build.tags import build_quick_links, enrich_stig, load_curated
 from stigref_build.threat_enrich import (
@@ -200,6 +205,7 @@ def write_data_tree(
             "intune",
             "csp",
             "threat",
+            "packages",
         ):
             p = out / sub
             if p.exists():
@@ -212,13 +218,22 @@ def write_data_tree(
 
     curated = load_curated()
     stigs = [enrich_stig(s, curated) for s in stigs]
+
+    # DISA GPO + Intune companion packages (quarterly, from raw/)
+    repo_root = Path(__file__).resolve().parents[2]
+    package_bundle = build_package_bundle(repo_root / "raw")
+    stigs = [annotate_stig(s, package_bundle) for s in stigs]
+
     # Intune CSP suggestions (quick-link products) during STIG processing
     csp_catalog = load_csp_catalog()
     stigs, intune_exports = attach_intune_to_stigs(stigs, catalog=csp_catalog)
     rules_by_id = merge_rules_across_stigs(stigs)
 
+    # Rule-level manual vs policy-amenable hints
+    for rule in rules_by_id.values():
+        rule["checkAutomation"] = rule_manual_hint(rule)
+
     # Threat intel: CVE display + CISA KEV join + full KEV catalog for /kev
-    repo_root = Path(__file__).resolve().parents[2]
     kev_cache = repo_root / "raw" / "intel" / "kev.json"
     # First pass without rule links; second normalize after threat attach
     kev_ids, kev_meta, _ = load_kev_bundle(kev_cache, fetch=True)
@@ -278,8 +293,10 @@ def write_data_tree(
             "roles": stig.get("roles") or [],
             "tags": stig.get("tags") or [],
             "quicklink_id": stig.get("quicklink_id"),
+            "automation": stig.get("automation") or {},
         }
         _write_json(out / "stigs" / "by-id" / f"{stig['id']}.json", detail)
+        auto = stig.get("automation") or {}
         stig_index.append(
             {
                 "id": stig["id"],
@@ -293,6 +310,10 @@ def write_data_tree(
                 "roles": stig.get("roles") or [],
                 "tags": stig.get("tags") or [],
                 "quicklink_id": stig.get("quicklink_id"),
+                "hasGpoPackage": bool(auto.get("hasGpoPackage")),
+                "hasIntunePackage": bool(auto.get("hasIntunePackage")),
+                "shbRelated": bool(auto.get("shbRelated")),
+                "manualOrPlatformNative": bool(auto.get("manualOrPlatformNative")),
             }
         )
 
@@ -316,6 +337,11 @@ def write_data_tree(
                     {"id": "intune", "label": "Intune-related", "tag": "intune"},
                     {"id": "intune-companion", "label": "Intune companion", "tag": "intune-companion"},
                     {"id": "gpo-companion", "label": "GPO companion", "tag": "gpo-companion"},
+                    {"id": "has-gpo-package", "label": "DISA GPO package", "tag": "has-gpo-package"},
+                    {"id": "has-intune-package", "label": "DISA Intune package", "tag": "has-intune-package"},
+                    {"id": "no-disa-automation-package", "label": "No DISA GPO/Intune package", "tag": "no-disa-automation-package"},
+                    {"id": "manual-or-platform-native", "label": "Manual / platform-native", "tag": "manual-or-platform-native"},
+                    {"id": "shb-related", "label": "SHB-related host stack", "tag": "shb-related"},
                 ],
             },
         },
@@ -367,8 +393,47 @@ def write_data_tree(
             "stig_ids": rule.get("stig_ids") or [],
             "intune": rule.get("intune"),
             "threat": rule.get("threat"),
+            "checkAutomation": rule.get("checkAutomation"),
         }
         _write_json(out / "rules" / "by-id" / f"{path_id}.json", detail)
+
+    # Companion package index (GPO + Intune) for docs/UI
+    _write_json(
+        out / "packages" / "index.json",
+        {
+            "paths": package_bundle.get("paths"),
+            "gpo": package_bundle.get("gpo"),
+            "intune": {
+                "filename": (package_bundle.get("intune") or {}).get("filename"),
+                "type": "intune",
+                "profileCount": (package_bundle.get("intune") or {}).get("profileCount"),
+                "notes": (package_bundle.get("intune") or {}).get("notes"),
+                "profiles": [
+                    {
+                        "name": p.get("name"),
+                        "category": p.get("category"),
+                        "path": p.get("path"),
+                    }
+                    for p in ((package_bundle.get("intune") or {}).get("profiles") or [])
+                ],
+            }
+            if package_bundle.get("intune")
+            else None,
+            "stats": {
+                "stigsWithGpo": sum(1 for s in stig_index if s.get("hasGpoPackage")),
+                "stigsWithIntune": sum(1 for s in stig_index if s.get("hasIntunePackage")),
+                "stigsShbRelated": sum(1 for s in stig_index if s.get("shbRelated")),
+                "stigsManualOrPlatform": sum(
+                    1 for s in stig_index if s.get("manualOrPlatformNative")
+                ),
+            },
+            "shbNote": (
+                "shb-related tags mark STIGs commonly stacked in DoD Secure Host Baseline "
+                "style Windows host hardening (Win10/11 + Edge/Chrome + Defender + Firewall + "
+                "Office/Reader). Not an official SHB product matrix."
+            ),
+        },
+    )
 
     # Threat meta + full KEV catalog for dedicated browser page
     _write_json(

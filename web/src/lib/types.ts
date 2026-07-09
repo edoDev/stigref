@@ -65,6 +65,20 @@ export interface StigIndexEntry {
   roles?: string[];
   tags?: string[];
   quicklink_id?: string | null;
+  hasGpoPackage?: boolean;
+  hasIntunePackage?: boolean;
+  shbRelated?: boolean;
+  manualOrPlatformNative?: boolean;
+}
+
+export interface StigAutomation {
+  hasGpoPackage?: boolean;
+  hasIntunePackage?: boolean;
+  gpoProducts?: string[];
+  intuneProfiles?: Array<{ name: string; category?: string; path?: string }>;
+  shbRelated?: boolean;
+  manualOrPlatformNative?: boolean;
+  platformKind?: string | null;
 }
 
 export interface StigDetail {
@@ -88,6 +102,7 @@ export interface StigDetail {
   roles?: string[];
   tags?: string[];
   quicklink_id?: string | null;
+  automation?: StigAutomation;
 }
 
 export interface QuickLink {
@@ -193,6 +208,11 @@ export interface RuleDetail {
   stig_ids: string[];
   intune?: IntunePayload | null;
   threat?: ThreatPayload | null;
+  checkAutomation?: {
+    checkStyle?: string;
+    confidence?: string;
+    reasons?: string[];
+  };
 }
 
 export interface IntuneProductIndex {
