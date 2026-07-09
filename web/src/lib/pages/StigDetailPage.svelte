@@ -85,11 +85,12 @@
     </div>
 
     {#if stig.quicklink_id}
-      <p class="muted" style="margin:0">
+      <div class="card muted" id="coverage">
         Product-level Intune draft (OMA-URI aggregate) for
         <span class="mono">{stig.quicklink_id}</span> — validate before deploy. Rule pages show
-        per-setting CSP suggestions with Learn links.
-      </p>
+        per-setting CSP suggestions, CVE/KEV context, and copy packs. Coverage is computed at
+        quarterly data build.
+      </div>
     {/if}
 
     {#if stig.description}

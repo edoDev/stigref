@@ -1,17 +1,23 @@
 import MiniSearch from "minisearch";
-import type { SearchDoc } from "./types";
+import type { SearchDoc, SearchFilters } from "./types";
 
 let engine: MiniSearch<SearchDoc> | null = null;
+let allDocs: SearchDoc[] = [];
 let docsById = new Map<string, SearchDoc>();
 
 export function isSearchReady(): boolean {
   return engine !== null;
 }
 
+export function getAllDocs(): SearchDoc[] {
+  return allDocs;
+}
+
 export function buildSearchIndex(docs: SearchDoc[]): void {
+  allDocs = docs;
   docsById = new Map(docs.map((d) => [d.id, d]));
   engine = new MiniSearch<SearchDoc>({
-    fields: ["title", "body", "full_rule_id", "stig_names"],
+    fields: ["title", "body", "full_rule_id", "stig_names", "cves", "ccis"],
     storeFields: [
       "id",
       "type",
@@ -20,20 +26,28 @@ export function buildSearchIndex(docs: SearchDoc[]): void {
       "route",
       "severity",
       "full_rule_id",
+      "group_id",
       "stig_names",
       "version",
       "release",
       "release_date",
+      "vendor",
+      "roles",
+      "hasIntune",
+      "hasCve",
+      "inKev",
+      "cves",
+      "ccis",
     ],
     searchOptions: {
-      boost: { title: 3, full_rule_id: 4, body: 1 },
+      boost: { title: 3, full_rule_id: 4, body: 1, cves: 5 },
       fuzzy: 0.15,
       prefix: true,
     },
     extractField: (doc, field) => {
-      if (field === "stig_names") {
-        return (doc.stig_names || []).join(" ");
-      }
+      if (field === "stig_names") return (doc.stig_names || []).join(" ");
+      if (field === "cves") return (doc.cves || []).join(" ");
+      if (field === "ccis") return (doc.ccis || []).join(" ");
       const v = (doc as Record<string, unknown>)[field];
       return v == null ? "" : String(v);
     },
@@ -41,44 +55,84 @@ export function buildSearchIndex(docs: SearchDoc[]): void {
   engine.addAll(docs);
 }
 
-export function search(query: string, limit = 40): SearchDoc[] {
-  if (!engine) return [];
-  const q = query.trim();
-  if (!q) return [];
-  const hits = engine.search(q, { combineWith: "AND" });
-  const out: SearchDoc[] = [];
-  for (const hit of hits.slice(0, limit)) {
-    const doc = docsById.get(String(hit.id));
-    if (doc) out.push(doc);
-  }
-  return out;
+export function emptyFilters(): SearchFilters {
+  return {
+    type: "",
+    severity: "",
+    vendor: "",
+    hasIntune: false,
+    hasCve: false,
+    inKev: false,
+  };
 }
 
-/** Fast path: exact / prefix match on rule ids even before fuzzy search. */
-export function searchPreferRuleId(query: string, limit = 40): SearchDoc[] {
+export function applyFilters(docs: SearchDoc[], f: SearchFilters): SearchDoc[] {
+  return docs.filter((d) => {
+    if (f.type && d.type !== f.type) return false;
+    if (f.severity && (d.severity || "").toLowerCase() !== f.severity.toLowerCase())
+      return false;
+    if (f.vendor && (d.vendor || "") !== f.vendor) return false;
+    if (f.hasIntune && !d.hasIntune) return false;
+    if (f.hasCve && !d.hasCve) return false;
+    if (f.inKev && !d.inKev) return false;
+    return true;
+  });
+}
+
+export function search(query: string, limit = 40, filters?: SearchFilters): SearchDoc[] {
+  if (!engine) return [];
+  const f = filters || emptyFilters();
   const q = query.trim();
-  if (!q) return [];
+
+  let pool: SearchDoc[];
+  if (!q) {
+    // filter-only browse of rules/stigs
+    pool = applyFilters(allDocs, f);
+    return pool.slice(0, limit);
+  }
+
   const upper = q.toUpperCase();
   const idHits: SearchDoc[] = [];
-  if (engine) {
-    for (const doc of docsById.values()) {
-      if (doc.type !== "rule") continue;
-      const rid = (doc.full_rule_id || "").toUpperCase();
-      if (rid === upper || rid.startsWith(upper) || rid.includes(upper)) {
-        idHits.push(doc);
-        if (idHits.length >= limit) break;
-      }
+  for (const doc of allDocs) {
+    if (doc.type !== "rule") continue;
+    const rid = (doc.full_rule_id || "").toUpperCase();
+    if (rid === upper || rid.startsWith(upper) || rid.includes(upper)) {
+      idHits.push(doc);
+      if (idHits.length >= limit) break;
     }
   }
-  if (idHits.length >= 5) return idHits.slice(0, limit);
-  const fuzzy = search(q, limit);
-  const seen = new Set(idHits.map((d) => d.id));
-  for (const d of fuzzy) {
-    if (!seen.has(d.id)) {
-      idHits.push(d);
-      seen.add(d.id);
-    }
-    if (idHits.length >= limit) break;
+
+  const hits = engine.search(q, { combineWith: "AND" });
+  const fuzzy: SearchDoc[] = [];
+  for (const hit of hits) {
+    const doc = docsById.get(String(hit.id));
+    if (doc) fuzzy.push(doc);
   }
-  return idHits;
+
+  const seen = new Set<string>();
+  const merged: SearchDoc[] = [];
+  for (const d of [...idHits, ...fuzzy]) {
+    if (seen.has(d.id)) continue;
+    seen.add(d.id);
+    merged.push(d);
+  }
+
+  return applyFilters(merged, f).slice(0, limit);
+}
+
+/** @deprecated use search() */
+export function searchPreferRuleId(
+  query: string,
+  limit = 40,
+  filters?: SearchFilters,
+): SearchDoc[] {
+  return search(query, limit, filters);
+}
+
+export function uniqueVendorsFromIndex(): string[] {
+  const s = new Set<string>();
+  for (const d of allDocs) {
+    if (d.vendor) s.add(d.vendor);
+  }
+  return [...s].sort();
 }

@@ -14,6 +14,8 @@ export interface Meta {
     controls?: number;
     ccis?: number;
     searchDocuments?: number;
+    rulesWithCve?: number;
+    rulesWithKev?: number;
   };
   parseErrors?: number;
   generator?: string;
@@ -27,10 +29,28 @@ export interface SearchDoc {
   route: string;
   severity?: string;
   full_rule_id?: string;
+  group_id?: string;
+  ccis?: string[];
+  cves?: string[];
   stig_names?: string[];
   version?: string;
   release?: string;
   release_date?: string;
+  vendor?: string;
+  roles?: string[];
+  tags?: string[];
+  hasIntune?: boolean;
+  hasCve?: boolean;
+  inKev?: boolean;
+}
+
+export interface SearchFilters {
+  type: "" | "stig" | "rule";
+  severity: string;
+  vendor: string;
+  hasIntune: boolean;
+  hasCve: boolean;
+  inKev: boolean;
 }
 
 export interface StigIndexEntry {
@@ -114,6 +134,41 @@ export interface IntunePayload {
   multiOption?: boolean;
 }
 
+export interface ThreatCve {
+  id: string;
+  inKev?: boolean;
+  nvdUrl?: string;
+  kevUrl?: string | null;
+  cvss?: { version?: string; score?: number; severity?: string };
+}
+
+export interface ThreatPayload {
+  status: string;
+  cves: ThreatCve[];
+  inKev?: boolean;
+  attack?: Array<{
+    techniqueId: string;
+    name: string;
+    url: string;
+    confidence?: string;
+    source?: string;
+  }>;
+  references?: Array<{
+    type: string;
+    title: string;
+    url: string;
+    publisher?: string;
+    date?: string;
+  }>;
+  iocs?: Array<{
+    type: string;
+    value: string;
+    sourceUrl?: string;
+    note?: string;
+  }>;
+  disclaimer?: string;
+}
+
 export interface RuleDetail {
   id: string;
   full_rule_id: string;
@@ -137,4 +192,18 @@ export interface RuleDetail {
   }>;
   stig_ids: string[];
   intune?: IntunePayload | null;
+  threat?: ThreatPayload | null;
+}
+
+export interface IntuneProductIndex {
+  products: Array<{
+    product: string;
+    stigId?: string;
+    stigName?: string;
+    settings?: number;
+    mappedRules?: number;
+    rules?: number;
+    path?: string;
+  }>;
+  total: number;
 }

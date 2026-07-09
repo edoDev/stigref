@@ -49,3 +49,7 @@ export function fetchTagsCatalog(): Promise<TagsCatalog> {
 export function intuneProductUrl(productId: string): string {
   return dataUrl("intune", "products", `${productId}.json`);
 }
+
+export function fetchIntuneIndex(): Promise<import("./types").IntuneProductIndex> {
+  return getJson(dataUrl("intune", "index.json"));
+}

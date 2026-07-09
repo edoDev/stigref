@@ -14,6 +14,7 @@ from stigref_build import __version__
 from stigref_build.ids import rule_path_id
 from stigref_build.intune_suggest import attach_intune_to_stigs, load_csp_catalog
 from stigref_build.tags import build_quick_links, enrich_stig, load_curated
+from stigref_build.threat_enrich import attach_threat_to_rules, load_kev_ids
 
 log = logging.getLogger(__name__)
 
@@ -111,10 +112,23 @@ def build_search_documents(
                 "vendor": stig.get("vendor") or "",
                 "roles": stig.get("roles") or [],
                 "tags": stig.get("tags") or [],
+                "severity": "",
+                "hasIntune": False,
+                "hasCve": False,
+                "inKev": False,
             }
         )
 
     for rule in rules_by_id.values():
+        cves = rule.get("cves") or []
+        threat = rule.get("threat") or {}
+        intune = rule.get("intune") or {}
+        has_intune = bool(
+            intune.get("status") == "mapped"
+            and (intune.get("suggestions") or [])
+        )
+        in_kev = bool(threat.get("inKev"))
+        has_cve = bool(cves) or bool(threat.get("cves"))
         body = _truncate(
             " ".join(
                 [
@@ -123,9 +137,16 @@ def build_search_documents(
                     rule.get("check") or "",
                     rule.get("group_id") or "",
                     " ".join(rule.get("ccis") or []),
+                    " ".join(cves),
                 ]
             )
         )
+        # vendor from first linked stig if present
+        vendor = ""
+        roles: list[str] = []
+        for s in rule.get("stigs") or []:
+            # stigs list may only have id/name/version — look up later if needed
+            pass
         docs.append(
             {
                 "id": f"rule:{rule['full_rule_id']}",
@@ -135,7 +156,15 @@ def build_search_documents(
                 "route": f"/rules/{rule_path_id(rule['full_rule_id'])}",
                 "severity": rule.get("severity") or "",
                 "full_rule_id": rule["full_rule_id"],
+                "group_id": rule.get("group_id") or "",
+                "ccis": rule.get("ccis") or [],
+                "cves": cves,
                 "stig_names": [s["name"] for s in rule.get("stigs") or []],
+                "vendor": vendor,
+                "roles": roles,
+                "hasIntune": has_intune,
+                "hasCve": has_cve,
+                "inKev": in_kev,
             }
         )
     return docs
@@ -166,6 +195,7 @@ def write_data_tree(
             "families",
             "intune",
             "csp",
+            "threat",
         ):
             p = out / sub
             if p.exists():
@@ -182,6 +212,15 @@ def write_data_tree(
     csp_catalog = load_csp_catalog()
     stigs, intune_exports = attach_intune_to_stigs(stigs, catalog=csp_catalog)
     rules_by_id = merge_rules_across_stigs(stigs)
+
+    # Threat intel: CVE display + CISA KEV join
+    repo_root = Path(__file__).resolve().parents[2]
+    kev_cache = repo_root / "raw" / "intel" / "kev.json"
+    kev_ids, kev_meta = load_kev_ids(kev_cache, fetch=True)
+    threat_stats = attach_threat_to_rules(rules_by_id, kev_ids)
+
+    # Propagate vendor/roles onto rule search docs via stig lookup
+    stig_by_id = {s["id"]: s for s in stigs}
 
     # STIG index + detail (detail includes rule summaries, not always full text)
     stig_index: list[dict] = []
@@ -301,8 +340,21 @@ def write_data_tree(
             "stigs": rule.get("stigs") or [],
             "stig_ids": rule.get("stig_ids") or [],
             "intune": rule.get("intune"),
+            "threat": rule.get("threat"),
         }
         _write_json(out / "rules" / "by-id" / f"{path_id}.json", detail)
+
+    # Threat meta
+    _write_json(
+        out / "threat" / "meta.json",
+        {
+            "kev": kev_meta,
+            "stats": threat_stats,
+            "disclaimer": (
+                "Public CVE/KEV context only. Not a vulnerability scan result."
+            ),
+        },
+    )
 
     # CSP catalog snapshot + product-level Intune export packages
     _write_json(
@@ -337,7 +389,27 @@ def write_data_tree(
         },
     )
 
+    # Attach vendor from first linked STIG onto rules for search facets
+    for rule in rules_by_id.values():
+        for link in rule.get("stigs") or []:
+            sid = link.get("id")
+            parent = stig_by_id.get(sid) if sid else None
+            if parent:
+                rule["_search_vendor"] = parent.get("vendor") or ""
+                rule["_search_roles"] = parent.get("roles") or []
+                break
+
     docs = build_search_documents(stigs, rules_by_id)
+    # fill vendor/roles on rule docs from temporary fields
+    for doc in docs:
+        if doc.get("type") != "rule":
+            continue
+        rid = doc.get("full_rule_id")
+        rule = rules_by_id.get(rid) if rid else None
+        if rule:
+            doc["vendor"] = rule.get("_search_vendor") or ""
+            doc["roles"] = rule.get("_search_roles") or []
+
     _write_json(out / "search" / "documents.json", {"documents": docs, "total": len(docs)})
 
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace(
@@ -366,6 +438,8 @@ def write_data_tree(
         "counts": {
             "stigs": len(stigs),
             "rules": len(rules_by_id),
+            "rulesWithCve": threat_stats.get("rulesWithCve", 0),
+            "rulesWithKev": threat_stats.get("rulesWithKev", 0),
             "controls": 0,
             "ccis": 0,
             "searchDocuments": len(docs),

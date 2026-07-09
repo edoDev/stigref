@@ -39,6 +39,47 @@ export function ruleCitation(rule: RuleDetail, origin = location.origin): string
   ].join("\n");
 }
 
+export function ruleMarkdown(rule: RuleDetail, origin = location.origin): string {
+  const link = `${origin}${routes.rule(rule.full_rule_id)}`;
+  const cves = (rule.cves || []).join(", ") || "—";
+  return [
+    `### ${rule.full_rule_id}`,
+    "",
+    `**${rule.title}**`,
+    "",
+    `| Field | Value |`,
+    `| --- | --- |`,
+    `| Severity | ${rule.severity || "n/a"} |`,
+    `| CCI | ${(rule.ccis || []).join(", ") || "—"} |`,
+    `| CVE | ${cves} |`,
+    "",
+    `[Open in stigref](${link})`,
+    "",
+    "#### Check",
+    "",
+    "```",
+    rule.check || "—",
+    "```",
+    "",
+    "#### Fix",
+    "",
+    "```",
+    rule.fix || "—",
+    "```",
+  ].join("\n");
+}
+
+export function ruleOmaUriPack(rule: RuleDetail): string {
+  const rows = (rule.intune?.suggestions || [])
+    .filter((s) => s.omaUri)
+    .map((s) => {
+      const val = s.value != null && s.value !== "" ? String(s.value) : "";
+      return `${s.omaUri}\t${val}\t${s.dataType || ""}\t${s.title || ""}`;
+    });
+  if (!rows.length) return "";
+  return ["omaUri\tvalue\tdataType\ttitle", ...rows].join("\n");
+}
+
 export function stigCitation(stig: StigDetail, origin = location.origin): string {
   const link = `${origin}${routes.stig(stig.id)}`;
   return [

@@ -4,7 +4,11 @@
   import type { LoadState, RuleDetail } from "../types";
   import { severityClass } from "../format";
   import CopyButton from "../components/CopyButton.svelte";
-  import { ruleCitation } from "../copy";
+  import {
+    ruleCitation,
+    ruleMarkdown,
+    ruleOmaUriPack,
+  } from "../copy";
 
   interface Props {
     id: string;
@@ -61,11 +65,81 @@
           {/if}
         </p>
       </div>
-      <div class="row">
+      <div class="row pack">
         <CopyButton text={rule.full_rule_id} label="Copy ID" />
-        <CopyButton text={ruleCitation(rule)} label="Copy citation" class="primary" />
+        <CopyButton text={ruleCitation(rule)} label="Citation" class="primary" />
+        <CopyButton text={ruleMarkdown(rule)} label="Markdown" />
+        <CopyButton text={rule.check || ""} label="Check" />
+        <CopyButton text={rule.fix || ""} label="Fix" />
+        {#if ruleOmaUriPack(rule)}
+          <CopyButton text={ruleOmaUriPack(rule)} label="OMA-URIs" />
+        {/if}
+        {#if rule.intune?.suggestions?.length}
+          <CopyButton
+            text={JSON.stringify(rule.intune.suggestions, null, 2)}
+            label="Intune JSON"
+          />
+        {/if}
       </div>
     </div>
+
+    {#if rule.threat && (rule.threat.cves?.length || rule.threat.status === "mapped")}
+      <div class="card stack">
+        <div class="section-title" style="margin-top:0">
+          <h2 class="h">Threat context</h2>
+          {#if rule.threat.inKev}
+            <span class="badge kev">CISA KEV</span>
+          {/if}
+        </div>
+        {#if rule.threat.cves?.length}
+          <div class="row">
+            {#each rule.threat.cves as c}
+              <a
+                class="cvechip"
+                class:kev={c.inKev}
+                href={c.nvdUrl}
+                target="_blank"
+                rel="noopener"
+                title={c.inKev ? "In CISA KEV catalog" : "NVD"}
+              >
+                {c.id}{c.inKev ? " · KEV" : ""}
+              </a>
+            {/each}
+          </div>
+          {#if rule.threat.inKev}
+            <p class="muted small" style="margin:0">
+              At least one CVE is listed in the
+              <a
+                href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+                target="_blank"
+                rel="noopener">CISA Known Exploited Vulnerabilities</a
+              >
+              catalog. Validate impact for your environment.
+            </p>
+          {/if}
+        {:else}
+          <p class="muted" style="margin:0">No CVE identifiers on this rule.</p>
+        {/if}
+        <p class="muted small" style="margin:0">
+          {rule.threat.disclaimer ||
+            "Public context only. Not a vulnerability scan result."}
+        </p>
+      </div>
+    {:else if rule.cves?.length}
+      <div class="card stack">
+        <h2 class="h">CVEs</h2>
+        <div class="row">
+          {#each rule.cves as c}
+            <a
+              class="cvechip"
+              href={`https://nvd.nist.gov/vuln/detail/${c}`}
+              target="_blank"
+              rel="noopener">{c}</a
+            >
+          {/each}
+        </div>
+      </div>
+    {/if}
 
     {#if rule.stigs?.length}
       <div class="card">
@@ -242,5 +316,31 @@
   a.btn:hover {
     border-color: var(--accent);
     color: var(--accent);
+  }
+  .pack {
+    justify-content: flex-end;
+    max-width: 22rem;
+  }
+  .cvechip {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .cvechip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .cvechip.kev {
+    border-color: var(--high);
+    color: var(--high);
+  }
+  .badge.kev {
+    border-color: var(--high);
+    color: var(--high);
   }
 </style>
