@@ -2,7 +2,7 @@
 
 **Fast, static STIG & control reference.** Search DISA STIGs/SRGs and related NIST controls in the browser. No account, no backend, no assessment workflow.
 
-> Status: **Phase 1 complete** — XCCDF build pipeline + sample `data/`. Frontend not started yet.
+> Status: **Phase 2 complete** — static Svelte UI + full April 2026 data. Enable GitHub Pages (Actions) to go live.
 
 ## Why this exists
 
@@ -88,7 +88,18 @@ See [scripts/README.md](scripts/README.md).
 | Phase | State |
 |-------|--------|
 | Design | Done |
-| Phase 1 — parser + data build | **Done** (sample fixture) |
-| Phase 2 — frontend UI | Not started |
-| Full DISA library ingest | Not started |
-| GitHub Pages live | Not started |
+| Phase 1 — parser + data build | **Done** |
+| Phase 2 — frontend UI | **Done** (Svelte + MiniSearch) |
+| Full DISA library ingest | **Done** (committed in `data/`) |
+| GitHub Pages live | Enable Actions source in repo Settings → Pages |
+
+## Web UI
+
+```powershell
+cd web
+npm install
+npm run dev
+# open http://localhost:5173/stigref/
+```
+
+Production build: `npm run build` (copies `data/` into `dist/data`).
