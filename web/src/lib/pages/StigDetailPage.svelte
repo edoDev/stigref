@@ -52,7 +52,26 @@
           V{stig.version}R{stig.release}
           · released {formatDate(stig.release_date)}
           · {stig.rule_count} rules
+          {#if stig.vendor}
+            · {stig.vendor}
+          {/if}
         </p>
+        {#if stig.tags?.length}
+          <div class="row" style="margin-top:0.35rem">
+            {#each stig.roles || [] as r}
+              <span class="badge">{r}</span>
+            {/each}
+            {#if stig.tags.includes("intune-companion")}
+              <span class="badge">intune companion</span>
+            {/if}
+            {#if stig.tags.includes("gpo-companion")}
+              <span class="badge">gpo companion</span>
+            {/if}
+            {#if stig.tags.includes("intune")}
+              <span class="badge">intune</span>
+            {/if}
+          </div>
+        {/if}
       </div>
       <CopyButton text={stigCitation(stig)} label="Copy citation" class="primary" />
     </div>

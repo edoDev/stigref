@@ -12,6 +12,7 @@ from typing import Any
 
 from stigref_build import __version__
 from stigref_build.ids import rule_path_id
+from stigref_build.tags import build_quick_links, enrich_stig, load_curated
 
 log = logging.getLogger(__name__)
 
@@ -91,13 +92,24 @@ def build_search_documents(
                 "type": "stig",
                 "title": stig["name"],
                 "body": _truncate(
-                    f"{stig['name']} {stig.get('description') or ''} "
-                    f"V{stig['version']}R{stig['release']}"
+                    " ".join(
+                        [
+                            stig["name"],
+                            stig.get("description") or "",
+                            f"V{stig['version']}R{stig['release']}",
+                            stig.get("vendor") or "",
+                            " ".join(stig.get("roles") or []),
+                            " ".join(stig.get("tags") or []),
+                        ]
+                    )
                 ),
                 "route": f"/stigs/{stig['id']}",
                 "version": stig["version"],
                 "release": stig["release"],
                 "release_date": stig.get("release_date") or "",
+                "vendor": stig.get("vendor") or "",
+                "roles": stig.get("roles") or [],
+                "tags": stig.get("tags") or [],
             }
         )
 
@@ -143,7 +155,7 @@ def write_data_tree(
     out = Path(out_dir)
     if clean and out.exists():
         # Only remove known subtrees to avoid deleting unrelated files
-        for sub in ("stigs", "rules", "search", "controls", "ccis"):
+        for sub in ("stigs", "rules", "search", "controls", "ccis", "tags", "families"):
             p = out / sub
             if p.exists():
                 shutil.rmtree(p)
@@ -153,6 +165,8 @@ def write_data_tree(
 
     out.mkdir(parents=True, exist_ok=True)
 
+    curated = load_curated()
+    stigs = [enrich_stig(s, curated) for s in stigs]
     rules_by_id = merge_rules_across_stigs(stigs)
 
     # STIG index + detail (detail includes rule summaries, not always full text)
@@ -180,6 +194,11 @@ def write_data_tree(
             "rule_count": len(summaries),
             "rules": summaries,
             "source": stig.get("source") or "",
+            "family": stig.get("family") or "",
+            "vendor": stig.get("vendor") or "",
+            "roles": stig.get("roles") or [],
+            "tags": stig.get("tags") or [],
+            "quicklink_id": stig.get("quicklink_id"),
         }
         _write_json(out / "stigs" / "by-id" / f"{stig['id']}.json", detail)
         stig_index.append(
@@ -190,10 +209,62 @@ def write_data_tree(
                 "release": stig["release"],
                 "release_date": stig.get("release_date") or "",
                 "rule_count": len(summaries),
+                "family": stig.get("family") or "",
+                "vendor": stig.get("vendor") or "",
+                "roles": stig.get("roles") or [],
+                "tags": stig.get("tags") or [],
+                "quicklink_id": stig.get("quicklink_id"),
             }
         )
 
     _write_json(out / "stigs" / "index.json", {"stigs": stig_index, "total": len(stig_index)})
+
+    # Facets + quick links for UI filters
+    vendors = sorted({s["vendor"] for s in stig_index if s.get("vendor")})
+    roles = sorted({r for s in stig_index for r in (s.get("roles") or [])})
+    tag_set = sorted({t for s in stig_index for t in (s.get("tags") or [])})
+    quick_links = build_quick_links(stigs, curated)
+    _write_json(
+        out / "tags" / "catalog.json",
+        {
+            "vendors": vendors,
+            "roles": roles,
+            "tags": tag_set,
+            "quickLinks": quick_links,
+            "filterHints": {
+                "roles": ["server", "workstation", "browser", "mobile", "database", "network", "cloud", "application", "other"],
+                "special": [
+                    {"id": "intune", "label": "Intune-related", "tag": "intune"},
+                    {"id": "intune-companion", "label": "Intune companion", "tag": "intune-companion"},
+                    {"id": "gpo-companion", "label": "GPO companion", "tag": "gpo-companion"},
+                ],
+            },
+        },
+    )
+
+    # Family map (foundation for multi-release history)
+    families: dict[str, list[dict]] = {}
+    for s in stig_index:
+        fam = s.get("family") or "unknown"
+        families.setdefault(fam, []).append(
+            {
+                "id": s["id"],
+                "name": s["name"],
+                "version": s["version"],
+                "release": s["release"],
+                "release_date": s.get("release_date") or "",
+            }
+        )
+    _write_json(
+        out / "families" / "index.json",
+        {
+            "families": [
+                {"family": k, "versions": v, "count": len(v)}
+                for k, v in sorted(families.items(), key=lambda kv: kv[0])
+            ],
+            "total": len(families),
+        },
+    )
 
     # Full rule detail files
     for rid, rule in rules_by_id.items():

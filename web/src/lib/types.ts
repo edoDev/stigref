@@ -40,6 +40,11 @@ export interface StigIndexEntry {
   release: string;
   release_date: string;
   rule_count: number;
+  family?: string;
+  vendor?: string;
+  roles?: string[];
+  tags?: string[];
+  quicklink_id?: string | null;
 }
 
 export interface StigDetail {
@@ -58,6 +63,30 @@ export interface StigDetail {
     group_id: string;
   }>;
   source?: string;
+  family?: string;
+  vendor?: string;
+  roles?: string[];
+  tags?: string[];
+  quicklink_id?: string | null;
+}
+
+export interface QuickLink {
+  id: string;
+  label: string;
+  stigId: string | null;
+  stigName: string | null;
+  found: boolean;
+}
+
+export interface TagsCatalog {
+  vendors: string[];
+  roles: string[];
+  tags: string[];
+  quickLinks: QuickLink[];
+  filterHints?: {
+    roles?: string[];
+    special?: Array<{ id: string; label: string; tag: string }>;
+  };
 }
 
 export interface RuleDetail {

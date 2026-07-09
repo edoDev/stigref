@@ -27,6 +27,24 @@
     <p style="margin:0"><a href={routes.home()}>← Back to search</a></p>
   </div>
 
+  <div class="card stack">
+    <h2 style="margin:0">Themes</h2>
+    <p class="muted" style="margin:0">
+      Pick a dark theme from the header control. Options: Midnight Slate, Carbon Green, Violet Dusk,
+      Amber Forge (saved in this browser).
+    </p>
+  </div>
+
+  <div class="card stack">
+    <h2 style="margin:0">Tags &amp; Intune</h2>
+    <p class="muted" style="margin:0">
+      Vendors and roles are inferred from STIG titles. Companion tags like
+      <span class="mono">intune-companion</span> and <span class="mono">gpo-companion</span> are
+      curated: public library ZIPs usually contain XCCDF + PDFs only, not Intune JSON templates.
+      The Intune MDM STIG itself is tagged <span class="mono">intune</span>.
+    </p>
+  </div>
+
   <div class="card">
     <h2>Catalog metadata</h2>
     {#if state === "loading"}

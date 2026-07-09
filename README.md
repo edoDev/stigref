@@ -2,7 +2,8 @@
 
 **Fast, static STIG & control reference.** Search DISA STIGs/SRGs and related NIST controls in the browser. No account, no backend, no assessment workflow.
 
-> Status: **Phase 2 complete** — static Svelte UI + full April 2026 data. Enable GitHub Pages (Actions) to go live.
+> Status: **Live** — search, filters, quick links, themes.  
+> Site: https://edodev.github.io/stigref/
 
 ## Why this exists
 

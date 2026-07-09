@@ -10,11 +10,13 @@
   import { bootData } from "./lib/metaStore";
   import { toastMessage } from "./lib/toast";
   import { routes } from "./lib/paths";
+  import { initTheme } from "./lib/theme";
 
   let r = $derived($route);
   let toast = $derived($toastMessage);
 
   onMount(() => {
+    initTheme();
     const stop = initRouter();
     bootData();
     return stop;

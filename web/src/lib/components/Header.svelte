@@ -2,9 +2,16 @@
   import { meta, metaState } from "../metaStore";
   import { routes } from "../paths";
   import { formatDate } from "../format";
+  import { applyTheme, theme, themes, type ThemeId } from "../theme";
 
   let m = $derived($meta);
   let state = $derived($metaState);
+  let t = $derived($theme);
+
+  function onTheme(e: Event) {
+    const v = (e.currentTarget as HTMLSelectElement).value as ThemeId;
+    applyTheme(v);
+  }
 </script>
 
 <header class="header">
@@ -15,6 +22,14 @@
       <a href={routes.stigs()}>STIGs</a>
       <a href={routes.about()}>About</a>
     </nav>
+    <label class="theme muted">
+      Theme
+      <select value={t} onchange={onTheme} aria-label="Color theme">
+        {#each themes as th}
+          <option value={th.id}>{th.label}</option>
+        {/each}
+      </select>
+    </label>
     <div class="meta muted">
       {#if state === "loading"}
         Loading catalog…
@@ -69,11 +84,29 @@
     font-size: 0.82rem;
     margin-left: auto;
   }
+  .theme {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+  }
+  .theme select {
+    font: inherit;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.35rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+  }
   @media (max-width: 720px) {
     .meta {
       width: 100%;
-      order: 3;
+      order: 4;
       margin-left: 0;
+    }
+    .theme {
+      order: 3;
     }
   }
 </style>

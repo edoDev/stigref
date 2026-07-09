@@ -1,5 +1,12 @@
 import { dataUrl } from "./paths";
-import type { Meta, RuleDetail, SearchDoc, StigDetail, StigIndexEntry } from "./types";
+import type {
+  Meta,
+  RuleDetail,
+  SearchDoc,
+  StigDetail,
+  StigIndexEntry,
+  TagsCatalog,
+} from "./types";
 
 async function getJson<T>(url: string): Promise<T> {
   const res = await fetch(url);
@@ -33,4 +40,8 @@ export function fetchStig(id: string): Promise<StigDetail> {
 
 export function fetchRule(id: string): Promise<RuleDetail> {
   return getJson<RuleDetail>(dataUrl("rules", "by-id", `${id}.json`));
+}
+
+export function fetchTagsCatalog(): Promise<TagsCatalog> {
+  return getJson<TagsCatalog>(dataUrl("tags", "catalog.json"));
 }
