@@ -9,7 +9,7 @@
 | **Last completed portion** | **W3-7** ship |
 | **Next portion** | Remaining *idea* items only (see BACKLOG) |
 | **Branch** | `main` |
-| **Last known good commit** | *(set after push)* |
+| **Last known good commit** | `12f832262` |
 | **Repo dirty?** | Clean after ship |
 
 ### How to resume
