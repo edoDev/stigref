@@ -97,6 +97,37 @@ export function createEngine(docs: SearchDoc[]): MiniSearch<SearchDoc> {
   return engine;
 }
 
+/** Substring scan over title/body/ids — safety net when MiniSearch undershoots. */
+function substringHits(
+  allDocs: SearchDoc[],
+  q: string,
+  limit: number,
+): SearchDoc[] {
+  const needle = q.trim().toLowerCase();
+  if (needle.length < 2) return [];
+  const out: SearchDoc[] = [];
+  for (const doc of allDocs) {
+    const hay = [
+      doc.title,
+      doc.body,
+      doc.full_rule_id,
+      doc.group_id,
+      ...(doc.stig_names || []),
+      ...(doc.ccis || []),
+      ...(doc.cves || []),
+      doc.vendor,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    if (hay.includes(needle)) {
+      out.push(doc);
+      if (out.length >= limit) break;
+    }
+  }
+  return out;
+}
+
 export function searchWithEngine(
   engine: MiniSearch<SearchDoc> | null,
   allDocs: SearchDoc[],
@@ -105,7 +136,7 @@ export function searchWithEngine(
   limit = 40,
   filters?: SearchFilters,
 ): SearchDoc[] {
-  if (!engine) return [];
+  if (!engine && !allDocs.length) return [];
   const f = filters || emptyFilters();
   const q = query.trim();
 
@@ -117,6 +148,7 @@ export function searchWithEngine(
   const idHits: SearchDoc[] = [];
   // B-031: tolerate missing "rN_rule" suffix and minor typos on SV-/V- ids
   const bare = upper.replace(/R\d+_RULE$/i, "").replace(/_RULE$/i, "");
+  const looksLikeId = /^(SV-|V-|CCI-|CVE-)/i.test(q.trim());
   for (const doc of allDocs) {
     if (doc.type !== "rule") continue;
     const rid = (doc.full_rule_id || "").toUpperCase();
@@ -135,11 +167,19 @@ export function searchWithEngine(
     }
   }
 
-  const hits = engine.search(q, { combineWith: "AND" });
   const fuzzy: SearchDoc[] = [];
-  for (const hit of hits) {
-    const doc = docsById.get(String(hit.id));
-    if (doc) fuzzy.push(doc);
+  if (engine) {
+    // Prefer OR for multi-word natural language; AND for rule-id style queries
+    const combineWith = looksLikeId || !q.includes(" ") ? "AND" : "OR";
+    try {
+      const hits = engine.search(q, { combineWith });
+      for (const hit of hits) {
+        const doc = docsById.get(String(hit.id));
+        if (doc) fuzzy.push(doc);
+      }
+    } catch {
+      /* MiniSearch can throw on empty token sets */
+    }
   }
 
   const seen = new Set<string>();
@@ -148,6 +188,17 @@ export function searchWithEngine(
     if (seen.has(d.id)) continue;
     seen.add(d.id);
     merged.push(d);
+  }
+
+  // Substring fallback when MiniSearch returns nothing (or very few) for a
+  // plain-language token — e.g. type=All bitlocker / print.
+  if (merged.length < Math.min(5, limit) && !looksLikeId && q.length >= 3) {
+    for (const d of substringHits(allDocs, q, limit * 2)) {
+      if (seen.has(d.id)) continue;
+      seen.add(d.id);
+      merged.push(d);
+      if (merged.length >= limit * 2) break;
+    }
   }
 
   return applyFilters(merged, f).slice(0, limit);

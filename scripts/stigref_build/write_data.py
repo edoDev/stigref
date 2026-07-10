@@ -33,7 +33,9 @@ from stigref_build.insights import build_insights_from_disk, write_insights
 
 log = logging.getLogger(__name__)
 
-SEARCH_BODY_MAX = 400
+# Index body budget per doc (title is separate). Larger = better recall for terms
+# that appear mid-check/fix (e.g. BitLocker, spooler) without reloading full text.
+SEARCH_BODY_MAX = 1400
 
 
 def _sha256_file(path: Path | None) -> str | None:
@@ -255,9 +257,13 @@ def build_search_documents(
                     rule.get("full_rule_id") or "",
                     rule.get("title") or "",
                     rule.get("check") or "",
+                    rule.get("fix") or "",
                     rule.get("group_id") or "",
                     " ".join(rule.get("ccis") or []),
                     " ".join(cves),
+                    " ".join(
+                        (s.get("name") or "") for s in (rule.get("stigs") or [])
+                    ),
                 ]
             )
         )
@@ -749,8 +755,13 @@ def write_data_tree(
             doc["vendor"] = rule.get("_search_vendor") or ""
             doc["roles"] = rule.get("_search_roles") or []
 
-    # B-041: sharded + gzip search index (no monolithic documents.json by default)
-    write_search_index(out / "search", docs, write_legacy_monolith=False)
+    # B-041: sharded + gzip search index; plain shards kept as fetch fallback
+    write_search_index(
+        out / "search",
+        docs,
+        write_legacy_monolith=False,
+        write_plain_shards=True,
+    )
 
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace(
         "+00:00", "Z"

@@ -76,10 +76,14 @@
 <section class="stack">
   <div>
     <h1>STIG catalog</h1>
-    <p class="muted">Filter by vendor, role, or companion-content tags.</p>
+    <p class="muted">
+      Filter STIGs by <strong>name</strong>, vendor, role, or companion-content tags. For rule text
+      (BitLocker, print spooler, RDP, …) use
+      <a href={routes.home()}>home search</a> with type <em>All</em> or <em>Rules</em>.
+    </p>
   </div>
 
-  <SearchBox bind:value={filter} placeholder="Filter by name, vendor, tag…" />
+  <SearchBox bind:value={filter} placeholder="Filter STIG name, vendor, tag…" />
 
   <div class="filters card">
     <label class="field">

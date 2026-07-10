@@ -111,6 +111,43 @@ describe("search", () => {
     expect(out.some((d) => d.id === "r1")).toBe(true);
   });
 
+  it("finds bitlocker-style title tokens", () => {
+    buildSearchIndexSync([
+      ...SAMPLE,
+      doc({
+        id: "r-bl",
+        type: "rule",
+        title: "Windows 11 systems must use BitLocker to encrypt all disks",
+        full_rule_id: "SV-253259r1_rule",
+        body: "BitLocker volume encryption",
+      }),
+    ]);
+    const out = search("bitlocker", 10);
+    expect(out.some((d) => d.id === "r-bl")).toBe(true);
+  });
+
+  it("substring fallback finds terms MiniSearch may miss in long body", () => {
+    buildSearchIndexSync([
+      doc({
+        id: "r-long",
+        type: "rule",
+        title: "Configure security settings",
+        full_rule_id: "SV-1r1_rule",
+        body: "x".repeat(50) + " uniquezebrazebra " + "y".repeat(50),
+      }),
+    ]);
+    const out = search("uniquezebrazebra", 10);
+    expect(out.some((d) => d.id === "r-long")).toBe(true);
+  });
+
+  it("type=stig filter excludes rules (UX: empty for rule-only terms)", () => {
+    const f = emptyFilters();
+    f.type = "stig";
+    const out = search("spooler", 10, f);
+    expect(out.every((d) => d.type === "stig")).toBe(true);
+    expect(out.some((d) => d.id === "r1")).toBe(false);
+  });
+
   it("combines text search with filters", () => {
     const f = emptyFilters();
     f.type = "rule";

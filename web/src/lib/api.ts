@@ -16,26 +16,62 @@ async function getJson<T>(url: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-/** Fetch JSON, preferring precompressed .gz when DecompressionStream is available (B-041). */
+function isGzipMagic(buf: ArrayBuffer): boolean {
+  if (buf.byteLength < 2) return false;
+  const u8 = new Uint8Array(buf);
+  return u8[0] === 0x1f && u8[1] === 0x8b;
+}
+
+/** Decompress a gzip ArrayBuffer to text (DecompressionStream). */
+async function gunzipToText(buf: ArrayBuffer): Promise<string> {
+  if (typeof DecompressionStream === "undefined") {
+    throw new Error("DecompressionStream not available");
+  }
+  const ds = new DecompressionStream("gzip");
+  const stream = new Response(buf).body?.pipeThrough(ds);
+  if (!stream) throw new Error("No body stream for gunzip");
+  return new Response(stream).text();
+}
+
+/**
+ * Fetch JSON, preferring precompressed .gz when available (B-041).
+ * Robust against:
+ * - gzipOnly shards (plain 404)
+ * - browsers without DecompressionStream (plain path)
+ * - accidental double-encoding / already-decompressed responses
+ */
 async function getJsonPreferGzip<T>(plainUrl: string, gzUrl?: string): Promise<T> {
-  const canGunzip =
-    typeof DecompressionStream !== "undefined" && typeof Response !== "undefined";
+  const canGunzip = typeof DecompressionStream !== "undefined";
+
   if (canGunzip && gzUrl) {
     try {
       const res = await fetch(gzUrl);
       if (res.ok) {
-        const ds = new DecompressionStream("gzip");
-        const stream = res.body?.pipeThrough(ds);
-        if (stream) {
-          const text = await new Response(stream).text();
+        const buf = await res.arrayBuffer();
+        if (isGzipMagic(buf)) {
+          const text = await gunzipToText(buf);
           return JSON.parse(text) as T;
         }
+        // Server may have already decompressed (or served plain JSON with .gz name)
+        const text = new TextDecoder("utf-8").decode(buf);
+        return JSON.parse(text) as T;
       }
     } catch {
-      /* fall through to plain */
+      /* try plain */
     }
   }
-  return getJson<T>(plainUrl);
+
+  try {
+    return await getJson<T>(plainUrl);
+  } catch (plainErr) {
+    // Last resort: gz without DecompressionStream is not usable
+    if (gzUrl && !canGunzip) {
+      throw new Error(
+        `Cannot load ${gzUrl}: browser lacks DecompressionStream and plain fallback failed (${plainErr instanceof Error ? plainErr.message : plainErr})`,
+      );
+    }
+    throw plainErr;
+  }
 }
 
 export function fetchMeta(): Promise<Meta> {
@@ -47,6 +83,7 @@ interface SearchManifest {
   format?: string;
   total?: number;
   preferGzip?: boolean;
+  gzipOnly?: boolean;
   shards?: Array<{
     id: string;
     path: string;
@@ -69,20 +106,47 @@ export async function fetchSearchDocuments(): Promise<SearchDoc[]> {
       dataUrl("search", "manifest.json.gz"),
     );
     if (man.shards?.length) {
-      const parts = await Promise.all(
+      const results = await Promise.all(
         man.shards.map(async (s) => {
           const plain = dataUrl("search", ...s.path.split("/"));
           const gz = s.pathGz
             ? dataUrl("search", ...s.pathGz.split("/"))
             : `${plain}.gz`;
-          const body = await getJsonPreferGzip<ShardBody>(plain, gz);
-          return body.documents ?? [];
+          try {
+            const body = await getJsonPreferGzip<ShardBody>(plain, gz);
+            return { ok: true as const, docs: body.documents ?? [], id: s.id };
+          } catch (e) {
+            return {
+              ok: false as const,
+              id: s.id,
+              error: e instanceof Error ? e.message : String(e),
+            };
+          }
         }),
       );
-      return parts.flat();
+      const failed = results.filter((r) => !r.ok);
+      const docs = results.flatMap((r) => (r.ok ? r.docs : []));
+      if (!docs.length) {
+        throw new Error(
+          `Search shards loaded 0 documents (${failed.length}/${man.shards.length} failed). ${failed[0] && !failed[0].ok ? failed[0].error : ""}`,
+        );
+      }
+      if (failed.length) {
+        console.warn(
+          `Search: ${failed.length} shard(s) failed; loaded ${docs.length} docs`,
+          failed,
+        );
+      }
+      // Sanity: warn if far below manifest total
+      if (man.total && docs.length < man.total * 0.5) {
+        console.warn(
+          `Search: only ${docs.length}/${man.total} documents loaded — index may be incomplete`,
+        );
+      }
+      return docs;
     }
-  } catch {
-    /* legacy path */
+  } catch (e) {
+    console.warn("Search shard load failed, trying legacy documents.json", e);
   }
 
   // Legacy monolithic documents.json
@@ -91,7 +155,11 @@ export async function fetchSearchDocuments(): Promise<SearchDoc[]> {
       dataUrl("search", "documents.json"),
       dataUrl("search", "documents.json.gz"),
     );
-    return body.documents ?? [];
+    const docs = body.documents ?? [];
+    if (!docs.length) {
+      throw new Error("Search index is empty (documents.json)");
+    }
+    return docs;
   } catch (e) {
     throw e instanceof Error ? e : new Error(String(e));
   }

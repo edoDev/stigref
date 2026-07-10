@@ -78,11 +78,16 @@
   }
 
   function retryBoot() {
-    bootData().then(() => {
+    bootData(true).then(() => {
       ready = isSearchReady();
       vendors = uniqueVendorsFromIndex();
       run(query);
     });
+  }
+
+  function clearTypeFilter() {
+    filters = { ...filters, type: "" };
+    run(query);
   }
 
   onMount(() => {
@@ -262,6 +267,39 @@
       <h2 id="search-results-heading">Results</h2>
       <span class="muted">{results.length} shown · URL updates as you filter</span>
     </div>
+    {#if results.length === 0 && query.trim()}
+      <div class="card" role="status">
+        <p style="margin:0">
+          <strong>No matches</strong> for
+          <span class="mono">{query.trim()}</span>
+          {#if filters.type}
+            with type filter <span class="mono">{filters.type}</span>
+          {/if}.
+        </p>
+        <ul class="muted" style="margin:0.5rem 0 0; padding-left:1.2rem">
+          {#if filters.type === "stig"}
+            <li>
+              Terms like <em>BitLocker</em> or <em>print</em> usually appear on
+              <strong>rules</strong>, not STIG titles.
+              <button type="button" class="linkish" onclick={clearTypeFilter}>
+                Search all types
+              </button>
+            </li>
+          {/if}
+          {#if filters.hasIntune || filters.hasCve || filters.inKev || filters.hasCis || filters.hasAttack || filters.hasOval || filters.hasScap || filters.severity || filters.vendor}
+            <li>
+              Active facet filters may be hiding hits.
+              <button type="button" class="linkish" onclick={clearFilters}>Clear filters</button>
+            </li>
+          {/if}
+          <li>
+            Catalog filter on
+            <a href={routes.stigs()}>STIGs</a> only matches STIG <em>names</em> — use this home
+            search for rule text.
+          </li>
+        </ul>
+      </div>
+    {/if}
     <ResultList {results} emptyLabel="No matches for that query/filters." />
   {:else if ready && m}
     <div class="card muted">
@@ -300,6 +338,15 @@
 </section>
 
 <style>
+  button.linkish {
+    background: none;
+    border: none;
+    color: var(--accent);
+    padding: 0;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
   .qlinks {
     display: flex;
     flex-wrap: wrap;

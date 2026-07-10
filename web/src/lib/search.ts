@@ -1,6 +1,6 @@
 /**
  * Search API — MiniSearch runs in a Web Worker when available (B-040).
- * Falls back to main-thread engine (tests / no Worker).
+ * Falls back to main-thread engine (tests / no Worker / worker timeout).
  */
 import type MiniSearch from "minisearch";
 import type { SearchDoc, SearchFilters } from "./types";
@@ -25,11 +25,26 @@ let useWorker = false;
 let reqSeq = 0;
 const pending = new Map<
   number,
-  { resolve: (v: unknown) => void; reject: (e: Error) => void }
+  {
+    resolve: (v: unknown) => void;
+    reject: (e: Error) => void;
+    timer?: ReturnType<typeof setTimeout>;
+  }
 >();
+
+const WORKER_BUILD_TIMEOUT_MS = 20_000;
+const WORKER_SEARCH_TIMEOUT_MS = 8_000;
 
 function canUseWorker(): boolean {
   return typeof Worker !== "undefined";
+}
+
+function rejectAllPending(err: Error): void {
+  for (const [, p] of pending) {
+    if (p.timer) clearTimeout(p.timer);
+    p.reject(err);
+  }
+  pending.clear();
 }
 
 function ensureWorker(): Worker | null {
@@ -44,6 +59,7 @@ function ensureWorker(): Worker | null {
       const p = pending.get(msg.requestId);
       if (!p) return;
       pending.delete(msg.requestId);
+      if (p.timer) clearTimeout(p.timer);
       if (msg.type === "error") {
         p.reject(new Error(msg.message));
         return;
@@ -63,6 +79,14 @@ function ensureWorker(): Worker | null {
     };
     worker.onerror = (err) => {
       console.error("search worker error", err);
+      useWorker = false;
+      rejectAllPending(new Error("Search worker failed"));
+      try {
+        worker?.terminate();
+      } catch {
+        /* ignore */
+      }
+      worker = null;
     };
     useWorker = true;
     return worker;
@@ -73,17 +97,31 @@ function ensureWorker(): Worker | null {
   }
 }
 
-function postWorker<T>(msg: Omit<WorkerIn, "requestId"> & { requestId?: number }): Promise<T> {
+function postWorker<T>(
+  msg: Omit<WorkerIn, "requestId"> & { requestId?: number },
+  timeoutMs: number,
+): Promise<T> {
   const w = ensureWorker();
   if (!w) return Promise.reject(new Error("no worker"));
   const requestId = ++reqSeq;
   return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      pending.delete(requestId);
+      reject(new Error(`Search worker timeout after ${timeoutMs}ms`));
+    }, timeoutMs);
     pending.set(requestId, {
       resolve: resolve as (v: unknown) => void,
       reject,
+      timer,
     });
     w.postMessage({ ...msg, requestId } as WorkerIn);
   });
+}
+
+function buildMainThread(docs: SearchDoc[]): void {
+  engine = createEngine(docs);
+  ready = true;
+  useWorker = false;
 }
 
 export function isSearchReady(): boolean {
@@ -94,22 +132,46 @@ export function getAllDocs(): SearchDoc[] {
   return allDocs;
 }
 
-/** Build index (async when worker is used). */
+/** Build index (async when worker is used). Always keeps main-thread fallback path. */
 export async function buildSearchIndex(docs: SearchDoc[]): Promise<void> {
   allDocs = docs;
   docsById = new Map(docs.map((d) => [d.id, d]));
   ready = false;
+  engine = null;
 
-  const w = ensureWorker();
-  if (w && useWorker) {
-    await postWorker<number>({ type: "build", docs });
+  if (!docs.length) {
     ready = true;
     return;
   }
 
-  // Main-thread fallback
-  engine = createEngine(docs);
-  ready = true;
+  const w = ensureWorker();
+  if (w && useWorker) {
+    try {
+      await postWorker<number>(
+        { type: "build", docs },
+        WORKER_BUILD_TIMEOUT_MS,
+      );
+      // Also keep a main-thread engine so sync helpers / CCI work offline of worker
+      try {
+        engine = createEngine(docs);
+      } catch (e) {
+        console.warn("main-thread index clone failed (worker still active)", e);
+      }
+      ready = true;
+      return;
+    } catch (e) {
+      console.warn("search worker build failed — main-thread fallback", e);
+      useWorker = false;
+      try {
+        worker?.terminate();
+      } catch {
+        /* ignore */
+      }
+      worker = null;
+    }
+  }
+
+  buildMainThread(docs);
 }
 
 /** Synchronous build for unit tests / environments without Worker. */
@@ -126,28 +188,38 @@ export async function searchAsync(
   limit = 40,
   filters?: SearchFilters,
 ): Promise<SearchDoc[]> {
-  if (!ready && !engine) return [];
-  // B-032: synonym alternate queries, merge unique hits
+  if (!ready) return [];
+
   const { alternateQueries } = await import("./synonyms");
   const queries = alternateQueries(query);
-  const merge = async (q: string) => {
+
+  const mergeOne = async (q: string): Promise<SearchDoc[]> => {
     if (useWorker && worker) {
-      return postWorker<SearchDoc[]>({
-        type: "search",
-        query: q,
-        limit,
-        filters,
-      });
+      try {
+        return await postWorker<SearchDoc[]>(
+          {
+            type: "search",
+            query: q,
+            limit,
+            filters,
+          },
+          WORKER_SEARCH_TIMEOUT_MS,
+        );
+      } catch (e) {
+        console.warn("worker search failed, main-thread fallback", e);
+        useWorker = false;
+      }
     }
     return searchWithEngine(engine, allDocs, docsById, q, limit, filters);
   };
+
   if (queries.length <= 1) {
-    return merge(query);
+    return mergeOne(query);
   }
   const seen = new Set<string>();
   const out: SearchDoc[] = [];
   for (const q of queries) {
-    const batch = await merge(q);
+    const batch = await mergeOne(q);
     for (const d of batch) {
       if (seen.has(d.id)) continue;
       seen.add(d.id);
@@ -158,17 +230,17 @@ export async function searchAsync(
   return out;
 }
 
-/** Sync search (main-thread engine only — used by tests). */
+/** Sync search (main-thread engine — used by tests). */
 export function search(
   query: string,
   limit = 40,
   filters?: SearchFilters,
 ): SearchDoc[] {
-  if (!engine && useWorker) {
-    // Worker-only: return empty; callers should use searchAsync after ready
+  if (!engine) {
+    // Worker-only without main clone: empty for sync API
+    if (useWorker) return [];
     return [];
   }
-  // Keep tests simple: primary query only (async path does synonym merge)
   return searchWithEngine(engine, allDocs, docsById, query, limit, filters);
 }
 
@@ -188,7 +260,10 @@ export function uniqueVendorsFromIndex(): string[] {
 export async function uniqueVendorsFromIndexAsync(): Promise<string[]> {
   if (useWorker && worker && ready) {
     try {
-      return await postWorker<string[]>({ type: "vendors" });
+      return await postWorker<string[]>(
+        { type: "vendors" },
+        WORKER_SEARCH_TIMEOUT_MS,
+      );
     } catch {
       /* fall through */
     }

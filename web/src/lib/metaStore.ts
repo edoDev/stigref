@@ -10,9 +10,11 @@ export const searchState = writable<LoadState>("idle");
 export const searchError = writable<string | null>(null);
 
 let bootPromise: Promise<void> | null = null;
+let lastBootFailed = false;
 
-export function bootData(): Promise<void> {
-  if (bootPromise) return bootPromise;
+export function bootData(force = false): Promise<void> {
+  if (bootPromise && !force && !lastBootFailed) return bootPromise;
+  lastBootFailed = false;
   bootPromise = (async () => {
     metaState.set("loading");
     searchState.set("loading");
@@ -27,10 +29,14 @@ export function bootData(): Promise<void> {
     }
     try {
       const docs = await fetchSearchDocuments();
+      if (!docs.length) {
+        throw new Error("Search index loaded 0 documents");
+      }
       await buildSearchIndex(docs);
       searchState.set("success");
       searchError.set(null);
     } catch (e) {
+      lastBootFailed = true;
       searchState.set("error");
       searchError.set(e instanceof Error ? e.message : String(e));
     }

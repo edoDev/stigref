@@ -25,7 +25,9 @@ def patch_search_documents(
         log.warning("No search documents to patch under %s", search_dir)
         return 0
     mutator(docs)
-    write_search_index(search_dir, docs, write_legacy_monolith=False)
+    write_search_index(
+        search_dir, docs, write_legacy_monolith=False, write_plain_shards=True
+    )
     # remove legacy if present
     for name in ("documents.json", "documents.json.gz"):
         p = search_dir / name
