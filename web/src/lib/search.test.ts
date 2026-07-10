@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
   applyFilters,
-  buildSearchIndex,
+  buildSearchIndexSync,
   emptyFilters,
   isSearchReady,
   search,
@@ -60,7 +60,7 @@ const SAMPLE: SearchDoc[] = [
 ];
 
 beforeEach(() => {
-  buildSearchIndex(SAMPLE);
+  buildSearchIndexSync(SAMPLE);
 });
 
 describe("buildSearchIndex / isSearchReady", () => {

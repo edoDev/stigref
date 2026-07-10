@@ -1,123 +1,154 @@
-import MiniSearch from "minisearch";
+/**
+ * Search API — MiniSearch runs in a Web Worker when available (B-040).
+ * Falls back to main-thread engine (tests / no Worker).
+ */
+import type MiniSearch from "minisearch";
 import type { SearchDoc, SearchFilters } from "./types";
+import {
+  applyFilters,
+  createEngine,
+  emptyFilters,
+  searchWithEngine,
+  uniqueVendors,
+} from "./searchCore";
+import type { WorkerIn, WorkerOut } from "./search.worker";
+
+export { applyFilters, emptyFilters };
 
 let engine: MiniSearch<SearchDoc> | null = null;
 let allDocs: SearchDoc[] = [];
 let docsById = new Map<string, SearchDoc>();
+let ready = false;
+
+let worker: Worker | null = null;
+let useWorker = false;
+let reqSeq = 0;
+const pending = new Map<
+  number,
+  { resolve: (v: unknown) => void; reject: (e: Error) => void }
+>();
+
+function canUseWorker(): boolean {
+  return typeof Worker !== "undefined";
+}
+
+function ensureWorker(): Worker | null {
+  if (!canUseWorker()) return null;
+  if (worker) return worker;
+  try {
+    worker = new Worker(new URL("./search.worker.ts", import.meta.url), {
+      type: "module",
+    });
+    worker.onmessage = (ev: MessageEvent<WorkerOut>) => {
+      const msg = ev.data;
+      const p = pending.get(msg.requestId);
+      if (!p) return;
+      pending.delete(msg.requestId);
+      if (msg.type === "error") {
+        p.reject(new Error(msg.message));
+        return;
+      }
+      if (msg.type === "ready") {
+        ready = true;
+        p.resolve(msg.count);
+        return;
+      }
+      if (msg.type === "results") {
+        p.resolve(msg.results);
+        return;
+      }
+      if (msg.type === "vendors") {
+        p.resolve(msg.vendors);
+      }
+    };
+    worker.onerror = (err) => {
+      console.error("search worker error", err);
+    };
+    useWorker = true;
+    return worker;
+  } catch (e) {
+    console.warn("search worker unavailable, using main thread", e);
+    useWorker = false;
+    return null;
+  }
+}
+
+function postWorker<T>(msg: Omit<WorkerIn, "requestId"> & { requestId?: number }): Promise<T> {
+  const w = ensureWorker();
+  if (!w) return Promise.reject(new Error("no worker"));
+  const requestId = ++reqSeq;
+  return new Promise<T>((resolve, reject) => {
+    pending.set(requestId, {
+      resolve: resolve as (v: unknown) => void,
+      reject,
+    });
+    w.postMessage({ ...msg, requestId } as WorkerIn);
+  });
+}
 
 export function isSearchReady(): boolean {
-  return engine !== null;
+  return ready;
 }
 
 export function getAllDocs(): SearchDoc[] {
   return allDocs;
 }
 
-export function buildSearchIndex(docs: SearchDoc[]): void {
+/** Build index (async when worker is used). */
+export async function buildSearchIndex(docs: SearchDoc[]): Promise<void> {
   allDocs = docs;
   docsById = new Map(docs.map((d) => [d.id, d]));
-  engine = new MiniSearch<SearchDoc>({
-    fields: ["title", "body", "full_rule_id", "stig_names", "cves", "ccis"],
-    storeFields: [
-      "id",
-      "type",
-      "title",
-      "body",
-      "route",
-      "severity",
-      "full_rule_id",
-      "group_id",
-      "stig_names",
-      "version",
-      "release",
-      "release_date",
-      "vendor",
-      "roles",
-      "hasIntune",
-      "hasCve",
-      "inKev",
-      "cves",
-      "ccis",
-    ],
-    searchOptions: {
-      boost: { title: 3, full_rule_id: 4, body: 1, cves: 5 },
-      fuzzy: 0.15,
-      prefix: true,
-    },
-    extractField: (doc, field) => {
-      if (field === "stig_names") return (doc.stig_names || []).join(" ");
-      if (field === "cves") return (doc.cves || []).join(" ");
-      if (field === "ccis") return (doc.ccis || []).join(" ");
-      const v = (doc as Record<string, unknown>)[field];
-      return v == null ? "" : String(v);
-    },
-  });
-  engine.addAll(docs);
+  ready = false;
+
+  const w = ensureWorker();
+  if (w && useWorker) {
+    await postWorker<number>({ type: "build", docs });
+    ready = true;
+    return;
+  }
+
+  // Main-thread fallback
+  engine = createEngine(docs);
+  ready = true;
 }
 
-export function emptyFilters(): SearchFilters {
-  return {
-    type: "",
-    severity: "",
-    vendor: "",
-    hasIntune: false,
-    hasCve: false,
-    inKev: false,
-  };
+/** Synchronous build for unit tests / environments without Worker. */
+export function buildSearchIndexSync(docs: SearchDoc[]): void {
+  allDocs = docs;
+  docsById = new Map(docs.map((d) => [d.id, d]));
+  engine = createEngine(docs);
+  ready = true;
+  useWorker = false;
 }
 
-export function applyFilters(docs: SearchDoc[], f: SearchFilters): SearchDoc[] {
-  return docs.filter((d) => {
-    if (f.type && d.type !== f.type) return false;
-    if (f.severity && (d.severity || "").toLowerCase() !== f.severity.toLowerCase())
-      return false;
-    if (f.vendor && (d.vendor || "") !== f.vendor) return false;
-    if (f.hasIntune && !d.hasIntune) return false;
-    if (f.hasCve && !d.hasCve) return false;
-    if (f.inKev && !d.inKev) return false;
-    return true;
-  });
+export async function searchAsync(
+  query: string,
+  limit = 40,
+  filters?: SearchFilters,
+): Promise<SearchDoc[]> {
+  if (!ready && !engine) return [];
+  if (useWorker && worker) {
+    return postWorker<SearchDoc[]>({
+      type: "search",
+      query,
+      limit,
+      filters,
+    });
+  }
+  return searchWithEngine(engine, allDocs, docsById, query, limit, filters);
 }
 
-export function search(query: string, limit = 40, filters?: SearchFilters): SearchDoc[] {
-  if (!engine) return [];
-  const f = filters || emptyFilters();
-  const q = query.trim();
-
-  let pool: SearchDoc[];
-  if (!q) {
-    // filter-only browse of rules/stigs
-    pool = applyFilters(allDocs, f);
-    return pool.slice(0, limit);
+/** Sync search (main-thread engine only — used by tests). */
+export function search(
+  query: string,
+  limit = 40,
+  filters?: SearchFilters,
+): SearchDoc[] {
+  if (!engine && useWorker) {
+    // Worker-only: return empty; callers should use searchAsync after ready
+    return [];
   }
-
-  const upper = q.toUpperCase();
-  const idHits: SearchDoc[] = [];
-  for (const doc of allDocs) {
-    if (doc.type !== "rule") continue;
-    const rid = (doc.full_rule_id || "").toUpperCase();
-    if (rid === upper || rid.startsWith(upper) || rid.includes(upper)) {
-      idHits.push(doc);
-      if (idHits.length >= limit) break;
-    }
-  }
-
-  const hits = engine.search(q, { combineWith: "AND" });
-  const fuzzy: SearchDoc[] = [];
-  for (const hit of hits) {
-    const doc = docsById.get(String(hit.id));
-    if (doc) fuzzy.push(doc);
-  }
-
-  const seen = new Set<string>();
-  const merged: SearchDoc[] = [];
-  for (const d of [...idHits, ...fuzzy]) {
-    if (seen.has(d.id)) continue;
-    seen.add(d.id);
-    merged.push(d);
-  }
-
-  return applyFilters(merged, f).slice(0, limit);
+  return searchWithEngine(engine, allDocs, docsById, query, limit, filters);
 }
 
 /** @deprecated use search() */
@@ -130,9 +161,16 @@ export function searchPreferRuleId(
 }
 
 export function uniqueVendorsFromIndex(): string[] {
-  const s = new Set<string>();
-  for (const d of allDocs) {
-    if (d.vendor) s.add(d.vendor);
+  return uniqueVendors(allDocs);
+}
+
+export async function uniqueVendorsFromIndexAsync(): Promise<string[]> {
+  if (useWorker && worker && ready) {
+    try {
+      return await postWorker<string[]>({ type: "vendors" });
+    } catch {
+      /* fall through */
+    }
   }
-  return [...s].sort();
+  return uniqueVendors(allDocs);
 }

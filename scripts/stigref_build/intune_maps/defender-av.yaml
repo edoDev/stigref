@@ -1,6 +1,79 @@
 product: defender-av
 family: microsoft-defender-antivirus
-version: "1"
-notes: Seed curated Defender Antivirus STIG → Policy CSP Defender area.
+version: "2"
+notes: |
+  Defender Antivirus STIG → Policy CSP Defender area. Many settings also appear
+  in Settings Catalog under Microsoft Defender Antivirus.
 
-rules: []
+rules:
+  - rule_id: SV-213426
+    suggestions:
+      - csp_id: Policy.Defender.PUAProtection
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Block potentially unwanted applications (PUA).
+
+  - rule_id: SV-213427
+    suggestions:
+      - csp_id: Policy.Defender.AllowRealtimeMonitoring
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Automatic action / real-time protection path; confirm remediation action CSP if split.
+
+  - rule_id: SV-213428
+    suggestions:
+      - csp_id: Policy.Defender.AllowRealtimeMonitoring
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Real-time monitoring must remain enabled.
+
+  - rule_id: SV-213432
+    suggestions:
+      - csp_id: Policy.Defender.AllowRealtimeMonitoring
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: Disable local setting override — pair with Defender CSP DisableLocalAdminMerge / UI lock-down ADMX.
+
+  - rule_id: SV-213433
+    suggestions:
+      - csp_id: Policy.Defender.AllowCloudProtection
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Cloud-delivered protection / MAPS real-time checks.
+
+  - rule_id: SV-213434
+    suggestions:
+      - csp_id: Policy.Defender.AllowCloudProtection
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Join Microsoft MAPS / cloud protection community.
+
+  - rule_id: SV-213435
+    suggestions:
+      - csp_id: Policy.Defender.SubmitSamplesConsent
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Send safe samples only (or org-required level); validate integer enum on Learn.
+
+  - rule_id: SV-213437
+    suggestions:
+      - csp_id: Policy.Defender.AllowRealtimeMonitoring
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: Prevent local override of scanning schedule / exclusions policy.
+
+  - rule_id: SV-213450
+    suggestions:
+      - csp_id: Policy.ADMX_MicrosoftDefenderAntivirus.DisableAntiSpyware
+        value: "0"
+        confidence: high
+        kind: admx-backed
+        rationale: Ensure Defender antivirus is not disabled (DisableAntiSpyware = 0).

@@ -1,4 +1,54 @@
 product: server-2025
 family: microsoft-windows-server-2025
-version: "1"
-rules: []
+version: "2"
+notes: |
+  Server 2025 STIG seeds. IDs differ from 2022; map common hardening themes to Policy CSP.
+
+rules:
+  - rule_id: SV-277993
+    suggestions:
+      - csp_id: Policy.DeviceGuard.EnableVirtualizationBasedSecurity
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: TPM / VBS related baseline for domain-joined systems.
+
+  - rule_id: SV-277995
+    suggestions:
+      - csp_id: Policy.Defender.AllowRealtimeMonitoring
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Antivirus program required.
+
+  - rule_id: SV-278020
+    suggestions:
+      - csp_id: Policy.LanmanServer.SMB1
+        value: "0"
+        confidence: medium
+        kind: native
+        rationale: SMBv1 disable when applicable.
+
+  - rule_id: SV-278050
+    suggestions:
+      - csp_id: Policy.LocalPoliciesSecurityOptions.InteractiveLogon_MachineInactivityLimit
+        value: "900"
+        confidence: medium
+        kind: native
+        rationale: Machine inactivity limit seed (confirm STIG seconds vs minutes).
+
+  - rule_id: SV-278060
+    suggestions:
+      - csp_id: Policy.DeviceLock.MinDevicePasswordLength
+        value: "14"
+        confidence: medium
+        kind: native
+        rationale: Password length floor for MDM-managed hosts.
+
+  - rule_id: SV-278080
+    suggestions:
+      - csp_id: Policy.DeviceGuard.LsaCfgFlags
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: LSA / Credential Guard related Device Guard CSP.

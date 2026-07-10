@@ -21,8 +21,8 @@
       assets—use STIG Manager or STIG Viewer for formal checklists.
     </p>
     <p class="muted" style="margin:0">
-      Header shows <em>Content updated</em> from the STIG library build. Theme preference is saved in this
-      browser.
+      Header shows the active library <em>release</em> and <em>Content updated</em> from the STIG build.
+      Appearance is fixed to Carbon Green.
     </p>
   </div>
 

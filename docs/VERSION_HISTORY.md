@@ -83,8 +83,13 @@ Already started: `data/families/index.json` groups STIGs by title-derived `famil
 
 Each full release ≈ 100 MB. Keeping 2–4 quarters on GitHub is workable; older quarters can move to GitHub Releases artifacts.
 
-## Current status
+## Current status (B-021 foundation — 2026-07)
 
-- **April 2026** lives as the single live `data/` tree.
-- `family`, `vendor`, `tags` fields are populated for filtering.
-- Full multi-release storage + UI lands on the **next** library import.
+- **April 2026** is the live `data/` tree (`storage: live`).
+- Root `meta.json` includes `currentRelease`, `release`, and `releases[]`.
+- Registry: `data/releases/index.json` + `data/releases/2026-04/pointer.json` (no full tree copy yet — avoids doubling ~117 MB in git).
+- CLI: `python -m stigref_build --release 2026-07 -o data/releases/2026-07 …`
+- Promote: `python promote_current.py --from data/releases/2026-07`
+- Diff (family-level): `python diff_releases.py --from data --to data/releases/2026-07`
+- UI: header shows release label when present.
+- **Next library import:** build into `data/releases/{id}/`, archive prior live snapshot (git tag or GH Release asset), then promote.

@@ -32,10 +32,10 @@
   </div>
 
   <div class="card stack">
-    <h2 style="margin:0">Themes</h2>
+    <h2 style="margin:0">Appearance</h2>
     <p class="muted" style="margin:0">
-      Pick a dark theme from the header control. Options: Midnight Slate, Carbon Green, Violet Dusk,
-      Amber Forge (saved in this browser).
+      Fixed <strong>Carbon Green</strong> theme (dark SOC-style palette). Theme switching was removed
+      for a consistent product look.
     </p>
   </div>
 
@@ -57,6 +57,13 @@
       <p class="error">Failed to load meta.json: {err}</p>
     {:else if m}
       <dl class="dl">
+        <dt>Release</dt>
+        <dd>
+          {m.release?.label || m.currentRelease || "—"}
+          {#if m.currentRelease}
+            <span class="mono muted">({m.currentRelease})</span>
+          {/if}
+        </dd>
         <dt>Content last updated</dt>
         <dd>{formatDate(m.lastUpdated)} <span class="mono muted">({m.lastUpdated})</span></dd>
         <dt>Built at</dt>

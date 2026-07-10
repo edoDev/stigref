@@ -41,6 +41,16 @@ def main(argv: list[str] | None = None) -> int:
         help="Debug logging",
     )
     parser.add_argument(
+        "--release",
+        default=None,
+        help="Release id (e.g. 2026-04). Default: inferred from library filename",
+    )
+    parser.add_argument(
+        "--release-label",
+        default=None,
+        help="Human label (e.g. 'April 2026'). Default: derived from --release",
+    )
+    parser.add_argument(
         "--version",
         action="version",
         version=f"stigref-build {__version__}",
@@ -73,6 +83,17 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     source_file = input_path if input_path.is_file() else None
+    # If writing under data/releases/<id>, mark storage path for registry
+    storage = "live"
+    try:
+        parts = out_dir.parts
+        if "releases" in parts:
+            idx = parts.index("releases")
+            if idx + 1 < len(parts):
+                storage = f"releases/{parts[idx + 1]}"
+    except (ValueError, IndexError):
+        storage = "live"
+
     meta = write_data_tree(
         stigs,
         out_dir,
@@ -80,10 +101,14 @@ def main(argv: list[str] | None = None) -> int:
         source_filename=input_path.name,
         clean=not args.no_clean,
         errors=errors,
+        release_id=args.release,
+        release_label=args.release_label,
+        storage=storage,
     )
     print(
         f"OK: {meta['counts']['stigs']} stigs, "
-        f"{meta['counts']['rules']} rules → {out_dir}"
+        f"{meta['counts']['rules']} rules → {out_dir} "
+        f"(release {meta.get('currentRelease')})"
     )
     if errors:
         print(f"Warnings: {len(errors)} parse error(s) (see meta.json)", file=sys.stderr)

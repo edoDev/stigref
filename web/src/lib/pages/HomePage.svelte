@@ -3,7 +3,12 @@
   import SearchBox from "../components/SearchBox.svelte";
   import ResultList from "../components/ResultList.svelte";
   import ErrorRetry from "../components/ErrorRetry.svelte";
-  import { search, isSearchReady, emptyFilters, uniqueVendorsFromIndex } from "../search";
+  import {
+    searchAsync,
+    isSearchReady,
+    emptyFilters,
+    uniqueVendorsFromIndex,
+  } from "../search";
   import { searchState, searchError, bootData, meta } from "../metaStore";
   import type { IntuneProductIndex, QuickLink, SearchDoc, SearchFilters } from "../types";
   import { routes } from "../paths";
@@ -30,7 +35,7 @@
   }
 
   /** Immediate search results; URL sync is debounced. */
-  function runResults(q: string = query) {
+  async function runResults(q: string = query) {
     query = q;
     if (!isSearchReady()) {
       results = [];
@@ -46,7 +51,7 @@
     if (!q.trim() && !hasFilter) {
       results = [];
     } else {
-      results = search(q, 60, filters);
+      results = await searchAsync(q, 60, filters);
     }
     vendors = uniqueVendorsFromIndex();
   }
@@ -56,7 +61,7 @@
   }, 250);
 
   function run(q: string = query) {
-    runResults(q);
+    void runResults(q);
     debouncedUrl();
   }
 
@@ -78,10 +83,10 @@
     query = parsed.q;
     filters = parsed.filters;
 
-    bootData().then(() => {
+    bootData().then(async () => {
       ready = isSearchReady();
       vendors = uniqueVendorsFromIndex();
-      runResults(query);
+      await runResults(query);
       // Initial URL may already match; still sync cleanly once
       replaceSearchUrl(query, filters);
     });

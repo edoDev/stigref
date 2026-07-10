@@ -1,4 +1,54 @@
 product: server-2019
 family: microsoft-windows-server-2019
-version: "1"
-rules: []
+version: "2"
+notes: |
+  Server 2019 STIG → shared Policy CSP seeds (password, inactivity, Defender).
+
+rules:
+  - rule_id: SV-205629
+    suggestions:
+      - csp_id: Policy.DeviceLock.DevicePasswordEnabled
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: Related to lockout / password policy family; confirm account lockout threshold GP vs CSP.
+
+  - rule_id: SV-205633
+    suggestions:
+      - csp_id: Policy.LocalPoliciesSecurityOptions.InteractiveLogon_MachineInactivityLimit
+        value: "900"
+        confidence: high
+        kind: native
+        rationale: 15-minute machine inactivity limit (900 seconds).
+
+  - rule_id: SV-205634
+    suggestions:
+      - csp_id: Policy.EventLogService.Channel_Security_MaxSize
+        value: "196608"
+        confidence: low
+        kind: native
+        rationale: Audit logon success is advanced audit policy (GPO); event log size is related hardening.
+
+  - rule_id: SV-205694
+    suggestions:
+      - csp_id: Policy.LanmanServer.SMB1
+        value: "0"
+        confidence: high
+        kind: native
+        rationale: Disable SMBv1 when still available as CSP on the build.
+
+  - rule_id: SV-205715
+    suggestions:
+      - csp_id: Policy.Defender.AllowRealtimeMonitoring
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: Antivirus required — enable Defender real-time when using Defender AV.
+
+  - rule_id: SV-205733
+    suggestions:
+      - csp_id: Policy.DeviceLock.MinDevicePasswordLength
+        value: "14"
+        confidence: medium
+        kind: native
+        rationale: Minimum password length seed for MDM-managed servers.

@@ -1,8 +1,21 @@
 export type LoadState = "idle" | "loading" | "success" | "error";
 
+export interface ReleaseInfo {
+  id: string;
+  label: string;
+  sourceFile?: string | null;
+  builtAt?: string | null;
+  /** Where catalog files live: "live" = top-level data/, else relative path under data/ */
+  storage?: "live" | string;
+}
+
 export interface Meta {
   lastUpdated: string;
   builtAt?: string;
+  /** Active catalog release id (e.g. 2026-04) — B-021 */
+  currentRelease?: string;
+  release?: ReleaseInfo;
+  releases?: ReleaseInfo[];
   source?: {
     filename?: string | null;
     sha256?: string | null;

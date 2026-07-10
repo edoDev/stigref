@@ -60,7 +60,7 @@
 
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
-| B-011 | Expand curated maps (Server / Defender / Edge) | P0 | L | planned | Ongoing |
+| B-011 | Expand curated maps (Server / Defender / Edge) | P0 | L | done | Edge/Defender/Server maps + reapply_intune |
 | B-012 | All Microsoft Windows STIGs (not only quick-links) | P1 | L | planned | Was “1B backlog” |
 | B-013 | Settings Catalog names beside OMA-URI | P1 | M | idea | |
 | B-014 | Multi-option ranking (preferred native vs ADMX) | P1 | M | planned | |
@@ -75,7 +75,7 @@
 
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
-| B-021 | Multi-release storage (`data/releases/…`) | P0 | L | planned | See VERSION_HISTORY.md |
+| B-021 | Multi-release storage (`data/releases/…`) | P0 | L | done | Meta registry + promote/diff scripts; full archive on next import |
 | B-022 | Quarterly “what changed” report | P0 | L | planned | |
 | B-023 | Per-family previous version links | P1 | M | planned | |
 | B-024 | Static changelog / release notes page | P1 | S | planned | |
@@ -109,11 +109,11 @@
 
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
-| B-040 | Search index in Web Worker | P0 | M | planned | |
+| B-040 | Search index in Web Worker | P0 | M | done | MiniSearch in search.worker.ts |
 | B-041 | Compressed / sharded search index | P1 | L | planned | |
 | B-042 | Offline shell (service worker) | P3 | L | idea | |
 | B-043 | Mobile layout improvements | P1 | M | idea | |
-| B-044 | Theme / high-contrast polish | P2 | S | idea | Carbon default done |
+| B-044 | Theme / high-contrast polish | P2 | S | done | Carbon locked; picker removed |
 | B-045 | Skeleton loaders | P2 | S | idea | |
 
 ### E7 — Content breadth

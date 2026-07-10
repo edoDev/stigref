@@ -10,7 +10,7 @@
   },
   "generatedFrom": {
     "cspCatalogVersion": "0.1.0",
-    "mapVersion": "1"
+    "mapVersion": "2"
   },
   "usage": {
     "intuneCustomProfile": "Create an Intune Windows custom configuration profile and add each OMA-URI row. Prefer Settings Catalog when a native setting exists. ADMX-backed values may need SyncML <enabled/> payloads — see Learn links.",
@@ -24,8 +24,26 @@
     "disclaimer": "Suggestions are assistive, not authoritative. Validate against STIG checks, organizational policy, and current Microsoft documentation. Mappings may be multi-option or incomplete."
   },
   "readme": "stigref Intune pack — edge\nSTIG: Microsoft Edge Security Technical Implementation Guide V2R5\n\nContents:\n  - This JSON file (policy settings + metadata)\n  - settingsCsv field (copy into .csv)\n\nHow to use in Microsoft Intune:\n  1. Prefer Settings Catalog when the setting exists there.\n  2. Otherwise: Devices > Configuration > Create > Windows 10+ > Templates > Custom.\n  3. Add each OMA-URI with the listed data type and value.\n  4. ADMX-backed settings may need SyncML <enabled/> payloads — open Learn URLs.\n\nDisclaimer: Assistive only. Validate against STIG checks and current Microsoft docs.\nPolicy CSP index: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-configuration-service-provider\n",
-  "settingsCsv": "omaUri,value,dataType,kind,confidence,cspId,title,sourceRules\n./Device/Vendor/MSFT/Policy/Config/Defender/AllowCloudProtection,,integer,native,low,Policy.Defender.AllowCloudProtection,Allow cloud protection,SV-235752r1156563_rule\n./Device/Vendor/MSFT/Policy/Config/Defender/PUAProtection,,integer,native,low,Policy.Defender.PUAProtection,PUA protection,SV-235764r960963_rule\n./Device/Vendor/MSFT/Policy/Config/ADMX_MicrosoftDefenderAntivirus/DisableAntiSpyware_Name,0,string,admx-backed,low,Policy.ADMX_MicrosoftDefenderAntivirus.DisableAntiSpyware,Turn off Microsoft Defender Antivirus (ADMX-backed),SV-235720r960852_rule;SV-235721r960852_rule;SV-235722r960852_rule;SV-235763r960963_rule;SV-235764r960963_rule\n",
+  "settingsCsv": "omaUri,value,dataType,kind,confidence,cspId,title,sourceRules\n./Device/Vendor/MSFT/Policy/Config/Browser/AllowSmartScreen,1,integer,settings-catalog,medium,Policy.Browser.AllowSmartScreen,Allow SmartScreen (legacy browser CSP),SV-235719r1156558_rule;SV-235720r960852_rule;SV-235721r960852_rule;SV-235722r960852_rule;SV-235723r960864_rule;SV-235725r960963_rule\n./Device/Vendor/MSFT/Policy/Config/Defender/AllowCloudProtection,,integer,native,low,Policy.Defender.AllowCloudProtection,Allow cloud protection,SV-235752r1156563_rule\n./Device/Vendor/MSFT/Policy/Config/System/AllowTelemetry,0,integer,settings-catalog,low,Policy.System.AllowTelemetry,Allow telemetry,SV-235724r960963_rule;SV-235727r960963_rule\n./Device/Vendor/MSFT/Policy/Config/Defender/PUAProtection,,integer,native,low,Policy.Defender.PUAProtection,PUA protection,SV-235764r960963_rule\n./Device/Vendor/MSFT/Policy/Config/ADMX_MicrosoftDefenderAntivirus/DisableAntiSpyware_Name,0,string,admx-backed,low,Policy.ADMX_MicrosoftDefenderAntivirus.DisableAntiSpyware,Turn off Microsoft Defender Antivirus (ADMX-backed),SV-235720r960852_rule;SV-235721r960852_rule;SV-235722r960852_rule;SV-235763r960963_rule;SV-235764r960963_rule\n",
   "settings": [
+    {
+      "name": "Allow SmartScreen (legacy browser CSP)",
+      "omaUri": "./Device/Vendor/MSFT/Policy/Config/Browser/AllowSmartScreen",
+      "dataType": "integer",
+      "value": "1",
+      "kind": "settings-catalog",
+      "confidence": "medium",
+      "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-browser",
+      "cspId": "Policy.Browser.AllowSmartScreen",
+      "sourceRules": [
+        "SV-235719r1156558_rule",
+        "SV-235720r960852_rule",
+        "SV-235721r960852_rule",
+        "SV-235722r960852_rule",
+        "SV-235723r960864_rule",
+        "SV-235725r960963_rule"
+      ]
+    },
     {
       "name": "Allow cloud protection",
       "omaUri": "./Device/Vendor/MSFT/Policy/Config/Defender/AllowCloudProtection",
@@ -37,6 +55,20 @@
       "cspId": "Policy.Defender.AllowCloudProtection",
       "sourceRules": [
         "SV-235752r1156563_rule"
+      ]
+    },
+    {
+      "name": "Allow telemetry",
+      "omaUri": "./Device/Vendor/MSFT/Policy/Config/System/AllowTelemetry",
+      "dataType": "integer",
+      "value": "0",
+      "kind": "settings-catalog",
+      "confidence": "low",
+      "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-system#allowtelemetry",
+      "cspId": "Policy.System.AllowTelemetry",
+      "sourceRules": [
+        "SV-235724r960963_rule",
+        "SV-235727r960963_rule"
       ]
     },
     {
@@ -74,44 +106,44 @@
     {
       "full_rule_id": "SV-235719r1156558_rule",
       "title": "User control of proxy settings must be disabled.",
-      "status": "unmapped",
-      "suggestionCount": 0
+      "status": "mapped",
+      "suggestionCount": 1
     },
     {
       "full_rule_id": "SV-235720r960852_rule",
       "title": "Bypassing Microsoft Defender SmartScreen prompts for sites must be disabled.",
       "status": "mapped",
-      "suggestionCount": 1
+      "suggestionCount": 2
     },
     {
       "full_rule_id": "SV-235721r960852_rule",
       "title": "Bypassing of Microsoft Defender SmartScreen warnings about downloads must be disabled.",
       "status": "mapped",
-      "suggestionCount": 1
+      "suggestionCount": 2
     },
     {
       "full_rule_id": "SV-235722r960852_rule",
       "title": "The list of domains for which Microsoft Defender SmartScreen will not trigger warnings must be allowlisted if used.",
       "status": "mapped",
-      "suggestionCount": 1
+      "suggestionCount": 2
     },
     {
       "full_rule_id": "SV-235723r960864_rule",
       "title": "InPrivate mode must be disabled.",
-      "status": "unmapped",
-      "suggestionCount": 0
+      "status": "mapped",
+      "suggestionCount": 1
     },
     {
       "full_rule_id": "SV-235724r960963_rule",
       "title": "Background processing must be disabled.",
-      "status": "unmapped",
-      "suggestionCount": 0
+      "status": "mapped",
+      "suggestionCount": 1
     },
     {
       "full_rule_id": "SV-235725r960963_rule",
       "title": "The ability of sites to show pop-ups must be disabled.",
-      "status": "unmapped",
-      "suggestionCount": 0
+      "status": "mapped",
+      "suggestionCount": 1
     },
     {
       "full_rule_id": "SV-235726r960963_rule",
@@ -122,8 +154,8 @@
     {
       "full_rule_id": "SV-235727r960963_rule",
       "title": "Data Synchronization must be disabled.",
-      "status": "unmapped",
-      "suggestionCount": 0
+      "status": "mapped",
+      "suggestionCount": 1
     },
     {
       "full_rule_id": "SV-235728r960963_rule",
@@ -440,7 +472,7 @@
   ],
   "counts": {
     "rules": 61,
-    "mappedRules": 6,
-    "settings": 3
+    "mappedRules": 11,
+    "settings": 5
   }
 }

@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import re
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
@@ -47,6 +48,57 @@ def _write_json(path: Path, obj: Any) -> None:
         json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=False) + "\n",
         encoding="utf-8",
     )
+
+
+def _update_releases_registry(
+    out: Path,
+    release_info: dict[str, Any],
+    *,
+    storage: str,
+) -> None:
+    """
+    Maintain data/releases/index.json (or out/releases when out is a release tree).
+
+    When writing the live catalog (storage=live), registry lives at out/releases/index.json.
+    When writing into data/releases/YYYY-MM, registry is at parent releases/index.json.
+    """
+    out = Path(out)
+    if storage == "live":
+        reg_dir = out / "releases"
+    else:
+        # out is .../data/releases/2026-07 → registry at .../data/releases
+        reg_dir = out.parent if out.parent.name == "releases" else out / "releases"
+    reg_dir.mkdir(parents=True, exist_ok=True)
+    reg_path = reg_dir / "index.json"
+    reg: dict[str, Any] = {"releases": [], "currentRelease": release_info.get("id")}
+    if reg_path.is_file():
+        try:
+            reg = json.loads(reg_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            pass
+    releases = list(reg.get("releases") or [])
+    # upsert by id
+    releases = [r for r in releases if r.get("id") != release_info.get("id")]
+    releases.insert(0, release_info)
+    reg["releases"] = releases
+    if storage == "live":
+        reg["currentRelease"] = release_info.get("id")
+    _write_json(reg_path, reg)
+    # slim per-release pointer (not a full catalog copy)
+    if storage == "live":
+        slim = reg_dir / str(release_info.get("id") or "unknown")
+        slim.mkdir(parents=True, exist_ok=True)
+        _write_json(
+            slim / "pointer.json",
+            {
+                **release_info,
+                "note": (
+                    "Catalog files currently live at data/ root (storage=live). "
+                    "On the next import, archive by promoting prior tree or using "
+                    "GitHub Release assets — see docs/VERSION_HISTORY.md."
+                ),
+            },
+        )
 
 
 def measure_data_sizes(out: Path) -> dict[str, Any]:
@@ -230,6 +282,61 @@ def build_search_documents(
     return docs
 
 
+def _infer_release_id(source_filename: str | None, explicit: str | None) -> str:
+    """Prefer --release; else parse U_SRG-STIG_Library_April_2026.zip → 2026-04."""
+    if explicit:
+        return explicit.strip()
+    name = source_filename or ""
+    m = re.search(
+        r"(January|February|March|April|May|June|July|August|September|October|November|December)[_\s-]?(\d{4})",
+        name,
+        re.I,
+    )
+    if m:
+        months = {
+            "january": "01",
+            "february": "02",
+            "march": "03",
+            "april": "04",
+            "may": "05",
+            "june": "06",
+            "july": "07",
+            "august": "08",
+            "september": "09",
+            "october": "10",
+            "november": "11",
+            "december": "12",
+        }
+        mon = months[m.group(1).lower()]
+        return f"{m.group(2)}-{mon}"
+    # fallback: calendar quarter of today
+    now = datetime.now(timezone.utc)
+    return f"{now.year}-{now.month:02d}"
+
+
+def _release_label(release_id: str) -> str:
+    try:
+        y, m = release_id.split("-", 1)
+        months = [
+            "",
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ]
+        return f"{months[int(m)]} {y}"
+    except (ValueError, IndexError):
+        return release_id
+
+
 def write_data_tree(
     stigs: list[dict],
     out_dir: str | Path,
@@ -238,9 +345,16 @@ def write_data_tree(
     source_filename: str | None = None,
     clean: bool = True,
     errors: list[dict] | None = None,
+    release_id: str | None = None,
+    release_label: str | None = None,
+    storage: str = "live",
 ) -> dict[str, Any]:
     """
     Write the full data/ layout. Returns the meta dict written.
+
+    B-021: ``release_id`` tags this build (e.g. 2026-04). Live catalog uses
+    ``storage="live"`` (files at data/ root). Historical trees use
+    ``data/releases/{id}/`` with storage relative path.
     """
     out = Path(out_dir)
     if clean and out.exists():
@@ -593,6 +707,16 @@ def write_data_tree(
     if src_name is None and source_path is not None:
         src_name = source_path.name
 
+    rid = _infer_release_id(src_name, release_id)
+    rlabel = release_label or _release_label(rid)
+    release_info = {
+        "id": rid,
+        "label": rlabel,
+        "sourceFile": src_name,
+        "builtAt": now,
+        "storage": storage,
+    }
+
     meta = {
         "lastUpdated": content_updated
         if "T" in str(content_updated)
@@ -600,6 +724,9 @@ def write_data_tree(
         if len(str(content_updated)) == 10
         else now,
         "builtAt": now,
+        "currentRelease": rid,
+        "release": release_info,
+        "releases": [release_info],
         "source": {
             "filename": src_name,
             "sha256": _sha256_file(source_path) if source_path else None,
@@ -628,6 +755,12 @@ def write_data_tree(
         _write_json(out / "meta.json", meta)
     except OSError as exc:
         log.error("Could not measure data sizes: %s", exc)
+
+    # B-021: register this release under data/releases/index.json when writing live tree
+    try:
+        _update_releases_registry(out, release_info, storage=storage)
+    except OSError as exc:
+        log.error("Could not update releases registry: %s", exc)
     log.info(
         "Wrote data to %s (%s stigs, %s rules, %s search docs)",
         out,

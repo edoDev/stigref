@@ -1,5 +1,71 @@
 product: server-2022
 family: microsoft-windows-server-2022
-version: "1"
-notes: Seed file — expand curated mappings over time.
-rules: []
+version: "2"
+notes: |
+  Server 2022 STIG seeds reusing shared Policy CSP nodes (password, BitLocker-adjacent,
+  inactivity, SMB, Defender). Many domain GPO settings remain GPO/ADMX-first on servers.
+
+rules:
+  - rule_id: SV-254246
+    suggestions:
+      - csp_id: Policy.DeviceGuard.EnableVirtualizationBasedSecurity
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: TPM / VBS related baseline; confirm exact STIG requirement (TPM presence vs VBS).
+
+  - rule_id: SV-254248
+    suggestions:
+      - csp_id: Policy.Defender.AllowRealtimeMonitoring
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Antivirus program required — enable Defender real-time monitoring when using Defender.
+
+  - rule_id: SV-254287
+    suggestions:
+      - csp_id: Policy.LanmanServer.SMB1
+        value: "0"
+        confidence: high
+        kind: native
+        rationale: Disable SMBv1 server where still exposed as CSP.
+
+  - rule_id: SV-254335
+    suggestions:
+      - csp_id: Policy.LocalPoliciesSecurityOptions.InteractiveLogon_MachineInactivityLimit
+        value: "900"
+        confidence: high
+        kind: native
+        rationale: Machine inactivity limit (seconds) — align with 15-minute STIG where applicable.
+
+  - rule_id: SV-254336
+    suggestions:
+      - csp_id: Policy.DeviceLock.MaxInactivityTimeDeviceLock
+        value: "15"
+        confidence: medium
+        kind: native
+        rationale: Device lock inactivity (minutes) if managing via MDM.
+
+  - rule_id: SV-254341
+    suggestions:
+      - csp_id: Policy.DeviceLock.MinDevicePasswordLength
+        value: "14"
+        confidence: medium
+        kind: native
+        rationale: Password length floor; domain GP may supersede on domain-joined servers.
+
+  - rule_id: SV-254342
+    suggestions:
+      - csp_id: Policy.DeviceLock.DevicePasswordHistory
+        value: "24"
+        confidence: medium
+        kind: native
+        rationale: Password history; validate against STIG exact count.
+
+  - rule_id: SV-254401
+    suggestions:
+      - csp_id: Policy.DeviceGuard.LsaCfgFlags
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: Credential Guard / LSA protection related Device Guard CSP.

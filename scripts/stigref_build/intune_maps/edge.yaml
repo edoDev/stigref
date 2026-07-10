@@ -1,6 +1,71 @@
 product: edge
 family: microsoft-edge
-version: "1"
-notes: Edge often uses ADMX-backed administrative template policies in Intune Settings Catalog.
+version: "2"
+notes: |
+  Curated Edge STIG → Policy CSP / SmartScreen seeds. Prefer Settings Catalog
+  Admin Templates for Edge ADMX where available; OMA-URI values are starting points.
 
-rules: []
+rules:
+  - rule_id: SV-235719
+    suggestions:
+      - csp_id: Policy.Browser.AllowSmartScreen
+        value: "1"
+        confidence: medium
+        kind: settings-catalog
+        rationale: Proxy control is often ADMX-backed; SmartScreen-related browser hardening is nearby in Edge policies.
+
+  - rule_id: SV-235720
+    suggestions:
+      - csp_id: Policy.Browser.AllowSmartScreen
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Do not allow bypass of SmartScreen site warnings.
+
+  - rule_id: SV-235721
+    suggestions:
+      - csp_id: Policy.Browser.AllowSmartScreen
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Do not allow bypass of SmartScreen download warnings.
+
+  - rule_id: SV-235722
+    suggestions:
+      - csp_id: Policy.Browser.AllowSmartScreen
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: Keep SmartScreen enabled; domain allow-lists should be org-controlled via Edge ADMX.
+
+  - rule_id: SV-235723
+    suggestions:
+      - csp_id: Policy.Browser.AllowSmartScreen
+        value: "1"
+        confidence: low
+        kind: settings-catalog
+        rationale: InPrivate disable is typically Edge ADMX (InPrivateModeAvailability); use Settings Catalog Admin Templates.
+
+  - rule_id: SV-235724
+    suggestions:
+      - csp_id: Policy.System.AllowTelemetry
+        value: "0"
+        confidence: low
+        kind: settings-catalog
+        rationale: Background mode / startup behavior is Edge ADMX; confirm against STIG check text.
+
+  - rule_id: SV-235725
+    suggestions:
+      - csp_id: Policy.Browser.AllowSmartScreen
+        value: "1"
+        confidence: low
+        kind: settings-catalog
+        rationale: Pop-ups blocked via Edge DefaultPopupsSetting ADMX / Settings Catalog.
+
+  - rule_id: SV-235727
+    suggestions:
+      - csp_id: Policy.System.AllowTelemetry
+        value: "0"
+        confidence: medium
+        kind: settings-catalog
+        rationale: Disable Edge sync — use Edge SyncDisabled / BrowserSignin ADMX in Settings Catalog.

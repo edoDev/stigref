@@ -27,7 +27,7 @@ export function bootData(): Promise<void> {
     }
     try {
       const docs = await fetchSearchDocuments();
-      buildSearchIndex(docs);
+      await buildSearchIndex(docs);
       searchState.set("success");
       searchError.set(null);
     } catch (e) {

@@ -1,6 +1,55 @@
 product: defender-fw
 family: microsoft-windows-defender-firewall-with-advanced-security
-version: "1"
-notes: Prefer Firewall CSP profile enable settings; expand per-rule maps over time.
+version: "2"
+notes: |
+  Windows Defender Firewall STIG → Policy CSP Firewall profiles.
+  Domain / Private / Public each have enable + inbound/outbound defaults.
 
-rules: []
+rules:
+  - rule_id: SV-241989
+    suggestions:
+      - csp_id: Policy.Firewall.EnableDomainNetworkFirewall
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Enable firewall on Domain profile.
+
+  - rule_id: SV-241990
+    suggestions:
+      - csp_id: Policy.Firewall.EnablePrivateNetworkFirewall
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Enable firewall on Private profile.
+
+  - rule_id: SV-241991
+    suggestions:
+      - csp_id: Policy.Firewall.EnablePublicNetworkFirewall
+        value: "1"
+        confidence: high
+        kind: native
+        rationale: Enable firewall on Public profile.
+
+  - rule_id: SV-241992
+    suggestions:
+      - csp_id: Policy.Firewall.EnableDomainNetworkFirewall
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: Domain inbound block default is companion Firewall CSP (InboundTrafficBlocked); ensure profile enabled.
+
+  - rule_id: SV-241997
+    suggestions:
+      - csp_id: Policy.Firewall.EnablePrivateNetworkFirewall
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: Private profile inbound block — pair with Firewall CSP inbound policy nodes.
+
+  - rule_id: SV-242002
+    suggestions:
+      - csp_id: Policy.Firewall.EnablePublicNetworkFirewall
+        value: "1"
+        confidence: medium
+        kind: native
+        rationale: Public profile inbound block — pair with Firewall CSP inbound policy nodes.
