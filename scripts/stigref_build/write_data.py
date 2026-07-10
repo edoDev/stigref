@@ -49,6 +49,56 @@ def _write_json(path: Path, obj: Any) -> None:
     )
 
 
+def measure_data_sizes(out: Path) -> dict[str, Any]:
+    """
+    Uncompressed size inventory for DESIGN §7.2 budget tracking.
+    Does not gzip-compress; reports raw bytes and file counts.
+    """
+    out = Path(out)
+    buckets = {
+        "rules": out / "rules",
+        "stigs": out / "stigs",
+        "search": out / "search",
+        "threat": out / "threat",
+        "intune": out / "intune",
+        "tags": out / "tags",
+        "families": out / "families",
+    }
+    by_area: dict[str, dict[str, int]] = {}
+    total_bytes = 0
+    total_files = 0
+    for name, path in buckets.items():
+        b = 0
+        n = 0
+        if path.is_dir():
+            for f in path.rglob("*"):
+                if f.is_file():
+                    n += 1
+                    b += f.stat().st_size
+        elif path.is_file():
+            n = 1
+            b = path.stat().st_size
+        by_area[name] = {"bytes": b, "files": n}
+        total_bytes += b
+        total_files += n
+    # top-level meta.json etc.
+    other = 0
+    if out.is_dir():
+        for f in out.iterdir():
+            if f.is_file():
+                other += f.stat().st_size
+                total_files += 1
+                total_bytes += f.stat().st_size
+    by_area["rootFiles"] = {"bytes": other, "files": sum(1 for f in out.iterdir() if f.is_file()) if out.is_dir() else 0}
+    return {
+        "totalBytes": total_bytes,
+        "totalFiles": total_files,
+        "totalMB": round(total_bytes / (1024 * 1024), 2),
+        "byArea": by_area,
+        "note": "Uncompressed on-disk sizes. DESIGN §7.2 gzip budget is separate (transfer).",
+    }
+
+
 def _truncate(text: str, max_len: int = SEARCH_BODY_MAX) -> str:
     text = " ".join((text or "").split())
     if len(text) <= max_len:
@@ -570,7 +620,14 @@ def write_data_tree(
     if errors:
         meta["errors"] = errors[:50]  # cap noise in meta
 
+    # Size inventory (B-076) — write after payloads so counts are accurate
     _write_json(out / "meta.json", meta)
+    try:
+        meta["sizes"] = measure_data_sizes(out)
+        # Re-write including sizes (meta itself is tiny)
+        _write_json(out / "meta.json", meta)
+    except OSError as exc:
+        log.error("Could not measure data sizes: %s", exc)
     log.info(
         "Wrote data to %s (%s stigs, %s rules, %s search docs)",
         out,

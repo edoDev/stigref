@@ -4,7 +4,8 @@
 **Status:** Living document  
 **Product:** [stigref](https://github.com/edoDev/stigref) — static STIG reference (search, deep links, copy, Intune CSP hints)
 
-**July 2026 review:** [REVIEW_2026-07.md](REVIEW_2026-07.md) — ops/hygiene follow-ups B-071–B-076.
+**July 2026 review:** [REVIEW_2026-07.md](REVIEW_2026-07.md) — ops/hygiene follow-ups B-071–B-076.  
+**Session resume:** [SESSION_LOG.md](SESSION_LOG.md)
 
 ---
 
@@ -96,7 +97,7 @@
 
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
-| B-033 | Confidence legend + disclaimers on intel/Intune | P0 | S | planned | |
+| B-033 | Confidence legend + disclaimers on intel/Intune | P0 | S | done | ConfidenceLegend + Intune disclaimer |
 | B-034 | “Needs human review” on low-confidence data | P0 | S | planned | |
 | B-035 | Richer provenance UI (SHA, library name, build) | P1 | S | idea | meta exists |
 | B-036 | Check vs fix visual separation | P2 | S | idea | |
@@ -161,9 +162,9 @@ From [REVIEW_2026-07.md](REVIEW_2026-07.md).
 | B-071 | Scheduled KEV refresh workflow + hardened fetch | P0 | M | done | `kev-refresh.yml`, retry/validate/safe cache |
 | B-072 | Pipeline error-handling pass (no silent stage drops) | P0 | M | done | error-level logs; narrow catches |
 | B-073 | Supply-chain hygiene (pin deps, Dependabot, SHA Actions, no prod maps) | P0 | S | done | requirements pin + dependabot + sourcemap off |
-| B-074 | Frontend UX/a11y (retry, skip link, live regions, KEV pagination) | P1 | M | planned | |
-| B-075 | Frontend + pipeline test suites in CI | P1 | L | planned | Vitest + ZIP fixture |
-| B-076 | Build emits compressed size metrics into meta.json | P2 | S | idea | DESIGN §7.2 budget |
+| B-074 | Frontend UX/a11y (retry, skip link, live regions, KEV pagination) | P1 | M | done | ErrorRetry, skip link, live region, KEV show-more, debounce, aria-pressed |
+| B-075 | Frontend + pipeline test suites in CI | P1 | L | done | Vitest 20 tests + pytest CI; ZIP fixture later |
+| B-076 | Build emits size metrics into meta.json | P2 | S | done | Uncompressed inventory; gzip budget still future |
 
 ---
 

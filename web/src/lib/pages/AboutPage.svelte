@@ -70,6 +70,13 @@
           {m.counts?.stigs ?? "?"} STIGs · {m.counts?.rules ?? "?"} rules ·
           {m.counts?.searchDocuments ?? "?"} search docs
         </dd>
+        {#if m.sizes?.totalMB != null}
+          <dt>Data size (raw)</dt>
+          <dd>
+            {m.sizes.totalMB} MB · {m.sizes.totalFiles?.toLocaleString() ?? "?"} files
+            <span class="muted"> (uncompressed on disk)</span>
+          </dd>
+        {/if}
         <dt>Generator</dt>
         <dd class="mono">{m.generator || "—"}</dd>
       </dl>

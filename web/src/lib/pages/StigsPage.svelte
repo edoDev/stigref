@@ -5,6 +5,7 @@
   import type { LoadState, StigIndexEntry, TagsCatalog } from "../types";
   import { formatDate } from "../format";
   import SearchBox from "../components/SearchBox.svelte";
+  import ErrorRetry from "../components/ErrorRetry.svelte";
 
   let state = $state<LoadState>("idle");
   let error = $state<string | null>(null);
@@ -16,8 +17,9 @@
   let special = $state(""); // tag id from filterHints.special
   let autoFilter = $state(""); // gpo | intune | manual | shb | none
 
-  onMount(async () => {
+  async function loadCatalog() {
     state = "loading";
+    error = null;
     try {
       const [idx, tags] = await Promise.all([fetchStigIndex(), fetchTagsCatalog()]);
       stigs = idx;
@@ -27,6 +29,10 @@
       state = "error";
       error = e instanceof Error ? e.message : String(e);
     }
+  }
+
+  onMount(() => {
+    void loadCatalog();
   });
 
   let filtered = $derived.by(() => {
@@ -167,7 +173,7 @@
   {#if state === "loading"}
     <p class="state">Loading catalog…</p>
   {:else if state === "error"}
-    <p class="state error">{error}</p>
+    <ErrorRetry title="Could not load catalog" message={error} onretry={loadCatalog} />
   {:else}
     <div class="section-title">
       <h2>STIGs</h2>

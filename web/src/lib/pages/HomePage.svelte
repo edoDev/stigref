@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import SearchBox from "../components/SearchBox.svelte";
   import ResultList from "../components/ResultList.svelte";
+  import ErrorRetry from "../components/ErrorRetry.svelte";
   import { search, isSearchReady, emptyFilters, uniqueVendorsFromIndex } from "../search";
   import { searchState, searchError, bootData, meta } from "../metaStore";
   import type { IntuneProductIndex, QuickLink, SearchDoc, SearchFilters } from "../types";
@@ -9,6 +10,7 @@
   import { formatDate } from "../format";
   import { fetchIntuneIndex, fetchTagsCatalog } from "../api";
   import { parseSearchParams, replaceSearchUrl } from "../urlState";
+  import { debounce } from "../debounce";
 
   let query = $state("");
   let filters = $state<SearchFilters>(emptyFilters());
@@ -27,7 +29,8 @@
     return `${mapped}/${p.rules} (${pct}%)`;
   }
 
-  function run(q: string = query) {
+  /** Immediate search results; URL sync is debounced. */
+  function runResults(q: string = query) {
     query = q;
     if (!isSearchReady()) {
       results = [];
@@ -45,13 +48,29 @@
     } else {
       results = search(q, 60, filters);
     }
-    replaceSearchUrl(query, filters);
     vendors = uniqueVendorsFromIndex();
+  }
+
+  const debouncedUrl = debounce(() => {
+    replaceSearchUrl(query, filters);
+  }, 250);
+
+  function run(q: string = query) {
+    runResults(q);
+    debouncedUrl();
   }
 
   function clearFilters() {
     filters = emptyFilters();
     run(query);
+  }
+
+  function retryBoot() {
+    bootData().then(() => {
+      ready = isSearchReady();
+      vendors = uniqueVendorsFromIndex();
+      run(query);
+    });
   }
 
   onMount(() => {
@@ -62,7 +81,9 @@
     bootData().then(() => {
       ready = isSearchReady();
       vendors = uniqueVendorsFromIndex();
-      run(query);
+      runResults(query);
+      // Initial URL may already match; still sync cleanly once
+      replaceSearchUrl(query, filters);
     });
     fetchTagsCatalog()
       .then((c) => {
@@ -78,6 +99,8 @@
       .catch(() => {
         intuneIndex = null;
       });
+
+    return () => debouncedUrl.cancel();
   });
 
   let sState = $derived($searchState);
@@ -92,6 +115,18 @@
       filters.hasIntune ||
       filters.hasCve ||
       filters.inKev,
+  );
+
+  let liveMsg = $derived(
+    sState === "loading"
+      ? "Loading search index"
+      : sState === "error"
+        ? "Search unavailable"
+        : showResults
+          ? `${results.length} result${results.length === 1 ? "" : "s"}`
+          : ready
+            ? "Index ready"
+            : "",
   );
 </script>
 
@@ -174,13 +209,19 @@
     <button type="button" onclick={clearFilters}>Clear</button>
   </div>
 
+  <div class="sr-only" role="status" aria-live="polite" aria-atomic="true">{liveMsg}</div>
+
   {#if sState === "loading"}
     <p class="state">Loading search index (~20k documents)…</p>
   {:else if sState === "error"}
-    <p class="state error">Search unavailable: {sErr}</p>
+    <ErrorRetry
+      title="Search unavailable"
+      message={sErr}
+      onretry={retryBoot}
+    />
   {:else if showResults}
     <div class="section-title">
-      <h2>Results</h2>
+      <h2 id="search-results-heading">Results</h2>
       <span class="muted">{results.length} shown · URL updates as you filter</span>
     </div>
     <ResultList {results} emptyLabel="No matches for that query/filters." />

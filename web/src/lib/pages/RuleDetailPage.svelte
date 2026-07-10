@@ -10,6 +10,8 @@
     ruleOmaUriPack,
   } from "../copy";
   import { bookmarks, toggleBookmark } from "../bookmarks";
+  import ErrorRetry from "../components/ErrorRetry.svelte";
+  import ConfidenceLegend from "../components/ConfidenceLegend.svelte";
 
   interface Props {
     id: string;
@@ -47,11 +49,12 @@
   {#if state === "loading"}
     <p class="state">Loading rule…</p>
   {:else if state === "error"}
-    <div class="state error">
-      <p>Rule not found or failed to load.</p>
-      <p class="mono">{error}</p>
-      <p><a href={routes.home()}>Back to search</a></p>
-    </div>
+    <ErrorRetry
+      title="Rule not found or failed to load"
+      message={error}
+      onretry={() => load(id)}
+    />
+    <p class="muted"><a href={routes.home()}>Back to search</a></p>
   {:else if rule}
     <div class="row" style="justify-content: space-between; align-items: flex-start;">
       <div>
@@ -80,6 +83,8 @@
       <div class="row pack">
         <button
           type="button"
+          aria-pressed={saved}
+          aria-label={saved ? "Remove bookmark" : "Save bookmark"}
           onclick={() =>
             toggleBookmark({
               type: "rule",
@@ -214,6 +219,7 @@
           {rule.threat.disclaimer ||
             "Public context only. Not a vulnerability scan result."}
         </p>
+        <ConfidenceLegend compact />
       </div>
     {:else if rule.cves?.length}
       <div class="card stack">
@@ -272,6 +278,12 @@
           />
         {/if}
       </div>
+
+      <p class="muted small" style="margin:0">
+        Curated / heuristic mappings — not an official Microsoft or DISA baseline. Validate in a
+        pilot ring before production.
+      </p>
+      <ConfidenceLegend compact />
 
       <details class="recipe">
         <summary>How to apply in Intune</summary>

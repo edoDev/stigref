@@ -5,6 +5,7 @@
   import type { IntuneProductIndex, LoadState, QuickLink } from "../types";
   import { copyText } from "../copy";
   import { toast } from "../toast";
+  import ErrorRetry from "../components/ErrorRetry.svelte";
 
   interface Props {
     id: string;
@@ -74,7 +75,7 @@
   {#if state === "loading"}
     <p class="state">Loading product…</p>
   {:else if state === "error"}
-    <p class="state error">{error}</p>
+    <ErrorRetry title="Could not load product" message={error} onretry={() => load(id)} />
   {:else}
     <div>
       <h1>{link?.label || id}</h1>

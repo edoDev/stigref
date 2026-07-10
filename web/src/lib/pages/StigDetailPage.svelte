@@ -8,6 +8,7 @@
   import { intuneProductUrl } from "../api";
   import { bookmarks, toggleBookmark } from "../bookmarks";
   import { routes as appRoutes } from "../paths";
+  import ErrorRetry from "../components/ErrorRetry.svelte";
 
   interface Props {
     id: string;
@@ -43,11 +44,8 @@
   {#if state === "loading"}
     <p class="state">Loading STIG…</p>
   {:else if state === "error"}
-    <div class="state error">
-      <p>Could not load STIG.</p>
-      <p class="mono">{error}</p>
-      <p><a href={routes.home()}>Back to search</a></p>
-    </div>
+    <ErrorRetry title="Could not load STIG" message={error} onretry={() => load(id)} />
+    <p class="muted"><a href={routes.home()}>Back to search</a></p>
   {:else if stig}
     <div class="row" style="justify-content: space-between; align-items: flex-start;">
       <div>
@@ -84,6 +82,8 @@
       <div class="row">
         <button
           type="button"
+          aria-pressed={saved}
+          aria-label={saved ? "Remove bookmark" : "Save bookmark"}
           onclick={() =>
             toggleBookmark({ type: "stig", id: stig.id, title: stig.name })}
         >

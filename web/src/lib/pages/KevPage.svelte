@@ -4,6 +4,7 @@
   import { routes } from "../paths";
   import type { LoadState } from "../types";
   import SearchBox from "../components/SearchBox.svelte";
+  import ErrorRetry from "../components/ErrorRetry.svelte";
 
   interface KevEntry {
     cveID: string;
@@ -27,10 +28,13 @@
     fetchedAt?: string;
     count: number;
     linkedToStigCount?: number;
+    linkedRuleCount?: number;
     catalogUrl?: string;
     vulnerabilities: KevEntry[];
     disclaimer?: string;
   }
+
+  const PAGE = 100;
 
   let state = $state<LoadState>("idle");
   let error = $state<string | null>(null);
@@ -39,16 +43,12 @@
   let ransomwareOnly = $state(false);
   let linkedOnly = $state(false);
   let vendor = $state("");
+  let visible = $state(PAGE);
 
-  onMount(async () => {
+  async function loadCatalog() {
     state = "loading";
+    error = null;
     try {
-      // Support ?q= on KEV page
-      const sp = new URLSearchParams(location.search);
-      if (sp.get("q")) query = sp.get("q") || "";
-      if (sp.get("linked") === "1") linkedOnly = true;
-      if (sp.get("ransomware") === "1") ransomwareOnly = true;
-
       const res = await fetch(dataUrl("threat", "kev.json"));
       if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       catalog = (await res.json()) as KevCatalog;
@@ -57,6 +57,23 @@
       state = "error";
       error = e instanceof Error ? e.message : String(e);
     }
+  }
+
+  onMount(() => {
+    const sp = new URLSearchParams(location.search);
+    if (sp.get("q")) query = sp.get("q") || "";
+    if (sp.get("linked") === "1") linkedOnly = true;
+    if (sp.get("ransomware") === "1") ransomwareOnly = true;
+    void loadCatalog();
+  });
+
+  // Reset pagination when filters change
+  $effect(() => {
+    void query;
+    void ransomwareOnly;
+    void linkedOnly;
+    void vendor;
+    visible = PAGE;
   });
 
   let vendors = $derived.by(() => {
@@ -91,6 +108,11 @@
       return blob.includes(q);
     });
   });
+
+  let shown = $derived(filtered.slice(0, visible));
+  let linkedCount = $derived(
+    catalog?.linkedToStigCount ?? catalog?.linkedRuleCount ?? null,
+  );
 </script>
 
 <section class="stack">
@@ -105,7 +127,7 @@
   {#if state === "loading"}
     <p class="state">Loading KEV catalog…</p>
   {:else if state === "error"}
-    <p class="state error">{error}</p>
+    <ErrorRetry title="Could not load KEV catalog" message={error} onretry={loadCatalog} />
   {:else if catalog}
     <div class="card muted">
       {catalog.count.toLocaleString()} vulnerabilities
@@ -115,8 +137,8 @@
       {#if catalog.catalogVersion}
         · {catalog.catalogVersion}
       {/if}
-      {#if catalog.linkedToStigCount != null}
-        · {catalog.linkedToStigCount} linked to STIG rules in this build
+      {#if linkedCount != null}
+        · {linkedCount} linked to STIG rules in this build
       {/if}
       ·
       <a href={catalog.catalogUrl || "https://www.cisa.gov/known-exploited-vulnerabilities-catalog"} target="_blank" rel="noopener"
@@ -144,11 +166,14 @@
         <input type="checkbox" bind:checked={linkedOnly} />
         Linked to STIG rules
       </label>
-      <span class="muted">{filtered.length.toLocaleString()} shown</span>
+      <span class="muted" role="status" aria-live="polite"
+        >{shown.length.toLocaleString()} of {filtered.length.toLocaleString()}</span
+      >
     </div>
 
+    <h2 class="list-heading">Vulnerabilities</h2>
     <ul class="list card">
-      {#each filtered.slice(0, 200) as v (v.cveID)}
+      {#each shown as v (v.cveID)}
         <li class="item">
           <div class="row">
             <a class="mono cve" href={v.nvdUrl} target="_blank" rel="noopener">{v.cveID}</a>
@@ -189,8 +214,13 @@
         </li>
       {/each}
     </ul>
-    {#if filtered.length > 200}
-      <p class="muted state">Showing first 200 of {filtered.length.toLocaleString()}. Refine search.</p>
+    {#if visible < filtered.length}
+      <p class="state">
+        <button type="button" class="primary" onclick={() => (visible += PAGE)}>
+          Show more ({Math.min(PAGE, filtered.length - visible)} of
+          {(filtered.length - visible).toLocaleString()} remaining)
+        </button>
+      </p>
     {/if}
     {#if catalog.disclaimer}
       <p class="muted small">{catalog.disclaimer}</p>
@@ -199,6 +229,10 @@
 </section>
 
 <style>
+  .list-heading {
+    font-size: 1.05rem;
+    margin: 0.25rem 0 0;
+  }
   .filters {
     gap: 0.75rem 1rem;
     align-items: end;

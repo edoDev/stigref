@@ -3,14 +3,16 @@
   import { fetchIntuneIndex, fetchTagsCatalog } from "../api";
   import { routes } from "../paths";
   import type { IntuneProductIndex, LoadState, QuickLink } from "../types";
+  import ErrorRetry from "../components/ErrorRetry.svelte";
 
   let state = $state<LoadState>("idle");
   let error = $state<string | null>(null);
   let links = $state<QuickLink[]>([]);
   let idx = $state<IntuneProductIndex | null>(null);
 
-  onMount(async () => {
+  async function loadProducts() {
     state = "loading";
+    error = null;
     try {
       const [tags, products] = await Promise.all([
         fetchTagsCatalog(),
@@ -23,6 +25,10 @@
       state = "error";
       error = e instanceof Error ? e.message : String(e);
     }
+  }
+
+  onMount(() => {
+    void loadProducts();
   });
 
   function cov(productId: string) {
@@ -42,7 +48,7 @@
   {#if state === "loading"}
     <p class="state">Loading…</p>
   {:else if state === "error"}
-    <p class="state error">{error}</p>
+    <ErrorRetry title="Could not load products" message={error} onretry={loadProducts} />
   {:else}
     <ul class="list card">
       {#each links as link (link.id)}

@@ -19,6 +19,13 @@ export interface Meta {
   };
   parseErrors?: number;
   generator?: string;
+  sizes?: {
+    totalBytes?: number;
+    totalFiles?: number;
+    totalMB?: number;
+    byArea?: Record<string, { bytes?: number; files?: number }>;
+    note?: string;
+  };
 }
 
 export interface SearchDoc {

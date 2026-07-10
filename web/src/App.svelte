@@ -28,9 +28,10 @@
   });
 </script>
 
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <Header />
 
-<main class="wrap">
+<main id="main-content" class="wrap" tabindex="-1">
   {#if r.name === "home"}
     <HomePage />
   {:else if r.name === "about"}
@@ -58,7 +59,7 @@
   {:else if r.name === "help"}
     <HelpPage />
   {:else}
-    <section class="state error">
+    <section class="state error" role="alert">
       <h1>Not found</h1>
       <p>No page for <span class="mono">{r.path}</span></p>
       <p><a href={routes.home()}>Go home</a></p>
