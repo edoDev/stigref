@@ -68,6 +68,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
-    sourcemap: true,
+    // Do not ship source maps to GitHub Pages (saves ~0.7 MB, less source exposure).
+    sourcemap: false,
   },
 });

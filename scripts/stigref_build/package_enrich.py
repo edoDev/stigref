@@ -134,8 +134,12 @@ def index_ckls_from_gpo(zip_path: Path) -> dict[str, dict[str, Any]]:
         for name in ckls:
             try:
                 rows = parse_ckl_bytes(z.read(name), name)
+            except (OSError, RuntimeError, ValueError, KeyError) as exc:
+                log.error("CKL parse failed %s: %s", name, exc)
+                continue
             except Exception as exc:  # noqa: BLE001
-                log.warning("CKL parse failed %s: %s", name, exc)
+                log.exception("CKL parse failed unexpectedly %s", name)
+                log.error("%s", exc)
                 continue
             for row in rows:
                 for key in _rule_keys(row.get("ruleId") or "", row.get("vulnNum") or ""):
@@ -271,8 +275,12 @@ def index_deviations_from_intune(zip_path: Path) -> dict[str, dict[str, Any]]:
         log.info("Parsing deviations workbook %s", name)
         try:
             rows = parse_deviations_xlsx(z.read(name))
+        except (OSError, RuntimeError, ValueError, KeyError, zipfile.BadZipFile) as exc:
+            log.error("Deviations parse failed: %s", exc)
+            return by_v
         except Exception as exc:  # noqa: BLE001
-            log.warning("Deviations parse failed: %s", exc)
+            log.exception("Deviations parse failed unexpectedly")
+            log.error("%s", exc)
             return by_v
         for row in rows:
             by_v[row["vulnNum"]] = row
@@ -307,7 +315,8 @@ def extract_settings_catalog_defs(zip_path: Path) -> list[dict[str, Any]]:
                 continue
             try:
                 data = json.loads(z.read(name))
-            except Exception:  # noqa: BLE001
+            except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as exc:
+                log.error("Settings Catalog JSON skip %s: %s", name, exc)
                 continue
             defs: list[str] = []
             walk_defs(data, defs)

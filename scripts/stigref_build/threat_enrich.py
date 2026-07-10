@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 import logging
 import re
+import time
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -20,12 +22,89 @@ CVE_RE = re.compile(r"CVE-\d{4}-\d{4,}", re.I)
 NVD = "https://nvd.nist.gov/vuln/detail/"
 KEV_CATALOG = "https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
 
+# Retry policy for network fetch (transient outages)
+KEV_FETCH_RETRIES = 3
+KEV_FETCH_BACKOFF_SEC = 2.0
+# Sanity floor: CISA KEV has been well above this for years
+KEV_MIN_VULNS = 100
+
 
 def normalize_cve(cve: str) -> str:
     m = CVE_RE.search(cve or "")
     if m:
         return m.group(0).upper()
     return (cve or "").strip().upper()
+
+
+def validate_kev_payload(data: Any) -> dict[str, Any]:
+    """
+    Validate CISA KEV JSON shape. Raises ValueError on bad/incomplete data.
+    """
+    if not isinstance(data, dict):
+        raise ValueError("KEV payload must be a JSON object")
+    vulns = data.get("vulnerabilities")
+    if not isinstance(vulns, list):
+        raise ValueError("KEV payload missing 'vulnerabilities' list")
+    if len(vulns) < KEV_MIN_VULNS:
+        raise ValueError(
+            f"KEV vulnerabilities count {len(vulns)} below minimum {KEV_MIN_VULNS}"
+        )
+    sample = vulns[0]
+    if not isinstance(sample, dict) or not sample.get("cveID"):
+        raise ValueError("KEV first entry missing cveID")
+    # Spot-check a mid entry if present
+    mid = vulns[len(vulns) // 2]
+    if not isinstance(mid, dict) or not mid.get("cveID"):
+        raise ValueError("KEV mid entry missing cveID")
+    return data
+
+
+def _load_kev_cache(cache_path: Path) -> dict[str, Any] | None:
+    """Read and validate KEV cache; return None on any failure (never raise)."""
+    try:
+        raw = json.loads(cache_path.read_text(encoding="utf-8"))
+        return validate_kev_payload(raw)
+    except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as exc:
+        log.error("KEV cache invalid or unreadable at %s: %s", cache_path, exc)
+        return None
+
+
+def _fetch_kev_json(*, timeout: int = 60) -> dict[str, Any]:
+    """
+    Download and validate KEV JSON with retries.
+    Raises the last network/parse/validation error if all attempts fail.
+    """
+    last_exc: BaseException | None = None
+    req = urllib.request.Request(
+        KEV_URL,
+        headers={"User-Agent": "stigref-build/0.1 (threat enrich)"},
+    )
+    for attempt in range(1, KEV_FETCH_RETRIES + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                body = resp.read().decode("utf-8")
+            data = validate_kev_payload(json.loads(body))
+            return data
+        except (
+            urllib.error.URLError,
+            urllib.error.HTTPError,
+            TimeoutError,
+            OSError,
+            json.JSONDecodeError,
+            UnicodeError,
+            ValueError,
+        ) as exc:
+            last_exc = exc
+            log.warning(
+                "KEV download attempt %s/%s failed: %s",
+                attempt,
+                KEV_FETCH_RETRIES,
+                exc,
+            )
+            if attempt < KEV_FETCH_RETRIES:
+                time.sleep(KEV_FETCH_BACKOFF_SEC * attempt)
+    assert last_exc is not None
+    raise last_exc
 
 
 def _fetch_or_load_kev(
@@ -41,16 +120,11 @@ def _fetch_or_load_kev(
         "count": 0,
         "fromCache": False,
     }
-    data = None
+    data: dict[str, Any] | None = None
 
     if fetch:
         try:
-            req = urllib.request.Request(
-                KEV_URL,
-                headers={"User-Agent": "stigref-build/0.1 (threat enrich)"},
-            )
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
+            data = _fetch_kev_json(timeout=timeout)
             meta["fetchedAt"] = (
                 datetime.now(timezone.utc)
                 .replace(microsecond=0)
@@ -62,19 +136,42 @@ def _fetch_or_load_kev(
                 cache_path.write_text(
                     json.dumps(data), encoding="utf-8"
                 )
-            log.info("Downloaded CISA KEV catalog")
-        except Exception as exc:  # noqa: BLE001
-            log.warning("KEV download failed: %s", exc)
+            log.info(
+                "Downloaded CISA KEV catalog (%s vulnerabilities)",
+                len(data.get("vulnerabilities") or []),
+            )
+        except (
+            urllib.error.URLError,
+            urllib.error.HTTPError,
+            TimeoutError,
+            OSError,
+            json.JSONDecodeError,
+            UnicodeError,
+            ValueError,
+        ) as exc:
+            log.error(
+                "KEV download failed after %s attempts: %s — trying cache",
+                KEV_FETCH_RETRIES,
+                exc,
+            )
+            meta["fetchError"] = str(exc)
 
     if data is None and cache_path and cache_path.is_file():
-        data = json.loads(cache_path.read_text(encoding="utf-8"))
-        meta["fromCache"] = True
-        log.info("Loaded KEV from cache %s", cache_path)
+        data = _load_kev_cache(cache_path)
+        if data is not None:
+            meta["fromCache"] = True
+            log.info("Loaded KEV from cache %s", cache_path)
+        else:
+            meta["cacheError"] = True
 
     if data:
         meta["catalogVersion"] = data.get("catalogVersion")
         meta["dateReleased"] = data.get("dateReleased")
         meta["count"] = len(data.get("vulnerabilities") or [])
+    else:
+        log.error(
+            "No KEV data available (fetch failed and cache missing/invalid)"
+        )
     return data, meta
 
 
@@ -89,6 +186,8 @@ def normalize_kev_entries(
     if not data:
         return out
     for row in data.get("vulnerabilities") or []:
+        if not isinstance(row, dict):
+            continue
         cve = normalize_cve(row.get("cveID") or "")
         if not cve:
             continue
@@ -127,6 +226,8 @@ def load_kev_ids(
     ids: set[str] = set()
     if data:
         for row in data.get("vulnerabilities") or []:
+            if not isinstance(row, dict):
+                continue
             cve = normalize_cve(row.get("cveID") or "")
             if cve:
                 ids.add(cve)
@@ -146,6 +247,8 @@ def load_kev_bundle(
     ids: set[str] = set()
     if data:
         for row in data.get("vulnerabilities") or []:
+            if not isinstance(row, dict):
+                continue
             cve = normalize_cve(row.get("cveID") or "")
             if cve:
                 ids.add(cve)

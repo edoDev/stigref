@@ -126,8 +126,11 @@ def load_all_maps(maps_dir: Path | None = None) -> dict[str, dict[str, Any]]:
             parsed = _parse_map_yaml(f.read_text(encoding="utf-8"))
             product = parsed.get("product") or f.stem
             out[product] = parsed
+        except (OSError, UnicodeError, ValueError, KeyError, TypeError) as exc:
+            log.error("Failed to parse Intune map %s: %s", f, exc)
         except Exception as exc:  # noqa: BLE001
-            log.warning("Failed to parse map %s: %s", f, exc)
+            log.exception("Failed to parse Intune map %s", f)
+            log.error("%s", exc)
     return out
 
 

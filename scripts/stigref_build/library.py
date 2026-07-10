@@ -51,8 +51,8 @@ def iter_xccdf_from_zip(
         for name in nested:
             try:
                 inner_bytes = zf.read(name)
-            except Exception as exc:  # noqa: BLE001
-                log.warning("Could not read nested zip %s: %s", name, exc)
+            except (KeyError, RuntimeError, OSError) as exc:
+                log.error("Could not read nested zip %s: %s", name, exc)
                 continue
             try:
                 with zipfile.ZipFile(io.BytesIO(inner_bytes), "r") as inner:
@@ -61,7 +61,7 @@ def iter_xccdf_from_zip(
                             label = f"{zip_path.name}:{name}:{inner_name}"
                             yield label, inner.read(inner_name)
             except zipfile.BadZipFile as exc:
-                log.warning("Bad nested zip %s: %s", name, exc)
+                log.error("Bad nested zip %s: %s", name, exc)
 
 
 def iter_xccdf_from_path(path: str | Path) -> Iterator[tuple[str, bytes]]:
@@ -104,7 +104,9 @@ def parse_all(
         except ParseError as exc:
             log.warning("Skip %s: %s", source, exc)
             errors.append({"source": source, "error": str(exc)})
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:  # noqa: BLE001 — intentional: record into meta.json
+            # Catch-all is deliberate: one bad XCCDF must not abort the library build.
+            # Errors are returned to the caller and written into meta.json.
             log.exception("Unexpected error parsing %s", source)
             errors.append({"source": source, "error": str(exc)})
     return stigs, errors

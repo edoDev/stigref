@@ -1,8 +1,10 @@
 # stigref product backlog
 
-**Last updated:** 2026-07-09  
+**Last updated:** 2026-07-10  
 **Status:** Living document  
 **Product:** [stigref](https://github.com/edoDev/stigref) — static STIG reference (search, deep links, copy, Intune CSP hints)
+
+**July 2026 review:** [REVIEW_2026-07.md](REVIEW_2026-07.md) — ops/hygiene follow-ups B-071–B-076.
 
 ---
 
@@ -149,6 +151,19 @@ Associate **public** security context with rules where evidence exists. Always l
 | B-068 | Search/filter: has-CVE, in-KEV, has-ATT&CK | P1 | S | done | CVE + KEV filters (ATT&CK later) |
 | B-069 | Product-level threat summary export | P2 | M | idea | |
 | B-070 | Intel contribution YAML schema | P1 | M | planned | Like intune_maps |
+
+### E10 — Review follow-ups (July 2026)
+
+From [REVIEW_2026-07.md](REVIEW_2026-07.md).
+
+| ID | Feature | Pri | Size | Status | Notes |
+|----|---------|-----|------|--------|-------|
+| B-071 | Scheduled KEV refresh workflow + hardened fetch | P0 | M | done | `kev-refresh.yml`, retry/validate/safe cache |
+| B-072 | Pipeline error-handling pass (no silent stage drops) | P0 | M | done | error-level logs; narrow catches |
+| B-073 | Supply-chain hygiene (pin deps, Dependabot, SHA Actions, no prod maps) | P0 | S | done | requirements pin + dependabot + sourcemap off |
+| B-074 | Frontend UX/a11y (retry, skip link, live regions, KEV pagination) | P1 | M | planned | |
+| B-075 | Frontend + pipeline test suites in CI | P1 | L | planned | Vitest + ZIP fixture |
+| B-076 | Build emits compressed size metrics into meta.json | P2 | S | idea | DESIGN §7.2 budget |
 
 ---
 

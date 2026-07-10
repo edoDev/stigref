@@ -341,8 +341,12 @@ def build_package_bundle(raw_dir: Path) -> dict[str, Any]:
         try:
             gpo_index = index_gpo_package(paths["gpo"])
             log.info("Indexed GPO package %s (%s products)", paths["gpo"].name, gpo_index["productCount"])
+        except (OSError, RuntimeError, ValueError, KeyError, zipfile.BadZipFile) as exc:
+            # Optional enrichment: fail-soft but escalate visibility (not silent).
+            log.error("GPO package index failed — GPO enrichment dropped: %s", exc)
         except Exception as exc:  # noqa: BLE001
-            log.warning("GPO package index failed: %s", exc)
+            log.exception("GPO package index failed unexpectedly — GPO enrichment dropped")
+            log.error("%s", exc)
     else:
         log.info("No GPO package found under %s", raw_dir)
 
@@ -354,8 +358,13 @@ def build_package_bundle(raw_dir: Path) -> dict[str, Any]:
                 paths["intune"].name,
                 intune_index["profileCount"],
             )
+        except (OSError, RuntimeError, ValueError, KeyError, zipfile.BadZipFile) as exc:
+            log.error("Intune package index failed — Intune enrichment dropped: %s", exc)
         except Exception as exc:  # noqa: BLE001
-            log.warning("Intune package index failed: %s", exc)
+            log.exception(
+                "Intune package index failed unexpectedly — Intune enrichment dropped"
+            )
+            log.error("%s", exc)
     else:
         log.info("No Intune package found under %s", raw_dir)
 
