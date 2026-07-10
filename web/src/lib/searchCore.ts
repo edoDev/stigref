@@ -16,9 +16,24 @@ export function emptyFilters(): SearchFilters {
   };
 }
 
+function isSrgDoc(d: SearchDoc): boolean {
+  const t = `${d.title || ""} ${d.body || ""}`.toLowerCase();
+  return (
+    t.includes("requirements guide") ||
+    /\bsrg\b/.test(t) ||
+    (d.type === "stig" && t.includes("security requirements guide"))
+  );
+}
+
 export function applyFilters(docs: SearchDoc[], f: SearchFilters): SearchDoc[] {
   return docs.filter((d) => {
-    if (f.type && d.type !== f.type) return false;
+    if (f.type === "srg") {
+      if (d.type !== "stig" || !isSrgDoc(d)) return false;
+    } else if (f.type === "stig") {
+      if (d.type !== "stig" || isSrgDoc(d)) return false;
+    } else if (f.type && d.type !== f.type) {
+      return false;
+    }
     if (f.severity && (d.severity || "").toLowerCase() !== f.severity.toLowerCase())
       return false;
     if (f.vendor && (d.vendor || "") !== f.vendor) return false;
@@ -86,12 +101,23 @@ export function searchWithEngine(
     return applyFilters(allDocs, f).slice(0, limit);
   }
 
-  const upper = q.toUpperCase();
+  const upper = q.toUpperCase().replace(/\s+/g, "");
   const idHits: SearchDoc[] = [];
+  // B-031: tolerate missing "rN_rule" suffix and minor typos on SV-/V- ids
+  const bare = upper.replace(/R\d+_RULE$/i, "").replace(/_RULE$/i, "");
   for (const doc of allDocs) {
     if (doc.type !== "rule") continue;
     const rid = (doc.full_rule_id || "").toUpperCase();
-    if (rid === upper || rid.startsWith(upper) || rid.includes(upper)) {
+    const ridBare = rid.replace(/R\d+_RULE$/i, "").replace(/_RULE$/i, "");
+    if (
+      rid === upper ||
+      rid.startsWith(upper) ||
+      rid.includes(upper) ||
+      ridBare === bare ||
+      ridBare.startsWith(bare) ||
+      (bare.length >= 6 && ridBare.includes(bare)) ||
+      (bare.length >= 8 && levenshtein(ridBare, bare) <= 2)
+    ) {
       idHits.push(doc);
       if (idHits.length >= limit) break;
     }
@@ -121,4 +147,24 @@ export function uniqueVendors(docs: SearchDoc[]): string[] {
     if (d.vendor) s.add(d.vendor);
   }
   return [...s].sort();
+}
+
+/** Small Levenshtein for rule-id typo tolerance (B-031). */
+export function levenshtein(a: string, b: string): number {
+  if (a === b) return 0;
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  const row = new Array(b.length + 1);
+  for (let j = 0; j <= b.length; j++) row[j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    let prev = i - 1;
+    row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const cur = row[j];
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      row[j] = Math.min(row[j] + 1, row[j - 1] + 1, prev + cost);
+      prev = cur;
+    }
+  }
+  return row[b.length];
 }

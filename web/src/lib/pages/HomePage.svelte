@@ -16,6 +16,8 @@
   import { fetchIntuneIndex, fetchTagsCatalog } from "../api";
   import { parseSearchParams, replaceSearchUrl } from "../urlState";
   import { debounce } from "../debounce";
+  import { getRecent } from "../recent";
+  import type { RecentItem } from "../recent";
 
   let query = $state("");
   let filters = $state<SearchFilters>(emptyFilters());
@@ -24,6 +26,7 @@
   let quickLinks = $state<QuickLink[]>([]);
   let intuneIndex = $state<IntuneProductIndex | null>(null);
   let vendors = $state<string[]>([]);
+  let recent = $state<RecentItem[]>([]);
 
   function coverageFor(productId: string | null | undefined): string {
     if (!productId || !intuneIndex) return "";
@@ -82,6 +85,7 @@
     const parsed = parseSearchParams();
     query = parsed.q;
     filters = parsed.filters;
+    recent = getRecent();
 
     bootData().then(async () => {
       ready = isSearchReady();
@@ -179,6 +183,7 @@
         <option value="">All</option>
         <option value="rule">Rules</option>
         <option value="stig">STIGs</option>
+        <option value="srg">SRGs</option>
       </select>
     </label>
     <label class="field">
@@ -217,7 +222,11 @@
   <div class="sr-only" role="status" aria-live="polite" aria-atomic="true">{liveMsg}</div>
 
   {#if sState === "loading"}
-    <p class="state">Loading search index (~20k documents)…</p>
+    <div class="skeleton card" aria-busy="true">
+      <div class="skel-line"></div>
+      <div class="skel-line short"></div>
+      <p class="state" style="margin:0.5rem 0 0">Loading search index (~20k documents)…</p>
+    </div>
   {:else if sState === "error"}
     <ErrorRetry
       title="Search unavailable"
@@ -242,7 +251,26 @@
       . Content last updated {formatDate(m.lastUpdated)}. Browse the
       <a href={routes.stigs()}>STIG catalog</a> or try a rule ID like
       <span class="mono">SV-</span>.
+      <span class="kbd-hint"> Press <kbd>/</kbd> to focus search · <kbd>?</kbd> help</span>
     </div>
+    {#if recent.length}
+      <div>
+        <div class="section-title">
+          <h2>Recently viewed</h2>
+          <span class="muted">This browser only</span>
+        </div>
+        <ul class="recent card">
+          {#each recent.slice(0, 8) as item (item.type + item.id)}
+            <li>
+              <span class="badge">{item.type}</span>
+              <a href={item.type === "rule" ? routes.rule(item.id) : routes.stig(item.id)}
+                >{item.title || item.id}</a
+              >
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/if}
   {/if}
 </section>
 
@@ -305,5 +333,50 @@
     gap: 0.35rem;
     font-size: 0.88rem;
     padding-bottom: 0.35rem;
+  }
+  .recent {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+  }
+  .recent li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .recent li:last-child {
+    border-bottom: none;
+  }
+  .kbd-hint {
+    display: inline;
+  }
+  kbd {
+    font-family: var(--mono);
+    font-size: 0.8em;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.05rem 0.3rem;
+    background: var(--bg);
+  }
+  .skeleton .skel-line {
+    height: 0.75rem;
+    background: var(--bg-hover);
+    border-radius: 4px;
+    margin-bottom: 0.45rem;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  .skeleton .skel-line.short {
+    width: 55%;
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.45;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 </style>

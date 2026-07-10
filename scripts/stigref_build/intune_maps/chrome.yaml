@@ -1,6 +1,31 @@
 product: chrome
 family: google-chrome-current-windows
-version: "1"
-notes: Chrome typically requires ADMX ingestion + ADMX-backed Policy CSP paths.
+version: "2"
+notes: |
+  Chrome STIG → primarily ADMX / Settings Catalog Admin Templates.
+  Seed a few Policy CSP-adjacent browser hardening links where applicable.
 
-rules: []
+rules:
+  - rule_id: SV-221558
+    suggestions:
+      - csp_id: Policy.Browser.AllowSmartScreen
+        value: "1"
+        confidence: low
+        kind: settings-catalog
+        rationale: Safe Browsing is Chrome ADMX (SafeBrowsingProtectionLevel); SmartScreen CSP is Edge-oriented — use Chrome ADMX in Settings Catalog.
+
+  - rule_id: SV-221559
+    suggestions:
+      - csp_id: Policy.System.AllowTelemetry
+        value: "0"
+        confidence: low
+        kind: settings-catalog
+        rationale: Metrics / reporting policies are Chrome ADMX (MetricsReportingEnabled).
+
+  - rule_id: SV-221574
+    suggestions:
+      - csp_id: Policy.Browser.AllowSmartScreen
+        value: "1"
+        confidence: low
+        kind: settings-catalog
+        rationale: Password manager / autofill controls are Chrome ADMX (PasswordManagerEnabled).

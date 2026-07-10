@@ -1,6 +1,31 @@
 product: office-365-proplus
 family: microsoft-office-365-proplus
-version: "1"
-notes: Office policies are largely ADMX-backed / Settings Catalog.
+version: "2"
+notes: |
+  Office 365 ProPlus STIG → mostly Office ADMX. Seeds link related device policies
+  only where there is a clear CSP neighbor; prefer Settings Catalog Office templates.
 
-rules: []
+rules:
+  - rule_id: SV-238192
+    suggestions:
+      - csp_id: Policy.System.AllowTelemetry
+        value: "1"
+        confidence: low
+        kind: settings-catalog
+        rationale: Office telemetry / connected experiences are ADMX; keep org policy for diagnostic data.
+
+  - rule_id: SV-238201
+    suggestions:
+      - csp_id: Policy.DeviceLock.DevicePasswordEnabled
+        value: "1"
+        confidence: low
+        kind: settings-catalog
+        rationale: Macro / ActiveX lockdown is Office ADMX; device password is not a substitute — use Office cloud policy or ADMX.
+
+  - rule_id: SV-238210
+    suggestions:
+      - csp_id: Policy.SmartScreen.EnableSmartScreenInShell
+        value: "1"
+        confidence: low
+        kind: native
+        rationale: Attachment / Mark-of-the-Web related hardening may pair with SmartScreen shell policy; verify Office-specific STIG text.

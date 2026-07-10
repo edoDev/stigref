@@ -312,6 +312,21 @@ def heuristic_suggestions_for_rule(
     return out
 
 
+def _rank_key(s: dict[str, Any]) -> tuple:
+    """B-014: prefer curated native/high-confidence suggestions first."""
+    source_rank = 0 if (s.get("source") or "") == "curated" else 1
+    kind = (s.get("kind") or "").lower()
+    kind_rank = {
+        "native": 0,
+        "settings-catalog": 1,
+        "admx-backed": 2,
+        "admx": 2,
+    }.get(kind, 3)
+    conf = (s.get("confidence") or "").lower()
+    conf_rank = {"high": 0, "medium": 1, "low": 2}.get(conf, 3)
+    return (source_rank, kind_rank, conf_rank, s.get("cspId") or s.get("omaUri") or "")
+
+
 def merge_suggestions(
     curated: list[dict[str, Any]],
     heuristic: list[dict[str, Any]],
@@ -324,6 +339,7 @@ def merge_suggestions(
             continue
         seen.add(key)
         out.append(s)
+    out.sort(key=_rank_key)
     return out
 
 
@@ -507,8 +523,31 @@ def product_export(
 
 
 def should_process_stig(stig: dict[str, Any]) -> bool:
-    """v1: quick-link products only."""
-    return bool(stig.get("quicklink_id"))
+    """
+    Process Intune suggestions for:
+    - Quick-link products (curated maps)
+    - B-012: Microsoft Windows / Edge / Defender / Office / Chrome STIGs (heuristics)
+    """
+    if stig.get("quicklink_id"):
+        return True
+    tags = {str(t).lower() for t in (stig.get("tags") or [])}
+    if "intune-companion" in tags:
+        return True
+    name = (stig.get("name") or "").lower()
+    vendor = (stig.get("vendor") or "").lower()
+    if vendor == "microsoft" or "microsoft" in name:
+        needles = (
+            "windows",
+            "edge",
+            "defender",
+            "office",
+            "chrome",
+            "bitlocker",
+            "intune",
+        )
+        if any(n in name for n in needles):
+            return True
+    return False
 
 
 def attach_intune_to_stigs(
@@ -535,13 +574,15 @@ def attach_intune_to_stigs(
             rule["intune"] = suggest_for_rule(
                 rule, product=product, maps=maps, catalog=catalog
             )
-        exports.append(
-            product_export(
-                product=product,
-                stig=stig,
-                rules=rules,
-                catalog=catalog,
-                maps=maps,
+        # Product export packs only for quick-link products (stable product ids)
+        if product:
+            exports.append(
+                product_export(
+                    product=product,
+                    stig=stig,
+                    rules=rules,
+                    catalog=catalog,
+                    maps=maps,
+                )
             )
-        )
     return stigs, exports

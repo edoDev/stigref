@@ -32,4 +32,5 @@ export const routes = {
   products: () => href("products"),
   product: (id: string) => href("products", encodeURIComponent(id)),
   help: () => href("help"),
+  releases: () => href("releases"),
 };

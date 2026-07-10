@@ -2,6 +2,8 @@ from stigref_build.intune_suggest import (
     extract_registry_paths,
     load_csp_catalog,
     load_all_maps,
+    merge_suggestions,
+    should_process_stig,
     suggest_for_rule,
 )
 
@@ -31,6 +33,42 @@ def test_curated_windows11_sehop():
     )
     assert payload["status"] == "mapped"
     assert any("SEHOP" in (s.get("title") or "").upper() or "SEHOP" in (s.get("rationale") or "").upper() or "StructuredException" in (s.get("cspId") or "") for s in payload["suggestions"])
+
+
+def test_merge_ranks_native_high_first():
+    merged = merge_suggestions(
+        [
+            {
+                "cspId": "a",
+                "kind": "admx-backed",
+                "confidence": "low",
+                "source": "heuristic",
+            }
+        ],
+        [
+            {
+                "cspId": "b",
+                "kind": "native",
+                "confidence": "high",
+                "source": "curated",
+            }
+        ],
+    )
+    assert merged[0]["cspId"] == "b"
+
+
+def test_should_process_microsoft_windows():
+    assert should_process_stig({"quicklink_id": "edge"})
+    assert should_process_stig(
+        {
+            "name": "Microsoft Windows 10 Security Technical Implementation Guide",
+            "vendor": "Microsoft",
+            "tags": [],
+        }
+    )
+    assert not should_process_stig(
+        {"name": "Some Appliance STIG", "vendor": "Other", "tags": []}
+    )
 
 
 def test_heuristic_smb():

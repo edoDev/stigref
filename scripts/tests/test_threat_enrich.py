@@ -7,6 +7,7 @@ from stigref_build.threat_enrich import (
     build_threat_for_rule,
     load_kev_bundle,
     normalize_cve,
+    suggest_attack_for_rule,
     validate_kev_payload,
 )
 
@@ -33,6 +34,40 @@ def test_threat_kev_flag():
 def test_threat_none():
     t = build_threat_for_rule({"cves": [], "title": "x", "check": "", "fix": ""}, set())
     assert t["status"] == "none"
+
+
+def test_attack_keyword_seed():
+    techs = suggest_attack_for_rule(
+        {
+            "title": "SMBv1 must be disabled",
+            "check": "Configure SMB1",
+            "fix": "",
+            "description": "",
+        }
+    )
+    assert any(t["techniqueId"] == "T1210" for t in techs)
+
+
+def test_threat_includes_attack_without_cve():
+    t = build_threat_for_rule(
+        {
+            "cves": [],
+            "title": "Microsoft Defender Antivirus real-time protection",
+            "check": "Microsoft Defender Antivirus must be configured",
+            "fix": "",
+            "description": "",
+        },
+        set(),
+    )
+    assert t["status"] == "suggested"
+    assert t["attack"]
+
+
+def test_attack_not_on_generic_title():
+    techs = suggest_attack_for_rule(
+        {"title": "The system must do something", "check": "ok", "fix": "", "description": ""}
+    )
+    assert techs == []
 
 
 def _minimal_kev(n: int = 120) -> dict:

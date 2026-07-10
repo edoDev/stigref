@@ -15,6 +15,7 @@
       <a href={routes.stigs()}>STIGs</a>
       <a href={routes.products()}>Products</a>
       <a href={routes.kev()}>KEV</a>
+      <a href={routes.releases()}>Releases</a>
       <a href={routes.saved()}>Saved</a>
       <a href={routes.help()}>Help</a>
       <a href={routes.about()}>About</a>

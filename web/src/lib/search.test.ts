@@ -125,3 +125,10 @@ describe("uniqueVendorsFromIndex", () => {
     expect(uniqueVendorsFromIndex()).toEqual(["Microsoft", "Red Hat"]);
   });
 });
+
+describe("rule id typo tolerance", () => {
+  it("matches bare SV- prefix without revision suffix", () => {
+    const out = search("SV-12345", 10);
+    expect(out.some((d) => d.id === "r1")).toBe(true);
+  });
+});

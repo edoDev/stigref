@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fetchRule } from "../api";
   import { routes } from "../paths";
-  import type { LoadState, RuleDetail } from "../types";
+  import type { LoadState, RuleDetail, SearchDoc } from "../types";
   import { severityClass } from "../format";
   import CopyButton from "../components/CopyButton.svelte";
   import {
@@ -12,6 +12,9 @@
   import { bookmarks, toggleBookmark } from "../bookmarks";
   import ErrorRetry from "../components/ErrorRetry.svelte";
   import ConfidenceLegend from "../components/ConfidenceLegend.svelte";
+  import { pushRecent } from "../recent";
+  import { getAllDocs, isSearchReady } from "../search";
+  import { meta } from "../metaStore";
 
   interface Props {
     id: string;
@@ -21,17 +24,57 @@
   let state = $state<LoadState>("idle");
   let error = $state<string | null>(null);
   let rule = $state<RuleDetail | null>(null);
+  let related = $state<SearchDoc[]>([]);
   let saved = $derived(
     $bookmarks.some((b) => b.type === "rule" && b.id === (rule?.full_rule_id || id)),
   );
+  let m = $derived($meta);
+
+  function needsReview(rule: RuleDetail): boolean {
+    const sugs = rule.intune?.suggestions || [];
+    if (sugs.some((s) => (s.confidence || "").toLowerCase() === "low")) return true;
+    if (sugs.some((s) => (s.source || "") === "heuristic" && (s.confidence || "") !== "high"))
+      return true;
+    return false;
+  }
+
+  function findRelated(r: RuleDetail): SearchDoc[] {
+    if (!isSearchReady()) return [];
+    const docs = getAllDocs().filter((d) => d.type === "rule");
+    const gid = r.group_id;
+    const ccis = new Set((r.ccis || []).map((c) => c.toUpperCase()));
+    const out: SearchDoc[] = [];
+    const seen = new Set<string>([r.full_rule_id]);
+    for (const d of docs) {
+      if (seen.has(d.full_rule_id || d.id)) continue;
+      let score = 0;
+      if (gid && d.group_id === gid) score += 2;
+      for (const c of d.ccis || []) {
+        if (ccis.has(c.toUpperCase())) score += 1;
+      }
+      if (score > 0) {
+        out.push(d);
+        seen.add(d.full_rule_id || d.id);
+      }
+      if (out.length >= 12) break;
+    }
+    return out.slice(0, 8);
+  }
 
   async function load(ruleId: string) {
     state = "loading";
     error = null;
     rule = null;
+    related = [];
     try {
       rule = await fetchRule(ruleId);
       state = "success";
+      pushRecent({
+        type: "rule",
+        id: rule.full_rule_id,
+        title: rule.title,
+      });
+      related = findRelated(rule);
     } catch (e) {
       state = "error";
       error = e instanceof Error ? e.message : String(e);
@@ -47,7 +90,11 @@
   <p class="muted"><a href={routes.home()}>← Search</a></p>
 
   {#if state === "loading"}
-    <p class="state">Loading rule…</p>
+    <div class="skeleton card" aria-busy="true">
+      <div class="skel-line"></div>
+      <div class="skel-line short"></div>
+      <p class="state" style="margin:0.5rem 0 0">Loading rule…</p>
+    </div>
   {:else if state === "error"}
     <ErrorRetry
       title="Rule not found or failed to load"
@@ -63,6 +110,11 @@
             <span class={`badge ${severityClass(rule.severity)}`}>{rule.severity}</span>
           {/if}
           <span class="mono">{rule.full_rule_id}</span>
+          {#if needsReview(rule)}
+            <span class="badge review" title="Low-confidence or heuristic Intune mapping">
+              Needs human review
+            </span>
+          {/if}
         </div>
         <h1>{rule.title}</h1>
         <p class="muted">
@@ -178,7 +230,7 @@
       </div>
     {/if}
 
-    {#if rule.threat && (rule.threat.cves?.length || rule.threat.status === "mapped")}
+    {#if rule.threat && (rule.threat.cves?.length || rule.threat.attack?.length || rule.threat.status === "mapped" || rule.threat.status === "suggested")}
       <div class="card stack">
         <div class="section-title" style="margin-top:0">
           <h2 class="h">Threat context</h2>
@@ -214,6 +266,26 @@
           {/if}
         {:else}
           <p class="muted" style="margin:0">No CVE identifiers on this rule.</p>
+        {/if}
+        {#if rule.threat.attack?.length}
+          <div>
+            <strong class="small">MITRE ATT&amp;CK (suggested)</strong>
+            <ul class="plain">
+              {#each rule.threat.attack as t}
+                <li>
+                  <a href={t.url} target="_blank" rel="noopener"
+                    >{t.techniqueId} — {t.name}</a
+                  >
+                  {#if t.confidence}
+                    <span class="badge review">{t.confidence}</span>
+                  {/if}
+                </li>
+              {/each}
+            </ul>
+            <p class="muted small" style="margin:0">
+              Keyword-based suggestions only — not authoritative mappings.
+            </p>
+          </div>
         {/if}
         <p class="muted small" style="margin:0">
           {rule.threat.disclaimer ||
@@ -252,20 +324,65 @@
       </div>
     {/if}
 
-    <div class="card">
+    <div class="card check-card">
       <div class="section-title" style="margin-top:0">
         <h2 class="h">Check</h2>
         <CopyButton text={rule.check} label="Copy check" />
       </div>
+      <p class="muted small section-label">How to verify compliance (assessment)</p>
       <pre class="block">{rule.check || "—"}</pre>
     </div>
 
-    <div class="card">
+    <div class="card fix-card">
       <div class="section-title" style="margin-top:0">
         <h2 class="h">Fix</h2>
         <CopyButton text={rule.fix} label="Copy fix" />
       </div>
+      <p class="muted small section-label">Remediation guidance (not a finding by itself)</p>
       <pre class="block">{rule.fix || "—"}</pre>
+    </div>
+
+    {#if related.length}
+      <div class="card stack">
+        <h2 class="h">Related rules</h2>
+        <p class="muted small" style="margin:0">Same group and/or shared CCI (from search index).</p>
+        <ul class="plain">
+          {#each related as d}
+            <li>
+              <a href={routes.rule(d.full_rule_id || d.id)}
+                >{d.full_rule_id || d.id} — {d.title}</a
+              >
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/if}
+
+    <div class="card stack print-hide">
+      <h2 class="h">Tools &amp; provenance</h2>
+      <p class="muted small" style="margin:0">
+        Formal assessment workflows:
+        <a href="https://github.com/NUWCDIVNPT/stig-manager" target="_blank" rel="noopener"
+          >STIG Manager</a
+        >
+        ·
+        <a
+          href="https://public.cyber.mil/stigs/srg-stig-tools/"
+          target="_blank"
+          rel="noopener">DISA STIG Viewer / tools</a
+        >
+      </p>
+      {#if m}
+        <p class="muted small" style="margin:0">
+          Catalog {m.release?.label || m.currentRelease || "—"}
+          {#if m.source?.filename}
+            · <span class="mono">{m.source.filename}</span>
+          {/if}
+          {#if m.source?.sha256}
+            · SHA <span class="mono">{m.source.sha256.slice(0, 12)}…</span>
+          {/if}
+        </p>
+      {/if}
     </div>
 
     <div class="card stack">
@@ -304,7 +421,7 @@
 
       {#if !rule.intune}
         <p class="muted" style="margin:0">
-          No Intune analysis for this rule (only quick-link products are processed in v1).
+          No Intune analysis for this rule (outside Microsoft / quick-link processing scope).
           <a
             href="https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-configuration-service-provider"
             target="_blank"
@@ -335,6 +452,9 @@
                 <span class="badge">{s.kind || "csp"}</span>
                 <span class="badge">{s.confidence || "?"} conf</span>
                 <span class="badge">{s.source || ""}</span>
+                {#if (s.confidence || "").toLowerCase() === "low" || s.source === "heuristic"}
+                  <span class="badge review">review</span>
+                {/if}
               </div>
               <div class="sug-title">{s.title}</div>
               {#if s.omaUri}
@@ -392,6 +512,38 @@
   h1 {
     margin: 0.35rem 0;
     font-size: 1.35rem;
+  }
+  .badge.review {
+    border-color: var(--medium);
+    color: var(--medium);
+  }
+  .check-card {
+    border-left: 3px solid var(--accent);
+  }
+  .fix-card {
+    border-left: 3px solid var(--medium);
+  }
+  .section-label {
+    margin: 0 0 0.35rem;
+  }
+  .skeleton .skel-line {
+    height: 0.75rem;
+    background: var(--bg-hover);
+    border-radius: 4px;
+    margin-bottom: 0.45rem;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  .skeleton .skel-line.short {
+    width: 50%;
+  }
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.45;
+    }
+    50% {
+      opacity: 1;
+    }
   }
   .h {
     margin: 0;

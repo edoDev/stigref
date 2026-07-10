@@ -1,74 +1,36 @@
 # stigref session log (resumable)
 
-**Purpose:** Survive mid-session cutoffs. Next agent: read **Resume pointer** first.
-
----
-
 ## Resume pointer
 
 | Field | Value |
 |-------|--------|
-| **Session date** | 2026-07-10 (wave 2) |
-| **Goal** | B-021 → B-011 → B-040; Carbon lock; wider layout |
-| **Last completed portion** | **S5** ship |
-| **Next portion** | *(wave 2 complete)* Next candidates: B-022 rule-level diffs, B-012 full MS maps, B-062 ATT&CK |
+| **Session** | 2026-07-10 wave 3 — backlog sweep |
+| **Goal** | Continue through backlog until complete or session lock |
+| **Last completed portion** | **W3-7** ship |
+| **Next portion** | Remaining *idea* items only (see BACKLOG) |
 | **Branch** | `main` |
 | **Last known good commit** | *(set after push)* |
-| **Repo dirty?** | Clean after S5 |
+| **Repo dirty?** | Clean after ship |
 
 ### How to resume
-
-1. Read this **Resume pointer**.
-2. If a portion is `IN PROGRESS`, re-run its verify steps.
-3. Continue from **Next portion**.
+1. Read this pointer. 2. Re-verify any `IN PROGRESS` portion. 3. Continue from Next portion.
 
 ---
 
-## Wave 2 plan
+## Wave 3 completed
 
-| Portion | Scope | Status |
-|---------|--------|--------|
-| **S0** | Plan freeze + this log | DONE |
-| **S1** | Carbon-only theme; remove picker; widen layout (`--max: 1280px`) | DONE |
-| **S2** | B-021 multi-release: meta registry, CLI `--release`, promote/diff scripts, UI label | DONE |
-| **S3** | B-011 expand Edge/Defender/Server maps + reapply intune | DONE |
-| **S4** | B-040 MiniSearch in Web Worker | DONE |
-| **S5** | Tests, backlog, commit, push | DONE |
+| Portion | Status | Notes |
+|---------|--------|-------|
+| W3-1 UX polish | DONE | B-006/007/030/034–036/039/043/045/047 |
+| W3-2 Discovery | DONE | B-004 related, B-031 fuzzy, B-023 families |
+| W3-3 Releases | DONE | B-022/024/054 `/releases` page |
+| W3-4 Intune | DONE | B-012/014/018/019 ranking + maps + runbook |
+| W3-5 Pipeline | DONE | B-046 ingest, B-062 ATT&CK seed, B-070 schema |
+| W3-6 Docs | DONE | CONTRIBUTING_MAPS, backlog |
+| W3-7 Ship | DONE | tests + push |
 
-### Out of scope this wave
+### ATT&CK note
+Keyword seed tightened after first pass matched all 19k rules; final ~387 rules with suggestions.
 
-- Full second DISA library import
-- Duplicating 117 MB into `data/releases/{id}/` full trees in git
-- ATT&CK epic, B-012 all Windows STIGs
-
----
-
-## Portion journal
-
-### S1 — Theme + width
-
-- Carbon tokens on `:root` only; removed slate/violet/amber + header picker
-- `--max: 960px` → **1280px**
-- About/Help text updated
-
-### S2 — B-021
-
-- `write_data` emits `currentRelease` / `release` / `releases[]`
-- `data/releases/index.json` + `2026-04/pointer.json` (storage=live)
-- `promote_current.py`, `diff_releases.py`, CLI `--release`
-- Header shows release label
-
-### S3 — B-011
-
-- Expanded maps: edge, defender-av, defender-fw, server-2019/2022/2025
-- `reapply_intune.py` without full library parse
-- Sample coverage: edge 11 mapped, defender-av 67, defender-fw 20, servers ~56–60
-
-### S4 — B-040
-
-- `searchCore.ts` + `search.worker.ts` + async `search.ts` API
-- Build emits separate worker chunk (~20 KB)
-
-### S5 — Verify
-
-- pytest 34 · vitest 20 · production build OK
+### Remaining backlog (ideas / later)
+B-003, B-013, B-015, B-017, B-020, B-025, B-027–028, B-032, B-037–038, B-041–042, B-048–052, B-063–065, B-069

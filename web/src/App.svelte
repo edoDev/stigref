@@ -11,20 +11,26 @@
   import ProductsPage from "./lib/pages/ProductsPage.svelte";
   import ProductHubPage from "./lib/pages/ProductHubPage.svelte";
   import HelpPage from "./lib/pages/HelpPage.svelte";
+  import ReleasesPage from "./lib/pages/ReleasesPage.svelte";
   import { initRouter, route } from "./lib/router";
   import { bootData } from "./lib/metaStore";
   import { toastMessage } from "./lib/toast";
   import { routes } from "./lib/paths";
   import { initTheme } from "./lib/theme";
+  import { initKeyboard } from "./lib/keyboard";
 
   let r = $derived($route);
   let toast = $derived($toastMessage);
 
   onMount(() => {
     initTheme();
-    const stop = initRouter();
+    const stopRouter = initRouter();
+    const stopKeys = initKeyboard();
     bootData();
-    return stop;
+    return () => {
+      stopRouter();
+      stopKeys();
+    };
   });
 </script>
 
@@ -58,6 +64,8 @@
     {/key}
   {:else if r.name === "help"}
     <HelpPage />
+  {:else if r.name === "releases"}
+    <ReleasesPage />
   {:else}
     <section class="state error" role="alert">
       <h1>Not found</h1>

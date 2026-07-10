@@ -65,7 +65,7 @@ export interface SearchDoc {
 }
 
 export interface SearchFilters {
-  type: "" | "stig" | "rule";
+  type: "" | "stig" | "rule" | "srg";
   severity: string;
   vendor: string;
   hasIntune: boolean;

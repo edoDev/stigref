@@ -22,7 +22,8 @@
     </p>
     <p class="muted" style="margin:0">
       Header shows the active library <em>release</em> and <em>Content updated</em> from the STIG build.
-      Appearance is fixed to Carbon Green.
+      Appearance is fixed to Carbon Green. Keyboard: <kbd>/</kbd> focus search, <kbd>?</kbd> this help,
+      <kbd>g</kbd> then <kbd>s</kbd>/<kbd>k</kbd>/<kbd>p</kbd>/<kbd>h</kbd> for STIG/KEV/Products/Home.
     </p>
   </div>
 

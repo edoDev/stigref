@@ -41,7 +41,29 @@ Outputs:
 
 1. Add curated rows to the product YAML when validated.
 2. Grow `catalog_seed.json` with more Policy CSP entries (registry paths help heuristics).
-3. Backlog: enable processing for all Microsoft Windows STIGs (`should_process_stig`).
+3. **B-012:** `should_process_stig` also processes Microsoft Windows / Edge / Defender / Office / Chrome STIGs (heuristics) plus `intune-companion` tags — not only quick-links.
+4. After map edits without a full library rebuild: `python scripts/reapply_intune.py`
+
+## B-018 — CSP catalog refresh runbook (quarterly)
+
+Run with each DISA library import (or when Microsoft documents major CSP renames).
+
+1. **Collect sources**
+   - Microsoft Learn Policy CSP index: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-configuration-service-provider
+   - Optional: export Settings Catalog definition IDs from a lab tenant / Graph (do not commit secrets).
+2. **Update seed**
+   - Edit `scripts/stigref_build/csp/catalog_seed.json`.
+   - For each entry: `id`, `omaUriDevice` (or user), `learnUrl`, `keywords`, `registryPaths` when known.
+   - Prefer additive changes; mark deprecated CSPs in `description` rather than deleting IDs used by maps.
+3. **Validate maps**
+   - Grep intune_maps for `csp_id` values missing from the seed.
+   - `cd scripts && python -m pytest tests/test_intune_suggest.py -q`
+4. **Rebuild / reapply**
+   - Full: `python -m stigref_build -i raw/U_SRG-STIG_Library_….zip -o ../data --release YYYY-MM`
+   - Maps only: `python reapply_intune.py`
+5. **Ship**
+   - Commit `catalog_seed.json`, maps, and regenerated `data/intune/**` + affected rules.
+   - Note in release notes on `/releases` (B-024).
 
 ## Disclaimer
 

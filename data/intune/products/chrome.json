@@ -10,7 +10,7 @@
   },
   "generatedFrom": {
     "cspCatalogVersion": "0.1.0",
-    "mapVersion": "1"
+    "mapVersion": "2"
   },
   "usage": {
     "intuneCustomProfile": "Create an Intune Windows custom configuration profile and add each OMA-URI row. Prefer Settings Catalog when a native setting exists. ADMX-backed values may need SyncML <enabled/> payloads — see Learn links.",
@@ -24,20 +24,48 @@
     "disclaimer": "Suggestions are assistive, not authoritative. Validate against STIG checks, organizational policy, and current Microsoft documentation. Mappings may be multi-option or incomplete."
   },
   "readme": "stigref Intune pack — chrome\nSTIG: Google Chrome Current Windows Security Technical Implementation Guide V2R11\n\nContents:\n  - This JSON file (policy settings + metadata)\n  - settingsCsv field (copy into .csv)\n\nHow to use in Microsoft Intune:\n  1. Prefer Settings Catalog when the setting exists there.\n  2. Otherwise: Devices > Configuration > Create > Windows 10+ > Templates > Custom.\n  3. Add each OMA-URI with the listed data type and value.\n  4. ADMX-backed settings may need SyncML <enabled/> payloads — open Learn URLs.\n\nDisclaimer: Assistive only. Validate against STIG checks and current Microsoft docs.\nPolicy CSP index: https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-configuration-service-provider\n",
-  "settingsCsv": "omaUri,value,dataType,kind,confidence,cspId,title,sourceRules\n",
-  "settings": [],
+  "settingsCsv": "omaUri,value,dataType,kind,confidence,cspId,title,sourceRules\n./Device/Vendor/MSFT/Policy/Config/Browser/AllowSmartScreen,1,integer,settings-catalog,low,Policy.Browser.AllowSmartScreen,Allow SmartScreen (legacy browser CSP),SV-221558r960804_rule;SV-221574r961863_rule\n./Device/Vendor/MSFT/Policy/Config/System/AllowTelemetry,0,integer,settings-catalog,low,Policy.System.AllowTelemetry,Allow telemetry,SV-221559r961083_rule\n",
+  "settings": [
+    {
+      "name": "Allow SmartScreen (legacy browser CSP)",
+      "omaUri": "./Device/Vendor/MSFT/Policy/Config/Browser/AllowSmartScreen",
+      "dataType": "integer",
+      "value": "1",
+      "kind": "settings-catalog",
+      "confidence": "low",
+      "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-browser",
+      "cspId": "Policy.Browser.AllowSmartScreen",
+      "sourceRules": [
+        "SV-221558r960804_rule",
+        "SV-221574r961863_rule"
+      ]
+    },
+    {
+      "name": "Allow telemetry",
+      "omaUri": "./Device/Vendor/MSFT/Policy/Config/System/AllowTelemetry",
+      "dataType": "integer",
+      "value": "0",
+      "kind": "settings-catalog",
+      "confidence": "low",
+      "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-system#allowtelemetry",
+      "cspId": "Policy.System.AllowTelemetry",
+      "sourceRules": [
+        "SV-221559r961083_rule"
+      ]
+    }
+  ],
   "rulesSummary": [
     {
       "full_rule_id": "SV-221558r960804_rule",
       "title": "Firewall traversal from remote host must be disabled.",
-      "status": "unmapped",
-      "suggestionCount": 0
+      "status": "mapped",
+      "suggestionCount": 1
     },
     {
       "full_rule_id": "SV-221559r961083_rule",
       "title": "Site tracking users location must be disabled.",
-      "status": "unmapped",
-      "suggestionCount": 0
+      "status": "mapped",
+      "suggestionCount": 1
     },
     {
       "full_rule_id": "SV-221561r960963_rule",
@@ -108,8 +136,8 @@
     {
       "full_rule_id": "SV-221574r961863_rule",
       "title": "Network prediction must be disabled.",
-      "status": "unmapped",
-      "suggestionCount": 0
+      "status": "mapped",
+      "suggestionCount": 1
     },
     {
       "full_rule_id": "SV-221575r960963_rule",
@@ -306,7 +334,7 @@
   ],
   "counts": {
     "rules": 46,
-    "mappedRules": 0,
-    "settings": 0
+    "mappedRules": 3,
+    "settings": 2
   }
 }

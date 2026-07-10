@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fetchStig } from "../api";
-  import { routes } from "../paths";
+  import { dataUrl, routes } from "../paths";
   import type { LoadState, StigDetail } from "../types";
   import { formatDate, severityClass } from "../format";
   import CopyButton from "../components/CopyButton.svelte";
@@ -9,6 +9,7 @@
   import { bookmarks, toggleBookmark } from "../bookmarks";
   import { routes as appRoutes } from "../paths";
   import ErrorRetry from "../components/ErrorRetry.svelte";
+  import { pushRecent } from "../recent";
 
   interface Props {
     id: string;
@@ -18,15 +19,39 @@
   let state = $state<LoadState>("idle");
   let error = $state<string | null>(null);
   let stig = $state<StigDetail | null>(null);
+  let familySiblings = $state<
+    Array<{ id: string; name: string; version: string; release: string; release_date?: string }>
+  >([]);
   let saved = $derived($bookmarks.some((b) => b.type === "stig" && b.id === id));
 
   async function load(stigId: string) {
     state = "loading";
     error = null;
     stig = null;
+    familySiblings = [];
     try {
       stig = await fetchStig(stigId);
       state = "success";
+      pushRecent({ type: "stig", id: stig.id, title: stig.name });
+      // B-023: other versions in same family
+      if (stig.family) {
+        try {
+          const res = await fetch(dataUrl("families", "index.json"));
+          if (res.ok) {
+            const body = await res.json();
+            const fam = (body.families || []).find(
+              (f: { family: string }) => f.family === stig!.family,
+            );
+            if (fam?.versions?.length) {
+              familySiblings = fam.versions.filter(
+                (v: { id: string }) => v.id !== stig!.id,
+              );
+            }
+          }
+        } catch {
+          /* ignore */
+        }
+      }
     } catch (e) {
       state = "error";
       error = e instanceof Error ? e.message : String(e);
@@ -98,6 +123,25 @@
         <CopyButton text={stigCitation(stig)} label="Copy citation" class="primary" />
       </div>
     </div>
+
+    {#if familySiblings.length}
+      <div class="card stack">
+        <h2 style="margin:0;font-size:1rem">Other versions in catalog</h2>
+        <p class="muted small" style="margin:0">
+          Same family key (<span class="mono">{stig.family}</span>). Multi-release storage will
+          expand this list across quarterly libraries.
+        </p>
+        <ul class="plain">
+          {#each familySiblings as v}
+            <li>
+              <a href={routes.stig(v.id)}
+                >{v.name} · V{v.version}R{v.release}</a
+              >
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/if}
 
     {#if stig.automation}
       <div class="card stack">

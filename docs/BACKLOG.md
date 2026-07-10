@@ -5,7 +5,8 @@
 **Product:** [stigref](https://github.com/edoDev/stigref) — static STIG reference (search, deep links, copy, Intune CSP hints)
 
 **July 2026 review:** [REVIEW_2026-07.md](REVIEW_2026-07.md) — ops/hygiene follow-ups B-071–B-076.  
-**Session resume:** [SESSION_LOG.md](SESSION_LOG.md)
+**Session resume:** [SESSION_LOG.md](SESSION_LOG.md)  
+**Contributing maps:** [CONTRIBUTING_MAPS.md](CONTRIBUTING_MAPS.md)
 
 ---
 
@@ -48,10 +49,10 @@
 | B-001 | Saved searches / bookmarks (localStorage) | P0 | M | done | No account |
 | B-002 | Shareable search URLs (`?q=&vendor=&…`) | P0 | S | done | Deep-link results |
 | B-003 | Rule comparison (two rules / revisions) | P1 | L | idea | |
-| B-004 | Related rules (group / CCI / registry / CSP) | P1 | M | planned | |
+| B-004 | Related rules (group / CCI / registry / CSP) | P1 | M | done | Group + CCI from search index |
 | B-005 | Copy packs (markdown, citation, OMA-URI, check+fix) | P0 | S | done | |
-| B-006 | Keyboard-first UX | P1 | M | planned | |
-| B-007 | Print / PDF-friendly rule view | P2 | S | idea | |
+| B-006 | Keyboard-first UX | P1 | M | done | `/` `?` `g` then s/k/p/h/a/r |
+| B-007 | Print / PDF-friendly rule view | P2 | S | done | `@media print` styles |
 | B-008 | Severity / CCI filters on search | P0 | M | done | Facets + URL |
 | B-009 | “Open in Intune” guidance recipes | P1 | M | done | With export |
 | B-010 | Intune coverage meter per product | P0 | S | done | Quick links |
@@ -61,14 +62,14 @@
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
 | B-011 | Expand curated maps (Server / Defender / Edge) | P0 | L | done | Edge/Defender/Server maps + reapply_intune |
-| B-012 | All Microsoft Windows STIGs (not only quick-links) | P1 | L | planned | Was “1B backlog” |
+| B-012 | All Microsoft Windows STIGs (not only quick-links) | P1 | L | done | should_process expanded + heuristics |
 | B-013 | Settings Catalog names beside OMA-URI | P1 | M | idea | |
-| B-014 | Multi-option ranking (preferred native vs ADMX) | P1 | M | planned | |
+| B-014 | Multi-option ranking (preferred native vs ADMX) | P1 | M | done | Rank curated/native/high first |
 | B-015 | Conflict warnings (same CSP/registry, different values) | P2 | M | idea | |
 | B-016 | Intune baseline pack export (JSON + CSV + readme) | P0 | M | done | Extends product JSON |
 | B-017 | Map contribution helper (YAML snippet generator) | P2 | M | idea | |
-| B-018 | CSP catalog refresh job (quarterly with library) | P1 | L | planned | |
-| B-019 | Chrome / Office ADMX path documentation + maps | P2 | L | idea | |
+| B-018 | CSP catalog refresh job (quarterly with library) | P1 | L | done | Runbook in INTUNE_CSP.md |
+| B-019 | Chrome / Office ADMX path documentation + maps | P2 | L | done | Seed maps (ADMX-first notes) |
 | B-020 | “Verify in Windows” PowerShell hints | P2 | M | idea | |
 
 ### E3 — Version history
@@ -76,9 +77,9 @@
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
 | B-021 | Multi-release storage (`data/releases/…`) | P0 | L | done | Meta registry + promote/diff scripts; full archive on next import |
-| B-022 | Quarterly “what changed” report | P0 | L | planned | |
-| B-023 | Per-family previous version links | P1 | M | planned | |
-| B-024 | Static changelog / release notes page | P1 | S | planned | |
+| B-022 | Quarterly “what changed” report | P0 | L | done | diff_releases.py + Releases page guidance |
+| B-023 | Per-family previous version links | P1 | M | done | STIG detail siblings from families index |
+| B-024 | Static changelog / release notes page | P1 | S | done | `/releases` page |
 | B-025 | Watchlist “changed since last release” | P3 | L | idea | Local list |
 
 ### E4 — Discovery
@@ -89,8 +90,8 @@
 | B-027 | CCI browser (CCI → rules → STIGs) | P1 | L | planned | |
 | B-028 | NIST 800-53 control pages | P2 | L | idea | Fixtures |
 | B-029 | Product hubs (`/products/windows-11`) | P0 | M | done | |
-| B-030 | Recently viewed | P1 | S | planned | |
-| B-031 | Typo-tolerant rule ID search | P1 | S | planned | |
+| B-030 | Recently viewed | P1 | S | done | localStorage + home/saved |
+| B-031 | Typo-tolerant rule ID search | P1 | S | done | Bare SV- + levenshtein |
 | B-032 | Synonym dictionary | P2 | M | idea | |
 
 ### E5 — Trust & light workflow
@@ -98,12 +99,12 @@
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
 | B-033 | Confidence legend + disclaimers on intel/Intune | P0 | S | done | ConfidenceLegend + Intune disclaimer |
-| B-034 | “Needs human review” on low-confidence data | P0 | S | planned | |
-| B-035 | Richer provenance UI (SHA, library name, build) | P1 | S | idea | meta exists |
-| B-036 | Check vs fix visual separation | P2 | S | idea | |
+| B-034 | “Needs human review” on low-confidence data | P0 | S | done | Badge on rule + suggestions |
+| B-035 | Richer provenance UI (SHA, library name, build) | P1 | S | done | Rule tools card + About/Releases |
+| B-036 | Check vs fix visual separation | P2 | S | done | Color bars + section labels |
 | B-037 | Personal scratch notes / status (local only) | P2 | M | idea | Not STIG Manager |
 | B-038 | Local checklist → CSV export | P3 | M | idea | |
-| B-039 | Outbound links to STIG Manager / formal tools | P2 | S | idea | |
+| B-039 | Outbound links to STIG Manager / formal tools | P2 | S | done | Rule detail tools card |
 
 ### E6 — Performance & polish
 
@@ -112,16 +113,16 @@
 | B-040 | Search index in Web Worker | P0 | M | done | MiniSearch in search.worker.ts |
 | B-041 | Compressed / sharded search index | P1 | L | planned | |
 | B-042 | Offline shell (service worker) | P3 | L | idea | |
-| B-043 | Mobile layout improvements | P1 | M | idea | |
+| B-043 | Mobile layout improvements | P1 | M | done | Nav denser &lt;480px; pack buttons wrap |
 | B-044 | Theme / high-contrast polish | P2 | S | done | Carbon locked; picker removed |
-| B-045 | Skeleton loaders | P2 | S | idea | |
+| B-045 | Skeleton loaders | P2 | S | done | Search + rule loading skeletons |
 
 ### E7 — Content breadth
 
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
-| B-046 | Mid-cycle individual STIG ZIP ingest | P1 | M | planned | |
-| B-047 | SRG vs STIG filter | P2 | S | idea | |
+| B-046 | Mid-cycle individual STIG ZIP ingest | P1 | M | done | scripts/ingest_stig_zip.py |
+| B-047 | SRG vs STIG filter | P2 | S | done | Search type=srg |
 | B-048 | Sunset / superseded badges | P1 | S | planned | Needs multi-release |
 | B-049 | Vendor product landing pages | P2 | M | idea | |
 | B-050 | SCAP/OVAL presence badge | P3 | S | idea | |
@@ -132,8 +133,8 @@
 |----|---------|-----|------|--------|-------|
 | B-051 | Embeddable rule card snippet | P2 | M | idea | |
 | B-052 | Team pack JSON (rule list import/export) | P2 | M | idea | |
-| B-053 | Map / intel contribution checklist | P2 | S | idea | |
-| B-054 | Automated release notes from meta + diff | P1 | M | planned | |
+| B-053 | Map / intel contribution checklist | P2 | S | done | docs/CONTRIBUTING_MAPS.md |
+| B-054 | Automated release notes from meta + diff | P1 | M | done | Releases page + diff_releases |
 
 ### E9 — Threat intel enrichment (new)
 
@@ -143,7 +144,7 @@ Associate **public** security context with rules where evidence exists. Always l
 |----|---------|-----|------|--------|-------|
 | B-060 | **CVE linkage** per rule (from XCCDF `ident` + enrichment) | P0 | M | done | NVD links |
 | B-061 | **CISA KEV** flag when CVE ∈ KEV catalog | P0 | M | done | User: “KEVD” → KEV |
-| B-062 | **MITRE ATT&CK** technique suggestions per rule | P1 | L | planned | Map via control/CCI/keyword + curated |
+| B-062 | **MITRE ATT&CK** technique suggestions per rule | P1 | L | done | Keyword seed v0 + UI; curated maps next |
 | B-063 | **Public PoC references** (advisory links, not weaponized code) | P1 | L | planned | Link-out only |
 | B-064 | **IoCs** (public indicators) linked when relevant | P2 | L | idea | Careful: scope/noise |
 | B-065 | **Open-source “pwned” / incident reports** (writeups, CISA alerts) | P1 | L | planned | Curated + URL allowlist |
@@ -151,7 +152,7 @@ Associate **public** security context with rules where evidence exists. Always l
 | B-067 | Quarterly intel rebuild (with STIG library build) | P0 | M | done | KEV fetch in build |
 | B-068 | Search/filter: has-CVE, in-KEV, has-ATT&CK | P1 | S | done | CVE + KEV filters (ATT&CK later) |
 | B-069 | Product-level threat summary export | P2 | M | idea | |
-| B-070 | Intel contribution YAML schema | P1 | M | planned | Like intune_maps |
+| B-070 | Intel contribution YAML schema | P1 | M | done | intel_maps/ README + example |
 
 ### E10 — Review follow-ups (July 2026)
 
@@ -180,4 +181,4 @@ From [REVIEW_2026-07.md](REVIEW_2026-07.md).
 
 ## Explicit backlog: “all MS Windows STIGs”
 
-Tracked as **B-012**. Do not expand Intune processing to full Microsoft set until quick-link maps are healthier and export UX is solid (B-010, B-011, B-016).
+**B-012** expanded: Microsoft Windows/Edge/Defender/Office/Chrome STIGs get heuristic Intune processing; curated maps still highest value. Remaining ideas: B-003, B-013, B-015, B-017, B-020, B-025, B-027–028, B-032, B-037–038, B-041–042, B-048–052, B-063–065, B-069.

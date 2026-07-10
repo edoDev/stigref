@@ -257,6 +257,65 @@ def load_kev_bundle(
     return ids, meta, entries
 
 
+# Lightweight ATT&CK technique seeds (B-062). Prefer specific phrases (avoid "admin"/"password").
+ATTACK_MITRE = "https://attack.mitre.org/techniques/"
+# keyword (lowercase) → technique id + name — keep specific to limit noise
+ATTACK_KEYWORD_SEED: list[tuple[str, str, str]] = [
+    ("bitlocker", "T1486", "Data Encrypted for Impact"),
+    ("credential dumping", "T1003", "OS Credential Dumping"),
+    ("lsass", "T1003.001", "LSASS Memory"),
+    ("remote desktop", "T1021.001", "Remote Desktop Protocol"),
+    (" rdp ", "T1021.001", "Remote Desktop Protocol"),
+    ("powershell script", "T1059.001", "PowerShell"),
+    ("windows powershell", "T1059.001", "PowerShell"),
+    ("smbv1", "T1210", "Exploitation of Remote Services"),
+    ("smb v1", "T1210", "Exploitation of Remote Services"),
+    ("smb1", "T1210", "Exploitation of Remote Services"),
+    ("windows defender firewall", "T1562.004", "Disable or Modify System Firewall"),
+    ("microsoft defender antivirus", "T1562.001", "Disable or Modify Tools"),
+    ("smartscreen", "T1562.001", "Disable or Modify Tools"),
+    ("user account control", "T1548.002", "Bypass User Account Control"),
+    ("credential guard", "T1003", "OS Credential Dumping"),
+    ("wdigest", "T1003", "OS Credential Dumping"),
+    ("ntlmv1", "T1110", "Brute Force"),
+    ("lanman authentication", "T1110", "Brute Force"),
+    ("print spooler", "T1068", "Exploitation for Privilege Escalation"),
+    ("anonymous sid", "T1078", "Valid Accounts"),
+    ("guest account", "T1078", "Valid Accounts"),
+]
+
+
+def suggest_attack_for_rule(rule: dict[str, Any], *, limit: int = 4) -> list[dict[str, Any]]:
+    """Keyword heuristic ATT&CK suggestions (public link-outs only)."""
+    blob = " ".join(
+        [
+            rule.get("title") or "",
+            rule.get("check") or "",
+            rule.get("fix") or "",
+            rule.get("description") or "",
+            rule.get("group_title") or "",
+        ]
+    ).lower()
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for kw, tid, name in ATTACK_KEYWORD_SEED:
+        if kw in blob and tid not in seen:
+            seen.add(tid)
+            path = tid.replace(".", "/")
+            out.append(
+                {
+                    "techniqueId": tid,
+                    "name": name,
+                    "url": f"{ATTACK_MITRE}{path}/",
+                    "confidence": "low",
+                    "source": "keyword-seed",
+                }
+            )
+        if len(out) >= limit:
+            break
+    return out
+
+
 def build_threat_for_rule(
     rule: dict[str, Any],
     kev_ids: set[str],
@@ -291,7 +350,9 @@ def build_threat_for_rule(
             }
         )
 
-    if not cves:
+    attack = suggest_attack_for_rule(rule)
+
+    if not cves and not attack:
         return {
             "status": "none",
             "cves": [],
@@ -305,15 +366,15 @@ def build_threat_for_rule(
         }
 
     return {
-        "status": "mapped",
+        "status": "mapped" if cves else "suggested",
         "cves": cves,
         "inKev": any_kev,
-        "attack": [],
+        "attack": attack,
         "references": [],
         "iocs": [],
         "disclaimer": (
-            "Public CVE/KEV context only. Not a vulnerability scan result "
-            "and not a STIG finding determination."
+            "Public CVE/KEV/ATT&CK context only. Keyword ATT&CK links are low-confidence "
+            "suggestions — not a vulnerability scan result or STIG finding determination."
         ),
     }
 

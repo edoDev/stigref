@@ -53,21 +53,21 @@
   "intune": {
     "suggestions": [
       {
-        "cspId": "Policy.ADMX_MicrosoftDefenderAntivirus.DisableAntiSpyware",
-        "title": "Turn off Microsoft Defender Antivirus (ADMX-backed)",
-        "area": "ADMX_MicrosoftDefenderAntivirus",
-        "name": "DisableAntiSpyware_Name",
-        "kind": "admx-backed",
+        "cspId": "Policy.Defender.AllowCloudProtection",
+        "title": "Allow cloud protection",
+        "area": "Defender",
+        "name": "AllowCloudProtection",
+        "kind": "native",
         "scope": [
           "device"
         ],
-        "omaUri": "./Device/Vendor/MSFT/Policy/Config/ADMX_MicrosoftDefenderAntivirus/DisableAntiSpyware_Name",
-        "dataType": "string",
+        "omaUri": "./Device/Vendor/MSFT/Policy/Config/Defender/AllowCloudProtection",
+        "dataType": "integer",
         "value": null,
         "confidence": "high",
-        "rationale": "Heuristic: registry overlap (HKLM\\SOFTWARE\\POLICIES\\MICROSOFT\\WINDOWS); keyword:defender; keyword:antispyware",
-        "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-microsoftdefenderantivirus",
-        "description": "ADMX-backed Defender disable policy — prefer native Defender CSP when possible.",
+        "rationale": "Heuristic: registry overlap (HKLM\\SOFTWARE\\POLICIES\\MICROSOFT\\WINDOWS); keyword:defender",
+        "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-defender#allowcloudprotection",
+        "description": "Microsoft Defender cloud-delivered protection.",
         "source": "heuristic"
       },
       {
@@ -86,24 +86,6 @@
         "rationale": "Heuristic: registry overlap (HKLM\\SOFTWARE\\POLICIES\\MICROSOFT\\WINDOWS); keyword:defender; keyword:antivirus",
         "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-defender#allowrealtimemonitoring",
         "description": "Enables or disables Microsoft Defender real-time protection.",
-        "source": "heuristic"
-      },
-      {
-        "cspId": "Policy.Defender.AllowCloudProtection",
-        "title": "Allow cloud protection",
-        "area": "Defender",
-        "name": "AllowCloudProtection",
-        "kind": "native",
-        "scope": [
-          "device"
-        ],
-        "omaUri": "./Device/Vendor/MSFT/Policy/Config/Defender/AllowCloudProtection",
-        "dataType": "integer",
-        "value": null,
-        "confidence": "high",
-        "rationale": "Heuristic: registry overlap (HKLM\\SOFTWARE\\POLICIES\\MICROSOFT\\WINDOWS); keyword:defender",
-        "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-defender#allowcloudprotection",
-        "description": "Microsoft Defender cloud-delivered protection.",
         "source": "heuristic"
       },
       {
@@ -141,6 +123,24 @@
         "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-system#allowtelemetry",
         "description": "Windows diagnostic data level.",
         "source": "heuristic"
+      },
+      {
+        "cspId": "Policy.ADMX_MicrosoftDefenderAntivirus.DisableAntiSpyware",
+        "title": "Turn off Microsoft Defender Antivirus (ADMX-backed)",
+        "area": "ADMX_MicrosoftDefenderAntivirus",
+        "name": "DisableAntiSpyware_Name",
+        "kind": "admx-backed",
+        "scope": [
+          "device"
+        ],
+        "omaUri": "./Device/Vendor/MSFT/Policy/Config/ADMX_MicrosoftDefenderAntivirus/DisableAntiSpyware_Name",
+        "dataType": "string",
+        "value": null,
+        "confidence": "high",
+        "rationale": "Heuristic: registry overlap (HKLM\\SOFTWARE\\POLICIES\\MICROSOFT\\WINDOWS); keyword:defender; keyword:antispyware",
+        "learnUrl": "https://learn.microsoft.com/en-us/windows/client-management/mdm/policy-csp-admx-microsoftdefenderantivirus",
+        "description": "ADMX-backed Defender disable policy — prefer native Defender CSP when possible.",
+        "source": "heuristic"
       }
     ],
     "status": "mapped",
@@ -149,13 +149,21 @@
     "multiOption": true
   },
   "threat": {
-    "status": "none",
+    "status": "suggested",
     "cves": [],
     "inKev": false,
-    "attack": [],
+    "attack": [
+      {
+        "techniqueId": "T1562.001",
+        "name": "Disable or Modify Tools",
+        "url": "https://attack.mitre.org/techniques/T1562/001/",
+        "confidence": "low",
+        "source": "keyword-seed"
+      }
+    ],
     "references": [],
     "iocs": [],
-    "disclaimer": "Public context only. Not a vulnerability scan result."
+    "disclaimer": "Public CVE/KEV/ATT&CK context only. Keyword ATT&CK links are low-confidence suggestions — not a vulnerability scan result or STIG finding determination."
   },
   "checkAutomation": {
     "checkStyle": "policy-amenable",

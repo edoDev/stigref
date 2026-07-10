@@ -9,7 +9,7 @@ export function parseSearchParams(search: string = location.search): {
   const sp = new URLSearchParams(search.startsWith("?") ? search.slice(1) : search);
   const f = emptyFilters();
   const type = sp.get("type") || "";
-  if (type === "stig" || type === "rule") f.type = type;
+  if (type === "stig" || type === "rule" || type === "srg") f.type = type;
   f.severity = sp.get("severity") || "";
   f.vendor = sp.get("vendor") || "";
   f.hasIntune = sp.get("intune") === "1" || sp.get("intune") === "true";
