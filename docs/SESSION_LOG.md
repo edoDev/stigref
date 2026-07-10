@@ -13,8 +13,8 @@
 | **Last completed portion** | **P5** ship |
 | **Next portion** | *(session complete — pick new plan)* Suggested next: B-021 multi-release **or** B-011 map expansion **or** B-040 search worker |
 | **Branch** | `main` |
-| **Last known good commit** | *(set after push — see P5 journal)* |
-| **Repo dirty?** | Clean after P5 push |
+| **Last known good commit** | `868d7cd7b` |
+| **Repo dirty?** | Clean after P5 push (SESSION_LOG commit hash may lag by one amend-less update) |
 
 ### How to resume after a hard stop
 
