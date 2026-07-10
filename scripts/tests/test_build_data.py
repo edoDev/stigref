@@ -46,9 +46,17 @@ def test_write_data_tree_from_xml(tmp_path: Path):
     assert rule["severity"] == "high"
     assert rule["stigs"][0]["id"] == stig_id
 
-    search = json.loads((data / "search" / "documents.json").read_text(encoding="utf-8"))
-    types = {d["type"] for d in search["documents"]}
+    man = json.loads((data / "search" / "manifest.json").read_text(encoding="utf-8"))
+    assert man.get("format") == "stigref-search-shards/v1"
+    assert man.get("total", 0) >= 3
+    from stigref_build.search_index import load_all_documents
+
+    docs = load_all_documents(data / "search")
+    types = {d["type"] for d in docs}
     assert types == {"stig", "rule"}
+    # gzip shard present
+    gz0 = data / "search" / man["shards"][0]["pathGz"]
+    assert gz0.is_file()
 
 
 def test_parse_nested_library_zip(tmp_path: Path):

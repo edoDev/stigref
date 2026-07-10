@@ -51,15 +51,15 @@ def main() -> int:
             attack_ids.add(rid)
         _write_json(paths[rid], rule)
 
-    # Patch search documents hasAttack flag
-    docs_path = root / "data" / "search" / "documents.json"
-    if docs_path.is_file():
-        blob = json.loads(docs_path.read_text(encoding="utf-8"))
-        for d in blob.get("documents") or []:
+    from stigref_build.search_patch import patch_search_documents
+
+    def _mut(docs: list) -> None:
+        for d in docs:
             if d.get("type") == "rule":
                 d["hasAttack"] = d.get("full_rule_id") in attack_ids
-        _write_json(docs_path, blob)
-        log.info("Patched search hasAttack for %s rules", len(attack_ids))
+
+    n = patch_search_documents(root / "data" / "search", _mut)
+    log.info("Patched search hasAttack for %s rules (%s docs)", len(attack_ids), n)
 
     log.info(
         "Updated %s rules; withCve=%s withKev=%s withAttack=%s",

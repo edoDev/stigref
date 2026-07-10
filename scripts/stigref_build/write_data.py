@@ -28,6 +28,7 @@ from stigref_build.threat_enrich import (
 )
 from stigref_build.cis_enrich import attach_cis_to_rules
 from stigref_build.scap_enrich import attach_scap_to_rules
+from stigref_build.search_index import write_search_index
 
 log = logging.getLogger(__name__)
 
@@ -746,7 +747,8 @@ def write_data_tree(
             doc["vendor"] = rule.get("_search_vendor") or ""
             doc["roles"] = rule.get("_search_roles") or []
 
-    _write_json(out / "search" / "documents.json", {"documents": docs, "total": len(docs)})
+    # B-041: sharded + gzip search index (no monolithic documents.json by default)
+    write_search_index(out / "search", docs, write_legacy_monolith=False)
 
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace(
         "+00:00", "Z"

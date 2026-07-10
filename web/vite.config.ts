@@ -40,7 +40,13 @@ function serveDataPlugin(): Plugin {
         res.end("Not found");
         return;
       }
-      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      // B-041: serve precompressed search shards as binary gzip
+      if (filePath.endsWith(".gz")) {
+        res.setHeader("Content-Type", "application/gzip");
+        res.setHeader("Content-Encoding", "identity");
+      } else {
+        res.setHeader("Content-Type", "application/json; charset=utf-8");
+      }
       res.setHeader("Cache-Control", "no-cache");
       fs.createReadStream(filePath).pipe(res);
     });

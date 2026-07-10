@@ -40,17 +40,19 @@ def main() -> int:
         ):
             oval_ids.add(rid)
 
-    docs_path = root / "data" / "search" / "documents.json"
-    if docs_path.is_file():
-        blob = json.loads(docs_path.read_text(encoding="utf-8"))
-        for d in blob.get("documents") or []:
+    from stigref_build.search_patch import patch_search_documents
+
+    def _mut(docs: list) -> None:
+        for d in docs:
             if d.get("type") == "rule":
                 rid = d.get("full_rule_id")
                 r = rules_by_id.get(rid or "")
                 scap = (r or {}).get("scap") or {}
                 d["hasOval"] = bool(scap.get("hasOval"))
                 d["hasScap"] = bool(scap.get("hasScapSignal"))
-        _write_json(docs_path, blob)
+
+    n = patch_search_documents(root / "data" / "search", _mut)
+    log.info("Patched search SCAP flags (%s docs)", n)
 
     log.info(
         "SCAP/OVAL: oval=%s scapSignal=%s total=%s",

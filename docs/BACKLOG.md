@@ -94,7 +94,7 @@
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
 | B-040 | Search Web Worker | P0 | M | done | |
-| B-041 | Compressed / sharded index | P1 | L | wontfix | Deferred: 21MB docs OK; shard later if needed |
+| B-041 | Compressed / sharded index | P1 | L | done | manifest + shards + gzip; parallel load |
 | B-042 | Offline shell (SW) | P3 | L | done | App-shell SW; data network-first |
 | B-043 | Mobile layout | P1 | M | done | |
 | B-044 | Carbon theme locked | P2 | S | done | |
@@ -158,8 +158,4 @@
 
 ## Remaining open
 
-| ID | Status | Why open |
-|----|--------|----------|
-| **B-041** | wontfix | Index sharding deferred until size becomes a problem |
-
-Ongoing work: refine CIS IDs against real Workbench PDFs, richer Intune maps, next DISA quarterly import.
+None for product surface. Ongoing **content** work: refine CIS IDs vs Workbench PDFs, richer Intune maps, next DISA quarterly import.

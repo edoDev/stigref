@@ -138,20 +138,20 @@ def main() -> int:
         {"products": products_out, "total": len(products_out)},
     )
 
-    docs_path = data / "search" / "documents.json"
-    if docs_path.is_file():
-        blob = json.loads(docs_path.read_text(encoding="utf-8"))
-        docs = blob.get("documents") or []
-        intune_rules = set()
-        for stig in stigs:
-            for rule in stig.get("rules") or []:
-                if (rule.get("intune") or {}).get("status") == "mapped":
-                    intune_rules.add(rule.get("full_rule_id"))
+    intune_rules = set()
+    for stig in stigs:
+        for rule in stig.get("rules") or []:
+            if (rule.get("intune") or {}).get("status") == "mapped":
+                intune_rules.add(rule.get("full_rule_id"))
+    from stigref_build.search_patch import patch_search_documents
+
+    def _mut(docs: list) -> None:
         for d in docs:
             if d.get("type") == "rule" and d.get("full_rule_id") in intune_rules:
                 d["hasIntune"] = True
-        _write_json(docs_path, blob)
-        log.info("Search docs with hasIntune mapped: %s", len(intune_rules))
+
+    n = patch_search_documents(data / "search", _mut)
+    log.info("Search docs with hasIntune mapped: %s (%s docs)", len(intune_rules), n)
 
     log.info(
         "Rules updated=%s products=%s",
