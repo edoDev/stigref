@@ -64,6 +64,8 @@ export interface SearchDoc {
   inKev?: boolean;
   hasAttack?: boolean;
   hasCis?: boolean;
+  hasOval?: boolean;
+  hasScap?: boolean;
 }
 
 export interface SearchFilters {
@@ -75,6 +77,8 @@ export interface SearchFilters {
   inKev: boolean;
   hasAttack: boolean;
   hasCis: boolean;
+  hasOval: boolean;
+  hasScap: boolean;
 }
 
 export interface StigIndexEntry {
@@ -221,12 +225,30 @@ export interface CisItem {
   confidence?: string;
   notes?: string;
   source?: string;
+  hasLocalExtract?: boolean;
+  localDescription?: string;
+  localAudit?: string;
+  localRemediation?: string;
+  localSourceFile?: string;
 }
 
 export interface CisPayload {
   status: string;
   items: CisItem[];
   disclaimer?: string;
+  localExtractCount?: number;
+}
+
+export interface ScapPayload {
+  hasOval?: boolean;
+  hasScapSignal?: boolean;
+  hasOvalInCheckText?: boolean;
+  hasOvalSystemOrHref?: boolean;
+  hasScapInText?: boolean;
+  scapFalsePositiveNote?: boolean;
+  checkSystems?: string[];
+  checkContentRefs?: Array<{ href?: string; name?: string }>;
+  note?: string;
 }
 
 export interface RuleDetail {
@@ -254,6 +276,7 @@ export interface RuleDetail {
   intune?: IntunePayload | null;
   threat?: ThreatPayload | null;
   cis?: CisPayload | null;
+  scap?: ScapPayload | null;
   checkAutomation?: {
     checkStyle?: string;
     confidence?: string;

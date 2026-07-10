@@ -17,6 +17,8 @@ export function parseSearchParams(search: string = location.search): {
   f.inKev = sp.get("kev") === "1" || sp.get("kev") === "true";
   f.hasAttack = sp.get("attack") === "1" || sp.get("attack") === "true";
   f.hasCis = sp.get("cis") === "1" || sp.get("cis") === "true";
+  f.hasOval = sp.get("oval") === "1" || sp.get("oval") === "true";
+  f.hasScap = sp.get("scap") === "1" || sp.get("scap") === "true";
   return { q: sp.get("q") || "", filters: f };
 }
 
@@ -31,6 +33,8 @@ export function buildSearchUrl(q: string, filters: SearchFilters): string {
   if (filters.inKev) sp.set("kev", "1");
   if (filters.hasAttack) sp.set("attack", "1");
   if (filters.hasCis) sp.set("cis", "1");
+  if (filters.hasOval) sp.set("oval", "1");
+  if (filters.hasScap) sp.set("scap", "1");
   const qs = sp.toString();
   const base = baseUrl().replace(/\/$/, "") || "";
   return qs ? `${base}/?${qs}` : `${base}/`;

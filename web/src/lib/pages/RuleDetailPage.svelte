@@ -192,6 +192,15 @@
           {#if cisItems.length}
             <span class="badge accent" title="Has CIS Benchmark crosswalk">{cisItems.length} CIS</span>
           {/if}
+          {#if rule.scap?.hasOval}
+            <span class="badge" title="OVAL/SCAP check signal detected">OVAL</span>
+          {/if}
+          {#if rule.scap?.hasScapSignal && !rule.scap?.hasOval}
+            <span class="badge" title="SCAP-related signal">SCAP</span>
+          {/if}
+          {#if rule.scap?.scapFalsePositiveNote}
+            <span class="badge review" title="DISA package notes SCAP false positive">SCAP FP note</span>
+          {/if}
         </div>
         <h1>{rule.title}</h1>
         <p class="muted">
@@ -479,6 +488,20 @@
                 {#if c.notes}
                   <p class="small" style="margin:0.35rem 0 0">{c.notes}</p>
                 {/if}
+                {#if c.hasLocalExtract}
+                  <div class="local-cis muted small">
+                    <strong>Local CIS extract</strong>
+                    {#if c.localDescription}
+                      <p style="margin:0.25rem 0 0">{c.localDescription}</p>
+                    {/if}
+                    {#if c.localAudit}
+                      <p style="margin:0.25rem 0 0"><em>Audit:</em> {c.localAudit}</p>
+                    {/if}
+                    {#if c.localRemediation}
+                      <p style="margin:0.25rem 0 0"><em>Remediation:</em> {c.localRemediation}</p>
+                    {/if}
+                  </div>
+                {/if}
               </div>
             {/each}
           </div>
@@ -553,6 +576,23 @@
             <CopyButton text={h.script} label="Copy script" />
           </div>
         {/each}
+      </div>
+    {/if}
+
+    {#if rule.scap && (rule.scap.hasOval || rule.scap.hasScapSignal || rule.scap.scapFalsePositiveNote)}
+      <div class="card stack">
+        <h2 class="h">SCAP / OVAL signals</h2>
+        <div class="row">
+          {#if rule.scap.hasOval}<span class="badge">OVAL</span>{/if}
+          {#if rule.scap.hasScapSignal}<span class="badge">SCAP signal</span>{/if}
+          {#if rule.scap.scapFalsePositiveNote}<span class="badge review">SCAP false-positive note</span>{/if}
+        </div>
+        <p class="muted small" style="margin:0">{rule.scap.note}</p>
+        {#if rule.scap.checkSystems?.length}
+          <p class="small mono" style="margin:0">
+            check systems: {rule.scap.checkSystems.slice(0, 5).join(", ")}
+          </p>
+        {/if}
       </div>
     {/if}
 

@@ -15,6 +15,8 @@ export function emptyFilters(): SearchFilters {
     inKev: false,
     hasAttack: false,
     hasCis: false,
+    hasOval: false,
+    hasScap: false,
   };
 }
 
@@ -44,6 +46,8 @@ export function applyFilters(docs: SearchDoc[], f: SearchFilters): SearchDoc[] {
     if (f.inKev && !d.inKev) return false;
     if (f.hasAttack && !d.hasAttack) return false;
     if (f.hasCis && !d.hasCis) return false;
+    if (f.hasOval && !d.hasOval) return false;
+    if (f.hasScap && !d.hasScap) return false;
     return true;
   });
 }
@@ -71,6 +75,8 @@ export function createEngine(docs: SearchDoc[]): MiniSearch<SearchDoc> {
       "inKev",
       "hasAttack",
       "hasCis",
+      "hasOval",
+      "hasScap",
       "cves",
       "ccis",
     ],

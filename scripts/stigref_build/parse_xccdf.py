@@ -106,6 +106,36 @@ def _check_content(rule: Element) -> str:
     return ""
 
 
+def _check_automation(rule: Element) -> dict[str, Any]:
+    """
+    Extract check system / content-ref hints for SCAP/OVAL presence (B-050).
+
+    DISA public XCCDF often uses check@system as a C-### id, not an OVAL URI.
+    Still capture systems + hrefs; OVAL is also detected later from check text.
+    """
+    systems: list[str] = []
+    refs: list[dict[str, str]] = []
+    for check in rule.iter(_qn("check")):
+        sys = (check.get("system") or "").strip()
+        if sys and sys not in systems:
+            systems.append(sys)
+        for ref in check.findall(_qn("check-content-ref")):
+            href = (ref.get("href") or "").strip()
+            name = (ref.get("name") or "").strip()
+            if href or name:
+                refs.append({"href": href, "name": name})
+    blob = " ".join(systems + [r.get("href", "") for r in refs]).lower()
+    has_oval_ref = "oval" in blob or any(
+        (r.get("href") or "").lower().endswith(".xml") and "oval" in (r.get("href") or "").lower()
+        for r in refs
+    )
+    return {
+        "checkSystems": systems[:20],
+        "checkContentRefs": refs[:20],
+        "hasOvalSystemOrHref": has_oval_ref,
+    }
+
+
 def _fix_text(rule: Element) -> str:
     fix = _find(rule, "fixtext")
     return get_text(fix) if fix is not None else ""
@@ -194,6 +224,11 @@ def parse_xccdf_bytes(data: bytes, source: str = "<memory>") -> dict[str, Any]:
             if profiles:
                 metadata["mac_profiles"] = profiles
 
+            check_text = _check_content(rule)
+            check_auto = _check_automation(rule)
+            # Text-body OVAL mentions (common in some product STIGs)
+            if re.search(r"\boval\b", check_text or "", re.I):
+                check_auto["hasOvalInCheckText"] = True
             rules.append(
                 {
                     "id": full,
@@ -205,11 +240,12 @@ def parse_xccdf_bytes(data: bytes, source: str = "<memory>") -> dict[str, Any]:
                     "title": rule_title,
                     "severity": severity,
                     "description": rule_description,
-                    "check": _check_content(rule),
+                    "check": check_text,
                     "fix": _fix_text(rule),
                     "ccis": _ident_values(rule, CCI_SYSTEMS),
                     "cves": _ident_values(rule, CVE_SYSTEM),
                     "metadata": metadata,
+                    "checkMeta": check_auto,
                     "stig_ids": [sid],
                 }
             )

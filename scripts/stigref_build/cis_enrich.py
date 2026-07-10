@@ -17,6 +17,8 @@ log = logging.getLogger(__name__)
 
 PKG = Path(__file__).resolve().parent
 MAPS_DIR = PKG / "cis_maps"
+REPO_ROOT = PKG.parents[1]
+RAW_CIS_DIR = REPO_ROOT / "raw" / "cis"
 
 DISCLAIMER = (
     "CIS crosswalk is assistive mapping only. Official CIS Benchmark text, "
@@ -179,18 +181,32 @@ def cis_items_for_rule(
 def attach_cis_to_rules(
     rules_by_id: dict[str, dict],
     maps: list[dict[str, Any]] | None = None,
+    *,
+    local_cis_dir: Path | None = None,
 ) -> dict[str, int]:
     """Mutate rules with cis payloads. Returns stats."""
+    from stigref_build.cis_local import (
+        enrich_cis_items_with_local,
+        load_local_cis_extracts,
+    )
+
     maps = maps if maps is not None else load_all_cis_maps()
+    local_dir = local_cis_dir if local_cis_dir is not None else RAW_CIS_DIR
+    local = load_local_cis_extracts(local_dir)
     mapped = 0
+    local_hits = 0
     for rule in rules_by_id.values():
         rid = rule.get("full_rule_id") or rule.get("id") or ""
         items = cis_items_for_rule(rid, maps)
         if items:
+            items = enrich_cis_items_with_local(items, local)
+            if any(i.get("hasLocalExtract") for i in items):
+                local_hits += 1
             rule["cis"] = {
                 "status": "mapped",
                 "items": items,
                 "disclaimer": DISCLAIMER,
+                "localExtractCount": sum(1 for i in items if i.get("hasLocalExtract")),
             }
             mapped += 1
         else:
@@ -198,6 +214,8 @@ def attach_cis_to_rules(
             rule.pop("cis", None)
     return {
         "rulesWithCis": mapped,
+        "rulesWithLocalCisExtract": local_hits,
         "rulesTotal": len(rules_by_id),
         "mapFiles": len(maps),
+        "localExtractRecommendations": len(local),
     }

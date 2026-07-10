@@ -22,6 +22,7 @@
 3. **Do not** commit CIS PDF/XML bodies into the public repo.
 4. After edits: `python scripts/reapply_cis.py`
 5. Spot-check rule page STIG↔CIS panel and `/cis` index.
+6. Optional local CIS text: see [CIS_LOCAL.md](CIS_LOCAL.md) (`raw/cis/*.json`, never commit to public remotes).
 
 ## Checklist before merge
 

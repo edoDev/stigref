@@ -108,7 +108,7 @@
 | B-047 | SRG vs STIG filter | P2 | S | done | |
 | B-048 | Sunset / superseded badges | P1 | S | done | Family V/R compare |
 | B-049 | Vendor landing pages | P2 | M | done | `/vendors` |
-| B-050 | SCAP/OVAL badge | P3 | S | idea | No SCAP data in public U_ library reliably |
+| B-050 | SCAP/OVAL badge | P3 | S | done | Text-text + package notes + filters |
 
 ### E8 — Collaboration
 
@@ -153,15 +153,13 @@
 | ID | Feature | Pri | Size | Status | Notes |
 |----|---------|-----|------|--------|-------|
 | B-080 | CIS Benchmark side-by-side + content maps | P0 | L | done | `cis_maps/`, `/cis`, rule panel, CSV/MD export |
-| B-081 | Expand CIS map coverage | P1 | L | planned | Ongoing content |
-| B-082 | Optional local CIS PDF extract (gitignored) | P2 | L | idea | License-gated full text |
+| B-081 | Expand CIS map coverage | P1 | L | done | Multi-product expanded seeds (keyword-seeded; refine IDs) |
+| B-082 | Optional local CIS extract (gitignored) | P2 | L | done | `raw/cis/` + `cis_local.py` + docs/CIS_LOCAL.md |
 
 ## Remaining open
 
 | ID | Status | Why open |
 |----|--------|----------|
-| **B-050** | idea | SCAP/OVAL not consistent in public U_ library |
-| **B-081** | planned | More CIS seed rows / products |
-| **B-082** | idea | Full CIS body only via license-safe local path |
+| **B-041** | wontfix | Index sharding deferred until size becomes a problem |
 
-Product surface is largely complete. Ongoing work is **map content** (CIS + Intune) and the next DISA quarterly import.
+Ongoing work: refine CIS IDs against real Workbench PDFs, richer Intune maps, next DISA quarterly import.

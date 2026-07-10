@@ -27,6 +27,7 @@ from stigref_build.threat_enrich import (
     normalize_cve,
 )
 from stigref_build.cis_enrich import attach_cis_to_rules
+from stigref_build.scap_enrich import attach_scap_to_rules
 
 log = logging.getLogger(__name__)
 
@@ -231,6 +232,8 @@ def build_search_documents(
                 "inKev": False,
                 "hasAttack": False,
                 "hasCis": False,
+                "hasOval": False,
+                "hasScap": False,
             }
         )
 
@@ -285,6 +288,8 @@ def build_search_documents(
                     (rule.get("cis") or {}).get("status") == "mapped"
                     and (rule.get("cis") or {}).get("items")
                 ),
+                "hasOval": bool((rule.get("scap") or {}).get("hasOval")),
+                "hasScap": bool((rule.get("scap") or {}).get("hasScapSignal")),
             }
         )
     return docs
@@ -420,6 +425,9 @@ def write_data_tree(
 
     # CIS Benchmark crosswalk (mapping-only YAML)
     cis_stats = attach_cis_to_rules(rules_by_id)
+
+    # SCAP/OVAL presence signals (B-050)
+    scap_stats = attach_scap_to_rules(rules_by_id)
 
     cve_to_rules: dict[str, list[str]] = {}
     for rid, rule in rules_by_id.items():
@@ -576,6 +584,7 @@ def write_data_tree(
             "intune": rule.get("intune"),
             "threat": rule.get("threat"),
             "cis": rule.get("cis"),
+            "scap": rule.get("scap"),
             "checkAutomation": rule.get("checkAutomation"),
             "packageEnrichment": rule.get("packageEnrichment"),
             "enrichmentTags": rule.get("enrichmentTags"),
@@ -781,6 +790,8 @@ def write_data_tree(
             "rulesWithCve": threat_stats.get("rulesWithCve", 0),
             "rulesWithKev": threat_stats.get("rulesWithKev", 0),
             "rulesWithCis": cis_stats.get("rulesWithCis", 0),
+            "rulesWithOval": scap_stats.get("rulesWithOval", 0),
+            "rulesWithScapSignal": scap_stats.get("rulesWithScapSignal", 0),
             "controls": 0,
             "ccis": 0,
             "searchDocuments": len(docs),

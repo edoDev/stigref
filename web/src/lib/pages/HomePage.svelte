@@ -52,7 +52,9 @@
       filters.hasCve ||
       filters.inKev ||
       filters.hasAttack ||
-      filters.hasCis;
+      filters.hasCis ||
+      filters.hasOval ||
+      filters.hasScap;
     if (!q.trim() && !hasFilter) {
       results = [];
     } else {
@@ -127,7 +129,9 @@
       filters.hasCve ||
       filters.inKev ||
       filters.hasAttack ||
-      filters.hasCis,
+      filters.hasCis ||
+      filters.hasOval ||
+      filters.hasScap,
   );
 
   let liveMsg = $derived(
@@ -227,6 +231,14 @@
     <label class="chk">
       <input type="checkbox" bind:checked={filters.hasCis} onchange={() => run()} />
       Has CIS map
+    </label>
+    <label class="chk">
+      <input type="checkbox" bind:checked={filters.hasOval} onchange={() => run()} />
+      OVAL signal
+    </label>
+    <label class="chk">
+      <input type="checkbox" bind:checked={filters.hasScap} onchange={() => run()} />
+      SCAP signal
     </label>
     <button type="button" onclick={clearFilters}>Clear</button>
   </div>
