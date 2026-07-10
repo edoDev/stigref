@@ -48,4 +48,5 @@ export const routes = {
   tools: () => href("tools"),
   nist: () => href("nist"),
   cis: () => href("cis"),
+  insights: () => href("insights"),
 };

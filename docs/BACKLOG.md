@@ -156,6 +156,12 @@
 | B-081 | Expand CIS map coverage | P1 | L | done | Multi-product expanded seeds (keyword-seeded; refine IDs) |
 | B-082 | Optional local CIS extract (gitignored) | P2 | L | done | `raw/cis/` + `cis_local.py` + docs/CIS_LOCAL.md |
 
+### E12 — Observatory / metrics
+
+| ID | Feature | Pri | Size | Status | Notes |
+|----|---------|-----|------|--------|-------|
+| B-090 | Library Observatory (`/insights`) | P0 | L | done | Precomputed `data/stats/insights.json`; KPI strip, landscape, Intune surface, automation, CIS/CCI/ATT&CK, KEV, health/delta, board-pack export |
+
 ## Remaining open
 
 None for product surface. Ongoing **content** work: refine CIS IDs vs Workbench PDFs, richer Intune maps, next DISA quarterly import.

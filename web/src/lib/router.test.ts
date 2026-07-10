@@ -20,6 +20,8 @@ describe("parsePath", () => {
     expect(parsePath("/stigref/vendors")).toEqual({ name: "vendors" });
     expect(parsePath("/stigref/tools")).toEqual({ name: "tools" });
     expect(parsePath("/stigref/nist")).toEqual({ name: "nist" });
+    expect(parsePath("/stigref/insights")).toEqual({ name: "insights" });
+    expect(parsePath("/stigref/cis")).toEqual({ name: "cis" });
   });
 
   it("parses detail routes with decode", () => {

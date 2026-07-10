@@ -20,6 +20,7 @@
   import ToolsPage from "./lib/pages/ToolsPage.svelte";
   import NistPage from "./lib/pages/NistPage.svelte";
   import CisPage from "./lib/pages/CisPage.svelte";
+  import InsightsPage from "./lib/pages/InsightsPage.svelte";
   import { initRouter, route } from "./lib/router";
   import { bootData } from "./lib/metaStore";
   import { toastMessage } from "./lib/toast";
@@ -100,6 +101,8 @@
     <NistPage />
   {:else if r.name === "cis"}
     <CisPage />
+  {:else if r.name === "insights"}
+    <InsightsPage />
   {:else}
     <section class="state error" role="alert">
       <h1>Not found</h1>

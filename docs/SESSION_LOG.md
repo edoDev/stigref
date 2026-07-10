@@ -4,24 +4,23 @@
 
 | Field | Value |
 |-------|--------|
-| **Session** | 2026-07-10 Claude review re-acceptance |
-| **Last completed portion** | Full Claude July 2026 review re-audit — every finding dispositioned |
-| **Next portion** | Optional content ops only (CIS IDs, Intune maps, next DISA import) |
+| **Session** | 2026-07-10 Library Observatory (B-090) |
+| **Last completed portion** | Full Insights feature shipped + data generated |
+| **Next portion** | Optional: content refinement, next DISA import (delta charts) |
 | **Branch** | `main` |
 | **Last known good commit** | *(see git log after push)* |
+
+---
+
+## B-090 Library Observatory
+
+- Pipeline: `scripts/stigref_build/insights.py` + `scripts/build_insights.py`
+- Data: `data/stats/insights.json` (scanned 303 STIGs / 19,403 rules)
+- UI: `/insights` — KPI strip, landscape, Intune surface, automation, CIS/CCI/ATT&CK, KEV, health/delta, board-pack export
+- Wired into `write_data` (post-build scan)
 
 ---
 
 ## Claude review (July 2026) — closed
 
 Canonical disposition: [REVIEW_2026-07.md](REVIEW_2026-07.md)
-
-- Priorities **1–7**: done or foundation-done  
-- All area findings: fixed or **explicit residual**  
-- No open review defects  
-
----
-
-## Product waves (prior)
-
-Waves 1–4 closed product backlog surface (tests/CI, multi-release foundation, search worker + shards, CIS maps, Intune expand, ATT&CK seed, tools/compare/CCI, etc.). See [BACKLOG.md](BACKLOG.md) and [VERSION_HISTORY.md](VERSION_HISTORY.md).

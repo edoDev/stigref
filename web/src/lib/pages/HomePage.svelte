@@ -273,7 +273,8 @@
         · {m.counts.rulesWithKev.toLocaleString()} with KEV
       {/if}
       . Content last updated {formatDate(m.lastUpdated)}. Browse the
-      <a href={routes.stigs()}>STIG catalog</a> or try a rule ID like
+      <a href={routes.stigs()}>STIG catalog</a>,
+      <a href={routes.insights()}>Library Observatory</a>, or try a rule ID like
       <span class="mono">SV-</span>.
       <span class="kbd-hint"> Press <kbd>/</kbd> to focus search · <kbd>?</kbd> help</span>
     </div>

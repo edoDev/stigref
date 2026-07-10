@@ -118,7 +118,23 @@
   </div>
 
   <div class="card stack">
-    <h2>8. Browse CISA KEV</h2>
+    <h2>8. Library Observatory (metrics)</h2>
+    <ol>
+      <li>Open <a href={routes.insights()}>Insights</a>.</li>
+      <li>
+        Review KPI strip, severity mix, vendor landscape, Intune coverage scorecards, automation
+        package mix, CIS/CCI/ATT&amp;CK, and KEV catalog stats.
+      </li>
+      <li>Use <strong>Copy board pack</strong> for a Markdown brief or export CSVs for planning.</li>
+    </ol>
+    <p class="muted" style="margin:0">
+      Metrics are precomputed at build time from public STIG data and curated maps—not a compliance
+      score or vulnerability assessment. Quarterly delta charts unlock after a second library import.
+    </p>
+  </div>
+
+  <div class="card stack">
+    <h2>9. Browse CISA KEV</h2>
     <ol>
       <li>Open <a href={routes.kev()}>KEV</a>.</li>
       <li>Search CVE, vendor, or product; filter ransomware or “linked to STIG rules”.</li>
@@ -131,7 +147,7 @@
   </div>
 
   <div class="card stack">
-    <h2>9. Threat context on a rule</h2>
+    <h2>10. Threat context on a rule</h2>
     <ol>
       <li>Open a rule that has CVE identifiers.</li>
       <li><strong>Threat context</strong> shows CVE chips; KEV is highlighted when applicable.</li>
@@ -140,7 +156,7 @@
   </div>
 
   <div class="card stack">
-    <h2>10. Bookmark work for a sprint</h2>
+    <h2>11. Bookmark work for a sprint</h2>
     <ol>
       <li>On a rule or STIG, click <strong>☆ Save</strong>.</li>
       <li>Reopen from <a href={routes.saved()}>Saved</a>.</li>

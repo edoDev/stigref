@@ -12,6 +12,7 @@
     <a class="brand" href={routes.home()}>stigref</a>
     <nav class="row nav">
       <a href={routes.home()}>Search</a>
+      <a href={routes.insights()}>Insights</a>
       <a href={routes.stigs()}>STIGs</a>
       <a href={routes.products()}>Products</a>
       <a href={routes.vendors()}>Vendors</a>

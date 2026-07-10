@@ -2,7 +2,7 @@
 
 **Fast, static STIG & control reference.** Search DISA STIGs/SRGs and related NIST controls in the browser. No account, no backend, no assessment workflow.
 
-> Status: **Live** — GPO/Intune package tags, SHB annotations, KEV browser, product hubs.  
+> Status: **Live** — GPO/Intune package tags, SHB annotations, KEV browser, product hubs, **Library Observatory** (`/insights`).  
 > Site: https://edodev.github.io/stigref/
 
 ## Why this exists
@@ -45,6 +45,8 @@ GitHub Pages  ◄──  Vite SPA (web/)  ◄── fetch ───────�
 - **Hosting:** GitHub Pages only.
 
 Details: [User help](docs/HELP.md) · [Design](docs/DESIGN.md) · [Backlog](docs/BACKLOG.md) · [Roadmap](docs/ROADMAP.md)
+
+**Library Observatory:** open `/insights` for precomputed KPIs (severity mix, vendor landscape, Intune coverage scorecards, automation package mix, CIS/CCI/ATT&CK, KEV catalog, board-pack export). Rebuild with `python scripts/build_insights.py`.
 
 ## Content source
 

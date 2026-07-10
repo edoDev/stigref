@@ -29,6 +29,7 @@ from stigref_build.threat_enrich import (
 from stigref_build.cis_enrich import attach_cis_to_rules
 from stigref_build.scap_enrich import attach_scap_to_rules
 from stigref_build.search_index import write_search_index
+from stigref_build.insights import build_insights_from_disk, write_insights
 
 log = logging.getLogger(__name__)
 
@@ -386,6 +387,7 @@ def write_data_tree(
             "threat",
             "packages",
             "cis",
+            "stats",
         ):
             p = out / sub
             if p.exists():
@@ -818,6 +820,15 @@ def write_data_tree(
         _update_releases_registry(out, release_info, storage=storage)
     except OSError as exc:
         log.error("Could not update releases registry: %s", exc)
+
+    # B-090: Library Observatory — scan written tree (same path as build_insights.py)
+    try:
+        insights_doc = build_insights_from_disk(out)
+        write_insights(out, insights_doc)
+    except Exception as exc:  # noqa: BLE001 — insights optional for build success
+        log.exception("Insights generation failed: %s", exc)
+        log.error("Insights generation failed — /insights will be stale or empty")
+
     log.info(
         "Wrote data to %s (%s stigs, %s rules, %s search docs)",
         out,

@@ -323,3 +323,151 @@ export interface IntuneProductIndex {
   }>;
   total: number;
 }
+
+/** Precomputed Library Observatory payload (data/stats/insights.json) — B-090 */
+export interface InsightsKpis {
+  stigs?: number;
+  rules?: number;
+  vendors?: number;
+  families?: number;
+  stigsWithGpo?: number;
+  stigsWithIntunePackage?: number;
+  stigsShbRelated?: number;
+  rulesWithCve?: number;
+  rulesWithKev?: number;
+  rulesWithCis?: number;
+  rulesWithOval?: number;
+  rulesWithScap?: number;
+  rulesWithIntuneMap?: number;
+  rulesWithAttack?: number;
+  uniqueCcis?: number;
+  intuneProducts?: number;
+  searchTransferBytesGz?: number;
+  searchTransferMBGz?: number;
+  dataTotalMB?: number;
+  parseErrors?: number;
+}
+
+export interface InsightsSevBucket {
+  total?: number;
+  mapped?: number;
+  pct?: number;
+}
+
+export interface InsightsIntuneProduct {
+  product: string;
+  stigId?: string;
+  stigName?: string;
+  rules?: number;
+  mappedRules?: number;
+  settings?: number;
+  coveragePct?: number;
+  severityCoverage?: {
+    high?: InsightsSevBucket;
+    medium?: InsightsSevBucket;
+    low?: InsightsSevBucket;
+  };
+  confidence?: { high?: number; medium?: number; low?: number };
+  kinds?: Record<string, number>;
+  unmappedCatI?: Array<{ id: string; title: string }>;
+}
+
+export interface InsightsDoc {
+  format?: string;
+  generatedAt?: string;
+  releaseId?: string;
+  disclaimers?: Record<string, string>;
+  kpis: InsightsKpis;
+  severity?: {
+    high?: number;
+    medium?: number;
+    low?: number;
+    unknown?: number;
+  };
+  vendors?: Array<{ name: string; stigs: number; rules: number }>;
+  roles?: Array<{ role: string; stigs: number; rules: number }>;
+  landscape?: Array<{
+    vendor: string;
+    family: string;
+    stigs: number;
+    rules: number;
+    hasGpo?: boolean;
+    hasIntunePackage?: boolean;
+    shbRelated?: boolean;
+  }>;
+  automation?: {
+    stigs?: {
+      gpoPackage?: number;
+      intunePackage?: number;
+      both?: number;
+      neither?: number;
+      shb?: number;
+      manualOrPlatform?: number;
+    };
+    rules?: Record<string, number | Record<string, number>>;
+  };
+  intuneProducts?: InsightsIntuneProduct[];
+  cis?: {
+    rulesWithCis?: number;
+    totalMappedRules?: number;
+    mapFiles?: number;
+    byProduct?: Array<{ product: string; rules: number }>;
+    topCisIds?: Array<{ id: string; rules: number }>;
+    disclaimer?: string;
+  };
+  cci?: {
+    uniqueCcis?: number;
+    rulesWithCci?: number;
+    top?: Array<{ id: string; ruleCount: number }>;
+  };
+  attack?: {
+    rulesWithAttack?: number;
+    techniques?: Array<{ id: string; name?: string; ruleCount: number }>;
+    disclaimer?: string;
+  };
+  kev?: {
+    catalogCount?: number;
+    catalogVersion?: string;
+    dateReleased?: string;
+    fetchedAt?: string;
+    rulesWithKev?: number;
+    ransomwareKnown?: number;
+    byYear?: Array<{ year: string; count: number }>;
+    topVendors?: Array<{ vendor: string; count: number }>;
+    disclaimer?: string;
+  };
+  health?: {
+    builtAt?: string;
+    lastUpdated?: string;
+    currentRelease?: string;
+    sourceFile?: string;
+    sourceSha256?: string;
+    generator?: string;
+    parseErrors?: number;
+    totalMB?: number;
+    totalFiles?: number;
+    searchBytesGz?: number;
+    searchShards?: number;
+    counts?: Record<string, number>;
+  };
+  delta?: {
+    available?: boolean;
+    note?: string;
+    releases?: Array<{ id?: string; label?: string }>;
+  };
+  scorecards?: Array<{
+    stigId?: string;
+    name?: string;
+    vendor?: string;
+    family?: string;
+    ruleCount?: number;
+    severity?: { high?: number; medium?: number; low?: number };
+    hasGpoPackage?: boolean;
+    hasIntunePackage?: boolean;
+    shbRelated?: boolean;
+    intuneCoveragePct?: number | null;
+    intuneProduct?: string | null;
+    rulesWithCis?: number;
+    rulesWithScap?: number;
+  }>;
+}
