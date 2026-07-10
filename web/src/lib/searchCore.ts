@@ -14,6 +14,7 @@ export function emptyFilters(): SearchFilters {
     hasCve: false,
     inKev: false,
     hasAttack: false,
+    hasCis: false,
   };
 }
 
@@ -42,6 +43,7 @@ export function applyFilters(docs: SearchDoc[], f: SearchFilters): SearchDoc[] {
     if (f.hasCve && !d.hasCve) return false;
     if (f.inKev && !d.inKev) return false;
     if (f.hasAttack && !d.hasAttack) return false;
+    if (f.hasCis && !d.hasCis) return false;
     return true;
   });
 }
@@ -68,6 +70,7 @@ export function createEngine(docs: SearchDoc[]): MiniSearch<SearchDoc> {
       "hasCve",
       "inKev",
       "hasAttack",
+      "hasCis",
       "cves",
       "ccis",
     ],

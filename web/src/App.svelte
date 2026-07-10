@@ -19,6 +19,7 @@
   import VendorPage from "./lib/pages/VendorPage.svelte";
   import ToolsPage from "./lib/pages/ToolsPage.svelte";
   import NistPage from "./lib/pages/NistPage.svelte";
+  import CisPage from "./lib/pages/CisPage.svelte";
   import { initRouter, route } from "./lib/router";
   import { bootData } from "./lib/metaStore";
   import { toastMessage } from "./lib/toast";
@@ -97,6 +98,8 @@
     <ToolsPage />
   {:else if r.name === "nist"}
     <NistPage />
+  {:else if r.name === "cis"}
+    <CisPage />
   {:else}
     <section class="state error" role="alert">
       <h1>Not found</h1>

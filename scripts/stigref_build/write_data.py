@@ -26,6 +26,7 @@ from stigref_build.threat_enrich import (
     load_kev_bundle,
     normalize_cve,
 )
+from stigref_build.cis_enrich import attach_cis_to_rules
 
 log = logging.getLogger(__name__)
 
@@ -229,6 +230,7 @@ def build_search_documents(
                 "hasCve": False,
                 "inKev": False,
                 "hasAttack": False,
+                "hasCis": False,
             }
         )
 
@@ -279,6 +281,10 @@ def build_search_documents(
                 "hasCve": has_cve,
                 "inKev": in_kev,
                 "hasAttack": bool(threat.get("attack")),
+                "hasCis": bool(
+                    (rule.get("cis") or {}).get("status") == "mapped"
+                    and (rule.get("cis") or {}).get("items")
+                ),
             }
         )
     return docs
@@ -373,6 +379,7 @@ def write_data_tree(
             "csp",
             "threat",
             "packages",
+            "cis",
         ):
             p = out / sub
             if p.exists():
@@ -410,6 +417,9 @@ def write_data_tree(
     # First pass without rule links; second normalize after threat attach
     kev_ids, kev_meta, _ = load_kev_bundle(kev_cache, fetch=True)
     threat_stats = attach_threat_to_rules(rules_by_id, kev_ids)
+
+    # CIS Benchmark crosswalk (mapping-only YAML)
+    cis_stats = attach_cis_to_rules(rules_by_id)
 
     cve_to_rules: dict[str, list[str]] = {}
     for rid, rule in rules_by_id.items():
@@ -565,11 +575,42 @@ def write_data_tree(
             "stig_ids": rule.get("stig_ids") or [],
             "intune": rule.get("intune"),
             "threat": rule.get("threat"),
+            "cis": rule.get("cis"),
             "checkAutomation": rule.get("checkAutomation"),
             "packageEnrichment": rule.get("packageEnrichment"),
             "enrichmentTags": rule.get("enrichmentTags"),
         }
         _write_json(out / "rules" / "by-id" / f"{path_id}.json", detail)
+
+    # CIS crosswalk index
+    cis_index_rules = []
+    for rid, rule in sorted(rules_by_id.items()):
+        items = (rule.get("cis") or {}).get("items") or []
+        if not items:
+            continue
+        cis_index_rules.append(
+            {
+                "full_rule_id": rid,
+                "title": rule.get("title"),
+                "cisCount": len(items),
+                "cisIds": [i.get("id") for i in items],
+                "profiles": sorted(
+                    {i.get("profile") for i in items if i.get("profile")}
+                ),
+            }
+        )
+    _write_json(
+        out / "cis" / "index.json",
+        {
+            "totalMappedRules": len(cis_index_rules),
+            "mapFiles": cis_stats.get("mapFiles"),
+            "disclaimer": (
+                "CIS crosswalk is assistive mapping only. Official CIS Benchmark "
+                "documents are authoritative."
+            ),
+            "rules": cis_index_rules,
+        },
+    )
 
     # Companion package index (GPO + Intune) for docs/UI
     _write_json(
@@ -739,6 +780,7 @@ def write_data_tree(
             "rules": len(rules_by_id),
             "rulesWithCve": threat_stats.get("rulesWithCve", 0),
             "rulesWithKev": threat_stats.get("rulesWithKev", 0),
+            "rulesWithCis": cis_stats.get("rulesWithCis", 0),
             "controls": 0,
             "ccis": 0,
             "searchDocuments": len(docs),

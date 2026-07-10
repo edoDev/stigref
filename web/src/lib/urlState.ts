@@ -16,6 +16,7 @@ export function parseSearchParams(search: string = location.search): {
   f.hasCve = sp.get("cve") === "1" || sp.get("cve") === "true";
   f.inKev = sp.get("kev") === "1" || sp.get("kev") === "true";
   f.hasAttack = sp.get("attack") === "1" || sp.get("attack") === "true";
+  f.hasCis = sp.get("cis") === "1" || sp.get("cis") === "true";
   return { q: sp.get("q") || "", filters: f };
 }
 
@@ -29,6 +30,7 @@ export function buildSearchUrl(q: string, filters: SearchFilters): string {
   if (filters.hasCve) sp.set("cve", "1");
   if (filters.inKev) sp.set("kev", "1");
   if (filters.hasAttack) sp.set("attack", "1");
+  if (filters.hasCis) sp.set("cis", "1");
   const qs = sp.toString();
   const base = baseUrl().replace(/\/$/, "") || "";
   return qs ? `${base}/?${qs}` : `${base}/`;

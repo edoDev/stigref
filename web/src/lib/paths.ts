@@ -47,4 +47,5 @@ export const routes = {
   vendor: (id: string) => href("vendors", encodeURIComponent(id)),
   tools: () => href("tools"),
   nist: () => href("nist"),
+  cis: () => href("cis"),
 };

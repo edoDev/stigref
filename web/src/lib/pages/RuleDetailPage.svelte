@@ -19,7 +19,12 @@
   import { isWatched, toggleWatch } from "../watchlist";
   import { powershellHints } from "../psHints";
   import { toast } from "../toast";
-  import { copyText } from "../copy";
+  import {
+    downloadText,
+    ruleExportCsv,
+    ruleExportMarkdown,
+    ruleStigCisCompareMarkdown,
+  } from "../exports";
 
   interface Props {
     id: string;
@@ -121,6 +126,38 @@
   <br/><a href="${url}">View on stigref</a>
 </blockquote>`;
   }
+
+  function exportMd() {
+    if (!rule) return;
+    downloadText(
+      `${rule.full_rule_id}.md`,
+      ruleExportMarkdown(rule),
+      "text/markdown;charset=utf-8",
+    );
+    toast("Markdown downloaded");
+  }
+
+  function exportCsv() {
+    if (!rule) return;
+    downloadText(
+      `${rule.full_rule_id}-cis.csv`,
+      ruleExportCsv(rule),
+      "text/csv;charset=utf-8",
+    );
+    toast("CSV downloaded");
+  }
+
+  function exportCompareMd() {
+    if (!rule) return;
+    downloadText(
+      `${rule.full_rule_id}-stig-cis.md`,
+      ruleStigCisCompareMarkdown(rule),
+      "text/markdown;charset=utf-8",
+    );
+    toast("STIG↔CIS Markdown downloaded");
+  }
+
+  let cisItems = $derived(rule?.cis?.items || []);
 </script>
 
 <section class="stack">
@@ -151,6 +188,9 @@
             <span class="badge review" title="Low-confidence or heuristic Intune mapping">
               Needs human review
             </span>
+          {/if}
+          {#if cisItems.length}
+            <span class="badge accent" title="Has CIS Benchmark crosswalk">{cisItems.length} CIS</span>
           {/if}
         </div>
         <h1>{rule.title}</h1>
@@ -191,6 +231,9 @@
         <CopyButton text={embedSnippet()} label="Embed HTML" />
         <CopyButton text={ruleCitation(rule)} label="Citation" class="primary" />
         <CopyButton text={ruleMarkdown(rule)} label="Markdown" />
+        <button type="button" onclick={exportMd}>Export MD</button>
+        <button type="button" onclick={exportCsv}>Export CSV</button>
+        <button type="button" onclick={exportCompareMd}>Export STIG↔CIS MD</button>
         <CopyButton text={rule.check || ""} label="Check" />
         <CopyButton text={rule.fix || ""} label="Fix" />
         {#if ruleOmaUriPack(rule)}
@@ -394,6 +437,56 @@
             </li>
           {/each}
         </ul>
+      </div>
+    {/if}
+
+    {#if cisItems.length}
+      <div class="card stack cis-panel">
+        <div class="section-title" style="margin-top:0">
+          <h2 class="h">STIG ↔ CIS side-by-side</h2>
+          <button type="button" class="primary" onclick={exportCompareMd}>Export compare MD</button>
+        </div>
+        <p class="muted small" style="margin:0">
+          Curated crosswalk only — not a full CIS Benchmark. Verify IDs against your CIS PDF /
+          Workbench version.
+        </p>
+        <div class="compare-grid">
+          <div class="compare-col">
+            <h3 class="h">STIG</h3>
+            <p class="mono small">{rule.full_rule_id}</p>
+            <p class="small"><strong>Severity:</strong> {rule.severity || "n/a"}</p>
+            <p class="section-label muted small">Check</p>
+            <pre class="block compact">{rule.check || "—"}</pre>
+            <p class="section-label muted small">Fix</p>
+            <pre class="block compact">{rule.fix || "—"}</pre>
+          </div>
+          <div class="compare-col">
+            <h3 class="h">CIS Benchmark</h3>
+            {#each cisItems as c}
+              <div class="cis-item">
+                <div class="row">
+                  <span class="mono accent">{c.id}</span>
+                  <span class="badge">{c.relationship || "related"}</span>
+                  <span class="badge">{c.confidence || "?"} conf</span>
+                  {#if c.profile}
+                    <span class="badge">{c.profile}</span>
+                  {/if}
+                </div>
+                <div class="sug-title">{c.title || "—"}</div>
+                {#if c.benchmark}
+                  <div class="muted small">{c.benchmark} {c.benchmarkVersion || ""}</div>
+                {/if}
+                {#if c.notes}
+                  <p class="small" style="margin:0.35rem 0 0">{c.notes}</p>
+                {/if}
+              </div>
+            {/each}
+          </div>
+        </div>
+        <p class="muted small" style="margin:0">
+          {rule.cis?.disclaimer ||
+            "CIS mapping assistive only. Official CIS Benchmark text is authoritative."}
+        </p>
       </div>
     {/if}
 
@@ -659,6 +752,45 @@
   }
   .fix-card {
     border-left: 3px solid var(--medium);
+  }
+  .cis-panel {
+    border-color: var(--accent);
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+  .compare-col {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    background: var(--bg);
+  }
+  .cis-item {
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cis-item:last-child {
+    border-bottom: none;
+  }
+  .block.compact {
+    max-height: 14rem;
+    overflow: auto;
+    font-size: 0.82rem;
+  }
+  .accent {
+    color: var(--accent);
+    font-weight: 650;
+  }
+  .badge.accent {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  @media (max-width: 720px) {
+    .compare-grid {
+      grid-template-columns: 1fr;
+    }
   }
   .section-label {
     margin: 0 0 0.35rem;

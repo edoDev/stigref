@@ -51,7 +51,8 @@
       filters.hasIntune ||
       filters.hasCve ||
       filters.inKev ||
-      filters.hasAttack;
+      filters.hasAttack ||
+      filters.hasCis;
     if (!q.trim() && !hasFilter) {
       results = [];
     } else {
@@ -125,7 +126,8 @@
       filters.hasIntune ||
       filters.hasCve ||
       filters.inKev ||
-      filters.hasAttack,
+      filters.hasAttack ||
+      filters.hasCis,
   );
 
   let liveMsg = $derived(
@@ -221,6 +223,10 @@
     <label class="chk">
       <input type="checkbox" bind:checked={filters.hasAttack} onchange={() => run()} />
       Has ATT&amp;CK
+    </label>
+    <label class="chk">
+      <input type="checkbox" bind:checked={filters.hasCis} onchange={() => run()} />
+      Has CIS map
     </label>
     <button type="button" onclick={clearFilters}>Clear</button>
   </div>

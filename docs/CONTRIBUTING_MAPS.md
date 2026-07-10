@@ -15,6 +15,14 @@
 2. Link-outs only — no exploit code, no paid/proprietary dumps.
 3. Always include confidence + source + disclaimer language.
 
+## CIS Benchmark crosswalk maps
+
+1. See `scripts/stigref_build/cis_maps/README.md` (B-080).
+2. Map STIG `rule_id` → CIS recommendation `id` + relationship + short notes you author.
+3. **Do not** commit CIS PDF/XML bodies into the public repo.
+4. After edits: `python scripts/reapply_cis.py`
+5. Spot-check rule page STIG↔CIS panel and `/cis` index.
+
 ## Checklist before merge
 
 - [ ] YAML parses (build or reapply does not error)

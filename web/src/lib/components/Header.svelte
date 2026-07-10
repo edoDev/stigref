@@ -16,6 +16,7 @@
       <a href={routes.products()}>Products</a>
       <a href={routes.vendors()}>Vendors</a>
       <a href={routes.cci()}>CCI</a>
+      <a href={routes.cis()}>CIS</a>
       <a href={routes.kev()}>KEV</a>
       <a href={routes.compare()}>Compare</a>
       <a href={routes.tools()}>Tools</a>

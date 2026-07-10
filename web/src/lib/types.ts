@@ -63,6 +63,7 @@ export interface SearchDoc {
   hasCve?: boolean;
   inKev?: boolean;
   hasAttack?: boolean;
+  hasCis?: boolean;
 }
 
 export interface SearchFilters {
@@ -73,6 +74,7 @@ export interface SearchFilters {
   hasCve: boolean;
   inKev: boolean;
   hasAttack: boolean;
+  hasCis: boolean;
 }
 
 export interface StigIndexEntry {
@@ -208,6 +210,25 @@ export interface ThreatPayload {
   disclaimer?: string;
 }
 
+export interface CisItem {
+  id: string;
+  title?: string;
+  benchmark?: string;
+  benchmarkVersion?: string;
+  profile?: string;
+  product?: string;
+  relationship?: string;
+  confidence?: string;
+  notes?: string;
+  source?: string;
+}
+
+export interface CisPayload {
+  status: string;
+  items: CisItem[];
+  disclaimer?: string;
+}
+
 export interface RuleDetail {
   id: string;
   full_rule_id: string;
@@ -232,6 +253,7 @@ export interface RuleDetail {
   stig_ids: string[];
   intune?: IntunePayload | null;
   threat?: ThreatPayload | null;
+  cis?: CisPayload | null;
   checkAutomation?: {
     checkStyle?: string;
     confidence?: string;

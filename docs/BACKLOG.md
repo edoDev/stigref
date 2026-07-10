@@ -148,10 +148,20 @@
 
 ---
 
+### E11 — Framework crosswalks
+
+| ID | Feature | Pri | Size | Status | Notes |
+|----|---------|-----|------|--------|-------|
+| B-080 | CIS Benchmark side-by-side + content maps | P0 | L | done | `cis_maps/`, `/cis`, rule panel, CSV/MD export |
+| B-081 | Expand CIS map coverage | P1 | L | planned | Ongoing content |
+| B-082 | Optional local CIS PDF extract (gitignored) | P2 | L | idea | License-gated full text |
+
 ## Remaining open
 
 | ID | Status | Why open |
 |----|--------|----------|
-| **B-050** | idea | SCAP/OVAL not consistently available in public U_ library content |
+| **B-050** | idea | SCAP/OVAL not consistent in public U_ library |
+| **B-081** | planned | More CIS seed rows / products |
+| **B-082** | idea | Full CIS body only via license-safe local path |
 
-Almost all planned/idea items that fit a static reference product are **done**. Future work is content depth (richer maps, second quarterly release import) rather than missing product surface.
+Product surface is largely complete. Ongoing work is **map content** (CIS + Intune) and the next DISA quarterly import.

@@ -20,6 +20,7 @@ export type Route =
   | { name: "vendor"; id: string }
   | { name: "tools" }
   | { name: "nist" }
+  | { name: "cis" }
   | { name: "notfound"; path: string };
 
 function stripBase(pathname: string): string {
@@ -50,6 +51,7 @@ export function parsePath(pathname: string = location.pathname): Route {
   if (path === "/vendors") return { name: "vendors" };
   if (path === "/tools") return { name: "tools" };
   if (path === "/nist") return { name: "nist" };
+  if (path === "/cis") return { name: "cis" };
 
   let m = path.match(/^\/stigs\/([^/]+)\/?$/);
   if (m) return { name: "stig", id: decodeURIComponent(m[1]) };
