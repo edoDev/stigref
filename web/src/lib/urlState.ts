@@ -15,6 +15,7 @@ export function parseSearchParams(search: string = location.search): {
   f.hasIntune = sp.get("intune") === "1" || sp.get("intune") === "true";
   f.hasCve = sp.get("cve") === "1" || sp.get("cve") === "true";
   f.inKev = sp.get("kev") === "1" || sp.get("kev") === "true";
+  f.hasAttack = sp.get("attack") === "1" || sp.get("attack") === "true";
   return { q: sp.get("q") || "", filters: f };
 }
 
@@ -27,6 +28,7 @@ export function buildSearchUrl(q: string, filters: SearchFilters): string {
   if (filters.hasIntune) sp.set("intune", "1");
   if (filters.hasCve) sp.set("cve", "1");
   if (filters.inKev) sp.set("kev", "1");
+  if (filters.hasAttack) sp.set("attack", "1");
   const qs = sp.toString();
   const base = baseUrl().replace(/\/$/, "") || "";
   return qs ? `${base}/?${qs}` : `${base}/`;

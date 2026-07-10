@@ -14,7 +14,11 @@
       <a href={routes.home()}>Search</a>
       <a href={routes.stigs()}>STIGs</a>
       <a href={routes.products()}>Products</a>
+      <a href={routes.vendors()}>Vendors</a>
+      <a href={routes.cci()}>CCI</a>
       <a href={routes.kev()}>KEV</a>
+      <a href={routes.compare()}>Compare</a>
+      <a href={routes.tools()}>Tools</a>
       <a href={routes.releases()}>Releases</a>
       <a href={routes.saved()}>Saved</a>
       <a href={routes.help()}>Help</a>

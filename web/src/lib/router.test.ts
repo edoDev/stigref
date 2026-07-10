@@ -15,6 +15,11 @@ describe("parsePath", () => {
     expect(parsePath("/stigref/products")).toEqual({ name: "products" });
     expect(parsePath("/stigref/help")).toEqual({ name: "help" });
     expect(parsePath("/stigref/releases")).toEqual({ name: "releases" });
+    expect(parsePath("/stigref/compare")).toEqual({ name: "compare" });
+    expect(parsePath("/stigref/cci")).toEqual({ name: "cci" });
+    expect(parsePath("/stigref/vendors")).toEqual({ name: "vendors" });
+    expect(parsePath("/stigref/tools")).toEqual({ name: "tools" });
+    expect(parsePath("/stigref/nist")).toEqual({ name: "nist" });
   });
 
   it("parses detail routes with decode", () => {

@@ -44,10 +44,22 @@ def main() -> int:
 
     stats = attach_threat_to_rules(rules_by_id, kev_ids)
     with_attack = 0
+    attack_ids: set[str] = set()
     for rid, rule in rules_by_id.items():
         if (rule.get("threat") or {}).get("attack"):
             with_attack += 1
+            attack_ids.add(rid)
         _write_json(paths[rid], rule)
+
+    # Patch search documents hasAttack flag
+    docs_path = root / "data" / "search" / "documents.json"
+    if docs_path.is_file():
+        blob = json.loads(docs_path.read_text(encoding="utf-8"))
+        for d in blob.get("documents") or []:
+            if d.get("type") == "rule":
+                d["hasAttack"] = d.get("full_rule_id") in attack_ids
+        _write_json(docs_path, blob)
+        log.info("Patched search hasAttack for %s rules", len(attack_ids))
 
     log.info(
         "Updated %s rules; withCve=%s withKev=%s withAttack=%s",

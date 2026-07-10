@@ -13,6 +13,13 @@ export type Route =
   | { name: "product"; id: string }
   | { name: "help" }
   | { name: "releases" }
+  | { name: "compare" }
+  | { name: "cci" }
+  | { name: "cciDetail"; id: string }
+  | { name: "vendors" }
+  | { name: "vendor"; id: string }
+  | { name: "tools" }
+  | { name: "nist" }
   | { name: "notfound"; path: string };
 
 function stripBase(pathname: string): string {
@@ -38,6 +45,11 @@ export function parsePath(pathname: string = location.pathname): Route {
   if (path === "/products") return { name: "products" };
   if (path === "/help") return { name: "help" };
   if (path === "/releases") return { name: "releases" };
+  if (path === "/compare") return { name: "compare" };
+  if (path === "/cci") return { name: "cci" };
+  if (path === "/vendors") return { name: "vendors" };
+  if (path === "/tools") return { name: "tools" };
+  if (path === "/nist") return { name: "nist" };
 
   let m = path.match(/^\/stigs\/([^/]+)\/?$/);
   if (m) return { name: "stig", id: decodeURIComponent(m[1]) };
@@ -47,6 +59,12 @@ export function parsePath(pathname: string = location.pathname): Route {
 
   m = path.match(/^\/products\/([^/]+)\/?$/);
   if (m) return { name: "product", id: decodeURIComponent(m[1]) };
+
+  m = path.match(/^\/cci\/([^/]+)\/?$/);
+  if (m) return { name: "cciDetail", id: decodeURIComponent(m[1]) };
+
+  m = path.match(/^\/vendors\/([^/]+)\/?$/);
+  if (m) return { name: "vendor", id: decodeURIComponent(m[1]) };
 
   return { name: "notfound", path };
 }

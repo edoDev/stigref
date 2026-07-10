@@ -12,10 +12,17 @@
   import ProductHubPage from "./lib/pages/ProductHubPage.svelte";
   import HelpPage from "./lib/pages/HelpPage.svelte";
   import ReleasesPage from "./lib/pages/ReleasesPage.svelte";
+  import ComparePage from "./lib/pages/ComparePage.svelte";
+  import CciPage from "./lib/pages/CciPage.svelte";
+  import CciDetailPage from "./lib/pages/CciDetailPage.svelte";
+  import VendorsPage from "./lib/pages/VendorsPage.svelte";
+  import VendorPage from "./lib/pages/VendorPage.svelte";
+  import ToolsPage from "./lib/pages/ToolsPage.svelte";
+  import NistPage from "./lib/pages/NistPage.svelte";
   import { initRouter, route } from "./lib/router";
   import { bootData } from "./lib/metaStore";
   import { toastMessage } from "./lib/toast";
-  import { routes } from "./lib/paths";
+  import { routes, baseUrl } from "./lib/paths";
   import { initTheme } from "./lib/theme";
   import { initKeyboard } from "./lib/keyboard";
 
@@ -27,6 +34,12 @@
     const stopRouter = initRouter();
     const stopKeys = initKeyboard();
     bootData();
+    // B-042: offline shell (caches app assets; data stays network-first)
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register(`${baseUrl()}sw.js`).catch(() => {
+        /* optional in dev */
+      });
+    }
     return () => {
       stopRouter();
       stopKeys();
@@ -66,6 +79,24 @@
     <HelpPage />
   {:else if r.name === "releases"}
     <ReleasesPage />
+  {:else if r.name === "compare"}
+    <ComparePage />
+  {:else if r.name === "cci"}
+    <CciPage />
+  {:else if r.name === "cciDetail"}
+    {#key r.id}
+      <CciDetailPage id={r.id} />
+    {/key}
+  {:else if r.name === "vendors"}
+    <VendorsPage />
+  {:else if r.name === "vendor"}
+    {#key r.id}
+      <VendorPage id={r.id} />
+    {/key}
+  {:else if r.name === "tools"}
+    <ToolsPage />
+  {:else if r.name === "nist"}
+    <NistPage />
   {:else}
     <section class="state error" role="alert">
       <h1>Not found</h1>

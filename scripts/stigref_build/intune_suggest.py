@@ -178,11 +178,18 @@ def _entry_to_suggestion(
 ) -> dict[str, Any]:
     kind = kind or entry.get("kind") or "native"
     oma = entry.get("omaUriDevice") or entry.get("omaUriUser") or ""
+    # B-013: Settings Catalog style display name (area + name)
+    area = entry.get("area") or ""
+    name = entry.get("name") or ""
+    sc_name = entry.get("settingsCatalogName")
+    if not sc_name and (area or name):
+        sc_name = f"{area}/{name}" if area and name else (name or area or "")
     return {
         "cspId": entry.get("id"),
         "title": entry.get("title") or entry.get("name"),
         "area": entry.get("area"),
         "name": entry.get("name"),
+        "settingsCatalogName": sc_name or None,
         "kind": kind,
         "scope": entry.get("scope") or ["device"],
         "omaUri": oma,

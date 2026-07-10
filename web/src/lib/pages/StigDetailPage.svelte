@@ -137,9 +137,20 @@
               <a href={routes.stig(v.id)}
                 >{v.name} · V{v.version}R{v.release}</a
               >
+              {#if Number(v.version) < Number(stig.version) || (v.version === stig.version && Number(v.release) < Number(stig.release))}
+                <span class="badge">older</span>
+              {:else}
+                <span class="badge accent">newer in catalog</span>
+              {/if}
             </li>
           {/each}
         </ul>
+        {#if familySiblings.some((v) => Number(v.version) > Number(stig.version) || (v.version === stig.version && Number(v.release) > Number(stig.release)))}
+          <p class="muted small" style="margin:0">
+            <span class="badge review">Possibly superseded</span> — a newer V/R of this family is also
+            in the catalog (B-048).
+          </p>
+        {/if}
       </div>
     {/if}
 

@@ -62,6 +62,7 @@ export interface SearchDoc {
   hasIntune?: boolean;
   hasCve?: boolean;
   inKev?: boolean;
+  hasAttack?: boolean;
 }
 
 export interface SearchFilters {
@@ -71,6 +72,7 @@ export interface SearchFilters {
   hasIntune: boolean;
   hasCve: boolean;
   inKev: boolean;
+  hasAttack: boolean;
 }
 
 export interface StigIndexEntry {
@@ -159,6 +161,8 @@ export interface IntuneSuggestion {
   learnUrl?: string;
   description?: string;
   source?: string;
+  /** Settings Catalog friendly name (B-013) */
+  settingsCatalogName?: string;
 }
 
 export interface IntunePayload {

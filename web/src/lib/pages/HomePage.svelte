@@ -50,7 +50,8 @@
       !!filters.vendor ||
       filters.hasIntune ||
       filters.hasCve ||
-      filters.inKev;
+      filters.inKev ||
+      filters.hasAttack;
     if (!q.trim() && !hasFilter) {
       results = [];
     } else {
@@ -123,7 +124,8 @@
       filters.vendor ||
       filters.hasIntune ||
       filters.hasCve ||
-      filters.inKev,
+      filters.inKev ||
+      filters.hasAttack,
   );
 
   let liveMsg = $derived(
@@ -215,6 +217,10 @@
     <label class="chk">
       <input type="checkbox" bind:checked={filters.inKev} onchange={() => run()} />
       In CISA KEV
+    </label>
+    <label class="chk">
+      <input type="checkbox" bind:checked={filters.hasAttack} onchange={() => run()} />
+      Has ATT&amp;CK
     </label>
     <button type="button" onclick={clearFilters}>Clear</button>
   </div>

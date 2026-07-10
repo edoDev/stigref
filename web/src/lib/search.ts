@@ -127,15 +127,35 @@ export async function searchAsync(
   filters?: SearchFilters,
 ): Promise<SearchDoc[]> {
   if (!ready && !engine) return [];
-  if (useWorker && worker) {
-    return postWorker<SearchDoc[]>({
-      type: "search",
-      query,
-      limit,
-      filters,
-    });
+  // B-032: synonym alternate queries, merge unique hits
+  const { alternateQueries } = await import("./synonyms");
+  const queries = alternateQueries(query);
+  const merge = async (q: string) => {
+    if (useWorker && worker) {
+      return postWorker<SearchDoc[]>({
+        type: "search",
+        query: q,
+        limit,
+        filters,
+      });
+    }
+    return searchWithEngine(engine, allDocs, docsById, q, limit, filters);
+  };
+  if (queries.length <= 1) {
+    return merge(query);
   }
-  return searchWithEngine(engine, allDocs, docsById, query, limit, filters);
+  const seen = new Set<string>();
+  const out: SearchDoc[] = [];
+  for (const q of queries) {
+    const batch = await merge(q);
+    for (const d of batch) {
+      if (seen.has(d.id)) continue;
+      seen.add(d.id);
+      out.push(d);
+      if (out.length >= limit) return out;
+    }
+  }
+  return out;
 }
 
 /** Sync search (main-thread engine only — used by tests). */
@@ -148,6 +168,7 @@ export function search(
     // Worker-only: return empty; callers should use searchAsync after ready
     return [];
   }
+  // Keep tests simple: primary query only (async path does synonym merge)
   return searchWithEngine(engine, allDocs, docsById, query, limit, filters);
 }
 

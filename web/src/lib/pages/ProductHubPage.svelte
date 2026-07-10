@@ -64,9 +64,48 @@
     toast((await copyText(r)) ? "Readme copied" : "Copy failed");
   }
 
+  async function copyThreatSummary() {
+    // B-069: product-level threat summary from pack settings + mapped rules
+    const summary = {
+      format: "stigref-product-threat-summary/v1",
+      product: id,
+      stigName: product?.stigName || link?.stigName,
+      mappedRules: product?.mappedRules,
+      rules: product?.rules,
+      settings: product?.settings,
+      disclaimer:
+        "Aggregated export aid only. Not a vulnerability assessment. See rule threat panels for CVE/KEV/ATT&CK.",
+      generatedAt: new Date().toISOString(),
+    };
+    toast(
+      (await copyText(JSON.stringify(summary, null, 2)))
+        ? "Threat summary JSON copied"
+        : "Copy failed",
+    );
+  }
+
   let mapped = $derived(product?.mappedRules ?? 0);
   let total = $derived(product?.rules ?? 0);
   let pct = $derived(total ? Math.round((mapped / total) * 100) : 0);
+
+  /** B-015: same OMA-URI with differing values across pack settings */
+  let conflicts = $derived.by(() => {
+    const settings = (pack as { settings?: Array<{ omaUri?: string; value?: string; name?: string; sourceRules?: string[] }> })
+      ?.settings;
+    if (!settings?.length) return [] as Array<{ omaUri: string; values: string[] }>;
+    const byOma = new Map<string, Set<string>>();
+    for (const s of settings) {
+      const oma = s.omaUri || "";
+      if (!oma) continue;
+      if (!byOma.has(oma)) byOma.set(oma, new Set());
+      byOma.get(oma)!.add(String(s.value ?? ""));
+    }
+    const out: Array<{ omaUri: string; values: string[] }> = [];
+    for (const [omaUri, vals] of byOma) {
+      if (vals.size > 1) out.push({ omaUri, values: [...vals] });
+    }
+    return out;
+  });
 </script>
 
 <section class="stack">
@@ -113,11 +152,30 @@
       <div class="row">
         <button type="button" class="primary" onclick={copyCsv}>Copy settings CSV</button>
         <button type="button" onclick={copyReadme}>Copy pack README</button>
+        <button type="button" onclick={copyThreatSummary}>Copy threat summary JSON</button>
       </div>
       <p class="muted small" style="margin:0">
         Assistive only — validate against STIG checks and current Microsoft documentation.
       </p>
     </div>
+
+    {#if conflicts.length}
+      <div class="card stack">
+        <h2 class="h">Possible OMA-URI conflicts</h2>
+        <p class="muted small" style="margin:0">
+          Same OMA-URI appears with different suggested values across rules (B-015). Resolve before
+          deploying a single profile.
+        </p>
+        <ul class="plain">
+          {#each conflicts as c}
+            <li>
+              <span class="mono small">{c.omaUri}</span>
+              <div class="muted small">values: {c.values.map((v) => JSON.stringify(v)).join(" · ")}</div>
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/if}
   {/if}
 </section>
 
@@ -146,5 +204,9 @@
   }
   .small {
     font-size: 0.85rem;
+  }
+  .plain {
+    margin: 0;
+    padding-left: 1.1rem;
   }
 </style>

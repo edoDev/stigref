@@ -379,6 +379,133 @@ def build_threat_for_rule(
     }
 
 
+def _load_intel_maps(maps_dir: Path | None = None) -> list[dict[str, Any]]:
+    """Load curated intel YAML maps (B-063/065/070) — minimal parser."""
+    pkg = Path(__file__).resolve().parent
+    maps_dir = maps_dir or (pkg / "intel_maps")
+    out: list[dict[str, Any]] = []
+    if not maps_dir.is_dir():
+        return out
+    for f in sorted(maps_dir.glob("*.yaml")):
+        if f.name.lower().startswith("readme"):
+            continue
+        try:
+            text = f.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        # Very small subset: collect list blocks by hand
+        data: dict[str, Any] = {
+            "attack": [],
+            "references": [],
+            "poc": [],
+            "iocs": [],
+        }
+        section: str | None = None
+        current: dict[str, Any] | None = None
+        for raw in text.splitlines():
+            line = raw.split("#", 1)[0].rstrip()
+            if not line.strip():
+                continue
+            m = re.match(r"^([A-Za-z0-9_]+):\s*(.*)$", line)
+            if m and not line.startswith(" "):
+                key, val = m.group(1), m.group(2).strip().strip("\"'")
+                section = key
+                current = None
+                if key in ("attack", "references", "poc", "iocs"):
+                    data[key] = []
+                elif val:
+                    data[key] = val
+                continue
+            if section in ("attack", "references", "poc", "iocs"):
+                if re.match(r"^\s*-\s+\w+:", line):
+                    current = {}
+                    data[section].append(current)
+                    k, v = line.strip()[2:].split(":", 1)
+                    current[k.strip()] = v.strip().strip("\"'")
+                elif current is not None and ":" in line:
+                    k, v = line.strip().split(":", 1)
+                    current[k.strip()] = v.strip().strip("\"'")
+        out.append(data)
+    return out
+
+
+def _apply_intel_maps(rule: dict[str, Any], maps: list[dict[str, Any]]) -> None:
+    """Merge curated intel into rule.threat (link-outs only)."""
+    threat = rule.get("threat") or {}
+    rid = (rule.get("full_rule_id") or "").upper()
+    cves = {normalize_cve(c.get("id") or "") for c in (threat.get("cves") or [])}
+    for c in rule.get("cves") or []:
+        cves.add(normalize_cve(c))
+    attack = list(threat.get("attack") or [])
+    refs = list(threat.get("references") or [])
+    iocs = list(threat.get("iocs") or [])
+    seen_t = {a.get("techniqueId") for a in attack}
+    for m in maps:
+        map_cve = normalize_cve(m.get("cve") or "")
+        map_rule = (m.get("rule_id") or "").upper()
+        hit = False
+        if map_cve and map_cve in cves:
+            hit = True
+        if map_rule and (rid.startswith(map_rule) or map_rule in rid):
+            hit = True
+        if not hit:
+            continue
+        for a in m.get("attack") or []:
+            tid = a.get("techniqueId")
+            if tid and tid not in seen_t:
+                seen_t.add(tid)
+                attack.append(
+                    {
+                        "techniqueId": tid,
+                        "name": a.get("name") or tid,
+                        "url": a.get("url")
+                        or f"{ATTACK_MITRE}{tid.replace('.', '/')}/",
+                        "confidence": a.get("confidence") or "medium",
+                        "source": a.get("source") or "curated",
+                    }
+                )
+        for r in m.get("references") or []:
+            if r.get("url"):
+                refs.append(
+                    {
+                        "type": r.get("type") or "advisory",
+                        "title": r.get("title") or r.get("url"),
+                        "url": r.get("url"),
+                        "publisher": r.get("publisher") or "",
+                        "date": r.get("date") or "",
+                    }
+                )
+        for p in m.get("poc") or []:
+            if p.get("url"):
+                refs.append(
+                    {
+                        "type": "poc-writeup",
+                        "title": p.get("title") or "Public writeup",
+                        "url": p.get("url"),
+                        "publisher": "",
+                        "date": "",
+                        "note": p.get("note") or "Link-out only — not an exploit package",
+                    }
+                )
+        for i in m.get("iocs") or []:
+            if i.get("value"):
+                iocs.append(
+                    {
+                        "type": i.get("type") or "indicator",
+                        "value": i.get("value"),
+                        "sourceUrl": i.get("sourceUrl") or i.get("url") or "",
+                        "note": i.get("note") or "Public indicator; validate before use",
+                    }
+                )
+    if attack or refs or iocs or threat.get("cves"):
+        threat["attack"] = attack
+        threat["references"] = refs
+        threat["iocs"] = iocs
+        if threat.get("status") in (None, "none") and (attack or refs or iocs):
+            threat["status"] = "suggested" if not threat.get("cves") else "mapped"
+        rule["threat"] = threat
+
+
 def attach_threat_to_rules(
     rules_by_id: dict[str, dict],
     kev_ids: set[str],
@@ -386,15 +513,22 @@ def attach_threat_to_rules(
     """Mutate rules with threat payloads. Returns stats."""
     with_cve = 0
     with_kev = 0
+    with_attack = 0
+    maps = _load_intel_maps()
     for rule in rules_by_id.values():
         threat = build_threat_for_rule(rule, kev_ids)
         rule["threat"] = threat
+        _apply_intel_maps(rule, maps)
+        threat = rule.get("threat") or {}
         if threat.get("cves"):
             with_cve += 1
         if threat.get("inKev"):
             with_kev += 1
+        if threat.get("attack"):
+            with_attack += 1
     return {
         "rulesWithCve": with_cve,
         "rulesWithKev": with_kev,
+        "rulesWithAttack": with_attack,
         "rulesTotal": len(rules_by_id),
     }

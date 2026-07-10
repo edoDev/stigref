@@ -15,6 +15,11 @@
   import { pushRecent } from "../recent";
   import { getAllDocs, isSearchReady } from "../search";
   import { meta } from "../metaStore";
+  import { getNote, setNote } from "../notes";
+  import { isWatched, toggleWatch } from "../watchlist";
+  import { powershellHints } from "../psHints";
+  import { toast } from "../toast";
+  import { copyText } from "../copy";
 
   interface Props {
     id: string;
@@ -25,10 +30,14 @@
   let error = $state<string | null>(null);
   let rule = $state<RuleDetail | null>(null);
   let related = $state<SearchDoc[]>([]);
+  let noteText = $state("");
+  let noteStatus = $state<"" | "todo" | "review" | "done" | "na">("");
+  let watched = $state(false);
   let saved = $derived(
     $bookmarks.some((b) => b.type === "rule" && b.id === (rule?.full_rule_id || id)),
   );
   let m = $derived($meta);
+  let psHints = $derived(rule ? powershellHints(rule) : []);
 
   function needsReview(rule: RuleDetail): boolean {
     const sugs = rule.intune?.suggestions || [];
@@ -75,6 +84,10 @@
         title: rule.title,
       });
       related = findRelated(rule);
+      const n = getNote("rule", rule.full_rule_id);
+      noteText = n?.text || "";
+      noteStatus = (n?.status as typeof noteStatus) || "";
+      watched = isWatched(rule.full_rule_id);
     } catch (e) {
       state = "error";
       error = e instanceof Error ? e.message : String(e);
@@ -84,6 +97,30 @@
   $effect(() => {
     void load(id);
   });
+
+  function saveNote() {
+    if (!rule) return;
+    setNote("rule", rule.full_rule_id, noteText, noteStatus);
+    toast("Note saved (this browser only)");
+  }
+
+  function onWatch() {
+    if (!rule) return;
+    watched = toggleWatch(rule.full_rule_id, rule.title);
+    toast(watched ? "Added to watchlist" : "Removed from watchlist");
+  }
+
+  function embedSnippet(): string {
+    if (!rule) return "";
+    const url =
+      typeof location !== "undefined"
+        ? location.origin + routes.rule(rule.full_rule_id)
+        : routes.rule(rule.full_rule_id);
+    return `<blockquote cite="${url}">
+  <strong>${rule.full_rule_id}</strong> — ${rule.title}
+  <br/><a href="${url}">View on stigref</a>
+</blockquote>`;
+  }
 </script>
 
 <section class="stack">
@@ -146,7 +183,12 @@
         >
           {saved ? "★ Saved" : "☆ Save"}
         </button>
+        <button type="button" aria-pressed={watched} onclick={onWatch}>
+          {watched ? "👁 Watching" : "Watch"}
+        </button>
+        <a class="btn" href={routes.compare(rule.full_rule_id, "")}>Compare…</a>
         <CopyButton text={rule.full_rule_id} label="Copy ID" />
+        <CopyButton text={embedSnippet()} label="Embed HTML" />
         <CopyButton text={ruleCitation(rule)} label="Citation" class="primary" />
         <CopyButton text={ruleMarkdown(rule)} label="Markdown" />
         <CopyButton text={rule.check || ""} label="Check" />
@@ -283,8 +325,39 @@
               {/each}
             </ul>
             <p class="muted small" style="margin:0">
-              Keyword-based suggestions only — not authoritative mappings.
+              Keyword/curated suggestions only — not authoritative mappings.
             </p>
+          </div>
+        {/if}
+        {#if rule.threat.references?.length}
+          <div>
+            <strong class="small">Public reports / advisories</strong>
+            <ul class="plain">
+              {#each rule.threat.references as r}
+                <li>
+                  <a href={r.url} target="_blank" rel="noopener">{r.title}</a>
+                  {#if r.type}
+                    <span class="badge">{r.type}</span>
+                  {/if}
+                </li>
+              {/each}
+            </ul>
+          </div>
+        {/if}
+        {#if rule.threat.iocs?.length}
+          <div>
+            <strong class="small">Public IoCs</strong>
+            <ul class="plain">
+              {#each rule.threat.iocs as i}
+                <li>
+                  <span class="mono">{i.value}</span>
+                  <span class="muted small">({i.type})</span>
+                  {#if i.sourceUrl}
+                    <a href={i.sourceUrl} target="_blank" rel="noopener">source</a>
+                  {/if}
+                </li>
+              {/each}
+            </ul>
           </div>
         {/if}
         <p class="muted small" style="margin:0">
@@ -359,6 +432,38 @@
     {/if}
 
     <div class="card stack print-hide">
+      <h2 class="h">Personal note (local)</h2>
+      <label class="field">
+        <span class="muted">Status</span>
+        <select bind:value={noteStatus}>
+          <option value="">—</option>
+          <option value="todo">todo</option>
+          <option value="review">review</option>
+          <option value="done">done</option>
+          <option value="na">n/a</option>
+        </select>
+      </label>
+      <textarea rows="3" bind:value={noteText} placeholder="Scratch notes — never leave this browser"></textarea>
+      <button type="button" onclick={saveNote}>Save note</button>
+    </div>
+
+    {#if psHints.length}
+      <div class="card stack print-hide">
+        <h2 class="h">Verify in Windows (PowerShell hints)</h2>
+        <p class="muted small" style="margin:0">
+          Operator aids only — STIG check text remains authoritative (B-020).
+        </p>
+        {#each psHints as h}
+          <div>
+            <strong class="small">{h.label}</strong>
+            <pre class="block">{h.script}</pre>
+            <CopyButton text={h.script} label="Copy script" />
+          </div>
+        {/each}
+      </div>
+    {/if}
+
+    <div class="card stack print-hide">
       <h2 class="h">Tools &amp; provenance</h2>
       <p class="muted small" style="margin:0">
         Formal assessment workflows:
@@ -371,6 +476,8 @@
           target="_blank"
           rel="noopener">DISA STIG Viewer / tools</a
         >
+        ·
+        <a href={routes.tools()}>Local tools</a>
       </p>
       {#if m}
         <p class="muted small" style="margin:0">
@@ -457,6 +564,11 @@
                 {/if}
               </div>
               <div class="sug-title">{s.title}</div>
+              {#if s.settingsCatalogName}
+                <div class="small">
+                  <strong>Settings Catalog:</strong> {s.settingsCatalogName}
+                </div>
+              {/if}
               {#if s.omaUri}
                 <div class="mono small">{s.omaUri}</div>
               {/if}
@@ -516,6 +628,31 @@
   .badge.review {
     border-color: var(--medium);
     color: var(--medium);
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+  }
+  select,
+  textarea {
+    font: inherit;
+    padding: 0.4rem 0.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+  }
+  a.btn {
+    display: inline-block;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-hover);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.9rem;
   }
   .check-card {
     border-left: 3px solid var(--accent);

@@ -228,6 +228,7 @@ def build_search_documents(
                 "hasIntune": False,
                 "hasCve": False,
                 "inKev": False,
+                "hasAttack": False,
             }
         )
 
@@ -277,6 +278,7 @@ def build_search_documents(
                 "hasIntune": has_intune,
                 "hasCve": has_cve,
                 "inKev": in_kev,
+                "hasAttack": bool(threat.get("attack")),
             }
         )
     return docs

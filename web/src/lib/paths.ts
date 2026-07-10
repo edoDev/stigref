@@ -33,4 +33,18 @@ export const routes = {
   product: (id: string) => href("products", encodeURIComponent(id)),
   help: () => href("help"),
   releases: () => href("releases"),
+  compare: (a?: string, b?: string) => {
+    const base = href("compare");
+    if (!a && !b) return base;
+    const sp = new URLSearchParams();
+    if (a) sp.set("a", a);
+    if (b) sp.set("b", b);
+    return `${base}?${sp}`;
+  },
+  cci: () => href("cci"),
+  cciId: (id: string) => href("cci", encodeURIComponent(id)),
+  vendors: () => href("vendors"),
+  vendor: (id: string) => href("vendors", encodeURIComponent(id)),
+  tools: () => href("tools"),
+  nist: () => href("nist"),
 };
