@@ -24,7 +24,11 @@
       Hosted as a static site. Data is rebuilt from the public
       <code class="mono">U_</code> SRG-STIG library ZIP (no CUI content).
     </p>
-    <p style="margin:0"><a href={routes.home()}>← Back to search</a></p>
+    <p style="margin:0">
+      <a href={routes.help()}>Help &amp; walkthroughs</a>
+      ·
+      <a href={routes.home()}>Search</a>
+    </p>
   </div>
 
   <div class="card stack">

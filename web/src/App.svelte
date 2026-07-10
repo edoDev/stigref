@@ -10,6 +10,7 @@
   import SavedPage from "./lib/pages/SavedPage.svelte";
   import ProductsPage from "./lib/pages/ProductsPage.svelte";
   import ProductHubPage from "./lib/pages/ProductHubPage.svelte";
+  import HelpPage from "./lib/pages/HelpPage.svelte";
   import { initRouter, route } from "./lib/router";
   import { bootData } from "./lib/metaStore";
   import { toastMessage } from "./lib/toast";
@@ -54,6 +55,8 @@
     {#key r.id}
       <ProductHubPage id={r.id} />
     {/key}
+  {:else if r.name === "help"}
+    <HelpPage />
   {:else}
     <section class="state error">
       <h1>Not found</h1>
